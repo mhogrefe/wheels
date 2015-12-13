@@ -13,8 +13,8 @@ import java.util.List;
 import static mho.wheels.testing.Testing.*;
 
 public abstract class TestProperties {
-    protected static int LIMIT;
-    protected static IterableProvider P;
+    protected int LIMIT;
+    protected IterableProvider P;
     private @NotNull String name;
 
     public TestProperties(@NotNull String name) {

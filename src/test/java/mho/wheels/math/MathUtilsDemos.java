@@ -12,7 +12,7 @@ import static mho.wheels.math.MathUtils.lcm;
 
 @SuppressWarnings("UnusedDeclaration")
 public class MathUtilsDemos extends Demos {
-    private static void demoGcd_int_int() {
+    private void demoGcd_int_int() {
         initialize();
         Iterable<Pair<Integer, Integer>> ps = filter(p -> p.a != 0 || p.b != 0, P.pairs(P.integers()));
         for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
@@ -20,7 +20,7 @@ public class MathUtilsDemos extends Demos {
         }
     }
 
-    private static void demoGcd_long_long() {
+    private void demoGcd_long_long() {
         initialize();
         Iterable<Pair<Long, Long>> ps = filter(p -> p.a != 0 || p.b != 0, P.pairs(P.longs()));
         for (Pair<Long, Long> p : take(LIMIT, ps)) {
@@ -28,7 +28,7 @@ public class MathUtilsDemos extends Demos {
         }
     }
 
-    private static void demoLcm() {
+    private void demoLcm() {
         initialize();
         for (Pair<BigInteger, BigInteger> p : take(LIMIT, P.pairs(P.positiveBigIntegers()))) {
             System.out.println("lcm(" + p.a + ", " + p.b + ") = " + lcm(p.a, p.b));

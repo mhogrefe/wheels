@@ -47,3 +47,4 @@ Progress
 | Triple                      | ✘       | ✘       | ✘     | ✘     | ✘          |
 | Demos                       | ✘       | ✘       | ✘     | ✘     | ✘          |
 | Testing                     | ✘       | ✘       | ✘     | ✘     | ✘          |
+| TestProperties              | ✘       | ✘       | ✘     | ✘     | ✘          |

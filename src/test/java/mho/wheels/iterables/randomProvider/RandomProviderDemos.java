@@ -22,70 +22,70 @@ import static mho.wheels.testing.Testing.*;
 
 @SuppressWarnings("UnusedDeclaration")
 public class RandomProviderDemos extends Demos {
-    private static void demoConstructor() {
+    private void demoConstructor() {
         initialize();
         for (Void v : take(LIMIT, repeat((Void) null))) {
             System.out.println("RandomProvider() = " + new RandomProvider());
         }
     }
 
-    private static void demoConstructor_List_Integer() {
+    private void demoConstructor_List_Integer() {
         initialize();
         for (List<Integer> is : take(LIMIT, P.lists(IsaacPRNG.SIZE, P.integers()))) {
             System.out.println("RandomProvider(" + is + ") = " + new RandomProvider(is));
         }
     }
 
-    private static void demoGetScale() {
+    private void demoGetScale() {
         initialize();
         for (RandomProvider rp : take(LIMIT, P.randomProviders())) {
             System.out.println("getScale(" + rp + ") = " + rp.getScale());
         }
     }
 
-    private static void demoGetSecondaryScale() {
+    private void demoGetSecondaryScale() {
         initialize();
         for (RandomProvider rp : take(LIMIT, P.randomProviders())) {
             System.out.println("getSecondaryScale(" + rp + ") = " + rp.getSecondaryScale());
         }
     }
 
-    private static void demoGetSeed() {
+    private void demoGetSeed() {
         initialize();
         for (RandomProvider rp : take(LIMIT, P.randomProviders())) {
             System.out.println("getSeed(" + rp + ") = " + rp.getSeed());
         }
     }
 
-    private static void demoWithScale() {
+    private void demoWithScale() {
         initialize();
         for (Pair<RandomProvider, Integer> p : take(LIMIT, P.pairs(P.randomProviders(), P.naturalIntegers()))) {
             System.out.println("withScale(" + p.a + ", " + p.b + ") = " + p.a.withScale(p.b));
         }
     }
 
-    private static void demoWithSecondaryScale() {
+    private void demoWithSecondaryScale() {
         initialize();
         for (Pair<RandomProvider, Integer> p : take(LIMIT, P.pairs(P.randomProviders(), P.naturalIntegers()))) {
             System.out.println("withSecondaryScale(" + p.a + ", " + p.b + ") = " + p.a.withSecondaryScale(p.b));
         }
     }
 
-    private static void demoCopy() {
+    private void demoCopy() {
         initialize();
         for (RandomProvider rp : take(LIMIT, P.randomProviders())) {
             System.out.println("copy(" + rp + ") = " + rp.copy());
         }
     }
 
-    private static void demoDeepCopy() {
+    private void demoDeepCopy() {
         initialize();
         for (RandomProvider rp : take(LIMIT, P.randomProviders())) {
             System.out.println("deepCopy(" + rp + ") = " + rp.deepCopy());
         }
     }
 
-    private static void demoReset() {
+    private void demoReset() {
         initialize();
         for (RandomProvider rp : take(LIMIT, P.randomProviders())) {
             head(rp.integers());
@@ -95,35 +95,35 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoGetId() {
+    private void demoGetId() {
         initialize();
         for (RandomProvider rp : take(LIMIT, P.randomProviders())) {
             System.out.println("getId(" + rp + ") = " + rp.getId());
         }
     }
 
-    private static void demoIntegers() {
+    private void demoIntegers() {
         initialize();
         for (RandomProvider rp : take(MEDIUM_LIMIT, P.randomProvidersDefault())) {
             System.out.println("integers(" + rp + ") = " + its(rp.integers()));
         }
     }
 
-    private static void demoLongs() {
+    private void demoLongs() {
         initialize();
         for (RandomProvider rp : take(MEDIUM_LIMIT, P.randomProvidersDefault())) {
             System.out.println("longs(" + rp + ") = " + its(rp.longs()));
         }
     }
 
-    private static void demoBooleans() {
+    private void demoBooleans() {
         initialize();
         for (RandomProvider rp : take(MEDIUM_LIMIT, P.randomProvidersDefault())) {
             System.out.println("booleans(" + rp + ") = " + its(rp.booleans()));
         }
     }
 
-    private static void demoUniformSample_Iterable() {
+    private void demoUniformSample_Iterable() {
         initialize();
         Iterable<Pair<RandomProvider, List<Integer>>> ps = P.pairs(
                 P.randomProvidersDefault(),
@@ -134,7 +134,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoUniformSample_String() {
+    private void demoUniformSample_String() {
         initialize();
         Iterable<Pair<RandomProvider, String>> ps = P.pairs(P.randomProvidersDefault(), P.stringsAtLeast(1));
         for (Pair<RandomProvider, String> p : take(MEDIUM_LIMIT, ps)) {
@@ -143,168 +143,168 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoOrderings() {
+    private void demoOrderings() {
         initialize();
         for (RandomProvider rp : take(MEDIUM_LIMIT, P.randomProvidersDefault())) {
             System.out.println("orderings(" + rp + ") = " + its(rp.orderings()));
         }
     }
 
-    private static void demoRoundingModes() {
+    private void demoRoundingModes() {
         initialize();
         for (RandomProvider rp : take(MEDIUM_LIMIT, P.randomProvidersDefault())) {
             System.out.println("roundingModes(" + rp + ") = " + its(rp.roundingModes()));
         }
     }
 
-    private static void demoPositiveBytes() {
+    private void demoPositiveBytes() {
         initialize();
         for (RandomProvider rp : take(MEDIUM_LIMIT, P.randomProvidersDefault())) {
             System.out.println("positiveBytes(" + rp + ") = " + its(rp.positiveBytes()));
         }
     }
 
-    private static void demoPositiveShorts() {
+    private void demoPositiveShorts() {
         initialize();
         for (RandomProvider rp : take(MEDIUM_LIMIT, P.randomProvidersDefault())) {
             System.out.println("positiveShorts(" + rp + ") = " + its(rp.positiveShorts()));
         }
     }
 
-    private static void demoPositiveIntegers() {
+    private void demoPositiveIntegers() {
         initialize();
         for (RandomProvider rp : take(MEDIUM_LIMIT, P.randomProvidersDefault())) {
             System.out.println("positiveIntegers(" + rp + ") = " + its(rp.positiveIntegers()));
         }
     }
 
-    private static void demoPositiveLongs() {
+    private void demoPositiveLongs() {
         initialize();
         for (RandomProvider rp : take(MEDIUM_LIMIT, P.randomProvidersDefault())) {
             System.out.println("positiveLongs(" + rp + ") = " + its(rp.positiveLongs()));
         }
     }
 
-    private static void demoNegativeBytes() {
+    private void demoNegativeBytes() {
         initialize();
         for (RandomProvider rp : take(MEDIUM_LIMIT, P.randomProvidersDefault())) {
             System.out.println("negativeBytes(" + rp + ") = " + its(rp.negativeBytes()));
         }
     }
 
-    private static void demoNegativeShorts() {
+    private void demoNegativeShorts() {
         initialize();
         for (RandomProvider rp : take(MEDIUM_LIMIT, P.randomProvidersDefault())) {
             System.out.println("negativeShorts(" + rp + ") = " + its(rp.negativeShorts()));
         }
     }
 
-    private static void demoNegativeIntegers() {
+    private void demoNegativeIntegers() {
         initialize();
         for (RandomProvider rp : take(MEDIUM_LIMIT, P.randomProvidersDefault())) {
             System.out.println("negativeIntegers(" + rp + ") = " + its(rp.negativeIntegers()));
         }
     }
 
-    private static void demoNegativeLongs() {
+    private void demoNegativeLongs() {
         initialize();
         for (RandomProvider rp : take(MEDIUM_LIMIT, P.randomProvidersDefault())) {
             System.out.println("negativeLongs(" + rp + ") = " + its(rp.negativeLongs()));
         }
     }
 
-    private static void demoNaturalBytes() {
+    private void demoNaturalBytes() {
         initialize();
         for (RandomProvider rp : take(MEDIUM_LIMIT, P.randomProvidersDefault())) {
             System.out.println("naturalBytes(" + rp + ") = " + its(rp.naturalBytes()));
         }
     }
 
-    private static void demoNaturalShorts() {
+    private void demoNaturalShorts() {
         initialize();
         for (RandomProvider rp : take(MEDIUM_LIMIT, P.randomProvidersDefault())) {
             System.out.println("naturalShorts(" + rp + ") = " + its(rp.naturalShorts()));
         }
     }
 
-    private static void demoNaturalIntegers() {
+    private void demoNaturalIntegers() {
         initialize();
         for (RandomProvider rp : take(MEDIUM_LIMIT, P.randomProvidersDefault())) {
             System.out.println("naturalIntegers(" + rp + ") = " + its(rp.naturalIntegers()));
         }
     }
 
-    private static void demoNaturalLongs() {
+    private void demoNaturalLongs() {
         initialize();
         for (RandomProvider rp : take(MEDIUM_LIMIT, P.randomProvidersDefault())) {
             System.out.println("naturalLongs(" + rp + ") = " + its(rp.naturalLongs()));
         }
     }
 
-    private static void demoNonzeroBytes() {
+    private void demoNonzeroBytes() {
         initialize();
         for (RandomProvider rp : take(MEDIUM_LIMIT, P.randomProvidersDefault())) {
             System.out.println("nonzeroBytes(" + rp + ") = " + its(rp.nonzeroBytes()));
         }
     }
 
-    private static void demoNonzeroShorts() {
+    private void demoNonzeroShorts() {
         initialize();
         for (RandomProvider rp : take(MEDIUM_LIMIT, P.randomProvidersDefault())) {
             System.out.println("nonzeroShorts(" + rp + ") = " + its(rp.nonzeroShorts()));
         }
     }
 
-    private static void demoNonzeroIntegers() {
+    private void demoNonzeroIntegers() {
         initialize();
         for (RandomProvider rp : take(MEDIUM_LIMIT, P.randomProvidersDefault())) {
             System.out.println("nonzeroIntegers(" + rp + ") = " + its(rp.nonzeroIntegers()));
         }
     }
 
-    private static void demoNonzeroLongs() {
+    private void demoNonzeroLongs() {
         initialize();
         for (RandomProvider rp : take(MEDIUM_LIMIT, P.randomProvidersDefault())) {
             System.out.println("nonzeroLongs(" + rp + ") = " + its(rp.nonzeroLongs()));
         }
     }
 
-    private static void demoBytes() {
+    private void demoBytes() {
         initialize();
         for (RandomProvider rp : take(MEDIUM_LIMIT, P.randomProvidersDefault())) {
             System.out.println("bytes(" + rp + ") = " + its(rp.bytes()));
         }
     }
 
-    private static void demoShorts() {
+    private void demoShorts() {
         initialize();
         for (RandomProvider rp : take(MEDIUM_LIMIT, P.randomProvidersDefault())) {
             System.out.println("shorts(" + rp + ") = " + its(rp.shorts()));
         }
     }
 
-    private static void demoAsciiCharacters() {
+    private void demoAsciiCharacters() {
         initialize();
         for (RandomProvider rp : take(MEDIUM_LIMIT, P.randomProvidersDefault())) {
             System.out.println("asciiCharacters(" + rp + ") = " + cits(rp.asciiCharacters()));
         }
     }
 
-    private static void demoCharacters() {
+    private void demoCharacters() {
         initialize();
         for (RandomProvider rp : take(MEDIUM_LIMIT, P.randomProvidersDefault())) {
             System.out.println("characters(" + rp + ") = " + cits(rp.characters()));
         }
     }
 
-    private static void demoRangeUp_byte() {
+    private void demoRangeUp_byte() {
         initialize();
         for (Pair<RandomProvider, Byte> p : take(MEDIUM_LIMIT, P.pairs(P.randomProvidersDefault(), P.bytes()))) {
             System.out.println("rangeUp(" + p.a + ", " + p.b + ") = " + its(p.a.rangeUp(p.b)));
         }
     }
 
-    private static void demoRangeUp_short() {
+    private void demoRangeUp_short() {
         initialize();
         Iterable<Pair<RandomProvider, Short>> ps = P.pairs(P.randomProvidersDefault(), P.shorts());
         for (Pair<RandomProvider, Short> p : take(MEDIUM_LIMIT, ps)) {
@@ -312,7 +312,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoRangeUp_int() {
+    private void demoRangeUp_int() {
         initialize();
         Iterable<Pair<RandomProvider, Integer>> ps = P.pairs(P.randomProvidersDefault(), P.integers());
         for (Pair<RandomProvider, Integer> p : take(MEDIUM_LIMIT, ps)) {
@@ -320,14 +320,14 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoRangeUp_long() {
+    private void demoRangeUp_long() {
         initialize();
         for (Pair<RandomProvider, Long> p : take(MEDIUM_LIMIT, P.pairs(P.randomProvidersDefault(), P.longs()))) {
             System.out.println("rangeUp(" + p.a + ", " + p.b + ") = " + its(p.a.rangeUp(p.b)));
         }
     }
 
-    private static void demoRangeUp_char() {
+    private void demoRangeUp_char() {
         initialize();
         Iterable<Pair<RandomProvider, Character>> ps = P.pairs(P.randomProvidersDefault(), P.characters());
         for (Pair<RandomProvider, Character> p : take(MEDIUM_LIMIT, ps)) {
@@ -335,14 +335,14 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoRangeDown_byte() {
+    private void demoRangeDown_byte() {
         initialize();
         for (Pair<RandomProvider, Byte> p : take(MEDIUM_LIMIT, P.pairs(P.randomProvidersDefault(), P.bytes()))) {
             System.out.println("rangeDown(" + p.a + ", " + p.b + ") = " + its(p.a.rangeDown(p.b)));
         }
     }
 
-    private static void demoRangeDown_short() {
+    private void demoRangeDown_short() {
         initialize();
         Iterable<Pair<RandomProvider, Short>> ps = P.pairs(P.randomProvidersDefault(), P.shorts());
         for (Pair<RandomProvider, Short> p : take(MEDIUM_LIMIT, ps)) {
@@ -350,7 +350,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoRangeDown_int() {
+    private void demoRangeDown_int() {
         initialize();
         Iterable<Pair<RandomProvider, Integer>> ps = P.pairs(P.randomProvidersDefault(), P.integers());
         for (Pair<RandomProvider, Integer> p : take(MEDIUM_LIMIT, ps)) {
@@ -358,14 +358,14 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoRangeDown_long() {
+    private void demoRangeDown_long() {
         initialize();
         for (Pair<RandomProvider, Long> p : take(MEDIUM_LIMIT, P.pairs(P.randomProvidersDefault(), P.longs()))) {
             System.out.println("rangeDown(" + p.a + ", " + p.b + ") = " + its(p.a.rangeDown(p.b)));
         }
     }
 
-    private static void demoRangeDown_char() {
+    private void demoRangeDown_char() {
         initialize();
         Iterable<Pair<RandomProvider, Character>> ps = P.pairs(P.randomProvidersDefault(), P.characters());
         for (Pair<RandomProvider, Character> p : take(MEDIUM_LIMIT, ps)) {
@@ -373,7 +373,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoRange_byte_byte() {
+    private void demoRange_byte_byte() {
         initialize();
         Iterable<Triple<RandomProvider, Byte, Byte>> ts = P.triples(P.randomProvidersDefault(), P.bytes(), P.bytes());
         for (Triple<RandomProvider, Byte, Byte> p : take(LIMIT, ts)) {
@@ -381,7 +381,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoRange_short_short() {
+    private void demoRange_short_short() {
         initialize();
         Iterable<Triple<RandomProvider, Short, Short>> ts = P.triples(
                 P.randomProvidersDefault(),
@@ -393,7 +393,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoRange_int_int() {
+    private void demoRange_int_int() {
         initialize();
         Iterable<Triple<RandomProvider, Integer, Integer>> ts = P.triples(
                 P.randomProvidersDefault(),
@@ -405,7 +405,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoRange_long_long() {
+    private void demoRange_long_long() {
         initialize();
         Iterable<Triple<RandomProvider, Long, Long>> ts = P.triples(P.randomProvidersDefault(), P.longs(), P.longs());
         for (Triple<RandomProvider, Long, Long> p : take(LIMIT, ts)) {
@@ -413,7 +413,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoRange_BigInteger_BigInteger() {
+    private void demoRange_BigInteger_BigInteger() {
         initialize();
         Iterable<Triple<RandomProvider, BigInteger, BigInteger>> ts = P.triples(
                 P.randomProvidersDefault(),
@@ -425,7 +425,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoRange_char_char() {
+    private void demoRange_char_char() {
         initialize();
         Iterable<Triple<RandomProvider, Character, Character>> ts = P.triples(
                 P.randomProvidersDefault(),
@@ -437,7 +437,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoPositiveIntegersGeometric() {
+    private void demoPositiveIntegersGeometric() {
         initialize();
         Iterable<RandomProvider> rps = filterInfinite(
                 x -> x.getScale() >= 2,
@@ -448,7 +448,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoNegativeIntegersGeometric() {
+    private void demoNegativeIntegersGeometric() {
         initialize();
         Iterable<RandomProvider> rps = filterInfinite(
                 x -> x.getScale() >= 2,
@@ -459,7 +459,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoNaturalIntegersGeometric() {
+    private void demoNaturalIntegersGeometric() {
         initialize();
         Iterable<RandomProvider> rps = filterInfinite(
                 x -> x.getScale() > 0 && x.getScale() != Integer.MAX_VALUE,
@@ -470,7 +470,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoNonzeroIntegersGeometric() {
+    private void demoNonzeroIntegersGeometric() {
         initialize();
         Iterable<RandomProvider> rps = filterInfinite(
                 x -> x.getScale() >= 2,
@@ -481,7 +481,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoIntegersGeometric() {
+    private void demoIntegersGeometric() {
         initialize();
         Iterable<RandomProvider> rps = filterInfinite(
                 x -> x.getScale() > 0 && x.getScale() != Integer.MAX_VALUE,
@@ -492,7 +492,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoRangeUpGeometric() {
+    private void demoRangeUpGeometric() {
         initialize();
         Iterable<Pair<RandomProvider, Integer>> ps = filterInfinite(
                 p -> p.a.getScale() > p.b && (p.b > 1 || p.a.getScale() >= Integer.MAX_VALUE + p.b),
@@ -503,7 +503,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoRangeDownGeometric() {
+    private void demoRangeDownGeometric() {
         initialize();
         Iterable<Pair<RandomProvider, Integer>> ps = filterInfinite(
                 p -> p.a.getScale() < p.b && (p.b <= -1 || p.a.getScale() > p.b - Integer.MAX_VALUE),
@@ -514,7 +514,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoPositiveBigIntegers() {
+    private void demoPositiveBigIntegers() {
         initialize();
         Iterable<RandomProvider> rps = filterInfinite(
                 x -> x.getScale() >= 2,
@@ -525,7 +525,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoNegativeBigIntegers() {
+    private void demoNegativeBigIntegers() {
         initialize();
         Iterable<RandomProvider> rps = filterInfinite(
                 x -> x.getScale() >= 2,
@@ -536,7 +536,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoNaturalBigIntegers() {
+    private void demoNaturalBigIntegers() {
         initialize();
         Iterable<RandomProvider> rps = filterInfinite(
                 x -> x.getScale() > 0 && x.getScale() != Integer.MAX_VALUE,
@@ -547,7 +547,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoNonzeroBigIntegers() {
+    private void demoNonzeroBigIntegers() {
         initialize();
         Iterable<RandomProvider> rps = filterInfinite(
                 x -> x.getScale() >= 2,
@@ -558,7 +558,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoBigIntegers() {
+    private void demoBigIntegers() {
         initialize();
         Iterable<RandomProvider> rps = filterInfinite(
                 x -> x.getScale() > 0 && x.getScale() != Integer.MAX_VALUE,
@@ -569,7 +569,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoRangeUp_BigInteger() {
+    private void demoRangeUp_BigInteger() {
         initialize();
         Iterable<Pair<RandomProvider, BigInteger>> ps = filterInfinite(
                 p -> {
@@ -583,7 +583,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoRangeDown_BigInteger() {
+    private void demoRangeDown_BigInteger() {
         initialize();
         Iterable<Pair<RandomProvider, BigInteger>> ps = filterInfinite(
                 p -> {
@@ -597,7 +597,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoPositiveBinaryFractions() {
+    private void demoPositiveBinaryFractions() {
         initialize();
         Iterable<RandomProvider> rps = filterInfinite(
                 x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
@@ -608,7 +608,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoNegativeBinaryFractions() {
+    private void demoNegativeBinaryFractions() {
         initialize();
         Iterable<RandomProvider> rps = filterInfinite(
                 x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
@@ -619,7 +619,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoNonzeroBinaryFractions() {
+    private void demoNonzeroBinaryFractions() {
         initialize();
         Iterable<RandomProvider> rps = filterInfinite(
                 x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
@@ -630,7 +630,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoBinaryFractions() {
+    private void demoBinaryFractions() {
         initialize();
         Iterable<RandomProvider> rps = filterInfinite(
                 x -> x.getScale() > 0 && x.getSecondaryScale() > 0,
@@ -641,7 +641,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoRangeUp_BinaryFraction() {
+    private void demoRangeUp_BinaryFraction() {
         initialize();
         Iterable<Pair<RandomProvider, BinaryFraction>> ps = P.pairs(
                 filterInfinite(x -> x.getScale() > 0 && x.getSecondaryScale() > 0, P.randomProviders()),
@@ -652,7 +652,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoRangeDown_BinaryFraction() {
+    private void demoRangeDown_BinaryFraction() {
         initialize();
         Iterable<Pair<RandomProvider, BinaryFraction>> ps = P.pairs(
                 filterInfinite(x -> x.getScale() > 0 && x.getSecondaryScale() > 0, P.randomProviders()),
@@ -663,7 +663,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoRange_BinaryFraction_BinaryFraction() {
+    private void demoRange_BinaryFraction_BinaryFraction() {
         initialize();
         Iterable<Triple<RandomProvider, BinaryFraction, BinaryFraction>> ts = P.triples(
                 filterInfinite(
@@ -678,119 +678,119 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoPositiveFloats() {
+    private void demoPositiveFloats() {
         initialize();
         for (RandomProvider rp : take(MEDIUM_LIMIT, P.randomProvidersDefault())) {
             System.out.println("positiveFloats(" + rp + ") = " + its(rp.positiveFloats()));
         }
     }
 
-    private static void demoNegativeFloats() {
+    private void demoNegativeFloats() {
         initialize();
         for (RandomProvider rp : take(MEDIUM_LIMIT, P.randomProvidersDefault())) {
             System.out.println("negativeFloats(" + rp + ") = " + its(rp.negativeFloats()));
         }
     }
 
-    private static void demoNonzeroFloats() {
+    private void demoNonzeroFloats() {
         initialize();
         for (RandomProvider rp : take(MEDIUM_LIMIT, P.randomProvidersDefault())) {
             System.out.println("nonzeroFloats(" + rp + ") = " + its(rp.nonzeroFloats()));
         }
     }
 
-    private static void demoFloats() {
+    private void demoFloats() {
         initialize();
         for (RandomProvider rp : take(MEDIUM_LIMIT, P.randomProvidersDefault())) {
             System.out.println("floats(" + rp + ") = " + its(rp.floats()));
         }
     }
 
-    private static void demoPositiveDoubles() {
+    private void demoPositiveDoubles() {
         initialize();
         for (RandomProvider rp : take(MEDIUM_LIMIT, P.randomProvidersDefault())) {
             System.out.println("positiveDoubles(" + rp + ") = " + its(rp.positiveDoubles()));
         }
     }
 
-    private static void demoNegativeDoubles() {
+    private void demoNegativeDoubles() {
         initialize();
         for (RandomProvider rp : take(MEDIUM_LIMIT, P.randomProvidersDefault())) {
             System.out.println("negativeDoubles(" + rp + ") = " + its(rp.negativeDoubles()));
         }
     }
 
-    private static void demoNonzeroDoubles() {
+    private void demoNonzeroDoubles() {
         initialize();
         for (RandomProvider rp : take(MEDIUM_LIMIT, P.randomProvidersDefault())) {
             System.out.println("nonzeroDoubles(" + rp + ") = " + its(rp.nonzeroDoubles()));
         }
     }
 
-    private static void demoDoubles() {
+    private void demoDoubles() {
         initialize();
         for (RandomProvider rp : take(MEDIUM_LIMIT, P.randomProvidersDefault())) {
             System.out.println("doubles(" + rp + ") = " + its(rp.doubles()));
         }
     }
 
-    private static void demoPositiveFloatsUniform() {
+    private void demoPositiveFloatsUniform() {
         initialize();
         for (RandomProvider rp : take(MEDIUM_LIMIT, P.randomProvidersDefault())) {
             System.out.println("positiveFloatsUniform(" + rp + ") = " + its(rp.positiveFloatsUniform()));
         }
     }
 
-    private static void demoNegativeFloatsUniform() {
+    private void demoNegativeFloatsUniform() {
         initialize();
         for (RandomProvider rp : take(MEDIUM_LIMIT, P.randomProvidersDefault())) {
             System.out.println("negativeFloatsUniform(" + rp + ") = " + its(rp.negativeFloatsUniform()));
         }
     }
 
-    private static void demoNonzeroFloatsUniform() {
+    private void demoNonzeroFloatsUniform() {
         initialize();
         for (RandomProvider rp : take(MEDIUM_LIMIT, P.randomProvidersDefault())) {
             System.out.println("nonzeroFloatsUniform(" + rp + ") = " + its(rp.nonzeroFloatsUniform()));
         }
     }
 
-    private static void demoFloatsUniform() {
+    private void demoFloatsUniform() {
         initialize();
         for (RandomProvider rp : take(MEDIUM_LIMIT, P.randomProvidersDefault())) {
             System.out.println("floatsUniform(" + rp + ") = " + its(rp.floatsUniform()));
         }
     }
 
-    private static void demoPositiveDoublesUniform() {
+    private void demoPositiveDoublesUniform() {
         initialize();
         for (RandomProvider rp : take(MEDIUM_LIMIT, P.randomProvidersDefault())) {
             System.out.println("positiveDoublesUniform(" + rp + ") = " + its(rp.positiveDoublesUniform()));
         }
     }
 
-    private static void demoNegativeDoublesUniform() {
+    private void demoNegativeDoublesUniform() {
         initialize();
         for (RandomProvider rp : take(MEDIUM_LIMIT, P.randomProvidersDefault())) {
             System.out.println("negativeDoublesUniform(" + rp + ") = " + its(rp.negativeDoublesUniform()));
         }
     }
 
-    private static void demoNonzeroDoublesUniform() {
+    private void demoNonzeroDoublesUniform() {
         initialize();
         for (RandomProvider rp : take(MEDIUM_LIMIT, P.randomProvidersDefault())) {
             System.out.println("nonzeroDoublesUniform(" + rp + ") = " + its(rp.nonzeroDoublesUniform()));
         }
     }
 
-    private static void demoDoublesUniform() {
+    private void demoDoublesUniform() {
         initialize();
         for (RandomProvider rp : take(MEDIUM_LIMIT, P.randomProvidersDefault())) {
             System.out.println("doublesUniform(" + rp + ") = " + its(rp.doublesUniform()));
         }
     }
 
-    private static void demoRangeUp_float() {
+    private void demoRangeUp_float() {
         initialize();
         Iterable<Pair<RandomProvider, Float>> ps = P.pairs(
                 P.randomProvidersDefault(),
@@ -801,7 +801,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoRangeDown_float() {
+    private void demoRangeDown_float() {
         initialize();
         Iterable<Pair<RandomProvider, Float>> ps = P.pairs(
                 P.randomProvidersDefault(),
@@ -812,7 +812,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoRange_float_float() {
+    private void demoRange_float_float() {
         initialize();
         Iterable<Triple<RandomProvider, Float, Float>> ts = P.triples(
                 P.randomProvidersDefault(),
@@ -824,7 +824,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoRangeUp_double() {
+    private void demoRangeUp_double() {
         initialize();
         Iterable<Pair<RandomProvider, Double>> ps = P.pairs(
                 P.randomProvidersDefault(),
@@ -835,7 +835,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoRangeDown_double() {
+    private void demoRangeDown_double() {
         initialize();
         Iterable<Pair<RandomProvider, Double>> ps = P.pairs(
                 P.randomProvidersDefault(),
@@ -846,7 +846,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoRange_double_double() {
+    private void demoRange_double_double() {
         initialize();
         Iterable<Triple<RandomProvider, Double, Double>> ts = P.triples(
                 P.randomProvidersDefault(),
@@ -858,7 +858,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoRangeUpUniform_float() {
+    private void demoRangeUpUniform_float() {
         initialize();
         Iterable<Pair<RandomProvider, Float>> ps = P.pairs(
                 P.randomProvidersDefault(),
@@ -869,7 +869,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoRangeDownUniform_float() {
+    private void demoRangeDownUniform_float() {
         initialize();
         Iterable<Pair<RandomProvider, Float>> ps = P.pairs(
                 P.randomProvidersDefault(),
@@ -880,7 +880,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoRangeUniform_float_float() {
+    private void demoRangeUniform_float_float() {
         initialize();
         Iterable<Triple<RandomProvider, Float, Float>> ts = P.triples(
                 P.randomProvidersDefault(),
@@ -893,7 +893,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoRangeUpUniform_double() {
+    private void demoRangeUpUniform_double() {
         initialize();
         Iterable<Pair<RandomProvider, Double>> ps = P.pairs(
                 P.randomProvidersDefault(),
@@ -904,7 +904,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoRangeDownUniform_double() {
+    private void demoRangeDownUniform_double() {
         initialize();
         Iterable<Pair<RandomProvider, Double>> ps = P.pairs(
                 P.randomProvidersDefault(),
@@ -915,7 +915,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoRangeUniform_double_double() {
+    private void demoRangeUniform_double_double() {
         initialize();
         Iterable<Triple<RandomProvider, Double, Double>> ts = P.triples(
                 P.randomProvidersDefault(),
@@ -928,7 +928,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoPositiveBigDecimals() {
+    private void demoPositiveBigDecimals() {
         initialize();
         Iterable<RandomProvider> rps = filterInfinite(
                 x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
@@ -939,7 +939,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoNegativeBigDecimals() {
+    private void demoNegativeBigDecimals() {
         initialize();
         Iterable<RandomProvider> rps = filterInfinite(
                 x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
@@ -950,7 +950,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoNonzeroBigDecimals() {
+    private void demoNonzeroBigDecimals() {
         initialize();
         Iterable<RandomProvider> rps = filterInfinite(
                 x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
@@ -961,7 +961,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoBigDecimals() {
+    private void demoBigDecimals() {
         initialize();
         Iterable<RandomProvider> rps = filterInfinite(
                 x -> x.getScale() > 0 && x.getSecondaryScale() > 0,
@@ -972,7 +972,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoPositiveCanonicalBigDecimals() {
+    private void demoPositiveCanonicalBigDecimals() {
         initialize();
         Iterable<RandomProvider> rps = filterInfinite(
                 x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
@@ -983,7 +983,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoNegativeCanonicalBigDecimals() {
+    private void demoNegativeCanonicalBigDecimals() {
         initialize();
         Iterable<RandomProvider> rps = filterInfinite(
                 x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
@@ -994,7 +994,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoNonzeroCanonicalBigDecimals() {
+    private void demoNonzeroCanonicalBigDecimals() {
         initialize();
         Iterable<RandomProvider> rps = filterInfinite(
                 x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
@@ -1005,7 +1005,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoCanonicalBigDecimals() {
+    private void demoCanonicalBigDecimals() {
         initialize();
         Iterable<RandomProvider> rps = filterInfinite(
                 x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
@@ -1016,7 +1016,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoRangeUp_BigDecimal() {
+    private void demoRangeUp_BigDecimal() {
         initialize();
         Iterable<Pair<RandomProvider, BigDecimal>> ps = P.pairs(
                 filterInfinite(x -> x.getScale() >= 2 && x.getSecondaryScale() > 0, P.randomProviders()),
@@ -1027,7 +1027,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoRangeDown_BigDecimal() {
+    private void demoRangeDown_BigDecimal() {
         initialize();
         Iterable<Pair<RandomProvider, BigDecimal>> ps = P.pairs(
                 filterInfinite(x -> x.getScale() >= 2 && x.getSecondaryScale() > 0, P.randomProviders()),
@@ -1038,7 +1038,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoRange_BigDecimal_BigDecimal() {
+    private void demoRange_BigDecimal_BigDecimal() {
         initialize();
         Iterable<Triple<RandomProvider, BigDecimal, BigDecimal>> ts = P.triples(
                 filterInfinite(x -> x.getScale() > 0 && x.getSecondaryScale() > 0, P.randomProviders()),
@@ -1050,7 +1050,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoRangeUpCanonical_BigDecimal() {
+    private void demoRangeUpCanonical_BigDecimal() {
         initialize();
         Iterable<Pair<RandomProvider, BigDecimal>> ps = P.pairs(
                 filterInfinite(x -> x.getScale() >= 2 && x.getSecondaryScale() > 0, P.randomProviders()),
@@ -1061,7 +1061,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoRangeDownCanonical_BigDecimal() {
+    private void demoRangeDownCanonical_BigDecimal() {
         initialize();
         Iterable<Pair<RandomProvider, BigDecimal>> ps = P.pairs(
                 filterInfinite(x -> x.getScale() >= 2 && x.getSecondaryScale() > 0, P.randomProviders()),
@@ -1072,7 +1072,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoRangeCanonical_BigDecimal_BigDecimal() {
+    private void demoRangeCanonical_BigDecimal_BigDecimal() {
         initialize();
         Iterable<Triple<RandomProvider, BigDecimal, BigDecimal>> ts = P.triples(
                 filterInfinite(x -> x.getScale() > 0 && x.getSecondaryScale() > 0, P.randomProviders()),
@@ -1085,7 +1085,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoWithElement() {
+    private void demoWithElement() {
         initialize();
         Iterable<Triple<RandomProvider, Integer, Iterable<Integer>>> ts = P.triples(
                 filterInfinite(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale()),
@@ -1098,7 +1098,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoWithNull() {
+    private void demoWithNull() {
         initialize();
         Iterable<Pair<RandomProvider, Iterable<Integer>>> ps = P.pairs(
                 filterInfinite(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale()),
@@ -1109,7 +1109,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoOptionals() {
+    private void demoOptionals() {
         initialize();
         Iterable<Pair<RandomProvider, Iterable<Integer>>> ps = P.pairs(
                 filterInfinite(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale()),
@@ -1120,7 +1120,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoNullableOptionals() {
+    private void demoNullableOptionals() {
         initialize();
         Iterable<Pair<RandomProvider, Iterable<Integer>>> ps = P.pairs(
                 filterInfinite(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale()),
@@ -1132,7 +1132,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoDependentPairsInfinite() {
+    private void demoDependentPairsInfinite() {
         initialize();
         RandomProvider RP = RandomProvider.example();
         IterableProvider PS = P.withScale(4);
@@ -1166,7 +1166,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoShuffle() {
+    private void demoShuffle() {
         initialize();
         Iterable<Pair<RandomProvider, List<Integer>>> ps = P.pairs(
                 P.randomProvidersDefault(),
@@ -1179,7 +1179,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoPermutationsFinite() {
+    private void demoPermutationsFinite() {
         initialize();
         Iterable<Pair<RandomProvider, List<Integer>>> ps = P.pairs(
                 P.randomProvidersDefault(),
@@ -1190,7 +1190,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoStringPermutations() {
+    private void demoStringPermutations() {
         initialize();
         Iterable<Pair<RandomProvider, String>> ps = P.pairs(P.randomProvidersDefault(), P.withScale(4).strings());
         for (Pair<RandomProvider, String> p : take(MEDIUM_LIMIT, ps)) {
@@ -1198,7 +1198,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoPrefixPermutations_finite() {
+    private void demoPrefixPermutations_finite() {
         initialize();
         Iterable<Pair<RandomProvider, List<Integer>>> ps = P.pairs(
                 filterInfinite(rp -> rp.getScale() > 0, P.randomProvidersDefaultSecondaryScale()),
@@ -1210,7 +1210,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoPrefixPermutations_infinite() {
+    private void demoPrefixPermutations_infinite() {
         initialize();
         Iterable<Pair<RandomProvider, Iterable<Integer>>> ps = P.pairs(
                 filterInfinite(rp -> rp.getScale() > 0, P.randomProvidersDefaultSecondaryScale()),
@@ -1222,7 +1222,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoStrings_int_String() {
+    private void demoStrings_int_String() {
         initialize();
         Iterable<Triple<RandomProvider, String, Integer>> ts = map(
                 p -> new Triple<>(p.a, p.b.a, p.b.b),
@@ -1240,7 +1240,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoStrings_int() {
+    private void demoStrings_int() {
         initialize();
         Iterable<Pair<RandomProvider, Integer>> ps = P.pairsLogarithmicOrder(
                 P.randomProvidersDefault(),
@@ -1251,7 +1251,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoLists() {
+    private void demoLists() {
         initialize();
         Iterable<Pair<RandomProvider, Iterable<Integer>>> ps = P.pairs(
                 filterInfinite(rp -> rp.getScale() > 0, P.withScale(4).randomProvidersDefaultSecondaryScale()),
@@ -1262,7 +1262,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoStrings_String() {
+    private void demoStrings_String() {
         initialize();
         Iterable<Pair<RandomProvider, String>> ps = P.pairs(
                 filterInfinite(rp -> rp.getScale() > 0, P.withScale(4).randomProvidersDefaultSecondaryScale()),
@@ -1273,7 +1273,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoStrings() {
+    private void demoStrings() {
         initialize();
         Iterable<RandomProvider> rps = filterInfinite(
                 s -> s.getScale() > 0,
@@ -1284,7 +1284,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoListsAtLeast() {
+    private void demoListsAtLeast() {
         initialize();
         Iterable<Triple<RandomProvider, Integer, Iterable<Integer>>> ts = filterInfinite(
                 t -> t.a.getScale() > t.b,
@@ -1300,7 +1300,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoStringsAtLeast_int_String() {
+    private void demoStringsAtLeast_int_String() {
         initialize();
         Iterable<Triple<RandomProvider, Integer, String>> ts = filterInfinite(
                 t -> t.a.getScale() > t.b,
@@ -1316,7 +1316,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoStringsAtLeast_int() {
+    private void demoStringsAtLeast_int() {
         initialize();
         Iterable<Pair<RandomProvider, Integer>> ps = filterInfinite(
                 p -> p.a.getScale() > p.b,
@@ -1330,7 +1330,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoDistinctStrings_int_String() {
+    private void demoDistinctStrings_int_String() {
         initialize();
         Iterable<Triple<RandomProvider, Integer, String>> ts = map(
                 p -> new Triple<>(p.a.a, p.a.b, p.b),
@@ -1354,7 +1354,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoDistinctStrings_int() {
+    private void demoDistinctStrings_int() {
         initialize();
         Iterable<Pair<RandomProvider, Integer>> ps = P.pairsLogarithmicOrder(
                 P.randomProvidersDefault(),
@@ -1365,7 +1365,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoDistinctLists() {
+    private void demoDistinctLists() {
         initialize();
         Iterable<Pair<RandomProvider, Iterable<Integer>>> ps = P.pairs(
                 filterInfinite(rp -> rp.getScale() > 0, P.withScale(4).randomProvidersDefaultSecondaryScale()),
@@ -1376,7 +1376,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoDistinctStrings_String() {
+    private void demoDistinctStrings_String() {
         initialize();
         Iterable<Pair<RandomProvider, String>> ps = P.pairs(
                 filterInfinite(rp -> rp.getScale() > 0, P.withScale(4).randomProvidersDefaultSecondaryScale()),
@@ -1388,7 +1388,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoDistinctStrings() {
+    private void demoDistinctStrings() {
         initialize();
         Iterable<RandomProvider> rps = filterInfinite(
                 s -> s.getScale() > 0,
@@ -1399,7 +1399,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoDistinctListsAtLeast() {
+    private void demoDistinctListsAtLeast() {
         initialize();
         Iterable<Triple<RandomProvider, Integer, Iterable<Integer>>> ts = map(
                 p -> new Triple<>(p.a.a, p.a.b, p.b),
@@ -1423,7 +1423,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoDistinctStringsAtLeast_int_String() {
+    private void demoDistinctStringsAtLeast_int_String() {
         initialize();
         Iterable<Triple<RandomProvider, Integer, String>> ts = map(
                 p -> new Triple<>(p.a.a, p.a.b, p.b),
@@ -1447,7 +1447,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoDistinctStringsAtLeast_int() {
+    private void demoDistinctStringsAtLeast_int() {
         initialize();
         Iterable<Pair<RandomProvider, Integer>> ps = filterInfinite(
                 p -> p.a.getScale() > p.b,
@@ -1462,7 +1462,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoStringBags_int_String() {
+    private void demoStringBags_int_String() {
         initialize();
         Iterable<Triple<RandomProvider, String, Integer>> ts = map(
                 p -> new Triple<>(p.a, p.b.a, p.b.b),
@@ -1480,7 +1480,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoStringBags_int() {
+    private void demoStringBags_int() {
         initialize();
         Iterable<Pair<RandomProvider, Integer>> ps = P.pairsLogarithmicOrder(
                 P.randomProvidersDefault(),
@@ -1491,7 +1491,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoBags() {
+    private void demoBags() {
         initialize();
         Iterable<Pair<RandomProvider, Iterable<Integer>>> ps = P.pairs(
                 filterInfinite(rp -> rp.getScale() > 0, P.withScale(4).randomProvidersDefaultSecondaryScale()),
@@ -1502,7 +1502,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoStringBags_String() {
+    private void demoStringBags_String() {
         initialize();
         Iterable<Pair<RandomProvider, String>> ps = P.pairs(
                 filterInfinite(rp -> rp.getScale() > 0, P.withScale(4).randomProvidersDefaultSecondaryScale()),
@@ -1513,7 +1513,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoStringBags() {
+    private void demoStringBags() {
         initialize();
         Iterable<RandomProvider> rps = filterInfinite(
                 s -> s.getScale() > 0,
@@ -1524,7 +1524,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoBagsAtLeast() {
+    private void demoBagsAtLeast() {
         initialize();
         Iterable<Triple<RandomProvider, Integer, Iterable<Integer>>> ts = filterInfinite(
                 t -> t.a.getScale() > t.b,
@@ -1540,7 +1540,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoStringBagsAtLeast_int_String() {
+    private void demoStringBagsAtLeast_int_String() {
         initialize();
         Iterable<Triple<RandomProvider, Integer, String>> ts = filterInfinite(
                 t -> t.a.getScale() > t.b,
@@ -1556,7 +1556,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoStringBagsAtLeast_int() {
+    private void demoStringBagsAtLeast_int() {
         initialize();
         Iterable<Pair<RandomProvider, Integer>> ps = filterInfinite(
                 p -> p.a.getScale() > p.b,
@@ -1570,7 +1570,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoStringSubsets_int_String() {
+    private void demoStringSubsets_int_String() {
         initialize();
         Iterable<Triple<RandomProvider, Integer, String>> ts = map(
                 p -> new Triple<>(p.a.a, p.a.b, p.b),
@@ -1594,7 +1594,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoStringSubsets_int() {
+    private void demoStringSubsets_int() {
         initialize();
         Iterable<Pair<RandomProvider, Integer>> ps = P.pairsLogarithmicOrder(
                 P.randomProvidersDefault(),
@@ -1605,7 +1605,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoSubsets() {
+    private void demoSubsets() {
         initialize();
         Iterable<Pair<RandomProvider, Iterable<Integer>>> ps = P.pairs(
                 filterInfinite(rp -> rp.getScale() > 0, P.withScale(4).randomProvidersDefaultSecondaryScale()),
@@ -1616,7 +1616,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoStringSubsets_String() {
+    private void demoStringSubsets_String() {
         initialize();
         Iterable<Pair<RandomProvider, String>> ps = P.pairs(
                 filterInfinite(rp -> rp.getScale() > 0, P.withScale(4).randomProvidersDefaultSecondaryScale()),
@@ -1628,7 +1628,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoStringSubsets() {
+    private void demoStringSubsets() {
         initialize();
         Iterable<RandomProvider> rps = filterInfinite(
                 s -> s.getScale() > 0,
@@ -1639,7 +1639,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoSubsetsAtLeast() {
+    private void demoSubsetsAtLeast() {
         initialize();
         Iterable<Triple<RandomProvider, Integer, Iterable<Integer>>> ts = map(
                 p -> new Triple<>(p.a.a, p.a.b, p.b),
@@ -1661,7 +1661,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoStringSubsetsAtLeast_int_String() {
+    private void demoStringSubsetsAtLeast_int_String() {
         initialize();
         Iterable<Triple<RandomProvider, Integer, String>> ts = map(
                 p -> new Triple<>(p.a.a, p.a.b, p.b),
@@ -1685,7 +1685,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoStringSubsetsAtLeast_int() {
+    private void demoStringSubsetsAtLeast_int() {
         initialize();
         Iterable<Pair<RandomProvider, Integer>> ps = filterInfinite(
                 p -> p.a.getScale() > p.b,
@@ -1700,7 +1700,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoCartesianProduct() {
+    private void demoCartesianProduct() {
         initialize();
         Iterable<Pair<RandomProvider, List<List<Integer>>>> ps = P.pairs(
                 P.randomProvidersDefault(),
@@ -1711,7 +1711,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoRepeatingIterables() {
+    private void demoRepeatingIterables() {
         initialize();
         Iterable<Pair<RandomProvider, Iterable<Integer>>> ps = P.pairs(
                 filterInfinite(rp -> rp.getScale() > 1, P.randomProvidersDefaultSecondaryScale()),
@@ -1723,7 +1723,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoRepeatingIterablesDistinctAtLeast() {
+    private void demoRepeatingIterablesDistinctAtLeast() {
         initialize();
         Iterable<Triple<RandomProvider, Integer, Iterable<Integer>>> ts = map(
                 p -> new Triple<>(p.a, p.b.b, p.b.a),
@@ -1744,7 +1744,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoSublists() {
+    private void demoSublists() {
         initialize();
         Iterable<Pair<RandomProvider, List<Integer>>> ps = P.pairs(
                 P.randomProvidersDefault(),
@@ -1755,7 +1755,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoSubstrings() {
+    private void demoSubstrings() {
         initialize();
         Iterable<Pair<RandomProvider, String>> ps = P.pairs(P.randomProvidersDefault(), P.withScale(4).strings());
         for (Pair<RandomProvider, String> p : take(MEDIUM_LIMIT, ps)) {
@@ -1763,7 +1763,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoListsWithElement() {
+    private void demoListsWithElement() {
         initialize();
         Iterable<Triple<RandomProvider, Integer, Iterable<Integer>>> ts = P.triples(
                 filterInfinite(rp -> rp.getScale() >= 3, P.withScale(4).randomProvidersDefaultSecondaryScale()),
@@ -1776,7 +1776,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoStringsWithChar_char_String() {
+    private void demoStringsWithChar_char_String() {
         initialize();
         Iterable<Triple<RandomProvider, Character, String>> ts = filterInfinite(
                 t -> nub(t.c).length() != 1 || head(t.c) != t.b,
@@ -1795,7 +1795,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoStringsWithChar_char() {
+    private void demoStringsWithChar_char() {
         initialize();
         Iterable<Pair<RandomProvider, Character>> ps = P.pairs(
                 filterInfinite(rp -> rp.getScale() >= 3, P.withScale(4).randomProvidersDefaultSecondaryScale()),
@@ -1807,7 +1807,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoSubsetsWithElement() {
+    private void demoSubsetsWithElement() {
         initialize();
         Iterable<Triple<RandomProvider, Integer, Iterable<Integer>>> ts = P.triples(
                 filterInfinite(rp -> rp.getScale() >= 2, P.withScale(4).randomProvidersDefaultSecondaryScale()),
@@ -1820,7 +1820,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoStringSubsetsWithChar_char_String() {
+    private void demoStringSubsetsWithChar_char_String() {
         initialize();
         Iterable<Triple<RandomProvider, Character, String>> ts = filterInfinite(
                 t -> nub(t.c).length() != 1 || head(t.c) != t.b,
@@ -1839,7 +1839,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoStringSubsetsWithChar_char() {
+    private void demoStringSubsetsWithChar_char() {
         initialize();
         Iterable<Pair<RandomProvider, Character>> ps = P.pairs(
                 filterInfinite(rp -> rp.getScale() >= 2, P.withScale(4).randomProvidersDefaultSecondaryScale()),
@@ -1851,7 +1851,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoListsWithSublists() {
+    private void demoListsWithSublists() {
         initialize();
         Iterable<Triple<RandomProvider, Iterable<List<Integer>>, Iterable<Integer>>> ts = P.triples(
                 filterInfinite(rp -> rp.getScale() > 1, P.withScale(4).randomProvidersDefaultSecondaryScale()),
@@ -1864,7 +1864,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoStringsWithSubstrings_Iterable_String_String() {
+    private void demoStringsWithSubstrings_Iterable_String_String() {
         initialize();
         Iterable<Triple<RandomProvider, Iterable<String>, String>> ts = P.triples(
                 filterInfinite(rp -> rp.getScale() > 1, P.withScale(4).randomProvidersDefaultSecondaryScale()),
@@ -1877,7 +1877,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoStringsWithSubstrings_Iterable_String() {
+    private void demoStringsWithSubstrings_Iterable_String() {
         initialize();
         Iterable<Pair<RandomProvider, Iterable<String>>> ps = P.pairs(
                 filterInfinite(rp -> rp.getScale() > 1, P.withScale(4).randomProvidersDefaultSecondaryScale()),
@@ -1889,7 +1889,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoMaps() {
+    private void demoMaps() {
         initialize();
         Iterable<Triple<RandomProvider, List<Integer>, Iterable<Integer>>> ts = P.triples(
                 P.randomProvidersDefault(),
@@ -1901,7 +1901,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoRandomProvidersFixedScales() {
+    private void demoRandomProvidersFixedScales() {
         initialize();
         Iterable<Triple<RandomProvider, Integer, Integer>> ts = P.triples(
                 P.randomProvidersDefault(),
@@ -1914,14 +1914,14 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoRandomProvidersDefault() {
+    private void demoRandomProvidersDefault() {
         initialize();
         for (RandomProvider rp : take(MEDIUM_LIMIT, P.randomProvidersDefault())) {
             System.out.println("randomProvidersDefault(" + rp + ") = " + its(rp.randomProvidersDefault()));
         }
     }
 
-    private static void demoRandomProvidersDefaultSecondaryScale() {
+    private void demoRandomProvidersDefaultSecondaryScale() {
         initialize();
         Iterable<RandomProvider> rps = filterInfinite(
                 rp -> rp.getScale() > 0,
@@ -1933,7 +1933,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoRandomProviders() {
+    private void demoRandomProviders() {
         initialize();
         Iterable<RandomProvider> rps = filterInfinite(
                 rp -> rp.getScale() > 0,
@@ -1944,14 +1944,14 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoEquals_RandomProvider() {
+    private void demoEquals_RandomProvider() {
         initialize();
         for (Pair<RandomProvider, RandomProvider> p : take(LIMIT, P.pairs(P.randomProviders()))) {
             System.out.println(p.a + (p.a.equals(p.b) ? " = " : " ≠ ") + p.b);
         }
     }
 
-    private static void demoEquals_null() {
+    private void demoEquals_null() {
         initialize();
         for (RandomProvider r : take(LIMIT, P.randomProviders())) {
             //noinspection ObjectEqualsNull
@@ -1959,14 +1959,14 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private static void demoHashCode() {
+    private void demoHashCode() {
         initialize();
         for (RandomProvider r : take(LIMIT, P.randomProviders())) {
             System.out.println("hashCode(" + r + ") = " + r.hashCode());
         }
     }
 
-    private static void demoToString() {
+    private void demoToString() {
         initialize();
         for (RandomProvider rp : take(LIMIT, P.randomProviders())) {
             System.out.println(rp);

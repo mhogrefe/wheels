@@ -1798,7 +1798,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
         }
     }
 
-    private static void compareImplementationsPairsLogarithmicOrder_Iterable() {
+    private void compareImplementationsPairsLogarithmicOrder_Iterable() {
         Map<String, Function<List<Integer>, List<Pair<Integer, Integer>>>> functions = new LinkedHashMap<>();
         functions.put("simplest", ExhaustiveProviderProperties::pairsLogarithmicOrder_Iterable_simplest);
         functions.put("standard", xs -> toList(EP.pairsLogarithmicOrder(xs)));
@@ -1908,7 +1908,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
         }
     }
 
-    private static void compareImplementationsPairsSquareRootOrder_Iterable() {
+    private void compareImplementationsPairsSquareRootOrder_Iterable() {
         Map<String, Function<List<Integer>, List<Pair<Integer, Integer>>>> functions = new LinkedHashMap<>();
         functions.put("simplest", ExhaustiveProviderProperties::pairsSquareRootOrder_Iterable_simplest);
         functions.put("standard", xs -> toList(EP.pairsSquareRootOrder(xs)));
@@ -2136,7 +2136,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
         }
     }
 
-    private static void compareImplementationsListsLex_int_List() {
+    private void compareImplementationsListsLex_int_List() {
         Map<String, Function<Pair<List<Integer>, Integer>, List<List<Integer>>>> functions = new LinkedHashMap<>();
         functions.put("alt", p -> listsLex_int_List_alt(p.b, p.a));
         functions.put("standard", p -> toList(EP.listsLex(p.b, p.a)));
@@ -2947,7 +2947,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
         }
     }
 
-    private static void compareImplementationsStringsLex_int_String() {
+    private void compareImplementationsStringsLex_int_String() {
         Map<String, Function<Pair<String, Integer>, List<String>>> functions = new LinkedHashMap<>();
         functions.put("alt", p -> stringsLex_int_String_alt(p.b, p.a));
         functions.put("standard", p -> toList(EP.stringsLex(p.b, p.a)));
@@ -3271,7 +3271,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
         }
     }
 
-    private static void compareImplementationsPairs_Iterable() {
+    private void compareImplementationsPairs_Iterable() {
         Map<String, Function<List<Integer>, List<Pair<Integer, Integer>>>> functions = new LinkedHashMap<>();
         functions.put("simplest", ExhaustiveProviderProperties::pairs_Iterable_simplest);
         functions.put("standard", xs -> toList(EP.pairs(xs)));
@@ -3396,7 +3396,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
         }
     }
 
-    private static void compareImplementationsTriples_Iterable() {
+    private void compareImplementationsTriples_Iterable() {
         Map<
                 String,
                 Function<List<Integer>, List<Triple<Integer, Integer, Integer>>>
@@ -3536,7 +3536,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
         }
     }
 
-    private static void compareImplementationsQuadruples_Iterable() {
+    private void compareImplementationsQuadruples_Iterable() {
         Map<
                 String,
                 Function<List<Integer>, List<Quadruple<Integer, Integer, Integer, Integer>>>
@@ -3731,7 +3731,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
         }
     }
 
-    private static void compareImplementationsQuintuples_Iterable() {
+    private void compareImplementationsQuintuples_Iterable() {
         Map<
                 String,
                 Function<List<Integer>, List<Quintuple<Integer, Integer, Integer, Integer, Integer>>>
@@ -3952,7 +3952,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
         }
     }
 
-    private static void compareImplementationsSextuples_Iterable() {
+    private void compareImplementationsSextuples_Iterable() {
         Map<
                 String,
                 Function<List<Integer>, List<Sextuple<Integer, Integer, Integer, Integer, Integer, Integer>>>
@@ -4204,7 +4204,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
         }
     }
 
-    private static void compareImplementationsSeptuples_Iterable() {
+    private void compareImplementationsSeptuples_Iterable() {
         Map<
                 String,
                 Function<List<Integer>, List<Septuple<Integer, Integer, Integer, Integer, Integer, Integer, Integer>>>

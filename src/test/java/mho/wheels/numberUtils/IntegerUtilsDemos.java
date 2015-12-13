@@ -20,21 +20,21 @@ import static mho.wheels.testing.Testing.MEDIUM_LIMIT;
 
 @SuppressWarnings("UnusedDeclaration")
 public class IntegerUtilsDemos extends Demos {
-    private static void demoBits_int() {
+    private void demoBits_int() {
         initialize();
         for (int i : take(LIMIT, P.naturalIntegers())) {
             System.out.println("bits(" + i + ") = " + toList(bits(i)));
         }
     }
 
-    private static void demoBits_BigInteger() {
+    private void demoBits_BigInteger() {
         initialize();
         for (BigInteger i : take(LIMIT, P.naturalBigIntegers())) {
             System.out.println("bits(" + i + ") = " + toList(bits(i)));
         }
     }
 
-    private static void demoBitsPadded_int_int() {
+    private void demoBitsPadded_int_int() {
         initialize();
         Iterable<Pair<Integer, Integer>> ps;
         if (P instanceof ExhaustiveProvider) {
@@ -47,7 +47,7 @@ public class IntegerUtilsDemos extends Demos {
         }
     }
 
-    private static void demoBitsPadded_int_BigInteger() {
+    private void demoBitsPadded_int_BigInteger() {
         initialize();
         Iterable<Pair<BigInteger, Integer>> ps;
         if (P instanceof ExhaustiveProvider) {
@@ -60,21 +60,21 @@ public class IntegerUtilsDemos extends Demos {
         }
     }
 
-    private static void demoBigEndianBits_int() {
+    private void demoBigEndianBits_int() {
         initialize();
         for (int i : take(LIMIT, P.naturalIntegers())) {
             System.out.println("bigEndianBits(" + i + ") = " + bigEndianBits(i));
         }
     }
 
-    private static void demoBigEndianBits_BigInteger() {
+    private void demoBigEndianBits_BigInteger() {
         initialize();
         for (BigInteger i : take(LIMIT, P.naturalBigIntegers())) {
             System.out.println("bigEndianBits(" + i + ") = " + bigEndianBits(i));
         }
     }
 
-    private static void demoBigEndianBitsPadded_int_int() {
+    private void demoBigEndianBitsPadded_int_int() {
         initialize();
         Iterable<Pair<Integer, Integer>> ps;
         if (P instanceof ExhaustiveProvider) {
@@ -87,7 +87,7 @@ public class IntegerUtilsDemos extends Demos {
         }
     }
 
-    private static void demoBigEndianBitsPadded_int_BigInteger() {
+    private void demoBigEndianBitsPadded_int_BigInteger() {
         initialize();
         Iterable<Pair<BigInteger, Integer>> ps;
         if (P instanceof ExhaustiveProvider) {
@@ -100,7 +100,7 @@ public class IntegerUtilsDemos extends Demos {
         }
     }
 
-    private static void demoFromBits() {
+    private void demoFromBits() {
         initialize();
         for (List<Boolean> bs : take(LIMIT, P.lists(P.booleans()))) {
             String listString = tail(init(bs.toString()));
@@ -108,7 +108,7 @@ public class IntegerUtilsDemos extends Demos {
         }
     }
 
-    private static void demoFromBigEndianBits() {
+    private void demoFromBigEndianBits() {
         initialize();
         for (List<Boolean> bs : take(LIMIT, P.lists(P.booleans()))) {
             String listString = tail(init(bs.toString()));
@@ -116,7 +116,7 @@ public class IntegerUtilsDemos extends Demos {
         }
     }
 
-    private static void demoDigits_int_int() {
+    private void demoDigits_int_int() {
         initialize();
         Iterable<Pair<Integer, Integer>> ps;
         if (P instanceof ExhaustiveProvider) {
@@ -129,7 +129,7 @@ public class IntegerUtilsDemos extends Demos {
         }
     }
 
-    private static void demoDigits_BigInteger_BigInteger() {
+    private void demoDigits_BigInteger_BigInteger() {
         initialize();
         Iterable<Pair<BigInteger, BigInteger>> ps;
         if (P instanceof ExhaustiveProvider) {
@@ -145,7 +145,7 @@ public class IntegerUtilsDemos extends Demos {
         }
     }
 
-    private static void demoDigitsPadded_int_int_int() {
+    private void demoDigitsPadded_int_int_int() {
         initialize();
         Iterable<Triple<Integer, Integer, Integer>> ts;
         if (P instanceof ExhaustiveProvider) {
@@ -166,7 +166,7 @@ public class IntegerUtilsDemos extends Demos {
         }
     }
 
-    private static void demoDigitsPadded_BigInteger_BigInteger_BigInteger() {
+    private void demoDigitsPadded_BigInteger_BigInteger_BigInteger() {
         initialize();
         Iterable<Triple<Integer, BigInteger, BigInteger>> ts;
         if (P instanceof ExhaustiveProvider) {
@@ -187,7 +187,7 @@ public class IntegerUtilsDemos extends Demos {
         }
     }
 
-    private static void demoBigEndianDigits_int_int() {
+    private void demoBigEndianDigits_int_int() {
         initialize();
         Iterable<Pair<Integer, Integer>> ps;
         if (P instanceof ExhaustiveProvider) {
@@ -200,7 +200,7 @@ public class IntegerUtilsDemos extends Demos {
         }
     }
 
-    private static void demoBigEndianDigits_BigInteger_BigInteger() {
+    private void demoBigEndianDigits_BigInteger_BigInteger() {
         initialize();
         Iterable<Pair<BigInteger, BigInteger>> ps;
         if (P instanceof ExhaustiveProvider) {
@@ -216,7 +216,7 @@ public class IntegerUtilsDemos extends Demos {
         }
     }
 
-    private static void demoBigEndianDigitsPadded_int_int_int() {
+    private void demoBigEndianDigitsPadded_int_int_int() {
         initialize();
         Iterable<Triple<Integer, Integer, Integer>> ts;
         if (P instanceof ExhaustiveProvider) {
@@ -237,7 +237,7 @@ public class IntegerUtilsDemos extends Demos {
         }
     }
 
-    private static void demoBigEndianDigitsPadded_BigInteger_BigInteger_BigInteger() {
+    private void demoBigEndianDigitsPadded_BigInteger_BigInteger_BigInteger() {
         initialize();
         Iterable<Triple<Integer, BigInteger, BigInteger>> ts;
         if (P instanceof ExhaustiveProvider) {
@@ -258,7 +258,7 @@ public class IntegerUtilsDemos extends Demos {
         }
     }
 
-    private static void demoFromDigits_int_Iterable_Integer() {
+    private void demoFromDigits_int_Iterable_Integer() {
         initialize();
         Iterable<Pair<List<Integer>, Integer>> unfilteredPs;
         if (P instanceof ExhaustiveProvider) {
@@ -275,7 +275,7 @@ public class IntegerUtilsDemos extends Demos {
         }
     }
 
-    private static void demoFromDigits_BigInteger_Iterable_BigInteger() {
+    private void demoFromDigits_BigInteger_Iterable_BigInteger() {
         initialize();
         Iterable<Pair<List<BigInteger>, BigInteger>> unfilteredPs;
         if (P instanceof ExhaustiveProvider) {
@@ -299,7 +299,7 @@ public class IntegerUtilsDemos extends Demos {
         }
     }
 
-    private static void demoFromBigEndianDigits_int_Iterable_Integer() {
+    private void demoFromBigEndianDigits_int_Iterable_Integer() {
         initialize();
         Iterable<Pair<List<Integer>, Integer>> unfilteredPs;
         if (P instanceof ExhaustiveProvider) {
@@ -319,7 +319,7 @@ public class IntegerUtilsDemos extends Demos {
         }
     }
 
-    private static void demoFromBigEndianDigits_BigInteger_Iterable_BigInteger() {
+    private void demoFromBigEndianDigits_BigInteger_Iterable_BigInteger() {
         initialize();
         Iterable<Pair<List<BigInteger>, BigInteger>> unfilteredPs;
         if (P instanceof ExhaustiveProvider) {
@@ -343,21 +343,21 @@ public class IntegerUtilsDemos extends Demos {
         }
     }
 
-    private static void demoToDigit() {
+    private void demoToDigit() {
         initialize();
         for (int i : take(LIMIT, P.range(0, 35))) {
             System.out.println("toDigit(" + i + ") = " + toDigit(i));
         }
     }
 
-    private static void demoFromDigit() {
+    private void demoFromDigit() {
         initialize();
         for (char c : take(LIMIT, IterableUtils.mux(Arrays.asList(P.range('0', '9'), P.range('A', 'Z'))))) {
             System.out.println("fromDigit(" + c + ") = " + fromDigit(c));
         }
     }
 
-    private static void demoToStringBase_int_int() {
+    private void demoToStringBase_int_int() {
         initialize();
         Iterable<Pair<Integer, Integer>> ps;
         if (P instanceof ExhaustiveProvider) {
@@ -370,7 +370,7 @@ public class IntegerUtilsDemos extends Demos {
         }
     }
 
-    private static void demoToStringBase_BigInteger_BigInteger() {
+    private void demoToStringBase_BigInteger_BigInteger() {
         initialize();
         Iterable<Pair<BigInteger, BigInteger>> ps;
         if (P instanceof ExhaustiveProvider) {
@@ -386,7 +386,7 @@ public class IntegerUtilsDemos extends Demos {
         }
     }
 
-    private static void demoFromStringBase_int_String() {
+    private void demoFromStringBase_int_String() {
         initialize();
         Iterable<Pair<Integer, String>> ps = map(
                 p -> new Pair<>(p.a, toStringBase(BigInteger.valueOf(p.a), p.b)),
@@ -397,7 +397,7 @@ public class IntegerUtilsDemos extends Demos {
         }
     }
 
-    private static void demoFromStringBase_BigInteger_String() {
+    private void demoFromStringBase_BigInteger_String() {
         initialize();
         Iterable<Pair<BigInteger, String>> ps = map(
                 p -> new Pair<>(p.a, toStringBase(p.a, p.b)),
@@ -408,7 +408,7 @@ public class IntegerUtilsDemos extends Demos {
         }
     }
 
-    private static void demoLogarithmicMux() {
+    private void demoLogarithmicMux() {
         initialize();
         Iterable<Pair<BigInteger, BigInteger>> ps;
         if (P instanceof ExhaustiveProvider) {
@@ -425,28 +425,28 @@ public class IntegerUtilsDemos extends Demos {
         }
     }
 
-    private static void demoLogarithmicDemux() {
+    private void demoLogarithmicDemux() {
         initialize();
         for (BigInteger i : take(LIMIT, P.naturalBigIntegers())) {
             System.out.println("logarithmicDemux(" + i + ") = " + logarithmicDemux(i));
         }
     }
 
-    private static void demoSquareRootMux() {
+    private void demoSquareRootMux() {
         initialize();
         for (Pair<BigInteger, BigInteger> p : take(LIMIT, P.pairs(P.naturalBigIntegers()))) {
             System.out.println("squareRootMux(" + p.a + ", " + p.b + ") = " + squareRootMux(p.a, p.b));
         }
     }
 
-    private static void demoSquareRootDemux() {
+    private void demoSquareRootDemux() {
         initialize();
         for (BigInteger i : take(LIMIT, P.naturalBigIntegers())) {
             System.out.println("squareRootDemux(" + i + ") = " + squareRootDemux(i));
         }
     }
 
-    private static void demoMux() {
+    private void demoMux() {
         initialize();
         for (List<BigInteger> is : take(LIMIT, P.lists(P.naturalBigIntegers()))) {
             String listString = tail(init(is.toString()));
@@ -454,7 +454,7 @@ public class IntegerUtilsDemos extends Demos {
         }
     }
 
-    private static void demoDemux() {
+    private void demoDemux() {
         initialize();
         Iterable<Pair<BigInteger, Integer>> ps;
         Pair<BigInteger, Integer> zeroPair = new Pair<>(BigInteger.ZERO, 0);

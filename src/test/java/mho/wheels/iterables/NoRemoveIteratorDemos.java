@@ -10,7 +10,7 @@ import static mho.wheels.testing.Testing.*;
 
 @SuppressWarnings("UnusedDeclaration")
 public class NoRemoveIteratorDemos extends Demos {
-    private static void demoConstructor_finite() {
+    private void demoConstructor_finite() {
         initialize();
         for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
             NoRemoveIterator<Integer> it = new NoRemoveIterator<Integer>() {
@@ -30,7 +30,7 @@ public class NoRemoveIteratorDemos extends Demos {
         }
     }
 
-    private static void demoConstructor_infinite() {
+    private void demoConstructor_infinite() {
         initialize();
         for (Iterable<Integer> xs : take(MEDIUM_LIMIT, P.prefixPermutations(EP.withNull(EP.integers())))) {
             NoRemoveIterator<Integer> it = new NoRemoveIterator<Integer>() {

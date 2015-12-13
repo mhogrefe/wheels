@@ -24,7 +24,7 @@ public class ReadersDemos extends Demos {
     private static final @NotNull String FLOATING_POINT_CHARS = "-.0123456789EINafinty";
     private static final @NotNull String BIG_DECIMAL_CHARS = "+-.0123456789E";
 
-    private static void demoGenericRead() {
+    private void demoGenericRead() {
         initialize();
         Iterable<Pair<Function<String, Integer>, String>> ps = map(
                 p -> new Pair<>(new FiniteDomainFunction<>(Collections.singletonList(p)), p.a),
@@ -35,7 +35,7 @@ public class ReadersDemos extends Demos {
         }
     }
 
-    private static void demoGenericFindIn_List_T() {
+    private void demoGenericFindIn_List_T() {
         initialize();
         Iterable<Pair<List<Integer>, String>> ps = P.pairs(P.distinctLists(P.integers()), P.strings(INTEGRAL_CHARS));
         for (Pair<List<Integer>, String> p : take(LIMIT, ps)) {
@@ -45,7 +45,7 @@ public class ReadersDemos extends Demos {
         }
     }
 
-    private static void demoGenericFindIn_Function_String_Optional_T() {
+    private void demoGenericFindIn_Function_String_Optional_T() {
         initialize();
         Iterable<Pair<Function<String, Optional<Integer>>, String>> ps = map(
                 p -> new Pair<>(new FiniteDomainFunction<String, Optional<Integer>>(p.b), p.a),
@@ -64,329 +64,329 @@ public class ReadersDemos extends Demos {
         }
     }
 
-    private static void demoReadBoolean() {
+    private void demoReadBoolean() {
         initialize();
         for (String s : take(LIMIT, P.strings())) {
             System.out.println("readBoolean(" + s + ") = " + readBoolean(s));
         }
     }
 
-    private static void demoReadBoolean_targeted() {
+    private void demoReadBoolean_targeted() {
         initialize();
         for (String s : take(LIMIT, P.strings(BOOLEAN_CHARS))) {
             System.out.println("readBoolean(" + s + ") = " + readBoolean(s));
         }
     }
 
-    private static void demoFindBooleanIn() {
+    private void demoFindBooleanIn() {
         initialize();
         for (String s : take(LIMIT, P.strings())) {
             System.out.println("findBooleanIn(" + s + ") = " + findBooleanIn(s));
         }
     }
 
-    private static void demoFindBooleanIn_targeted() {
+    private void demoFindBooleanIn_targeted() {
         initialize();
         for (String s : take(LIMIT, P.strings(BOOLEAN_CHARS))) {
             System.out.println("findBooleanIn(" + s + ") = " + findBooleanIn(s));
         }
     }
 
-    private static void demoReadOrdering() {
+    private void demoReadOrdering() {
         initialize();
         for (String s : take(LIMIT, P.strings())) {
             System.out.println("readOrdering(" + s + ") = " + readOrdering(s));
         }
     }
 
-    private static void demoReadOrdering_targeted() {
+    private void demoReadOrdering_targeted() {
         initialize();
         for (String s : take(LIMIT, P.strings(ORDERING_CHARS))) {
             System.out.println("readOrdering(" + s + ") = " + readOrdering(s));
         }
     }
 
-    private static void demoFindOrderingIn() {
+    private void demoFindOrderingIn() {
         initialize();
         for (String s : take(LIMIT, P.strings())) {
             System.out.println("findOrderingIn(" + s + ") = " + findOrderingIn(s));
         }
     }
 
-    private static void demoFindOrderingIn_targeted() {
+    private void demoFindOrderingIn_targeted() {
         initialize();
         for (String s : take(LIMIT, P.strings(ORDERING_CHARS))) {
             System.out.println("findOrderingIn(" + s + ") = " + findOrderingIn(s));
         }
     }
 
-    private static void demoReadRoundingMode() {
+    private void demoReadRoundingMode() {
         initialize();
         for (String s : take(LIMIT, P.strings())) {
             System.out.println("readRoundingMode(" + s + ") = " + readRoundingMode(s));
         }
     }
 
-    private static void demoReadRoundingMode_targeted() {
+    private void demoReadRoundingMode_targeted() {
         initialize();
         for (String s : take(LIMIT, P.strings(ROUNDING_MODE_CHARS))) {
             System.out.println("readRoundingMode(" + s + ") = " + readRoundingMode(s));
         }
     }
 
-    private static void demoFindRoundingModeIn() {
+    private void demoFindRoundingModeIn() {
         initialize();
         for (String s : take(LIMIT, P.strings())) {
             System.out.println("findRoundingModeIn(" + s + ") = " + findRoundingModeIn(s));
         }
     }
 
-    private static void demoFindRoundingModeIn_targeted() {
+    private void demoFindRoundingModeIn_targeted() {
         initialize();
         for (String s : take(LIMIT, P.strings(ROUNDING_MODE_CHARS))) {
             System.out.println("findRoundingModeIn(" + s + ") = " + findRoundingModeIn(s));
         }
     }
 
-    private static void demoReadBigInteger() {
+    private void demoReadBigInteger() {
         initialize();
         for (String s : take(LIMIT, P.strings())) {
             System.out.println("readBigInteger(" + s + ") = " + readBigInteger(s));
         }
     }
 
-    private static void demoReadBigInteger_targeted() {
+    private void demoReadBigInteger_targeted() {
         initialize();
         for (String s : take(LIMIT, P.strings(INTEGRAL_CHARS))) {
             System.out.println("readBigInteger(" + s + ") = " + readBigInteger(s));
         }
     }
 
-    private static void demoFindBigIntegerIn() {
+    private void demoFindBigIntegerIn() {
         initialize();
         for (String s : take(LIMIT, P.strings())) {
             System.out.println("findBigIntegerIn(" + s + ") = " + findBigIntegerIn(s));
         }
     }
 
-    private static void demoFindBigIntegerIn_targeted() {
+    private void demoFindBigIntegerIn_targeted() {
         initialize();
         for (String s : take(LIMIT, P.strings(INTEGRAL_CHARS))) {
             System.out.println("findBigIntegerIn(" + s + ") = " + findBigIntegerIn(s));
         }
     }
 
-    private static void demoReadByte() {
+    private void demoReadByte() {
         initialize();
         for (String s : take(LIMIT, P.strings())) {
             System.out.println("readByte(" + s + ") = " + readByte(s));
         }
     }
 
-    private static void demoReadByte_targeted() {
+    private void demoReadByte_targeted() {
         initialize();
         for (String s : take(LIMIT, P.strings(INTEGRAL_CHARS))) {
             System.out.println("readByte(" + s + ") = " + readByte(s));
         }
     }
 
-    private static void demoFindByteIn() {
+    private void demoFindByteIn() {
         initialize();
         for (String s : take(LIMIT, P.strings())) {
             System.out.println("findByteIn(" + s + ") = " + findByteIn(s));
         }
     }
 
-    private static void demoFindByteIn_targeted() {
+    private void demoFindByteIn_targeted() {
         initialize();
         for (String s : take(LIMIT, P.strings(INTEGRAL_CHARS))) {
             System.out.println("findByteIn(" + s + ") = " + findByteIn(s));
         }
     }
 
-    private static void demoReadShort() {
+    private void demoReadShort() {
         initialize();
         for (String s : take(LIMIT, P.strings())) {
             System.out.println("readShort(" + s + ") = " + readShort(s));
         }
     }
 
-    private static void demoReadShort_targeted() {
+    private void demoReadShort_targeted() {
         initialize();
         for (String s : take(LIMIT, P.strings(INTEGRAL_CHARS))) {
             System.out.println("readShort(" + s + ") = " + readShort(s));
         }
     }
 
-    private static void demoFindShortIn() {
+    private void demoFindShortIn() {
         initialize();
         for (String s : take(LIMIT, P.strings())) {
             System.out.println("findShortIn(" + s + ") = " + findShortIn(s));
         }
     }
 
-    private static void demoFindShortIn_targeted() {
+    private void demoFindShortIn_targeted() {
         initialize();
         for (String s : take(LIMIT, P.strings(INTEGRAL_CHARS))) {
             System.out.println("findShortIn(" + s + ") = " + findShortIn(s));
         }
     }
 
-    private static void demoReadInteger() {
+    private void demoReadInteger() {
         initialize();
         for (String s : take(LIMIT, P.strings())) {
             System.out.println("readInteger(" + s + ") = " + readByte(s));
         }
     }
 
-    private static void demoReadInteger_targeted() {
+    private void demoReadInteger_targeted() {
         initialize();
         for (String s : take(LIMIT, P.strings(INTEGRAL_CHARS))) {
             System.out.println("readInteger(" + s + ") = " + readInteger(s));
         }
     }
 
-    private static void demoFindIntegerIn() {
+    private void demoFindIntegerIn() {
         initialize();
         for (String s : take(LIMIT, P.strings())) {
             System.out.println("findIntegerIn(" + s + ") = " + findIntegerIn(s));
         }
     }
 
-    private static void demoFindIntegerIn_targeted() {
+    private void demoFindIntegerIn_targeted() {
         initialize();
         for (String s : take(LIMIT, P.strings(INTEGRAL_CHARS))) {
             System.out.println("findIntegerIn(" + s + ") = " + findIntegerIn(s));
         }
     }
 
-    private static void demoReadLong() {
+    private void demoReadLong() {
         initialize();
         for (String s : take(LIMIT, P.strings())) {
             System.out.println("readLong(" + s + ") = " + readLong(s));
         }
     }
 
-    private static void demoReadLong_targeted() {
+    private void demoReadLong_targeted() {
         initialize();
         for (String s : take(LIMIT, P.strings(INTEGRAL_CHARS))) {
             System.out.println("readLong(" + s + ") = " + readLong(s));
         }
     }
 
-    private static void demoFindLongIn() {
+    private void demoFindLongIn() {
         initialize();
         for (String s : take(LIMIT, P.strings())) {
             System.out.println("findLongIn(" + s + ") = " + findLongIn(s));
         }
     }
 
-    private static void demoFindLongIn_targeted() {
+    private void demoFindLongIn_targeted() {
         initialize();
         for (String s : take(LIMIT, P.strings(INTEGRAL_CHARS))) {
             System.out.println("findLongIn(" + s + ") = " + findLongIn(s));
         }
     }
 
-    private static void demoReadFloat() {
+    private void demoReadFloat() {
         initialize();
         for (String s : take(LIMIT, P.strings())) {
             System.out.println("readFloat(" + s + ") = " + readFloat(s));
         }
     }
 
-    private static void demoReadFloat_targeted() {
+    private void demoReadFloat_targeted() {
         initialize();
         for (String s : take(LIMIT, P.strings(FLOATING_POINT_CHARS))) {
             System.out.println("readFloat(" + s + ") = " + readFloat(s));
         }
     }
 
-    private static void demoFindFloatIn() {
+    private void demoFindFloatIn() {
         initialize();
         for (String s : take(LIMIT, P.strings())) {
             System.out.println("findFloatIn(" + s + ") = " + findFloatIn(s));
         }
     }
 
-    private static void demoFindFloatIn_targeted() {
+    private void demoFindFloatIn_targeted() {
         initialize();
         for (String s : take(LIMIT, P.strings(FLOATING_POINT_CHARS))) {
             System.out.println("findFloatIn(" + s + ") = " + findFloatIn(s));
         }
     }
 
-    private static void demoReadDouble() {
+    private void demoReadDouble() {
         initialize();
         for (String s : take(LIMIT, P.strings())) {
             System.out.println("readDouble(" + s + ") = " + readDouble(s));
         }
     }
 
-    private static void demoReadDouble_targeted() {
+    private void demoReadDouble_targeted() {
         initialize();
         for (String s : take(LIMIT, P.strings(FLOATING_POINT_CHARS))) {
             System.out.println("readDouble(" + s + ") = " + readDouble(s));
         }
     }
 
-    private static void demoFindDoubleIn() {
+    private void demoFindDoubleIn() {
         initialize();
         for (String s : take(LIMIT, P.strings())) {
             System.out.println("findDoubleIn(" + s + ") = " + findDoubleIn(s));
         }
     }
 
-    private static void demoFindDoubleIn_targeted() {
+    private void demoFindDoubleIn_targeted() {
         initialize();
         for (String s : take(LIMIT, P.strings(FLOATING_POINT_CHARS))) {
             System.out.println("findDoubleIn(" + s + ") = " + findDoubleIn(s));
         }
     }
 
-    private static void demoReadBigDecimal() {
+    private void demoReadBigDecimal() {
         initialize();
         for (String s : take(LIMIT, P.strings())) {
             System.out.println("readBigDecimal(" + s + ") = " + readBigDecimal(s));
         }
     }
 
-    private static void demoReadBigDecimal_targeted() {
+    private void demoReadBigDecimal_targeted() {
         initialize();
         for (String s : take(LIMIT, P.strings(BIG_DECIMAL_CHARS))) {
             System.out.println("readBigDecimal(" + s + ") = " + readBigDecimal(s));
         }
     }
 
-    private static void demoFindBigDecimalIn() {
+    private void demoFindBigDecimalIn() {
         initialize();
         for (String s : take(LIMIT, P.strings())) {
             System.out.println("findBigDecimalIn(" + s + ") = " + findBigDecimalIn(s));
         }
     }
 
-    private static void demoFindBigDecimalIn_targeted() {
+    private void demoFindBigDecimalIn_targeted() {
         initialize();
         for (String s : take(LIMIT, P.strings(BIG_DECIMAL_CHARS))) {
             System.out.println("findBigDecimalIn(" + s + ") = " + findBigDecimalIn(s));
         }
     }
 
-    private static void demoReadCharacter() {
+    private void demoReadCharacter() {
         initialize();
         for (String s : take(LIMIT, P.strings())) {
             System.out.println("readCharacter(" + s + ") = " + readCharacter(s));
         }
     }
 
-    private static void demoFindCharacterIn() {
+    private void demoFindCharacterIn() {
         initialize();
         for (String s : take(LIMIT, P.strings())) {
             System.out.println("findCharacterIn(" + s + ") = " + findCharacterIn(s));
         }
     }
 
-    private static void demoReadString() {
+    private void demoReadString() {
         initialize();
         for (String s : take(LIMIT, P.strings())) {
             System.out.println("readString(" + s + ") = " + readString(s));

@@ -7,11 +7,11 @@ import mho.wheels.iterables.RandomProvider;
 import static mho.wheels.testing.Testing.*;
 
 public class Demos {
-    protected static final boolean USE_RANDOM = false;
-    protected static int LIMIT;
-    protected static IterableProvider P;
+    protected final boolean USE_RANDOM = false;
+    protected int LIMIT;
+    protected IterableProvider P;
 
-    protected static void initialize() {
+    protected void initialize() {
         if (USE_RANDOM) {
             P = RandomProvider.example();
             LIMIT = MEDIUM_LIMIT;
