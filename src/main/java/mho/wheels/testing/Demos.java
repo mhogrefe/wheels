@@ -8,7 +8,7 @@ import static mho.wheels.testing.Testing.LARGE_LIMIT;
 import static mho.wheels.testing.Testing.MEDIUM_LIMIT;
 
 public class Demos {
-    protected final boolean useRandom;
+    private final boolean useRandom;
     protected int LIMIT;
     protected IterableProvider P;
 
