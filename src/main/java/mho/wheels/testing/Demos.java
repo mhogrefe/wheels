@@ -13,6 +13,7 @@ public class Demos {
     protected IterableProvider P;
 
     protected void initialize() {
+        //noinspection ConstantConditions
         if (USE_RANDOM) {
             P = RandomProvider.example();
             LIMIT = MEDIUM_LIMIT;

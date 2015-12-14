@@ -3414,7 +3414,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
         Iterable<Quadruple<List<Integer>, List<Integer>, List<Integer>, List<Integer>>> qs = P.quadruples(
                 P.withScale(4).lists(P.withNull(P.integersGeometric()))
         );
-        for (Quadruple<List<Integer>, List<Integer>, List<Integer>, List<Integer>> q : take(SMALL_LIMIT, qs)) {
+        for (Quadruple<List<Integer>, List<Integer>, List<Integer>, List<Integer>> q : take(MEDIUM_LIMIT, qs)) {
             Iterable<Quadruple<Integer, Integer, Integer, Integer>> quadruples = EP.quadruples(q.a, q.b, q.c, q.d);
             testNoRemove(TINY_LIMIT, quadruples);
             BigInteger quadruplesLength = BigInteger.valueOf(q.a.size())
@@ -3437,7 +3437,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
         }
 
         qs = P.quadruples(P.withScale(4).distinctLists(P.withNull(P.integersGeometric())));
-        for (Quadruple<List<Integer>, List<Integer>, List<Integer>, List<Integer>> q : take(SMALL_LIMIT, qs)) {
+        for (Quadruple<List<Integer>, List<Integer>, List<Integer>, List<Integer>> q : take(MEDIUM_LIMIT, qs)) {
             BigInteger quadruplesLength = BigInteger.valueOf(q.a.size())
                     .multiply(BigInteger.valueOf(q.b.size()))
                     .multiply(BigInteger.valueOf(q.c.size()))
@@ -3479,7 +3479,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
 
     private void propertiesQuadruples_Iterable() {
         initialize("quadruples(Iterable<T>)");
-        for (List<Integer> xs : take(SMALL_LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
+        for (List<Integer> xs : take(MEDIUM_LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
             Iterable<Quadruple<Integer, Integer, Integer, Integer>> quadruples = EP.quadruples(xs);
             testNoRemove(TINY_LIMIT, quadruples);
             BigInteger quadruplesLength = BigInteger.valueOf(xs.size()).pow(4);
@@ -3499,7 +3499,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
             }
         }
 
-        for (List<Integer> xs : take(SMALL_LIMIT, P.withScale(4).distinctLists(P.withNull(P.integersGeometric())))) {
+        for (List<Integer> xs : take(MEDIUM_LIMIT, P.withScale(4).distinctLists(P.withNull(P.integersGeometric())))) {
             BigInteger quadruplesLength = BigInteger.valueOf(xs.size()).pow(4);
             if (lt(quadruplesLength, BigInteger.valueOf(LIMIT))) {
                 assertTrue(xs, unique(EP.quadruples(xs)));
@@ -3546,7 +3546,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
                 xs -> lt(BigInteger.valueOf(xs.size()).pow(4), BigInteger.valueOf(LIMIT)),
                 P.withScale(4).lists(P.withNull(P.integersGeometric()))
         );
-        compareImplementations("quadruples(Iterable<T>)", take(SMALL_LIMIT, iss), functions);
+        compareImplementations("quadruples(Iterable<T>)", take(MEDIUM_LIMIT, iss), functions);
     }
 
     private void propertiesQuintuples_Iterable_Iterable_Iterable_Iterable_Iterable() {
@@ -3566,7 +3566,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
                 List<Integer>,
                 List<Integer>,
                 List<Integer>
-        > q : take(SMALL_LIMIT, qs)) {
+        > q : take(MEDIUM_LIMIT, qs)) {
             Iterable<Quintuple<Integer, Integer, Integer, Integer, Integer>> quintuples =
                     EP.quintuples(q.a, q.b, q.c, q.d, q.e);
             testNoRemove(TINY_LIMIT, quintuples);
@@ -3606,7 +3606,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
                 List<Integer>,
                 List<Integer>,
                 List<Integer>
-        > q : take(SMALL_LIMIT, qs)) {
+        > q : take(MEDIUM_LIMIT, qs)) {
             BigInteger quintuplesLength = BigInteger.valueOf(q.a.size())
                     .multiply(BigInteger.valueOf(q.b.size()))
                     .multiply(BigInteger.valueOf(q.c.size()))
@@ -3662,7 +3662,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
 
     private void propertiesQuintuples_Iterable() {
         initialize("quintuples(Iterable<T>)");
-        for (List<Integer> xs : take(SMALL_LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
+        for (List<Integer> xs : take(MEDIUM_LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
             Iterable<Quintuple<Integer, Integer, Integer, Integer, Integer>> quintuples = EP.quintuples(xs);
             testNoRemove(TINY_LIMIT, quintuples);
             BigInteger quintuplesLength = BigInteger.valueOf(xs.size()).pow(5);
@@ -3691,7 +3691,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
             }
         }
 
-        for (List<Integer> xs : take(SMALL_LIMIT, P.withScale(4).distinctLists(P.withNull(P.integersGeometric())))) {
+        for (List<Integer> xs : take(MEDIUM_LIMIT, P.withScale(4).distinctLists(P.withNull(P.integersGeometric())))) {
             BigInteger quintuplesLength = BigInteger.valueOf(xs.size()).pow(5);
             if (lt(quintuplesLength, BigInteger.valueOf(LIMIT))) {
                 assertTrue(xs, unique(EP.quintuples(xs)));
@@ -3741,7 +3741,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
                 xs -> lt(BigInteger.valueOf(xs.size()).pow(5), BigInteger.valueOf(LIMIT)),
                 P.withScale(4).lists(P.withNull(P.integersGeometric()))
         );
-        compareImplementations("quintuples(Iterable<T>)", take(SMALL_LIMIT, iss), functions);
+        compareImplementations("quintuples(Iterable<T>)", take(MEDIUM_LIMIT, iss), functions);
     }
 
     private void propertiesSextuples_Iterable_Iterable_Iterable_Iterable_Iterable_Iterable() {
@@ -3763,7 +3763,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
                 List<Integer>,
                 List<Integer>,
                 List<Integer>
-        > s : take(SMALL_LIMIT, ss)) {
+        > s : take(MEDIUM_LIMIT, ss)) {
             Iterable<Sextuple<Integer, Integer, Integer, Integer, Integer, Integer>> sextuples =
                     EP.sextuples(s.a, s.b, s.c, s.d, s.e, s.f);
             testNoRemove(TINY_LIMIT, sextuples);
@@ -3773,7 +3773,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
                     .multiply(BigInteger.valueOf(s.d.size()))
                     .multiply(BigInteger.valueOf(s.e.size()))
                     .multiply(BigInteger.valueOf(s.f.size()));
-            if (lt(sextuplesLength, BigInteger.valueOf(SMALL_LIMIT))) {
+            if (lt(sextuplesLength, BigInteger.valueOf(MEDIUM_LIMIT))) {
                 testHasNext(sextuples);
                 List<Sextuple<Integer, Integer, Integer, Integer, Integer, Integer>> sextuplesList = toList(sextuples);
                 if (
@@ -3813,14 +3813,14 @@ public class ExhaustiveProviderProperties extends TestProperties {
                 List<Integer>,
                 List<Integer>,
                 List<Integer>
-        > s : take(SMALL_LIMIT, ss)) {
+        > s : take(MEDIUM_LIMIT, ss)) {
             BigInteger sextuplesLength = BigInteger.valueOf(s.a.size())
                     .multiply(BigInteger.valueOf(s.b.size()))
                     .multiply(BigInteger.valueOf(s.c.size()))
                     .multiply(BigInteger.valueOf(s.d.size()))
                     .multiply(BigInteger.valueOf(s.e.size()))
                     .multiply(BigInteger.valueOf(s.f.size()));
-            if (lt(sextuplesLength, BigInteger.valueOf(SMALL_LIMIT))) {
+            if (lt(sextuplesLength, BigInteger.valueOf(MEDIUM_LIMIT))) {
                 List<Sextuple<Integer, Integer, Integer, Integer, Integer, Integer>> sextuplesList =
                         toList(EP.sextuples(s.a, s.b, s.c, s.d, s.e, s.f));
                 assertTrue(s, unique(sextuplesList));
@@ -3880,11 +3880,11 @@ public class ExhaustiveProviderProperties extends TestProperties {
 
     private void propertiesSextuples_Iterable() {
         initialize("sextuples(Iterable<T>)");
-        for (List<Integer> xs : take(SMALL_LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
+        for (List<Integer> xs : take(MEDIUM_LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
             Iterable<Sextuple<Integer, Integer, Integer, Integer, Integer, Integer>> sextuples = EP.sextuples(xs);
             testNoRemove(TINY_LIMIT, sextuples);
             BigInteger sextuplesLength = BigInteger.valueOf(xs.size()).pow(6);
-            if (lt(sextuplesLength, BigInteger.valueOf(SMALL_LIMIT))) {
+            if (lt(sextuplesLength, BigInteger.valueOf(MEDIUM_LIMIT))) {
                 testHasNext(sextuples);
                 List<Sextuple<Integer, Integer, Integer, Integer, Integer, Integer>> sextuplesList = toList(sextuples);
                 assertEquals(xs, sextuplesList, sextuples_Iterable_simplest(xs));
@@ -3910,7 +3910,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
             }
         }
 
-        for (List<Integer> xs : take(SMALL_LIMIT, P.withScale(4).distinctLists(P.withNull(P.integersGeometric())))) {
+        for (List<Integer> xs : take(MEDIUM_LIMIT, P.withScale(4).distinctLists(P.withNull(P.integersGeometric())))) {
             BigInteger sextuplesLength = BigInteger.valueOf(xs.size()).pow(6);
             if (lt(sextuplesLength, BigInteger.valueOf(LIMIT))) {
                 assertTrue(xs, unique(EP.sextuples(xs)));
@@ -3962,7 +3962,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
                 xs -> lt(BigInteger.valueOf(xs.size()).pow(6), BigInteger.valueOf(LIMIT)),
                 P.withScale(4).lists(P.withNull(P.integersGeometric()))
         );
-        compareImplementations("sextuples(Iterable<T>)", take(SMALL_LIMIT, iss), functions);
+        compareImplementations("sextuples(Iterable<T>)", take(MEDIUM_LIMIT, iss), functions);
     }
 
     private void propertiesSeptuples_Iterable_Iterable_Iterable_Iterable_Iterable_Iterable_Iterable() {
@@ -3988,7 +3988,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
                 List<Integer>,
                 List<Integer>,
                 List<Integer>
-        > s : take(SMALL_LIMIT, ss)) {
+        > s : take(MEDIUM_LIMIT, ss)) {
             Iterable<Septuple<Integer, Integer, Integer, Integer, Integer, Integer, Integer>> septuples =
                     EP.septuples(s.a, s.b, s.c, s.d, s.e, s.f, s.g);
             testNoRemove(TINY_LIMIT, septuples);
@@ -3999,7 +3999,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
                     .multiply(BigInteger.valueOf(s.e.size()))
                     .multiply(BigInteger.valueOf(s.f.size()))
                     .multiply(BigInteger.valueOf(s.g.size()));
-            if (lt(septuplesLength, BigInteger.valueOf(SMALL_LIMIT))) {
+            if (lt(septuplesLength, BigInteger.valueOf(MEDIUM_LIMIT))) {
                 testHasNext(septuples);
                 List<Septuple<Integer, Integer, Integer, Integer, Integer, Integer, Integer>> septuplesList =
                         toList(septuples);
@@ -4043,7 +4043,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
                 List<Integer>,
                 List<Integer>,
                 List<Integer>
-        > s : take(SMALL_LIMIT, ss)) {
+        > s : take(MEDIUM_LIMIT, ss)) {
             BigInteger septuplesLength = BigInteger.valueOf(s.a.size())
                     .multiply(BigInteger.valueOf(s.b.size()))
                     .multiply(BigInteger.valueOf(s.c.size()))
@@ -4051,7 +4051,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
                     .multiply(BigInteger.valueOf(s.e.size()))
                     .multiply(BigInteger.valueOf(s.f.size()))
                     .multiply(BigInteger.valueOf(s.g.size()));
-            if (lt(septuplesLength, BigInteger.valueOf(SMALL_LIMIT))) {
+            if (lt(septuplesLength, BigInteger.valueOf(MEDIUM_LIMIT))) {
                 List<Septuple<Integer, Integer, Integer, Integer, Integer, Integer, Integer>> septuplesList =
                         toList(EP.septuples(s.a, s.b, s.c, s.d, s.e, s.f, s.g));
                 assertTrue(s, unique(septuplesList));
@@ -4123,12 +4123,12 @@ public class ExhaustiveProviderProperties extends TestProperties {
 
     private void propertiesSeptuples_Iterable() {
         initialize("septuples(Iterable<T>)");
-        for (List<Integer> xs : take(SMALL_LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
+        for (List<Integer> xs : take(MEDIUM_LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
             Iterable<Septuple<Integer, Integer, Integer, Integer, Integer, Integer, Integer>> septuples =
                     EP.septuples(xs);
             testNoRemove(TINY_LIMIT, septuples);
             BigInteger septuplesLength = BigInteger.valueOf(xs.size()).pow(7);
-            if (lt(septuplesLength, BigInteger.valueOf(SMALL_LIMIT))) {
+            if (lt(septuplesLength, BigInteger.valueOf(MEDIUM_LIMIT))) {
                 testHasNext(septuples);
                 List<Septuple<Integer, Integer, Integer, Integer, Integer, Integer, Integer>> septuplesList =
                         toList(septuples);
@@ -4156,7 +4156,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
             }
         }
 
-        for (List<Integer> xs : take(SMALL_LIMIT, P.withScale(4).distinctLists(P.withNull(P.integersGeometric())))) {
+        for (List<Integer> xs : take(MEDIUM_LIMIT, P.withScale(4).distinctLists(P.withNull(P.integersGeometric())))) {
             BigInteger septuplesLength = BigInteger.valueOf(xs.size()).pow(7);
             if (lt(septuplesLength, BigInteger.valueOf(LIMIT))) {
                 assertTrue(xs, unique(EP.septuples(xs)));
@@ -4214,7 +4214,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
                 xs -> lt(BigInteger.valueOf(xs.size()).pow(7), BigInteger.valueOf(LIMIT)),
                 P.withScale(4).lists(P.withNull(P.integersGeometric()))
         );
-        compareImplementations("septuples(Iterable<T>)", take(SMALL_LIMIT, iss), functions);
+        compareImplementations("septuples(Iterable<T>)", take(MEDIUM_LIMIT, iss), functions);
     }
 
     private void propertiesStrings_int_String() {
@@ -4278,7 +4278,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
 
     private void propertiesStrings_int() {
         initialize("strings(int)");
-        for (int i : take(SMALL_LIMIT, P.withScale(4).naturalIntegersGeometric())) {
+        for (int i : take(MEDIUM_LIMIT, P.withScale(4).naturalIntegersGeometric())) {
             Iterable<String> strings = EP.strings(i);
             testNoRemove(TINY_LIMIT, strings);
             List<String> stringsList = toList(take(TINY_LIMIT, strings));
@@ -4310,7 +4310,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
             assertTrue(xs, unique(listsList));
         }
 
-        for (Iterable<Integer> xs : take(SMALL_LIMIT, P.prefixPermutations(EP.withNull(EP.naturalIntegers())))) {
+        for (Iterable<Integer> xs : take(MEDIUM_LIMIT, P.prefixPermutations(EP.withNull(EP.naturalIntegers())))) {
             Iterable<List<Integer>> lists = EP.lists(xs);
             testNoRemove(TINY_LIMIT, lists);
             List<List<Integer>> listsList = toList(take(TINY_LIMIT, lists));
@@ -4371,7 +4371,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
                 P.prefixPermutations(EP.withNull(EP.naturalIntegers())),
                 P.withScale(4).naturalIntegersGeometric()
         );
-        for (Pair<Iterable<Integer>, Integer> p : take(SMALL_LIMIT, ps2)) {
+        for (Pair<Iterable<Integer>, Integer> p : take(MEDIUM_LIMIT, ps2)) {
             Iterable<List<Integer>> lists = EP.listsAtLeast(p.b, p.a);
             testNoRemove(TINY_LIMIT, lists);
             List<List<Integer>> listsList = toList(take(TINY_LIMIT, lists));
@@ -5478,7 +5478,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
             Iterable<Pair<Integer, Integer>> pairs = EP.distinctPairs(xs);
             testNoRemove(TINY_LIMIT, pairs);
             BigInteger pairsLength = MathUtils.fallingFactorial(BigInteger.valueOf(xs.size()), 2);
-            if (lt(pairsLength, BigInteger.valueOf(SMALL_LIMIT))) {
+            if (lt(pairsLength, BigInteger.valueOf(MEDIUM_LIMIT))) {
                 testHasNext(pairs);
                 List<Pair<Integer, Integer>> pairsList = toList(pairs);
                 if (!pairsList.isEmpty()) {
@@ -5493,7 +5493,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
 
         for (List<Integer> xs : take(LIMIT, P.withScale(4).distinctLists(P.withNull(P.integersGeometric())))) {
             BigInteger pairsLength = MathUtils.fallingFactorial(BigInteger.valueOf(xs.size()), 2);
-            if (lt(pairsLength, BigInteger.valueOf(SMALL_LIMIT))) {
+            if (lt(pairsLength, BigInteger.valueOf(MEDIUM_LIMIT))) {
                 List<Pair<Integer, Integer>> pairsList = toList(EP.distinctPairs(xs));
                 assertTrue(xs, unique(pairsList));
                 assertTrue(xs, all(IterableUtils::unique, map(Pair::toList, pairsList)));
@@ -5518,7 +5518,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
             Iterable<Triple<Integer, Integer, Integer>> triples = EP.distinctTriples(xs);
             testNoRemove(TINY_LIMIT, triples);
             BigInteger triplesLength = MathUtils.fallingFactorial(BigInteger.valueOf(xs.size()), 3);
-            if (lt(triplesLength, BigInteger.valueOf(SMALL_LIMIT))) {
+            if (lt(triplesLength, BigInteger.valueOf(MEDIUM_LIMIT))) {
                 testHasNext(triples);
                 List<Triple<Integer, Integer, Integer>> triplesList = toList(triples);
                 if (!triplesList.isEmpty()) {
@@ -5538,7 +5538,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
 
         for (List<Integer> xs : take(LIMIT, P.withScale(4).distinctLists(P.withNull(P.integersGeometric())))) {
             BigInteger triplesLength = MathUtils.fallingFactorial(BigInteger.valueOf(xs.size()), 3);
-            if (lt(triplesLength, BigInteger.valueOf(SMALL_LIMIT))) {
+            if (lt(triplesLength, BigInteger.valueOf(MEDIUM_LIMIT))) {
                 List<Triple<Integer, Integer, Integer>> triplesList = toList(EP.distinctTriples(xs));
                 assertTrue(xs, unique(triplesList));
                 assertTrue(xs, all(IterableUtils::unique, map(Triple::toList, triplesList)));
@@ -5564,7 +5564,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
             Iterable<Quadruple<Integer, Integer, Integer, Integer>> quadruples = EP.distinctQuadruples(xs);
             testNoRemove(TINY_LIMIT, quadruples);
             BigInteger quadruplesLength = MathUtils.fallingFactorial(BigInteger.valueOf(xs.size()), 4);
-            if (lt(quadruplesLength, BigInteger.valueOf(SMALL_LIMIT))) {
+            if (lt(quadruplesLength, BigInteger.valueOf(MEDIUM_LIMIT))) {
                 testHasNext(quadruples);
                 List<Quadruple<Integer, Integer, Integer, Integer>> quadruplesList = toList(quadruples);
                 if (!quadruplesList.isEmpty()) {
@@ -5594,7 +5594,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
 
         for (List<Integer> xs : take(LIMIT, P.withScale(4).distinctLists(P.withNull(P.integersGeometric())))) {
             BigInteger quadruplesLength = MathUtils.fallingFactorial(BigInteger.valueOf(xs.size()), 4);
-            if (lt(quadruplesLength, BigInteger.valueOf(SMALL_LIMIT))) {
+            if (lt(quadruplesLength, BigInteger.valueOf(MEDIUM_LIMIT))) {
                 List<Quadruple<Integer, Integer, Integer, Integer>> quadruplesList = toList(EP.distinctQuadruples(xs));
                 assertTrue(xs, unique(quadruplesList));
                 assertTrue(xs, all(IterableUtils::unique, map(Quadruple::toList, quadruplesList)));
@@ -5621,7 +5621,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
             Iterable<Quintuple<Integer, Integer, Integer, Integer, Integer>> quintuples = EP.distinctQuintuples(xs);
             testNoRemove(TINY_LIMIT, quintuples);
             BigInteger quintuplesLength = MathUtils.fallingFactorial(BigInteger.valueOf(xs.size()), 5);
-            if (lt(quintuplesLength, BigInteger.valueOf(SMALL_LIMIT))) {
+            if (lt(quintuplesLength, BigInteger.valueOf(MEDIUM_LIMIT))) {
                 testHasNext(quintuples);
                 List<Quintuple<Integer, Integer, Integer, Integer, Integer>> quintuplesList = toList(quintuples);
                 if (!quintuplesList.isEmpty()) {
@@ -5653,7 +5653,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
 
         for (List<Integer> xs : take(LIMIT, P.withScale(4).distinctLists(P.withNull(P.integersGeometric())))) {
             BigInteger quintuplesLength = MathUtils.fallingFactorial(BigInteger.valueOf(xs.size()), 5);
-            if (lt(quintuplesLength, BigInteger.valueOf(SMALL_LIMIT))) {
+            if (lt(quintuplesLength, BigInteger.valueOf(MEDIUM_LIMIT))) {
                 List<Quintuple<Integer, Integer, Integer, Integer, Integer>> quintuplesList =
                         toList(EP.distinctQuintuples(xs));
                 assertTrue(xs, unique(quintuplesList));
@@ -5684,7 +5684,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
                     EP.distinctSextuples(xs);
             testNoRemove(TINY_LIMIT, sextuples);
             BigInteger sextuplesLength = MathUtils.fallingFactorial(BigInteger.valueOf(xs.size()), 6);
-            if (lt(sextuplesLength, BigInteger.valueOf(SMALL_LIMIT))) {
+            if (lt(sextuplesLength, BigInteger.valueOf(MEDIUM_LIMIT))) {
                 testHasNext(sextuples);
                 List<Sextuple<Integer, Integer, Integer, Integer, Integer, Integer>> sextuplesList = toList(sextuples);
                 if (!sextuplesList.isEmpty()) {
@@ -5718,7 +5718,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
 
         for (List<Integer> xs : take(LIMIT, P.withScale(4).distinctLists(P.withNull(P.integersGeometric())))) {
             BigInteger sextuplesLength = MathUtils.fallingFactorial(BigInteger.valueOf(xs.size()), 6);
-            if (lt(sextuplesLength, BigInteger.valueOf(SMALL_LIMIT))) {
+            if (lt(sextuplesLength, BigInteger.valueOf(MEDIUM_LIMIT))) {
                 List<Sextuple<Integer, Integer, Integer, Integer, Integer, Integer>> sextuplesList =
                         toList(EP.distinctSextuples(xs));
                 assertTrue(xs, unique(sextuplesList));
@@ -5751,7 +5751,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
                     EP.distinctSeptuples(xs);
             testNoRemove(TINY_LIMIT, septuples);
             BigInteger septuplesLength = MathUtils.fallingFactorial(BigInteger.valueOf(xs.size()), 7);
-            if (lt(septuplesLength, BigInteger.valueOf(SMALL_LIMIT))) {
+            if (lt(septuplesLength, BigInteger.valueOf(MEDIUM_LIMIT))) {
                 testHasNext(septuples);
                 List<Septuple<Integer, Integer, Integer, Integer, Integer, Integer, Integer>> septuplesList =
                         toList(septuples);
@@ -5788,7 +5788,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
 
         for (List<Integer> xs : take(LIMIT, P.withScale(4).distinctLists(P.withNull(P.integersGeometric())))) {
             BigInteger septuplesLength = MathUtils.fallingFactorial(BigInteger.valueOf(xs.size()), 7);
-            if (lt(septuplesLength, BigInteger.valueOf(SMALL_LIMIT))) {
+            if (lt(septuplesLength, BigInteger.valueOf(MEDIUM_LIMIT))) {
                 List<Septuple<Integer, Integer, Integer, Integer, Integer, Integer, Integer>> septuplesList =
                         toList(EP.distinctSeptuples(xs));
                 assertTrue(xs, unique(septuplesList));
@@ -5878,7 +5878,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
 
     private void propertiesDistinctStrings_int() {
         initialize("distinctStrings(int)");
-        for (int i : take(SMALL_LIMIT, P.withScale(4).naturalIntegersGeometric())) {
+        for (int i : take(MEDIUM_LIMIT, P.withScale(4).naturalIntegersGeometric())) {
             Iterable<String> strings = EP.distinctStrings(i);
             testNoRemove(TINY_LIMIT, strings);
             List<String> stringsList = toList(take(TINY_LIMIT, strings));
@@ -5888,7 +5888,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
             assertTrue(i, unique(stringsList));
         }
 
-        for (int i : take(SMALL_LIMIT, P.rangeUp((1 << 16) + 1))) {
+        for (int i : take(MEDIUM_LIMIT, P.rangeUp((1 << 16) + 1))) {
             assertEquals(i, toList(EP.distinctStrings(i)), Collections.emptyList());
         }
 
@@ -5906,7 +5906,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
             Iterable<List<Integer>> lists = EP.distinctLists(xs);
             testNoRemove(TINY_LIMIT, lists);
             BigInteger listsLength = MathUtils.numberOfArrangementsOfASet(xs.size());
-            if (lt(listsLength, BigInteger.valueOf(SMALL_LIMIT))) {
+            if (lt(listsLength, BigInteger.valueOf(MEDIUM_LIMIT))) {
                 testHasNext(lists);
                 List<List<Integer>> listsList = toList(lists);
                 if (!listsList.isEmpty()) {
@@ -5920,14 +5920,14 @@ public class ExhaustiveProviderProperties extends TestProperties {
 
         for (List<Integer> xs : take(LIMIT, P.withScale(4).distinctLists(P.withNull(P.integersGeometric())))) {
             BigInteger listsLength = MathUtils.numberOfArrangementsOfASet(xs.size());
-            if (lt(listsLength, BigInteger.valueOf(SMALL_LIMIT))) {
+            if (lt(listsLength, BigInteger.valueOf(MEDIUM_LIMIT))) {
                 List<List<Integer>> listsList = toList(EP.distinctLists(xs));
                 assertTrue(xs, unique(listsList));
                 assertTrue(xs, all(IterableUtils::unique, listsList));
             }
         }
 
-        for (Iterable<Integer> xs : take(SMALL_LIMIT, P.prefixPermutations(EP.withNull(EP.naturalIntegers())))) {
+        for (Iterable<Integer> xs : take(MEDIUM_LIMIT, P.prefixPermutations(EP.withNull(EP.naturalIntegers())))) {
             Iterable<List<Integer>> lists = EP.distinctLists(xs);
             testNoRemove(TINY_LIMIT, lists);
             List<List<Integer>> listsList = toList(take(TINY_LIMIT, lists));
@@ -5944,7 +5944,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
             Iterable<String> strings = EP.distinctStrings(s);
             testNoRemove(TINY_LIMIT, strings);
             BigInteger stringsLength = MathUtils.numberOfArrangementsOfASet(s.length());
-            if (lt(stringsLength, BigInteger.valueOf(SMALL_LIMIT))) {
+            if (lt(stringsLength, BigInteger.valueOf(MEDIUM_LIMIT))) {
                 testHasNext(strings);
                 List<String> stringsList = toList(strings);
                 if (!stringsList.isEmpty()) {
@@ -5958,7 +5958,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
 
         for (String s : take(LIMIT, P.withScale(4).distinctStrings())) {
             BigInteger listsLength = MathUtils.numberOfArrangementsOfASet(s.length());
-            if (lt(listsLength, BigInteger.valueOf(SMALL_LIMIT))) {
+            if (lt(listsLength, BigInteger.valueOf(MEDIUM_LIMIT))) {
                 List<String> stringsList = toList(EP.distinctStrings(s));
                 assertTrue(s, unique(stringsList));
                 assertTrue(s, all(IterableUtils::unique, stringsList));
@@ -5981,7 +5981,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
             Iterable<List<Integer>> lists = EP.distinctListsAtLeast(p.b, p.a);
             testNoRemove(TINY_LIMIT, lists);
             BigInteger listsLength = MathUtils.numberOfArrangementsOfASet(p.b, p.a.size());
-            if (lt(listsLength, BigInteger.valueOf(SMALL_LIMIT))) {
+            if (lt(listsLength, BigInteger.valueOf(MEDIUM_LIMIT))) {
                 List<List<Integer>> listsList = toList(lists);
                 if (!listsLength.equals(BigInteger.ZERO)) {
                     assertEquals(p, head(listsList), toList(take(p.b, p.a)));
@@ -5999,7 +5999,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
         );
         for (Pair<List<Integer>, Integer> p : take(LIMIT, ps)) {
             BigInteger listsLength = MathUtils.numberOfArrangementsOfASet(p.b, p.a.size());
-            if (lt(listsLength, BigInteger.valueOf(SMALL_LIMIT))) {
+            if (lt(listsLength, BigInteger.valueOf(MEDIUM_LIMIT))) {
                 List<List<Integer>> listsList = toList(EP.distinctListsAtLeast(p.b, p.a));
                 assertTrue(p, unique(listsList));
                 assertTrue(p, all(IterableUtils::unique, listsList));
@@ -6010,7 +6010,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
                 P.prefixPermutations(EP.withNull(EP.naturalIntegers())),
                 P.withScale(4).naturalIntegersGeometric()
         );
-        for (Pair<Iterable<Integer>, Integer> p : take(SMALL_LIMIT, ps2)) {
+        for (Pair<Iterable<Integer>, Integer> p : take(MEDIUM_LIMIT, ps2)) {
             Iterable<List<Integer>> lists = EP.distinctListsAtLeast(p.b, p.a);
             testNoRemove(TINY_LIMIT, lists);
             List<List<Integer>> listsList = toList(take(TINY_LIMIT, lists));
@@ -6049,7 +6049,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
             Iterable<String> strings = EP.distinctStringsAtLeast(p.b, p.a);
             testNoRemove(TINY_LIMIT, strings);
             BigInteger stringsLength = MathUtils.numberOfArrangementsOfASet(p.b, p.a.length());
-            if (lt(stringsLength, BigInteger.valueOf(SMALL_LIMIT))) {
+            if (lt(stringsLength, BigInteger.valueOf(MEDIUM_LIMIT))) {
                 List<String> stringsList = toList(strings);
                 if (!stringsLength.equals(BigInteger.ZERO)) {
                     assertEquals(p, head(stringsList), take(p.b, p.a));
@@ -6064,7 +6064,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
         ps = P.pairsLogarithmicOrder(P.withScale(4).distinctStrings(), P.withScale(4).naturalIntegersGeometric());
         for (Pair<String, Integer> p : take(LIMIT, ps)) {
             BigInteger stringsLength = MathUtils.numberOfArrangementsOfASet(p.b, p.a.length());
-            if (lt(stringsLength, BigInteger.valueOf(SMALL_LIMIT))) {
+            if (lt(stringsLength, BigInteger.valueOf(MEDIUM_LIMIT))) {
                 List<String> stringsList = toList(EP.distinctStringsAtLeast(p.b, p.a));
                 assertTrue(p, unique(stringsList));
                 assertTrue(p, all(IterableUtils::unique, stringsList));
@@ -6102,7 +6102,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
             assertTrue(i, unique(stringsList));
         }
 
-        for (int i : take(SMALL_LIMIT, P.rangeUp((1 << 16) + 1))) {
+        for (int i : take(MEDIUM_LIMIT, P.rangeUp((1 << 16) + 1))) {
             assertEquals(i, toList(EP.distinctStringsAtLeast(i)), Collections.emptyList());
         }
 
@@ -6908,7 +6908,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
             Iterable<Pair<Integer, Integer>> pairs = EP.bagPairs(xs);
             testNoRemove(TINY_LIMIT, pairs);
             BigInteger pairsLength = MathUtils.multisetCoefficient(BigInteger.valueOf(xs.size()), 2);
-            if (lt(pairsLength, BigInteger.valueOf(SMALL_LIMIT))) {
+            if (lt(pairsLength, BigInteger.valueOf(MEDIUM_LIMIT))) {
                 testHasNext(pairs);
                 List<Pair<Integer, Integer>> pairsList = toList(pairs);
                 if (!pairsList.isEmpty()) {
@@ -6923,7 +6923,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
 
         for (List<Integer> xs : take(LIMIT, P.withScale(4).distinctLists(P.integersGeometric()))) {
             BigInteger pairsLength = MathUtils.multisetCoefficient(BigInteger.valueOf(xs.size()), 2);
-            if (lt(pairsLength, BigInteger.valueOf(SMALL_LIMIT))) {
+            if (lt(pairsLength, BigInteger.valueOf(MEDIUM_LIMIT))) {
                 List<Pair<Integer, Integer>> pairsList = toList(EP.bagPairs(xs));
                 assertTrue(xs, unique(pairsList));
                 assertTrue(xs, all(IterableUtils::weaklyIncreasing, map(Pair::toList, pairsList)));
@@ -6956,7 +6956,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
             Iterable<Triple<Integer, Integer, Integer>> triples = EP.bagTriples(xs);
             testNoRemove(TINY_LIMIT, triples);
             BigInteger triplesLength = MathUtils.multisetCoefficient(BigInteger.valueOf(xs.size()), 3);
-            if (lt(triplesLength, BigInteger.valueOf(SMALL_LIMIT))) {
+            if (lt(triplesLength, BigInteger.valueOf(MEDIUM_LIMIT))) {
                 testHasNext(triples);
                 List<Triple<Integer, Integer, Integer>> triplesList = toList(triples);
                 if (!triplesList.isEmpty()) {
@@ -6972,7 +6972,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
 
         for (List<Integer> xs : take(LIMIT, P.withScale(4).distinctLists(P.integersGeometric()))) {
             BigInteger triplesLength = MathUtils.multisetCoefficient(BigInteger.valueOf(xs.size()), 3);
-            if (lt(triplesLength, BigInteger.valueOf(SMALL_LIMIT))) {
+            if (lt(triplesLength, BigInteger.valueOf(MEDIUM_LIMIT))) {
                 List<Triple<Integer, Integer, Integer>> triplesList = toList(EP.bagTriples(xs));
                 assertTrue(xs, unique(triplesList));
                 assertTrue(xs, all(IterableUtils::weaklyIncreasing, map(Triple::toList, triplesList)));
@@ -7006,7 +7006,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
             Iterable<Quadruple<Integer, Integer, Integer, Integer>> quadruples = EP.bagQuadruples(xs);
             testNoRemove(TINY_LIMIT, quadruples);
             BigInteger quadruplesLength = MathUtils.multisetCoefficient(BigInteger.valueOf(xs.size()), 4);
-            if (lt(quadruplesLength, BigInteger.valueOf(SMALL_LIMIT))) {
+            if (lt(quadruplesLength, BigInteger.valueOf(MEDIUM_LIMIT))) {
                 testHasNext(quadruples);
                 List<Quadruple<Integer, Integer, Integer, Integer>> quadruplesList = toList(quadruples);
                 if (!quadruplesList.isEmpty()) {
@@ -7023,7 +7023,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
 
         for (List<Integer> xs : take(LIMIT, P.withScale(4).distinctLists(P.integersGeometric()))) {
             BigInteger quadruplesLength = MathUtils.multisetCoefficient(BigInteger.valueOf(xs.size()), 4);
-            if (lt(quadruplesLength, BigInteger.valueOf(SMALL_LIMIT))) {
+            if (lt(quadruplesLength, BigInteger.valueOf(MEDIUM_LIMIT))) {
                 List<Quadruple<Integer, Integer, Integer, Integer>> quadruplesList = toList(EP.bagQuadruples(xs));
                 assertTrue(xs, unique(quadruplesList));
                 assertTrue(xs, all(IterableUtils::weaklyIncreasing, map(Quadruple::toList, quadruplesList)));
@@ -7058,7 +7058,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
             Iterable<Quintuple<Integer, Integer, Integer, Integer, Integer>> quintuples = EP.bagQuintuples(xs);
             testNoRemove(TINY_LIMIT, quintuples);
             BigInteger quintuplesLength = MathUtils.multisetCoefficient(BigInteger.valueOf(xs.size()), 5);
-            if (lt(quintuplesLength, BigInteger.valueOf(SMALL_LIMIT))) {
+            if (lt(quintuplesLength, BigInteger.valueOf(MEDIUM_LIMIT))) {
                 testHasNext(quintuples);
                 List<Quintuple<Integer, Integer, Integer, Integer, Integer>> quintuplesList = toList(quintuples);
                 if (!quintuplesList.isEmpty()) {
@@ -7084,7 +7084,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
 
         for (List<Integer> xs : take(LIMIT, P.withScale(4).distinctLists(P.integersGeometric()))) {
             BigInteger quintuplesLength = MathUtils.multisetCoefficient(BigInteger.valueOf(xs.size()), 5);
-            if (lt(quintuplesLength, BigInteger.valueOf(SMALL_LIMIT))) {
+            if (lt(quintuplesLength, BigInteger.valueOf(MEDIUM_LIMIT))) {
                 List<Quintuple<Integer, Integer, Integer, Integer, Integer>> quintuplesList =
                         toList(EP.bagQuintuples(xs));
                 assertTrue(xs, unique(quintuplesList));
@@ -7306,7 +7306,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
 
     private void propertiesStringBags_int() {
         initialize("stringBags(int)");
-        for (int i : take(SMALL_LIMIT, P.withScale(4).naturalIntegersGeometric())) {
+        for (int i : take(MEDIUM_LIMIT, P.withScale(4).naturalIntegersGeometric())) {
             Iterable<String> strings = EP.stringBags(i);
             testNoRemove(TINY_LIMIT, strings);
             List<String> stringsList = toList(take(TINY_LIMIT, strings));
@@ -7340,7 +7340,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
             assertTrue(xs, all(IterableUtils::weaklyIncreasing, listsList));
         }
 
-        for (Iterable<Integer> xs : take(SMALL_LIMIT, P.prefixPermutations(EP.naturalIntegers()))) {
+        for (Iterable<Integer> xs : take(MEDIUM_LIMIT, P.prefixPermutations(EP.naturalIntegers()))) {
             Iterable<List<Integer>> lists = EP.bags(xs);
             testNoRemove(TINY_LIMIT, lists);
             List<List<Integer>> listsList = toList(take(TINY_LIMIT, lists));
@@ -7412,7 +7412,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
                 P.prefixPermutations(EP.naturalIntegers()),
                 P.withScale(4).naturalIntegersGeometric()
         );
-        for (Pair<Iterable<Integer>, Integer> p : take(SMALL_LIMIT, ps2)) {
+        for (Pair<Iterable<Integer>, Integer> p : take(MEDIUM_LIMIT, ps2)) {
             Iterable<List<Integer>> lists = EP.bagsAtLeast(p.b, p.a);
             testNoRemove(TINY_LIMIT, lists);
             List<List<Integer>> listsList = toList(take(TINY_LIMIT, lists));
@@ -8561,7 +8561,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
             Iterable<Pair<Integer, Integer>> pairs = EP.subsetPairs(xs);
             testNoRemove(TINY_LIMIT, pairs);
             BigInteger pairsLength = MathUtils.binomialCoefficient(BigInteger.valueOf(xs.size()), 2);
-            if (lt(pairsLength, BigInteger.valueOf(SMALL_LIMIT))) {
+            if (lt(pairsLength, BigInteger.valueOf(MEDIUM_LIMIT))) {
                 testHasNext(pairs);
                 List<Pair<Integer, Integer>> pairsList = toList(pairs);
                 if (!pairsList.isEmpty()) {
@@ -8578,7 +8578,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
 
         for (List<Integer> xs : take(LIMIT, P.withScale(4).distinctLists(P.integersGeometric()))) {
             BigInteger pairsLength = MathUtils.binomialCoefficient(BigInteger.valueOf(xs.size()), 2);
-            if (lt(pairsLength, BigInteger.valueOf(SMALL_LIMIT))) {
+            if (lt(pairsLength, BigInteger.valueOf(MEDIUM_LIMIT))) {
                 List<Pair<Integer, Integer>> pairsList = toList(EP.subsetPairs(xs));
                 assertTrue(xs, unique(pairsList));
                 assertTrue(xs, all(IterableUtils::weaklyIncreasing, map(Pair::toList, pairsList)));
@@ -8616,7 +8616,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
             Iterable<Triple<Integer, Integer, Integer>> triples = EP.subsetTriples(xs);
             testNoRemove(TINY_LIMIT, triples);
             BigInteger triplesLength = MathUtils.binomialCoefficient(BigInteger.valueOf(xs.size()), 3);
-            if (lt(triplesLength, BigInteger.valueOf(SMALL_LIMIT))) {
+            if (lt(triplesLength, BigInteger.valueOf(MEDIUM_LIMIT))) {
                 testHasNext(triples);
                 List<Triple<Integer, Integer, Integer>> triplesList = toList(triples);
                 if (!triplesList.isEmpty()) {
@@ -8636,7 +8636,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
 
         for (List<Integer> xs : take(LIMIT, P.withScale(4).distinctLists(P.integersGeometric()))) {
             BigInteger triplesLength = MathUtils.binomialCoefficient(BigInteger.valueOf(xs.size()), 3);
-            if (lt(triplesLength, BigInteger.valueOf(SMALL_LIMIT))) {
+            if (lt(triplesLength, BigInteger.valueOf(MEDIUM_LIMIT))) {
                 List<Triple<Integer, Integer, Integer>> triplesList = toList(EP.subsetTriples(xs));
                 assertTrue(xs, unique(triplesList));
                 assertTrue(xs, all(IterableUtils::weaklyIncreasing, map(Triple::toList, triplesList)));
@@ -8675,7 +8675,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
             Iterable<Quadruple<Integer, Integer, Integer, Integer>> quadruples = EP.subsetQuadruples(xs);
             testNoRemove(TINY_LIMIT, quadruples);
             BigInteger quadruplesLength = MathUtils.binomialCoefficient(BigInteger.valueOf(xs.size()), 4);
-            if (lt(quadruplesLength, BigInteger.valueOf(SMALL_LIMIT))) {
+            if (lt(quadruplesLength, BigInteger.valueOf(MEDIUM_LIMIT))) {
                 testHasNext(quadruples);
                 List<Quadruple<Integer, Integer, Integer, Integer>> quadruplesList = toList(quadruples);
                 if (!quadruplesList.isEmpty()) {
@@ -8709,7 +8709,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
 
         for (List<Integer> xs : take(LIMIT, P.withScale(4).distinctLists(P.integersGeometric()))) {
             BigInteger quadruplesLength = MathUtils.binomialCoefficient(BigInteger.valueOf(xs.size()), 4);
-            if (lt(quadruplesLength, BigInteger.valueOf(SMALL_LIMIT))) {
+            if (lt(quadruplesLength, BigInteger.valueOf(MEDIUM_LIMIT))) {
                 List<Quadruple<Integer, Integer, Integer, Integer>> quadruplesList = toList(EP.subsetQuadruples(xs));
                 assertTrue(xs, unique(quadruplesList));
                 assertTrue(xs, all(IterableUtils::weaklyIncreasing, map(Quadruple::toList, quadruplesList)));
@@ -8749,7 +8749,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
             Iterable<Quintuple<Integer, Integer, Integer, Integer, Integer>> quintuples = EP.subsetQuintuples(xs);
             testNoRemove(TINY_LIMIT, quintuples);
             BigInteger quintuplesLength = MathUtils.binomialCoefficient(BigInteger.valueOf(xs.size()), 5);
-            if (lt(quintuplesLength, BigInteger.valueOf(SMALL_LIMIT))) {
+            if (lt(quintuplesLength, BigInteger.valueOf(MEDIUM_LIMIT))) {
                 testHasNext(quintuples);
                 List<Quintuple<Integer, Integer, Integer, Integer, Integer>> quintuplesList = toList(quintuples);
                 if (!quintuplesList.isEmpty()) {
@@ -8785,7 +8785,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
 
         for (List<Integer> xs : take(LIMIT, P.withScale(4).distinctLists(P.integersGeometric()))) {
             BigInteger quintuplesLength = MathUtils.binomialCoefficient(BigInteger.valueOf(xs.size()), 5);
-            if (lt(quintuplesLength, BigInteger.valueOf(SMALL_LIMIT))) {
+            if (lt(quintuplesLength, BigInteger.valueOf(MEDIUM_LIMIT))) {
                 List<Quintuple<Integer, Integer, Integer, Integer, Integer>> quintuplesList =
                         toList(EP.subsetQuintuples(xs));
                 assertTrue(xs, unique(quintuplesList));
@@ -8829,7 +8829,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
                     EP.subsetSextuples(xs);
             testNoRemove(TINY_LIMIT, sextuples);
             BigInteger sextuplesLength = MathUtils.binomialCoefficient(BigInteger.valueOf(xs.size()), 6);
-            if (lt(sextuplesLength, BigInteger.valueOf(SMALL_LIMIT))) {
+            if (lt(sextuplesLength, BigInteger.valueOf(MEDIUM_LIMIT))) {
                 testHasNext(sextuples);
                 List<Sextuple<Integer, Integer, Integer, Integer, Integer, Integer>> sextuplesList = toList(sextuples);
                 if (!sextuplesList.isEmpty()) {
@@ -8876,7 +8876,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
 
         for (List<Integer> xs : take(LIMIT, P.withScale(4).distinctLists(P.integersGeometric()))) {
             BigInteger sextuplesLength = MathUtils.binomialCoefficient(BigInteger.valueOf(xs.size()), 6);
-            if (lt(sextuplesLength, BigInteger.valueOf(SMALL_LIMIT))) {
+            if (lt(sextuplesLength, BigInteger.valueOf(MEDIUM_LIMIT))) {
                 List<Sextuple<Integer, Integer, Integer, Integer, Integer, Integer>> sextuplesList =
                         toList(EP.subsetSextuples(xs));
                 assertTrue(xs, unique(sextuplesList));
@@ -8922,7 +8922,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
                     EP.subsetSeptuples(xs);
             testNoRemove(TINY_LIMIT, septuples);
             BigInteger septuplesLength = MathUtils.binomialCoefficient(BigInteger.valueOf(xs.size()), 7);
-            if (lt(septuplesLength, BigInteger.valueOf(SMALL_LIMIT))) {
+            if (lt(septuplesLength, BigInteger.valueOf(MEDIUM_LIMIT))) {
                 testHasNext(septuples);
                 List<Septuple<Integer, Integer, Integer, Integer, Integer, Integer, Integer>> septuplesList =
                         toList(septuples);
@@ -8981,7 +8981,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
 
         for (List<Integer> xs : take(LIMIT, P.withScale(4).distinctLists(P.integersGeometric()))) {
             BigInteger septuplesLength = MathUtils.binomialCoefficient(BigInteger.valueOf(xs.size()), 7);
-            if (lt(septuplesLength, BigInteger.valueOf(SMALL_LIMIT))) {
+            if (lt(septuplesLength, BigInteger.valueOf(MEDIUM_LIMIT))) {
                 List<Septuple<Integer, Integer, Integer, Integer, Integer, Integer, Integer>> septuplesList =
                         toList(EP.subsetSeptuples(xs));
                 assertTrue(xs, unique(septuplesList));
@@ -9085,7 +9085,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
 
     private void propertiesStringSubsets_int() {
         initialize("stringSubsets(int)");
-        for (int i : take(SMALL_LIMIT, P.withScale(4).naturalIntegersGeometric())) {
+        for (int i : take(MEDIUM_LIMIT, P.withScale(4).naturalIntegersGeometric())) {
             Iterable<String> strings = EP.stringSubsets(i);
             testNoRemove(TINY_LIMIT, strings);
             List<String> stringsList = toList(take(TINY_LIMIT, strings));
@@ -9096,7 +9096,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
             assertTrue(i, unique(stringsList));
         }
 
-        for (int i : take(SMALL_LIMIT, P.rangeUp((1 << 16) + 1))) {
+        for (int i : take(MEDIUM_LIMIT, P.rangeUp((1 << 16) + 1))) {
             assertEquals(i, toList(EP.stringSubsets(i)), Collections.emptyList());
         }
 
@@ -9115,7 +9115,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
             Iterable<List<Integer>> lists = EP.subsets(xs);
             testNoRemove(TINY_LIMIT, lists);
             BigInteger listsLength = BigInteger.ONE.shiftLeft(xs.size());
-            if (lt(listsLength, BigInteger.valueOf(SMALL_LIMIT))) {
+            if (lt(listsLength, BigInteger.valueOf(MEDIUM_LIMIT))) {
                 testHasNext(lists);
                 List<List<Integer>> listsList = toList(lists);
                 if (!listsList.isEmpty()) {
@@ -9128,14 +9128,14 @@ public class ExhaustiveProviderProperties extends TestProperties {
 
         for (List<Integer> xs : take(LIMIT, P.withScale(4).distinctLists(P.integersGeometric()))) {
             BigInteger listsLength = BigInteger.ONE.shiftLeft(xs.size());
-            if (lt(listsLength, BigInteger.valueOf(SMALL_LIMIT))) {
+            if (lt(listsLength, BigInteger.valueOf(MEDIUM_LIMIT))) {
                 List<List<Integer>> listsList = toList(EP.subsets(xs));
                 assertTrue(xs, unique(listsList));
                 assertTrue(xs, all(IterableUtils::increasing, listsList));
             }
         }
 
-        for (Iterable<Integer> xs : take(SMALL_LIMIT, P.prefixPermutations(EP.naturalIntegers()))) {
+        for (Iterable<Integer> xs : take(MEDIUM_LIMIT, P.prefixPermutations(EP.naturalIntegers()))) {
             Iterable<List<Integer>> lists = EP.subsets(xs);
             testNoRemove(TINY_LIMIT, lists);
             List<List<Integer>> listsList = toList(take(TINY_LIMIT, lists));
@@ -9159,7 +9159,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
             Iterable<String> strings = EP.stringSubsets(s);
             testNoRemove(TINY_LIMIT, strings);
             BigInteger stringsLength = BigInteger.ONE.shiftLeft(s.length());
-            if (lt(stringsLength, BigInteger.valueOf(SMALL_LIMIT))) {
+            if (lt(stringsLength, BigInteger.valueOf(MEDIUM_LIMIT))) {
                 testHasNext(strings);
                 List<String> stringsList = toList(strings);
                 if (!stringsList.isEmpty()) {
@@ -9172,7 +9172,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
 
         for (String s : take(LIMIT, P.withScale(4).distinctStrings())) {
             BigInteger listsLength = BigInteger.ONE.shiftLeft(s.length());
-            if (lt(listsLength, BigInteger.valueOf(SMALL_LIMIT))) {
+            if (lt(listsLength, BigInteger.valueOf(MEDIUM_LIMIT))) {
                 List<String> stringsList = toList(EP.stringSubsets(s));
                 assertTrue(s, unique(stringsList));
                 assertTrue(s, all(t -> increasing(toList(t)), stringsList));
@@ -9195,7 +9195,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
             Iterable<List<Integer>> lists = EP.subsetsAtLeast(p.b, p.a);
             testNoRemove(TINY_LIMIT, lists);
             BigInteger listsLength = MathUtils.subsetCount(p.b, BigInteger.valueOf(p.a.size()));
-            if (lt(listsLength, BigInteger.valueOf(SMALL_LIMIT))) {
+            if (lt(listsLength, BigInteger.valueOf(MEDIUM_LIMIT))) {
                 List<List<Integer>> listsList = toList(lists);
                 if (!listsLength.equals(BigInteger.ZERO)) {
                     assertEquals(p, head(listsList), sort(take(p.b, p.a)));
@@ -9212,7 +9212,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
         );
         for (Pair<List<Integer>, Integer> p : take(LIMIT, ps)) {
             BigInteger listsLength = MathUtils.subsetCount(p.b, BigInteger.valueOf(p.a.size()));
-            if (lt(listsLength, BigInteger.valueOf(SMALL_LIMIT))) {
+            if (lt(listsLength, BigInteger.valueOf(MEDIUM_LIMIT))) {
                 List<List<Integer>> listsList = toList(EP.subsetsAtLeast(p.b, p.a));
                 assertTrue(p, unique(listsList));
                 assertTrue(p, all(IterableUtils::unique, listsList));
@@ -9223,7 +9223,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
                 P.prefixPermutations(EP.naturalIntegers()),
                 P.withScale(4).naturalIntegersGeometric()
         );
-        for (Pair<Iterable<Integer>, Integer> p : take(SMALL_LIMIT, ps2)) {
+        for (Pair<Iterable<Integer>, Integer> p : take(MEDIUM_LIMIT, ps2)) {
             Iterable<List<Integer>> lists = EP.subsetsAtLeast(p.b, p.a);
             testNoRemove(TINY_LIMIT, lists);
             List<List<Integer>> listsList = toList(take(TINY_LIMIT, lists));
@@ -9262,7 +9262,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
             Iterable<String> strings = EP.stringSubsetsAtLeast(p.b, p.a);
             testNoRemove(TINY_LIMIT, strings);
             BigInteger stringsLength = MathUtils.subsetCount(p.b, BigInteger.valueOf(p.a.length()));
-            if (lt(stringsLength, BigInteger.valueOf(SMALL_LIMIT))) {
+            if (lt(stringsLength, BigInteger.valueOf(MEDIUM_LIMIT))) {
                 List<String> stringsList = toList(strings);
                 if (!stringsLength.equals(BigInteger.ZERO)) {
                     assertEquals(p, head(stringsList), sort(take(p.b, p.a)));
@@ -9276,7 +9276,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
         ps = P.pairsLogarithmicOrder(P.withScale(4).distinctStrings(), P.withScale(4).naturalIntegersGeometric());
         for (Pair<String, Integer> p : take(LIMIT, ps)) {
             BigInteger stringsLength = MathUtils.subsetCount(p.b, BigInteger.valueOf(p.a.length()));
-            if (lt(stringsLength, BigInteger.valueOf(SMALL_LIMIT))) {
+            if (lt(stringsLength, BigInteger.valueOf(MEDIUM_LIMIT))) {
                 List<String> stringsList = toList(EP.stringSubsetsAtLeast(p.b, p.a));
                 assertTrue(p, unique(stringsList));
                 assertTrue(p, all(s -> increasing(toList(s)), stringsList));
@@ -9314,7 +9314,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
             assertTrue(i, unique(stringsList));
         }
 
-        for (int i : take(SMALL_LIMIT, P.rangeUp((1 << 16) + 1))) {
+        for (int i : take(MEDIUM_LIMIT, P.rangeUp((1 << 16) + 1))) {
             assertEquals(i, toList(EP.stringSubsetsAtLeast(i)), Collections.emptyList());
         }
 
@@ -9335,7 +9335,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
             Iterable<List<Integer>> lists = EP.cartesianProduct(xss);
             testNoRemove(TINY_LIMIT, lists);
             BigInteger listsLength = productBigInteger(map(xs -> BigInteger.valueOf(xs.size()), xss));
-            if (lt(listsLength, BigInteger.valueOf(SMALL_LIMIT))) {
+            if (lt(listsLength, BigInteger.valueOf(MEDIUM_LIMIT))) {
                 List<List<Integer>> listsList = toList(lists);
                 assertEquals(xss, listsList.size(), listsLength.intValueExact());
                 assertTrue(xss, all(xs -> xs.size() == xss.size(), listsList));
@@ -9352,7 +9352,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
             Iterable<List<Integer>> lists = EP.cartesianProduct(xss);
             testNoRemove(TINY_LIMIT, lists);
             BigInteger listsLength = productBigInteger(map(xs -> BigInteger.valueOf(xs.size()), xss));
-            if (lt(listsLength, BigInteger.valueOf(SMALL_LIMIT))) {
+            if (lt(listsLength, BigInteger.valueOf(MEDIUM_LIMIT))) {
                 assertTrue(xss, unique(lists));
             }
         }
@@ -9537,7 +9537,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
                 P.withNull(P.integersGeometric()),
                 P.prefixPermutations(P.withNull(EP.naturalIntegers()))
         );
-        for (Pair<Integer, Iterable<Integer>> p : take(SMALL_LIMIT, ps2)) {
+        for (Pair<Integer, Iterable<Integer>> p : take(MEDIUM_LIMIT, ps2)) {
             simpleTest(p, EP.listsWithElement(p.a, p.b), xs -> xs.contains(p.a));
         }
     }
@@ -9563,7 +9563,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
 
     private void propertiesStringsWithChar_char() {
         initialize("stringsWithChar(char, String)");
-        for (char c : take(SMALL_LIMIT, P.characters())) {
+        for (char c : take(MEDIUM_LIMIT, P.characters())) {
             simpleTest(c, EP.stringsWithChar(c), s -> elem(c, s));
         }
     }
@@ -9602,7 +9602,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
                 P.integersGeometric(),
                 P.prefixPermutations(EP.naturalIntegers())
         );
-        for (Pair<Integer, Iterable<Integer>> p : take(SMALL_LIMIT, ps2)) {
+        for (Pair<Integer, Iterable<Integer>> p : take(MEDIUM_LIMIT, ps2)) {
             simpleTest(p, EP.subsetsWithElement(p.a, p.b), xs -> xs.contains(p.a));
         }
 
@@ -9789,7 +9789,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
 
     private void propertiesRandomProvidersFixedScales() {
         initialize("randomProvidersFixedScales(int, int)");
-        for (Pair<Integer, Integer> p : take(SMALL_LIMIT, P.pairs(P.integersGeometric()))) {
+        for (Pair<Integer, Integer> p : take(MEDIUM_LIMIT, P.pairs(P.integersGeometric()))) {
             Iterable<RandomProvider> rps = EP.randomProvidersFixedScales(p.a, p.b);
             testNoRemove(TINY_LIMIT, rps);
             List<RandomProvider> rpsList = toList(take(TINY_LIMIT, rps));
