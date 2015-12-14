@@ -31,7 +31,7 @@ import static mho.wheels.testing.Testing.*;
 
 public class RandomProviderProperties extends TestProperties {
     private static final String RANDOM_PROVIDER_CHARS = " ,-0123456789@PR[]adeimnorv";
-    
+
     public RandomProviderProperties() {
         super("RandomProvider");
     }

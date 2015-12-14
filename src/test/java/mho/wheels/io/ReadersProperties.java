@@ -20,7 +20,7 @@ import static mho.wheels.testing.Testing.*;
 
 public strictfp class ReadersProperties extends TestProperties {
     private static final @NotNull String INTEGRAL_CHARS = "-0123456789";
-    
+
     public ReadersProperties() {
         super("Readers");
     }

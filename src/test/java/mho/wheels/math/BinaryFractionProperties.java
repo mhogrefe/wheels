@@ -24,7 +24,7 @@ import static mho.wheels.testing.Testing.*;
 
 public strictfp class BinaryFractionProperties extends TestProperties {
     private static final @NotNull String BINARY_FRACTION_CHARS = " -0123456789<>";
-    
+
     public BinaryFractionProperties() {
         super("BinaryFraction");
     }
