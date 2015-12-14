@@ -631,10 +631,9 @@ public strictfp class Testing {
         }
 
         if (denseInUsedCharString) {
-            Iterable<String> ss = filter(s -> read.apply(s).isPresent(), P.strings(usedChars));
-            for (String s : take(limit, ss)) {
-                Optional<T> ox = read.apply(s);
-                validate.accept(ox.get());
+            for (String s : take(limit, filterInfinite(t -> read.apply(t).isPresent(), P.strings(usedChars)))) {
+                inverses(t -> read.apply(t).get(), Object::toString, s);
+                validate.accept(read.apply(s).get());
             }
         }
     }

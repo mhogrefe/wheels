@@ -16,7 +16,7 @@ import static mho.wheels.testing.Testing.MEDIUM_LIMIT;
 public abstract class TestProperties {
     protected int LIMIT;
     protected IterableProvider P;
-    private @NotNull String name;
+    private @NotNull final String name;
 
     public TestProperties(@NotNull String name) {
         this.name = name;
