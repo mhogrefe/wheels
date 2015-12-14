@@ -17,6 +17,10 @@ import static mho.wheels.testing.Testing.*;
 
 @SuppressWarnings("UnusedDeclaration")
 public class ExhaustiveProviderDemos extends Demos {
+    public ExhaustiveProviderDemos(boolean useRandom) {
+        super(useRandom);
+    }
+
     private void demoUniformSample_Iterable() {
         initialize();
         for (List<Integer> is : take(LIMIT, P.lists(P.withNull(P.integersGeometric())))) {

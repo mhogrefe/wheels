@@ -20,6 +20,10 @@ import static mho.wheels.testing.Testing.MEDIUM_LIMIT;
 
 @SuppressWarnings("UnusedDeclaration")
 public class IntegerUtilsDemos extends Demos {
+    public IntegerUtilsDemos(boolean useRandom) {
+        super(useRandom);
+    }
+
     private void demoBits_int() {
         initialize();
         for (int i : take(LIMIT, P.naturalIntegers())) {

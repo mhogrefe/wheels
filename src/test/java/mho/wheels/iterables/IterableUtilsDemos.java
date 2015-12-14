@@ -13,6 +13,10 @@ import static mho.wheels.testing.Testing.*;
 
 @SuppressWarnings("UnusedDeclaration")
 public strictfp class IterableUtilsDemos extends Demos {
+    public IterableUtilsDemos(boolean useRandom) {
+        super(useRandom);
+    }
+
     private void demoAddTo_Collection_Iterable() {
         initialize();
         for (Pair<List<Integer>, List<Integer>> p : take(LIMIT, P.pairs(P.lists(P.withNull(P.integers()))))) {

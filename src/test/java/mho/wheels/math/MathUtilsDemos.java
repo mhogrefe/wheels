@@ -12,6 +12,10 @@ import static mho.wheels.math.MathUtils.lcm;
 
 @SuppressWarnings("UnusedDeclaration")
 public class MathUtilsDemos extends Demos {
+    public MathUtilsDemos(boolean useRandom) {
+        super(useRandom);
+    }
+
     private void demoGcd_int_int() {
         initialize();
         Iterable<Pair<Integer, Integer>> ps = filter(p -> p.a != 0 || p.b != 0, P.pairs(P.integers()));

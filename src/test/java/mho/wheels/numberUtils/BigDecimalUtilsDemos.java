@@ -10,6 +10,10 @@ import static mho.wheels.numberUtils.BigDecimalUtils.*;
 
 @SuppressWarnings("UnusedDeclaration")
 public class BigDecimalUtilsDemos extends Demos {
+    public BigDecimalUtilsDemos(boolean useRandom) {
+        super(useRandom);
+    }
+
     private void demoCeilingLog10() {
         initialize();
         for (BigDecimal bd : take(LIMIT, P.positiveBigDecimals())) {

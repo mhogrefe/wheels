@@ -17,6 +17,10 @@ import static mho.wheels.testing.Testing.*;
 public strictfp class BinaryFractionDemos extends Demos {
     private static final @NotNull String BINARY_FRACTION_CHARS = " -0123456789<>";
 
+    public BinaryFractionDemos(boolean useRandom) {
+        super(useRandom);
+    }
+
     private void demoGetMantissa() {
         initialize();
         for (BinaryFraction bf : take(LIMIT, P.binaryFractions())) {

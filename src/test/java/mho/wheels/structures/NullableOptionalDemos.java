@@ -10,6 +10,10 @@ import static mho.wheels.structures.NullableOptional.of;
 
 @SuppressWarnings("UnusedDeclaration")
 public class NullableOptionalDemos extends Demos {
+    public NullableOptionalDemos(boolean useRandom) {
+        super(useRandom);
+    }
+
     private void demoOf_Integer() {
         initialize();
         for (Integer i : take(LIMIT, P.withNull(P.integers()))) {

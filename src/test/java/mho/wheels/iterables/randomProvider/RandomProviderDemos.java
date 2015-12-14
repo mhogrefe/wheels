@@ -22,6 +22,10 @@ import static mho.wheels.testing.Testing.*;
 
 @SuppressWarnings("UnusedDeclaration")
 public class RandomProviderDemos extends Demos {
+    public RandomProviderDemos(boolean useRandom) {
+        super(useRandom);
+    }
+
     private void demoConstructor() {
         initialize();
         for (Void v : take(LIMIT, repeat((Void) null))) {

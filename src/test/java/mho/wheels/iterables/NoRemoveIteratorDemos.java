@@ -10,6 +10,10 @@ import static mho.wheels.testing.Testing.*;
 
 @SuppressWarnings("UnusedDeclaration")
 public class NoRemoveIteratorDemos extends Demos {
+    public NoRemoveIteratorDemos(boolean useRandom) {
+        super(useRandom);
+    }
+
     private void demoConstructor_finite() {
         initialize();
         for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {

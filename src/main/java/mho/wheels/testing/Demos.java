@@ -8,13 +8,17 @@ import static mho.wheels.testing.Testing.LARGE_LIMIT;
 import static mho.wheels.testing.Testing.MEDIUM_LIMIT;
 
 public class Demos {
-    protected final boolean USE_RANDOM = false;
+    protected final boolean useRandom;
     protected int LIMIT;
     protected IterableProvider P;
 
+    public Demos(boolean useRandom) {
+        this.useRandom = useRandom;
+    }
+
     protected void initialize() {
         //noinspection ConstantConditions
-        if (USE_RANDOM) {
+        if (useRandom) {
             P = RandomProvider.example();
             LIMIT = MEDIUM_LIMIT;
         } else {

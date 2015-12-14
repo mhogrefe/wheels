@@ -10,6 +10,10 @@ import static mho.wheels.testing.Testing.MEDIUM_LIMIT;
 
 @SuppressWarnings("UnusedDeclaration")
 public strictfp class FloatingPointUtilsDemos extends Demos {
+    public FloatingPointUtilsDemos(boolean useRandom) {
+        super(useRandom);
+    }
+
     private void demoIsNegativeZero_float() {
         initialize();
         for (float f : take(LIMIT, P.floats())) {

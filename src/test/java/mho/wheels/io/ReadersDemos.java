@@ -24,6 +24,10 @@ public class ReadersDemos extends Demos {
     private static final @NotNull String FLOATING_POINT_CHARS = "-.0123456789EINafinty";
     private static final @NotNull String BIG_DECIMAL_CHARS = "+-.0123456789E";
 
+    public ReadersDemos(boolean useRandom) {
+        super(useRandom);
+    }
+
     private void demoGenericRead() {
         initialize();
         Iterable<Pair<Function<String, Integer>, String>> ps = map(
