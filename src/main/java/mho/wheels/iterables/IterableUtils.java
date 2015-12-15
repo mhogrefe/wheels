@@ -2517,20 +2517,133 @@ public final strictfp class IterableUtils {
         return foldl(BigDecimal::multiply, BigDecimal.ONE, xs);
     }
 
-    public static <T extends Comparable<T>> T maximum(@NotNull Iterable<T> xs) {
-        return foldl1((x, y) -> max(x, y), xs);
-    }
-
-    public static char maximum(@NotNull String s) {
-        return foldl1((x, y) -> max(x, y), fromString(s));
-    }
-
     public static <T extends Comparable<T>> T minimum(@NotNull Iterable<T> xs) {
-        return foldl1((x, y) -> min(x, y), xs);
+        return foldl1(Ordering::min, xs);
+    }
+
+    public static <T extends Comparable<T>> T maximum(@NotNull Iterable<T> xs) {
+        return foldl1(Ordering::max, xs);
+    }
+
+    public static <T extends Comparable<T>> Pair<T, T> minimumMaximum(@NotNull Iterable<T> xs) {
+        T min = null;
+        T max = null;
+        boolean first = true;
+        for (T x : xs) {
+            if (first) {
+                min = x;
+                max = x;
+                first = false;
+            } else {
+                if (lt(x, min)) {
+                    min = x;
+                } else if (gt(x, max)) {
+                    max = x;
+                }
+            }
+        }
+        if (first) {
+            throw new IllegalArgumentException();
+        }
+        return new Pair<>(min, max);
+    }
+
+    public static <T> T minimum(@NotNull Comparator<T> comparator, @NotNull Iterable<T> xs) {
+        return foldl1((x, y) -> min(comparator, x, y), xs);
+    }
+
+    public static <T> T maximum(@NotNull Comparator<T> comparator, @NotNull Iterable<T> xs) {
+        return foldl1((x, y) -> max(comparator, x, y), xs);
+    }
+
+    public static <T> Pair<T, T> minimumMaximum(@NotNull Comparator<T> comparator, @NotNull Iterable<T> xs) {
+        T min = null;
+        T max = null;
+        boolean first = true;
+        for (T x : xs) {
+            if (first) {
+                min = x;
+                max = x;
+                first = false;
+            } else {
+                if (lt(comparator, x, min)) {
+                    min = x;
+                } else if (gt(comparator, x, max)) {
+                    max = x;
+                }
+            }
+        }
+        if (first) {
+            throw new IllegalArgumentException();
+        }
+        return new Pair<>(min, max);
     }
 
     public static char minimum(@NotNull String s) {
-        return foldl1((x, y) -> min(x, y), fromString(s));
+        return foldl1(Ordering::min, fromString(s));
+    }
+
+    public static char maximum(@NotNull String s) {
+        return foldl1(Ordering::max, fromString(s));
+    }
+
+    public static Pair<Character, Character> minimumMaximum(@NotNull String s) {
+        char min = '\0';
+        char max = '\0';
+        boolean first = true;
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (first) {
+                min = c;
+                max = c;
+                first = false;
+            } else {
+                if (lt(c, min)) {
+                    min = c;
+                } else if (gt(c, max)) {
+                    max = c;
+                }
+            }
+        }
+        if (first) {
+            throw new IllegalArgumentException();
+        }
+        return new Pair<>(min, max);
+    }
+
+    public static char minimum(@NotNull Comparator<Character> comparator, @NotNull String s) {
+        return foldl1((x, y) -> min(comparator, x, y), fromString(s));
+    }
+
+    public static char maximum(@NotNull Comparator<Character> comparator, @NotNull String s) {
+        return foldl1((x, y) -> max(comparator, x, y), fromString(s));
+    }
+
+    public static Pair<Character, Character> minimumMaximum(
+            @NotNull Comparator<Character> comparator,
+            @NotNull String s
+    ) {
+        char min = '\0';
+        char max = '\0';
+        boolean first = true;
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (first) {
+                min = c;
+                max = c;
+                first = false;
+            } else {
+                if (lt(comparator, c, min)) {
+                    min = c;
+                } else if (gt(comparator, c, max)) {
+                    max = c;
+                }
+            }
+        }
+        if (first) {
+            throw new IllegalArgumentException();
+        }
+        return new Pair<>(min, max);
     }
 
     public static @NotNull <A, B> Iterable<B> scanl(
@@ -5726,22 +5839,6 @@ public final strictfp class IterableUtils {
         List<Character> list = toList(s);
         Collections.sort(list, comparator);
         return charsToString(list);
-    }
-
-    public static <T> T maximum(@NotNull Comparator<T> comparator, @NotNull Iterable<T> xs) {
-        return foldl1((x, y) -> max(comparator, x, y), xs);
-    }
-
-    public static char maximum(@NotNull Comparator<Character> comparator, @NotNull String s) {
-        return foldl1((x, y) -> max(comparator, x, y), fromString(s));
-    }
-
-    public static <T> T minimum(@NotNull Comparator<T> comparator, @NotNull Iterable<T> xs) {
-        return foldl1((x, y) -> min(comparator, x, y), xs);
-    }
-
-    public static char minimum(@NotNull Comparator<Character> comparator, @NotNull String s) {
-        return foldl1((x, y) -> min(comparator, x, y), fromString(s));
     }
 
     public static @NotNull <T> Iterable<List<T>> group(
