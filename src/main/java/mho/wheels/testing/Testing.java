@@ -515,9 +515,11 @@ public strictfp class Testing {
             @NotNull BiFunction<T, T, T> f,
             @NotNull Function<List<T>, T> listF,
             @NotNull Consumer<T> validate,
+            boolean listCanBeEmpty,
             boolean commutativeAndAssociative
     ) {
-        for (List<T> lxs : take(limit, P.lists(xs))) {
+        Iterable<List<T>> xsi = listCanBeEmpty ? P.lists(xs) : P.listsAtLeast(1, xs);
+        for (List<T> lxs : take(limit, xsi)) {
             T result = listF.apply(lxs);
             validate.accept(result);
         }
@@ -527,7 +529,7 @@ public strictfp class Testing {
         if (commutativeAndAssociative) {
             Iterable<Pair<List<T>, List<T>>> ps = filter(
                     q -> !q.a.equals(q.b),
-                    P.dependentPairs(P.lists(xs), P::permutationsFinite)
+                    P.dependentPairs(xsi, P::permutationsFinite)
             );
             for (Pair<List<T>, List<T>> p : take(limit, ps)) {
                 assertEquals(p, listF.apply(p.a), listF.apply(p.b));
@@ -542,7 +544,10 @@ public strictfp class Testing {
             assertEquals(p, listF.apply(Arrays.asList(p.a, p.b)), f.apply(p.a, p.b));
         }
 
-        for (List<T> lxs : take(limit, P.listsWithElement(null, xs))) {
+        Iterable<List<T>> xsin = listCanBeEmpty ?
+                P.listsWithElement(null, xs) :
+                filterInfinite(ys -> !ys.isEmpty(), P.listsWithElement(null, xs));
+        for (List<T> lxs : take(limit, xsin)) {
             try {
                 listF.apply(lxs);
                 fail(lxs);

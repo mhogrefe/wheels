@@ -619,6 +619,7 @@ public strictfp class BinaryFractionProperties extends TestProperties {
                 BinaryFraction::add,
                 BinaryFraction::sum,
                 BinaryFraction::validate,
+                true,
                 true
         );
 
@@ -642,6 +643,7 @@ public strictfp class BinaryFractionProperties extends TestProperties {
                 BinaryFraction::multiply,
                 BinaryFraction::product,
                 BinaryFraction::validate,
+                true,
                 true
         );
 

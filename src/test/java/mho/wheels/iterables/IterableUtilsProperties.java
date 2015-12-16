@@ -95,35 +95,53 @@ public strictfp class IterableUtilsProperties extends TestProperties {
         initialize("");
         System.out.println("\t\ttesting sumByte(Iterable<Byte>) properties...");
 
-        propertiesFoldHelper(LIMIT, P, P.bytes(), (x, y) -> (byte) (x + y), IterableUtils::sumByte, b -> {}, true);
+        propertiesFoldHelper(
+                LIMIT,
+                P,
+                P.bytes(),
+                (x, y) -> (byte) (x + y),
+                IterableUtils::sumByte,
+                b -> {},
+                true,
+                true
+        );
     }
 
     private void propertiesSumShort() {
         initialize("");
         System.out.println("\t\ttesting sumShort(Iterable<Short>) properties...");
 
-        propertiesFoldHelper(LIMIT, P, P.shorts(), (x, y) -> (short) (x + y), IterableUtils::sumShort, s -> {}, true);
+        propertiesFoldHelper(
+                LIMIT,
+                P,
+                P.shorts(),
+                (x, y) -> (short) (x + y),
+                IterableUtils::sumShort,
+                s -> {},
+                true,
+                true
+        );
     }
 
     private void propertiesSumInteger() {
         initialize("");
         System.out.println("\t\ttesting sumInteger(Iterable<Integer>) properties...");
 
-        propertiesFoldHelper(LIMIT, P, P.integers(), (x, y) -> x + y, IterableUtils::sumInteger, i -> {}, true);
+        propertiesFoldHelper(LIMIT, P, P.integers(), (x, y) -> x + y, IterableUtils::sumInteger, i -> {}, true, true);
     }
 
     private void propertiesSumLong() {
         initialize("");
         System.out.println("\t\ttesting sumLong(Iterable<Long>) properties...");
 
-        propertiesFoldHelper(LIMIT, P, P.longs(), (x, y) -> x + y, IterableUtils::sumLong, l -> {}, true);
+        propertiesFoldHelper(LIMIT, P, P.longs(), (x, y) -> x + y, IterableUtils::sumLong, l -> {}, true, true);
     }
 
     private void propertiesSumFloat() {
         initialize("");
         System.out.println("\t\ttesting sumFloat(Iterable<Float>) properties...");
 
-        propertiesFoldHelper(LIMIT, P, P.floats(), (x, y) -> x + y, IterableUtils::sumFloat, f -> {}, false);
+        propertiesFoldHelper(LIMIT, P, P.floats(), (x, y) -> x + y, IterableUtils::sumFloat, f -> {}, true, false);
         for (List<Float> fs : take(LIMIT, P.listsWithElement(Float.NaN, P.floats()))) {
             aeqf(fs, sumFloat(fs), Float.NaN);
         }
@@ -133,7 +151,7 @@ public strictfp class IterableUtilsProperties extends TestProperties {
         initialize("");
         System.out.println("\t\ttesting sumDouble(Iterable<Double>) properties...");
 
-        propertiesFoldHelper(LIMIT, P, P.doubles(), (x, y) -> x + y, IterableUtils::sumDouble, d -> {}, false);
+        propertiesFoldHelper(LIMIT, P, P.doubles(), (x, y) -> x + y, IterableUtils::sumDouble, d -> {}, true, false);
         for (List<Double> ds : take(LIMIT, P.listsWithElement(Double.NaN, P.doubles()))) {
             aeqd(ds, sumDouble(ds), Double.NaN);
         }
@@ -166,7 +184,16 @@ public strictfp class IterableUtilsProperties extends TestProperties {
         initialize("");
         System.out.println("\t\ttesting sumBigInteger(Iterable<BigInteger>) properties...");
 
-        propertiesFoldHelper(LIMIT, P, P.bigIntegers(), BigInteger::add, IterableUtils::sumBigInteger, i -> {}, true);
+        propertiesFoldHelper(
+                LIMIT,
+                P,
+                P.bigIntegers(),
+                BigInteger::add,
+                IterableUtils::sumBigInteger,
+                i -> {},
+                true,
+                true
+        );
     }
 
     private void compareImplementationsSumBigInteger() {
@@ -185,14 +212,32 @@ public strictfp class IterableUtilsProperties extends TestProperties {
         initialize("");
         System.out.println("\t\ttesting sumBigDecimal(Iterable<BigDecimal>) properties...");
 
-        propertiesFoldHelper(LIMIT, P, P.bigDecimals(), BigDecimal::add, IterableUtils::sumBigDecimal, bd -> {}, true);
+        propertiesFoldHelper(
+                LIMIT,
+                P,
+                P.bigDecimals(),
+                BigDecimal::add,
+                IterableUtils::sumBigDecimal,
+                bd -> {},
+                true,
+                true
+        );
     }
 
     private void propertiesProductByte() {
         initialize("");
         System.out.println("\t\ttesting productByte(Iterable<Byte>) properties...");
 
-        propertiesFoldHelper(LIMIT, P, P.bytes(), (x, y) -> (byte) (x * y), IterableUtils::productByte, b -> {}, true);
+        propertiesFoldHelper(
+                LIMIT,
+                P,
+                P.bytes(),
+                (x, y) -> (byte) (x * y),
+                IterableUtils::productByte,
+                b -> {},
+                true,
+                true
+        );
     }
 
     private void propertiesProductShort() {
@@ -206,6 +251,7 @@ public strictfp class IterableUtilsProperties extends TestProperties {
                 (x, y) -> (short) (x * y),
                 IterableUtils::productShort,
                 s -> {},
+                true,
                 true
         );
     }
@@ -214,21 +260,30 @@ public strictfp class IterableUtilsProperties extends TestProperties {
         initialize("");
         System.out.println("\t\ttesting productInteger(Iterable<Integer>) properties...");
 
-        propertiesFoldHelper(LIMIT, P, P.integers(), (x, y) -> x * y, IterableUtils::productInteger, i -> {}, true);
+        propertiesFoldHelper(
+                LIMIT,
+                P,
+                P.integers(),
+                (x, y) -> x * y,
+                IterableUtils::productInteger,
+                i -> {},
+                true,
+                true
+        );
     }
 
     private void propertiesProductLong() {
         initialize("");
         System.out.println("\t\ttesting productLong(Iterable<Long>) properties...");
 
-        propertiesFoldHelper(LIMIT, P, P.longs(), (x, y) -> x * y, IterableUtils::productLong, l -> {}, true);
+        propertiesFoldHelper(LIMIT, P, P.longs(), (x, y) -> x * y, IterableUtils::productLong, l -> {}, true, true);
     }
 
     private void propertiesProductFloat() {
         initialize("");
         System.out.println("\t\ttesting productFloat(Iterable<Float>) properties...");
 
-        propertiesFoldHelper(LIMIT, P, P.floats(), (x, y) -> x * y, IterableUtils::productFloat, f -> {}, false);
+        propertiesFoldHelper(LIMIT, P, P.floats(), (x, y) -> x * y, IterableUtils::productFloat, f -> {}, true, false);
         for (List<Float> fs : take(LIMIT, P.listsWithElement(Float.NaN, P.floats()))) {
             aeqf(fs, productFloat(fs), Float.NaN);
         }
@@ -238,7 +293,16 @@ public strictfp class IterableUtilsProperties extends TestProperties {
         initialize("");
         System.out.println("\t\ttesting productDouble(Iterable<Double>) properties...");
 
-        propertiesFoldHelper(LIMIT, P, P.doubles(), (x, y) -> x * y, IterableUtils::productDouble, d -> {}, false);
+        propertiesFoldHelper(
+                LIMIT,
+                P,
+                P.doubles(),
+                (x, y) -> x * y,
+                IterableUtils::productDouble,
+                d -> {},
+                true,
+                false
+        );
         for (List<Double> ds : take(LIMIT, P.listsWithElement(Double.NaN, P.doubles()))) {
             aeqd(ds, productDouble(ds), Double.NaN);
         }
@@ -278,6 +342,7 @@ public strictfp class IterableUtilsProperties extends TestProperties {
                 BigInteger::multiply,
                 IterableUtils::productBigInteger,
                 i -> {},
+                true,
                 true
         );
     }
@@ -305,6 +370,7 @@ public strictfp class IterableUtilsProperties extends TestProperties {
                 BigDecimal::multiply,
                 IterableUtils::productBigDecimal,
                 bd -> {},
+                true,
                 true
         );
     }
