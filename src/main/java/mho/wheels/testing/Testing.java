@@ -551,7 +551,7 @@ public strictfp class Testing {
             try {
                 listF.apply(lxs);
                 fail(lxs);
-            } catch (NullPointerException ignored) {}
+            } catch (NullPointerException | IllegalArgumentException ignored) {}
         }
     }
 
