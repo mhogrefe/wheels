@@ -17,7 +17,6 @@ public class MathUtilsDemos extends Demos {
     }
 
     private void demoGcd_int_int() {
-        initialize();
         Iterable<Pair<Integer, Integer>> ps = filter(p -> p.a != 0 || p.b != 0, P.pairs(P.integers()));
         for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
             System.out.println("gcd(" + p.a + ", " + p.b + ") = " + gcd(p.a, p.b));
@@ -25,7 +24,6 @@ public class MathUtilsDemos extends Demos {
     }
 
     private void demoGcd_long_long() {
-        initialize();
         Iterable<Pair<Long, Long>> ps = filter(p -> p.a != 0 || p.b != 0, P.pairs(P.longs()));
         for (Pair<Long, Long> p : take(LIMIT, ps)) {
             System.out.println("gcd(" + p.a + ", " + p.b + ") = " + gcd(p.a, p.b));
@@ -33,7 +31,6 @@ public class MathUtilsDemos extends Demos {
     }
 
     private void demoLcm() {
-        initialize();
         for (Pair<BigInteger, BigInteger> p : take(LIMIT, P.pairs(P.positiveBigIntegers()))) {
             System.out.println("lcm(" + p.a + ", " + p.b + ") = " + lcm(p.a, p.b));
         }

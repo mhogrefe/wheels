@@ -15,7 +15,6 @@ public class NoRemoveIteratorDemos extends Demos {
     }
 
     private void demoConstructor_finite() {
-        initialize();
         for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
             NoRemoveIterator<Integer> it = new NoRemoveIterator<Integer>() {
                 private int i = 0;
@@ -35,7 +34,6 @@ public class NoRemoveIteratorDemos extends Demos {
     }
 
     private void demoConstructor_infinite() {
-        initialize();
         for (Iterable<Integer> xs : take(MEDIUM_LIMIT, P.prefixPermutations(EP.withNull(EP.integers())))) {
             NoRemoveIterator<Integer> it = new NoRemoveIterator<Integer>() {
                 private Iterator<Integer> iterator = xs.iterator();

@@ -15,14 +15,12 @@ public class BigDecimalUtilsDemos extends Demos {
     }
 
     private void demoCeilingLog10() {
-        initialize();
         for (BigDecimal bd : take(LIMIT, P.positiveBigDecimals())) {
             System.out.println("ceilingLog10(" + bd + ") = " + ceilingLog10(bd));
         }
     }
 
     private void demoSetPrecision() {
-        initialize();
         Iterable<Pair<BigDecimal, Integer>> ps = P.pairsSquareRootOrder(
                 P.bigDecimals(),
                 P.positiveIntegersGeometric()
@@ -33,42 +31,36 @@ public class BigDecimalUtilsDemos extends Demos {
     }
 
     private void demoSuccessor() {
-        initialize();
         for (BigDecimal bd : take(LIMIT, P.bigDecimals())) {
             System.out.println("successor(" + bd + ") = " + successor(bd));
         }
     }
 
     private void demoPredecessor() {
-        initialize();
         for (BigDecimal bd : take(LIMIT, P.bigDecimals())) {
             System.out.println("predecessor(" + bd + ") = " + predecessor(bd));
         }
     }
 
     private void demoShiftLeft() {
-        initialize();
         for (Pair<BigDecimal, Integer> p : take(LIMIT, P.pairs(P.bigDecimals(), P.integersGeometric()))) {
             System.out.println(p.a + " << " + p.b + " = " + shiftLeft(p.a, p.b));
         }
     }
 
     private void demoShiftRight() {
-        initialize();
         for (Pair<BigDecimal, Integer> p : take(LIMIT, P.pairs(P.bigDecimals(), P.integersGeometric()))) {
             System.out.println(p.a + " >> " + p.b + " = " + shiftRight(p.a, p.b));
         }
     }
 
     private void demoCanonicalize() {
-        initialize();
         for (BigDecimal bd : take(LIMIT, P.bigDecimals())) {
             System.out.println("canonicalize(" + bd + ") = " + canonicalize(bd));
         }
     }
 
     private void demoIsCanonical() {
-        initialize();
         for (BigDecimal bd : take(LIMIT, P.bigDecimals())) {
             System.out.println(bd + " is " + (isCanonical(bd) ? "" : "not ") + "canonical");
         }

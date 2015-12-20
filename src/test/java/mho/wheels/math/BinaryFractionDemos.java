@@ -22,21 +22,18 @@ public strictfp class BinaryFractionDemos extends Demos {
     }
 
     private void demoGetMantissa() {
-        initialize();
         for (BinaryFraction bf : take(LIMIT, P.binaryFractions())) {
             System.out.println("getMantissa(" + bf + ") = " + bf.getMantissa());
         }
     }
 
     private void demoGetExponent() {
-        initialize();
         for (BinaryFraction bf : take(LIMIT, P.binaryFractions())) {
             System.out.println("getExponent(" + bf + ") = " + bf.getExponent());
         }
     }
 
     private void demoOf_BigInteger_int() {
-        initialize();
         Iterable<Pair<BigInteger, Integer>> ps = filterInfinite(
                 p -> (long) p.b + p.a.getLowestSetBit() < Integer.MAX_VALUE,
                 P.pairs(P.bigIntegers(), P.integers())
@@ -47,70 +44,60 @@ public strictfp class BinaryFractionDemos extends Demos {
     }
 
     private void demoOf_BigInteger() {
-        initialize();
         for (BigInteger i : take(LIMIT, P.bigIntegers())) {
             System.out.println("of(" + i + ") = " + of(i));
         }
     }
 
     private void demoOf_int() {
-        initialize();
         for (int i : take(LIMIT, P.integers())) {
             System.out.println("of(" + i + ") = " + of(i));
         }
     }
 
     private void demoOf_float() {
-        initialize();
         for (float f : take(LIMIT, P.floats())) {
             System.out.println("of(" + f + ") = " + of(f));
         }
     }
 
     private void demoOf_double() {
-        initialize();
         for (double d : take(LIMIT, P.doubles())) {
             System.out.println("of(" + d + ") = " + of(d));
         }
     }
 
     private void demoBigDecimalValue() {
-        initialize();
         for (BinaryFraction bf : take(LIMIT, P.binaryFractions())) {
             System.out.println("bigDecimalValue(" + bf + ") = " + bf.bigDecimalValue());
         }
     }
 
     private void demoFloatRange() {
-        initialize();
         for (BinaryFraction bf : take(LIMIT, P.binaryFractions())) {
             System.out.println("floatRange(" + bf + ") = " + bf.floatRange());
         }
     }
 
     private void demoDoubleRange() {
-        initialize();
         for (BinaryFraction bf : take(LIMIT, P.binaryFractions())) {
             System.out.println("doubleRange(" + bf + ") = " + bf.doubleRange());
         }
     }
 
     private void demoBigIntegerValueExact() {
-        initialize();
         for (BinaryFraction bf : take(LIMIT, map(BinaryFraction::of, P.bigIntegers()))) {
             System.out.println("bigIntegerValueExact(" + bf + ") = " + bf.bigIntegerValueExact());
         }
     }
 
     private void demoIsInteger() {
-        initialize();
         for (BinaryFraction bf : take(LIMIT, P.binaryFractions())) {
             System.out.println(bf + " is " + (bf.isInteger() ? "" : "not ") + "an integer");
         }
     }
 
     private void demoAdd() {
-        initialize();
         Iterable<Pair<BinaryFraction, BinaryFraction>> ps = filterInfinite(
                 p -> {
                     try {
@@ -128,28 +115,24 @@ public strictfp class BinaryFractionDemos extends Demos {
     }
 
     private void demoNegate() {
-        initialize();
         for (BinaryFraction bf : take(LIMIT, P.binaryFractions())) {
             System.out.println("-(" + bf + ") = " + bf.negate());
         }
     }
 
     private void demoAbs() {
-        initialize();
         for (BinaryFraction bf : take(LIMIT, P.binaryFractions())) {
             System.out.println("|" + bf + "| = " + bf.abs());
         }
     }
 
     private void demoSignum() {
-        initialize();
         for (BinaryFraction bf : take(LIMIT, P.binaryFractions())) {
             System.out.println("signum(" + bf + ") = " + bf.signum());
         }
     }
 
     private void demoSubtract() {
-        initialize();
         Iterable<Pair<BinaryFraction, BinaryFraction>> ps = filterInfinite(
                 p -> {
                     try {
@@ -167,7 +150,6 @@ public strictfp class BinaryFractionDemos extends Demos {
     }
 
     private void demoMultiply() {
-        initialize();
         Iterable<Pair<BinaryFraction, BinaryFraction>> ps = filterInfinite(
                 p -> {
                     long productExponent = (long) p.a.getExponent() + p.b.getExponent();
@@ -181,7 +163,6 @@ public strictfp class BinaryFractionDemos extends Demos {
     }
 
     private void demoShiftLeft() {
-        initialize();
         Iterable<Pair<BinaryFraction, Integer>> ps = filterInfinite(
                 p -> {
                     long shiftedExponent = (long) p.a.getExponent() + p.b;
@@ -195,7 +176,6 @@ public strictfp class BinaryFractionDemos extends Demos {
     }
 
     private void demoShiftRight() {
-        initialize();
         Iterable<Pair<BinaryFraction, Integer>> ps = filterInfinite(
                 p -> {
                     long shiftedExponent = (long) p.a.getExponent() - p.b;
@@ -209,7 +189,6 @@ public strictfp class BinaryFractionDemos extends Demos {
     }
 
     private void demoSum() {
-        initialize();
         for (List<BinaryFraction> rs : take(LIMIT, P.withScale(4).lists(P.binaryFractions()))) {
             String listString = tail(init(rs.toString()));
             System.out.println("Σ(" + listString + ") = " + sum(rs));
@@ -217,7 +196,6 @@ public strictfp class BinaryFractionDemos extends Demos {
     }
 
     private void demoProduct() {
-        initialize();
         for (List<BinaryFraction> rs : take(LIMIT, P.withScale(4).lists(P.binaryFractions()))) {
             String listString = tail(init(rs.toString()));
             System.out.println("Π(" + listString + ") = " + product(rs));
@@ -225,7 +203,6 @@ public strictfp class BinaryFractionDemos extends Demos {
     }
 
     private void demoDelta_finite() {
-        initialize();
         for (List<BinaryFraction> rs : take(LIMIT, P.withScale(4).listsAtLeast(1, P.binaryFractions()))) {
             String listString = tail(init(rs.toString()));
             System.out.println("Δ(" + listString + ") = " + its(delta(rs)));
@@ -233,7 +210,6 @@ public strictfp class BinaryFractionDemos extends Demos {
     }
 
     private void demoDelta_infinite() {
-        initialize();
         for (Iterable<BinaryFraction> bfs : take(MEDIUM_LIMIT, P.prefixPermutations(EP.binaryFractions()))) {
             String listString = tail(init(its(bfs)));
             System.out.println("Δ(" + listString + ") = " + its(delta(bfs)));
@@ -241,28 +217,24 @@ public strictfp class BinaryFractionDemos extends Demos {
     }
 
     private void demoFloor() {
-        initialize();
         for (BinaryFraction bf : take(LIMIT, P.binaryFractions())) {
             System.out.println("floor(" + bf + ") = " + bf.floor());
         }
     }
 
     private void demoCeiling() {
-        initialize();
         for (BinaryFraction bf : take(LIMIT, P.binaryFractions())) {
             System.out.println("ceiling(" + bf + ") = " + bf.ceiling());
         }
     }
 
     private void demoEquals_BinaryFraction() {
-        initialize();
         for (Pair<BinaryFraction, BinaryFraction> p : take(LIMIT, P.pairs(P.binaryFractions()))) {
             System.out.println(p.a + (p.a.equals(p.b) ? " = " : " ≠ ") + p.b);
         }
     }
 
     private void demoEquals_null() {
-        initialize();
         for (BinaryFraction bf : take(LIMIT, P.binaryFractions())) {
             //noinspection ObjectEqualsNull
             System.out.println(bf + (bf.equals(null) ? " = " : " ≠ ") + null);
@@ -270,49 +242,42 @@ public strictfp class BinaryFractionDemos extends Demos {
     }
 
     private void demoHashCode() {
-        initialize();
         for (BinaryFraction bf : take(LIMIT, P.binaryFractions())) {
             System.out.println("hashCode(" + bf + ") = " + bf.hashCode());
         }
     }
 
     private void demoCompareTo() {
-        initialize();
         for (Pair<BinaryFraction, BinaryFraction> p : take(LIMIT, P.pairs(P.binaryFractions()))) {
             System.out.println(p.a + " " + Ordering.compare(p.a, p.b).toChar() + " " + p.b);
         }
     }
 
     private void demoRead() {
-        initialize();
         for (String s : take(LIMIT, P.strings())) {
             System.out.println("read(" + nicePrint(s) + ") = " + read(s));
         }
     }
 
     private void demoRead_targeted() {
-        initialize();
         for (String s : take(LIMIT, P.strings(BINARY_FRACTION_CHARS))) {
             System.out.println("read(" + s + ") = " + read(s));
         }
     }
 
     private void demoFindIn() {
-        initialize();
         for (String s : take(LIMIT, P.strings())) {
             System.out.println("findIn(" + nicePrint(s) + ") = " + findIn(s));
         }
     }
 
     private void demoFindIn_targeted() {
-        initialize();
         for (String s : take(LIMIT, P.strings(BINARY_FRACTION_CHARS))) {
             System.out.println("findIn(" + s + ") = " + findIn(s));
         }
     }
 
     private void demoToString() {
-        initialize();
         for (BinaryFraction bf : take(LIMIT, P.binaryFractions())) {
             System.out.println(bf);
         }
