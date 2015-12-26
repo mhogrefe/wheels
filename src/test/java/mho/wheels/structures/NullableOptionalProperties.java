@@ -35,7 +35,7 @@ public class NullableOptionalProperties extends TestProperties {
             NullableOptional<Integer> noi = of(i);
             assertTrue(i, noi.isPresent());
             //noinspection RedundantTypeArguments
-            inverses(NullableOptional::of, NullableOptional<Integer>::get, i);
+            inverse(NullableOptional::of, NullableOptional<Integer>::get, i);
             assertEquals(i, noi.toString(), "NullableOptional[" + i + "]");
         }
     }
@@ -52,7 +52,7 @@ public class NullableOptionalProperties extends TestProperties {
         for (NullableOptional<Integer> noi : take(LIMIT, P.nonEmptyNullableOptionals(P.withNull(P.integers())))) {
             noi.get();
             //noinspection RedundantTypeArguments
-            inverses(NullableOptional<Integer>::get, NullableOptional::of, noi);
+            inverse(NullableOptional<Integer>::get, NullableOptional::of, noi);
         }
     }
 
@@ -62,7 +62,7 @@ public class NullableOptionalProperties extends TestProperties {
             NullableOptional<Integer> noi = fromOptional(oi);
             assertEquals(oi, oi.isPresent(), noi.isPresent());
             //noinspection Convert2MethodRef
-            inverses(
+            inverse(
                     (Optional<Integer> n) -> fromOptional(n),
                     (NullableOptional<Integer> m) -> m.isPresent() ? Optional.of(m.get()) : Optional.empty(),
                     oi

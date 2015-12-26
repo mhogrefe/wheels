@@ -1223,7 +1223,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
             assertFalse(xs, isEmpty(withNull));
             assertNull(xs, head(withNull));
             assertTrue(xs, all(i -> i != null, tail(withNull)));
-            inverses(EP::withNull, (Iterable<Integer> wn) -> toList(tail(wn)), xs);
+            inverse(EP::withNull, (Iterable<Integer> wn) -> toList(tail(wn)), xs);
         }
 
         for (Iterable<Integer> xs : take(LIMIT, P.prefixPermutations(EP.naturalIntegers()))) {
@@ -1243,7 +1243,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
             testNoRemove(neos);
             testHasNext(neos);
             assertEquals(xs, xs.size(), length(neos));
-            inverses(EP::nonEmptyOptionals, (Iterable<Optional<Integer>> ys) -> toList(map(Optional::get, ys)), xs);
+            inverse(EP::nonEmptyOptionals, (Iterable<Optional<Integer>> ys) -> toList(map(Optional::get, ys)), xs);
         }
 
         for (Iterable<Integer> xs : take(LIMIT, P.prefixPermutations(EP.naturalIntegers()))) {
@@ -1262,7 +1262,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
             assertFalse(xs, isEmpty(os));
             assertFalse(xs, head(os).isPresent());
             assertTrue(xs, all(Optional::isPresent, tail(os)));
-            inverses(EP::optionals, (Iterable<Optional<Integer>> ys) -> toList(map(Optional::get, tail(ys))), xs);
+            inverse(EP::optionals, (Iterable<Optional<Integer>> ys) -> toList(map(Optional::get, tail(ys))), xs);
         }
 
         for (Iterable<Integer> xs : take(LIMIT, P.prefixPermutations(EP.naturalIntegers()))) {
@@ -1282,7 +1282,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
             testNoRemove(nenos);
             testHasNext(nenos);
             assertEquals(xs, xs.size(), length(nenos));
-            inverses(
+            inverse(
                     EP::nonEmptyNullableOptionals,
                     (Iterable<NullableOptional<Integer>> ys) -> toList(map(NullableOptional::get, ys)),
                     xs
@@ -1305,7 +1305,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
             assertFalse(xs, isEmpty(nos));
             assertFalse(xs, head(nos).isPresent());
             assertTrue(xs, all(NullableOptional::isPresent, tail(nos)));
-            inverses(
+            inverse(
                     EP::nullableOptionals,
                     (Iterable<NullableOptional<Integer>> ys) -> toList(map(NullableOptional::get, tail(ys))),
                     xs

@@ -303,7 +303,7 @@ public class RandomProviderProperties extends TestProperties {
             assertEquals(p, rp.getScale(), p.b);
             assertEquals(p, rp.getSecondaryScale(), p.a.getSecondaryScale());
             assertEquals(p, rp.getSeed(), p.a.getSeed());
-            inverses(x -> x.withScale(p.b), (RandomProvider y) -> y.withScale(p.a.getScale()), p.a);
+            inverse(x -> x.withScale(p.b), (RandomProvider y) -> y.withScale(p.a.getScale()), p.a);
         }
 
         for (RandomProvider rp : take(LIMIT, P.randomProviders())) {
@@ -319,7 +319,7 @@ public class RandomProviderProperties extends TestProperties {
             assertEquals(p, rp.getScale(), p.a.getScale());
             assertEquals(p, rp.getSecondaryScale(), p.b);
             assertEquals(p, rp.getSeed(), p.a.getSeed());
-            inverses(
+            inverse(
                     x -> x.withSecondaryScale(p.b),
                     (RandomProvider y) -> y.withSecondaryScale(p.a.getSecondaryScale()),
                     p.a

@@ -254,11 +254,11 @@ public strictfp class Testing {
         assertEquals(x, f.apply(y), y);
     }
 
-    public static <T> void isInvolution(@NotNull Function<T, T> f, @NotNull T x) {
+    public static <T> void involution(@NotNull Function<T, T> f, @NotNull T x) {
         assertEquals(x, f.andThen(f).apply(x), x);
     }
 
-    public static <A, B> void inverses(@NotNull Function<A, B> f, @NotNull Function<B, A> g, @Nullable A x) {
+    public static <A, B> void inverse(@NotNull Function<A, B> f, @NotNull Function<B, A> g, @Nullable A x) {
         assertEquals(x, f.andThen(g).apply(x), x);
     }
 
@@ -637,7 +637,7 @@ public strictfp class Testing {
 
         if (denseInUsedCharString) {
             for (String s : take(limit, filterInfinite(t -> read.apply(t).isPresent(), P.strings(usedChars)))) {
-                inverses(t -> read.apply(t).get(), Object::toString, s);
+                inverse(t -> read.apply(t).get(), Object::toString, s);
                 validate.accept(read.apply(s).get());
             }
         }

@@ -313,7 +313,7 @@ public strictfp class BinaryFractionProperties extends TestProperties {
             BinaryFraction sum = p.a.add(p.b);
             sum.validate();
             commutative(BinaryFraction::add, p);
-            inverses(bf -> bf.add(p.b), (BinaryFraction bf) -> bf.subtract(p.b), p.a);
+            inverse(bf -> bf.add(p.b), (BinaryFraction bf) -> bf.subtract(p.b), p.a);
         }
 
         for (BinaryFraction bf : take(LIMIT, P.binaryFractions())) {
@@ -341,7 +341,7 @@ public strictfp class BinaryFractionProperties extends TestProperties {
             );
             BinaryFraction negative = bf.negate();
             negative.validate();
-            isInvolution(BinaryFraction::negate, bf);
+            involution(BinaryFraction::negate, bf);
             assertTrue(bf, bf.add(negative) == ZERO);
         }
 
@@ -418,7 +418,7 @@ public strictfp class BinaryFractionProperties extends TestProperties {
             difference.validate();
             assertEquals(p, difference, subtract_simplest(p.a, p.b));
             antiCommutative(BinaryFraction::subtract, BinaryFraction::negate, p);
-            inverses(bf -> bf.add(p.b), (BinaryFraction bf) -> bf.subtract(p.b), p.a);
+            inverse(bf -> bf.add(p.b), (BinaryFraction bf) -> bf.subtract(p.b), p.a);
         }
 
         for (BinaryFraction bf : take(LIMIT, P.binaryFractions())) {
@@ -516,7 +516,7 @@ public strictfp class BinaryFractionProperties extends TestProperties {
             BinaryFraction shifted = p.a.shiftLeft(p.b);
             shifted.validate();
             assertEquals(p, shifted, shiftLeft_simplest(p.a, p.b));
-            inverses(bf -> bf.shiftLeft(p.b), (BinaryFraction bf) -> bf.shiftRight(p.b), p.a);
+            inverse(bf -> bf.shiftLeft(p.b), (BinaryFraction bf) -> bf.shiftRight(p.b), p.a);
             assertEquals(p, shifted, p.a.shiftRight(-p.b));
         }
 
@@ -585,7 +585,7 @@ public strictfp class BinaryFractionProperties extends TestProperties {
             BinaryFraction shifted = p.a.shiftRight(p.b);
             shifted.validate();
             assertEquals(p, shifted, shiftRight_simplest(p.a, p.b));
-            inverses(bf -> bf.shiftRight(p.b), (BinaryFraction bf) -> bf.shiftLeft(p.b), p.a);
+            inverse(bf -> bf.shiftRight(p.b), (BinaryFraction bf) -> bf.shiftLeft(p.b), p.a);
             assertEquals(p, shifted, p.a.shiftLeft(-p.b));
         }
 

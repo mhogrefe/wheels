@@ -96,7 +96,7 @@ public class FloatingPointUtilsProperties extends TestProperties {
         );
         for (float f : take(LIMIT, fs)) {
             //noinspection RedundantCast
-            inverses((Function<Float, Float>) FloatingPointUtils::successor, FloatingPointUtils::predecessor, f);
+            inverse((Function<Float, Float>) FloatingPointUtils::successor, FloatingPointUtils::predecessor, f);
         }
     }
 
@@ -108,7 +108,7 @@ public class FloatingPointUtilsProperties extends TestProperties {
         );
         for (float f : take(LIMIT, fs)) {
             //noinspection RedundantCast
-            inverses((Function<Float, Float>) FloatingPointUtils::predecessor, FloatingPointUtils::successor, f);
+            inverse((Function<Float, Float>) FloatingPointUtils::predecessor, FloatingPointUtils::successor, f);
         }
     }
 
@@ -120,7 +120,7 @@ public class FloatingPointUtilsProperties extends TestProperties {
         );
         for (double d : take(LIMIT, ds)) {
             //noinspection RedundantCast
-            inverses((Function<Double, Double>) FloatingPointUtils::successor, FloatingPointUtils::predecessor, d);
+            inverse((Function<Double, Double>) FloatingPointUtils::successor, FloatingPointUtils::predecessor, d);
         }
     }
 
@@ -132,7 +132,7 @@ public class FloatingPointUtilsProperties extends TestProperties {
         );
         for (double d : take(LIMIT, ds)) {
             //noinspection RedundantCast
-            inverses((Function<Double, Double>) FloatingPointUtils::predecessor, FloatingPointUtils::successor, d);
+            inverse((Function<Double, Double>) FloatingPointUtils::predecessor, FloatingPointUtils::successor, d);
         }
     }
 
@@ -151,7 +151,7 @@ public class FloatingPointUtilsProperties extends TestProperties {
         }
 
         for (float f : take(LIMIT, filter(g -> !Float.isNaN(g) && !isNegativeZero(g), P.floats()))) {
-            inverses(
+            inverse(
                     FloatingPointUtils::toOrderedRepresentation,
                     FloatingPointUtils::floatFromOrderedRepresentation,
                     f
@@ -198,7 +198,7 @@ public class FloatingPointUtilsProperties extends TestProperties {
         for (int i : take(LIMIT, P.range(-maxAbs, maxAbs))) {
             float f = floatFromOrderedRepresentation(i);
             assertFalse(f, Float.isNaN(f));
-            inverses(
+            inverse(
                     FloatingPointUtils::floatFromOrderedRepresentation,
                     FloatingPointUtils::toOrderedRepresentation,
                     i
@@ -276,7 +276,7 @@ public class FloatingPointUtilsProperties extends TestProperties {
         }
 
         for (double d : take(LIMIT, filter(e -> !Double.isNaN(e) && !isNegativeZero(e), P.doubles()))) {
-            inverses(
+            inverse(
                     FloatingPointUtils::toOrderedRepresentation,
                     FloatingPointUtils::doubleFromOrderedRepresentation,
                     d
@@ -323,7 +323,7 @@ public class FloatingPointUtilsProperties extends TestProperties {
         for (long l : take(LIMIT, P.range(-maxAbs, maxAbs))) {
             double d = doubleFromOrderedRepresentation(l);
             assertFalse(d, Double.isNaN(d));
-            inverses(
+            inverse(
                     FloatingPointUtils::doubleFromOrderedRepresentation,
                     FloatingPointUtils::toOrderedRepresentation,
                     l
@@ -402,7 +402,7 @@ public class FloatingPointUtilsProperties extends TestProperties {
             assertFalse(p, Float.isInfinite(f));
             assertFalse(p, isNegativeZero(f));
             assertTrue(p, p.a == 0 || (p.a & 1) == 1);
-            inverses(
+            inverse(
                     q -> floatFromMantissaAndExponent(q.a, q.b).get(),
                     (Float g) -> toMantissaAndExponent(g).get(),
                     p
@@ -426,7 +426,7 @@ public class FloatingPointUtilsProperties extends TestProperties {
             assertFalse(p, Double.isInfinite(d));
             assertFalse(p, isNegativeZero(d));
             assertTrue(p, p.a == 0L || (p.a & 1) == 1);
-            inverses(
+            inverse(
                     q -> doubleFromMantissaAndExponent(q.a, q.b).get(),
                     (Double e) -> toMantissaAndExponent(e).get(),
                     p
@@ -446,7 +446,7 @@ public class FloatingPointUtilsProperties extends TestProperties {
             assertNotNull(f, p.b);
             assertTrue(f, p.a == 0 || (p.a & 1) == 1);
             if (!isNegativeZero(f)) {
-                inverses(
+                inverse(
                         (Float g) -> toMantissaAndExponent(g).get(),
                         q -> floatFromMantissaAndExponent(q.a, q.b).get(),
                         f
@@ -467,7 +467,7 @@ public class FloatingPointUtilsProperties extends TestProperties {
             assertNotNull(d, p.b);
             assertTrue(d, p.a == 0L || (p.a & 1) == 1);
             if (!isNegativeZero(d)) {
-                inverses(
+                inverse(
                         (Double e) -> toMantissaAndExponent(e).get(),
                         q -> doubleFromMantissaAndExponent(q.a, q.b).get(),
                         d
@@ -510,7 +510,7 @@ public class FloatingPointUtilsProperties extends TestProperties {
         }
 
         for (float f : take(LIMIT, filter(g -> Float.isFinite(g) && !isNegativeZero(g), P.floats()))) {
-            inverses(
+            inverse(
                     g -> scaleUp(g).get(),
                     (BigInteger i) -> BinaryFraction.of(i, MIN_SUBNORMAL_FLOAT_EXPONENT).floatRange().a,
                     f
@@ -530,7 +530,7 @@ public class FloatingPointUtilsProperties extends TestProperties {
         }
 
         for (double d : take(LIMIT, filter(e -> Double.isFinite(e) && !isNegativeZero(e), P.doubles()))) {
-            inverses(
+            inverse(
                     e -> scaleUp(e).get(),
                     (BigInteger i) -> BinaryFraction.of(i, MIN_SUBNORMAL_DOUBLE_EXPONENT).doubleRange().a,
                     d
@@ -544,7 +544,7 @@ public class FloatingPointUtilsProperties extends TestProperties {
             String s = toStringCompact(f);
             assertFalse(f, s.endsWith(".0"));
             assertFalse(f, s.contains(".0E"));
-            inverses(FloatingPointUtils::toStringCompact, Float::parseFloat, f);
+            inverse(FloatingPointUtils::toStringCompact, Float::parseFloat, f);
         }
     }
 
@@ -554,7 +554,7 @@ public class FloatingPointUtilsProperties extends TestProperties {
             String s = toStringCompact(d);
             assertFalse(d, s.endsWith(".0"));
             assertFalse(d, s.contains(".0E"));
-            inverses(FloatingPointUtils::toStringCompact, Double::parseDouble, d);
+            inverse(FloatingPointUtils::toStringCompact, Double::parseDouble, d);
         }
     }
 }
