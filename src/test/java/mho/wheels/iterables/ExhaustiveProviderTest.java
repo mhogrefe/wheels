@@ -3,6 +3,7 @@ package mho.wheels.iterables;
 import mho.wheels.io.Readers;
 import mho.wheels.math.BinaryFraction;
 import mho.wheels.numberUtils.FloatingPointUtils;
+import mho.wheels.structures.*;
 import mho.wheels.testing.Testing;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -3860,16 +3861,26 @@ public strictfp class ExhaustiveProviderTest {
         } catch (IllegalArgumentException ignored) {}
     }
 
+    private static <A, B> void pairs_Iterable_Iterable_helper(
+            @NotNull Iterable<A> as,
+            @NotNull Iterable<B> bs,
+            @NotNull String output
+    ) {
+        Iterable<Pair<A, B>> ps = EP.pairs(as, bs);
+        aeqit(ps, output);
+        testNoRemove(ps);
+    }
+
     @Test
     public void testPairs_Iterable_Iterable() {
-        aeqit(EP.pairs(Arrays.asList(1, 2, 3, 4), fromString("abcd")),
+        pairs_Iterable_Iterable_helper(Arrays.asList(1, 2, 3, 4), fromString("abcd"),
                 "[(1, a), (1, b), (2, a), (2, b), (1, c), (1, d), (2, c), (2, d), (3, a), (3, b), (4, a), (4, b)," +
                 " (3, c), (3, d), (4, c), (4, d)]");
-        aeqit(EP.pairs(Arrays.asList(1, 2, null, 4), fromString("abcd")),
+        pairs_Iterable_Iterable_helper(Arrays.asList(1, 2, null, 4), fromString("abcd"),
                 "[(1, a), (1, b), (2, a), (2, b), (1, c), (1, d), (2, c), (2, d), (null, a), (null, b), (4, a)," +
                 " (4, b), (null, c), (null, d), (4, c), (4, d)]");
-        aeqit(EP.pairs(Collections.emptyList(), fromString("abcd")), "[]");
-        aeqit(EP.pairs(Collections.emptyList(), Collections.emptyList()), "[]");
+        pairs_Iterable_Iterable_helper(Collections.emptyList(), fromString("abcd"), "[]");
+        pairs_Iterable_Iterable_helper(Collections.emptyList(), Collections.emptyList(), "[]");
         simpleProviderHelper(EP.pairs(EP.naturalBigIntegers(), fromString("abcd")),
                 "[(0, a), (0, b), (1, a), (1, b), (0, c), (0, d), (1, c), (1, d), (2, a), (2, b), (3, a), (3, b)," +
                 " (2, c), (2, d), (3, c), (3, d), (4, a), (4, b), (5, a), (5, b), ...]");
@@ -3910,21 +3921,37 @@ public strictfp class ExhaustiveProviderTest {
                 " (1, 1), (1, 1), (1, 1), (1, 1), (1, 1), (1, 1), (1, 1), (1, 1), ...]");
     }
 
+    private static <A, B, C> void triples_Iterable_Iterable_Iterable_helper(
+            @NotNull Iterable<A> as,
+            @NotNull Iterable<B> bs,
+            @NotNull Iterable<C> cs,
+            @NotNull String output
+    ) {
+        Iterable<Triple<A, B, C>> ts = EP.triples(as, bs, cs);
+        aeqit(ts, output);
+        testNoRemove(ts);
+    }
+
     @Test
     public void testTriples_Iterable_Iterable_Iterable() {
-        aeqit(EP.triples(Arrays.asList(1, 2, 3), fromString("abc"), EP.booleans()),
+        triples_Iterable_Iterable_Iterable_helper(Arrays.asList(1, 2, 3), fromString("abc"), EP.booleans(),
                 "[(1, a, false), (1, a, true), (1, b, false), (1, b, true), (2, a, false), (2, a, true)," +
                 " (2, b, false), (2, b, true), (1, c, false), (1, c, true), (2, c, false), (2, c, true)," +
                 " (3, a, false), (3, a, true), (3, b, false), (3, b, true), (3, c, false), (3, c, true)]");
-        aeqit(EP.triples(Arrays.asList(1, 2, null, 4), fromString("abcd"), EP.booleans()),
+        triples_Iterable_Iterable_Iterable_helper(Arrays.asList(1, 2, null, 4), fromString("abcd"), EP.booleans(),
                 "[(1, a, false), (1, a, true), (1, b, false), (1, b, true), (2, a, false), (2, a, true)," +
                 " (2, b, false), (2, b, true), (1, c, false), (1, c, true), (1, d, false), (1, d, true)," +
                 " (2, c, false), (2, c, true), (2, d, false), (2, d, true), (null, a, false), (null, a, true)," +
                 " (null, b, false), (null, b, true), (4, a, false), (4, a, true), (4, b, false), (4, b, true)," +
                 " (null, c, false), (null, c, true), (null, d, false), (null, d, true), (4, c, false)," +
                 " (4, c, true), (4, d, false), (4, d, true)]");
-        aeqit(EP.triples(Collections.emptyList(), fromString("abcd"), EP.booleans()), "[]");
-        aeqit(EP.triples(Collections.emptyList(), Collections.emptyList(), Collections.emptyList()), "[]");
+        triples_Iterable_Iterable_Iterable_helper(Collections.emptyList(), fromString("abcd"), EP.booleans(), "[]");
+        triples_Iterable_Iterable_Iterable_helper(
+                Collections.emptyList(),
+                Collections.emptyList(),
+                Collections.emptyList(),
+                "[]"
+        );
         simpleProviderHelper(EP.triples(EP.naturalBigIntegers(), fromString("abcd"), EP.booleans()),
                 "[(0, a, false), (0, a, true), (0, b, false), (0, b, true), (1, a, false), (1, a, true)," +
                 " (1, b, false), (1, b, true), (0, c, false), (0, c, true), (0, d, false), (0, d, true)," +
@@ -3975,9 +4002,25 @@ public strictfp class ExhaustiveProviderTest {
                 " (1, 1, 1), (1, 1, 1), ...]");
     }
 
+    private static <A, B, C, D> void quadruples_Iterable_Iterable_Iterable_Iterable_helper(
+            @NotNull Iterable<A> as,
+            @NotNull Iterable<B> bs,
+            @NotNull Iterable<C> cs,
+            @NotNull Iterable<D> ds,
+            @NotNull String output
+    ) {
+        Iterable<Quadruple<A, B, C, D>> qs = EP.quadruples(as, bs, cs, ds);
+        aeqit(qs, output);
+        testNoRemove(qs);
+    }
+
     @Test
     public void testQuadruples_Iterable_Iterable_Iterable_Iterable() {
-        aeqit(EP.quadruples(Arrays.asList(1, 2, 3), fromString("abc"), EP.booleans(), EP.orderings()),
+        quadruples_Iterable_Iterable_Iterable_Iterable_helper(
+                Arrays.asList(1, 2, 3),
+                fromString("abc"),
+                EP.booleans(),
+                EP.orderings(),
                 "[(1, a, false, EQ), (1, a, false, LT), (1, a, true, EQ), (1, a, true, LT), (1, b, false, EQ)," +
                 " (1, b, false, LT), (1, b, true, EQ), (1, b, true, LT), (2, a, false, EQ), (2, a, false, LT)," +
                 " (2, a, true, EQ), (2, a, true, LT), (2, b, false, EQ), (2, b, false, LT), (2, b, true, EQ)," +
@@ -3988,8 +4031,13 @@ public strictfp class ExhaustiveProviderTest {
                 " (2, c, true, GT), (3, a, false, EQ), (3, a, false, LT), (3, a, true, EQ), (3, a, true, LT)," +
                 " (3, b, false, EQ), (3, b, false, LT), (3, b, true, EQ), (3, b, true, LT), (3, a, false, GT)," +
                 " (3, a, true, GT), (3, b, false, GT), (3, b, true, GT), (3, c, false, EQ), (3, c, false, LT)," +
-                " (3, c, true, EQ), (3, c, true, LT), (3, c, false, GT), (3, c, true, GT)]");
-        aeqit(EP.quadruples(Arrays.asList(1, 2, null, 4), fromString("abcd"), EP.booleans(), EP.orderings()),
+                " (3, c, true, EQ), (3, c, true, LT), (3, c, false, GT), (3, c, true, GT)]"
+        );
+        quadruples_Iterable_Iterable_Iterable_Iterable_helper(
+                Arrays.asList(1, 2, null, 4),
+                fromString("abcd"),
+                EP.booleans(),
+                EP.orderings(),
                 "[(1, a, false, EQ), (1, a, false, LT), (1, a, true, EQ), (1, a, true, LT), (1, b, false, EQ)," +
                 " (1, b, false, LT), (1, b, true, EQ), (1, b, true, LT), (2, a, false, EQ), (2, a, false, LT)," +
                 " (2, a, true, EQ), (2, a, true, LT), (2, b, false, EQ), (2, b, false, LT), (2, b, true, EQ)," +
@@ -4010,15 +4058,20 @@ public strictfp class ExhaustiveProviderTest {
                 " (4, c, false, LT), (4, c, true, EQ), (4, c, true, LT), (4, d, false, EQ), (4, d, false, LT)," +
                 " (4, d, true, EQ), (4, d, true, LT), (null, c, false, GT), (null, c, true, GT)," +
                 " (null, d, false, GT), (null, d, true, GT), (4, c, false, GT), (4, c, true, GT), (4, d, false, GT)," +
-                " (4, d, true, GT)]");
-        aeqit(EP.quadruples(Collections.emptyList(), fromString("abcd"), EP.booleans(), EP.orderings()), "[]");
-        aeqit(
-                EP.quadruples(
-                    Collections.emptyList(),
-                    Collections.emptyList(),
-                    Collections.emptyList(),
-                    Collections.emptyList()
-                ),
+                " (4, d, true, GT)]"
+        );
+        quadruples_Iterable_Iterable_Iterable_Iterable_helper(
+                Collections.emptyList(),
+                fromString("abcd"),
+                EP.booleans(),
+                EP.orderings(),
+                "[]"
+        );
+        quadruples_Iterable_Iterable_Iterable_Iterable_helper(
+                Collections.emptyList(),
+                Collections.emptyList(),
+                Collections.emptyList(),
+                Collections.emptyList(),
                 "[]"
         );
         simpleProviderHelper(EP.quadruples(EP.naturalBigIntegers(), fromString("abcd"), EP.booleans(), EP.orderings()),
@@ -4073,16 +4126,27 @@ public strictfp class ExhaustiveProviderTest {
                 " (1, 1, 1, 1), (1, 1, 1, 1), (1, 1, 1, 1), (1, 1, 1, 1), (1, 1, 1, 1), (1, 1, 1, 1), ...]");
     }
 
+    private static <A, B, C, D, E> void quintuples_Iterable_Iterable_Iterable_Iterable_Iterable_helper(
+            @NotNull Iterable<A> as,
+            @NotNull Iterable<B> bs,
+            @NotNull Iterable<C> cs,
+            @NotNull Iterable<D> ds,
+            @NotNull Iterable<E> es,
+            @NotNull String output
+    ) {
+        Iterable<Quintuple<A, B, C, D, E>> qs = EP.quintuples(as, bs, cs, ds, es);
+        aeqit(qs, output);
+        testNoRemove(qs);
+    }
+
     @Test
     public void testQuintuples_Iterable_Iterable_Iterable_Iterable_Iterable() {
-        aeqit(
-                EP.quintuples(
-                        Arrays.asList(1, 2, 3),
-                        fromString("abc"),
-                        EP.booleans(),
-                        EP.orderings(),
-                        Arrays.asList("yes", "no")
-                ),
+        quintuples_Iterable_Iterable_Iterable_Iterable_Iterable_helper(
+                Arrays.asList(1, 2, 3),
+                fromString("abc"),
+                EP.booleans(),
+                EP.orderings(),
+                Arrays.asList("yes", "no"),
                 "[(1, a, false, EQ, yes), (1, a, false, EQ, no), (1, a, false, LT, yes), (1, a, false, LT, no)," +
                 " (1, a, true, EQ, yes), (1, a, true, EQ, no), (1, a, true, LT, yes), (1, a, true, LT, no)," +
                 " (1, b, false, EQ, yes), (1, b, false, EQ, no), (1, b, false, LT, yes), (1, b, false, LT, no)," +
@@ -4111,14 +4175,12 @@ public strictfp class ExhaustiveProviderTest {
                 " (3, c, true, EQ, yes), (3, c, true, EQ, no), (3, c, true, LT, yes), (3, c, true, LT, no)," +
                 " (3, c, false, GT, yes), (3, c, false, GT, no), (3, c, true, GT, yes), (3, c, true, GT, no)]"
         );
-        aeqit(
-                EP.quintuples(
-                        Arrays.asList(1, 2, null, 4),
-                        fromString("abcd"),
-                        EP.booleans(),
-                        EP.orderings(),
-                        Arrays.asList("yes", "no")
-                ),
+        quintuples_Iterable_Iterable_Iterable_Iterable_Iterable_helper(
+                Arrays.asList(1, 2, null, 4),
+                fromString("abcd"),
+                EP.booleans(),
+                EP.orderings(),
+                Arrays.asList("yes", "no"),
                 "[(1, a, false, EQ, yes), (1, a, false, EQ, no), (1, a, false, LT, yes), (1, a, false, LT, no)," +
                 " (1, a, true, EQ, yes), (1, a, true, EQ, no), (1, a, true, LT, yes), (1, a, true, LT, no)," +
                 " (1, b, false, EQ, yes), (1, b, false, EQ, no), (1, b, false, LT, yes), (1, b, false, LT, no)," +
@@ -4172,76 +4234,63 @@ public strictfp class ExhaustiveProviderTest {
                 " (4, c, false, GT, yes), (4, c, false, GT, no), (4, c, true, GT, yes), (4, c, true, GT, no)," +
                 " (4, d, false, GT, yes), (4, d, false, GT, no), (4, d, true, GT, yes), (4, d, true, GT, no)]"
         );
-        aeqit(
-                EP.quintuples(
+        quintuples_Iterable_Iterable_Iterable_Iterable_Iterable_helper(
                 Collections.emptyList(),
                 fromString("abcd"),
                 EP.booleans(),
                 EP.orderings(),
-                Arrays.asList("yes", "no")
-                ),
+                Arrays.asList("yes", "no"),
                 "[]"
         );
-        aeqit(
+        quintuples_Iterable_Iterable_Iterable_Iterable_Iterable_helper(
+                Collections.emptyList(),
+                Collections.emptyList(),
+                Collections.emptyList(),
+                Collections.emptyList(),
+                Collections.emptyList(),
+                "[]"
+        );
+        simpleProviderHelper(
                 EP.quintuples(
-                        Collections.emptyList(),
-                        Collections.emptyList(),
-                        Collections.emptyList(),
-                        Collections.emptyList(),
-                        Collections.emptyList()
-                ),
-                "[]"
-        );
-        aeqit(
-                take(
-                        20,
-                        EP.quintuples(
                         EP.naturalBigIntegers(),
                         fromString("abcd"),
                         EP.booleans(),
                         EP.orderings(),
                         Arrays.asList("yes", "no")
-                        )
                 ),
                 "[(0, a, false, EQ, yes), (0, a, false, EQ, no), (0, a, false, LT, yes), (0, a, false, LT, no)," +
                 " (0, a, true, EQ, yes), (0, a, true, EQ, no), (0, a, true, LT, yes), (0, a, true, LT, no)," +
                 " (0, b, false, EQ, yes), (0, b, false, EQ, no), (0, b, false, LT, yes), (0, b, false, LT, no)," +
                 " (0, b, true, EQ, yes), (0, b, true, EQ, no), (0, b, true, LT, yes), (0, b, true, LT, no)," +
-                " (1, a, false, EQ, yes), (1, a, false, EQ, no), (1, a, false, LT, yes), (1, a, false, LT, no)]"
+                " (1, a, false, EQ, yes), (1, a, false, EQ, no), (1, a, false, LT, yes), (1, a, false, LT, no), ...]"
         );
-        aeqit(
-                take(
-                        20,
-                        EP.quintuples(
-                                fromString("abcd"),
-                                EP.booleans(),
-                                EP.naturalBigIntegers(),
-                                EP.orderings(),
-                                Arrays.asList("yes", "no")
-                        )
+        simpleProviderHelper(
+                EP.quintuples(
+                        fromString("abcd"),
+                        EP.booleans(),
+                        EP.naturalBigIntegers(),
+                        EP.orderings(),
+                        Arrays.asList("yes", "no")
                 ),
                 "[(a, false, 0, EQ, yes), (a, false, 0, EQ, no), (a, false, 0, LT, yes), (a, false, 0, LT, no)," +
                 " (a, false, 1, EQ, yes), (a, false, 1, EQ, no), (a, false, 1, LT, yes), (a, false, 1, LT, no)," +
                 " (a, true, 0, EQ, yes), (a, true, 0, EQ, no), (a, true, 0, LT, yes), (a, true, 0, LT, no)," +
                 " (a, true, 1, EQ, yes), (a, true, 1, EQ, no), (a, true, 1, LT, yes), (a, true, 1, LT, no)," +
-                " (b, false, 0, EQ, yes), (b, false, 0, EQ, no), (b, false, 0, LT, yes), (b, false, 0, LT, no)]"
+                " (b, false, 0, EQ, yes), (b, false, 0, EQ, no), (b, false, 0, LT, yes), (b, false, 0, LT, no), ...]"
         );
-        aeqit(
-                take(
-                        20,
-                        EP.quintuples(
-                                EP.positiveBigIntegers(),
-                                EP.negativeBigIntegers(),
-                                EP.characters(),
-                                EP.strings(),
-                                EP.floats()
-                        )
+        simpleProviderHelper(
+                EP.quintuples(
+                        EP.positiveBigIntegers(),
+                        EP.negativeBigIntegers(),
+                        EP.characters(),
+                        EP.strings(),
+                        EP.floats()
                 ),
                 "[(1, -1, a, , NaN), (1, -1, a, , Infinity), (1, -1, a, a, NaN), (1, -1, a, a, Infinity)," +
                 " (1, -1, b, , NaN), (1, -1, b, , Infinity), (1, -1, b, a, NaN), (1, -1, b, a, Infinity)," +
                 " (1, -2, a, , NaN), (1, -2, a, , Infinity), (1, -2, a, a, NaN), (1, -2, a, a, Infinity)," +
                 " (1, -2, b, , NaN), (1, -2, b, , Infinity), (1, -2, b, a, NaN), (1, -2, b, a, Infinity)," +
-                " (2, -1, a, , NaN), (2, -1, a, , Infinity), (2, -1, a, a, NaN), (2, -1, a, a, Infinity)]"
+                " (2, -1, a, , NaN), (2, -1, a, , Infinity), (2, -1, a, a, NaN), (2, -1, a, a, Infinity), ...]"
         );
     }
 
@@ -4284,17 +4333,29 @@ public strictfp class ExhaustiveProviderTest {
                 " (1, 1, 1, 1, 1), (1, 1, 1, 1, 1), (1, 1, 1, 1, 1), (1, 1, 1, 1, 1), (1, 1, 1, 1, 1), ...]");
     }
 
+    private static <A, B, C, D, E, F> void sextuples_Iterable_Iterable_Iterable_Iterable_Iterable_Iterable_helper(
+            @NotNull Iterable<A> as,
+            @NotNull Iterable<B> bs,
+            @NotNull Iterable<C> cs,
+            @NotNull Iterable<D> ds,
+            @NotNull Iterable<E> es,
+            @NotNull Iterable<F> fs,
+            @NotNull String output
+    ) {
+        Iterable<Sextuple<A, B, C, D, E, F>> ss = EP.sextuples(as, bs, cs, ds, es, fs);
+        aeqit(ss, output);
+        testNoRemove(ss);
+    }
+
     @Test
     public void testSextuples_Iterable_Iterable_Iterable_Iterable_Iterable_Iterable() {
-        aeqit(
-                EP.sextuples(
-                        Arrays.asList(1, 2, 3),
-                        fromString("abc"),
-                        EP.booleans(),
-                        EP.orderings(),
-                        Arrays.asList("yes", "no"),
-                        Arrays.asList(Float.POSITIVE_INFINITY, Float.NaN)
-                ),
+        sextuples_Iterable_Iterable_Iterable_Iterable_Iterable_Iterable_helper(
+                Arrays.asList(1, 2, 3),
+                fromString("abc"),
+                EP.booleans(),
+                EP.orderings(),
+                Arrays.asList("yes", "no"),
+                Arrays.asList(Float.POSITIVE_INFINITY, Float.NaN),
                 "[(1, a, false, EQ, yes, Infinity), (1, a, false, EQ, yes, NaN), (1, a, false, EQ, no, Infinity)," +
                 " (1, a, false, EQ, no, NaN), (1, a, false, LT, yes, Infinity), (1, a, false, LT, yes, NaN)," +
                 " (1, a, false, LT, no, Infinity), (1, a, false, LT, no, NaN), (1, a, true, EQ, yes, Infinity)," +
@@ -4368,15 +4429,13 @@ public strictfp class ExhaustiveProviderTest {
                 " (3, c, false, GT, no, Infinity), (3, c, false, GT, no, NaN), (3, c, true, GT, yes, Infinity)," +
                 " (3, c, true, GT, yes, NaN), (3, c, true, GT, no, Infinity), (3, c, true, GT, no, NaN)]"
         );
-        aeqit(
-                EP.sextuples(
-                        Arrays.asList(1, 2, null, 4),
-                        fromString("abcd"),
-                        EP.booleans(),
-                        EP.orderings(),
-                        Arrays.asList("yes", "no"),
-                        Arrays.asList(Float.POSITIVE_INFINITY, Float.NaN)
-                ),
+        sextuples_Iterable_Iterable_Iterable_Iterable_Iterable_Iterable_helper(
+                Arrays.asList(1, 2, null, 4),
+                fromString("abcd"),
+                EP.booleans(),
+                EP.orderings(),
+                Arrays.asList("yes", "no"),
+                Arrays.asList(Float.POSITIVE_INFINITY, Float.NaN),
                 "[(1, a, false, EQ, yes, Infinity), (1, a, false, EQ, yes, NaN), (1, a, false, EQ, no, Infinity)," +
                 " (1, a, false, EQ, no, NaN), (1, a, false, LT, yes, Infinity), (1, a, false, LT, yes, NaN)," +
                 " (1, a, false, LT, no, Infinity), (1, a, false, LT, no, NaN), (1, a, true, EQ, yes, Infinity)," +
@@ -4520,39 +4579,32 @@ public strictfp class ExhaustiveProviderTest {
                 " (4, d, false, GT, no, Infinity), (4, d, false, GT, no, NaN), (4, d, true, GT, yes, Infinity)," +
                 " (4, d, true, GT, yes, NaN), (4, d, true, GT, no, Infinity), (4, d, true, GT, no, NaN)]"
         );
-        aeqit(
+        sextuples_Iterable_Iterable_Iterable_Iterable_Iterable_Iterable_helper(
+                Collections.emptyList(),
+                fromString("abcd"),
+                EP.booleans(),
+                EP.orderings(),
+                Arrays.asList("yes", "no"),
+                Arrays.asList(Float.POSITIVE_INFINITY, Float.NaN),
+                "[]"
+        );
+        sextuples_Iterable_Iterable_Iterable_Iterable_Iterable_Iterable_helper(
+                Collections.emptyList(),
+                Collections.emptyList(),
+                Collections.emptyList(),
+                Collections.emptyList(),
+                Collections.emptyList(),
+                Collections.emptyList(),
+                "[]"
+        );
+        simpleProviderHelper(
                 EP.sextuples(
-                        Collections.emptyList(),
+                        EP.naturalBigIntegers(),
                         fromString("abcd"),
                         EP.booleans(),
                         EP.orderings(),
                         Arrays.asList("yes", "no"),
                         Arrays.asList(Float.POSITIVE_INFINITY, Float.NaN)
-                ),
-                "[]"
-        );
-        aeqit(
-                EP.sextuples(
-                        Collections.emptyList(),
-                        Collections.emptyList(),
-                        Collections.emptyList(),
-                        Collections.emptyList(),
-                        Collections.emptyList(),
-                        Collections.emptyList()
-                ),
-                "[]"
-        );
-        aeqit(
-                take(
-                        20,
-                        EP.sextuples(
-                                EP.naturalBigIntegers(),
-                                fromString("abcd"),
-                                EP.booleans(),
-                                EP.orderings(),
-                                Arrays.asList("yes", "no"),
-                                Arrays.asList(Float.POSITIVE_INFINITY, Float.NaN)
-                        )
                 ),
                 "[(0, a, false, EQ, yes, Infinity), (0, a, false, EQ, yes, NaN), (0, a, false, EQ, no, Infinity)," +
                 " (0, a, false, EQ, no, NaN), (0, a, false, LT, yes, Infinity), (0, a, false, LT, yes, NaN)," +
@@ -4560,19 +4612,16 @@ public strictfp class ExhaustiveProviderTest {
                 " (0, a, true, EQ, yes, NaN), (0, a, true, EQ, no, Infinity), (0, a, true, EQ, no, NaN)," +
                 " (0, a, true, LT, yes, Infinity), (0, a, true, LT, yes, NaN), (0, a, true, LT, no, Infinity)," +
                 " (0, a, true, LT, no, NaN), (0, b, false, EQ, yes, Infinity), (0, b, false, EQ, yes, NaN)," +
-                " (0, b, false, EQ, no, Infinity), (0, b, false, EQ, no, NaN)]"
+                " (0, b, false, EQ, no, Infinity), (0, b, false, EQ, no, NaN), ...]"
         );
-        aeqit(
-                take(
-                        20,
-                        EP.sextuples(
-                                fromString("abcd"),
-                                EP.booleans(),
-                                EP.naturalBigIntegers(),
-                                EP.orderings(),
-                                Arrays.asList("yes", "no"),
-                                Arrays.asList(Float.POSITIVE_INFINITY, Float.NaN)
-                        )
+        simpleProviderHelper(
+                EP.sextuples(
+                        fromString("abcd"),
+                        EP.booleans(),
+                        EP.naturalBigIntegers(),
+                        EP.orderings(),
+                        Arrays.asList("yes", "no"),
+                        Arrays.asList(Float.POSITIVE_INFINITY, Float.NaN)
                 ),
                 "[(a, false, 0, EQ, yes, Infinity), (a, false, 0, EQ, yes, NaN), (a, false, 0, EQ, no, Infinity)," +
                 " (a, false, 0, EQ, no, NaN), (a, false, 0, LT, yes, Infinity), (a, false, 0, LT, yes, NaN)," +
@@ -4580,19 +4629,16 @@ public strictfp class ExhaustiveProviderTest {
                 " (a, false, 1, EQ, yes, NaN), (a, false, 1, EQ, no, Infinity), (a, false, 1, EQ, no, NaN)," +
                 " (a, false, 1, LT, yes, Infinity), (a, false, 1, LT, yes, NaN), (a, false, 1, LT, no, Infinity)," +
                 " (a, false, 1, LT, no, NaN), (a, true, 0, EQ, yes, Infinity), (a, true, 0, EQ, yes, NaN)," +
-                " (a, true, 0, EQ, no, Infinity), (a, true, 0, EQ, no, NaN)]"
+                " (a, true, 0, EQ, no, Infinity), (a, true, 0, EQ, no, NaN), ...]"
         );
-        aeqit(
-                take(
-                        20,
-                        EP.sextuples(
-                                EP.positiveBigIntegers(),
-                                EP.negativeBigIntegers(),
-                                EP.characters(),
-                                EP.strings(),
-                                EP.floats(),
-                                EP.lists(EP.integers())
-                        )
+        simpleProviderHelper(
+                EP.sextuples(
+                        EP.positiveBigIntegers(),
+                        EP.negativeBigIntegers(),
+                        EP.characters(),
+                        EP.strings(),
+                        EP.floats(),
+                        EP.lists(EP.integers())
                 ),
                 "[(1, -1, a, , NaN, []), (1, -1, a, , NaN, [0]), (1, -1, a, , Infinity, [])," +
                 " (1, -1, a, , Infinity, [0]), (1, -1, a, a, NaN, []), (1, -1, a, a, NaN, [0])," +
@@ -4600,7 +4646,7 @@ public strictfp class ExhaustiveProviderTest {
                 " (1, -1, b, , NaN, [0]), (1, -1, b, , Infinity, []), (1, -1, b, , Infinity, [0])," +
                 " (1, -1, b, a, NaN, []), (1, -1, b, a, NaN, [0]), (1, -1, b, a, Infinity, [])," +
                 " (1, -1, b, a, Infinity, [0]), (1, -2, a, , NaN, []), (1, -2, a, , NaN, [0])," +
-                " (1, -2, a, , Infinity, []), (1, -2, a, , Infinity, [0])]"
+                " (1, -2, a, , Infinity, []), (1, -2, a, , Infinity, [0]), ...]"
         );
     }
 
@@ -4648,20 +4694,34 @@ public strictfp class ExhaustiveProviderTest {
                 " (1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1), ...]");
     }
 
+    private static <A, B, C, D, E, F, G> void
+        septuples_Iterable_Iterable_Iterable_Iterable_Iterable_Iterable_Iterable_helper(
+            @NotNull Iterable<A> as,
+            @NotNull Iterable<B> bs,
+            @NotNull Iterable<C> cs,
+            @NotNull Iterable<D> ds,
+            @NotNull Iterable<E> es,
+            @NotNull Iterable<F> fs,
+            @NotNull Iterable<G> gs,
+            @NotNull String output
+    ) {
+        Iterable<Septuple<A, B, C, D, E, F, G>> ss = EP.septuples(as, bs, cs, ds, es, fs, gs);
+        aeqit(ss, output);
+        testNoRemove(ss);
+    }
+
     @Test
     public void testSeptuples_Iterable_Iterable_Iterable_Iterable_Iterable_Iterable_Iterable() {
         List<Integer> x = Arrays.asList(1, 0);
         List<Integer> y = Arrays.asList(0, 1);
-        aeqit(
-                EP.septuples(
-                        Arrays.asList(1, 2, 3),
-                        fromString("abc"),
-                        EP.booleans(),
-                        EP.orderings(),
-                        Arrays.asList("yes", "no"),
-                        Arrays.asList(Float.POSITIVE_INFINITY, Float.NaN),
-                        Arrays.asList(x, y)
-                ),
+        septuples_Iterable_Iterable_Iterable_Iterable_Iterable_Iterable_Iterable_helper(
+                Arrays.asList(1, 2, 3),
+                fromString("abc"),
+                EP.booleans(),
+                EP.orderings(),
+                Arrays.asList("yes", "no"),
+                Arrays.asList(Float.POSITIVE_INFINITY, Float.NaN),
+                Arrays.asList(x, y),
                 "[(1, a, false, EQ, yes, Infinity, [1, 0]), (1, a, false, EQ, yes, Infinity, [0, 1])," +
                 " (1, a, false, EQ, yes, NaN, [1, 0]), (1, a, false, EQ, yes, NaN, [0, 1])," +
                 " (1, a, false, EQ, no, Infinity, [1, 0]), (1, a, false, EQ, no, Infinity, [0, 1])," +
@@ -4879,16 +4939,14 @@ public strictfp class ExhaustiveProviderTest {
                 " (3, c, true, GT, no, Infinity, [1, 0]), (3, c, true, GT, no, Infinity, [0, 1])," +
                 " (3, c, true, GT, no, NaN, [1, 0]), (3, c, true, GT, no, NaN, [0, 1])]"
         );
-        aeqit(
-                EP.septuples(
-                        Arrays.asList(1, 2, null, 4),
-                        fromString("abcd"),
-                        EP.booleans(),
-                        EP.orderings(),
-                        Arrays.asList("yes", "no"),
-                        Arrays.asList(Float.POSITIVE_INFINITY, Float.NaN),
-                        Arrays.asList(x, y)
-                ),
+        septuples_Iterable_Iterable_Iterable_Iterable_Iterable_Iterable_Iterable_helper(
+                Arrays.asList(1, 2, null, 4),
+                fromString("abcd"),
+                EP.booleans(),
+                EP.orderings(),
+                Arrays.asList("yes", "no"),
+                Arrays.asList(Float.POSITIVE_INFINITY, Float.NaN),
+                Arrays.asList(x, y),
                 "[(1, a, false, EQ, yes, Infinity, [1, 0]), (1, a, false, EQ, yes, Infinity, [0, 1])," +
                 " (1, a, false, EQ, yes, NaN, [1, 0]), (1, a, false, EQ, yes, NaN, [0, 1])," +
                 " (1, a, false, EQ, no, Infinity, [1, 0]), (1, a, false, EQ, no, Infinity, [0, 1])," +
@@ -5274,42 +5332,35 @@ public strictfp class ExhaustiveProviderTest {
                 " (4, d, true, GT, no, Infinity, [1, 0]), (4, d, true, GT, no, Infinity, [0, 1])," +
                 " (4, d, true, GT, no, NaN, [1, 0]), (4, d, true, GT, no, NaN, [0, 1])]"
         );
-        aeqit(
+        septuples_Iterable_Iterable_Iterable_Iterable_Iterable_Iterable_Iterable_helper(
+                Collections.emptyList(),
+                fromString("abcd"),
+                EP.booleans(),
+                EP.orderings(),
+                Arrays.asList("yes", "no"),
+                Arrays.asList(Float.POSITIVE_INFINITY, Float.NaN),
+                Arrays.asList(x, y),
+                "[]"
+        );
+        septuples_Iterable_Iterable_Iterable_Iterable_Iterable_Iterable_Iterable_helper(
+                Collections.emptyList(),
+                Collections.emptyList(),
+                Collections.emptyList(),
+                Collections.emptyList(),
+                Collections.emptyList(),
+                Collections.emptyList(),
+                Collections.emptyList(),
+                "[]"
+        );
+        simpleProviderHelper(
                 EP.septuples(
-                        Collections.emptyList(),
+                        EP.naturalBigIntegers(),
                         fromString("abcd"),
                         EP.booleans(),
                         EP.orderings(),
                         Arrays.asList("yes", "no"),
                         Arrays.asList(Float.POSITIVE_INFINITY, Float.NaN),
                         Arrays.asList(x, y)
-                ),
-                "[]"
-        );
-        aeqit(
-                EP.septuples(
-                        Collections.emptyList(),
-                        Collections.emptyList(),
-                        Collections.emptyList(),
-                        Collections.emptyList(),
-                        Collections.emptyList(),
-                        Collections.emptyList(),
-                        Collections.emptyList()
-                ),
-                "[]"
-        );
-        aeqit(
-                take(
-                        20,
-                        EP.septuples(
-                                EP.naturalBigIntegers(),
-                                fromString("abcd"),
-                                EP.booleans(),
-                                EP.orderings(),
-                                Arrays.asList("yes", "no"),
-                                Arrays.asList(Float.POSITIVE_INFINITY, Float.NaN),
-                                Arrays.asList(x, y)
-                        )
                 ),
                 "[(0, a, false, EQ, yes, Infinity, [1, 0]), (0, a, false, EQ, yes, Infinity, [0, 1])," +
                 " (0, a, false, EQ, yes, NaN, [1, 0]), (0, a, false, EQ, yes, NaN, [0, 1])," +
@@ -5320,20 +5371,17 @@ public strictfp class ExhaustiveProviderTest {
                 " (0, a, false, LT, no, Infinity, [1, 0]), (0, a, false, LT, no, Infinity, [0, 1])," +
                 " (0, a, false, LT, no, NaN, [1, 0]), (0, a, false, LT, no, NaN, [0, 1])," +
                 " (0, a, true, EQ, yes, Infinity, [1, 0]), (0, a, true, EQ, yes, Infinity, [0, 1])," +
-                " (0, a, true, EQ, yes, NaN, [1, 0]), (0, a, true, EQ, yes, NaN, [0, 1])]"
+                " (0, a, true, EQ, yes, NaN, [1, 0]), (0, a, true, EQ, yes, NaN, [0, 1]), ...]"
         );
-        aeqit(
-                take(
-                        20,
-                        EP.septuples(
-                                fromString("abcd"),
-                                EP.booleans(),
-                                EP.naturalBigIntegers(),
-                                EP.orderings(),
-                                Arrays.asList("yes", "no"),
-                                Arrays.asList(Float.POSITIVE_INFINITY, Float.NaN),
-                                Arrays.asList(x, y)
-                        )
+        simpleProviderHelper(
+                EP.septuples(
+                        fromString("abcd"),
+                        EP.booleans(),
+                        EP.naturalBigIntegers(),
+                        EP.orderings(),
+                        Arrays.asList("yes", "no"),
+                        Arrays.asList(Float.POSITIVE_INFINITY, Float.NaN),
+                        Arrays.asList(x, y)
                 ),
                 "[(a, false, 0, EQ, yes, Infinity, [1, 0]), (a, false, 0, EQ, yes, Infinity, [0, 1])," +
                 " (a, false, 0, EQ, yes, NaN, [1, 0]), (a, false, 0, EQ, yes, NaN, [0, 1])," +
@@ -5344,20 +5392,17 @@ public strictfp class ExhaustiveProviderTest {
                 " (a, false, 0, LT, no, Infinity, [1, 0]), (a, false, 0, LT, no, Infinity, [0, 1])," +
                 " (a, false, 0, LT, no, NaN, [1, 0]), (a, false, 0, LT, no, NaN, [0, 1])," +
                 " (a, false, 1, EQ, yes, Infinity, [1, 0]), (a, false, 1, EQ, yes, Infinity, [0, 1])," +
-                " (a, false, 1, EQ, yes, NaN, [1, 0]), (a, false, 1, EQ, yes, NaN, [0, 1])]"
+                " (a, false, 1, EQ, yes, NaN, [1, 0]), (a, false, 1, EQ, yes, NaN, [0, 1]), ...]"
         );
-        aeqit(
-                take(
-                        20,
-                        EP.septuples(
-                                EP.positiveBigIntegers(),
-                                EP.negativeBigIntegers(),
-                                EP.characters(),
-                                EP.strings(),
-                                EP.floats(),
-                                EP.lists(EP.integers()),
-                                EP.bigDecimals()
-                        )
+        simpleProviderHelper(
+                EP.septuples(
+                        EP.positiveBigIntegers(),
+                        EP.negativeBigIntegers(),
+                        EP.characters(),
+                        EP.strings(),
+                        EP.floats(),
+                        EP.lists(EP.integers()),
+                        EP.bigDecimals()
                 ),
                 "[(1, -1, a, , NaN, [], 0), (1, -1, a, , NaN, [], 0.0), (1, -1, a, , NaN, [0], 0)," +
                 " (1, -1, a, , NaN, [0], 0.0), (1, -1, a, , Infinity, [], 0), (1, -1, a, , Infinity, [], 0.0)," +
@@ -5365,7 +5410,7 @@ public strictfp class ExhaustiveProviderTest {
                 " (1, -1, a, a, NaN, [], 0.0), (1, -1, a, a, NaN, [0], 0), (1, -1, a, a, NaN, [0], 0.0)," +
                 " (1, -1, a, a, Infinity, [], 0), (1, -1, a, a, Infinity, [], 0.0), (1, -1, a, a, Infinity, [0], 0)," +
                 " (1, -1, a, a, Infinity, [0], 0.0), (1, -1, b, , NaN, [], 0), (1, -1, b, , NaN, [], 0.0)," +
-                " (1, -1, b, , NaN, [0], 0), (1, -1, b, , NaN, [0], 0.0)]"
+                " (1, -1, b, , NaN, [0], 0), (1, -1, b, , NaN, [0], 0.0), ...]"
         );
     }
 
