@@ -5819,9 +5819,96 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         );
     }
 
+    /**
+     * Returns an {@code Iterable} containing all {@code Either}s generated from two {@code Iterable}s, unless the
+     * iterable is infinite, in which case no elements from the second {@code Iterable} will be generated. Elements
+     * generated from the first {@code Iterable} come before elements generated from the second.
+     *
+     * <ul>
+     *  <li>{@code as} cannot be null.</li>
+     *  <li>{@code bs} cannot be null.</li>
+     *  <li>The result contains {@code Either}s.</li>
+     * </ul>
+     *
+     * Length is |{@code as}|+|{@code bs}|
+     *
+     * @param as the first {@code Iterable}
+     * @param bs the second {@code Iterable}
+     * @param <A> the type of the first {@code Iterable}'s elements
+     * @param <B> the type of the second {@code Iterable}'s elements
+     * @return all {@code Either}s created from {@code as} and {@code bs}
+     */
+    @Override
+    public @NotNull <A, B> Iterable<Either<A, B>> eithersSuccessive(@NotNull Iterable<A> as, @NotNull Iterable<B> bs) {
+        return concat(Arrays.asList(map(Either::ofA, as), map(Either::ofB, bs)));
+    }
+
+    /**
+     * Returns an {@code Iterable} containing all {@code Either}s generated from two {@code Iterable}s. Does not
+     * support removal.
+     *
+     * <ul>
+     *  <li>{@code as} cannot be null.</li>
+     *  <li>{@code bs} cannot be null.</li>
+     *  <li>The result contains {@code Either}s.</li>
+     * </ul>
+     *
+     * Length is |{@code as}|+|{@code bs}|
+     *
+     * @param as the first {@code Iterable}
+     * @param bs the second {@code Iterable}
+     * @param <A> the type of the first {@code Iterable}'s elements
+     * @param <B> the type of the second {@code Iterable}'s elements
+     * @return all {@code Either}s created from {@code as} and {@code bs}
+     */
     @Override
     public @NotNull <A, B> Iterable<Either<A, B>> eithers(@NotNull Iterable<A> as, @NotNull Iterable<B> bs) {
         return mux(Arrays.asList(map(Either::ofA, as), map(Either::ofB, bs)));
+    }
+
+    private static @NotNull <A, B> Iterable<Either<A, B>> eithers(
+            @NotNull Iterable<BigInteger> indices,
+            @NotNull Iterable<A> as,
+            @NotNull Iterable<B> bs
+    ) {
+        Iterable<Boolean> flags = booleansFromIndices(indices);
+        return () -> new NoRemoveIterator<Either<A, B>>() {
+            private final @NotNull Iterator<Boolean> flagIterator = flags.iterator();
+            private final @NotNull Iterator<A> asi = as.iterator();
+            private final @NotNull Iterator<B> bsi = bs.iterator();
+
+            @Override
+            public boolean hasNext() {
+                return asi.hasNext() || bsi.hasNext();
+            }
+
+            @Override
+            public Either<A, B> next() {
+                if (!asi.hasNext()) {
+                    return Either.ofB(bsi.next());
+                } else if (!bsi.hasNext()) {
+                    return Either.ofA(asi.next());
+                } else {
+                    return flagIterator.next() ? Either.ofB(bsi.next()) : Either.ofA(asi.next());
+                }
+            }
+        };
+    }
+
+    @Override
+    public @NotNull <A, B> Iterable<Either<A, B>> eithersSquareRootOrder(
+            @NotNull Iterable<A> as,
+            @NotNull Iterable<B> bs
+    ) {
+        return eithers(map(i -> i.pow(2), rangeUp(BigInteger.ZERO)), as, bs);
+    }
+
+    @Override
+    public @NotNull <A, B> Iterable<Either<A, B>> eithersLogarithmicOrder(
+            @NotNull Iterable<A> as,
+            @NotNull Iterable<B> bs
+    ) {
+        return eithers(map(i -> BigInteger.ONE.shiftLeft(i.intValueExact()), rangeUp(BigInteger.ZERO)), as, bs);
     }
 
     /**
