@@ -5909,6 +5909,29 @@ public final strictfp class IterableUtils {
         return fromMap(frequencies);
     }
 
+    public static @NotNull Iterable<Boolean> booleansFromIndices(@NotNull Iterable<BigInteger> indices) {
+        return () -> new NoRemoveIterator<Boolean>() {
+            private final @NotNull Iterator<BigInteger> is = indices.iterator();
+            private @NotNull Optional<BigInteger> nextIndex = is.hasNext() ? Optional.of(is.next()) : Optional.empty();
+            private @NotNull BigInteger i = BigInteger.ZERO;
+
+            @Override
+            public boolean hasNext() {
+                return nextIndex.isPresent();
+            }
+
+            @Override
+            public @NotNull Boolean next() {
+                boolean result = nextIndex.get().equals(i);
+                if (result) {
+                    nextIndex = is.hasNext() ? Optional.of(is.next()) : Optional.empty();
+                }
+                i = i.add(BigInteger.ONE);
+                return result;
+            }
+        };
+    }
+
     public static @NotNull Iterable<String> group(
             @NotNull Predicate<Pair<Character, Character>> p,
             @NotNull String s
