@@ -4133,6 +4133,30 @@ public final strictfp class RandomProvider extends IterableProvider {
         );
     }
 
+    @Override
+    public @NotNull <A, B> Iterable<Either<A, B>> eithers(@NotNull Iterable<A> as, @NotNull Iterable<B> bs) {
+        Iterable<Integer> range = range(0, scale);
+        return () -> new NoRemoveIterator<Either<A, B>>() {
+            private final @NotNull Iterator<Integer> indices = range.iterator();
+            private final @NotNull Iterator<A> asi = as.iterator();
+            private final @NotNull Iterator<B> bsi = bs.iterator();
+
+            @Override
+            public boolean hasNext() {
+                return true;
+            }
+
+            @Override
+            public Either<A, B> next() {
+                if (indices.next() == 0) {
+                    return Either.ofB(bsi.next());
+                } else {
+                    return Either.ofA(asi.next());
+                }
+            }
+        };
+    }
+
     /**
      * An {@code Iterable} that uniformly generates elements from the Cartesian product of a {@code List} of
      * {@code List}s. Does not support removal.

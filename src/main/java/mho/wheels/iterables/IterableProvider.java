@@ -2362,6 +2362,112 @@ public abstract strictfp class IterableProvider {
     }
 
     /**
+     * Generates all {@code Either}s from two {@code Iterable}s. If applicable, {@code Either}s from the first
+     * {@code Iterable} are generated before {@code Either}s from the second.
+     *
+     * @param as the first {@code Iterable}
+     * @param bs the second {@code Iterable}
+     * @param <A> the type of the first {@code Iterable}'s elements
+     * @param <B> the type of the second {@code Iterable}'s elements
+     */
+    public @NotNull <A, B> Iterable<Either<A, B>> eithersSuccessive(@NotNull Iterable<A> as, @NotNull Iterable<B> bs) {
+        return eithers(as, bs);
+    }
+
+    /**
+     * Generates all {@code Either}s from two {@code Iterable}s. If applicable, the ratio of elements derived from the
+     * second {@code Iterable} approaches sqrt(n)/n, where n is the number of elements generated (assuming the two
+     * source {@code Iterable}s are infinite).
+     *
+     * @param as the first {@code Iterable}
+     * @param bs the second {@code Iterable}
+     * @param <A> the type of the first {@code Iterable}'s elements
+     * @param <B> the type of the second {@code Iterable}'s elements
+     */
+    public @NotNull <A, B> Iterable<Either<A, B>> eithersSquareRootOrder(
+            @NotNull Iterable<A> as,
+            @NotNull Iterable<B> bs
+    ) {
+        return eithers(as, bs);
+    }
+
+    /**
+     * Generates all {@code Either}s from two {@code Iterable}s. If applicable, the ratio of elements derived from the
+     * second {@code Iterable} approaches log<sub>2</sub>(n)/n, where n is the number of elements generated (assuming
+     * the two source {@code Iterable}s are infinite).
+     *
+     * @param as the first {@code Iterable}
+     * @param bs the second {@code Iterable}
+     * @param <A> the type of the first {@code Iterable}'s elements
+     * @param <B> the type of the second {@code Iterable}'s elements
+     */
+    public @NotNull <A, B> Iterable<Either<A, B>> eithersLogarithmicOrder(
+            @NotNull Iterable<A> as,
+            @NotNull Iterable<B> bs
+    ) {
+        return eithers(as, bs);
+    }
+
+    /**
+     * Generates all {@code Either}s from two {@code Iterable}s.
+     *
+     * @param as the first {@code Iterable}
+     * @param bs the second {@code Iterable}
+     * @param <A> the type of the first {@code Iterable}'s elements
+     * @param <B> the type of the second {@code Iterable}'s elements
+     */
+    public abstract @NotNull <A, B> Iterable<Either<A, B>> eithers(@NotNull Iterable<A> as, @NotNull Iterable<B> bs);
+
+    /**
+     * Given two {@code Iterable}s, generates an {@code Iterable} containing the elements of both. If applicable,
+     * elements from the first {@code Iterable} are returned before elements from the second.
+     *
+     * @param as the first {@code Iterable}
+     * @param bs the second {@code Iterable}
+     * @param <T> the type of the {@code Iterables}' elements
+     */
+    public @NotNull <T> Iterable<T> chooseSuccessive(@NotNull Iterable<T> as, @NotNull Iterable<T> bs) {
+        return map(e -> e.whichSlot() == Either.Slot.A ? e.a() : e.b(), eithersSuccessive(as, bs));
+    }
+
+    /**
+     * Given two {@code Iterable}s, generates an {@code Iterable} containing the elements of both. If applicable, the
+     * ratio of elements from the second {@code Iterable} approaches sqrt(n)/n, where n is the number of elements
+     * generated (assuming the two source {@code Iterable}s are infinite).
+     *
+     * @param as the first {@code Iterable}
+     * @param bs the second {@code Iterable}
+     * @param <T> the type of the {@code Iterables}' elements
+     */
+    public @NotNull <T> Iterable<T> chooseSquareRootOrder(@NotNull Iterable<T> as, @NotNull Iterable<T> bs) {
+        return map(e -> e.whichSlot() == Either.Slot.A ? e.a() : e.b(), eithersSquareRootOrder(as, bs));
+    }
+
+    /**
+     * Given two {@code Iterable}s, generates an {@code Iterable} containing the elements of both. If applicable, the
+     * ratio of elements from the second {@code Iterable} approaches log<sub>2</sub>(n)/n, where n is the number of
+     * elements generated (assuming the two source {@code Iterable}s are infinite).
+     *
+     * @param as the first {@code Iterable}
+     * @param bs the second {@code Iterable}
+     * @param <T> the type of the {@code Iterables}' elements
+     */
+    public @NotNull <T> Iterable<T> chooseLogarithmicOrder(@NotNull Iterable<T> as, @NotNull Iterable<T> bs) {
+        return map(e -> e.whichSlot() == Either.Slot.A ? e.a() : e.b(), eithersLogarithmicOrder(as, bs));
+    }
+
+    /**
+     * Given two {@code Iterable}s, generates an {@code Iterable} containing the elements of both.
+     *
+     * @param as the first {@code Iterable}
+     * @param bs the second {@code Iterable}
+     * @param <T> the type of the {@code Iterables}' elements
+     */
+    public @NotNull <T> Iterable<T> choose(@NotNull Iterable<T> as, @NotNull Iterable<T> bs) {
+        return map(e -> e.whichSlot() == Either.Slot.A ? e.a() : e.b(), eithers(as, bs));
+    }
+
+    /**
      * Generates the Cartesian product of a {@code List} of {@code List}s, that is, all possible {@code List}s such
      * that the ith element of the {@code List} comes from the ith input {@code List}.
      *

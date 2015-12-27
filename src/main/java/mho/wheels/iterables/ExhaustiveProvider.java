@@ -5819,6 +5819,11 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         );
     }
 
+    @Override
+    public @NotNull <A, B> Iterable<Either<A, B>> eithers(@NotNull Iterable<A> as, @NotNull Iterable<B> bs) {
+        return mux(Arrays.asList(map(Either::ofA, as), map(Either::ofB, bs)));
+    }
+
     /**
      * Given a {@code List} of {@code Integer}s, generates the Cartesian product of the indices [0, ..., i–1] for each
      * element i.
