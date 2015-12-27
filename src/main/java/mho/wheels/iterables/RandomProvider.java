@@ -4133,6 +4133,25 @@ public final strictfp class RandomProvider extends IterableProvider {
         );
     }
 
+    /**
+     * An {@code Iterable} that generates all {@code Either}s generated from two {@code Iterable}s. The ratio of
+     * elements from {@code as} to elements from {@code bs} is {@code scale}:1. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code this} must have a positive {@code scale}.</li>
+     *  <li>{@code as} must be infinite.</li>
+     *  <li>{@code bs} must be infinite.</li>
+     *  <li>The result contains {@code Either}s.</li>
+     * </ul>
+     *
+     * Length is |{@code as}|+|{@code bs}|
+     *
+     * @param as the first {@code Iterable}
+     * @param bs the second {@code Iterable}
+     * @param <A> the type of the first {@code Iterable}'s elements
+     * @param <B> the type of the second {@code Iterable}'s elements
+     * @return all {@code Either}s created from {@code as} and {@code bs}
+     */
     @Override
     public @NotNull <A, B> Iterable<Either<A, B>> eithers(@NotNull Iterable<A> as, @NotNull Iterable<B> bs) {
         Iterable<Integer> range = range(0, scale);
