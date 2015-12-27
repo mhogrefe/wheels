@@ -743,7 +743,7 @@ public final strictfp class IterableUtils {
      * results: for example, if {@code a} is large, the result might contain runs of identical {@code float}s. If
      * {@code a}{@literal >}{@code b}, the result is empty. If {@code a}={@code b}, an {@code Iterable} containing only
      * {@code a} is returned. If {@code a} is {@code -Infinity} and {@code b} is not {@code -Infinity}, the result is
-     * {@code -Infinity} repeating forever. If {@code a} is negative zero and {@code b} is nonnegative, the first
+     * {@code -Infinity} repeating forever. If {@code a} is negative zero and {@code b} is non-negative, the first
      * element of the result is also negative zero. Neither {@code a} nor {@code b} may be {@code NaN}. The
      * {@code Iterable} produced does not support removing elements.
      *
@@ -790,7 +790,7 @@ public final strictfp class IterableUtils {
      * results: for example, if {@code a} is large, the result might contain runs of identical {@code double}s. If
      * {@code a}{@literal >}{@code b}, the result is empty. If {@code a}={@code b}, an {@code Iterable} containing only
      * {@code a} is returned. If {@code a} is {@code -Infinity} and {@code b} is not {@code -Infinity}, the result is
-     * {@code -Infinity} repeating forever. If {@code a} is negative zero and {@code b} is nonnegative, the first
+     * {@code -Infinity} repeating forever. If {@code a} is negative zero and {@code b} is non-negative, the first
      * element of the result is also negative zero. Neither {@code a} nor {@code b} may be {@code NaN}. The
      * {@code Iterable} produced does not support removing elements.
      *

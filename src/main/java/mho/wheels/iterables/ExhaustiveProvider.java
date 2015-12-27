@@ -4067,11 +4067,11 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      *
      * <ul>
      *  <li>{@code xs} cannot be null.</li>
-     *  <li>{@code originalIndices} cannot contain any nulls, and all of its elements can only contain nonnegative
+     *  <li>{@code originalIndices} cannot contain any nulls, and all of its elements can only contain non-negative
      *  {@code Integer}s.</li>
      *  <li>{@code requiredSize} cannot be null.</li>
      *  <li>{@code outputSizeFunction} cannot be null.</li>
-     *  <li>If {@code xs} is finite, {@code outputSizeFunction} must return a nonnegative integer when applied to
+     *  <li>If {@code xs} is finite, {@code outputSizeFunction} must return a non-negative integer when applied to
      *  {@code length(xs)}.</li>
      *  <li>The number of lists in {@code originalSize} that correspond to a valid distinct list must be at least
      *  {@code outputSizeFunction.apply(length(xs))} (or infinite if {@code xs} is infinite).</li>
@@ -4683,11 +4683,11 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      *
      * <ul>
      *  <li>{@code xs} cannot be null.</li>
-     *  <li>{@code originalIndices} cannot contain any nulls, and all of its elements can only contain nonnegative
+     *  <li>{@code originalIndices} cannot contain any nulls, and all of its elements can only contain non-negative
      *  {@code Integer}s.</li>
      *  <li>{@code outputSizeFunction} cannot be null.</li>
      *  <li>If {@code xs} is finite, {@code outputSizeFunction} must return a either an empty {@code Optional} or a
-     *  nonnegative integer when applied to {@code length(xs)}.</li>
+     *  non-negative integer when applied to {@code length(xs)}.</li>
      *  <li>The number of lists in {@code originalSize} that correspond to a valid bag must be at least
      *  {@code outputSizeFunction.apply(length(xs))} (or infinite if {@code xs} is infinite or
      *  {@code outputSizeFunction.apply(length(xs))} is empty).</li>
@@ -5533,12 +5533,12 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      *
      * <ul>
      *  <li>{@code xs} cannot be null.</li>
-     *  <li>{@code originalIndices} cannot contain any nulls, and all of its elements can only contain nonnegative
+     *  <li>{@code originalIndices} cannot contain any nulls, and all of its elements can only contain non-negative
      *  {@code Integer}s.</li>
      *  <li>{@code requiredSize} cannot be null.</li>
      *  <li>{@code outputSizeFunction} cannot be null.</li>
      *  <li>If {@code xs} is finite, {@code outputSizeFunction} must return a either an empty {@code Optional} or a
-     *  nonnegative integer when applied to {@code length(xs)}.</li>
+     *  non-negative integer when applied to {@code length(xs)}.</li>
      *  <li>The number of lists in {@code originalSize} that correspond to a valid subset must be at least
      *  {@code outputSizeFunction.apply(length(xs))} (or infinite if {@code xs} is infinite or
      *  {@code outputSizeFunction.apply(length(xs))} is empty).</li>
@@ -5821,8 +5821,8 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
 
     /**
      * Returns an {@code Iterable} containing all {@code Either}s generated from two {@code Iterable}s, unless the
-     * iterable is infinite, in which case no elements from the second {@code Iterable} will be generated. Elements
-     * generated from the first {@code Iterable} come before elements generated from the second.
+     * first {@code Iterable} is infinite, in which case no elements from the second {@code Iterable} will be
+     * generated. Elements generated from the first {@code Iterable} come before elements generated from the second.
      *
      * <ul>
      *  <li>{@code as} cannot be null.</li>
@@ -5840,7 +5840,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull <A, B> Iterable<Either<A, B>> eithersSuccessive(@NotNull Iterable<A> as, @NotNull Iterable<B> bs) {
-        return concat(Arrays.asList(map(Either::ofA, as), map(Either::ofB, bs)));
+        return concat(map(Either::ofA, as), map(Either::ofB, bs));
     }
 
     /**
@@ -5866,6 +5866,30 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         return mux(Arrays.asList(map(Either::ofA, as), map(Either::ofB, bs)));
     }
 
+    /**
+     * Returns an {@code Iterable} containing all {@code Either}s generated from two {@code Iterable}s. The choice of
+     * which {@code Iterable} to select from is governed by a list of indices. The indices in the list correspond to
+     * points in the resulting {@code Iterable} where the second {@code Iterable} is used, and at all other indices,
+     * the first {@code Iterable} is used. This assumes that both {@code Iterable}s are infinite; if one runs out
+     * before the other, than the remaining elements are appended at the end of the resulting {@code Iterable}. Does
+     * not support removal.
+     *
+     * <ul>
+     *  <li>{@code indices} must contain non-negative {@code BigInteger}s in ascending order.</li>
+     *  <li>{@code as} cannot be null.</li>
+     *  <li>{@code bs} cannot be null.</li>
+     *  <li>The result contains {@code Either}s.</li>
+     * </ul>
+     *
+     * Length is |{@code as}|+|{@code bs}|
+     *
+     * @param indices indices of the resulting {@code Iterable} at which {@code bs} is used
+     * @param as the first {@code Iterable}
+     * @param bs the second {@code Iterable}
+     * @param <A> the type of the first {@code Iterable}'s elements
+     * @param <B> the type of the second {@code Iterable}'s elements
+     * @return all {@code Either}s created from {@code as} and {@code bs}, controlled by {@code indices}
+     */
     private static @NotNull <A, B> Iterable<Either<A, B>> eithers(
             @NotNull Iterable<BigInteger> indices,
             @NotNull Iterable<A> as,
@@ -5895,6 +5919,25 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         };
     }
 
+    /**
+     * Returns an {@code Iterable} containing all {@code Either}s generated from two {@code Iterable}s. The ratio of
+     * elements derived from the second {@code Iterable} approaches sqrt(n)/n, where n is the number of elements
+     * generated (assuming the two source {@code Iterable}s are infinite). Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code as} cannot be null.</li>
+     *  <li>{@code bs} cannot be null.</li>
+     *  <li>The result contains {@code Either}s.</li>
+     * </ul>
+     *
+     * Length is |{@code as}|+|{@code bs}|
+     *
+     * @param as the first {@code Iterable}
+     * @param bs the second {@code Iterable}
+     * @param <A> the type of the first {@code Iterable}'s elements
+     * @param <B> the type of the second {@code Iterable}'s elements
+     * @return all {@code Either}s created from {@code as} and {@code bs}, the latter appearing quadratically rarely.
+     */
     @Override
     public @NotNull <A, B> Iterable<Either<A, B>> eithersSquareRootOrder(
             @NotNull Iterable<A> as,
@@ -5903,12 +5946,54 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         return eithers(map(i -> i.pow(2), rangeUp(BigInteger.ZERO)), as, bs);
     }
 
+    /**
+     * Returns an {@code Iterable} containing all {@code Either}s generated from two {@code Iterable}s. The ratio of
+     * elements derived from the second {@code Iterable} approaches log<sub>2</sub>(n)/n, where n is the number of
+     * elements generated (assuming the two source {@code Iterable}s are infinite). Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code as} cannot be null.</li>
+     *  <li>{@code bs} cannot be null.</li>
+     *  <li>The result contains {@code Either}s.</li>
+     * </ul>
+     *
+     * Length is |{@code as}|+|{@code bs}|
+     *
+     * @param as the first {@code Iterable}
+     * @param bs the second {@code Iterable}
+     * @param <A> the type of the first {@code Iterable}'s elements
+     * @param <B> the type of the second {@code Iterable}'s elements
+     * @return all {@code Either}s created from {@code as} and {@code bs}, the latter appearing exponentially rarely.
+     */
     @Override
     public @NotNull <A, B> Iterable<Either<A, B>> eithersLogarithmicOrder(
             @NotNull Iterable<A> as,
             @NotNull Iterable<B> bs
     ) {
         return eithers(map(i -> BigInteger.ONE.shiftLeft(i.intValueExact()), rangeUp(BigInteger.ZERO)), as, bs);
+    }
+
+    /**
+     * Returns an {@code Iterable} containing all elements from two {@code Iterable}s, unless the
+     * iterable is infinite, in which case no elements from the second {@code Iterable} will be generated. Elements
+     * from the first {@code Iterable} come before elements from the second.
+     *
+     * <ul>
+     *  <li>{@code as} cannot be null.</li>
+     *  <li>{@code bs} cannot be null.</li>
+     *  <li>The result is not null.</li>
+     * </ul>
+     *
+     * Length is |{@code as}|+|{@code bs}|
+     *
+     * @param as the first {@code Iterable}
+     * @param bs the second {@code Iterable}
+     * @param <T> the type of the {@code Iterables}' elements
+     * @return all elements from {@code as} and {@code bs}
+     */
+    @Override
+    public @NotNull <T> Iterable<T> chooseSuccessive(@NotNull Iterable<T> as, @NotNull Iterable<T> bs) {
+        return concat(as, bs);
     }
 
     /**
