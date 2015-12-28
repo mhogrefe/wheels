@@ -52,13 +52,22 @@ public class Either<A, B> {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Either<?, ?> either = (Either<?, ?>) o;
-        return (a == null ? either.a == null : a.equals(either.a))
-            && (b == null ? either.b == null : b.equals(either.b));
+        if (slot != either.slot) return false;
+        switch (slot) {
+            case A: return a == null ? either.a == null : a.equals(either.a);
+            case B: return b == null ? either.b == null : b.equals(either.b);
+            default: throw new IllegalStateException("unreachable");
+        }
     }
 
     @Override
     public int hashCode() {
-        return 31 * (a != null ? a.hashCode() : 0) + (b != null ? b.hashCode() : 0);
+        int result = 31 * slot.hashCode();
+        switch (slot) {
+            case A: return result + (a == null ? 0 : a.hashCode());
+            case B: return result + (b == null ? 0 : b.hashCode());
+            default: throw new IllegalStateException("unreachable");
+        }
     }
 
     public @NotNull String toString() {

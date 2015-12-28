@@ -274,6 +274,13 @@ public class ExhaustiveProviderProperties extends TestProperties {
         propertiesSubsetsAtLeast();
         propertiesStringSubsetsAtLeast_int_String();
         propertiesStringSubsetsAtLeast_int();
+        propertiesEithersSuccessive();
+        propertiesEithersSquareRootOrder();
+        propertiesEithersLogarithmicOrder();
+        propertiesEithers();
+        propertiesChooseSquareRootOrder();
+        propertiesChooseLogarithmicOrder();
+        propertiesChoose();
         propertiesCartesianProduct();
         propertiesRepeatingIterables();
         propertiesRepeatingIterablesDistinctAtLeast();
@@ -9323,6 +9330,247 @@ public class ExhaustiveProviderProperties extends TestProperties {
                 EP.stringSubsetsAtLeast(i);
                 fail(i);
             } catch (IllegalArgumentException ignored) {}
+        }
+    }
+
+    private void propertiesEithersSuccessive() {
+        initialize("eithersSuccessive(Iterable<A>, Iterable<B>)");
+        Iterable<Pair<List<Integer>, List<Integer>>> ps = P.pairs(
+                P.withScale(4).lists(P.withNull(P.integersGeometric()))
+        );
+        for (Pair<List<Integer>, List<Integer>> p : take(LIMIT, ps)) {
+            Iterable<Either<Integer, Integer>> eithers = EP.eithersSuccessive(p.a, p.b);
+            testNoRemove(eithers);
+            testHasNext(eithers);
+            List<Either<Integer, Integer>> eithersList = toList(eithers);
+            if (!p.a.isEmpty()) {
+                assertEquals(p, head(eithersList), Either.ofA(head(p.a)));
+            }
+            assertEquals(p, eithersList.size(), p.a.size() + p.b.size());
+            assertTrue(p, all(e -> e.whichSlot() == Either.Slot.A ? elem(e.a(), p.a) : elem(e.b(), p.b), eithersList));
+        }
+
+        ps = P.pairs(P.withScale(4).distinctLists(P.withNull(P.integersGeometric())));
+        for (Pair<List<Integer>, List<Integer>> p : take(LIMIT, ps)) {
+            assertTrue(p, unique(EP.eithersSuccessive(p.a, p.b)));
+        }
+
+        Iterable<Pair<Iterable<Integer>, Iterable<Integer>>> ps2 = P.pairs(
+                P.prefixPermutations(EP.withNull(EP.naturalIntegers()))
+        );
+        for (Pair<Iterable<Integer>, Iterable<Integer>> p : take(LIMIT, ps2)) {
+            Iterable<Either<Integer, Integer>> eithers = EP.eithersSuccessive(p.a, p.b);
+            testNoRemove(TINY_LIMIT, eithers);
+            List<Either<Integer, Integer>> eithersList = toList(take(TINY_LIMIT, eithers));
+            if (!isEmpty(p.a)) {
+                assertEquals(p, head(eithersList), Either.ofA(head(p.a)));
+            }
+            assertTrue(p, all(e -> e.whichSlot() == Either.Slot.A ? elem(e.a(), p.a) : elem(e.b(), p.b), eithersList));
+            assertTrue(p, unique(eithersList));
+        }
+    }
+
+    private void propertiesEithersSquareRootOrder() {
+        initialize("eithersSquareRootOrder(Iterable<A>, Iterable<B>)");
+        Iterable<Pair<List<Integer>, List<Integer>>> ps = P.pairs(
+                P.withScale(4).lists(P.withNull(P.integersGeometric()))
+        );
+        for (Pair<List<Integer>, List<Integer>> p : take(LIMIT, ps)) {
+            Iterable<Either<Integer, Integer>> eithers = EP.eithersSquareRootOrder(p.a, p.b);
+            testNoRemove(eithers);
+            testHasNext(eithers);
+            List<Either<Integer, Integer>> eithersList = toList(eithers);
+            if (!p.b.isEmpty()) {
+                assertEquals(p, head(eithersList), Either.ofB(head(p.b)));
+            }
+            assertEquals(p, eithersList.size(), p.a.size() + p.b.size());
+            assertTrue(p, all(e -> e.whichSlot() == Either.Slot.A ? elem(e.a(), p.a) : elem(e.b(), p.b), eithersList));
+        }
+
+        ps = P.pairs(P.withScale(4).distinctLists(P.withNull(P.integersGeometric())));
+        for (Pair<List<Integer>, List<Integer>> p : take(LIMIT, ps)) {
+            assertTrue(p, unique(EP.eithersSquareRootOrder(p.a, p.b)));
+        }
+
+        Iterable<Pair<Iterable<Integer>, Iterable<Integer>>> ps2 = P.pairs(
+                P.prefixPermutations(EP.withNull(EP.naturalIntegers()))
+        );
+        for (Pair<Iterable<Integer>, Iterable<Integer>> p : take(LIMIT, ps2)) {
+            Iterable<Either<Integer, Integer>> eithers = EP.eithersSquareRootOrder(p.a, p.b);
+            testNoRemove(TINY_LIMIT, eithers);
+            List<Either<Integer, Integer>> eithersList = toList(take(TINY_LIMIT, eithers));
+            if (!isEmpty(p.b)) {
+                assertEquals(p, head(eithersList), Either.ofB(head(p.b)));
+            }
+            assertTrue(p, all(e -> e.whichSlot() == Either.Slot.A ? elem(e.a(), p.a) : elem(e.b(), p.b), eithersList));
+            assertTrue(p, unique(eithersList));
+        }
+    }
+
+    private void propertiesEithersLogarithmicOrder() {
+        initialize("eithersLogarithmicOrder(Iterable<A>, Iterable<B>)");
+        Iterable<Pair<List<Integer>, List<Integer>>> ps = P.pairs(
+                P.withScale(4).lists(P.withNull(P.integersGeometric()))
+        );
+        for (Pair<List<Integer>, List<Integer>> p : take(LIMIT, ps)) {
+            Iterable<Either<Integer, Integer>> eithers = EP.eithersLogarithmicOrder(p.a, p.b);
+            testNoRemove(eithers);
+            testHasNext(eithers);
+            List<Either<Integer, Integer>> eithersList = toList(eithers);
+            if (!p.a.isEmpty()) {
+                assertEquals(p, head(eithersList), Either.ofA(head(p.a)));
+            }
+            assertEquals(p, eithersList.size(), p.a.size() + p.b.size());
+            assertTrue(p, all(e -> e.whichSlot() == Either.Slot.A ? elem(e.a(), p.a) : elem(e.b(), p.b), eithersList));
+        }
+
+        ps = P.pairs(P.withScale(4).distinctLists(P.withNull(P.integersGeometric())));
+        for (Pair<List<Integer>, List<Integer>> p : take(LIMIT, ps)) {
+            assertTrue(p, unique(EP.eithersLogarithmicOrder(p.a, p.b)));
+        }
+
+        Iterable<Pair<Iterable<Integer>, Iterable<Integer>>> ps2 = P.pairs(
+                P.prefixPermutations(EP.withNull(EP.naturalIntegers()))
+        );
+        for (Pair<Iterable<Integer>, Iterable<Integer>> p : take(LIMIT, ps2)) {
+            Iterable<Either<Integer, Integer>> eithers = EP.eithersLogarithmicOrder(p.a, p.b);
+            testNoRemove(TINY_LIMIT, eithers);
+            List<Either<Integer, Integer>> eithersList = toList(take(TINY_LIMIT, eithers));
+            if (!isEmpty(p.a)) {
+                assertEquals(p, head(eithersList), Either.ofA(head(p.a)));
+            }
+            assertTrue(p, all(e -> e.whichSlot() == Either.Slot.A ? elem(e.a(), p.a) : elem(e.b(), p.b), eithersList));
+            assertTrue(p, unique(eithersList));
+        }
+    }
+
+    private void propertiesEithers() {
+        initialize("eithers(Iterable<A>, Iterable<B>)");
+        Iterable<Pair<List<Integer>, List<Integer>>> ps = P.pairs(
+                P.withScale(4).lists(P.withNull(P.integersGeometric()))
+        );
+        for (Pair<List<Integer>, List<Integer>> p : take(LIMIT, ps)) {
+            Iterable<Either<Integer, Integer>> eithers = EP.eithers(p.a, p.b);
+            testNoRemove(eithers);
+            testHasNext(eithers);
+            List<Either<Integer, Integer>> eithersList = toList(eithers);
+            if (!p.a.isEmpty()) {
+                assertEquals(p, head(eithersList), Either.ofA(head(p.a)));
+            }
+            assertEquals(p, eithersList.size(), p.a.size() + p.b.size());
+            assertTrue(p, all(e -> e.whichSlot() == Either.Slot.A ? elem(e.a(), p.a) : elem(e.b(), p.b), eithersList));
+        }
+
+        ps = P.pairs(P.withScale(4).distinctLists(P.withNull(P.integersGeometric())));
+        for (Pair<List<Integer>, List<Integer>> p : take(LIMIT, ps)) {
+            assertTrue(p, unique(EP.eithers(p.a, p.b)));
+        }
+
+        Iterable<Pair<Iterable<Integer>, Iterable<Integer>>> ps2 = P.pairs(
+                P.prefixPermutations(EP.withNull(EP.naturalIntegers()))
+        );
+        for (Pair<Iterable<Integer>, Iterable<Integer>> p : take(LIMIT, ps2)) {
+            Iterable<Either<Integer, Integer>> eithers = EP.eithers(p.a, p.b);
+            testNoRemove(TINY_LIMIT, eithers);
+            List<Either<Integer, Integer>> eithersList = toList(take(TINY_LIMIT, eithers));
+            if (!isEmpty(p.a)) {
+                assertEquals(p, head(eithersList), Either.ofA(head(p.a)));
+            }
+            assertTrue(p, all(e -> e.whichSlot() == Either.Slot.A ? elem(e.a(), p.a) : elem(e.b(), p.b), eithersList));
+            assertTrue(p, unique(eithersList));
+        }
+    }
+
+    private void propertiesChooseSquareRootOrder() {
+        initialize("chooseSquareRootOrder(Iterable<T>, Iterable<T>)");
+        Iterable<Pair<List<Integer>, List<Integer>>> ps = P.pairs(
+                P.withScale(4).lists(P.withNull(P.integersGeometric()))
+        );
+        for (Pair<List<Integer>, List<Integer>> p : take(LIMIT, ps)) {
+            Iterable<Integer> chosen = EP.chooseSquareRootOrder(p.a, p.b);
+            testNoRemove(chosen);
+            testHasNext(chosen);
+            List<Integer> chosenList = toList(chosen);
+            if (!p.b.isEmpty()) {
+                assertEquals(p, head(chosenList), head(p.b));
+            }
+            assertEquals(p, chosenList.size(), p.a.size() + p.b.size());
+            assertTrue(p, all(i -> elem(i, p.a) || elem(i, p.b), chosenList));
+        }
+
+        Iterable<Pair<Iterable<Integer>, Iterable<Integer>>> ps2 = P.pairs(
+                P.prefixPermutations(EP.withNull(EP.naturalIntegers()))
+        );
+        for (Pair<Iterable<Integer>, Iterable<Integer>> p : take(LIMIT, ps2)) {
+            Iterable<Integer> chosen = EP.chooseSquareRootOrder(p.a, p.b);
+            testNoRemove(TINY_LIMIT, chosen);
+            List<Integer> chosenList = toList(take(TINY_LIMIT, chosen));
+            if (!isEmpty(p.b)) {
+                assertEquals(p, head(chosenList), head(p.b));
+            }
+            assertTrue(p, all(i -> elem(i, p.a) || elem(i, p.b), chosenList));
+        }
+    }
+
+    private void propertiesChooseLogarithmicOrder() {
+        initialize("chooseLogarithmicOrder(Iterable<T>, Iterable<T>)");
+        Iterable<Pair<List<Integer>, List<Integer>>> ps = P.pairs(
+                P.withScale(4).lists(P.withNull(P.integersGeometric()))
+        );
+        for (Pair<List<Integer>, List<Integer>> p : take(LIMIT, ps)) {
+            Iterable<Integer> chosen = EP.chooseLogarithmicOrder(p.a, p.b);
+            testNoRemove(chosen);
+            testHasNext(chosen);
+            List<Integer> chosenList = toList(chosen);
+            if (!p.a.isEmpty()) {
+                assertEquals(p, head(chosenList), head(p.a));
+            }
+            assertEquals(p, chosenList.size(), p.a.size() + p.b.size());
+            assertTrue(p, all(i -> elem(i, p.a) || elem(i, p.b), chosenList));
+        }
+
+        Iterable<Pair<Iterable<Integer>, Iterable<Integer>>> ps2 = P.pairs(
+                P.prefixPermutations(EP.withNull(EP.naturalIntegers()))
+        );
+        for (Pair<Iterable<Integer>, Iterable<Integer>> p : take(LIMIT, ps2)) {
+            Iterable<Integer> chosen = EP.chooseLogarithmicOrder(p.a, p.b);
+            testNoRemove(TINY_LIMIT, chosen);
+            List<Integer> chosenList = toList(take(TINY_LIMIT, chosen));
+            if (!isEmpty(p.a)) {
+                assertEquals(p, head(chosenList), head(p.a));
+            }
+            assertTrue(p, all(i -> elem(i, p.a) || elem(i, p.b), chosenList));
+        }
+    }
+
+    private void propertiesChoose() {
+        initialize("choose(Iterable<T>, Iterable<T>)");
+        Iterable<Pair<List<Integer>, List<Integer>>> ps = P.pairs(
+                P.withScale(4).lists(P.withNull(P.integersGeometric()))
+        );
+        for (Pair<List<Integer>, List<Integer>> p : take(LIMIT, ps)) {
+            Iterable<Integer> chosen = EP.choose(p.a, p.b);
+            testNoRemove(chosen);
+            testHasNext(chosen);
+            List<Integer> chosenList = toList(chosen);
+            if (!p.a.isEmpty()) {
+                assertEquals(p, head(chosenList), head(p.a));
+            }
+            assertEquals(p, chosenList.size(), p.a.size() + p.b.size());
+            assertTrue(p, all(i -> elem(i, p.a) || elem(i, p.b), chosenList));
+        }
+
+        Iterable<Pair<Iterable<Integer>, Iterable<Integer>>> ps2 = P.pairs(
+                P.prefixPermutations(EP.withNull(EP.naturalIntegers()))
+        );
+        for (Pair<Iterable<Integer>, Iterable<Integer>> p : take(LIMIT, ps2)) {
+            Iterable<Integer> chosen = EP.choose(p.a, p.b);
+            testNoRemove(TINY_LIMIT, chosen);
+            List<Integer> chosenList = toList(take(TINY_LIMIT, chosen));
+            if (!isEmpty(p.a)) {
+                assertEquals(p, head(chosenList), head(p.a));
+            }
+            assertTrue(p, all(i -> elem(i, p.a) || elem(i, p.b), chosenList));
         }
     }
 
