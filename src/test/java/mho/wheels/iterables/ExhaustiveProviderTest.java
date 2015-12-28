@@ -9462,6 +9462,202 @@ public strictfp class ExhaustiveProviderTest {
         } catch (IllegalArgumentException ignored) {}
     }
 
+    private static <A, B> void eithersSuccessive_helper(
+            @NotNull Iterable<A> as,
+            @NotNull Iterable<B> bs,
+            @NotNull String output
+    ) {
+        Iterable<Either<A, B>> es = EP.eithersSuccessive(as, bs);
+        aeqit(es, output);
+        testNoRemove(es);
+    }
+
+    @Test
+    public void testEithersSuccessive() {
+        eithersSuccessive_helper(Arrays.asList(1, 2, 3, 4), fromString("abcd"),
+                "[<1, >, <2, >, <3, >, <4, >, <, a>, <, b>, <, c>, <, d>]");
+        eithersSuccessive_helper(Arrays.asList(1, 2, null, 4), fromString("abcd"),
+                "[<1, >, <2, >, <null, >, <4, >, <, a>, <, b>, <, c>, <, d>]");
+        eithersSuccessive_helper(Arrays.asList(1, 2), fromString("abcd"),
+                "[<1, >, <2, >, <, a>, <, b>, <, c>, <, d>]");
+        eithersSuccessive_helper(Arrays.asList(1, 2, 3, 4), fromString("ab"),
+                "[<1, >, <2, >, <3, >, <4, >, <, a>, <, b>]");
+        eithersSuccessive_helper(Collections.emptyList(), fromString("abcd"), "[<, a>, <, b>, <, c>, <, d>]");
+        eithersSuccessive_helper(Collections.emptyList(), Collections.emptyList(), "[]");
+        simpleProviderHelper(EP.eithersSuccessive(EP.naturalBigIntegers(), fromString("abcd")),
+                "[<0, >, <1, >, <2, >, <3, >, <4, >, <5, >, <6, >, <7, >, <8, >, <9, >, <10, >, <11, >, <12, >," +
+                " <13, >, <14, >, <15, >, <16, >, <17, >, <18, >, <19, >, ...]");
+        simpleProviderHelper(EP.eithersSuccessive(fromString("abcd"), EP.naturalBigIntegers()),
+                "[<a, >, <b, >, <c, >, <d, >, <, 0>, <, 1>, <, 2>, <, 3>, <, 4>, <, 5>, <, 6>, <, 7>, <, 8>, <, 9>," +
+                " <, 10>, <, 11>, <, 12>, <, 13>, <, 14>, <, 15>, ...]");
+        simpleProviderHelper(EP.eithersSuccessive(EP.positiveBigIntegers(), EP.negativeBigIntegers()),
+                "[<1, >, <2, >, <3, >, <4, >, <5, >, <6, >, <7, >, <8, >, <9, >, <10, >, <11, >, <12, >, <13, >," +
+                " <14, >, <15, >, <16, >, <17, >, <18, >, <19, >, <20, >, ...]");
+    }
+
+    private static <A, B> void eithersSquareRootOrder_helper(
+            @NotNull Iterable<A> as,
+            @NotNull Iterable<B> bs,
+            @NotNull String output
+    ) {
+        Iterable<Either<A, B>> es = EP.eithersSquareRootOrder(as, bs);
+        aeqit(es, output);
+        testNoRemove(es);
+    }
+
+    @Test
+    public void testEithersSquareRootOrder() {
+        eithersSquareRootOrder_helper(Arrays.asList(1, 2, 3, 4), fromString("abcd"),
+                "[<, a>, <, b>, <1, >, <2, >, <, c>, <3, >, <4, >, <, d>]");
+        eithersSquareRootOrder_helper(Arrays.asList(1, 2, null, 4), fromString("abcd"),
+                "[<, a>, <, b>, <1, >, <2, >, <, c>, <null, >, <4, >, <, d>]");
+        eithersSquareRootOrder_helper(Arrays.asList(1, 2), fromString("abcd"),
+                "[<, a>, <, b>, <1, >, <2, >, <, c>, <, d>]");
+        eithersSquareRootOrder_helper(Arrays.asList(1, 2, 3, 4), fromString("ab"),
+                "[<, a>, <, b>, <1, >, <2, >, <3, >, <4, >]");
+        eithersSquareRootOrder_helper(Collections.emptyList(), fromString("abcd"), "[<, a>, <, b>, <, c>, <, d>]");
+        eithersSquareRootOrder_helper(Collections.emptyList(), Collections.emptyList(), "[]");
+        simpleProviderHelper(EP.eithersSquareRootOrder(EP.naturalBigIntegers(), fromString("abcd")),
+                "[<, a>, <, b>, <0, >, <1, >, <, c>, <2, >, <3, >, <4, >, <5, >, <, d>, <6, >, <7, >, <8, >, <9, >," +
+                " <10, >, <11, >, <12, >, <13, >, <14, >, <15, >, ...]");
+        simpleProviderHelper(EP.eithersSquareRootOrder(fromString("abcd"), EP.naturalBigIntegers()),
+                "[<, 0>, <, 1>, <a, >, <b, >, <, 2>, <c, >, <d, >, <, 3>, <, 4>, <, 5>, <, 6>, <, 7>, <, 8>, <, 9>," +
+                " <, 10>, <, 11>, <, 12>, <, 13>, <, 14>, <, 15>, ...]");
+        simpleProviderHelper(EP.eithersSquareRootOrder(EP.positiveBigIntegers(), EP.negativeBigIntegers()),
+                "[<, -1>, <, -2>, <1, >, <2, >, <, -3>, <3, >, <4, >, <5, >, <6, >, <, -4>, <7, >, <8, >, <9, >," +
+                " <10, >, <11, >, <12, >, <, -5>, <13, >, <14, >, <15, >, ...]");
+    }
+
+    private static <A, B> void eithersLogarithmicOrder_helper(
+            @NotNull Iterable<A> as,
+            @NotNull Iterable<B> bs,
+            @NotNull String output
+    ) {
+        Iterable<Either<A, B>> es = EP.eithersLogarithmicOrder(as, bs);
+        aeqit(es, output);
+        testNoRemove(es);
+    }
+
+    @Test
+    public void testEithersLogarithmicOrder() {
+        eithersLogarithmicOrder_helper(Arrays.asList(1, 2, 3, 4), fromString("abcd"),
+                "[<1, >, <, a>, <, b>, <2, >, <, c>, <3, >, <4, >, <, d>]");
+        eithersLogarithmicOrder_helper(Arrays.asList(1, 2, null, 4), fromString("abcd"),
+                "[<1, >, <, a>, <, b>, <2, >, <, c>, <null, >, <4, >, <, d>]");
+        eithersLogarithmicOrder_helper(Arrays.asList(1, 2), fromString("abcd"),
+                "[<1, >, <, a>, <, b>, <2, >, <, c>, <, d>]");
+        eithersLogarithmicOrder_helper(Arrays.asList(1, 2, 3, 4), fromString("ab"),
+                "[<1, >, <, a>, <, b>, <2, >, <3, >, <4, >]");
+        eithersLogarithmicOrder_helper(Collections.emptyList(), fromString("abcd"), "[<, a>, <, b>, <, c>, <, d>]");
+        eithersLogarithmicOrder_helper(Collections.emptyList(), Collections.emptyList(), "[]");
+        simpleProviderHelper(EP.eithersLogarithmicOrder(EP.naturalBigIntegers(), fromString("abcd")),
+                "[<0, >, <, a>, <, b>, <1, >, <, c>, <2, >, <3, >, <4, >, <, d>, <5, >, <6, >, <7, >, <8, >, <9, >," +
+                " <10, >, <11, >, <12, >, <13, >, <14, >, <15, >, ...]");
+        simpleProviderHelper(EP.eithersLogarithmicOrder(fromString("abcd"), EP.naturalBigIntegers()),
+                "[<a, >, <, 0>, <, 1>, <b, >, <, 2>, <c, >, <d, >, <, 3>, <, 4>, <, 5>, <, 6>, <, 7>, <, 8>, <, 9>," +
+                " <, 10>, <, 11>, <, 12>, <, 13>, <, 14>, <, 15>, ...]");
+        simpleProviderHelper(EP.eithersLogarithmicOrder(EP.positiveBigIntegers(), EP.negativeBigIntegers()),
+                "[<1, >, <, -1>, <, -2>, <2, >, <, -3>, <3, >, <4, >, <5, >, <, -4>, <6, >, <7, >, <8, >, <9, >," +
+                " <10, >, <11, >, <12, >, <, -5>, <13, >, <14, >, <15, >, ...]");
+    }
+
+    private static <A, B> void eithers_helper(
+            @NotNull Iterable<A> as,
+            @NotNull Iterable<B> bs,
+            @NotNull String output
+    ) {
+        Iterable<Either<A, B>> es = EP.eithers(as, bs);
+        aeqit(es, output);
+        testNoRemove(es);
+    }
+
+    @Test
+    public void testEithers() {
+        eithers_helper(Arrays.asList(1, 2, 3, 4), fromString("abcd"),
+                "[<1, >, <, a>, <2, >, <, b>, <3, >, <, c>, <4, >, <, d>]");
+        eithers_helper(Arrays.asList(1, 2, null, 4), fromString("abcd"),
+                "[<1, >, <, a>, <2, >, <, b>, <null, >, <, c>, <4, >, <, d>]");
+        eithers_helper(Arrays.asList(1, 2), fromString("abcd"), "[<1, >, <, a>, <2, >, <, b>, <, c>, <, d>]");
+        eithers_helper(Arrays.asList(1, 2, 3, 4), fromString("ab"), "[<1, >, <, a>, <2, >, <, b>, <3, >, <4, >]");
+        eithers_helper(Collections.emptyList(), fromString("abcd"), "[<, a>, <, b>, <, c>, <, d>]");
+        eithers_helper(Collections.emptyList(), Collections.emptyList(), "[]");
+        simpleProviderHelper(EP.eithers(EP.naturalBigIntegers(), fromString("abcd")),
+                "[<0, >, <, a>, <1, >, <, b>, <2, >, <, c>, <3, >, <, d>, <4, >, <5, >, <6, >, <7, >, <8, >, <9, >," +
+                " <10, >, <11, >, <12, >, <13, >, <14, >, <15, >, ...]");
+        simpleProviderHelper(EP.eithers(fromString("abcd"), EP.naturalBigIntegers()),
+                "[<a, >, <, 0>, <b, >, <, 1>, <c, >, <, 2>, <d, >, <, 3>, <, 4>, <, 5>, <, 6>, <, 7>, <, 8>, <, 9>," +
+                " <, 10>, <, 11>, <, 12>, <, 13>, <, 14>, <, 15>, ...]");
+        simpleProviderHelper(EP.eithers(EP.positiveBigIntegers(), EP.negativeBigIntegers()),
+                "[<1, >, <, -1>, <2, >, <, -2>, <3, >, <, -3>, <4, >, <, -4>, <5, >, <, -5>, <6, >, <, -6>, <7, >," +
+                " <, -7>, <8, >, <, -8>, <9, >, <, -9>, <10, >, <, -10>, ...]");
+    }
+
+    private static void chooseSquareRootOrder_helper(@NotNull String as, @NotNull String bs, @NotNull String output) {
+        Iterable<Integer> es = EP.chooseSquareRootOrder(readIntegerListWithNulls(as), readIntegerListWithNulls(bs));
+        aeqit(es, output);
+        testNoRemove(es);
+    }
+
+    @Test
+    public void testChooseSquareRootOrder() {
+        chooseSquareRootOrder_helper("[1, 2, 3, 4]", "[-1, -2, -3, -4]", "[-1, -2, 1, 2, -3, 3, 4, -4]");
+        chooseSquareRootOrder_helper("[1, 2, null, 4]", "[-1, -2, -3, -4]", "[-1, -2, 1, 2, -3, null, 4, -4]");
+        chooseSquareRootOrder_helper("[1, 2]", "[-1, -2, -3, -4]", "[-1, -2, 1, 2, -3, -4]");
+        chooseSquareRootOrder_helper("[1, 2, 3, 4]", "[-1, -2]", "[-1, -2, 1, 2, 3, 4]");
+        chooseSquareRootOrder_helper("[]", "[1, 2, 3, 4]", "[1, 2, 3, 4]");
+        chooseSquareRootOrder_helper("[]", "[]", "[]");
+        simpleProviderHelper(EP.chooseSquareRootOrder(EP.naturalIntegers(), Arrays.asList(-1, -2, -3, -4)),
+                "[-1, -2, 0, 1, -3, 2, 3, 4, 5, -4, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, ...]");
+        simpleProviderHelper(EP.chooseSquareRootOrder(Arrays.asList(-1, -2, -3, -4), EP.naturalIntegers()),
+                "[0, 1, -1, -2, 2, -3, -4, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, ...]");
+        simpleProviderHelper(EP.chooseSquareRootOrder(EP.positiveIntegers(), EP.negativeIntegers()),
+                "[-1, -2, 1, 2, -3, 3, 4, 5, 6, -4, 7, 8, 9, 10, 11, 12, -5, 13, 14, 15, ...]");
+    }
+
+    private static void chooseLogarithmicOrder_helper(@NotNull String as, @NotNull String bs, @NotNull String output) {
+        Iterable<Integer> es = EP.chooseLogarithmicOrder(readIntegerListWithNulls(as), readIntegerListWithNulls(bs));
+        aeqit(es, output);
+        testNoRemove(es);
+    }
+
+    @Test
+    public void testChooseLogarithmicOrder() {
+        chooseLogarithmicOrder_helper("[1, 2, 3, 4]", "[-1, -2, -3, -4]", "[1, -1, -2, 2, -3, 3, 4, -4]");
+        chooseLogarithmicOrder_helper("[1, 2, null, 4]", "[-1, -2, -3, -4]", "[1, -1, -2, 2, -3, null, 4, -4]");
+        chooseLogarithmicOrder_helper("[1, 2]", "[-1, -2, -3, -4]", "[1, -1, -2, 2, -3, -4]");
+        chooseLogarithmicOrder_helper("[1, 2, 3, 4]", "[-1, -2]", "[1, -1, -2, 2, 3, 4]");
+        chooseLogarithmicOrder_helper("[]", "[1, 2, 3, 4]", "[1, 2, 3, 4]");
+        chooseLogarithmicOrder_helper("[]", "[]", "[]");
+        simpleProviderHelper(EP.chooseLogarithmicOrder(EP.naturalIntegers(), Arrays.asList(-1, -2, -3, -4)),
+                "[0, -1, -2, 1, -3, 2, 3, 4, -4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, ...]");
+        simpleProviderHelper(EP.chooseLogarithmicOrder(Arrays.asList(-1, -2, -3, -4), EP.naturalIntegers()),
+                "[-1, 0, 1, -2, 2, -3, -4, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, ...]");
+        simpleProviderHelper(EP.chooseLogarithmicOrder(EP.positiveIntegers(), EP.negativeIntegers()),
+                "[1, -1, -2, 2, -3, 3, 4, 5, -4, 6, 7, 8, 9, 10, 11, 12, -5, 13, 14, 15, ...]");
+    }
+
+    private static void choose_helper(@NotNull String as, @NotNull String bs, @NotNull String output) {
+        Iterable<Integer> es = EP.choose(readIntegerListWithNulls(as), readIntegerListWithNulls(bs));
+        aeqit(es, output);
+        testNoRemove(es);
+    }
+
+    @Test
+    public void testChoose() {
+        choose_helper("[1, 2, 3, 4]", "[-1, -2, -3, -4]", "[1, -1, 2, -2, 3, -3, 4, -4]");
+        choose_helper("[1, 2, null, 4]", "[-1, -2, -3, -4]", "[1, -1, 2, -2, null, -3, 4, -4]");
+        choose_helper("[1, 2]", "[-1, -2, -3, -4]", "[1, -1, 2, -2, -3, -4]");
+        choose_helper("[1, 2, 3, 4]", "[-1, -2]", "[1, -1, 2, -2, 3, 4]");
+        choose_helper("[]", "[1, 2, 3, 4]", "[1, 2, 3, 4]");
+        choose_helper("[]", "[]", "[]");
+        simpleProviderHelper(EP.choose(EP.naturalIntegers(), Arrays.asList(-1, -2, -3, -4)),
+                "[0, -1, 1, -2, 2, -3, 3, -4, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, ...]");
+        simpleProviderHelper(EP.choose(Arrays.asList(-1, -2, -3, -4), EP.naturalIntegers()),
+                "[-1, 0, -2, 1, -3, 2, -4, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, ...]");
+        simpleProviderHelper(EP.choose(EP.positiveIntegers(), EP.negativeIntegers()),
+                "[1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6, 7, -7, 8, -8, 9, -9, 10, -10, ...]");
+    }
+
     private static void cartesianProduct_helper(@NotNull String input, @NotNull String output) {
         aeqit(EP.cartesianProduct(readIntegerListWithNullsLists(input)), output);
     }

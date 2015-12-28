@@ -63,8 +63,8 @@ public class Either<A, B> {
 
     public @NotNull String toString() {
         switch (slot) {
-            case A: return "[" + a + ", ]";
-            case B: return "[, " + b + "]";
+            case A: return "<" + a + ", >";
+            case B: return "<, " + b + ">";
             default: throw new IllegalStateException("unreachable");
         }
     }

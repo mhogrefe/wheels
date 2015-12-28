@@ -5997,6 +5997,27 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
+     * Returns an {@code Iterable} containing all elements from two {@code Iterable}s. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code as} cannot be null.</li>
+     *  <li>{@code bs} cannot be null.</li>
+     *  <li>The result is not null.</li>
+     * </ul>
+     *
+     * Length is |{@code as}|+|{@code bs}|
+     *
+     * @param as the first {@code Iterable}
+     * @param bs the second {@code Iterable}
+     * @param <T> the type of the {@code Iterables}' elements
+     * @return all elements from {@code as} and {@code bs}
+     */
+    @Override
+    public @NotNull <T> Iterable<T> choose(@NotNull Iterable<T> as, @NotNull Iterable<T> bs) {
+        return mux(Arrays.asList(as, bs));
+    }
+
+    /**
      * Given a {@code List} of {@code Integer}s, generates the Cartesian product of the indices [0, ..., i–1] for each
      * element i.
      *
