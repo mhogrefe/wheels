@@ -2039,6 +2039,141 @@ public class ExhaustiveProviderDemos extends Demos {
         }
     }
 
+    private void demoEithersSuccessive_finite() {
+        Iterable<Pair<List<Integer>, List<Integer>>> ps = P.pairs(
+                P.withScale(4).lists(P.withNull(P.integersGeometric()))
+        );
+        for (Pair<List<Integer>, List<Integer>> p : take(LIMIT, ps)) {
+            System.out.println("eithersSuccessive(" + p.a + ", " + p.b + ") = " + its(EP.eithersSuccessive(p.a, p.b)));
+        }
+    }
+
+    private void demoEithersSuccessive_infinite() {
+        Iterable<Pair<Iterable<Integer>, Iterable<Integer>>> ps = P.pairs(
+                P.prefixPermutations(EP.withNull(EP.naturalIntegers()))
+        );
+        for (Pair<Iterable<Integer>, Iterable<Integer>> p : take(MEDIUM_LIMIT, ps)) {
+            System.out.println("eithersSuccessive(" + its(p.a) + ", " + its(p.b) + ") = " +
+                    its(EP.eithersSuccessive(p.a, p.b)));
+        }
+    }
+
+    private void demoEithersSquareRootOrder_finite() {
+        Iterable<Pair<List<Integer>, List<Integer>>> ps = P.pairs(
+                P.withScale(4).lists(P.withNull(P.integersGeometric()))
+        );
+        for (Pair<List<Integer>, List<Integer>> p : take(LIMIT, ps)) {
+            System.out.println("eithersSquareRootOrder(" + p.a + ", " + p.b + ") = " +
+                    its(EP.eithersSquareRootOrder(p.a, p.b)));
+        }
+    }
+
+    private void demoEithersSquareRootOrder_infinite() {
+        Iterable<Pair<Iterable<Integer>, Iterable<Integer>>> ps = P.pairs(
+                P.prefixPermutations(EP.withNull(EP.naturalIntegers()))
+        );
+        for (Pair<Iterable<Integer>, Iterable<Integer>> p : take(MEDIUM_LIMIT, ps)) {
+            System.out.println("eithersSquareRootOrder(" + its(p.a) + ", " + its(p.b) + ") = " +
+                    its(EP.eithersSquareRootOrder(p.a, p.b)));
+        }
+    }
+
+    private void demoEithersLogarithmicOrder_finite() {
+        Iterable<Pair<List<Integer>, List<Integer>>> ps = P.pairs(
+                P.withScale(4).lists(P.withNull(P.integersGeometric()))
+        );
+        for (Pair<List<Integer>, List<Integer>> p : take(LIMIT, ps)) {
+            System.out.println("eithersLogarithmicOrder(" + p.a + ", " + p.b + ") = " +
+                    its(EP.eithersLogarithmicOrder(p.a, p.b)));
+        }
+    }
+
+    private void demoEithersLogarithmicOrder_infinite() {
+        Iterable<Pair<Iterable<Integer>, Iterable<Integer>>> ps = P.pairs(
+                P.prefixPermutations(EP.withNull(EP.naturalIntegers()))
+        );
+        for (Pair<Iterable<Integer>, Iterable<Integer>> p : take(MEDIUM_LIMIT, ps)) {
+            System.out.println("eithersLogarithmicOrder(" + its(p.a) + ", " + its(p.b) + ") = " +
+                    its(EP.eithersLogarithmicOrder(p.a, p.b)));
+        }
+    }
+
+    private void demoEithers_finite() {
+        Iterable<Pair<List<Integer>, List<Integer>>> ps = P.pairs(
+                P.withScale(4).lists(P.withNull(P.integersGeometric()))
+        );
+        for (Pair<List<Integer>, List<Integer>> p : take(LIMIT, ps)) {
+            System.out.println("eithers(" + p.a + ", " + p.b + ") = " + its(EP.eithers(p.a, p.b)));
+        }
+    }
+
+    private void demoEithers_infinite() {
+        Iterable<Pair<Iterable<Integer>, Iterable<Integer>>> ps = P.pairs(
+                P.prefixPermutations(EP.withNull(EP.naturalIntegers()))
+        );
+        for (Pair<Iterable<Integer>, Iterable<Integer>> p : take(MEDIUM_LIMIT, ps)) {
+            System.out.println("eithers(" + its(p.a) + ", " + its(p.b) + ") = " + its(EP.eithers(p.a, p.b)));
+        }
+    }
+
+    private void demoChooseSquareRootOrder_finite() {
+        Iterable<Pair<List<Integer>, List<Integer>>> ps = P.pairs(
+                P.withScale(4).lists(P.withNull(P.integersGeometric()))
+        );
+        for (Pair<List<Integer>, List<Integer>> p : take(LIMIT, ps)) {
+            System.out.println("chooseSquareRootOrder(" + p.a + ", " + p.b + ") = " +
+                    its(EP.chooseSquareRootOrder(p.a, p.b)));
+        }
+    }
+
+    private void demoChooseSquareRootOrder_infinite() {
+        Iterable<Pair<Iterable<Integer>, Iterable<Integer>>> ps = P.pairs(
+                P.prefixPermutations(EP.withNull(EP.naturalIntegers()))
+        );
+        for (Pair<Iterable<Integer>, Iterable<Integer>> p : take(MEDIUM_LIMIT, ps)) {
+            System.out.println("chooseSquareRootOrder(" + its(p.a) + ", " + its(p.b) + ") = " +
+                    its(EP.chooseSquareRootOrder(p.a, p.b)));
+        }
+    }
+
+    private void demoChooseLogarithmicOrder_finite() {
+        Iterable<Pair<List<Integer>, List<Integer>>> ps = P.pairs(
+                P.withScale(4).lists(P.withNull(P.integersGeometric()))
+        );
+        for (Pair<List<Integer>, List<Integer>> p : take(LIMIT, ps)) {
+            System.out.println("chooseLogarithmicOrder(" + p.a + ", " + p.b + ") = " +
+                    its(EP.chooseLogarithmicOrder(p.a, p.b)));
+        }
+    }
+
+    private void demoChooseLogarithmicOrder_infinite() {
+        Iterable<Pair<Iterable<Integer>, Iterable<Integer>>> ps = P.pairs(
+                P.prefixPermutations(EP.withNull(EP.naturalIntegers()))
+        );
+        for (Pair<Iterable<Integer>, Iterable<Integer>> p : take(MEDIUM_LIMIT, ps)) {
+            System.out.println("chooseLogarithmicOrder(" + its(p.a) + ", " + its(p.b) + ") = " +
+                    its(EP.chooseLogarithmicOrder(p.a, p.b)));
+        }
+    }
+
+    private void demoChoose_finite() {
+        Iterable<Pair<List<Integer>, List<Integer>>> ps = P.pairs(
+                P.withScale(4).lists(P.withNull(P.integersGeometric()))
+        );
+        for (Pair<List<Integer>, List<Integer>> p : take(LIMIT, ps)) {
+            System.out.println("choose(" + p.a + ", " + p.b + ") = " + its(EP.choose(p.a, p.b)));
+        }
+    }
+
+    private void demoChoose_infinite() {
+        Iterable<Pair<Iterable<Integer>, Iterable<Integer>>> ps = P.pairs(
+                P.prefixPermutations(EP.withNull(EP.naturalIntegers()))
+        );
+        for (Pair<Iterable<Integer>, Iterable<Integer>> p : take(MEDIUM_LIMIT, ps)) {
+            System.out.println("choose(" + its(p.a) + ", " + its(p.b) + ") = " + its(EP.choose(p.a, p.b)));
+        }
+    }
+
     private void demoCartesianProduct() {
         Iterable<List<List<Integer>>> xsss = P.withScale(4).lists(
                 P.withScale(4).lists(P.withNull(P.integersGeometric()))
