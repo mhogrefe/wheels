@@ -4,6 +4,7 @@ import mho.wheels.io.Readers;
 import mho.wheels.iterables.ExhaustiveProvider;
 import mho.wheels.iterables.IterableUtils;
 import mho.wheels.iterables.RandomProvider;
+import mho.wheels.structures.Either;
 import mho.wheels.structures.NullableOptional;
 import mho.wheels.testing.Testing;
 import org.jetbrains.annotations.NotNull;
@@ -5958,6 +5959,176 @@ public strictfp class CompoundTest {
         );
         stringSubsetsAtLeast_int_fail_helper(5, 5);
         stringSubsetsAtLeast_int_fail_helper(4, 5);
+    }
+
+    private static void eithers_helper(
+            int scale,
+            @NotNull String as,
+            @NotNull String bs,
+            @NotNull String output,
+            @NotNull String topSampleCount
+    ) {
+        List<Either<Integer, Integer>> sample = toList(
+                take(
+                        DEFAULT_SAMPLE_SIZE,
+                        P.withScale(scale).eithers(
+                                P.uniformSample(readIntegerListWithNulls(as)),
+                                P.uniformSample(readIntegerListWithNulls(bs))
+                        )
+                )
+        );
+        aeqitLimit(TINY_LIMIT, sample, output);
+        aeq(topSampleCount(DEFAULT_TOP_COUNT, sample), topSampleCount);
+        P.reset();
+    }
+
+    private static void eithers_fail_helper(int scale, @NotNull Iterable<Integer> as, @NotNull Iterable<Integer> bs) {
+        try {
+            toList(P.withScale(scale).eithers(as, bs));
+            fail();
+        } catch (NoSuchElementException | IllegalStateException ignored) {}
+        finally {
+            P.reset();
+        }
+    }
+
+    @Test
+    public void testEithers() {
+        eithers_helper(
+                1,
+                "[1]",
+                "[2]",
+                "[<1, >, <, 2>, <1, >, <1, >, <1, >, <1, >, <1, >, <1, >, <1, >, <, 2>, <1, >, <, 2>, <, 2>, <1, >," +
+                " <, 2>, <, 2>, <1, >, <1, >, <, 2>, <1, >, ...]",
+                "{<1, >=500745, <, 2>=499255}"
+        );
+        eithers_helper(
+                2,
+                "[1]",
+                "[2]",
+                "[<1, >, <1, >, <1, >, <1, >, <1, >, <1, >, <1, >, <1, >, <1, >, <, 2>, <1, >, <1, >, <1, >, <1, >," +
+                " <1, >, <1, >, <1, >, <1, >, <, 2>, <1, >, ...]",
+                "{<1, >=667157, <, 2>=332843}"
+        );
+        eithers_helper(
+                10,
+                "[1]",
+                "[2]",
+                "[<1, >, <1, >, <1, >, <1, >, <1, >, <1, >, <1, >, <1, >, <1, >, <1, >, <1, >, <1, >, <1, >, <1, >," +
+                " <1, >, <1, >, <1, >, <1, >, <1, >, <, 2>, ...]",
+                "{<1, >=909228, <, 2>=90772}"
+        );
+        eithers_helper(
+                1,
+                "[1, 2, 3]",
+                "[null, -2, -3]",
+                "[<3, >, <1, >, <2, >, <2, >, <2, >, <2, >, <, -3>, <2, >, <, -3>, <1, >, <3, >, <3, >, <2, >," +
+                " <, -3>, <, -2>, <, -2>, <3, >, <3, >, <, -3>, <3, >, ...]",
+                "{<3, >=167097, <1, >=166824, <, null>=166735, <2, >=166483, <, -2>=166476, <, -3>=166385}"
+        );
+        eithers_helper(
+                2,
+                "[1, 2, 3]",
+                "[null, -2, -3]",
+                "[<3, >, <2, >, <, -2>, <2, >, <, -3>, <1, >, <, -3>, <3, >, <, null>, <3, >, <1, >, <3, >, <3, >," +
+                " <3, >, <, -2>, <3, >, <, -3>, <, -3>, <, -3>, <2, >, ...]",
+                "{<3, >=222480, <2, >=221874, <1, >=221653, <, null>=111689, <, -3>=111244, <, -2>=111060}"
+        );
+        eithers_helper(
+                10,
+                "[1, 2, 3]",
+                "[null, -2, -3]",
+                "[<3, >, <2, >, <2, >, <1, >, <3, >, <3, >, <2, >, <3, >, <2, >, <3, >, <1, >, <, -3>, <3, >, <1, >," +
+                " <3, >, <3, >, <3, >, <2, >, <2, >, <3, >, ...]",
+                "{<3, >=303798, <2, >=302606, <1, >=302512, <, -2>=30501, <, null>=30450, <, -3>=30133}"
+        );
+        eithers_fail_helper(1, Arrays.asList(-1, -2, -3), P.naturalIntegers());
+        eithers_fail_helper(1, P.naturalIntegers(), Arrays.asList(-1, -2, -3));
+        eithers_fail_helper(1, Arrays.asList(1, 2, 3), Arrays.asList(-1, -2, -3));
+        eithers_fail_helper(0, P.naturalIntegers(), P.negativeIntegers());
+        eithers_fail_helper(-1, P.naturalIntegers(), P.negativeIntegers());
+    }
+
+    private static void choose_helper(
+            int scale,
+            @NotNull String as,
+            @NotNull String bs,
+            @NotNull String output,
+            @NotNull String topSampleCount
+    ) {
+        List<Integer> sample = toList(
+                take(
+                        DEFAULT_SAMPLE_SIZE,
+                        P.withScale(scale).choose(
+                                P.uniformSample(readIntegerListWithNulls(as)),
+                                P.uniformSample(readIntegerListWithNulls(bs))
+                        )
+                )
+        );
+        aeqitLimit(TINY_LIMIT, sample, output);
+        aeq(topSampleCount(DEFAULT_TOP_COUNT, sample), topSampleCount);
+        P.reset();
+    }
+
+    private static void choose_fail_helper(int scale, @NotNull Iterable<Integer> as, @NotNull Iterable<Integer> bs) {
+        try {
+            toList(P.withScale(scale).choose(as, bs));
+            fail();
+        } catch (NoSuchElementException | IllegalStateException ignored) {}
+        finally {
+            P.reset();
+        }
+    }
+
+    @Test
+    public void testChoose() {
+        choose_helper(
+                1,
+                "[1]",
+                "[2]",
+                "[1, 2, 1, 1, 1, 1, 1, 1, 1, 2, 1, 2, 2, 1, 2, 2, 1, 1, 2, 1, ...]",
+                "{1=500745, 2=499255}"
+        );
+        choose_helper(
+                2,
+                "[1]",
+                "[2]",
+                "[1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, ...]",
+                "{1=667157, 2=332843}"
+        );
+        choose_helper(
+                10,
+                "[1]",
+                "[2]",
+                "[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, ...]",
+                "{1=909228, 2=90772}"
+        );
+        choose_helper(
+                1,
+                "[1, 2, 3]",
+                "[null, -2, -3]",
+                "[3, 1, 2, 2, 2, 2, -3, 2, -3, 1, 3, 3, 2, -3, -2, -2, 3, 3, -3, 3, ...]",
+                "{3=167097, 1=166824, null=166735, 2=166483, -2=166476, -3=166385}"
+        );
+        choose_helper(
+                2,
+                "[1, 2, 3]",
+                "[null, -2, -3]",
+                "[3, 2, -2, 2, -3, 1, -3, 3, null, 3, 1, 3, 3, 3, -2, 3, -3, -3, -3, 2, ...]",
+                "{3=222480, 2=221874, 1=221653, null=111689, -3=111244, -2=111060}"
+        );
+        choose_helper(
+                10,
+                "[1, 2, 3]",
+                "[null, -2, -3]",
+                "[3, 2, 2, 1, 3, 3, 2, 3, 2, 3, 1, -3, 3, 1, 3, 3, 3, 2, 2, 3, ...]",
+                "{3=303798, 2=302606, 1=302512, -2=30501, null=30450, -3=30133}"
+        );
+        choose_fail_helper(1, Arrays.asList(-1, -2, -3), P.naturalIntegers());
+        choose_fail_helper(1, P.naturalIntegers(), Arrays.asList(-1, -2, -3));
+        choose_fail_helper(1, Arrays.asList(1, 2, 3), Arrays.asList(-1, -2, -3));
+        choose_fail_helper(0, P.naturalIntegers(), P.negativeIntegers());
+        choose_fail_helper(-1, P.naturalIntegers(), P.negativeIntegers());
     }
 
     private static void cartesianProduct_helper(

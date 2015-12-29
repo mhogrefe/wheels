@@ -4154,6 +4154,9 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull <A, B> Iterable<Either<A, B>> eithers(@NotNull Iterable<A> as, @NotNull Iterable<B> bs) {
+        if (scale < 1) {
+            throw new IllegalStateException("this must have a positive scale. Invalid scale: " + scale);
+        }
         Iterable<Integer> range = range(0, scale);
         return () -> new NoRemoveIterator<Either<A, B>>() {
             private final @NotNull Iterator<Integer> indices = range.iterator();
