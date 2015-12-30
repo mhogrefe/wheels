@@ -1,6 +1,7 @@
 package mho.wheels.numberUtils;
 
 import mho.wheels.io.Readers;
+import mho.wheels.iterables.ExhaustiveProvider;
 import mho.wheels.iterables.IterableUtils;
 import mho.wheels.iterables.NoRemoveIterator;
 import mho.wheels.structures.Pair;
@@ -1024,7 +1025,7 @@ public class IntegerUtils {
         int outputSize = max(xBits.size(), yBits.size()) * 3;
         Iterable<Iterable<Boolean>> xChunks = map(w -> w, chunk(2, concat(xBits, repeat(false))));
         Iterable<Iterable<Boolean>> yChunks = map(Arrays::asList, concat(yBits, repeat(false)));
-        return fromBits(take(outputSize, concat(IterableUtils.mux(Arrays.asList(yChunks, xChunks)))));
+        return fromBits(take(outputSize, concat(ExhaustiveProvider.INSTANCE.choose(yChunks, xChunks))));
     }
 
     /**

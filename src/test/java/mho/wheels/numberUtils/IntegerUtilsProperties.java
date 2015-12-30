@@ -1934,7 +1934,7 @@ public class IntegerUtilsProperties extends TestProperties {
         initialize("");
         System.out.println("\t\ttesting fromDigit(char) properties...");
 
-        for (char c : take(LIMIT, IterableUtils.mux(Arrays.asList(P.range('0', '9'), P.range('A', 'Z'))))) {
+        for (char c : take(LIMIT, EP.choose(P.range('0', '9'), P.range('A', 'Z')))) {
             int i = fromDigit(c);
             assertTrue(c, i >= 0 && i < 36);
             assertEquals(c, c, toDigit(i));
