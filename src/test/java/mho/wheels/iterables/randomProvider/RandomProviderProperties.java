@@ -196,6 +196,8 @@ public class RandomProviderProperties extends TestProperties {
         propertiesSubsetsAtLeast();
         propertiesStringSubsetsAtLeast_int_String();
         propertiesStringSubsetsAtLeast_int();
+        propertiesEithers();
+        propertiesChoose();
         propertiesCartesianProduct();
         propertiesRepeatingIterables();
         propertiesRepeatingIterablesDistinctAtLeast();
@@ -3989,6 +3991,102 @@ public class RandomProviderProperties extends TestProperties {
                 p.a.stringSubsetsAtLeast(p.b);
                 fail(p);
             } catch (IllegalStateException ignored) {}
+        }
+    }
+
+    private void propertiesEithers() {
+        initialize("either(Iterable<A>, Iterable<B>)");
+        Iterable<Triple<RandomProvider, Iterable<Integer>, Iterable<Integer>>> ts = P.triples(
+                filterInfinite(rp -> rp.getScale() > 0, P.randomProvidersDefaultSecondaryScale()),
+                P.prefixPermutations(EP.naturalIntegers()),
+                P.prefixPermutations(EP.naturalIntegers())
+        );
+        for (Triple<RandomProvider, Iterable<Integer>, Iterable<Integer>> t : take(LIMIT, ts)) {
+            simpleTest(t.a, t.a.eithers(t.b, t.c), e -> true);
+        }
+
+        Iterable<Triple<RandomProvider, Iterable<Integer>, Iterable<Integer>>> tsFail = P.triples(
+                filterInfinite(rp -> rp.getScale() <= 0, P.randomProvidersDefaultSecondaryScale()),
+                P.prefixPermutations(EP.naturalIntegers()),
+                P.prefixPermutations(EP.naturalIntegers())
+        );
+        for (Triple<RandomProvider, Iterable<Integer>, Iterable<Integer>> t : take(LIMIT, tsFail)) {
+            try {
+                t.a.eithers(t.b, t.c);
+                fail(t);
+            } catch (IllegalStateException ignored) {}
+        }
+
+        tsFail = P.triples(
+                filterInfinite(rp -> rp.getScale() > 0, P.randomProvidersDefaultSecondaryScale()),
+                map(xs -> ((Iterable<Integer>) xs), P.lists(P.integersGeometric())),
+                P.prefixPermutations(EP.naturalIntegers())
+        );
+        for (Triple<RandomProvider, Iterable<Integer>, Iterable<Integer>> t : take(LIMIT, tsFail)) {
+            try {
+                toList(t.a.eithers(t.b, t.c));
+                fail(t);
+            } catch (NoSuchElementException ignored) {}
+        }
+
+        tsFail = P.triples(
+                filterInfinite(rp -> rp.getScale() > 0, P.randomProvidersDefaultSecondaryScale()),
+                P.prefixPermutations(EP.naturalIntegers()),
+                map(xs -> ((Iterable<Integer>) xs), P.lists(P.integersGeometric()))
+        );
+        for (Triple<RandomProvider, Iterable<Integer>, Iterable<Integer>> t : take(LIMIT, tsFail)) {
+            try {
+                toList(t.a.eithers(t.b, t.c));
+                fail(t);
+            } catch (NoSuchElementException ignored) {}
+        }
+    }
+
+    private void propertiesChoose() {
+        initialize("choose(Iterable<A>, Iterable<B>)");
+        Iterable<Triple<RandomProvider, Iterable<Integer>, Iterable<Integer>>> ts = P.triples(
+                filterInfinite(rp -> rp.getScale() > 0, P.randomProvidersDefaultSecondaryScale()),
+                P.prefixPermutations(EP.naturalIntegers()),
+                P.prefixPermutations(EP.naturalIntegers())
+        );
+        for (Triple<RandomProvider, Iterable<Integer>, Iterable<Integer>> t : take(LIMIT, ts)) {
+            simpleTest(t.a, t.a.choose(t.b, t.c), i -> true);
+        }
+
+        Iterable<Triple<RandomProvider, Iterable<Integer>, Iterable<Integer>>> tsFail = P.triples(
+                filterInfinite(rp -> rp.getScale() <= 0, P.randomProvidersDefaultSecondaryScale()),
+                P.prefixPermutations(EP.naturalIntegers()),
+                P.prefixPermutations(EP.naturalIntegers())
+        );
+        for (Triple<RandomProvider, Iterable<Integer>, Iterable<Integer>> t : take(LIMIT, tsFail)) {
+            try {
+                t.a.choose(t.b, t.c);
+                fail(t);
+            } catch (IllegalStateException ignored) {}
+        }
+
+        tsFail = P.triples(
+                filterInfinite(rp -> rp.getScale() > 0, P.randomProvidersDefaultSecondaryScale()),
+                map(xs -> ((Iterable<Integer>) xs), P.lists(P.integersGeometric())),
+                P.prefixPermutations(EP.naturalIntegers())
+        );
+        for (Triple<RandomProvider, Iterable<Integer>, Iterable<Integer>> t : take(LIMIT, tsFail)) {
+            try {
+                toList(t.a.choose(t.b, t.c));
+                fail(t);
+            } catch (NoSuchElementException ignored) {}
+        }
+
+        tsFail = P.triples(
+                filterInfinite(rp -> rp.getScale() > 0, P.randomProvidersDefaultSecondaryScale()),
+                P.prefixPermutations(EP.naturalIntegers()),
+                map(xs -> ((Iterable<Integer>) xs), P.lists(P.integersGeometric()))
+        );
+        for (Triple<RandomProvider, Iterable<Integer>, Iterable<Integer>> t : take(LIMIT, tsFail)) {
+            try {
+                toList(t.a.choose(t.b, t.c));
+                fail(t);
+            } catch (NoSuchElementException ignored) {}
         }
     }
 
