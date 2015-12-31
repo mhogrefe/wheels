@@ -2517,6 +2517,30 @@ public final strictfp class IterableUtils {
         return foldl(BigDecimal::multiply, BigDecimal.ONE, xs);
     }
 
+    public static int bigIntegerSumSign(@NotNull List<BigInteger> xs) {
+        if (xs.isEmpty()) return 0;
+        int compare = sumBigInteger(tail(xs)).compareTo(head(xs).negate());
+        if (compare > 0) {
+            return 1;
+        } else if (compare < 0) {
+            return -1;
+        } else {
+            return 0;
+        }
+    }
+
+    public static int bigDecimalSumSign(@NotNull List<BigDecimal> xs) {
+        if (xs.isEmpty()) return 0;
+        int compare = sumBigDecimal(tail(xs)).compareTo(head(xs).negate());
+        if (compare > 0) {
+            return 1;
+        } else if (compare < 0) {
+            return -1;
+        } else {
+            return 0;
+        }
+    }
+
     public static <T extends Comparable<T>> T minimum(@NotNull Iterable<T> xs) {
         return foldl1(Ordering::min, xs);
     }

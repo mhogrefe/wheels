@@ -1404,6 +1404,60 @@ public strictfp class IterableUtilsTest {
         } catch (NullPointerException ignored) {}
     }
 
+    private static void bigIntegerSumSign_helper(@NotNull String input, int output) {
+        aeq(bigIntegerSumSign(readBigIntegerList(input)), output);
+    }
+
+    private static void bigIntegerSumSign_fail_helper(@NotNull String input) {
+        try {
+            bigIntegerSumSign(readBigIntegerListWithNulls(input));
+            fail();
+        } catch (NullPointerException ignored) {}
+    }
+
+    @Test
+    public void testBigIntegerSumSign() {
+        bigIntegerSumSign_helper("[]", 0);
+        bigIntegerSumSign_helper("[0]", 0);
+        bigIntegerSumSign_helper("[5]", 1);
+        bigIntegerSumSign_helper("[-5]", -1);
+        bigIntegerSumSign_helper("[23, -2]", 1);
+        bigIntegerSumSign_helper("[23, -25]", -1);
+        bigIntegerSumSign_helper("[23, -23]", 0);
+        bigIntegerSumSign_helper("[1, 2, 4, -7]", 0);
+        bigIntegerSumSign_helper("[1, 2, 4, -8]", -1);
+        bigIntegerSumSign_helper("[1, 2, 4, -6]", 1);
+        bigIntegerSumSign_fail_helper("[null]");
+        bigIntegerSumSign_fail_helper("[1, 2, null]");
+    }
+
+    private static void bigDecimalSumSign_helper(@NotNull String input, int output) {
+        aeq(bigDecimalSumSign(readBigDecimalList(input)), output);
+    }
+
+    private static void bigDecimalSumSign_fail_helper(@NotNull String input) {
+        try {
+            bigDecimalSumSign(readBigDecimalListWithNulls(input));
+            fail();
+        } catch (NullPointerException ignored) {}
+    }
+
+    @Test
+    public void testBigDecimalSumSign() {
+        bigDecimalSumSign_helper("[]", 0);
+        bigDecimalSumSign_helper("[0]", 0);
+        bigDecimalSumSign_helper("[5.32]", 1);
+        bigDecimalSumSign_helper("[-5E+10]", -1);
+        bigDecimalSumSign_helper("[23.08, -2]", 1);
+        bigDecimalSumSign_helper("[23.08, -25]", -1);
+        bigDecimalSumSign_helper("[23.08, -23.08]", 0);
+        bigDecimalSumSign_helper("[1, 2, 4.00, -7]", 0);
+        bigDecimalSumSign_helper("[1, 2, 4.00, -8]", -1);
+        bigDecimalSumSign_helper("[1, 2, 4.00, -6]", 1);
+        bigDecimalSumSign_fail_helper("[null]");
+        bigDecimalSumSign_fail_helper("[1, 2E-10, null]");
+    }
+
     @Test
     public void testDeltaByte() {
         aeqit(deltaByte(Arrays.asList((byte) 3, (byte) 1, (byte) 4, (byte) 1, (byte) 5, (byte) 9, (byte) 3)),
