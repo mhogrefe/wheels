@@ -3,6 +3,7 @@ package mho.wheels.iterables;
 import mho.wheels.math.MathUtils;
 import mho.wheels.numberUtils.FloatingPointUtils;
 import mho.wheels.ordering.Ordering;
+import mho.wheels.structures.Pair;
 import mho.wheels.testing.TestProperties;
 import org.jetbrains.annotations.NotNull;
 
@@ -414,6 +415,10 @@ public strictfp class IterableUtilsProperties extends TestProperties {
             assertEquals(i, sumSignBigInteger(Collections.singletonList(i)), i.signum());
         }
 
+        for (Pair<BigInteger, BigInteger> p : take(LIMIT, P.pairs(P.bigIntegers()))) {
+            assertEquals(p, sumSignBigInteger(Pair.toList(p)), Integer.signum(p.a.compareTo(p.b.negate())));
+        }
+
         for (List<BigInteger> is : take(LIMIT, P.listsWithElement(null, P.bigIntegers()))) {
             try {
                 sumSignBigInteger(is);
@@ -455,7 +460,7 @@ public strictfp class IterableUtilsProperties extends TestProperties {
     }
 
     private void propertiesSumSignBigDecimal() {
-        initialize("sumSignBigInteger(List<BigDecimal>)");
+        initialize("sumSignBigDecimal(List<BigDecimal>)");
         for (List<BigDecimal> bds : take(LIMIT, P.lists(P.bigDecimals()))) {
             int sumSign = sumSignBigDecimal(bds);
             assertEquals(bds, sumSignBigDecimal_simplest(bds), sumSign);
@@ -466,6 +471,10 @@ public strictfp class IterableUtilsProperties extends TestProperties {
 
         for (BigDecimal bd : take(LIMIT, P.bigDecimals())) {
             assertEquals(bd, sumSignBigDecimal(Collections.singletonList(bd)), bd.signum());
+        }
+
+        for (Pair<BigDecimal, BigDecimal> p : take(LIMIT, P.pairs(P.bigDecimals()))) {
+            assertEquals(p, sumSignBigDecimal(Pair.toList(p)), Integer.signum(p.a.compareTo(p.b.negate())));
         }
 
         for (List<BigDecimal> bds : take(LIMIT, P.listsWithElement(null, P.bigDecimals()))) {
