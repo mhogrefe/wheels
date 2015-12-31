@@ -2518,13 +2518,25 @@ public final strictfp class IterableUtils {
     }
 
     public static int sumSignBigInteger(@NotNull List<BigInteger> xs) {
-        if (xs.isEmpty()) return 0;
-        return Integer.signum(sumBigInteger(tail(xs)).compareTo(head(xs).negate()));
+        switch (xs.size()) {
+            case 0:
+                return 0;
+            case 1:
+                return xs.get(0).signum();
+            default:
+                return Integer.signum(sumBigInteger(tail(xs)).compareTo(head(xs).negate()));
+        }
     }
 
     public static int sumSignBigDecimal(@NotNull List<BigDecimal> xs) {
-        if (xs.isEmpty()) return 0;
-        return Integer.signum(sumBigDecimal(tail(xs)).compareTo(head(xs).negate()));
+        switch (xs.size()) {
+            case 0:
+                return 0;
+            case 1:
+                return xs.get(0).signum();
+            default:
+                return Integer.signum(sumBigDecimal(tail(xs)).compareTo(head(xs).negate()));
+        }
     }
 
     public static <T extends Comparable<T>> T minimum(@NotNull Iterable<T> xs) {
