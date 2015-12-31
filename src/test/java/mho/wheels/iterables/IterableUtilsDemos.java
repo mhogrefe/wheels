@@ -347,6 +347,20 @@ public strictfp class IterableUtilsDemos extends Demos {
         }
     }
 
+    private void demoSumSignBigInteger() {
+        for (List<BigInteger> is : take(LIMIT, P.withScale(4).lists(P.bigIntegers()))) {
+            String listString = tail(init(is.toString()));
+            System.out.println("sumSignBigInteger(" + listString + ") = " + sumSignBigInteger(is));
+        }
+    }
+
+    private void demoSumSignBigDecimal() {
+        for (List<BigDecimal> bds : take(LIMIT, P.withScale(4).lists(P.bigDecimals()))) {
+            String listString = tail(init(bds.toString()));
+            System.out.println("sumSignBigDecimal(" + listString + ") = " + sumSignBigDecimal(bds));
+        }
+    }
+
     private void demoDeltaByte_finite() {
         for (List<Byte> bs : take(LIMIT, P.listsAtLeast(1, P.bytes()))) {
             String listString = tail(init(bs.toString()));

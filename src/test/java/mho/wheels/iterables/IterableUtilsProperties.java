@@ -8,6 +8,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,6 +45,10 @@ public strictfp class IterableUtilsProperties extends TestProperties {
         propertiesProductBigInteger();
         compareImplementationsProductBigInteger();
         propertiesProductBigDecimal();
+        propertiesSumSignBigInteger();
+        compareImplementationsSumSignBigInteger();
+        propertiesSumSignBigDecimal();
+        compareImplementationsSumSignBigDecimal();
         propertiesDeltaByte();
         propertiesDeltaShort();
         propertiesDeltaInteger();
@@ -372,6 +377,114 @@ public strictfp class IterableUtilsProperties extends TestProperties {
                 bd -> {},
                 true,
                 true
+        );
+    }
+
+    private static int sumSignBigInteger_simplest(@NotNull List<BigInteger> xs) {
+        return sumBigInteger(xs).signum();
+    }
+
+    private static int sumSignBigInteger_alt(@NotNull List<BigInteger> xs) {
+        if (xs.isEmpty()) return 0;
+        int mostComplexBitLength = xs.get(0).bitLength();
+        int mostComplexIndex = 0;
+        for (int i = 1; i < xs.size(); i++) {
+            int bitLength = xs.get(i).bitLength();
+            if (bitLength > mostComplexBitLength) {
+                mostComplexBitLength = bitLength;
+                mostComplexIndex = i;
+            }
+        }
+        int j = mostComplexIndex;
+        BigInteger sum = sumBigInteger(map(xs::get, filter(i -> i != j, range(0, xs.size() - 1))));
+        return Integer.signum(sum.compareTo(xs.get(mostComplexIndex).negate()));
+    }
+
+    private void propertiesSumSignBigInteger() {
+        initialize("sumSignBigInteger(List<BigInteger>)");
+        for (List<BigInteger> is : take(LIMIT, P.lists(P.bigIntegers()))) {
+            int sumSign = sumSignBigInteger(is);
+            assertEquals(is, sumSignBigInteger_simplest(is), sumSign);
+            assertEquals(is, sumSignBigInteger_alt(is), sumSign);
+            assertTrue(is, sumSign == 0 || sumSign == 1 || sumSign == -1);
+            assertEquals(is, sumSignBigInteger(toList(map(BigInteger::negate, is))), -sumSign);
+        }
+
+        for (BigInteger i : take(LIMIT, P.bigIntegers())) {
+            assertEquals(i, sumSignBigInteger(Collections.singletonList(i)), i.signum());
+        }
+
+        for (List<BigInteger> is : take(LIMIT, P.listsWithElement(null, P.bigIntegers()))) {
+            try {
+                sumSignBigInteger(is);
+                fail(is);
+            } catch (NullPointerException ignored) {}
+        }
+    }
+
+    private void compareImplementationsSumSignBigInteger() {
+        Map<String, Function<List<BigInteger>, Integer>> functions = new LinkedHashMap<>();
+        functions.put("simplest", IterableUtilsProperties::sumSignBigInteger_simplest);
+        functions.put("alt", IterableUtilsProperties::sumSignBigInteger_alt);
+        functions.put("standard", IterableUtils::sumSignBigInteger);
+        compareImplementations(
+                "sumSignBigInteger(List<BigInteger>)",
+                take(LIMIT, P.lists(P.bigIntegers())),
+                functions
+        );
+    }
+
+    private static int sumSignBigDecimal_simplest(@NotNull List<BigDecimal> xs) {
+        return sumBigDecimal(xs).signum();
+    }
+
+    private static int sumSignBigDecimal_alt(@NotNull List<BigDecimal> xs) {
+        if (xs.isEmpty()) return 0;
+        int mostComplexBitLength = xs.get(0).unscaledValue().bitLength();
+        int mostComplexIndex = 0;
+        for (int i = 1; i < xs.size(); i++) {
+            int bitLength = xs.get(i).unscaledValue().bitLength();
+            if (bitLength > mostComplexBitLength) {
+                mostComplexBitLength = bitLength;
+                mostComplexIndex = i;
+            }
+        }
+        int j = mostComplexIndex;
+        BigDecimal sum = sumBigDecimal(map(xs::get, filter(i -> i != j, range(0, xs.size() - 1))));
+        return Integer.signum(sum.compareTo(xs.get(mostComplexIndex).negate()));
+    }
+
+    private void propertiesSumSignBigDecimal() {
+        initialize("sumSignBigInteger(List<BigDecimal>)");
+        for (List<BigDecimal> bds : take(LIMIT, P.lists(P.bigDecimals()))) {
+            int sumSign = sumSignBigDecimal(bds);
+            assertEquals(bds, sumSignBigDecimal_simplest(bds), sumSign);
+            assertEquals(bds, sumSignBigDecimal_alt(bds), sumSign);
+            assertTrue(bds, sumSign == 0 || sumSign == 1 || sumSign == -1);
+            assertEquals(bds, sumSignBigDecimal(toList(map(BigDecimal::negate, bds))), -sumSign);
+        }
+
+        for (BigDecimal bd : take(LIMIT, P.bigDecimals())) {
+            assertEquals(bd, sumSignBigDecimal(Collections.singletonList(bd)), bd.signum());
+        }
+
+        for (List<BigDecimal> bds : take(LIMIT, P.listsWithElement(null, P.bigDecimals()))) {
+            try {
+                sumSignBigDecimal(bds);
+                fail(bds);
+            } catch (NullPointerException ignored) {}
+        }
+    }
+
+    private void compareImplementationsSumSignBigDecimal() {
+        Map<String, Function<List<BigDecimal>, Integer>> functions = new LinkedHashMap<>();
+        functions.put("simplest", IterableUtilsProperties::sumSignBigDecimal_simplest);
+        functions.put("alt", IterableUtilsProperties::sumSignBigDecimal_alt);
+        functions.put("standard", IterableUtils::sumSignBigDecimal);
+        compareImplementations(
+                "sumSignBigDecimal(List<BigDecimal>)",
+                take(LIMIT, P.lists(P.bigDecimals())),
+                functions
         );
     }
 

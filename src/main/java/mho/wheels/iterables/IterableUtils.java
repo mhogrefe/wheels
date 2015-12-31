@@ -2517,28 +2517,14 @@ public final strictfp class IterableUtils {
         return foldl(BigDecimal::multiply, BigDecimal.ONE, xs);
     }
 
-    public static int bigIntegerSumSign(@NotNull List<BigInteger> xs) {
+    public static int sumSignBigInteger(@NotNull List<BigInteger> xs) {
         if (xs.isEmpty()) return 0;
-        int compare = sumBigInteger(tail(xs)).compareTo(head(xs).negate());
-        if (compare > 0) {
-            return 1;
-        } else if (compare < 0) {
-            return -1;
-        } else {
-            return 0;
-        }
+        return Integer.signum(sumBigInteger(tail(xs)).compareTo(head(xs).negate()));
     }
 
-    public static int bigDecimalSumSign(@NotNull List<BigDecimal> xs) {
+    public static int sumSignBigDecimal(@NotNull List<BigDecimal> xs) {
         if (xs.isEmpty()) return 0;
-        int compare = sumBigDecimal(tail(xs)).compareTo(head(xs).negate());
-        if (compare > 0) {
-            return 1;
-        } else if (compare < 0) {
-            return -1;
-        } else {
-            return 0;
-        }
+        return Integer.signum(sumBigDecimal(tail(xs)).compareTo(head(xs).negate()));
     }
 
     public static <T extends Comparable<T>> T minimum(@NotNull Iterable<T> xs) {

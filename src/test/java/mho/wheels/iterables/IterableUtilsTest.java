@@ -1405,18 +1405,18 @@ public strictfp class IterableUtilsTest {
     }
 
     private static void bigIntegerSumSign_helper(@NotNull String input, int output) {
-        aeq(bigIntegerSumSign(readBigIntegerList(input)), output);
+        aeq(sumSignBigInteger(readBigIntegerList(input)), output);
     }
 
     private static void bigIntegerSumSign_fail_helper(@NotNull String input) {
         try {
-            bigIntegerSumSign(readBigIntegerListWithNulls(input));
+            sumSignBigInteger(readBigIntegerListWithNulls(input));
             fail();
         } catch (NullPointerException ignored) {}
     }
 
     @Test
-    public void testBigIntegerSumSign() {
+    public void testSumSignBigInteger() {
         bigIntegerSumSign_helper("[]", 0);
         bigIntegerSumSign_helper("[0]", 0);
         bigIntegerSumSign_helper("[5]", 1);
@@ -1432,18 +1432,18 @@ public strictfp class IterableUtilsTest {
     }
 
     private static void bigDecimalSumSign_helper(@NotNull String input, int output) {
-        aeq(bigDecimalSumSign(readBigDecimalList(input)), output);
+        aeq(sumSignBigDecimal(readBigDecimalList(input)), output);
     }
 
     private static void bigDecimalSumSign_fail_helper(@NotNull String input) {
         try {
-            bigDecimalSumSign(readBigDecimalListWithNulls(input));
+            sumSignBigDecimal(readBigDecimalListWithNulls(input));
             fail();
         } catch (NullPointerException ignored) {}
     }
 
     @Test
-    public void testBigDecimalSumSign() {
+    public void testSumSignBigDecimal() {
         bigDecimalSumSign_helper("[]", 0);
         bigDecimalSumSign_helper("[0]", 0);
         bigDecimalSumSign_helper("[5.32]", 1);
