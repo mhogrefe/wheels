@@ -524,8 +524,6 @@ public strictfp class Testing {
             validate.accept(result);
         }
 
-        testNoRemove(limit, xs);
-
         if (commutativeAndAssociative) {
             Iterable<Pair<List<T>, List<T>>> ps = filter(
                     q -> !q.a.equals(q.b),
