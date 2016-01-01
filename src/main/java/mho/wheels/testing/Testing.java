@@ -525,7 +525,7 @@ public strictfp class Testing {
         }
 
         if (commutativeAndAssociative) {
-            Iterable<Pair<List<T>, List<T>>> ps = filter(
+            Iterable<Pair<List<T>, List<T>>> ps = filterInfinite(
                     q -> !q.a.equals(q.b),
                     P.dependentPairs(xsi, P::permutationsFinite)
             );
