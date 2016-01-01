@@ -2524,7 +2524,29 @@ public final strictfp class IterableUtils {
             case 1:
                 return xs.get(0).signum();
             default:
-                return Integer.signum(sumBigInteger(tail(xs)).compareTo(head(xs).negate()));
+                int lastPositiveIndex = xs.size();
+                int lastNegativeIndex = xs.size();
+                boolean positiveSeen = false;
+                boolean negativeSeen = false;
+                for (int i = xs.size() - 1; i >= 0 && !(positiveSeen && negativeSeen); i--) {
+                    int sign = xs.get(i).signum();
+                    if (!positiveSeen && sign == 1) {
+                        lastPositiveIndex = i;
+                        positiveSeen = true;
+                    } else if (!negativeSeen && sign == -1) {
+                        lastNegativeIndex = i;
+                        negativeSeen = true;
+                    }
+                }
+                BigInteger sum = BigInteger.ZERO;
+                int signum = 0;
+                for (int i = 0; i < xs.size(); i++) {
+                    sum = sum.add(xs.get(i));
+                    signum = sum.signum();
+                    if (signum == 1 && i > lastNegativeIndex) return 1;
+                    if (signum == -1 && i > lastPositiveIndex) return -1;
+                }
+                return signum;
         }
     }
 
@@ -2535,7 +2557,29 @@ public final strictfp class IterableUtils {
             case 1:
                 return xs.get(0).signum();
             default:
-                return Integer.signum(sumBigDecimal(tail(xs)).compareTo(head(xs).negate()));
+                int lastPositiveIndex = xs.size();
+                int lastNegativeIndex = xs.size();
+                boolean positiveSeen = false;
+                boolean negativeSeen = false;
+                for (int i = xs.size() - 1; i >= 0 && !(positiveSeen && negativeSeen); i--) {
+                    int sign = xs.get(i).signum();
+                    if (!positiveSeen && sign == 1) {
+                        lastPositiveIndex = i;
+                        positiveSeen = true;
+                    } else if (!negativeSeen && sign == -1) {
+                        lastNegativeIndex = i;
+                        negativeSeen = true;
+                    }
+                }
+                BigDecimal sum = BigDecimal.ZERO;
+                int signum = 0;
+                for (int i = 0; i < xs.size(); i++) {
+                    sum = sum.add(xs.get(i));
+                    signum = sum.signum();
+                    if (signum == 1 && i > lastNegativeIndex) return 1;
+                    if (signum == -1 && i > lastPositiveIndex) return -1;
+                }
+                return signum;
         }
     }
 

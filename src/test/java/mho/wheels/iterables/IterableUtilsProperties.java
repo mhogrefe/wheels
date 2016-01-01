@@ -9,10 +9,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 
 import static mho.wheels.iterables.IterableUtils.*;
@@ -386,6 +383,17 @@ public strictfp class IterableUtilsProperties extends TestProperties {
     }
 
     private static int sumSignBigInteger_alt(@NotNull List<BigInteger> xs) {
+        switch (xs.size()) {
+            case 0:
+                return 0;
+            case 1:
+                return xs.get(0).signum();
+            default:
+                return Integer.signum(sumBigInteger(tail(xs)).compareTo(head(xs).negate()));
+        }
+    }
+
+    public static int sumSignBigInteger_alt2(@NotNull List<BigInteger> xs) {
         if (xs.isEmpty()) return 0;
         int mostComplexBitLength = xs.get(0).bitLength();
         int mostComplexIndex = 0;
@@ -401,12 +409,59 @@ public strictfp class IterableUtilsProperties extends TestProperties {
         return Integer.signum(sum.compareTo(xs.get(mostComplexIndex).negate()));
     }
 
+    public static int sumSignBigInteger_alt3(@NotNull List<BigInteger> xs) {
+        switch (xs.size()) {
+            case 0:
+                return 0;
+            case 1:
+                return xs.get(0).signum();
+            default:
+                List<BigInteger> positives = new ArrayList<>();
+                List<BigInteger> negatives = new ArrayList<>();
+                for (BigInteger i : xs) {
+                    int signum = i.signum();
+                    if (signum == 1) {
+                        positives.add(i);
+                    } else if (signum == -1) {
+                        negatives.add(i);
+                    }
+                }
+                int positiveSize = positives.size();
+                int negativeSize = negatives.size();
+                if (positiveSize == 0 && negativeSize == 0) {
+                    return 0;
+                } else if (positiveSize == 0) {
+                    return -1;
+                } else if (negativeSize == 0) {
+                    return 1;
+                } else if (positiveSize < negativeSize) {
+                    BigInteger positiveSum = sumBigInteger(positives).negate();
+                    BigInteger negativeSum = BigInteger.ZERO;
+                    for (BigInteger negative : negatives) {
+                        negativeSum = negativeSum.add(negative);
+                        if (lt(negativeSum, positiveSum)) return -1;
+                    }
+                    return negativeSum.equals(positiveSum) ? 0 : 1;
+                } else {
+                    BigInteger negativeSum = sumBigInteger(negatives).negate();
+                    BigInteger positiveSum = BigInteger.ZERO;
+                    for (BigInteger positive : positives) {
+                        positiveSum = positiveSum.add(positive);
+                        if (gt(positiveSum, negativeSum)) return 1;
+                    }
+                    return negativeSum.equals(positiveSum) ? 0 : -1;
+                }
+        }
+    }
+
     private void propertiesSumSignBigInteger() {
         initialize("sumSignBigInteger(List<BigInteger>)");
         for (List<BigInteger> is : take(LIMIT, P.lists(P.bigIntegers()))) {
             int sumSign = sumSignBigInteger(is);
             assertEquals(is, sumSignBigInteger_simplest(is), sumSign);
             assertEquals(is, sumSignBigInteger_alt(is), sumSign);
+            assertEquals(is, sumSignBigInteger_alt2(is), sumSign);
+            assertEquals(is, sumSignBigInteger_alt3(is), sumSign);
             assertTrue(is, sumSign == 0 || sumSign == 1 || sumSign == -1);
             assertEquals(is, sumSignBigInteger(toList(map(BigInteger::negate, is))), -sumSign);
         }
@@ -431,6 +486,8 @@ public strictfp class IterableUtilsProperties extends TestProperties {
         Map<String, Function<List<BigInteger>, Integer>> functions = new LinkedHashMap<>();
         functions.put("simplest", IterableUtilsProperties::sumSignBigInteger_simplest);
         functions.put("alt", IterableUtilsProperties::sumSignBigInteger_alt);
+        functions.put("alt2", IterableUtilsProperties::sumSignBigInteger_alt2);
+        functions.put("alt3", IterableUtilsProperties::sumSignBigInteger_alt3);
         functions.put("standard", IterableUtils::sumSignBigInteger);
         compareImplementations(
                 "sumSignBigInteger(List<BigInteger>)",
@@ -444,6 +501,17 @@ public strictfp class IterableUtilsProperties extends TestProperties {
     }
 
     private static int sumSignBigDecimal_alt(@NotNull List<BigDecimal> xs) {
+        switch (xs.size()) {
+            case 0:
+                return 0;
+            case 1:
+                return xs.get(0).signum();
+            default:
+                return Integer.signum(sumBigDecimal(tail(xs)).compareTo(head(xs).negate()));
+        }
+    }
+
+    public static int sumSignBigDecimal_alt2(@NotNull List<BigDecimal> xs) {
         if (xs.isEmpty()) return 0;
         int mostComplexBitLength = xs.get(0).unscaledValue().bitLength();
         int mostComplexIndex = 0;
@@ -459,12 +527,59 @@ public strictfp class IterableUtilsProperties extends TestProperties {
         return Integer.signum(sum.compareTo(xs.get(mostComplexIndex).negate()));
     }
 
+    public static int sumSignBigDecimal_alt3(@NotNull List<BigDecimal> xs) {
+        switch (xs.size()) {
+            case 0:
+                return 0;
+            case 1:
+                return xs.get(0).signum();
+            default:
+                List<BigDecimal> positives = new ArrayList<>();
+                List<BigDecimal> negatives = new ArrayList<>();
+                for (BigDecimal bd : xs) {
+                    int signum = bd.signum();
+                    if (signum == 1) {
+                        positives.add(bd);
+                    } else if (signum == -1) {
+                        negatives.add(bd);
+                    }
+                }
+                int positiveSize = positives.size();
+                int negativeSize = negatives.size();
+                if (positiveSize == 0 && negativeSize == 0) {
+                    return 0;
+                } else if (positiveSize == 0) {
+                    return -1;
+                } else if (negativeSize == 0) {
+                    return 1;
+                } else if (positiveSize < negativeSize) {
+                    BigDecimal positiveSum = sumBigDecimal(positives).negate();
+                    BigDecimal negativeSum = BigDecimal.ZERO;
+                    for (BigDecimal negative : negatives) {
+                        negativeSum = negativeSum.add(negative);
+                        if (lt(negativeSum, positiveSum)) return -1;
+                    }
+                    return negativeSum.equals(positiveSum) ? 0 : 1;
+                } else {
+                    BigDecimal negativeSum = sumBigDecimal(negatives).negate();
+                    BigDecimal positiveSum = BigDecimal.ZERO;
+                    for (BigDecimal positive : positives) {
+                        positiveSum = positiveSum.add(positive);
+                        if (gt(positiveSum, negativeSum)) return 1;
+                    }
+                    return eq(negativeSum, positiveSum) ? 0 : -1;
+                }
+        }
+    }
+
     private void propertiesSumSignBigDecimal() {
         initialize("sumSignBigDecimal(List<BigDecimal>)");
         for (List<BigDecimal> bds : take(LIMIT, P.lists(P.bigDecimals()))) {
             int sumSign = sumSignBigDecimal(bds);
             assertEquals(bds, sumSignBigDecimal_simplest(bds), sumSign);
             assertEquals(bds, sumSignBigDecimal_alt(bds), sumSign);
+            assertEquals(bds, sumSignBigDecimal_alt2(bds), sumSign);
+            assertEquals(bds, sumSignBigDecimal_alt3(bds), sumSign);
             assertTrue(bds, sumSign == 0 || sumSign == 1 || sumSign == -1);
             assertEquals(bds, sumSignBigDecimal(toList(map(BigDecimal::negate, bds))), -sumSign);
         }
@@ -489,6 +604,8 @@ public strictfp class IterableUtilsProperties extends TestProperties {
         Map<String, Function<List<BigDecimal>, Integer>> functions = new LinkedHashMap<>();
         functions.put("simplest", IterableUtilsProperties::sumSignBigDecimal_simplest);
         functions.put("alt", IterableUtilsProperties::sumSignBigDecimal_alt);
+        functions.put("alt2", IterableUtilsProperties::sumSignBigDecimal_alt2);
+        functions.put("alt3", IterableUtilsProperties::sumSignBigDecimal_alt3);
         functions.put("standard", IterableUtils::sumSignBigDecimal);
         compareImplementations(
                 "sumSignBigDecimal(List<BigDecimal>)",
