@@ -846,8 +846,7 @@ public class Readers {
             if (s.equals(".empty")) return Optional.of(Optional.<T>empty());
             if (s.length() < 2 || head(s) != '[' || last(s) != ']') return Optional.empty();
             s = tail(init(s));
-            Optional<T> ot = read.apply(s);
-            return ot.isPresent() ? Optional.of(ot) : Optional.<Optional<T>>empty();
+            return read.apply(s).map(Optional::of);
         };
     }
 

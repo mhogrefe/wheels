@@ -576,7 +576,7 @@ public class ReadersTest {
         assertFalse(readWithNulls(Readers::readInteger).apply("").isPresent());
         try {
             readWithNulls(s -> null).apply("hello");
-        } catch (NullPointerException ignored) {}
+        } catch (NullPointerException | IllegalArgumentException ignored) {}
     }
 
     @Test
