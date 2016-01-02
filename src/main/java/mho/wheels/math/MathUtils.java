@@ -28,18 +28,7 @@ public final class MathUtils {
     /**
      * A cache of small primes, generated using the Sieve of Eratosthenes algorithm.
      */
-    private static final BitSet PRIME_SIEVE;
-    static {
-        PRIME_SIEVE = new BitSet(PRIME_SIEVE_SIZE);
-        PRIME_SIEVE.set(2, PRIME_SIEVE_SIZE - 1);
-        int multiple;
-        for (multiple = 0; multiple < PRIME_SIEVE_SIZE; multiple++) {
-            while (!PRIME_SIEVE.get(multiple) && multiple < PRIME_SIEVE_SIZE) multiple++;
-            for (int i : rangeBy(multiple * 2, multiple, PRIME_SIEVE_SIZE - 1)) {
-                PRIME_SIEVE.clear(i);
-            }
-        }
-    }
+    private static BitSet PRIME_SIEVE;
 
     /**
      * Disallow instantiation
@@ -333,10 +322,24 @@ public final class MathUtils {
         );
     }
 
+    private static void ensurePrimeSieveInitialized() {
+        if (PRIME_SIEVE != null) return;
+        PRIME_SIEVE = new BitSet(PRIME_SIEVE_SIZE);
+        PRIME_SIEVE.set(2, PRIME_SIEVE_SIZE - 1);
+        int multiple;
+        for (multiple = 0; multiple < PRIME_SIEVE_SIZE; multiple++) {
+            while (!PRIME_SIEVE.get(multiple) && multiple < PRIME_SIEVE_SIZE) multiple++;
+            for (int i : rangeBy(multiple * 2, multiple, PRIME_SIEVE_SIZE - 1)) {
+                PRIME_SIEVE.clear(i);
+            }
+        }
+    }
+
     public static int smallestPrimeFactor(int n) {
         if (n < 2)
             throw new IllegalArgumentException("argument must be at least 2");
         if (n % 2 == 0) return 2;
+        ensurePrimeSieveInitialized();
         if (n < PRIME_SIEVE_SIZE && PRIME_SIEVE.get(n)) return n;
         for (int i = 3; ; i += 2) {
             int square = i * i;
@@ -351,6 +354,7 @@ public final class MathUtils {
             return BigInteger.valueOf(smallestPrimeFactor(n.intValueExact()));
         }
         if (!n.testBit(0)) return IntegerUtils.TWO;
+        ensurePrimeSieveInitialized();
         for (int i = 3; i < PRIME_SIEVE_SIZE; i += 2) {
             BigInteger bi = BigInteger.valueOf(i);
             if (gt(bi.pow(2), n)) return n;
@@ -433,6 +437,7 @@ public final class MathUtils {
     public static @NotNull Iterable<Integer> intPrimes() {
         @SuppressWarnings("ConstantConditions")
         int start = (PRIME_SIEVE_SIZE & 1) == 0 ? PRIME_SIEVE_SIZE + 1 : PRIME_SIEVE_SIZE;
+        ensurePrimeSieveInitialized();
         return concat(
                 filter(PRIME_SIEVE::get, range(2, PRIME_SIEVE_SIZE - 1)),
                 filter(MathUtils::isPrime, rangeBy(start, 2))
