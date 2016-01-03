@@ -1940,6 +1940,9 @@ public final strictfp class IterableUtils {
                         nextList.add(iterator.next());
                     }
                 }
+                if (nextList.isEmpty()) {
+                    throw new NoSuchElementException();
+                }
                 return nextList;
             }
         };
@@ -2825,6 +2828,9 @@ public final strictfp class IterableUtils {
 
             @Override
             public T next() {
+                if (i >= n) {
+                    throw new NoSuchElementException();
+                }
                 i++;
                 return x;
             }
@@ -2842,6 +2848,9 @@ public final strictfp class IterableUtils {
 
             @Override
             public T next() {
+                if (ge(i, n)) {
+                    throw new NoSuchElementException();
+                }
                 i = i.add(BigInteger.ONE);
                 return x;
             }
