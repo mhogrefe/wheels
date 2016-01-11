@@ -325,9 +325,6 @@ public strictfp class Testing {
                 T x = xs.get(i);
                 T y = ys.get(j);
                 assertEquals(new Pair<>(x, y), i == j, x.equals(y));
-                if (i == j) {
-                    assertEquals(x, x.hashCode(), y.hashCode());
-                }
             }
         }
     }
