@@ -313,6 +313,9 @@ public final class MathUtils {
     }
 
     public static @NotNull BigInteger ceilingRoot(@NotNull BigInteger r, @NotNull BigInteger x) {
+        if (x.signum() == -1) {
+            throw new ArithmeticException();
+        }
         //noinspection SuspiciousNameCombination
         return ceilingInverse(
                 i -> i.pow(r.intValueExact()),
