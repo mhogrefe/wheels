@@ -2499,6 +2499,8 @@ public final strictfp class IterableUtils {
      * @return Πxs
      */
     public static @NotNull BigInteger productBigInteger(Iterable<BigInteger> xs) {
+        if (any(x -> x == null, xs)) throw new NullPointerException();
+        if (any(x -> x.equals(BigInteger.ZERO), xs)) return BigInteger.ZERO;
         return foldl(BigInteger::multiply, BigInteger.ONE, xs);
     }
 
@@ -2515,8 +2517,8 @@ public final strictfp class IterableUtils {
      */
     public static @NotNull BigDecimal productBigDecimal(@NotNull Iterable<BigDecimal> xs) {
         if (isEmpty(xs)) return BigDecimal.ONE;
-        if (head(xs) == null)
-            throw new NullPointerException();
+        if (any(x -> x == null, xs)) throw new NullPointerException();
+        if (any(x -> eq(x, BigDecimal.ZERO), xs)) return BigDecimal.ZERO;
         return foldl(BigDecimal::multiply, BigDecimal.ONE, xs);
     }
 

@@ -1,6 +1,7 @@
 package mho.wheels.iterables;
 
 import mho.wheels.math.MathUtils;
+import mho.wheels.numberUtils.BigDecimalUtils;
 import mho.wheels.numberUtils.FloatingPointUtils;
 import mho.wheels.ordering.Ordering;
 import mho.wheels.structures.Pair;
@@ -312,6 +313,7 @@ public strictfp class IterableUtilsProperties extends TestProperties {
     }
 
     private static @NotNull BigInteger productBigInteger_alt(@NotNull Iterable<BigInteger> xs) {
+        if (any(x -> x.equals(BigInteger.ZERO), xs)) return BigInteger.ZERO;
         return foldl(
                 BigInteger::multiply,
                 BigInteger.ONE,
@@ -369,9 +371,9 @@ public strictfp class IterableUtilsProperties extends TestProperties {
         propertiesFoldHelper(
                 LIMIT,
                 P,
-                P.bigDecimals(),
-                BigDecimal::multiply,
-                IterableUtils::productBigDecimal,
+                P.canonicalBigDecimals(),
+                (x, y) -> BigDecimalUtils.canonicalize(x.multiply(y)),
+                xs -> BigDecimalUtils.canonicalize(productBigDecimal(xs)),
                 bd -> {},
                 true,
                 true
