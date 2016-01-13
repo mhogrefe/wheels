@@ -18,6 +18,16 @@ import static mho.wheels.ordering.Ordering.*;
 import static mho.wheels.testing.Testing.*;
 
 public strictfp class IterableUtilsProperties extends TestProperties {
+    private static final @NotNull Comparator<BigInteger> BIG_INTEGER_BITSIZE_COMPARATOR = (x, y) -> {
+        int c = Integer.compare(x.bitLength(), y.bitLength());
+        return c == 0 ? x.compareTo(y) : c;
+    };
+
+    private static final @NotNull Comparator<BigDecimal> BIG_DECIMAL_BITSIZE_COMPARATOR = (x, y) -> {
+        int c = Integer.compare(x.unscaledValue().bitLength(), y.unscaledValue().bitLength());
+        return c == 0 ? x.compareTo(y) : c;
+    };
+
     public IterableUtilsProperties() {
         super("IterableUtils");
     }
@@ -44,6 +54,7 @@ public strictfp class IterableUtilsProperties extends TestProperties {
         propertiesProductBigInteger();
         compareImplementationsProductBigInteger();
         propertiesProductBigDecimal();
+        compareImplementationsProductBigDecimal();
         propertiesSumSignBigInteger();
         compareImplementationsSumSignBigInteger();
         propertiesSumSignBigDecimal();
@@ -317,29 +328,12 @@ public strictfp class IterableUtilsProperties extends TestProperties {
         return foldl(
                 BigInteger::multiply,
                 BigInteger.ONE,
-                sort(
-                        (x, y) -> {
-                            Ordering o = compare(x.abs(), y.abs());
-                            if (o == EQ) {
-                                int sx = x.signum();
-                                int sy = x.signum();
-                                if (sx > sy) {
-                                    o = GT;
-                                } else if (sx < sy) {
-                                    o = LT;
-                                }
-                            }
-                            return o.toInt();
-                        },
-                        xs
-                )
+                sort(BIG_INTEGER_BITSIZE_COMPARATOR, xs)
         );
     }
 
     private void propertiesProductBigInteger() {
-        initialize("");
-        System.out.println("\t\ttesting productBigInteger(Iterable<BigInteger>) properties...");
-
+        initialize("productBigInteger(Iterable<BigInteger>)");
         propertiesFoldHelper(
                 LIMIT,
                 P,
@@ -350,10 +344,13 @@ public strictfp class IterableUtilsProperties extends TestProperties {
                 true,
                 true
         );
+
+        for (List<BigInteger> is : take(LIMIT, P.lists(P.bigIntegers()))) {
+            assertEquals(is, productBigInteger(is), productBigInteger_alt(is));
+        }
     }
 
     private void compareImplementationsProductBigInteger() {
-        initialize("");
         Map<String, Function<List<BigInteger>, BigInteger>> functions = new LinkedHashMap<>();
         functions.put("alt", IterableUtilsProperties::productBigInteger_alt);
         functions.put("standard", IterableUtils::productBigInteger);
@@ -364,10 +361,17 @@ public strictfp class IterableUtilsProperties extends TestProperties {
         );
     }
 
-    private void propertiesProductBigDecimal() {
-        initialize("");
-        System.out.println("\t\ttesting productBigDecimal(Iterable<BigDecimal>) properties...");
+    private static @NotNull BigDecimal productBigDecimal_alt(@NotNull Iterable<BigDecimal> xs) {
+        if (any(x -> eq(x, BigDecimal.ZERO), xs)) return BigDecimal.ZERO;
+        return foldl(
+                BigDecimal::multiply,
+                BigDecimal.ONE,
+                sort(BIG_DECIMAL_BITSIZE_COMPARATOR, xs)
+        );
+    }
 
+    private void propertiesProductBigDecimal() {
+        initialize("productBigDecimal(Iterable<BigDecimal>)");
         propertiesFoldHelper(
                 LIMIT,
                 P,
@@ -377,6 +381,21 @@ public strictfp class IterableUtilsProperties extends TestProperties {
                 bd -> {},
                 true,
                 true
+        );
+
+        for (List<BigDecimal> bds : take(LIMIT, P.lists(P.bigDecimals()))) {
+            assertEquals(bds, productBigDecimal(bds), productBigDecimal_alt(bds));
+        }
+    }
+
+    private void compareImplementationsProductBigDecimal() {
+        Map<String, Function<List<BigDecimal>, BigDecimal>> functions = new LinkedHashMap<>();
+        functions.put("alt", IterableUtilsProperties::productBigDecimal_alt);
+        functions.put("standard", IterableUtils::productBigDecimal);
+        compareImplementations(
+                "productBigDecimal(Iterable<BigInteger>)",
+                take(LIMIT, P.lists(P.bigDecimals())),
+                functions
         );
     }
 
