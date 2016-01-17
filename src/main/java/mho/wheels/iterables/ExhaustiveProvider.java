@@ -267,7 +267,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Byte> nonzeroBytes() {
-        return mux(Arrays.asList(positiveBytes(), negativeBytes()));
+        return choose(positiveBytes(), negativeBytes());
     }
 
     /**
@@ -277,7 +277,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Short> nonzeroShorts() {
-        return mux(Arrays.asList(positiveShorts(), negativeShorts()));
+        return choose(positiveShorts(), negativeShorts());
     }
 
     /**
@@ -287,7 +287,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Integer> nonzeroIntegers() {
-        return mux(Arrays.asList(positiveIntegers(), negativeIntegers()));
+        return choose(positiveIntegers(), negativeIntegers());
     }
 
     /**
@@ -297,7 +297,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Long> nonzeroLongs() {
-        return mux(Arrays.asList(positiveLongs(), negativeLongs()));
+        return choose(positiveLongs(), negativeLongs());
     }
 
     /**
@@ -307,7 +307,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<BigInteger> nonzeroBigIntegers() {
-        return mux(Arrays.asList(positiveBigIntegers(), negativeBigIntegers()));
+        return choose(positiveBigIntegers(), negativeBigIntegers());
     }
 
     /**
@@ -496,7 +496,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         } else {
             return cons(
                     (byte) 0,
-                    mux(Arrays.asList(IterableUtils.rangeUp((byte) 1), IterableUtils.rangeBy((byte) -1, (byte) -1, a)))
+                    choose(IterableUtils.rangeUp((byte) 1), IterableUtils.rangeBy((byte) -1, (byte) -1, a))
             );
         }
     }
@@ -522,12 +522,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         } else {
             return cons(
                     (short) 0,
-                    mux(
-                            Arrays.asList(
-                                    IterableUtils.rangeUp((short) 1),
-                                    IterableUtils.rangeBy((short) -1, (short) -1, a)
-                            )
-                    )
+                    choose(IterableUtils.rangeUp((short) 1), IterableUtils.rangeBy((short) -1, (short) -1, a))
             );
         }
     }
@@ -551,7 +546,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         if (a >= 0) {
             return IterableUtils.rangeUp(a);
         } else {
-            return cons(0, mux(Arrays.asList(IterableUtils.rangeUp(1), IterableUtils.rangeBy(-1, -1, a))));
+            return cons(0, choose(IterableUtils.rangeUp(1), IterableUtils.rangeBy(-1, -1, a)));
         }
     }
 
@@ -574,7 +569,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         if (a >= 0) {
             return IterableUtils.rangeUp(a);
         } else {
-            return cons(0L, mux(Arrays.asList(IterableUtils.rangeUp(1L), IterableUtils.rangeBy(-1L, -1L, a))));
+            return cons(0L,choose(IterableUtils.rangeUp(1L), IterableUtils.rangeBy(-1L, -1L, a)));
         }
     }
 
@@ -599,11 +594,9 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         } else {
             return cons(
                     BigInteger.ZERO,
-                    mux(
-                            Arrays.asList(
-                                    IterableUtils.rangeUp(BigInteger.ONE),
-                                    IterableUtils.rangeBy(IntegerUtils.NEGATIVE_ONE, IntegerUtils.NEGATIVE_ONE, a)
-                            )
+                    choose(
+                            IterableUtils.rangeUp(BigInteger.ONE),
+                            IterableUtils.rangeBy(IntegerUtils.NEGATIVE_ONE, IntegerUtils.NEGATIVE_ONE, a)
                     )
             );
         }
@@ -648,7 +641,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         } else {
             return cons(
                     (byte) 0,
-                    mux(Arrays.asList(IterableUtils.range((byte) 1, a), IterableUtils.rangeBy((byte) -1, (byte) -1)))
+                    choose(IterableUtils.range((byte) 1, a), IterableUtils.rangeBy((byte) -1, (byte) -1))
             );
         }
     }
@@ -673,11 +666,9 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         } else {
             return cons(
                     (short) 0,
-                    mux(
-                            Arrays.asList(
-                                    IterableUtils.range((short) 1, a),
-                                    IterableUtils.rangeBy((short) -1, (short) -1)
-                            )
+                    choose(
+                            IterableUtils.range((short) 1, a),
+                            IterableUtils.rangeBy((short) -1, (short) -1)
                     )
             );
         }
@@ -702,7 +693,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         if (a <= 0) {
             return IterableUtils.rangeBy(a, -1);
         } else {
-            return cons(0, mux(Arrays.asList(IterableUtils.range(1, a), IterableUtils.rangeBy(-1, -1))));
+            return cons(0, choose(IterableUtils.range(1, a), IterableUtils.rangeBy(-1, -1)));
         }
     }
 
@@ -724,7 +715,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         if (a <= 0) {
             return IterableUtils.rangeBy(a, -1L);
         } else {
-            return cons(0L, mux(Arrays.asList(IterableUtils.range(1L, a), IterableUtils.rangeBy(-1L, -1L))));
+            return cons(0L, choose(IterableUtils.range(1L, a), IterableUtils.rangeBy(-1L, -1L)));
         }
     }
 
@@ -749,11 +740,9 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         } else {
             return cons(
                     BigInteger.ZERO,
-                    mux(
-                            Arrays.asList(
-                                    IterableUtils.range(BigInteger.ONE, a),
-                                    IterableUtils.rangeBy(IntegerUtils.NEGATIVE_ONE, IntegerUtils.NEGATIVE_ONE)
-                            )
+                    choose(
+                            IterableUtils.range(BigInteger.ONE, a),
+                            IterableUtils.rangeBy(IntegerUtils.NEGATIVE_ONE, IntegerUtils.NEGATIVE_ONE)
                     )
             );
         }
@@ -804,11 +793,9 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         } else {
             return cons(
                     (byte) 0,
-                    mux(
-                            Arrays.asList(
-                                    IterableUtils.range((byte) 1, b),
-                                    IterableUtils.rangeBy((byte) -1, (byte) -1, a)
-                            )
+                    choose(
+                            IterableUtils.range((byte) 1, b),
+                            IterableUtils.rangeBy((byte) -1, (byte) -1, a)
                     )
             );
         }
@@ -840,11 +827,9 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         } else {
             return cons(
                     (short) 0,
-                    mux(
-                            Arrays.asList(
-                                    IterableUtils.range((short) 1, b),
-                                    IterableUtils.rangeBy((short) -1, (short) -1, a)
-                            )
+                    choose(
+                            IterableUtils.range((short) 1, b),
+                            IterableUtils.rangeBy((short) -1, (short) -1, a)
                     )
             );
         }
@@ -874,7 +859,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         } else if (a < 0 && b < 0) {
             return IterableUtils.rangeBy(b, -1, a);
         } else {
-            return cons(0, mux(Arrays.asList(IterableUtils.range(1, b), IterableUtils.rangeBy(-1, -1, a))));
+            return cons(0, choose(IterableUtils.range(1, b), IterableUtils.rangeBy(-1, -1, a)));
         }
     }
 
@@ -902,7 +887,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         } else if (a < 0 && b < 0) {
             return IterableUtils.rangeBy(b, (byte) -1, a);
         } else {
-            return cons(0L, mux(Arrays.asList(IterableUtils.range(1L, b), IterableUtils.rangeBy(-1L, -1L, a))));
+            return cons(0L, choose(IterableUtils.range(1L, b), IterableUtils.rangeBy(-1L, -1L, a)));
         }
     }
 
@@ -932,11 +917,9 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         } else {
             return cons(
                     BigInteger.ZERO,
-                    mux(
-                            Arrays.asList(
-                                    IterableUtils.range(BigInteger.ONE, b),
-                                    IterableUtils.rangeBy(IntegerUtils.NEGATIVE_ONE, IntegerUtils.NEGATIVE_ONE, a)
-                            )
+                    choose(
+                            IterableUtils.range(BigInteger.ONE, b),
+                            IterableUtils.rangeBy(IntegerUtils.NEGATIVE_ONE, IntegerUtils.NEGATIVE_ONE, a)
                     )
             );
         }
@@ -993,7 +976,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<BinaryFraction> nonzeroBinaryFractions() {
-        return mux(Arrays.asList(positiveBinaryFractions(), negativeBinaryFractions()));
+        return choose(positiveBinaryFractions(), negativeBinaryFractions());
     }
 
     /**
@@ -1129,9 +1112,9 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     private static final @NotNull Iterable<Integer> FLOAT_EXPONENTS = cons(
             0,
-            mux(
-                    Arrays.asList(INSTANCE.range(1, Float.MAX_EXPONENT),
-                    IterableUtils.rangeBy(-1, -1, FloatingPointUtils.MIN_SUBNORMAL_FLOAT_EXPONENT))
+            INSTANCE.choose(
+                    INSTANCE.range(1, Float.MAX_EXPONENT),
+                    IterableUtils.rangeBy(-1, -1, FloatingPointUtils.MIN_SUBNORMAL_FLOAT_EXPONENT)
             )
     );
 
@@ -1165,7 +1148,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      * Length is 2<sup>32</sup>–2<sup>24</sup>–2 = 4,278,190,078
      */
     private static @NotNull Iterable<Float> nonzeroOrdinaryFloats() {
-        return mux(Arrays.asList(positiveOrdinaryFloats(), negativeOrdinaryFloats()));
+        return INSTANCE.choose(positiveOrdinaryFloats(), negativeOrdinaryFloats());
     }
 
     /**
@@ -1239,9 +1222,9 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     private static final @NotNull Iterable<Integer> DOUBLE_EXPONENTS = cons(
             0,
-            mux(
-                    Arrays.asList(INSTANCE.range(1, Double.MAX_EXPONENT),
-                    IterableUtils.rangeBy(-1, -1, FloatingPointUtils.MIN_SUBNORMAL_DOUBLE_EXPONENT))
+            INSTANCE.choose(
+                    INSTANCE.range(1, Double.MAX_EXPONENT),
+                    IterableUtils.rangeBy(-1, -1, FloatingPointUtils.MIN_SUBNORMAL_DOUBLE_EXPONENT)
             )
     );
 
@@ -1275,7 +1258,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      * Length is 2<sup>64</sup>–2<sup>53</sup>–2 = 18,437,736,874,454,810,622
      */
     private static @NotNull Iterable<Double> nonzeroOrdinaryDoubles() {
-        return mux(Arrays.asList(positiveOrdinaryDoubles(), negativeOrdinaryDoubles()));
+        return INSTANCE.choose(positiveOrdinaryDoubles(), negativeOrdinaryDoubles());
     }
 
     /**
@@ -4067,11 +4050,11 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      *
      * <ul>
      *  <li>{@code xs} cannot be null.</li>
-     *  <li>{@code originalIndices} cannot contain any nulls, and all of its elements can only contain nonnegative
+     *  <li>{@code originalIndices} cannot contain any nulls, and all of its elements can only contain non-negative
      *  {@code Integer}s.</li>
      *  <li>{@code requiredSize} cannot be null.</li>
      *  <li>{@code outputSizeFunction} cannot be null.</li>
-     *  <li>If {@code xs} is finite, {@code outputSizeFunction} must return a nonnegative integer when applied to
+     *  <li>If {@code xs} is finite, {@code outputSizeFunction} must return a non-negative integer when applied to
      *  {@code length(xs)}.</li>
      *  <li>The number of lists in {@code originalSize} that correspond to a valid distinct list must be at least
      *  {@code outputSizeFunction.apply(length(xs))} (or infinite if {@code xs} is infinite).</li>
@@ -4683,11 +4666,11 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      *
      * <ul>
      *  <li>{@code xs} cannot be null.</li>
-     *  <li>{@code originalIndices} cannot contain any nulls, and all of its elements can only contain nonnegative
+     *  <li>{@code originalIndices} cannot contain any nulls, and all of its elements can only contain non-negative
      *  {@code Integer}s.</li>
      *  <li>{@code outputSizeFunction} cannot be null.</li>
      *  <li>If {@code xs} is finite, {@code outputSizeFunction} must return a either an empty {@code Optional} or a
-     *  nonnegative integer when applied to {@code length(xs)}.</li>
+     *  non-negative integer when applied to {@code length(xs)}.</li>
      *  <li>The number of lists in {@code originalSize} that correspond to a valid bag must be at least
      *  {@code outputSizeFunction.apply(length(xs))} (or infinite if {@code xs} is infinite or
      *  {@code outputSizeFunction.apply(length(xs))} is empty).</li>
@@ -5533,12 +5516,12 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      *
      * <ul>
      *  <li>{@code xs} cannot be null.</li>
-     *  <li>{@code originalIndices} cannot contain any nulls, and all of its elements can only contain nonnegative
+     *  <li>{@code originalIndices} cannot contain any nulls, and all of its elements can only contain non-negative
      *  {@code Integer}s.</li>
      *  <li>{@code requiredSize} cannot be null.</li>
      *  <li>{@code outputSizeFunction} cannot be null.</li>
      *  <li>If {@code xs} is finite, {@code outputSizeFunction} must return a either an empty {@code Optional} or a
-     *  nonnegative integer when applied to {@code length(xs)}.</li>
+     *  non-negative integer when applied to {@code length(xs)}.</li>
      *  <li>The number of lists in {@code originalSize} that correspond to a valid subset must be at least
      *  {@code outputSizeFunction.apply(length(xs))} (or infinite if {@code xs} is infinite or
      *  {@code outputSizeFunction.apply(length(xs))} is empty).</li>
@@ -5817,6 +5800,204 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
                 Optional.of(minSize),
                 n -> MathUtils.subsetCount(minSize, BigInteger.valueOf(n))
         );
+    }
+
+    /**
+     * Returns an {@code Iterable} containing all {@code Either}s generated from two {@code Iterable}s, unless the
+     * first {@code Iterable} is infinite, in which case no elements from the second {@code Iterable} will be
+     * generated. Elements generated from the first {@code Iterable} come before elements generated from the second.
+     *
+     * <ul>
+     *  <li>{@code as} cannot be null.</li>
+     *  <li>{@code bs} cannot be null.</li>
+     *  <li>The result contains {@code Either}s.</li>
+     * </ul>
+     *
+     * Length is |{@code as}|+|{@code bs}|
+     *
+     * @param as the first {@code Iterable}
+     * @param bs the second {@code Iterable}
+     * @param <A> the type of the first {@code Iterable}'s elements
+     * @param <B> the type of the second {@code Iterable}'s elements
+     * @return all {@code Either}s created from {@code as} and {@code bs}
+     */
+    @Override
+    public @NotNull <A, B> Iterable<Either<A, B>> eithersSuccessive(@NotNull Iterable<A> as, @NotNull Iterable<B> bs) {
+        return concat(map(Either::ofA, as), map(Either::ofB, bs));
+    }
+
+    /**
+     * Returns an {@code Iterable} containing all {@code Either}s generated from two {@code Iterable}s. Does not
+     * support removal.
+     *
+     * <ul>
+     *  <li>{@code as} cannot be null.</li>
+     *  <li>{@code bs} cannot be null.</li>
+     *  <li>The result contains {@code Either}s.</li>
+     * </ul>
+     *
+     * Length is |{@code as}|+|{@code bs}|
+     *
+     * @param as the first {@code Iterable}
+     * @param bs the second {@code Iterable}
+     * @param <A> the type of the first {@code Iterable}'s elements
+     * @param <B> the type of the second {@code Iterable}'s elements
+     * @return all {@code Either}s created from {@code as} and {@code bs}
+     */
+    @Override
+    public @NotNull <A, B> Iterable<Either<A, B>> eithers(@NotNull Iterable<A> as, @NotNull Iterable<B> bs) {
+        return choose(map(Either::ofA, as), map(Either::ofB, bs));
+    }
+
+    /**
+     * Returns an {@code Iterable} containing all {@code Either}s generated from two {@code Iterable}s. The choice of
+     * which {@code Iterable} to select from is governed by a list of indices. The indices in the list correspond to
+     * points in the resulting {@code Iterable} where the second {@code Iterable} is used, and at all other indices,
+     * the first {@code Iterable} is used. This assumes that both {@code Iterable}s are infinite; if one runs out
+     * before the other, than the remaining elements are appended at the end of the resulting {@code Iterable}. Does
+     * not support removal.
+     *
+     * <ul>
+     *  <li>{@code indices} must contain non-negative {@code BigInteger}s in ascending order.</li>
+     *  <li>{@code as} cannot be null.</li>
+     *  <li>{@code bs} cannot be null.</li>
+     *  <li>The result contains {@code Either}s.</li>
+     * </ul>
+     *
+     * Length is |{@code as}|+|{@code bs}|
+     *
+     * @param indices indices of the resulting {@code Iterable} at which {@code bs} is used
+     * @param as the first {@code Iterable}
+     * @param bs the second {@code Iterable}
+     * @param <A> the type of the first {@code Iterable}'s elements
+     * @param <B> the type of the second {@code Iterable}'s elements
+     * @return all {@code Either}s created from {@code as} and {@code bs}, controlled by {@code indices}
+     */
+    private static @NotNull <A, B> Iterable<Either<A, B>> eithers(
+            @NotNull Iterable<BigInteger> indices,
+            @NotNull Iterable<A> as,
+            @NotNull Iterable<B> bs
+    ) {
+        Iterable<Boolean> flags = booleansFromIndices(indices);
+        return () -> new NoRemoveIterator<Either<A, B>>() {
+            private final @NotNull Iterator<Boolean> flagIterator = flags.iterator();
+            private final @NotNull Iterator<A> asi = as.iterator();
+            private final @NotNull Iterator<B> bsi = bs.iterator();
+
+            @Override
+            public boolean hasNext() {
+                return asi.hasNext() || bsi.hasNext();
+            }
+
+            @Override
+            public Either<A, B> next() {
+                if (!asi.hasNext()) {
+                    return Either.ofB(bsi.next());
+                } else if (!bsi.hasNext()) {
+                    return Either.ofA(asi.next());
+                } else {
+                    return flagIterator.next() ? Either.ofB(bsi.next()) : Either.ofA(asi.next());
+                }
+            }
+        };
+    }
+
+    /**
+     * Returns an {@code Iterable} containing all {@code Either}s generated from two {@code Iterable}s. The ratio of
+     * elements derived from the second {@code Iterable} approaches sqrt(n)/n, where n is the number of elements
+     * generated (assuming the two source {@code Iterable}s are infinite). Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code as} cannot be null.</li>
+     *  <li>{@code bs} cannot be null.</li>
+     *  <li>The result contains {@code Either}s.</li>
+     * </ul>
+     *
+     * Length is |{@code as}|+|{@code bs}|
+     *
+     * @param as the first {@code Iterable}
+     * @param bs the second {@code Iterable}
+     * @param <A> the type of the first {@code Iterable}'s elements
+     * @param <B> the type of the second {@code Iterable}'s elements
+     * @return all {@code Either}s created from {@code as} and {@code bs}, the latter appearing quadratically rarely.
+     */
+    @Override
+    public @NotNull <A, B> Iterable<Either<A, B>> eithersSquareRootOrder(
+            @NotNull Iterable<A> as,
+            @NotNull Iterable<B> bs
+    ) {
+        return eithers(map(i -> i.pow(2), rangeUp(BigInteger.ZERO)), as, bs);
+    }
+
+    /**
+     * Returns an {@code Iterable} containing all {@code Either}s generated from two {@code Iterable}s. The ratio of
+     * elements derived from the second {@code Iterable} approaches log<sub>2</sub>(n)/n, where n is the number of
+     * elements generated (assuming the two source {@code Iterable}s are infinite). Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code as} cannot be null.</li>
+     *  <li>{@code bs} cannot be null.</li>
+     *  <li>The result contains {@code Either}s.</li>
+     * </ul>
+     *
+     * Length is |{@code as}|+|{@code bs}|
+     *
+     * @param as the first {@code Iterable}
+     * @param bs the second {@code Iterable}
+     * @param <A> the type of the first {@code Iterable}'s elements
+     * @param <B> the type of the second {@code Iterable}'s elements
+     * @return all {@code Either}s created from {@code as} and {@code bs}, the latter appearing exponentially rarely.
+     */
+    @Override
+    public @NotNull <A, B> Iterable<Either<A, B>> eithersLogarithmicOrder(
+            @NotNull Iterable<A> as,
+            @NotNull Iterable<B> bs
+    ) {
+        return eithers(map(i -> BigInteger.ONE.shiftLeft(i.intValueExact()), rangeUp(BigInteger.ZERO)), as, bs);
+    }
+
+    /**
+     * Returns an {@code Iterable} containing all elements from two {@code Iterable}s, unless the
+     * iterable is infinite, in which case no elements from the second {@code Iterable} will be generated. Elements
+     * from the first {@code Iterable} come before elements from the second.
+     *
+     * <ul>
+     *  <li>{@code as} cannot be null.</li>
+     *  <li>{@code bs} cannot be null.</li>
+     *  <li>The result is not null.</li>
+     * </ul>
+     *
+     * Length is |{@code as}|+|{@code bs}|
+     *
+     * @param as the first {@code Iterable}
+     * @param bs the second {@code Iterable}
+     * @param <T> the type of the {@code Iterables}' elements
+     * @return all elements from {@code as} and {@code bs}
+     */
+    @Override
+    public @NotNull <T> Iterable<T> chooseSuccessive(@NotNull Iterable<T> as, @NotNull Iterable<T> bs) {
+        return concat(as, bs);
+    }
+
+    /**
+     * Returns an {@code Iterable} containing all elements from two {@code Iterable}s. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code as} cannot be null.</li>
+     *  <li>{@code bs} cannot be null.</li>
+     *  <li>The result is not null.</li>
+     * </ul>
+     *
+     * Length is |{@code as}|+|{@code bs}|
+     *
+     * @param as the first {@code Iterable}
+     * @param bs the second {@code Iterable}
+     * @param <T> the type of the {@code Iterables}' elements
+     * @return all elements from {@code as} and {@code bs}
+     */
+    @Override
+    public @NotNull <T> Iterable<T> choose(@NotNull Iterable<T> as, @NotNull Iterable<T> bs) {
+        return mux(Arrays.asList(as, bs));
     }
 
     /**

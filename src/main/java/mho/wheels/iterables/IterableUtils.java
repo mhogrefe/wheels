@@ -743,7 +743,7 @@ public final strictfp class IterableUtils {
      * results: for example, if {@code a} is large, the result might contain runs of identical {@code float}s. If
      * {@code a}{@literal >}{@code b}, the result is empty. If {@code a}={@code b}, an {@code Iterable} containing only
      * {@code a} is returned. If {@code a} is {@code -Infinity} and {@code b} is not {@code -Infinity}, the result is
-     * {@code -Infinity} repeating forever. If {@code a} is negative zero and {@code b} is nonnegative, the first
+     * {@code -Infinity} repeating forever. If {@code a} is negative zero and {@code b} is non-negative, the first
      * element of the result is also negative zero. Neither {@code a} nor {@code b} may be {@code NaN}. The
      * {@code Iterable} produced does not support removing elements.
      *
@@ -790,7 +790,7 @@ public final strictfp class IterableUtils {
      * results: for example, if {@code a} is large, the result might contain runs of identical {@code double}s. If
      * {@code a}{@literal >}{@code b}, the result is empty. If {@code a}={@code b}, an {@code Iterable} containing only
      * {@code a} is returned. If {@code a} is {@code -Infinity} and {@code b} is not {@code -Infinity}, the result is
-     * {@code -Infinity} repeating forever. If {@code a} is negative zero and {@code b} is nonnegative, the first
+     * {@code -Infinity} repeating forever. If {@code a} is negative zero and {@code b} is non-negative, the first
      * element of the result is also negative zero. Neither {@code a} nor {@code b} may be {@code NaN}. The
      * {@code Iterable} produced does not support removing elements.
      *
@@ -1940,6 +1940,9 @@ public final strictfp class IterableUtils {
                         nextList.add(iterator.next());
                     }
                 }
+                if (nextList.isEmpty()) {
+                    throw new NoSuchElementException();
+                }
                 return nextList;
             }
         };
@@ -2496,6 +2499,8 @@ public final strictfp class IterableUtils {
      * @return Πxs
      */
     public static @NotNull BigInteger productBigInteger(Iterable<BigInteger> xs) {
+        if (any(x -> x == null, xs)) throw new NullPointerException();
+        if (any(x -> x.equals(BigInteger.ZERO), xs)) return BigInteger.ZERO;
         return foldl(BigInteger::multiply, BigInteger.ONE, xs);
     }
 
@@ -2512,25 +2517,204 @@ public final strictfp class IterableUtils {
      */
     public static @NotNull BigDecimal productBigDecimal(@NotNull Iterable<BigDecimal> xs) {
         if (isEmpty(xs)) return BigDecimal.ONE;
-        if (head(xs) == null)
-            throw new NullPointerException();
+        if (any(x -> x == null, xs)) throw new NullPointerException();
+        if (any(x -> eq(x, BigDecimal.ZERO), xs)) return BigDecimal.ZERO;
         return foldl(BigDecimal::multiply, BigDecimal.ONE, xs);
     }
 
-    public static <T extends Comparable<T>> T maximum(@NotNull Iterable<T> xs) {
-        return foldl1((x, y) -> max(x, y), xs);
+    public static int sumSignBigInteger(@NotNull List<BigInteger> xs) {
+        switch (xs.size()) {
+            case 0:
+                return 0;
+            case 1:
+                return xs.get(0).signum();
+            default:
+                int lastPositiveIndex = xs.size();
+                int lastNegativeIndex = xs.size();
+                boolean positiveSeen = false;
+                boolean negativeSeen = false;
+                for (int i = xs.size() - 1; i >= 0 && !(positiveSeen && negativeSeen); i--) {
+                    int sign = xs.get(i).signum();
+                    if (!positiveSeen && sign == 1) {
+                        lastPositiveIndex = i;
+                        positiveSeen = true;
+                    } else if (!negativeSeen && sign == -1) {
+                        lastNegativeIndex = i;
+                        negativeSeen = true;
+                    }
+                }
+                BigInteger sum = BigInteger.ZERO;
+                int signum = 0;
+                for (int i = 0; i < xs.size(); i++) {
+                    sum = sum.add(xs.get(i));
+                    signum = sum.signum();
+                    if (signum == 1 && i > lastNegativeIndex) return 1;
+                    if (signum == -1 && i > lastPositiveIndex) return -1;
+                }
+                return signum;
+        }
     }
 
-    public static char maximum(@NotNull String s) {
-        return foldl1((x, y) -> max(x, y), fromString(s));
+    public static int sumSignBigDecimal(@NotNull List<BigDecimal> xs) {
+        switch (xs.size()) {
+            case 0:
+                return 0;
+            case 1:
+                return xs.get(0).signum();
+            default:
+                int lastPositiveIndex = xs.size();
+                int lastNegativeIndex = xs.size();
+                boolean positiveSeen = false;
+                boolean negativeSeen = false;
+                for (int i = xs.size() - 1; i >= 0 && !(positiveSeen && negativeSeen); i--) {
+                    int sign = xs.get(i).signum();
+                    if (!positiveSeen && sign == 1) {
+                        lastPositiveIndex = i;
+                        positiveSeen = true;
+                    } else if (!negativeSeen && sign == -1) {
+                        lastNegativeIndex = i;
+                        negativeSeen = true;
+                    }
+                }
+                BigDecimal sum = BigDecimal.ZERO;
+                int signum = 0;
+                for (int i = 0; i < xs.size(); i++) {
+                    sum = sum.add(xs.get(i));
+                    signum = sum.signum();
+                    if (signum == 1 && i > lastNegativeIndex) return 1;
+                    if (signum == -1 && i > lastPositiveIndex) return -1;
+                }
+                return signum;
+        }
     }
 
     public static <T extends Comparable<T>> T minimum(@NotNull Iterable<T> xs) {
-        return foldl1((x, y) -> min(x, y), xs);
+        return foldl1(Ordering::min, xs);
+    }
+
+    public static <T extends Comparable<T>> T maximum(@NotNull Iterable<T> xs) {
+        return foldl1(Ordering::max, xs);
+    }
+
+    public static <T extends Comparable<T>> Pair<T, T> minimumMaximum(@NotNull Iterable<T> xs) {
+        T min = null;
+        T max = null;
+        boolean first = true;
+        for (T x : xs) {
+            if (first) {
+                min = x;
+                max = x;
+                first = false;
+            } else {
+                if (lt(x, min)) {
+                    min = x;
+                } else if (gt(x, max)) {
+                    max = x;
+                }
+            }
+        }
+        if (first) {
+            throw new IllegalArgumentException();
+        }
+        return new Pair<>(min, max);
+    }
+
+    public static <T> T minimum(@NotNull Comparator<T> comparator, @NotNull Iterable<T> xs) {
+        return foldl1((x, y) -> min(comparator, x, y), xs);
+    }
+
+    public static <T> T maximum(@NotNull Comparator<T> comparator, @NotNull Iterable<T> xs) {
+        return foldl1((x, y) -> max(comparator, x, y), xs);
+    }
+
+    public static <T> Pair<T, T> minimumMaximum(@NotNull Comparator<T> comparator, @NotNull Iterable<T> xs) {
+        T min = null;
+        T max = null;
+        boolean first = true;
+        for (T x : xs) {
+            if (first) {
+                min = x;
+                max = x;
+                first = false;
+            } else {
+                if (lt(comparator, x, min)) {
+                    min = x;
+                } else if (gt(comparator, x, max)) {
+                    max = x;
+                }
+            }
+        }
+        if (first) {
+            throw new IllegalArgumentException();
+        }
+        return new Pair<>(min, max);
     }
 
     public static char minimum(@NotNull String s) {
-        return foldl1((x, y) -> min(x, y), fromString(s));
+        return foldl1(Ordering::min, fromString(s));
+    }
+
+    public static char maximum(@NotNull String s) {
+        return foldl1(Ordering::max, fromString(s));
+    }
+
+    public static Pair<Character, Character> minimumMaximum(@NotNull String s) {
+        char min = '\0';
+        char max = '\0';
+        boolean first = true;
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (first) {
+                min = c;
+                max = c;
+                first = false;
+            } else {
+                if (lt(c, min)) {
+                    min = c;
+                } else if (gt(c, max)) {
+                    max = c;
+                }
+            }
+        }
+        if (first) {
+            throw new IllegalArgumentException();
+        }
+        return new Pair<>(min, max);
+    }
+
+    public static char minimum(@NotNull Comparator<Character> comparator, @NotNull String s) {
+        return foldl1((x, y) -> min(comparator, x, y), fromString(s));
+    }
+
+    public static char maximum(@NotNull Comparator<Character> comparator, @NotNull String s) {
+        return foldl1((x, y) -> max(comparator, x, y), fromString(s));
+    }
+
+    public static Pair<Character, Character> minimumMaximum(
+            @NotNull Comparator<Character> comparator,
+            @NotNull String s
+    ) {
+        char min = '\0';
+        char max = '\0';
+        boolean first = true;
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (first) {
+                min = c;
+                max = c;
+                first = false;
+            } else {
+                if (lt(comparator, c, min)) {
+                    min = c;
+                } else if (gt(comparator, c, max)) {
+                    max = c;
+                }
+            }
+        }
+        if (first) {
+            throw new IllegalArgumentException();
+        }
+        return new Pair<>(min, max);
     }
 
     public static @NotNull <A, B> Iterable<B> scanl(
@@ -2646,6 +2830,9 @@ public final strictfp class IterableUtils {
 
             @Override
             public T next() {
+                if (i >= n) {
+                    throw new NoSuchElementException();
+                }
                 i++;
                 return x;
             }
@@ -2663,6 +2850,9 @@ public final strictfp class IterableUtils {
 
             @Override
             public T next() {
+                if (ge(i, n)) {
+                    throw new NoSuchElementException();
+                }
                 i = i.add(BigInteger.ONE);
                 return x;
             }
@@ -5728,22 +5918,6 @@ public final strictfp class IterableUtils {
         return charsToString(list);
     }
 
-    public static <T> T maximum(@NotNull Comparator<T> comparator, @NotNull Iterable<T> xs) {
-        return foldl1((x, y) -> max(comparator, x, y), xs);
-    }
-
-    public static char maximum(@NotNull Comparator<Character> comparator, @NotNull String s) {
-        return foldl1((x, y) -> max(comparator, x, y), fromString(s));
-    }
-
-    public static <T> T minimum(@NotNull Comparator<T> comparator, @NotNull Iterable<T> xs) {
-        return foldl1((x, y) -> min(comparator, x, y), xs);
-    }
-
-    public static char minimum(@NotNull Comparator<Character> comparator, @NotNull String s) {
-        return foldl1((x, y) -> min(comparator, x, y), fromString(s));
-    }
-
     public static @NotNull <T> Iterable<List<T>> group(
             @NotNull Predicate<Pair<T, T>> p,
             @NotNull Iterable<T> xs
@@ -5810,6 +5984,29 @@ public final strictfp class IterableUtils {
             frequencies.put(x, frequency);
         }
         return fromMap(frequencies);
+    }
+
+    public static @NotNull Iterable<Boolean> booleansFromIndices(@NotNull Iterable<BigInteger> indices) {
+        return () -> new NoRemoveIterator<Boolean>() {
+            private final @NotNull Iterator<BigInteger> is = indices.iterator();
+            private @NotNull Optional<BigInteger> nextIndex = is.hasNext() ? Optional.of(is.next()) : Optional.empty();
+            private @NotNull BigInteger i = BigInteger.ZERO;
+
+            @Override
+            public boolean hasNext() {
+                return nextIndex.isPresent();
+            }
+
+            @Override
+            public @NotNull Boolean next() {
+                boolean result = nextIndex.get().equals(i);
+                if (result) {
+                    nextIndex = is.hasNext() ? Optional.of(is.next()) : Optional.empty();
+                }
+                i = i.add(BigInteger.ONE);
+                return result;
+            }
+        };
     }
 
     public static @NotNull Iterable<String> group(

@@ -1,52 +1,31 @@
 package mho.wheels.math;
 
 import mho.wheels.iterables.ExhaustiveProvider;
-import mho.wheels.iterables.IterableProvider;
-import mho.wheels.iterables.RandomProvider;
 import mho.wheels.structures.Pair;
 import mho.wheels.structures.Triple;
+import mho.wheels.testing.TestProperties;
 import org.jetbrains.annotations.NotNull;
-import org.junit.Test;
 
 import java.math.BigInteger;
-import java.util.Arrays;
 
 import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.math.MathUtils.*;
 import static mho.wheels.ordering.Ordering.le;
 import static mho.wheels.testing.Testing.*;
 
-public class MathUtilsProperties {
-    private static boolean USE_RANDOM;
-    private static final int TINY_LIMIT = 10;
-    private static int LIMIT;
-
-    private static IterableProvider P;
-
-    private static void initialize() {
-        if (USE_RANDOM) {
-            P = RandomProvider.example();
-            LIMIT = 1000;
-        } else {
-            P = ExhaustiveProvider.INSTANCE;
-            LIMIT = 10000;
-        }
+public class MathUtilsProperties extends TestProperties {
+    public MathUtilsProperties() {
+        super("MathUtils");
     }
 
-    @Test
-    public void testAllProperties() {
-        System.out.println("MathUtils properties");
-        for (boolean useRandom : Arrays.asList(false, true)) {
-            System.out.println("\ttesting " + (useRandom ? "randomly" : "exhaustively"));
-            USE_RANDOM = useRandom;
-            propertiesGcd_int_int();
-            compareImplementationsGcd_int_int();
-            propertiesGcd_long_long();
-            compareImplementationsGcd_long_long();
-            propertiesLcm();
-            compareImplementationsLcm();
-        }
-        System.out.println("Done");
+    @Override
+    protected void testBothModes() {
+        propertiesGcd_int_int();
+        compareImplementationsGcd_int_int();
+        propertiesGcd_long_long();
+        compareImplementationsGcd_long_long();
+        propertiesLcm();
+        compareImplementationsLcm();
     }
 
     private static int gcd_int_int_simplest(int x, int y) {
@@ -61,8 +40,8 @@ public class MathUtilsProperties {
         return maximum(intersect(factors(x), factors(y)));
     }
 
-    private static void propertiesGcd_int_int() {
-        initialize();
+    private void propertiesGcd_int_int() {
+        initialize("");
         System.out.println("\t\ttesting gcd(int, int) properties...");
 
         Iterable<Pair<Integer, Integer>> ps = filter(p -> p.a != 0 || p.b != 0, P.pairs(P.integers()));
@@ -100,8 +79,8 @@ public class MathUtilsProperties {
         }
     }
 
-    private static void compareImplementationsGcd_int_int() {
-        initialize();
+    private void compareImplementationsGcd_int_int() {
+        initialize("");
         System.out.println("\t\tcomparing gcd(int, int) implementations...");
 
         long totalTime = 0;
@@ -141,8 +120,8 @@ public class MathUtilsProperties {
         return maximum(intersect(factors(BigInteger.valueOf(x)), factors(BigInteger.valueOf(y)))).longValue();
     }
 
-    private static void propertiesGcd_long_long() {
-        initialize();
+    private void propertiesGcd_long_long() {
+        initialize("");
         System.out.println("\t\ttesting gcd(long, long) properties...");
 
         Iterable<Pair<Long, Long>> ps = filter(p -> p.a != 0 || p.b != 0, P.pairs(P.longs()));
@@ -182,8 +161,8 @@ public class MathUtilsProperties {
         }
     }
 
-    private static void compareImplementationsGcd_long_long() {
-        initialize();
+    private void compareImplementationsGcd_long_long() {
+        initialize("");
         System.out.println("\t\tcomparing gcd(long, long) implementations...");
 
         long totalTime = 0;
@@ -220,8 +199,8 @@ public class MathUtilsProperties {
         return head(orderedIntersection(rangeBy(x, x), rangeBy(y, y)));
     }
 
-    private static void propertiesLcm() {
-        initialize();
+    private void propertiesLcm() {
+        initialize("");
         System.out.println("\t\ttesting lcm(BigInteger, BigInteger) properties...");
 
         for (Pair<BigInteger, BigInteger> p : take(LIMIT, P.pairs(P.positiveBigIntegers()))) {
@@ -267,8 +246,8 @@ public class MathUtilsProperties {
         }
     }
 
-    private static void compareImplementationsLcm() {
-        initialize();
+    private void compareImplementationsLcm() {
+        initialize("");
         System.out.println("\t\tcomparing lcm(BigInteger, BigInteger) implementations...");
 
         long totalTime = 0;

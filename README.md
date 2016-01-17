@@ -30,6 +30,7 @@ Progress
 | IntegerUtils                | ✔       | ✘       | ✘     | ✘     | ✘          |
 | LexComparator               | ✔       | ✔       | ✘     | ✘     | ✘          |
 | ListBasedComparator         | ✔       | ✘       | ✘     | ✘     | ✘          |
+| OptionalComparator          | ✔       | ✘       | ✘     | ✘     | ✘          |
 | ShortlexComparator          | ✔       | ✔       | ✘     | ✘     | ✘          |
 | StringShortlexComparator    | ✔       | ✔       | ✘     | ✘     | ✘          |
 | WithNullComparator          | ✘       | ✘       | ✘     | ✘     | ✘          |
@@ -44,4 +45,6 @@ Progress
 | Septuple                    | ✘       | ✘       | ✘     | ✘     | ✘          |
 | Sextuple                    | ✘       | ✘       | ✘     | ✘     | ✘          |
 | Triple                      | ✘       | ✘       | ✘     | ✘     | ✘          |
+| Demos                       | ✘       | ✘       | ✘     | ✘     | ✘          |
 | Testing                     | ✘       | ✘       | ✘     | ✘     | ✘          |
+| TestProperties              | ✘       | ✘       | ✘     | ✘     | ✘          |

@@ -21,9 +21,14 @@ import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.ordering.Ordering.*;
 
 public strictfp class Testing {
-    private static final @NotNull ExhaustiveProvider EP = ExhaustiveProvider.INSTANCE;
-    private static final int TINY_LIMIT = 20;
-    private static final int SMALL_LIMIT = 128;
+    public static final @NotNull ExhaustiveProvider EP = ExhaustiveProvider.INSTANCE;
+    public static final int DEFAULT_SAMPLE_SIZE = 1000000;
+    public static final int DEFAULT_TOP_COUNT = 10;
+    public static final int LARGE_LIMIT = 10000;
+    public static final int MEDIUM_LIMIT = 1000;
+    public static final int SMALL_LIMIT = 100;
+    public static final int SMALLER_LIMIT = 50;
+    public static final int TINY_LIMIT = 20;
 
     /**
      * Disallow instantiation
@@ -249,11 +254,11 @@ public strictfp class Testing {
         assertEquals(x, f.apply(y), y);
     }
 
-    public static <T> void isInvolution(@NotNull Function<T, T> f, @NotNull T x) {
+    public static <T> void involution(@NotNull Function<T, T> f, @NotNull T x) {
         assertEquals(x, f.andThen(f).apply(x), x);
     }
 
-    public static <A, B> void inverses(@NotNull Function<A, B> f, @NotNull Function<B, A> g, @Nullable A x) {
+    public static <A, B> void inverse(@NotNull Function<A, B> f, @NotNull Function<B, A> g, @Nullable A x) {
         assertEquals(x, f.andThen(g).apply(x), x);
     }
 
@@ -270,6 +275,22 @@ public strictfp class Testing {
 
     public static <T> void associative(@NotNull BiFunction<T, T, T> f, @NotNull Triple<T, T, T> t) {
         assertEquals(t, f.apply(f.apply(t.a, t.b), t.c), f.apply(t.a, f.apply(t.b, t.c)));
+    }
+
+    public static <A, B> void leftDistributive(
+            @NotNull BiFunction<A, A, A> f,
+            @NotNull BiFunction<B, A, A> g,
+            @NotNull Triple<B, A, A> t
+    ) {
+        assertEquals(t, g.apply(t.a, f.apply(t.b, t.c)), f.apply(g.apply(t.a, t.b), g.apply(t.a, t.c)));
+    }
+
+    public static <A, B> void rightDistributive(
+            @NotNull BiFunction<A, A, A> f,
+            @NotNull BiFunction<A, B, A> g,
+            @NotNull Triple<B, A, A> t
+    ) {
+        assertEquals(t, g.apply(f.apply(t.b, t.c), t.a), f.apply(g.apply(t.b, t.a), g.apply(t.c, t.a)));
     }
 
     public static <A, B, MA, MB> void homomorphic(
@@ -304,9 +325,6 @@ public strictfp class Testing {
                 T x = xs.get(i);
                 T y = ys.get(j);
                 assertEquals(new Pair<>(x, y), i == j, x.equals(y));
-                if (i == j) {
-                    assertEquals(x, x.hashCode(), y.hashCode());
-                }
             }
         }
     }
@@ -494,19 +512,19 @@ public strictfp class Testing {
             @NotNull BiFunction<T, T, T> f,
             @NotNull Function<List<T>, T> listF,
             @NotNull Consumer<T> validate,
+            boolean listCanBeEmpty,
             boolean commutativeAndAssociative
     ) {
-        for (List<T> lxs : take(limit, P.lists(xs))) {
+        Iterable<List<T>> xsi = listCanBeEmpty ? P.lists(xs) : P.listsAtLeast(1, xs);
+        for (List<T> lxs : take(limit, xsi)) {
             T result = listF.apply(lxs);
             validate.accept(result);
         }
 
-        testNoRemove(limit, xs);
-
         if (commutativeAndAssociative) {
-            Iterable<Pair<List<T>, List<T>>> ps = filter(
+            Iterable<Pair<List<T>, List<T>>> ps = filterInfinite(
                     q -> !q.a.equals(q.b),
-                    P.dependentPairs(P.lists(xs), P::permutationsFinite)
+                    P.dependentPairs(xsi, P::permutationsFinite)
             );
             for (Pair<List<T>, List<T>> p : take(limit, ps)) {
                 assertEquals(p, listF.apply(p.a), listF.apply(p.b));
@@ -521,11 +539,14 @@ public strictfp class Testing {
             assertEquals(p, listF.apply(Arrays.asList(p.a, p.b)), f.apply(p.a, p.b));
         }
 
-        for (List<T> lxs : take(limit, P.listsWithElement(null, xs))) {
+        Iterable<List<T>> xsin = listCanBeEmpty ?
+                P.listsWithElement(null, xs) :
+                filterInfinite(ys -> !ys.isEmpty(), P.listsWithElement(null, xs));
+        for (List<T> lxs : take(limit, xsin)) {
             try {
                 listF.apply(lxs);
                 fail(lxs);
-            } catch (NullPointerException ignored) {}
+            } catch (NullPointerException | IllegalArgumentException ignored) {}
         }
     }
 
@@ -610,10 +631,9 @@ public strictfp class Testing {
         }
 
         if (denseInUsedCharString) {
-            Iterable<String> ss = filter(s -> read.apply(s).isPresent(), P.strings(usedChars));
-            for (String s : take(limit, ss)) {
-                Optional<T> ox = read.apply(s);
-                validate.accept(ox.get());
+            for (String s : take(limit, filterInfinite(t -> read.apply(t).isPresent(), P.strings(usedChars)))) {
+                inverse(t -> read.apply(t).get(), Object::toString, s);
+                validate.accept(read.apply(s).get());
             }
         }
     }

@@ -1,8 +1,7 @@
 package mho.wheels.iterables;
 
 import mho.wheels.structures.Pair;
-import mho.wheels.testing.Testing;
-import org.jetbrains.annotations.NotNull;
+import mho.wheels.testing.Demos;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -10,30 +9,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static mho.wheels.iterables.IterableUtils.*;
+import static mho.wheels.testing.Testing.*;
 
 @SuppressWarnings("UnusedDeclaration")
-public strictfp class IterableUtilsDemos {
-    private static final boolean USE_RANDOM = false;
-    private static final @NotNull ExhaustiveProvider EP = ExhaustiveProvider.INSTANCE;
-    private static int LIMIT;
-    private static final int SMALL_LIMIT = 1000;
-    private static final int SMALLER_LIMIT = 100;
-    private static final int TINY_LIMIT = 20;
-
-    private static IterableProvider P;
-
-    private static void initialize() {
-        if (USE_RANDOM) {
-            P = RandomProvider.example();
-            LIMIT = 1000;
-        } else {
-            P = ExhaustiveProvider.INSTANCE;
-            LIMIT = 10000;
-        }
+public strictfp class IterableUtilsDemos extends Demos {
+    public IterableUtilsDemos(boolean useRandom) {
+        super(useRandom);
     }
 
-    private static void demoAddTo_Collection_Iterable() {
-        initialize();
+    private void demoAddTo_Collection_Iterable() {
         for (Pair<List<Integer>, List<Integer>> p : take(LIMIT, P.pairs(P.lists(P.withNull(P.integers()))))) {
             List<Integer> list = new ArrayList<>();
             list.addAll(p.b);
@@ -42,8 +26,7 @@ public strictfp class IterableUtilsDemos {
         }
     }
 
-    private static void demoAddTo_Collection_String() {
-        initialize();
+    private void demoAddTo_Collection_String() {
         Iterable<Pair<String, List<Character>>> ps = P.pairs(P.strings(), P.lists(P.withNull(P.characters())));
         for (Pair<String, List<Character>> p : take(LIMIT, ps)) {
             List<Character> list = new ArrayList<>();
@@ -53,31 +36,27 @@ public strictfp class IterableUtilsDemos {
         }
     }
 
-    private static void demoToList_Iterable() {
-        initialize();
+    private void demoToList_Iterable() {
         for (List<Integer> is : take(LIMIT, P.lists(P.withNull(P.integers())))) {
             String listString = tail(init(is.toString()));
             System.out.println("toList(" + listString + ") = " + toList(is));
         }
     }
 
-    private static void demoToList_String() {
-        initialize();
+    private void demoToList_String() {
         for (String s : take(LIMIT, P.strings())) {
             System.out.println("toList(" + s + ") = " + toList(s));
         }
     }
 
-    private static void demoToString_Iterable() {
-        initialize();
+    private void demoToString_Iterable() {
         for (List<Integer> is : take(LIMIT, P.lists(P.withNull(P.integers())))) {
             String listString = tail(init(is.toString()));
             System.out.println("toString(" + listString + ") = " + IterableUtils.toString(is));
         }
     }
 
-    private static void demoToString_int_finite_Iterable() {
-        initialize();
+    private void demoToString_int_finite_Iterable() {
         Iterable<Pair<Integer, List<Integer>>> ps;
         if (P instanceof ExhaustiveProvider) {
             ps = map(
@@ -95,8 +74,7 @@ public strictfp class IterableUtilsDemos {
         }
     }
 
-    private static void demoToString_int_infinite_Iterable() {
-        initialize();
+    private void demoToString_int_infinite_Iterable() {
         Iterable<Pair<Integer, Iterable<Integer>>> ps;
         if (P instanceof ExhaustiveProvider) {
             ps = map(
@@ -118,142 +96,123 @@ public strictfp class IterableUtilsDemos {
         }
     }
 
-    private static void demoFromString() {
-        initialize();
+    private void demoFromString() {
         for (String s : take(LIMIT, P.strings())) {
             System.out.println("fromString(" + s + ") = " + toList(fromString(s)));
         }
     }
 
-    private static void demoCharsToString() {
-        initialize();
+    private void demoCharsToString() {
         for (List<Character> cs : take(LIMIT, P.lists(P.characters()))) {
             String listString = tail(init(cs.toString()));
             System.out.println("charsToString(" + listString + ") = " + charsToString(cs));
         }
     }
 
-    private static void demoRangeUp_byte() {
-        initialize();
+    private void demoRangeUp_byte() {
         for (byte b : take(LIMIT, P.bytes())) {
             System.out.println("range(" + b + ") = " + toList(rangeUp(b)));
         }
     }
 
-    private static void demoRangeUp_short() {
-        initialize();
+    private void demoRangeUp_short() {
         for (short s : take(LIMIT, P.shorts())) {
             System.out.println("range(" + s + ") = " + IterableUtils.toString(TINY_LIMIT, rangeUp(s)));
         }
     }
 
-    private static void demoRangeUp_int() {
-        initialize();
+    private void demoRangeUp_int() {
         for (int i : take(LIMIT, P.integers())) {
             System.out.println("range(" + i + ") = " + IterableUtils.toString(TINY_LIMIT, rangeUp(i)));
         }
     }
 
-    private static void demoRangeUp_long() {
-        initialize();
+    private void demoRangeUp_long() {
         for (long l : take(LIMIT, P.longs())) {
             System.out.println("range(" + l + ") = " + IterableUtils.toString(TINY_LIMIT, rangeUp(l)));
         }
     }
 
-    private static void demoRangeUp_BigInteger() {
-        initialize();
+    private void demoRangeUp_BigInteger() {
         for (BigInteger i : take(LIMIT, P.bigIntegers())) {
             System.out.println("range(" + i + ") = " + IterableUtils.toString(TINY_LIMIT, rangeUp(i)));
         }
     }
 
-    private static void demoRangeUp_BigDecimal() {
-        initialize();
+    private void demoRangeUp_BigDecimal() {
         for (BigDecimal bd : take(LIMIT, P.bigDecimals())) {
             System.out.println("range(" + bd + ") = " + IterableUtils.toString(TINY_LIMIT, rangeUp(bd)));
         }
     }
 
-    private static void demoRangeUp_char() {
-        initialize();
+    private void demoRangeUp_char() {
         for (char c : take(LIMIT, P.characters())) {
             System.out.println("range(" + c + ") = " + IterableUtils.toString(TINY_LIMIT, rangeUp(c)));
         }
     }
 
-    private static void demoRangeUp_float() {
-        initialize();
+    private void demoRangeUp_float() {
         for (float f : take(LIMIT, filter(g -> !Float.isNaN(g), P.floats()))) {
             System.out.println("range(" + f + ") = " + IterableUtils.toString(TINY_LIMIT, rangeUp(f)));
         }
     }
 
-    private static void demoRangeUp_double() {
-        initialize();
+    private void demoRangeUp_double() {
         for (double d : take(LIMIT, filter(e -> !Double.isNaN(e), P.doubles()))) {
             System.out.println("range(" + d + ") = " + IterableUtils.toString(TINY_LIMIT, rangeUp(d)));
         }
     }
 
-    private static void demoRange_byte_byte() {
-        initialize();
+    private void demoRange_byte_byte() {
         for (Pair<Byte, Byte> p : take(LIMIT, P.pairs(P.bytes()))) {
             System.out.println("range(" + p.a + ", " + p.b + ") = " +
                     IterableUtils.toString(TINY_LIMIT, range(p.a, p.b)));
         }
     }
 
-    private static void demoRange_short_short() {
-        initialize();
+    private void demoRange_short_short() {
         for (Pair<Short, Short> p : take(LIMIT, P.pairs(P.shorts()))) {
             System.out.println("range(" + p.a + ", " + p.b + ") = " +
                     IterableUtils.toString(TINY_LIMIT, range(p.a, p.b)));
         }
     }
 
-    private static void demoRange_int_int() {
-        initialize();
+    private void demoRange_int_int() {
         for (Pair<Integer, Integer> p : take(LIMIT, P.pairs(P.integers()))) {
             System.out.println("range(" + p.a + ", " + p.b + ") = " +
                     IterableUtils.toString(TINY_LIMIT, range(p.a, p.b)));
         }
     }
 
-    private static void demoRange_long_long() {
-        initialize();
+    private void demoRange_long_long() {
         for (Pair<Long, Long> p : take(LIMIT, P.pairs(P.longs()))) {
             System.out.println("range(" + p.a + ", " + p.b + ") = " +
                     IterableUtils.toString(TINY_LIMIT, range(p.a, p.b)));
         }
     }
 
-    private static void demoRange_BigInteger_BigInteger() {
-        initialize();
+    private void demoRange_BigInteger_BigInteger() {
         for (Pair<BigInteger, BigInteger> p : take(LIMIT, P.pairs(P.bigIntegers()))) {
             System.out.println("range(" + p.a + ", " + p.b + ") = " +
                     IterableUtils.toString(TINY_LIMIT, range(p.a, p.b)));
         }
     }
 
-    private static void demoRange_BigDecimal_BigDecimal() {
-        initialize();
+    private void demoRange_BigDecimal_BigDecimal() {
         for (Pair<BigDecimal, BigDecimal> p : take(LIMIT, P.pairs(P.bigDecimals()))) {
             System.out.println("range(" + p.a + ", " + p.b + ") = " +
                     IterableUtils.toString(TINY_LIMIT, range(p.a, p.b)));
         }
     }
 
-    private static void demoRange_char_char() {
-        initialize();
+    private void demoRange_char_char() {
         for (Pair<Character, Character> p : take(LIMIT, P.pairs(P.characters()))) {
             System.out.println("range(" + p.a + ", " + p.b + ") = " +
                     IterableUtils.toString(TINY_LIMIT, range(p.a, p.b)));
         }
     }
 
-    private static void demoRange_float_float() {
-        initialize();
+    private void demoRange_float_float() {
         Iterable<Pair<Float, Float>> ps = P.pairs(filter(f -> !Float.isNaN(f), P.floats()));
         for (Pair<Float, Float> p : take(LIMIT, ps)) {
             System.out.println("range(" + p.a + ", " + p.b + ") = " +
@@ -261,8 +220,7 @@ public strictfp class IterableUtilsDemos {
         }
     }
 
-    private static void demoRange_double_double() {
-        initialize();
+    private void demoRange_double_double() {
         Iterable<Pair<Double, Double>> ps = P.pairs(filter(d -> !Double.isNaN(d), P.doubles()));
         for (Pair<Double, Double> p : take(LIMIT, ps)) {
             System.out.println("range(" + p.a + ", " + p.b + ") = " +
@@ -270,284 +228,263 @@ public strictfp class IterableUtilsDemos {
         }
     }
 
-    private static void demoUnrepeat() {
-        initialize();
+    private void demoUnrepeat() {
         for (List<Integer> is : take(LIMIT, P.lists(P.withNull(P.integers())))) {
             String listString = tail(init(is.toString()));
             System.out.println("unrepeat(" + listString + ") = " + unrepeat(is));
         }
     }
 
-    private static void demoSumByte() {
-        initialize();
+    private void demoSumByte() {
         for (List<Byte> bs : take(LIMIT, P.lists(P.bytes()))) {
             String listString = tail(init(bs.toString()));
             System.out.println("Σ(" + listString + ") = " + sumByte(bs));
         }
     }
 
-    private static void demoSumShort() {
-        initialize();
+    private void demoSumShort() {
         for (List<Short> ss : take(LIMIT, P.lists(P.shorts()))) {
             String listString = tail(init(ss.toString()));
             System.out.println("Σ(" + listString + ") = " + sumShort(ss));
         }
     }
 
-    private static void demoSumInteger() {
-        initialize();
+    private void demoSumInteger() {
         for (List<Integer> is : take(LIMIT, P.lists(P.integers()))) {
             String listString = tail(init(is.toString()));
             System.out.println("Σ(" + listString + ") = " + sumInteger(is));
         }
     }
 
-    private static void demoSumLong() {
-        initialize();
+    private void demoSumLong() {
         for (List<Long> ls : take(LIMIT, P.lists(P.longs()))) {
             String listString = tail(init(ls.toString()));
             System.out.println("Σ(" + listString + ") = " + sumLong(ls));
         }
     }
 
-    private static void demoSumFloat() {
-        initialize();
+    private void demoSumFloat() {
         for (List<Float> fs : take(LIMIT, P.lists(P.floats()))) {
             String listString = tail(init(fs.toString()));
             System.out.println("Σ(" + listString + ") = " + sumFloat(fs));
         }
     }
 
-    private static void demoSumDouble() {
-        initialize();
+    private void demoSumDouble() {
         for (List<Double> ds : take(LIMIT, P.lists(P.doubles()))) {
             String listString = tail(init(ds.toString()));
             System.out.println("Σ(" + listString + ") = " + sumDouble(ds));
         }
     }
 
-    private static void demoSumBigInteger() {
-        initialize();
+    private void demoSumBigInteger() {
         for (List<BigInteger> is : take(LIMIT, P.lists(P.bigIntegers()))) {
             String listString = tail(init(is.toString()));
             System.out.println("Σ(" + listString + ") = " + sumBigInteger(is));
         }
     }
 
-    private static void demoSumBigDecimal() {
-        initialize();
+    private void demoSumBigDecimal() {
         for (List<BigDecimal> bds : take(LIMIT, P.lists(P.bigDecimals()))) {
             String listString = tail(init(bds.toString()));
             System.out.println("Σ(" + listString + ") = " + sumBigDecimal(bds));
         }
     }
 
-    private static void demoProductByte() {
-        initialize();
+    private void demoProductByte() {
         for (List<Byte> bs : take(LIMIT, P.lists(P.bytes()))) {
             String listString = tail(init(bs.toString()));
             System.out.println("Π(" + listString + ") = " + productByte(bs));
         }
     }
 
-    private static void demoProductShort() {
-        initialize();
+    private void demoProductShort() {
         for (List<Short> ss : take(LIMIT, P.lists(P.shorts()))) {
             String listString = tail(init(ss.toString()));
             System.out.println("Π(" + listString + ") = " + productShort(ss));
         }
     }
 
-    private static void demoProductInteger() {
-        initialize();
+    private void demoProductInteger() {
         for (List<Integer> is : take(LIMIT, P.lists(P.integers()))) {
             String listString = tail(init(is.toString()));
             System.out.println("Π(" + listString + ") = " + productInteger(is));
         }
     }
 
-    private static void demoProductLong() {
-        initialize();
+    private void demoProductLong() {
         for (List<Long> ls : take(LIMIT, P.lists(P.longs()))) {
             String listString = tail(init(ls.toString()));
             System.out.println("Π(" + listString + ") = " + productLong(ls));
         }
     }
 
-    private static void demoProductFloat() {
-        initialize();
+    private void demoProductFloat() {
         for (List<Float> fs : take(LIMIT, P.lists(P.floats()))) {
             String listString = tail(init(fs.toString()));
             System.out.println("Π(" + listString + ") = " + productFloat(fs));
         }
     }
 
-    private static void demoProductDouble() {
-        initialize();
+    private void demoProductDouble() {
         for (List<Double> ds : take(LIMIT, P.lists(P.doubles()))) {
             String listString = tail(init(ds.toString()));
             System.out.println("Π(" + listString + ") = " + productDouble(ds));
         }
     }
 
-    private static void demoProductBigInteger() {
-        initialize();
+    private void demoProductBigInteger() {
         for (List<BigInteger> is : take(LIMIT, P.lists(P.bigIntegers()))) {
             String listString = tail(init(is.toString()));
             System.out.println("Π(" + listString + ") = " + productBigInteger(is));
         }
     }
 
-    private static void demoProductBigDecimal() {
-        initialize();
+    private void demoProductBigDecimal() {
         for (List<BigDecimal> bds : take(LIMIT, P.lists(P.bigDecimals()))) {
             String listString = tail(init(bds.toString()));
             System.out.println("Π(" + listString + ") = " + productBigDecimal(bds));
         }
     }
 
-    private static void demoDeltaByte_finite() {
-        initialize();
+    private void demoSumSignBigInteger() {
+        for (List<BigInteger> is : take(LIMIT, P.withScale(4).lists(P.bigIntegers()))) {
+            String listString = tail(init(is.toString()));
+            System.out.println("sumSignBigInteger(" + listString + ") = " + sumSignBigInteger(is));
+        }
+    }
+
+    private void demoSumSignBigDecimal() {
+        for (List<BigDecimal> bds : take(LIMIT, P.withScale(4).lists(P.bigDecimals()))) {
+            String listString = tail(init(bds.toString()));
+            System.out.println("sumSignBigDecimal(" + listString + ") = " + sumSignBigDecimal(bds));
+        }
+    }
+
+    private void demoDeltaByte_finite() {
         for (List<Byte> bs : take(LIMIT, P.listsAtLeast(1, P.bytes()))) {
             String listString = tail(init(bs.toString()));
             System.out.println("Δ(" + listString + ") = " + IterableUtils.toString(TINY_LIMIT, deltaByte(bs)));
         }
     }
 
-    private static void demoDeltaByte_infinite() {
-        initialize();
-        for (Iterable<Byte> bs : take(SMALL_LIMIT, P.prefixPermutations(EP.bytes()))) {
+    private void demoDeltaByte_infinite() {
+        for (Iterable<Byte> bs : take(MEDIUM_LIMIT, P.prefixPermutations(EP.bytes()))) {
             String listString = tail(init(IterableUtils.toString(TINY_LIMIT, bs)));
             System.out.println("Δ(" + listString + ") = " + IterableUtils.toString(TINY_LIMIT, deltaByte(bs)));
         }
     }
 
-    private static void demoDeltaShort_finite() {
-        initialize();
+    private void demoDeltaShort_finite() {
         for (List<Short> ss : take(LIMIT, P.listsAtLeast(1, P.shorts()))) {
             String listString = tail(init(ss.toString()));
             System.out.println("Δ(" + listString + ") = " + IterableUtils.toString(TINY_LIMIT, deltaShort(ss)));
         }
     }
 
-    private static void demoDeltaShort_infinite() {
-        initialize();
-        for (Iterable<Short> ss : take(SMALL_LIMIT, P.prefixPermutations(EP.shorts()))) {
+    private void demoDeltaShort_infinite() {
+        for (Iterable<Short> ss : take(MEDIUM_LIMIT, P.prefixPermutations(EP.shorts()))) {
             String listString = tail(init(IterableUtils.toString(TINY_LIMIT, ss)));
             System.out.println("Δ(" + listString + ") = " + IterableUtils.toString(TINY_LIMIT, deltaShort(ss)));
         }
     }
 
-    private static void demoDeltaInteger_finite() {
-        initialize();
+    private void demoDeltaInteger_finite() {
         for (List<Integer> is : take(LIMIT, P.listsAtLeast(1, P.integers()))) {
             String listString = tail(init(is.toString()));
             System.out.println("Δ(" + listString + ") = " + IterableUtils.toString(TINY_LIMIT, deltaInteger(is)));
         }
     }
 
-    private static void demoDeltaInteger_infinite() {
-        initialize();
-        for (Iterable<Integer> is : take(SMALL_LIMIT, P.prefixPermutations(EP.integers()))) {
+    private void demoDeltaInteger_infinite() {
+        for (Iterable<Integer> is : take(MEDIUM_LIMIT, P.prefixPermutations(EP.integers()))) {
             String listString = tail(init(IterableUtils.toString(TINY_LIMIT, is)));
             System.out.println("Δ(" + listString + ") = " + IterableUtils.toString(TINY_LIMIT, deltaInteger(is)));
         }
     }
 
-    private static void demoDeltaLong_finite() {
-        initialize();
+    private void demoDeltaLong_finite() {
         for (List<Long> ls : take(LIMIT, P.listsAtLeast(1, P.longs()))) {
             String listString = tail(init(ls.toString()));
             System.out.println("Δ(" + listString + ") = " + IterableUtils.toString(TINY_LIMIT, deltaLong(ls)));
         }
     }
 
-    private static void demoDeltaLong_infinite() {
-        initialize();
-        for (Iterable<Long> ls : take(SMALL_LIMIT, P.prefixPermutations(EP.longs()))) {
+    private void demoDeltaLong_infinite() {
+        for (Iterable<Long> ls : take(MEDIUM_LIMIT, P.prefixPermutations(EP.longs()))) {
             String listString = tail(init(IterableUtils.toString(TINY_LIMIT, ls)));
             System.out.println("Δ(" + listString + ") = " + IterableUtils.toString(TINY_LIMIT, deltaLong(ls)));
         }
     }
 
-    private static void demoDeltaBigInteger_finite() {
-        initialize();
+    private void demoDeltaBigInteger_finite() {
         for (List<BigInteger> is : take(LIMIT, P.listsAtLeast(1, P.bigIntegers()))) {
             String listString = tail(init(is.toString()));
             System.out.println("Δ(" + listString + ") = " + IterableUtils.toString(TINY_LIMIT, deltaBigInteger(is)));
         }
     }
 
-    private static void demoDeltaBigInteger_infinite() {
-        initialize();
-        for (Iterable<BigInteger> is : take(SMALL_LIMIT, P.prefixPermutations(EP.bigIntegers()))) {
+    private void demoDeltaBigInteger_infinite() {
+        for (Iterable<BigInteger> is : take(MEDIUM_LIMIT, P.prefixPermutations(EP.bigIntegers()))) {
             String listString = tail(init(IterableUtils.toString(TINY_LIMIT, is)));
             System.out.println("Δ(" + listString + ") = " + IterableUtils.toString(TINY_LIMIT, deltaBigInteger(is)));
         }
     }
 
-    private static void demoDeltaBigDecimal_finite() {
-        initialize();
+    private void demoDeltaBigDecimal_finite() {
         for (List<BigDecimal> bds : take(LIMIT, P.listsAtLeast(1, P.bigDecimals()))) {
             String listString = tail(init(bds.toString()));
             System.out.println("Δ(" + listString + ") = " + IterableUtils.toString(TINY_LIMIT, deltaBigDecimal(bds)));
         }
     }
 
-    private static void demoDeltaBigDecimal_infinite() {
-        initialize();
-        for (Iterable<BigDecimal> bds : take(SMALLER_LIMIT, P.prefixPermutations(EP.bigDecimals()))) {
+    private void demoDeltaBigDecimal_infinite() {
+        for (Iterable<BigDecimal> bds : take(SMALL_LIMIT, P.prefixPermutations(EP.bigDecimals()))) {
             String listString = tail(init(IterableUtils.toString(TINY_LIMIT, bds)));
             System.out.println("Δ(" + listString + ") = " + IterableUtils.toString(TINY_LIMIT, deltaBigDecimal(bds)));
         }
     }
 
-    private static void demoDeltaFloat_finite() {
-        initialize();
+    private void demoDeltaFloat_finite() {
         for (List<Float> fs : take(LIMIT, P.listsAtLeast(1, P.floats()))) {
             String listString = tail(init(fs.toString()));
             System.out.println("Δ(" + listString + ") = " + IterableUtils.toString(TINY_LIMIT, deltaFloat(fs)));
         }
     }
 
-    private static void demoDeltaFloat_infinite() {
-        initialize();
-        for (Iterable<Float> fs : take(SMALL_LIMIT, P.prefixPermutations(EP.floats()))) {
+    private void demoDeltaFloat_infinite() {
+        for (Iterable<Float> fs : take(MEDIUM_LIMIT, P.prefixPermutations(EP.floats()))) {
             String listString = tail(init(IterableUtils.toString(TINY_LIMIT, fs)));
             System.out.println("Δ(" + listString + ") = " + IterableUtils.toString(TINY_LIMIT, deltaFloat(fs)));
         }
     }
 
-    private static void demoDeltaDouble_finite() {
-        initialize();
+    private void demoDeltaDouble_finite() {
         for (List<Double> ds : take(LIMIT, P.listsAtLeast(1, P.doubles()))) {
             String listString = tail(init(ds.toString()));
             System.out.println("Δ(" + listString + ") = " + IterableUtils.toString(TINY_LIMIT, deltaDouble(ds)));
         }
     }
 
-    private static void demoDeltaDouble_infinite() {
-        initialize();
-        for (Iterable<Double> ds : take(SMALL_LIMIT, P.prefixPermutations(EP.doubles()))) {
+    private void demoDeltaDouble_infinite() {
+        for (Iterable<Double> ds : take(MEDIUM_LIMIT, P.prefixPermutations(EP.doubles()))) {
             String listString = tail(init(IterableUtils.toString(TINY_LIMIT, ds)));
             System.out.println("Δ(" + listString + ") = " + IterableUtils.toString(TINY_LIMIT, deltaDouble(ds)));
         }
     }
 
-    private static void demoDeltaCharacter_finite() {
-        initialize();
+    private void demoDeltaCharacter_finite() {
         for (List<Character> cs : take(LIMIT, P.listsAtLeast(1, P.characters()))) {
             String listString = tail(init(cs.toString()));
             System.out.println("Δ(" + listString + ") = " + IterableUtils.toString(TINY_LIMIT, deltaCharacter(cs)));
         }
     }
 
-    private static void demoDeltaCharacter_infinite() {
-        initialize();
-        for (Iterable<Character> cs : take(SMALL_LIMIT, P.prefixPermutations(EP.characters()))) {
+    private void demoDeltaCharacter_infinite() {
+        for (Iterable<Character> cs : take(MEDIUM_LIMIT, P.prefixPermutations(EP.characters()))) {
             String listString = tail(init(IterableUtils.toString(TINY_LIMIT, cs)));
-            System.out.println("Δ(" + Testing.nicePrint(listString) + ") = " +
-                    Testing.nicePrint(IterableUtils.toString(TINY_LIMIT, deltaCharacter(cs))));
+            System.out.println("Δ(" + nicePrint(listString) + ") = " +
+                    nicePrint(IterableUtils.toString(TINY_LIMIT, deltaCharacter(cs))));
         }
     }
 }

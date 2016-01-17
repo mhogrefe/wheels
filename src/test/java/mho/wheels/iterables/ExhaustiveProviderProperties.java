@@ -7,8 +7,8 @@ import mho.wheels.numberUtils.FloatingPointUtils;
 import mho.wheels.numberUtils.IntegerUtils;
 import mho.wheels.ordering.comparators.*;
 import mho.wheels.structures.*;
+import mho.wheels.testing.TestProperties;
 import org.jetbrains.annotations.NotNull;
-import org.junit.Test;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -20,27 +20,13 @@ import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.ordering.Ordering.*;
 import static mho.wheels.testing.Testing.*;
 
-public class ExhaustiveProviderProperties {
-    private static final ExhaustiveProvider EP = ExhaustiveProvider.INSTANCE;
-    private static final int LARGE_LIMIT = 10000;
-    private static final int SMALL_LIMIT = 100;
-    private static final int TINY_LIMIT = 20;
-    private static int LIMIT;
-    private static IterableProvider P;
-
-    private static void initializeConstant(String name) {
-        System.out.println("\ttesting " + name + " properties...");
+public class ExhaustiveProviderProperties extends TestProperties {
+    public ExhaustiveProviderProperties() {
+        super("ExhaustiveProvider");
     }
 
-    private static void initialize(String name) {
-        P.reset();
-        System.out.print('\t');
-        initializeConstant(name);
-    }
-
-    @Test
-    public void testAllProperties() {
-        System.out.println("ExhaustiveProvider properties");
+    @Override
+    protected void testConstant() {
         propertiesBooleans();
         propertiesOrderingsIncreasing();
         propertiesOrderings();
@@ -105,210 +91,212 @@ public class ExhaustiveProviderProperties {
         propertiesRandomProvidersDefault();
         propertiesRandomProvidersDefaultSecondaryScale();
         propertiesRandomProviders();
-        List<Triple<IterableProvider, Integer, String>> configs = new ArrayList<>();
-        configs.add(new Triple<>(ExhaustiveProvider.INSTANCE, 10000, "exhaustively"));
-        configs.add(new Triple<>(RandomProvider.example(), 1000, "randomly"));
-        for (Triple<IterableProvider, Integer, String> config : configs) {
-            P = config.a;
-            LIMIT = config.b;
-            System.out.println("\ttesting " + config.c);
-            propertiesUniformSample_Iterable();
-            propertiesUniformSample_String();
-            propertiesRangeUp_byte();
-            propertiesRangeUp_short();
-            propertiesRangeUp_int();
-            propertiesRangeUp_long();
-            propertiesRangeUp_BigInteger();
-            propertiesRangeUp_char();
-            propertiesRangeDown_byte();
-            propertiesRangeDown_short();
-            propertiesRangeDown_int();
-            propertiesRangeDown_long();
-            propertiesRangeDown_BigInteger();
-            propertiesRangeDown_char();
-            propertiesRange_byte_byte();
-            propertiesRange_short_short();
-            propertiesRange_int_int();
-            propertiesRange_long_long();
-            propertiesRange_BigInteger_BigInteger();
-            propertiesRange_char_char();
-            propertiesRangeUp_BinaryFraction();
-            propertiesRangeDown_BinaryFraction();
-            propertiesRange_BinaryFraction_BinaryFraction();
-            propertiesRangeUp_float();
-            propertiesRangeDown_float();
-            propertiesRange_float_float();
-            propertiesRangeUp_double();
-            propertiesRangeDown_double();
-            propertiesRange_double_double();
-            propertiesRangeUp_BigDecimal();
-            propertiesRangeDown_BigDecimal();
-            propertiesRange_BigDecimal_BigDecimal();
-            propertiesRangeUpCanonical_BigDecimal();
-            propertiesRangeDownCanonical_BigDecimal();
-            propertiesRangeCanonical_BigDecimal_BigDecimal();
-            propertiesWithNull();
-            propertiesNonEmptyOptionals();
-            propertiesOptionals();
-            propertiesNonEmptyNullableOptionals();
-            propertiesNullableOptionals();
-            propertiesDependentPairs();
-            propertiesDependentPairsInfinite();
-            propertiesDependentPairsInfiniteLogarithmicOrder();
-            propertiesDependentPairsInfiniteSquareRootOrder();
-            propertiesPairsLogarithmicOrder_Iterable_Iterable();
-            propertiesPairsLogarithmicOrder_Iterable();
-            compareImplementationsPairsLogarithmicOrder_Iterable();
-            propertiesPairsSquareRootOrder_Iterable_Iterable();
-            propertiesPairsSquareRootOrder_Iterable();
-            compareImplementationsPairsSquareRootOrder_Iterable();
-            propertiesPermutationsFinite();
-            propertiesStringPermutations();
-            propertiesPrefixPermutations();
-            propertiesListsLex_int_List();
-            compareImplementationsListsLex_int_List();
-            propertiesPairsLex();
-            propertiesTriplesLex();
-            propertiesQuadruplesLex();
-            propertiesQuintuplesLex();
-            propertiesSextuplesLex();
-            propertiesSeptuplesLex();
-            propertiesStringsLex_int_String();
-            compareImplementationsStringsLex_int_String();
-            propertiesListsShortlex();
-            propertiesStringsShortlex();
-            propertiesListsShortlexAtLeast();
-            propertiesStringsShortlexAtLeast();
-            propertiesLists_int_Iterable();
-            propertiesPairs_Iterable_Iterable();
-            propertiesPairs_Iterable();
-            compareImplementationsPairs_Iterable();
-            propertiesTriples_Iterable_Iterable_Iterable();
-            propertiesTriples_Iterable();
-            compareImplementationsTriples_Iterable();
-            propertiesQuadruples_Iterable_Iterable_Iterable_Iterable();
-            propertiesQuadruples_Iterable();
-            compareImplementationsQuadruples_Iterable();
-            propertiesQuintuples_Iterable_Iterable_Iterable_Iterable_Iterable();
-            propertiesQuintuples_Iterable();
-            compareImplementationsQuintuples_Iterable();
-            propertiesSextuples_Iterable_Iterable_Iterable_Iterable_Iterable_Iterable();
-            propertiesSextuples_Iterable();
-            compareImplementationsSextuples_Iterable();
-            propertiesSeptuples_Iterable_Iterable_Iterable_Iterable_Iterable_Iterable_Iterable();
-            propertiesSeptuples_Iterable();
-            compareImplementationsSeptuples_Iterable();
-            propertiesStrings_int_String();
-            propertiesStrings_int();
-            propertiesLists_Iterable();
-            propertiesStrings_String();
-            propertiesListsAtLeast();
-            propertiesStringsAtLeast_int_String();
-            propertiesStringsAtLeast_int();
-            propertiesDistinctListsLex_int_List();
-            propertiesDistinctPairsLex();
-            propertiesDistinctTriplesLex();
-            propertiesDistinctQuadruplesLex();
-            propertiesDistinctQuintuplesLex();
-            propertiesDistinctSextuplesLex();
-            propertiesDistinctSeptuplesLex();
-            propertiesDistinctStringsLex_int_String();
-            propertiesDistinctListsLex_List();
-            propertiesDistinctStringsLex_String();
-            propertiesDistinctListsLexAtLeast();
-            propertiesDistinctStringsLexAtLeast();
-            propertiesDistinctListsShortlex();
-            propertiesDistinctStringsShortlex();
-            propertiesDistinctListsShortlexAtLeast();
-            propertiesDistinctStringsShortlexAtLeast();
-            propertiesDistinctLists_int_Iterable();
-            propertiesDistinctPairs();
-            propertiesDistinctTriples();
-            propertiesDistinctQuadruples();
-            propertiesDistinctQuintuples();
-            propertiesDistinctSextuples();
-            propertiesDistinctSeptuples();
-            propertiesDistinctStrings_int_String();
-            propertiesDistinctStrings_int();
-            propertiesDistinctLists_Iterable();
-            propertiesDistinctStrings_String();
-            propertiesDistinctListsAtLeast();
-            propertiesDistinctStringsAtLeast_int_String();
-            propertiesDistinctStringsAtLeast_int();
-            propertiesBagsLex_int_List();
-            propertiesBagPairsLex();
-            propertiesBagTriplesLex();
-            propertiesBagQuadruplesLex();
-            propertiesBagQuintuplesLex();
-            propertiesBagSextuplesLex();
-            propertiesBagSeptuplesLex();
-            propertiesStringBagsLex();
-            propertiesBagsShortlex();
-            propertiesStringBagsShortlex();
-            propertiesBagsShortlexAtLeast();
-            propertiesStringBagsShortlexAtLeast();
-            propertiesBags_int_Iterable();
-            propertiesBagPairs();
-            propertiesBagTriples();
-            propertiesBagQuadruples();
-            propertiesBagQuintuples();
-            propertiesBagSextuples();
-            propertiesBagSeptuples();
-            propertiesStringBags_int_String();
-            propertiesStringBags_int();
-            propertiesBags_Iterable();
-            propertiesStringBags_String();
-            propertiesBagsAtLeast();
-            propertiesStringBagsAtLeast_int_String();
-            propertiesStringBagsAtLeast_int();
-            propertiesSubsetsLex_int_List();
-            propertiesSubsetPairsLex();
-            propertiesSubsetTriplesLex();
-            propertiesSubsetQuadruplesLex();
-            propertiesSubsetQuintuplesLex();
-            propertiesSubsetSextuplesLex();
-            propertiesSubsetSeptuplesLex();
-            propertiesStringSubsetsLex_int_String();
-            propertiesSubsetsLex_List();
-            propertiesStringSubsetsLex_String();
-            propertiesSubsetsLexAtLeast();
-            propertiesStringSubsetsLexAtLeast();
-            propertiesSubsetsShortlex();
-            propertiesStringSubsetsShortlex();
-            propertiesSubsetsShortlexAtLeast();
-            propertiesStringSubsetsShortlexAtLeast();
-            propertiesSubsets_int_Iterable();
-            propertiesSubsetPairs();
-            propertiesSubsetTriples();
-            propertiesSubsetQuadruples();
-            propertiesSubsetQuintuples();
-            propertiesSubsetSextuples();
-            propertiesSubsetSeptuples();
-            propertiesStringSubsets_int_String();
-            propertiesStringSubsets_int();
-            propertiesSubsets_Iterable();
-            propertiesStringSubsets_String();
-            propertiesSubsetsAtLeast();
-            propertiesStringSubsetsAtLeast_int_String();
-            propertiesStringSubsetsAtLeast_int();
-            propertiesCartesianProduct();
-            propertiesRepeatingIterables();
-            propertiesRepeatingIterablesDistinctAtLeast();
-            propertiesSublists();
-            propertiesSubstrings();
-            propertiesListsWithElement();
-            propertiesStringsWithChar_char_String();
-            propertiesStringsWithChar_char();
-            propertiesSubsetsWithElement();
-            propertiesStringSubsetsWithChar_char_String();
-            propertiesStringSubsetsWithChar_char();
-            propertiesListsWithSublists();
-            propertiesStringsWithSubstrings_Iterable_String_String();
-            propertiesStringsWithSubstrings_Iterable_String();
-            propertiesMaps();
-            propertiesRandomProvidersFixedScales();
-        }
-        System.out.println("Done");
+    }
+
+    @Override
+    protected void testBothModes() {
+        propertiesUniformSample_Iterable();
+        propertiesUniformSample_String();
+        propertiesRangeUp_byte();
+        propertiesRangeUp_short();
+        propertiesRangeUp_int();
+        propertiesRangeUp_long();
+        propertiesRangeUp_BigInteger();
+        propertiesRangeUp_char();
+        propertiesRangeDown_byte();
+        propertiesRangeDown_short();
+        propertiesRangeDown_int();
+        propertiesRangeDown_long();
+        propertiesRangeDown_BigInteger();
+        propertiesRangeDown_char();
+        propertiesRange_byte_byte();
+        propertiesRange_short_short();
+        propertiesRange_int_int();
+        propertiesRange_long_long();
+        propertiesRange_BigInteger_BigInteger();
+        propertiesRange_char_char();
+        propertiesRangeUp_BinaryFraction();
+        propertiesRangeDown_BinaryFraction();
+        propertiesRange_BinaryFraction_BinaryFraction();
+        propertiesRangeUp_float();
+        propertiesRangeDown_float();
+        propertiesRange_float_float();
+        propertiesRangeUp_double();
+        propertiesRangeDown_double();
+        propertiesRange_double_double();
+        propertiesRangeUp_BigDecimal();
+        propertiesRangeDown_BigDecimal();
+        propertiesRange_BigDecimal_BigDecimal();
+        propertiesRangeUpCanonical_BigDecimal();
+        propertiesRangeDownCanonical_BigDecimal();
+        propertiesRangeCanonical_BigDecimal_BigDecimal();
+        propertiesWithNull();
+        propertiesNonEmptyOptionals();
+        propertiesOptionals();
+        propertiesNonEmptyNullableOptionals();
+        propertiesNullableOptionals();
+        propertiesDependentPairs();
+        propertiesDependentPairsInfinite();
+        propertiesDependentPairsInfiniteLogarithmicOrder();
+        propertiesDependentPairsInfiniteSquareRootOrder();
+        propertiesPairsLogarithmicOrder_Iterable_Iterable();
+        propertiesPairsLogarithmicOrder_Iterable();
+        compareImplementationsPairsLogarithmicOrder_Iterable();
+        propertiesPairsSquareRootOrder_Iterable_Iterable();
+        propertiesPairsSquareRootOrder_Iterable();
+        compareImplementationsPairsSquareRootOrder_Iterable();
+        propertiesPermutationsFinite();
+        propertiesStringPermutations();
+        propertiesPrefixPermutations();
+        propertiesListsLex_int_List();
+        compareImplementationsListsLex_int_List();
+        propertiesPairsLex();
+        propertiesTriplesLex();
+        propertiesQuadruplesLex();
+        propertiesQuintuplesLex();
+        propertiesSextuplesLex();
+        propertiesSeptuplesLex();
+        propertiesStringsLex_int_String();
+        compareImplementationsStringsLex_int_String();
+        propertiesListsShortlex();
+        propertiesStringsShortlex();
+        propertiesListsShortlexAtLeast();
+        propertiesStringsShortlexAtLeast();
+        propertiesLists_int_Iterable();
+        propertiesPairs_Iterable_Iterable();
+        propertiesPairs_Iterable();
+        compareImplementationsPairs_Iterable();
+        propertiesTriples_Iterable_Iterable_Iterable();
+        propertiesTriples_Iterable();
+        compareImplementationsTriples_Iterable();
+        propertiesQuadruples_Iterable_Iterable_Iterable_Iterable();
+        propertiesQuadruples_Iterable();
+        compareImplementationsQuadruples_Iterable();
+        propertiesQuintuples_Iterable_Iterable_Iterable_Iterable_Iterable();
+        propertiesQuintuples_Iterable();
+        compareImplementationsQuintuples_Iterable();
+        propertiesSextuples_Iterable_Iterable_Iterable_Iterable_Iterable_Iterable();
+        propertiesSextuples_Iterable();
+        compareImplementationsSextuples_Iterable();
+        propertiesSeptuples_Iterable_Iterable_Iterable_Iterable_Iterable_Iterable_Iterable();
+        propertiesSeptuples_Iterable();
+        compareImplementationsSeptuples_Iterable();
+        propertiesStrings_int_String();
+        propertiesStrings_int();
+        propertiesLists_Iterable();
+        propertiesStrings_String();
+        propertiesListsAtLeast();
+        propertiesStringsAtLeast_int_String();
+        propertiesStringsAtLeast_int();
+        propertiesDistinctListsLex_int_List();
+        propertiesDistinctPairsLex();
+        propertiesDistinctTriplesLex();
+        propertiesDistinctQuadruplesLex();
+        propertiesDistinctQuintuplesLex();
+        propertiesDistinctSextuplesLex();
+        propertiesDistinctSeptuplesLex();
+        propertiesDistinctStringsLex_int_String();
+        propertiesDistinctListsLex_List();
+        propertiesDistinctStringsLex_String();
+        propertiesDistinctListsLexAtLeast();
+        propertiesDistinctStringsLexAtLeast();
+        propertiesDistinctListsShortlex();
+        propertiesDistinctStringsShortlex();
+        propertiesDistinctListsShortlexAtLeast();
+        propertiesDistinctStringsShortlexAtLeast();
+        propertiesDistinctLists_int_Iterable();
+        propertiesDistinctPairs();
+        propertiesDistinctTriples();
+        propertiesDistinctQuadruples();
+        propertiesDistinctQuintuples();
+        propertiesDistinctSextuples();
+        propertiesDistinctSeptuples();
+        propertiesDistinctStrings_int_String();
+        propertiesDistinctStrings_int();
+        propertiesDistinctLists_Iterable();
+        propertiesDistinctStrings_String();
+        propertiesDistinctListsAtLeast();
+        propertiesDistinctStringsAtLeast_int_String();
+        propertiesDistinctStringsAtLeast_int();
+        propertiesBagsLex_int_List();
+        propertiesBagPairsLex();
+        propertiesBagTriplesLex();
+        propertiesBagQuadruplesLex();
+        propertiesBagQuintuplesLex();
+        propertiesBagSextuplesLex();
+        propertiesBagSeptuplesLex();
+        propertiesStringBagsLex();
+        propertiesBagsShortlex();
+        propertiesStringBagsShortlex();
+        propertiesBagsShortlexAtLeast();
+        propertiesStringBagsShortlexAtLeast();
+        propertiesBags_int_Iterable();
+        propertiesBagPairs();
+        propertiesBagTriples();
+        propertiesBagQuadruples();
+        propertiesBagQuintuples();
+        propertiesBagSextuples();
+        propertiesBagSeptuples();
+        propertiesStringBags_int_String();
+        propertiesStringBags_int();
+        propertiesBags_Iterable();
+        propertiesStringBags_String();
+        propertiesBagsAtLeast();
+        propertiesStringBagsAtLeast_int_String();
+        propertiesStringBagsAtLeast_int();
+        propertiesSubsetsLex_int_List();
+        propertiesSubsetPairsLex();
+        propertiesSubsetTriplesLex();
+        propertiesSubsetQuadruplesLex();
+        propertiesSubsetQuintuplesLex();
+        propertiesSubsetSextuplesLex();
+        propertiesSubsetSeptuplesLex();
+        propertiesStringSubsetsLex_int_String();
+        propertiesSubsetsLex_List();
+        propertiesStringSubsetsLex_String();
+        propertiesSubsetsLexAtLeast();
+        propertiesStringSubsetsLexAtLeast();
+        propertiesSubsetsShortlex();
+        propertiesStringSubsetsShortlex();
+        propertiesSubsetsShortlexAtLeast();
+        propertiesStringSubsetsShortlexAtLeast();
+        propertiesSubsets_int_Iterable();
+        propertiesSubsetPairs();
+        propertiesSubsetTriples();
+        propertiesSubsetQuadruples();
+        propertiesSubsetQuintuples();
+        propertiesSubsetSextuples();
+        propertiesSubsetSeptuples();
+        propertiesStringSubsets_int_String();
+        propertiesStringSubsets_int();
+        propertiesSubsets_Iterable();
+        propertiesStringSubsets_String();
+        propertiesSubsetsAtLeast();
+        propertiesStringSubsetsAtLeast_int_String();
+        propertiesStringSubsetsAtLeast_int();
+        propertiesEithersSuccessive();
+        propertiesEithersSquareRootOrder();
+        propertiesEithersLogarithmicOrder();
+        propertiesEithers();
+        propertiesChooseSquareRootOrder();
+        propertiesChooseLogarithmicOrder();
+        propertiesChoose();
+        propertiesCartesianProduct();
+        propertiesRepeatingIterables();
+        propertiesRepeatingIterablesDistinctAtLeast();
+        propertiesSublists();
+        propertiesSubstrings();
+        propertiesListsWithElement();
+        propertiesStringsWithChar_char_String();
+        propertiesStringsWithChar_char();
+        propertiesSubsetsWithElement();
+        propertiesStringSubsetsWithChar_char_String();
+        propertiesStringSubsetsWithChar_char();
+        propertiesListsWithSublists();
+        propertiesStringsWithSubstrings_Iterable_String_String();
+        propertiesStringsWithSubstrings_Iterable_String();
+        propertiesMaps();
+        propertiesRandomProvidersFixedScales();
     }
 
     private static <T> void test_helper(
@@ -339,32 +327,32 @@ public class ExhaustiveProviderProperties {
         test_helper(LARGE_LIMIT, message, xs, predicate);
     }
 
-    private static void propertiesBooleans() {
+    private void propertiesBooleans() {
         initializeConstant("booleans()");
         biggerTest(EP, EP.booleans(), b -> true);
         testHasNext(EP.booleans());
     }
 
-    private static void propertiesOrderingsIncreasing() {
+    private void propertiesOrderingsIncreasing() {
         initializeConstant("orderingsIncreasing()");
         biggerTest(EP, EP.orderingsIncreasing(), b -> true);
         assertTrue(EP, increasing(EP.orderingsIncreasing()));
         testHasNext(EP.orderingsIncreasing());
     }
 
-    private static void propertiesOrderings() {
+    private void propertiesOrderings() {
         initializeConstant("orderings()");
         biggerTest(EP, EP.orderings(), b -> true);
         testHasNext(EP.orderings());
     }
 
-    private static void propertiesRoundingModes() {
+    private void propertiesRoundingModes() {
         initializeConstant("roundingModes()");
         biggerTest(EP, EP.roundingModes(), b -> true);
         testHasNext(EP.roundingModes());
     }
 
-    private static void propertiesUniformSample_Iterable() {
+    private void propertiesUniformSample_Iterable() {
         initialize("uniformSample(Iterable<T>)");
         for (List<Integer> is : take(LIMIT, P.lists(P.withNull(P.integersGeometric())))) {
             Iterable<Integer> js = EP.uniformSample(is);
@@ -374,7 +362,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesUniformSample_String() {
+    private void propertiesUniformSample_String() {
         initialize("uniformSample(String)");
         for (String s : take(LIMIT, P.strings())) {
             Iterable<Character> cs = EP.uniformSample(s);
@@ -384,97 +372,97 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesBytesIncreasing() {
+    private void propertiesBytesIncreasing() {
         initializeConstant("bytesIncreasing()");
         biggerTest(EP, EP.bytesIncreasing(), b -> true);
         assertTrue(EP, increasing(EP.bytesIncreasing()));
         testHasNext(EP.bytesIncreasing());
     }
 
-    private static void propertiesShortsIncreasing() {
+    private void propertiesShortsIncreasing() {
         initializeConstant("shortsIncreasing()");
         biggerTest(EP, EP.shortsIncreasing(), b -> true);
         assertTrue(EP, increasing(EP.shortsIncreasing()));
         testHasNext(EP.shortsIncreasing());
     }
 
-    private static void propertiesIntegersIncreasing() {
+    private void propertiesIntegersIncreasing() {
         initializeConstant("integersIncreasing()");
         biggerTest(EP, EP.integersIncreasing(), b -> true);
         assertTrue(EP, increasing(take(LARGE_LIMIT, EP.integersIncreasing())));
     }
 
-    private static void propertiesLongsIncreasing() {
+    private void propertiesLongsIncreasing() {
         initializeConstant("longsIncreasing()");
         biggerTest(EP, EP.longsIncreasing(), b -> true);
         assertTrue(EP, increasing(take(LARGE_LIMIT, EP.longsIncreasing())));
     }
 
-    private static void propertiesPositiveBytes() {
+    private void propertiesPositiveBytes() {
         initializeConstant("positiveBytes()");
         biggerTest(EP, EP.positiveBytes(), b -> b > 0);
         assertTrue(EP, increasing(EP.positiveBytes()));
         testHasNext(EP.positiveBytes());
     }
 
-    private static void propertiesPositiveShorts() {
+    private void propertiesPositiveShorts() {
         initializeConstant("positiveShorts()");
         biggerTest(EP, EP.positiveShorts(), s -> s > 0);
         assertTrue(EP, increasing(EP.positiveShorts()));
         testHasNext(EP.positiveShorts());
     }
 
-    private static void propertiesPositiveIntegers() {
+    private void propertiesPositiveIntegers() {
         initializeConstant("positiveIntegers()");
         biggerTest(EP, EP.positiveIntegers(), i -> i > 0);
         assertTrue(EP, increasing(take(LARGE_LIMIT, EP.positiveIntegers())));
     }
 
-    private static void propertiesPositiveLongs() {
+    private void propertiesPositiveLongs() {
         initializeConstant("positiveLongs()");
         biggerTest(EP, EP.positiveLongs(), l -> l > 0);
         assertTrue(EP, increasing(take(LARGE_LIMIT, EP.positiveLongs())));
     }
 
-    private static void propertiesPositiveBigIntegers() {
+    private void propertiesPositiveBigIntegers() {
         initializeConstant("positiveBigIntegers()");
         biggerTest(EP, EP.positiveBigIntegers(), i -> i.signum() == 1);
         assertTrue(EP, increasing(take(LARGE_LIMIT, EP.positiveBigIntegers())));
     }
 
-    private static void propertiesNegativeBytes() {
+    private void propertiesNegativeBytes() {
         initializeConstant("negativeBytes()");
         biggerTest(EP, EP.negativeBytes(), b -> b < 0);
         assertTrue(EP, decreasing(EP.negativeBytes()));
         testHasNext(EP.negativeBytes());
     }
 
-    private static void propertiesNegativeShorts() {
+    private void propertiesNegativeShorts() {
         initializeConstant("negativeShorts()");
         biggerTest(EP, EP.negativeShorts(), s -> s < 0);
         assertTrue(EP, decreasing(EP.negativeShorts()));
         testHasNext(EP.negativeShorts());
     }
 
-    private static void propertiesNegativeIntegers() {
+    private void propertiesNegativeIntegers() {
         initializeConstant("negativeIntegers()");
         biggerTest(EP, EP.negativeIntegers(), i -> i < 0);
         assertTrue(EP, decreasing(take(LARGE_LIMIT, EP.negativeIntegers())));
     }
 
-    private static void propertiesNegativeLongs() {
+    private void propertiesNegativeLongs() {
         initializeConstant("negativeLongs()");
         biggerTest(EP, EP.negativeLongs(), l -> l < 0);
         assertTrue(EP, decreasing(take(LARGE_LIMIT, EP.negativeLongs())));
     }
 
-    private static void propertiesNegativeBigIntegers() {
+    private void propertiesNegativeBigIntegers() {
         initializeConstant("negativeBigIntegers()");
         biggerTest(EP, EP.negativeBigIntegers(), i -> i.signum() == -1);
         assertTrue(EP, decreasing(take(LARGE_LIMIT, EP.negativeBigIntegers())));
     }
 
-    private static void propertiesNonzeroBytes() {
+    private void propertiesNonzeroBytes() {
         initializeConstant("nonzeroBytes()");
         biggerTest(EP, EP.nonzeroBytes(), b -> b != 0);
         //noinspection RedundantCast
@@ -482,7 +470,7 @@ public class ExhaustiveProviderProperties {
         testHasNext(EP.nonzeroBytes());
     }
 
-    private static void propertiesNonzeroShorts() {
+    private void propertiesNonzeroShorts() {
         initializeConstant("nonzeroShorts()");
         biggerTest(EP, EP.nonzeroShorts(), s -> s != 0);
         //noinspection RedundantCast
@@ -490,59 +478,59 @@ public class ExhaustiveProviderProperties {
         testHasNext(EP.nonzeroShorts());
     }
 
-    private static void propertiesNonzeroIntegers() {
+    private void propertiesNonzeroIntegers() {
         initializeConstant("nonzeroIntegers()");
         biggerTest(EP, EP.nonzeroIntegers(), i -> i != 0);
         //noinspection RedundantCast
         assertTrue(EP, weaklyIncreasing((Iterable<Integer>) map(Math::abs, take(LARGE_LIMIT, EP.nonzeroIntegers()))));
     }
 
-    private static void propertiesNonzeroLongs() {
+    private void propertiesNonzeroLongs() {
         initializeConstant("nonzeroLongs()");
         biggerTest(EP, EP.nonzeroLongs(), l -> l != 0);
         //noinspection RedundantCast
         assertTrue(EP, weaklyIncreasing((Iterable<Long>) map(Math::abs, take(LARGE_LIMIT, EP.nonzeroLongs()))));
     }
 
-    private static void propertiesNonzeroBigIntegers() {
+    private void propertiesNonzeroBigIntegers() {
         initializeConstant("nonzeroBigIntegers()");
         biggerTest(EP, EP.nonzeroBigIntegers(), i -> !i.equals(BigInteger.ZERO));
         assertTrue(EP, weaklyIncreasing(map(BigInteger::abs, take(LARGE_LIMIT, EP.nonzeroBigIntegers()))));
     }
 
-    private static void propertiesNaturalBytes() {
+    private void propertiesNaturalBytes() {
         initializeConstant("naturalBytes()");
         biggerTest(EP, EP.naturalBytes(), b -> b >= 0);
         assertTrue(EP, increasing(EP.naturalBytes()));
         testHasNext(EP.naturalBytes());
     }
 
-    private static void propertiesNaturalShorts() {
+    private void propertiesNaturalShorts() {
         initializeConstant("naturalShorts()");
         biggerTest(EP, EP.naturalShorts(), s -> s >= 0);
         assertTrue(EP, increasing(EP.naturalShorts()));
         testHasNext(EP.naturalShorts());
     }
 
-    private static void propertiesNaturalIntegers() {
+    private void propertiesNaturalIntegers() {
         initializeConstant("naturalIntegers()");
         biggerTest(EP, EP.naturalIntegers(), i -> i >= 0);
         assertTrue(EP, increasing(take(LARGE_LIMIT, EP.naturalIntegers())));
     }
 
-    private static void propertiesNaturalLongs() {
+    private void propertiesNaturalLongs() {
         initializeConstant("naturalLongs()");
         biggerTest(EP, EP.naturalLongs(), l -> l >= 0);
         assertTrue(EP, increasing(take(LARGE_LIMIT, EP.naturalLongs())));
     }
 
-    private static void propertiesNaturalBigIntegers() {
+    private void propertiesNaturalBigIntegers() {
         initializeConstant("naturalBigIntegers()");
         biggerTest(EP, EP.naturalBigIntegers(), i -> i.signum() != -1);
         assertTrue(EP, increasing(take(LARGE_LIMIT, EP.naturalBigIntegers())));
     }
 
-    private static void propertiesBytes() {
+    private void propertiesBytes() {
         initializeConstant("bytes()");
         biggerTest(EP, EP.bytes(), b -> true);
         //noinspection RedundantCast
@@ -550,7 +538,7 @@ public class ExhaustiveProviderProperties {
         testHasNext(EP.bytes());
     }
 
-    private static void propertiesShorts() {
+    private void propertiesShorts() {
         initializeConstant("shorts()");
         biggerTest(EP, EP.shorts(), s -> true);
         //noinspection RedundantCast
@@ -558,53 +546,53 @@ public class ExhaustiveProviderProperties {
         testHasNext(EP.shorts());
     }
 
-    private static void propertiesIntegers() {
+    private void propertiesIntegers() {
         initializeConstant("integers()");
         biggerTest(EP, EP.integers(), i -> true);
         //noinspection RedundantCast
         assertTrue(EP, weaklyIncreasing((Iterable<Integer>) map(Math::abs, take(LARGE_LIMIT, EP.integers()))));
     }
 
-    private static void propertiesLongs() {
+    private void propertiesLongs() {
         initializeConstant("longs()");
         biggerTest(EP, EP.longs(), l -> true);
         //noinspection RedundantCast
         assertTrue(EP, weaklyIncreasing((Iterable<Long>) map(Math::abs, take(LARGE_LIMIT, EP.longs()))));
     }
 
-    private static void propertiesBigIntegers() {
+    private void propertiesBigIntegers() {
         initializeConstant("bigIntegers()");
         biggerTest(EP, EP.bigIntegers(), i -> true);
         assertTrue(EP, weaklyIncreasing(map(BigInteger::abs, take(LARGE_LIMIT, EP.bigIntegers()))));
     }
 
-    private static void propertiesAsciiCharactersIncreasing() {
+    private void propertiesAsciiCharactersIncreasing() {
         initializeConstant("asciiCharactersIncreasing()");
         biggerTest(EP, EP.asciiCharactersIncreasing(), i -> i < 128);
         assertTrue(EP, increasing(EP.asciiCharactersIncreasing()));
         testHasNext(EP.asciiCharactersIncreasing());
     }
 
-    private static void propertiesAsciiCharacters() {
+    private void propertiesAsciiCharacters() {
         initializeConstant("asciiCharacters()");
         biggerTest(EP, EP.asciiCharacters(), i -> i < 128);
         testHasNext(EP.asciiCharacters());
     }
 
-    private static void propertiesCharactersIncreasing() {
+    private void propertiesCharactersIncreasing() {
         initializeConstant("charactersIncreasing()");
         biggerTest(EP, EP.charactersIncreasing(), i -> true);
         assertTrue(EP, increasing(take(LARGE_LIMIT, EP.charactersIncreasing())));
         testHasNext(EP.charactersIncreasing());
     }
 
-    private static void propertiesCharacters() {
+    private void propertiesCharacters() {
         initializeConstant("characters()");
         biggerTest(EP, EP.characters(), i -> true);
         testHasNext(EP.characters());
     }
 
-    private static void propertiesRangeUp_byte() {
+    private void propertiesRangeUp_byte() {
         initialize("rangeUp(byte)");
         for (byte b : take(LIMIT, P.bytes())) {
             Iterable<Byte> bs = EP.rangeUp(b);
@@ -619,7 +607,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesRangeUp_short() {
+    private void propertiesRangeUp_short() {
         initialize("rangeUp(short)");
         for (short s : take(LIMIT, P.shorts())) {
             Iterable<Short> ss = EP.rangeUp(s);
@@ -632,7 +620,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesRangeUp_int() {
+    private void propertiesRangeUp_int() {
         initialize("rangeUp(int)");
         for (int i : take(LIMIT, P.integers())) {
             Iterable<Integer> is = EP.rangeUp(i);
@@ -645,7 +633,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesRangeUp_long() {
+    private void propertiesRangeUp_long() {
         initialize("rangeUp(long)");
         for (long l : take(LIMIT, P.longs())) {
             Iterable<Long> ls = EP.rangeUp(l);
@@ -658,7 +646,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesRangeUp_BigInteger() {
+    private void propertiesRangeUp_BigInteger() {
         initialize("rangeUp(BigInteger)");
         for (BigInteger i : take(LIMIT, P.bigIntegers())) {
             Iterable<BigInteger> is = EP.rangeUp(i);
@@ -667,7 +655,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesRangeUp_char() {
+    private void propertiesRangeUp_char() {
         initialize("rangeUp(char)");
         for (char c : take(LIMIT, P.characters())) {
             Iterable<Character> cs = EP.rangeUp(c);
@@ -679,7 +667,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesRangeDown_byte() {
+    private void propertiesRangeDown_byte() {
         initialize("rangeDown(byte)");
         for (byte b : take(LIMIT, P.bytes())) {
             Iterable<Byte> bs = EP.rangeDown(b);
@@ -694,7 +682,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesRangeDown_short() {
+    private void propertiesRangeDown_short() {
         initialize("rangeDown(short)");
         for (short s : take(LIMIT, P.shorts())) {
             Iterable<Short> ss = EP.rangeDown(s);
@@ -707,7 +695,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesRangeDown_int() {
+    private void propertiesRangeDown_int() {
         initialize("rangeDown(int)");
         for (int i : take(LIMIT, P.integers())) {
             Iterable<Integer> is = EP.rangeDown(i);
@@ -720,7 +708,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesRangeDown_long() {
+    private void propertiesRangeDown_long() {
         initialize("rangeDown(long)");
         for (long l : take(LIMIT, P.longs())) {
             Iterable<Long> ls = EP.rangeDown(l);
@@ -733,7 +721,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesRangeDown_BigInteger() {
+    private void propertiesRangeDown_BigInteger() {
         initialize("rangeDown(BigInteger)");
         for (BigInteger i : take(LIMIT, P.bigIntegers())) {
             Iterable<BigInteger> is = EP.rangeDown(i);
@@ -742,7 +730,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesRangeDown_char() {
+    private void propertiesRangeDown_char() {
         initialize("rangeDown(char)");
         for (char c : take(LIMIT, P.characters())) {
             Iterable<Character> cs = EP.rangeDown(c);
@@ -754,7 +742,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesRange_byte_byte() {
+    private void propertiesRange_byte_byte() {
         initialize("range(byte, byte)");
         for (Pair<Byte, Byte> p : take(LIMIT, P.pairs(P.bytes()))) {
             Iterable<Byte> bs = EP.range(p.a, p.b);
@@ -776,7 +764,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesRange_short_short() {
+    private void propertiesRange_short_short() {
         initialize("range(short, short)");
         for (Pair<Short, Short> p : take(LIMIT, P.pairs(P.shorts()))) {
             Iterable<Short> ss = EP.range(p.a, p.b);
@@ -796,7 +784,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesRange_int_int() {
+    private void propertiesRange_int_int() {
         initialize("range(int, int)");
         for (Pair<Integer, Integer> p : take(LIMIT, P.pairs(P.integers()))) {
             Iterable<Integer> is = EP.range(p.a, p.b);
@@ -817,7 +805,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesRange_long_long() {
+    private void propertiesRange_long_long() {
         initialize("range(long, long)");
         for (Pair<Long, Long> p : take(LIMIT, P.pairs(P.longs()))) {
             Iterable<Long> ls = EP.range(p.a, p.b);
@@ -838,7 +826,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesRange_BigInteger_BigInteger() {
+    private void propertiesRange_BigInteger_BigInteger() {
         initialize("range(BigInteger, BigInteger)");
         for (Pair<BigInteger, BigInteger> p : take(LIMIT, P.pairs(P.bigIntegers()))) {
             Iterable<BigInteger> is = EP.range(p.a, p.b);
@@ -856,7 +844,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesRange_char_char() {
+    private void propertiesRange_char_char() {
         initialize("range(char, char)");
         for (Pair<Character, Character> p : take(LIMIT, P.pairs(P.characters()))) {
             Iterable<Character> cs = EP.range(p.a, p.b);
@@ -876,55 +864,55 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesPositiveBinaryFractions() {
+    private void propertiesPositiveBinaryFractions() {
         initializeConstant("positiveBinaryFractions()");
         biggerTest(EP, EP.positiveBinaryFractions(), bf -> bf.signum() == 1);
-        take(TINY_LIMIT, EP.positiveBinaryFractions()).forEach(BinaryFraction::validate);
+        take(LARGE_LIMIT, EP.positiveBinaryFractions()).forEach(BinaryFraction::validate);
     }
 
-    private static void propertiesNegativeBinaryFractions() {
+    private void propertiesNegativeBinaryFractions() {
         initializeConstant("negativeBinaryFractions()");
         biggerTest(EP, EP.negativeBinaryFractions(), bf -> bf.signum() == -1);
-        take(TINY_LIMIT, EP.negativeBinaryFractions()).forEach(BinaryFraction::validate);
+        take(LARGE_LIMIT, EP.negativeBinaryFractions()).forEach(BinaryFraction::validate);
     }
 
-    private static void propertiesNonzeroBinaryFractions() {
+    private void propertiesNonzeroBinaryFractions() {
         initializeConstant("nonzeroBinaryFractions()");
         biggerTest(EP, EP.nonzeroBinaryFractions(), bf -> bf != BinaryFraction.ZERO);
-        take(TINY_LIMIT, EP.nonzeroBinaryFractions()).forEach(BinaryFraction::validate);
+        take(LARGE_LIMIT, EP.nonzeroBinaryFractions()).forEach(BinaryFraction::validate);
     }
 
-    private static void propertiesBinaryFractions() {
+    private void propertiesBinaryFractions() {
         initializeConstant("binaryFractions()");
         biggerTest(EP, EP.binaryFractions(), bf -> true);
-        take(TINY_LIMIT, EP.binaryFractions()).forEach(BinaryFraction::validate);
+        take(LARGE_LIMIT, EP.binaryFractions()).forEach(BinaryFraction::validate);
     }
 
-    private static void propertiesRangeUp_BinaryFraction() {
+    private void propertiesRangeUp_BinaryFraction() {
         initialize("rangeUp(BinaryFraction)");
         for (BinaryFraction bf : take(LIMIT, P.binaryFractions())) {
             Iterable<BinaryFraction> bfs = EP.rangeUp(bf);
             simpleTest(bf, bfs, c -> ge(c, bf));
-            take(TINY_LIMIT, EP.rangeUp(bf)).forEach(BinaryFraction::validate);
+            take(TINY_LIMIT, bfs).forEach(BinaryFraction::validate);
         }
     }
 
-    private static void propertiesRangeDown_BinaryFraction() {
+    private void propertiesRangeDown_BinaryFraction() {
         initialize("rangeDown(BinaryFraction)");
         for (BinaryFraction bf : take(LIMIT, P.binaryFractions())) {
             Iterable<BinaryFraction> bfs = EP.rangeDown(bf);
             simpleTest(bf, bfs, c -> le(c, bf));
-            take(TINY_LIMIT, EP.rangeDown(bf)).forEach(BinaryFraction::validate);
+            take(TINY_LIMIT, bfs).forEach(BinaryFraction::validate);
         }
     }
 
-    private static void propertiesRange_BinaryFraction_BinaryFraction() {
+    private void propertiesRange_BinaryFraction_BinaryFraction() {
         initialize("range(BinaryFraction, BinaryFraction)");
         for (Pair<BinaryFraction, BinaryFraction> p : take(LIMIT, P.pairs(P.binaryFractions()))) {
             Iterable<BinaryFraction> bfs = EP.range(p.a, p.b);
             simpleTest(p, bfs, bf -> ge(bf, p.a) && le(bf, p.b));
             assertEquals(p, gt(p.a, p.b), isEmpty(bfs));
-            take(TINY_LIMIT, EP.range(p.a, p.b)).forEach(BinaryFraction::validate);
+            take(TINY_LIMIT, bfs).forEach(BinaryFraction::validate);
             if (ge(p.a, p.b)) {
                 testHasNext(bfs);
             }
@@ -935,47 +923,47 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesPositiveFloats() {
+    private void propertiesPositiveFloats() {
         initializeConstant("positiveFloats()");
         biggerTest(EP, EP.positiveFloats(), f -> f > 0);
     }
 
-    private static void propertiesNegativeFloats() {
+    private void propertiesNegativeFloats() {
         initializeConstant("negativeFloats()");
         biggerTest(EP, EP.negativeFloats(), f -> f < 0);
     }
 
-    private static void propertiesNonzeroFloats() {
+    private void propertiesNonzeroFloats() {
         initializeConstant("nonzeroFloats()");
         biggerTest(EP, EP.nonzeroFloats(), f -> f != 0);
     }
 
-    private static void propertiesFloats() {
+    private void propertiesFloats() {
         initializeConstant("floats()");
         biggerTest(EP, EP.floats(), f -> true);
     }
 
-    private static void propertiesPositiveDoubles() {
+    private void propertiesPositiveDoubles() {
         initializeConstant("positiveDoubles()");
         biggerTest(EP, EP.positiveDoubles(), d -> d > 0);
     }
 
-    private static void propertiesNegativeDoubles() {
+    private void propertiesNegativeDoubles() {
         initializeConstant("negativeDoubles()");
         biggerTest(EP, EP.negativeDoubles(), d -> d < 0);
     }
 
-    private static void propertiesNonzeroDoubles() {
+    private void propertiesNonzeroDoubles() {
         initializeConstant("nonzeroDoubles()");
         biggerTest(EP, EP.nonzeroDoubles(), d -> d != 0);
     }
 
-    private static void propertiesDoubles() {
+    private void propertiesDoubles() {
         initializeConstant("doubles()");
         biggerTest(EP, EP.doubles(), d -> true);
     }
 
-    private static void propertiesRangeUp_float() {
+    private void propertiesRangeUp_float() {
         initialize("rangeUp(float)");
         for (float f : take(LIMIT, filter(g -> !Float.isNaN(g), P.floats()))) {
             Iterable<Float> fs = EP.rangeUp(f);
@@ -993,7 +981,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesRangeDown_float() {
+    private void propertiesRangeDown_float() {
         initialize("rangeDown(float)");
         for (float f : take(LIMIT, filter(g -> !Float.isNaN(g), P.floats()))) {
             Iterable<Float> fs = EP.rangeDown(f);
@@ -1011,7 +999,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesRange_float_float() {
+    private void propertiesRange_float_float() {
         initialize("range(float, float)");
         for (Pair<Float, Float> p : take(LIMIT, P.pairs(filter(g -> !Float.isNaN(g), P.floats())))) {
             Iterable<Float> fs = EP.range(p.a, p.b);
@@ -1045,7 +1033,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesRangeUp_double() {
+    private void propertiesRangeUp_double() {
         initialize("rangeUp(double)");
         for (double d : take(LIMIT, filter(e -> !Double.isNaN(e), P.doubles()))) {
             Iterable<Double> ds = EP.rangeUp(d);
@@ -1067,7 +1055,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesRangeDown_double() {
+    private void propertiesRangeDown_double() {
         initialize("rangeDown(double)");
         for (double d : take(LIMIT, filter(e -> !Double.isNaN(e), P.doubles()))) {
             Iterable<Double> ds = EP.rangeDown(d);
@@ -1093,7 +1081,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesRange_double_double() {
+    private void propertiesRange_double_double() {
         initialize("range(double, double)");
         for (Pair<Double, Double> p : take(LIMIT, P.pairs(filter(g -> !Double.isNaN(g), P.doubles())))) {
             Iterable<Double> ds = EP.range(p.a, p.b);
@@ -1131,37 +1119,37 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesPositiveBigDecimals() {
+    private void propertiesPositiveBigDecimals() {
         initializeConstant("positiveBigDecimals()");
         biggerTest(EP, EP.positiveBigDecimals(), bd -> bd.signum() == 1);
     }
 
-    private static void propertiesNegativeBigDecimals() {
+    private void propertiesNegativeBigDecimals() {
         initializeConstant("negativeBigDecimals()");
         biggerTest(EP, EP.negativeBigDecimals(), bd -> bd.signum() == -1);
     }
 
-    private static void propertiesNonzeroBigDecimals() {
+    private void propertiesNonzeroBigDecimals() {
         initializeConstant("nonzeroBigDecimals()");
         biggerTest(EP, EP.nonzeroBigDecimals(), bd -> !bd.equals(BigDecimal.ZERO));
     }
 
-    private static void propertiesBigDecimals() {
+    private void propertiesBigDecimals() {
         initializeConstant("bigDecimals()");
         biggerTest(EP, EP.bigDecimals(), bd -> true);
     }
 
-    private static void propertiesPositiveCanonicalBigDecimals() {
+    private void propertiesPositiveCanonicalBigDecimals() {
         initializeConstant("positiveCanonicalBigDecimals()");
         biggerTest(EP, EP.positiveCanonicalBigDecimals(), bd -> BigDecimalUtils.isCanonical(bd) && bd.signum() == 1);
     }
 
-    private static void propertiesNegativeCanonicalBigDecimals() {
+    private void propertiesNegativeCanonicalBigDecimals() {
         initializeConstant("negativeCanonicalBigDecimals()");
         biggerTest(EP, EP.negativeCanonicalBigDecimals(), bd -> BigDecimalUtils.isCanonical(bd) && bd.signum() == -1);
     }
 
-    private static void propertiesNonzeroCanonicalBigDecimals() {
+    private void propertiesNonzeroCanonicalBigDecimals() {
         initializeConstant("nonzeroCanonicalBigDecimals()");
         biggerTest(
                 EP,
@@ -1170,12 +1158,12 @@ public class ExhaustiveProviderProperties {
         );
     }
 
-    private static void propertiesCanonicalBigDecimals() {
+    private void propertiesCanonicalBigDecimals() {
         initializeConstant("canonicalBigDecimals()");
         biggerTest(EP, EP.canonicalBigDecimals(), BigDecimalUtils::isCanonical);
     }
 
-    private static void propertiesRangeUp_BigDecimal() {
+    private void propertiesRangeUp_BigDecimal() {
         initialize("rangeUp(BigDecimal)");
         for (BigDecimal bd : take(LIMIT, P.bigDecimals())) {
             Iterable<BigDecimal> bds = EP.rangeUp(bd);
@@ -1183,7 +1171,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesRangeDown_BigDecimal() {
+    private void propertiesRangeDown_BigDecimal() {
         initialize("rangeDown(BigDecimal)");
         for (BigDecimal bd : take(LIMIT, P.bigDecimals())) {
             Iterable<BigDecimal> bds = EP.rangeDown(bd);
@@ -1191,7 +1179,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesRange_BigDecimal_BigDecimal() {
+    private void propertiesRange_BigDecimal_BigDecimal() {
         initialize("range(BigDecimal, BigDecimal)");
         for (Pair<BigDecimal, BigDecimal> p : take(LIMIT, P.pairs(P.bigDecimals()))) {
             Iterable<BigDecimal> bds = EP.range(p.a, p.b);
@@ -1204,7 +1192,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesRangeUpCanonical_BigDecimal() {
+    private void propertiesRangeUpCanonical_BigDecimal() {
         initialize("rangeUpCanonical(BigDecimal)");
         for (BigDecimal bd : take(LIMIT, P.bigDecimals())) {
             Iterable<BigDecimal> bds = EP.rangeUpCanonical(bd);
@@ -1212,7 +1200,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesRangeDownCanonical_BigDecimal() {
+    private void propertiesRangeDownCanonical_BigDecimal() {
         initialize("rangeDownCanonical(BigDecimal)");
         for (BigDecimal bd : take(LIMIT, P.bigDecimals())) {
             Iterable<BigDecimal> bds = EP.rangeDownCanonical(bd);
@@ -1220,7 +1208,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesRangeCanonical_BigDecimal_BigDecimal() {
+    private void propertiesRangeCanonical_BigDecimal_BigDecimal() {
         initialize("rangeCanonical(BigDecimal, BigDecimal)");
         for (Pair<BigDecimal, BigDecimal> p : take(LIMIT, P.pairs(P.bigDecimals()))) {
             Iterable<BigDecimal> bds = EP.rangeCanonical(p.a, p.b);
@@ -1233,7 +1221,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesWithNull() {
+    private void propertiesWithNull() {
         initialize("withNull(Iterable<T>)");
         for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.integersGeometric()))) {
             Iterable<Integer> withNull = EP.withNull(xs);
@@ -1242,7 +1230,7 @@ public class ExhaustiveProviderProperties {
             assertFalse(xs, isEmpty(withNull));
             assertNull(xs, head(withNull));
             assertTrue(xs, all(i -> i != null, tail(withNull)));
-            inverses(EP::withNull, (Iterable<Integer> wn) -> toList(tail(wn)), xs);
+            inverse(EP::withNull, (Iterable<Integer> wn) -> toList(tail(wn)), xs);
         }
 
         for (Iterable<Integer> xs : take(LIMIT, P.prefixPermutations(EP.naturalIntegers()))) {
@@ -1255,14 +1243,14 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesNonEmptyOptionals() {
+    private void propertiesNonEmptyOptionals() {
         initialize("nonEmptyOptionals(Iterable<T>)");
         for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.integersGeometric()))) {
             Iterable<Optional<Integer>> neos = EP.nonEmptyOptionals(xs);
             testNoRemove(neos);
             testHasNext(neos);
             assertEquals(xs, xs.size(), length(neos));
-            inverses(EP::nonEmptyOptionals, (Iterable<Optional<Integer>> ys) -> toList(map(Optional::get, ys)), xs);
+            inverse(EP::nonEmptyOptionals, (Iterable<Optional<Integer>> ys) -> toList(map(Optional::get, ys)), xs);
         }
 
         for (Iterable<Integer> xs : take(LIMIT, P.prefixPermutations(EP.naturalIntegers()))) {
@@ -1272,7 +1260,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesOptionals() {
+    private void propertiesOptionals() {
         initialize("optionals(Iterable<T>)");
         for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.integersGeometric()))) {
             Iterable<Optional<Integer>> os = EP.optionals(xs);
@@ -1281,7 +1269,7 @@ public class ExhaustiveProviderProperties {
             assertFalse(xs, isEmpty(os));
             assertFalse(xs, head(os).isPresent());
             assertTrue(xs, all(Optional::isPresent, tail(os)));
-            inverses(EP::optionals, (Iterable<Optional<Integer>> ys) -> toList(map(Optional::get, tail(ys))), xs);
+            inverse(EP::optionals, (Iterable<Optional<Integer>> ys) -> toList(map(Optional::get, tail(ys))), xs);
         }
 
         for (Iterable<Integer> xs : take(LIMIT, P.prefixPermutations(EP.naturalIntegers()))) {
@@ -1294,14 +1282,14 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesNonEmptyNullableOptionals() {
+    private void propertiesNonEmptyNullableOptionals() {
         initialize("nonEmptyNullableOptionals(Iterable<T>)");
         for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
             Iterable<NullableOptional<Integer>> nenos = EP.nonEmptyNullableOptionals(xs);
             testNoRemove(nenos);
             testHasNext(nenos);
             assertEquals(xs, xs.size(), length(nenos));
-            inverses(
+            inverse(
                     EP::nonEmptyNullableOptionals,
                     (Iterable<NullableOptional<Integer>> ys) -> toList(map(NullableOptional::get, ys)),
                     xs
@@ -1315,7 +1303,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesNullableOptionals() {
+    private void propertiesNullableOptionals() {
         initialize("nullableOptionals(Iterable<T>)");
         for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
             Iterable<NullableOptional<Integer>> nos = EP.nullableOptionals(xs);
@@ -1324,7 +1312,7 @@ public class ExhaustiveProviderProperties {
             assertFalse(xs, isEmpty(nos));
             assertFalse(xs, head(nos).isPresent());
             assertTrue(xs, all(NullableOptional::isPresent, tail(nos)));
-            inverses(
+            inverse(
                     EP::nullableOptionals,
                     (Iterable<NullableOptional<Integer>> ys) -> toList(map(NullableOptional::get, tail(ys))),
                     xs
@@ -1341,7 +1329,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesDependentPairs() {
+    private void propertiesDependentPairs() {
         initialize("dependentPairs(Iterable<A>, Function<A, Iterable<B>>)");
         IterableProvider PS = P.withScale(4);
         Iterable<Pair<List<Integer>, FiniteDomainFunction<Integer, Iterable<Integer>>>> ps = P.dependentPairsInfinite(
@@ -1426,7 +1414,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesDependentPairsInfinite() {
+    private void propertiesDependentPairsInfinite() {
         initialize("dependentPairsInfinite(Iterable<A>, Function<A, Iterable<B>>)");
         IterableProvider PS = P.withScale(4);
         Function<List<Integer>, Iterable<Map<Integer, List<Integer>>>> f = xs -> filterInfinite(
@@ -1516,7 +1504,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesDependentPairsInfiniteLogarithmicOrder() {
+    private void propertiesDependentPairsInfiniteLogarithmicOrder() {
         initialize("dependentPairsInfiniteLogarithmicOrder(Iterable<A>, Function<A, Iterable<B>>)");
         IterableProvider PS = P.withScale(4);
         Function<List<Integer>, Iterable<Map<Integer, List<Integer>>>> f = xs -> filterInfinite(
@@ -1620,7 +1608,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesDependentPairsInfiniteSquareRootOrder() {
+    private void propertiesDependentPairsInfiniteSquareRootOrder() {
         initialize("dependentPairsInfiniteSquareRootOrder(Iterable<A>, Function<A, Iterable<B>>)");
         IterableProvider PS = P.withScale(4);
         Function<List<Integer>, Iterable<Map<Integer, List<Integer>>>> f = xs -> filterInfinite(
@@ -1710,7 +1698,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesPairsLogarithmicOrder_Iterable_Iterable() {
+    private void propertiesPairsLogarithmicOrder_Iterable_Iterable() {
         initialize("pairsLogarithmicOrder(Iterable<A>, Iterable<B>)");
         Iterable<Pair<List<Integer>, List<Integer>>> ps = P.pairs(
                 P.withScale(4).lists(P.integersGeometric()),
@@ -1763,7 +1751,7 @@ public class ExhaustiveProviderProperties {
         return toList(EP.pairsLogarithmicOrder(xs, xs));
     }
 
-    private static void propertiesPairsLogarithmicOrder_Iterable() {
+    private void propertiesPairsLogarithmicOrder_Iterable() {
         initialize("pairsLogarithmicOrder(Iterable<T>)");
         Iterable<List<Integer>> iss = filterInfinite(
                 xs -> xs.size() < TINY_LIMIT,
@@ -1816,7 +1804,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void compareImplementationsPairsLogarithmicOrder_Iterable() {
+    private void compareImplementationsPairsLogarithmicOrder_Iterable() {
         Map<String, Function<List<Integer>, List<Pair<Integer, Integer>>>> functions = new LinkedHashMap<>();
         functions.put("simplest", ExhaustiveProviderProperties::pairsLogarithmicOrder_Iterable_simplest);
         functions.put("standard", xs -> toList(EP.pairsLogarithmicOrder(xs)));
@@ -1827,7 +1815,7 @@ public class ExhaustiveProviderProperties {
         compareImplementations("pairsLogarithmicOrder(Iterable<T>)", take(LIMIT, iss), functions);
     }
 
-    private static void propertiesPairsSquareRootOrder_Iterable_Iterable() {
+    private void propertiesPairsSquareRootOrder_Iterable_Iterable() {
         initialize("pairsSquareRootOrder(Iterable<A>, Iterable<B>)");
         Iterable<Pair<List<Integer>, List<Integer>>> ps = P.pairs(
                 P.withScale(4).lists(P.withNull(P.integersGeometric()))
@@ -1873,7 +1861,7 @@ public class ExhaustiveProviderProperties {
         return toList(EP.pairsSquareRootOrder(xs, xs));
     }
 
-    private static void propertiesPairsSquareRootOrder_Iterable() {
+    private void propertiesPairsSquareRootOrder_Iterable() {
         initialize("pairsSquareRootOrder(Iterable<T>)");
         for (List<Integer> is : take(LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
             Iterable<Pair<Integer, Integer>> pairs = EP.pairsSquareRootOrder(is);
@@ -1926,7 +1914,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void compareImplementationsPairsSquareRootOrder_Iterable() {
+    private void compareImplementationsPairsSquareRootOrder_Iterable() {
         Map<String, Function<List<Integer>, List<Pair<Integer, Integer>>>> functions = new LinkedHashMap<>();
         functions.put("simplest", ExhaustiveProviderProperties::pairsSquareRootOrder_Iterable_simplest);
         functions.put("standard", xs -> toList(EP.pairsSquareRootOrder(xs)));
@@ -1934,7 +1922,7 @@ public class ExhaustiveProviderProperties {
         compareImplementations("pairsSquareRootOrder(Iterable<T>)", take(LIMIT, iss), functions);
     }
 
-    private static void propertiesPermutationsFinite() {
+    private void propertiesPermutationsFinite() {
         initialize("permutationsFinite(List<T>)");
         Comparator<Integer> comparator = new WithNullComparator<>();
         for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
@@ -1977,7 +1965,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesStringPermutations() {
+    private void propertiesStringPermutations() {
         initialize("stringPermutations(String)");
         for (String s : take(LIMIT, P.withScale(4).strings())) {
             Iterable<String> permutations = EP.stringPermutations(s);
@@ -2011,7 +1999,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesPrefixPermutations() {
+    private void propertiesPrefixPermutations() {
         initialize("prefixPermutations(Iterable<T>)");
         Comparator<Integer> comparator = new WithNullComparator<>();
         for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
@@ -2087,7 +2075,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesListsLex_int_List() {
+    private void propertiesListsLex_int_List() {
         initialize("listsLex(int, List<T>)");
         Iterable<Pair<List<Integer>, Integer>> ps = P.pairsLogarithmicOrder(
                 P.withScale(4).lists(P.withNull(P.integersGeometric())),
@@ -2154,7 +2142,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void compareImplementationsListsLex_int_List() {
+    private void compareImplementationsListsLex_int_List() {
         Map<String, Function<Pair<List<Integer>, Integer>, List<List<Integer>>>> functions = new LinkedHashMap<>();
         functions.put("alt", p -> listsLex_int_List_alt(p.b, p.a));
         functions.put("standard", p -> toList(EP.listsLex(p.b, p.a)));
@@ -2168,7 +2156,7 @@ public class ExhaustiveProviderProperties {
         compareImplementations("listsLex(int, List<T>)", take(LIMIT, ps), functions);
     }
 
-    private static void propertiesPairsLex() {
+    private void propertiesPairsLex() {
         initialize("pairsLex(Iterable<A>, List<B>)");
         Iterable<Pair<List<Integer>, List<Integer>>> ps = P.pairs(
                 P.withScale(4).lists(P.withNull(P.integersGeometric()))
@@ -2229,7 +2217,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesTriplesLex() {
+    private void propertiesTriplesLex() {
         initialize("triplesLex(Iterable<A>, List<B>, List<C>)");
         Iterable<Triple<List<Integer>, List<Integer>, List<Integer>>> ts = P.triples(
                 P.withScale(4).lists(P.withNull(P.integersGeometric()))
@@ -2299,7 +2287,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesQuadruplesLex() {
+    private void propertiesQuadruplesLex() {
         initialize("quadruplesLex(Iterable<A>, List<B>, List<C>, List<D>)");
         Iterable<Quadruple<List<Integer>, List<Integer>, List<Integer>, List<Integer>>> qs = P.quadruples(
                 P.withScale(4).lists(P.withNull(P.integersGeometric()))
@@ -2382,7 +2370,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesQuintuplesLex() {
+    private void propertiesQuintuplesLex() {
         initialize("quintuplesLex(Iterable<A>, List<B>, List<C>, List<D>, List<E>)");
         Iterable<Quintuple<
                 List<Integer>,
@@ -2523,7 +2511,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesSextuplesLex() {
+    private void propertiesSextuplesLex() {
         initialize("sexuplesLex(Iterable<A>, List<B>, List<C>, List<D>, List<E>, List<F>)");
         Iterable<Sextuple<
                 List<Integer>,
@@ -2690,7 +2678,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesSeptuplesLex() {
+    private void propertiesSeptuplesLex() {
         initialize("septuplesLex(Iterable<A>, List<B>, List<C>, List<D>, List<E>, List<F>, List<G>)");
         Iterable<Septuple<
                 List<Integer>,
@@ -2898,7 +2886,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesStringsLex_int_String() {
+    private void propertiesStringsLex_int_String() {
         initialize("stringsLex(int, String)");
         Iterable<Pair<String, Integer>> ps = P.pairsLogarithmicOrder(
                 P.withScale(4).strings(),
@@ -2965,7 +2953,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void compareImplementationsStringsLex_int_String() {
+    private void compareImplementationsStringsLex_int_String() {
         Map<String, Function<Pair<String, Integer>, List<String>>> functions = new LinkedHashMap<>();
         functions.put("alt", p -> stringsLex_int_String_alt(p.b, p.a));
         functions.put("standard", p -> toList(EP.stringsLex(p.b, p.a)));
@@ -2979,7 +2967,7 @@ public class ExhaustiveProviderProperties {
         compareImplementations("stringsLex(int, String)", take(LIMIT, ps), functions);
     }
 
-    private static void propertiesListsShortlex() {
+    private void propertiesListsShortlex() {
         initialize("listsShortlex(List<T>)");
         for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
             Iterable<List<Integer>> lists = EP.listsShortlex(xs);
@@ -3002,7 +2990,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesStringsShortlex() {
+    private void propertiesStringsShortlex() {
         initialize("stringsShortlex(String)");
         for (String s : take(LIMIT, P.withScale(4).strings())) {
             Iterable<String> strings = EP.stringsShortlex(s);
@@ -3019,7 +3007,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesListsShortlexAtLeast() {
+    private void propertiesListsShortlexAtLeast() {
         initialize("listsShortlexAtLeast(int, List<T>)");
         Iterable<Pair<List<Integer>, Integer>> ps = P.pairsLogarithmicOrder(
                 P.withScale(4).lists(P.withNull(P.integersGeometric())),
@@ -3070,7 +3058,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesStringsShortlexAtLeast() {
+    private void propertiesStringsShortlexAtLeast() {
         initialize("stringsShortlexAtLeast(int, String)");
         Iterable<Pair<String, Integer>> ps = P.pairsLogarithmicOrder(
                 P.withScale(4).strings(),
@@ -3115,7 +3103,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesLists_int_Iterable() {
+    private void propertiesLists_int_Iterable() {
         initialize("lists(int, Iterable<T>)");
         Iterable<Pair<List<Integer>, Integer>> ps = P.pairsLogarithmicOrder(
                 P.withScale(4).lists(P.withNull(P.integersGeometric())),
@@ -3187,7 +3175,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesPairs_Iterable_Iterable() {
+    private void propertiesPairs_Iterable_Iterable() {
         initialize("pairs(Iterable<A>, Iterable<B>)");
         Iterable<Pair<List<Integer>, List<Integer>>> ps = P.pairs(
                 P.withScale(4).lists(P.withNull(P.integersGeometric()))
@@ -3238,7 +3226,7 @@ public class ExhaustiveProviderProperties {
         return toList(EP.pairs(xs, xs));
     }
 
-    private static void propertiesPairs_Iterable() {
+    private void propertiesPairs_Iterable() {
         initialize("pairs(Iterable<T>)");
         for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
             Iterable<Pair<Integer, Integer>> pairs = EP.pairs(xs);
@@ -3289,7 +3277,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void compareImplementationsPairs_Iterable() {
+    private void compareImplementationsPairs_Iterable() {
         Map<String, Function<List<Integer>, List<Pair<Integer, Integer>>>> functions = new LinkedHashMap<>();
         functions.put("simplest", ExhaustiveProviderProperties::pairs_Iterable_simplest);
         functions.put("standard", xs -> toList(EP.pairs(xs)));
@@ -3300,7 +3288,7 @@ public class ExhaustiveProviderProperties {
         compareImplementations("pairs(Iterable<T>)", take(LIMIT, iss), functions);
     }
 
-    private static void propertiesTriples_Iterable_Iterable_Iterable() {
+    private void propertiesTriples_Iterable_Iterable_Iterable() {
         initialize("triples(Iterable<A>, Iterable<B>, Iterable<C>)");
         Iterable<Triple<List<Integer>, List<Integer>, List<Integer>>> ts = P.triples(
                 P.withScale(4).lists(P.withNull(P.integersGeometric()))
@@ -3359,7 +3347,7 @@ public class ExhaustiveProviderProperties {
         return toList(EP.triples(xs, xs, xs));
     }
 
-    private static void propertiesTriples_Iterable() {
+    private void propertiesTriples_Iterable() {
         initialize("triples(Iterable<T>)");
         for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
             Iterable<Triple<Integer, Integer, Integer>> triples = EP.triples(xs);
@@ -3414,7 +3402,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void compareImplementationsTriples_Iterable() {
+    private void compareImplementationsTriples_Iterable() {
         Map<
                 String,
                 Function<List<Integer>, List<Triple<Integer, Integer, Integer>>>
@@ -3428,12 +3416,12 @@ public class ExhaustiveProviderProperties {
         compareImplementations("triples(Iterable<T>)", take(LIMIT, iss), functions);
     }
 
-    private static void propertiesQuadruples_Iterable_Iterable_Iterable_Iterable() {
+    private void propertiesQuadruples_Iterable_Iterable_Iterable_Iterable() {
         initialize("quadruples(Iterable<A>, Iterable<B>, Iterable<C>, Iterable<D>)");
         Iterable<Quadruple<List<Integer>, List<Integer>, List<Integer>, List<Integer>>> qs = P.quadruples(
                 P.withScale(4).lists(P.withNull(P.integersGeometric()))
         );
-        for (Quadruple<List<Integer>, List<Integer>, List<Integer>, List<Integer>> q : take(SMALL_LIMIT, qs)) {
+        for (Quadruple<List<Integer>, List<Integer>, List<Integer>, List<Integer>> q : take(MEDIUM_LIMIT, qs)) {
             Iterable<Quadruple<Integer, Integer, Integer, Integer>> quadruples = EP.quadruples(q.a, q.b, q.c, q.d);
             testNoRemove(TINY_LIMIT, quadruples);
             BigInteger quadruplesLength = BigInteger.valueOf(q.a.size())
@@ -3456,7 +3444,7 @@ public class ExhaustiveProviderProperties {
         }
 
         qs = P.quadruples(P.withScale(4).distinctLists(P.withNull(P.integersGeometric())));
-        for (Quadruple<List<Integer>, List<Integer>, List<Integer>, List<Integer>> q : take(SMALL_LIMIT, qs)) {
+        for (Quadruple<List<Integer>, List<Integer>, List<Integer>, List<Integer>> q : take(MEDIUM_LIMIT, qs)) {
             BigInteger quadruplesLength = BigInteger.valueOf(q.a.size())
                     .multiply(BigInteger.valueOf(q.b.size()))
                     .multiply(BigInteger.valueOf(q.c.size()))
@@ -3496,9 +3484,9 @@ public class ExhaustiveProviderProperties {
         return toList(EP.quadruples(xs, xs, xs, xs));
     }
 
-    private static void propertiesQuadruples_Iterable() {
+    private void propertiesQuadruples_Iterable() {
         initialize("quadruples(Iterable<T>)");
-        for (List<Integer> xs : take(SMALL_LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
+        for (List<Integer> xs : take(MEDIUM_LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
             Iterable<Quadruple<Integer, Integer, Integer, Integer>> quadruples = EP.quadruples(xs);
             testNoRemove(TINY_LIMIT, quadruples);
             BigInteger quadruplesLength = BigInteger.valueOf(xs.size()).pow(4);
@@ -3518,7 +3506,7 @@ public class ExhaustiveProviderProperties {
             }
         }
 
-        for (List<Integer> xs : take(SMALL_LIMIT, P.withScale(4).distinctLists(P.withNull(P.integersGeometric())))) {
+        for (List<Integer> xs : take(MEDIUM_LIMIT, P.withScale(4).distinctLists(P.withNull(P.integersGeometric())))) {
             BigInteger quadruplesLength = BigInteger.valueOf(xs.size()).pow(4);
             if (lt(quadruplesLength, BigInteger.valueOf(LIMIT))) {
                 assertTrue(xs, unique(EP.quadruples(xs)));
@@ -3554,7 +3542,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void compareImplementationsQuadruples_Iterable() {
+    private void compareImplementationsQuadruples_Iterable() {
         Map<
                 String,
                 Function<List<Integer>, List<Quadruple<Integer, Integer, Integer, Integer>>>
@@ -3565,10 +3553,10 @@ public class ExhaustiveProviderProperties {
                 xs -> lt(BigInteger.valueOf(xs.size()).pow(4), BigInteger.valueOf(LIMIT)),
                 P.withScale(4).lists(P.withNull(P.integersGeometric()))
         );
-        compareImplementations("quadruples(Iterable<T>)", take(SMALL_LIMIT, iss), functions);
+        compareImplementations("quadruples(Iterable<T>)", take(MEDIUM_LIMIT, iss), functions);
     }
 
-    private static void propertiesQuintuples_Iterable_Iterable_Iterable_Iterable_Iterable() {
+    private void propertiesQuintuples_Iterable_Iterable_Iterable_Iterable_Iterable() {
         initialize("quintuples(Iterable<A>, Iterable<B>, Iterable<C>, Iterable<D>, Iterable<E>)");
         Iterable<Quintuple<
                 List<Integer>,
@@ -3585,7 +3573,7 @@ public class ExhaustiveProviderProperties {
                 List<Integer>,
                 List<Integer>,
                 List<Integer>
-        > q : take(SMALL_LIMIT, qs)) {
+        > q : take(MEDIUM_LIMIT, qs)) {
             Iterable<Quintuple<Integer, Integer, Integer, Integer, Integer>> quintuples =
                     EP.quintuples(q.a, q.b, q.c, q.d, q.e);
             testNoRemove(TINY_LIMIT, quintuples);
@@ -3625,7 +3613,7 @@ public class ExhaustiveProviderProperties {
                 List<Integer>,
                 List<Integer>,
                 List<Integer>
-        > q : take(SMALL_LIMIT, qs)) {
+        > q : take(MEDIUM_LIMIT, qs)) {
             BigInteger quintuplesLength = BigInteger.valueOf(q.a.size())
                     .multiply(BigInteger.valueOf(q.b.size()))
                     .multiply(BigInteger.valueOf(q.c.size()))
@@ -3679,9 +3667,9 @@ public class ExhaustiveProviderProperties {
         return toList(EP.quintuples(xs, xs, xs, xs, xs));
     }
 
-    private static void propertiesQuintuples_Iterable() {
+    private void propertiesQuintuples_Iterable() {
         initialize("quintuples(Iterable<T>)");
-        for (List<Integer> xs : take(SMALL_LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
+        for (List<Integer> xs : take(MEDIUM_LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
             Iterable<Quintuple<Integer, Integer, Integer, Integer, Integer>> quintuples = EP.quintuples(xs);
             testNoRemove(TINY_LIMIT, quintuples);
             BigInteger quintuplesLength = BigInteger.valueOf(xs.size()).pow(5);
@@ -3710,7 +3698,7 @@ public class ExhaustiveProviderProperties {
             }
         }
 
-        for (List<Integer> xs : take(SMALL_LIMIT, P.withScale(4).distinctLists(P.withNull(P.integersGeometric())))) {
+        for (List<Integer> xs : take(MEDIUM_LIMIT, P.withScale(4).distinctLists(P.withNull(P.integersGeometric())))) {
             BigInteger quintuplesLength = BigInteger.valueOf(xs.size()).pow(5);
             if (lt(quintuplesLength, BigInteger.valueOf(LIMIT))) {
                 assertTrue(xs, unique(EP.quintuples(xs)));
@@ -3749,7 +3737,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void compareImplementationsQuintuples_Iterable() {
+    private void compareImplementationsQuintuples_Iterable() {
         Map<
                 String,
                 Function<List<Integer>, List<Quintuple<Integer, Integer, Integer, Integer, Integer>>>
@@ -3760,10 +3748,10 @@ public class ExhaustiveProviderProperties {
                 xs -> lt(BigInteger.valueOf(xs.size()).pow(5), BigInteger.valueOf(LIMIT)),
                 P.withScale(4).lists(P.withNull(P.integersGeometric()))
         );
-        compareImplementations("quintuples(Iterable<T>)", take(SMALL_LIMIT, iss), functions);
+        compareImplementations("quintuples(Iterable<T>)", take(MEDIUM_LIMIT, iss), functions);
     }
 
-    private static void propertiesSextuples_Iterable_Iterable_Iterable_Iterable_Iterable_Iterable() {
+    private void propertiesSextuples_Iterable_Iterable_Iterable_Iterable_Iterable_Iterable() {
         initialize("sextuples(Iterable<A>, Iterable<B>, Iterable<C>, Iterable<D>, Iterable<E>, Iterable<F>)");
         Iterable<Sextuple<
                 List<Integer>,
@@ -3782,7 +3770,7 @@ public class ExhaustiveProviderProperties {
                 List<Integer>,
                 List<Integer>,
                 List<Integer>
-        > s : take(SMALL_LIMIT, ss)) {
+        > s : take(MEDIUM_LIMIT, ss)) {
             Iterable<Sextuple<Integer, Integer, Integer, Integer, Integer, Integer>> sextuples =
                     EP.sextuples(s.a, s.b, s.c, s.d, s.e, s.f);
             testNoRemove(TINY_LIMIT, sextuples);
@@ -3832,7 +3820,7 @@ public class ExhaustiveProviderProperties {
                 List<Integer>,
                 List<Integer>,
                 List<Integer>
-        > s : take(SMALL_LIMIT, ss)) {
+        > s : take(MEDIUM_LIMIT, ss)) {
             BigInteger sextuplesLength = BigInteger.valueOf(s.a.size())
                     .multiply(BigInteger.valueOf(s.b.size()))
                     .multiply(BigInteger.valueOf(s.c.size()))
@@ -3897,9 +3885,9 @@ public class ExhaustiveProviderProperties {
         return toList(EP.sextuples(xs, xs, xs, xs, xs, xs));
     }
 
-    private static void propertiesSextuples_Iterable() {
+    private void propertiesSextuples_Iterable() {
         initialize("sextuples(Iterable<T>)");
-        for (List<Integer> xs : take(SMALL_LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
+        for (List<Integer> xs : take(MEDIUM_LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
             Iterable<Sextuple<Integer, Integer, Integer, Integer, Integer, Integer>> sextuples = EP.sextuples(xs);
             testNoRemove(TINY_LIMIT, sextuples);
             BigInteger sextuplesLength = BigInteger.valueOf(xs.size()).pow(6);
@@ -3929,7 +3917,7 @@ public class ExhaustiveProviderProperties {
             }
         }
 
-        for (List<Integer> xs : take(SMALL_LIMIT, P.withScale(4).distinctLists(P.withNull(P.integersGeometric())))) {
+        for (List<Integer> xs : take(MEDIUM_LIMIT, P.withScale(4).distinctLists(P.withNull(P.integersGeometric())))) {
             BigInteger sextuplesLength = BigInteger.valueOf(xs.size()).pow(6);
             if (lt(sextuplesLength, BigInteger.valueOf(LIMIT))) {
                 assertTrue(xs, unique(EP.sextuples(xs)));
@@ -3970,7 +3958,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void compareImplementationsSextuples_Iterable() {
+    private void compareImplementationsSextuples_Iterable() {
         Map<
                 String,
                 Function<List<Integer>, List<Sextuple<Integer, Integer, Integer, Integer, Integer, Integer>>>
@@ -3981,10 +3969,10 @@ public class ExhaustiveProviderProperties {
                 xs -> lt(BigInteger.valueOf(xs.size()).pow(6), BigInteger.valueOf(LIMIT)),
                 P.withScale(4).lists(P.withNull(P.integersGeometric()))
         );
-        compareImplementations("sextuples(Iterable<T>)", take(SMALL_LIMIT, iss), functions);
+        compareImplementations("sextuples(Iterable<T>)", take(MEDIUM_LIMIT, iss), functions);
     }
 
-    private static void propertiesSeptuples_Iterable_Iterable_Iterable_Iterable_Iterable_Iterable_Iterable() {
+    private void propertiesSeptuples_Iterable_Iterable_Iterable_Iterable_Iterable_Iterable_Iterable() {
         initialize(
                 "septuples(Iterable<A>, Iterable<B>, Iterable<C>, Iterable<D>, Iterable<E>, Iterable<F>, Iterable<G>)"
         );
@@ -4007,7 +3995,7 @@ public class ExhaustiveProviderProperties {
                 List<Integer>,
                 List<Integer>,
                 List<Integer>
-        > s : take(SMALL_LIMIT, ss)) {
+        > s : take(MEDIUM_LIMIT, ss)) {
             Iterable<Septuple<Integer, Integer, Integer, Integer, Integer, Integer, Integer>> septuples =
                     EP.septuples(s.a, s.b, s.c, s.d, s.e, s.f, s.g);
             testNoRemove(TINY_LIMIT, septuples);
@@ -4062,7 +4050,7 @@ public class ExhaustiveProviderProperties {
                 List<Integer>,
                 List<Integer>,
                 List<Integer>
-        > s : take(SMALL_LIMIT, ss)) {
+        > s : take(MEDIUM_LIMIT, ss)) {
             BigInteger septuplesLength = BigInteger.valueOf(s.a.size())
                     .multiply(BigInteger.valueOf(s.b.size()))
                     .multiply(BigInteger.valueOf(s.c.size()))
@@ -4140,9 +4128,9 @@ public class ExhaustiveProviderProperties {
         return toList(EP.septuples(xs, xs, xs, xs, xs, xs, xs));
     }
 
-    private static void propertiesSeptuples_Iterable() {
+    private void propertiesSeptuples_Iterable() {
         initialize("septuples(Iterable<T>)");
-        for (List<Integer> xs : take(SMALL_LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
+        for (List<Integer> xs : take(MEDIUM_LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
             Iterable<Septuple<Integer, Integer, Integer, Integer, Integer, Integer, Integer>> septuples =
                     EP.septuples(xs);
             testNoRemove(TINY_LIMIT, septuples);
@@ -4175,7 +4163,7 @@ public class ExhaustiveProviderProperties {
             }
         }
 
-        for (List<Integer> xs : take(SMALL_LIMIT, P.withScale(4).distinctLists(P.withNull(P.integersGeometric())))) {
+        for (List<Integer> xs : take(MEDIUM_LIMIT, P.withScale(4).distinctLists(P.withNull(P.integersGeometric())))) {
             BigInteger septuplesLength = BigInteger.valueOf(xs.size()).pow(7);
             if (lt(septuplesLength, BigInteger.valueOf(LIMIT))) {
                 assertTrue(xs, unique(EP.septuples(xs)));
@@ -4222,7 +4210,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void compareImplementationsSeptuples_Iterable() {
+    private void compareImplementationsSeptuples_Iterable() {
         Map<
                 String,
                 Function<List<Integer>, List<Septuple<Integer, Integer, Integer, Integer, Integer, Integer, Integer>>>
@@ -4233,10 +4221,10 @@ public class ExhaustiveProviderProperties {
                 xs -> lt(BigInteger.valueOf(xs.size()).pow(7), BigInteger.valueOf(LIMIT)),
                 P.withScale(4).lists(P.withNull(P.integersGeometric()))
         );
-        compareImplementations("septuples(Iterable<T>)", take(SMALL_LIMIT, iss), functions);
+        compareImplementations("septuples(Iterable<T>)", take(MEDIUM_LIMIT, iss), functions);
     }
 
-    private static void propertiesStrings_int_String() {
+    private void propertiesStrings_int_String() {
         initialize("strings(int, String)");
         Iterable<Pair<String, Integer>> ps = P.pairsLogarithmicOrder(
                 P.withScale(4).strings(),
@@ -4295,9 +4283,9 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesStrings_int() {
+    private void propertiesStrings_int() {
         initialize("strings(int)");
-        for (int i : take(SMALL_LIMIT, P.withScale(4).naturalIntegersGeometric())) {
+        for (int i : take(MEDIUM_LIMIT, P.withScale(4).naturalIntegersGeometric())) {
             Iterable<String> strings = EP.strings(i);
             testNoRemove(TINY_LIMIT, strings);
             List<String> stringsList = toList(take(TINY_LIMIT, strings));
@@ -4314,7 +4302,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesLists_Iterable() {
+    private void propertiesLists_Iterable() {
         initialize("lists(Iterable<T>)");
         for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
             Iterable<List<Integer>> lists = EP.lists(xs);
@@ -4329,7 +4317,7 @@ public class ExhaustiveProviderProperties {
             assertTrue(xs, unique(listsList));
         }
 
-        for (Iterable<Integer> xs : take(SMALL_LIMIT, P.prefixPermutations(EP.withNull(EP.naturalIntegers())))) {
+        for (Iterable<Integer> xs : take(MEDIUM_LIMIT, P.prefixPermutations(EP.withNull(EP.naturalIntegers())))) {
             Iterable<List<Integer>> lists = EP.lists(xs);
             testNoRemove(TINY_LIMIT, lists);
             List<List<Integer>> listsList = toList(take(TINY_LIMIT, lists));
@@ -4339,7 +4327,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesStrings_String() {
+    private void propertiesStrings_String() {
         initialize("strings(String)");
         for (String s : take(LIMIT, P.withScale(4).strings())) {
             Iterable<String> strings = EP.strings(s);
@@ -4355,12 +4343,12 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesStrings() {
+    private void propertiesStrings() {
         initializeConstant("strings()");
         biggerTest(EP, EP.strings(), s -> true);
     }
 
-    private static void propertiesListsAtLeast() {
+    private void propertiesListsAtLeast() {
         initialize("listsAtLeast(int, Iterable<T>)");
         Iterable<Pair<List<Integer>, Integer>> ps = P.pairsLogarithmicOrder(
                 P.withScale(4).lists(P.withNull(P.integersGeometric())),
@@ -4390,7 +4378,7 @@ public class ExhaustiveProviderProperties {
                 P.prefixPermutations(EP.withNull(EP.naturalIntegers())),
                 P.withScale(4).naturalIntegersGeometric()
         );
-        for (Pair<Iterable<Integer>, Integer> p : take(SMALL_LIMIT, ps2)) {
+        for (Pair<Iterable<Integer>, Integer> p : take(MEDIUM_LIMIT, ps2)) {
             Iterable<List<Integer>> lists = EP.listsAtLeast(p.b, p.a);
             testNoRemove(TINY_LIMIT, lists);
             List<List<Integer>> listsList = toList(take(TINY_LIMIT, lists));
@@ -4418,7 +4406,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesStringsAtLeast_int_String() {
+    private void propertiesStringsAtLeast_int_String() {
         initialize("stringsAtLeast(int, String)");
         Iterable<Pair<String, Integer>> ps = P.pairsLogarithmicOrder(
                 P.withScale(4).strings(),
@@ -4459,7 +4447,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesStringsAtLeast_int() {
+    private void propertiesStringsAtLeast_int() {
         initialize("stringsAtLeast(int)");
         for (int i : take(TINY_LIMIT, P.withScale(4).naturalIntegersGeometric())) {
             Iterable<String> strings = EP.stringsAtLeast(i);
@@ -4478,7 +4466,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesDistinctListsLex_int_List() {
+    private void propertiesDistinctListsLex_int_List() {
         initialize("distinctListsLex(int, List<T>)");
         Iterable<Pair<List<Integer>, Integer>> ps = P.pairsLogarithmicOrder(
                 P.withScale(4).lists(P.withNull(P.integersGeometric())),
@@ -4567,7 +4555,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesDistinctPairsLex() {
+    private void propertiesDistinctPairsLex() {
         initialize("distinctPairsLex(List<T>)");
         for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
             Iterable<Pair<Integer, Integer>> pairs = EP.distinctPairsLex(xs);
@@ -4613,7 +4601,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesDistinctTriplesLex() {
+    private void propertiesDistinctTriplesLex() {
         initialize("distinctTriplesLex(List<T>)");
         for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
             Iterable<Triple<Integer, Integer, Integer>> triples = EP.distinctTriplesLex(xs);
@@ -4668,7 +4656,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesDistinctQuadruplesLex() {
+    private void propertiesDistinctQuadruplesLex() {
         initialize("distinctQuadruplesLex(List<T>)");
         for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
             Iterable<Quadruple<Integer, Integer, Integer, Integer>> quadruples = EP.distinctQuadruplesLex(xs);
@@ -4735,7 +4723,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesDistinctQuintuplesLex() {
+    private void propertiesDistinctQuintuplesLex() {
         initialize("distinctQuintuplesLex(List<T>)");
         for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
             Iterable<Quintuple<Integer, Integer, Integer, Integer, Integer>> quintuples = EP.distinctQuintuplesLex(xs);
@@ -4805,7 +4793,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesDistinctSextuplesLex() {
+    private void propertiesDistinctSextuplesLex() {
         initialize("distinctSextuplesLex(List<T>)");
         for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
             Iterable<Sextuple<Integer, Integer, Integer, Integer, Integer, Integer>> sextuples =
@@ -4879,7 +4867,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesDistinctSeptuplesLex() {
+    private void propertiesDistinctSeptuplesLex() {
         initialize("distinctSeptuplesLex(List<T>)");
         for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
             Iterable<Septuple<Integer, Integer, Integer, Integer, Integer, Integer, Integer>> septuples =
@@ -4960,7 +4948,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesDistinctStringsLex_int_String() {
+    private void propertiesDistinctStringsLex_int_String() {
         initialize("distinctStringsLex(int, String)");
         Iterable<Pair<String, Integer>> ps = P.pairsLogarithmicOrder(
                 P.withScale(4).strings(),
@@ -5043,7 +5031,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesDistinctListsLex_List() {
+    private void propertiesDistinctListsLex_List() {
         initialize("distinctListsLex(List<T>)");
         for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
             Iterable<List<Integer>> lists = EP.distinctListsLex(xs);
@@ -5077,7 +5065,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesDistinctStringsLex_String() {
+    private void propertiesDistinctStringsLex_String() {
         initialize("distinctStringsLex(String)");
         for (String s : take(LIMIT, P.withScale(4).strings())) {
             Iterable<String> strings = EP.distinctStringsLex(s);
@@ -5111,7 +5099,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesDistinctListsLexAtLeast() {
+    private void propertiesDistinctListsLexAtLeast() {
         initialize("distinctListsLexAtLeast(int, List<T>)");
         Iterable<Pair<List<Integer>, Integer>> ps = P.pairsLogarithmicOrder(
                 P.withScale(4).lists(P.withNull(P.integersGeometric())),
@@ -5170,7 +5158,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesDistinctStringsLexAtLeast() {
+    private void propertiesDistinctStringsLexAtLeast() {
         initialize("distinctStringsLexAtLeast(int, String)");
         Iterable<Pair<String, Integer>> ps = P.pairsLogarithmicOrder(
                 P.withScale(4).strings(),
@@ -5226,7 +5214,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesDistinctListsShortlex() {
+    private void propertiesDistinctListsShortlex() {
         initialize("distinctListsShortlex(List<T>)");
         for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
             Iterable<List<Integer>> lists = EP.distinctListsShortlex(xs);
@@ -5260,7 +5248,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesDistinctStringsShortlex() {
+    private void propertiesDistinctStringsShortlex() {
         initialize("distinctStringsShortlex(String)");
         for (String s : take(LIMIT, P.withScale(4).strings())) {
             Iterable<String> strings = EP.distinctStringsShortlex(s);
@@ -5294,7 +5282,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesDistinctListsShortlexAtLeast() {
+    private void propertiesDistinctListsShortlexAtLeast() {
         initialize("distinctListsShortlexAtLeast(int, List<T>)");
         Iterable<Pair<List<Integer>, Integer>> ps = P.pairsLogarithmicOrder(
                 P.withScale(4).lists(P.withNull(P.integersGeometric())),
@@ -5353,7 +5341,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesDistinctStringsShortlexAtLeast() {
+    private void propertiesDistinctStringsShortlexAtLeast() {
         initialize("distinctStringsShortlexAtLeast(int, String)");
         Iterable<Pair<String, Integer>> ps = P.pairsLogarithmicOrder(
                 P.withScale(4).strings(),
@@ -5409,7 +5397,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesDistinctLists_int_Iterable() {
+    private void propertiesDistinctLists_int_Iterable() {
         initialize("distinctLists(int, Iterable<T>)");
         Iterable<Pair<List<Integer>, Integer>> ps = P.pairsLogarithmicOrder(
                 P.withScale(4).lists(P.withNull(P.integersGeometric())),
@@ -5491,7 +5479,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesDistinctPairs() {
+    private void propertiesDistinctPairs() {
         initialize("distinctPairs(Iterable<T>)");
         for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
             Iterable<Pair<Integer, Integer>> pairs = EP.distinctPairs(xs);
@@ -5531,7 +5519,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesDistinctTriples() {
+    private void propertiesDistinctTriples() {
         initialize("distinctTriples(Iterable<T>)");
         for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
             Iterable<Triple<Integer, Integer, Integer>> triples = EP.distinctTriples(xs);
@@ -5577,7 +5565,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesDistinctQuadruples() {
+    private void propertiesDistinctQuadruples() {
         initialize("distinctQuadruples(Iterable<T>)");
         for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
             Iterable<Quadruple<Integer, Integer, Integer, Integer>> quadruples = EP.distinctQuadruples(xs);
@@ -5634,7 +5622,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesDistinctQuintuples() {
+    private void propertiesDistinctQuintuples() {
         initialize("distinctQuintuples(Iterable<T>)");
         for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
             Iterable<Quintuple<Integer, Integer, Integer, Integer, Integer>> quintuples = EP.distinctQuintuples(xs);
@@ -5696,7 +5684,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesDistinctSextuples() {
+    private void propertiesDistinctSextuples() {
         initialize("distinctSextuples(Iterable<T>)");
         for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
             Iterable<Sextuple<Integer, Integer, Integer, Integer, Integer, Integer>> sextuples =
@@ -5763,7 +5751,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesDistinctSeptuples() {
+    private void propertiesDistinctSeptuples() {
         initialize("distinctSeptuples(Iterable<T>)");
         for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
             Iterable<Septuple<Integer, Integer, Integer, Integer, Integer, Integer, Integer>> septuples =
@@ -5834,7 +5822,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesDistinctStrings_int_String() {
+    private void propertiesDistinctStrings_int_String() {
         initialize("distinctStrings(int, String)");
         Iterable<Pair<String, Integer>> ps = P.pairsLogarithmicOrder(
                 P.withScale(4).strings(),
@@ -5895,9 +5883,9 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesDistinctStrings_int() {
+    private void propertiesDistinctStrings_int() {
         initialize("distinctStrings(int)");
-        for (int i : take(SMALL_LIMIT, P.withScale(4).naturalIntegersGeometric())) {
+        for (int i : take(MEDIUM_LIMIT, P.withScale(4).naturalIntegersGeometric())) {
             Iterable<String> strings = EP.distinctStrings(i);
             testNoRemove(TINY_LIMIT, strings);
             List<String> stringsList = toList(take(TINY_LIMIT, strings));
@@ -5907,7 +5895,7 @@ public class ExhaustiveProviderProperties {
             assertTrue(i, unique(stringsList));
         }
 
-        for (int i : take(SMALL_LIMIT, P.rangeUp((1 << 16) + 1))) {
+        for (int i : take(MEDIUM_LIMIT, P.rangeUp((1 << 16) + 1))) {
             assertEquals(i, toList(EP.distinctStrings(i)), Collections.emptyList());
         }
 
@@ -5919,7 +5907,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesDistinctLists_Iterable() {
+    private void propertiesDistinctLists_Iterable() {
         initialize("distinctLists(Iterable<T>)");
         for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
             Iterable<List<Integer>> lists = EP.distinctLists(xs);
@@ -5946,7 +5934,7 @@ public class ExhaustiveProviderProperties {
             }
         }
 
-        for (Iterable<Integer> xs : take(SMALL_LIMIT, P.prefixPermutations(EP.withNull(EP.naturalIntegers())))) {
+        for (Iterable<Integer> xs : take(MEDIUM_LIMIT, P.prefixPermutations(EP.withNull(EP.naturalIntegers())))) {
             Iterable<List<Integer>> lists = EP.distinctLists(xs);
             testNoRemove(TINY_LIMIT, lists);
             List<List<Integer>> listsList = toList(take(TINY_LIMIT, lists));
@@ -5957,7 +5945,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesDistinctStrings_String() {
+    private void propertiesDistinctStrings_String() {
         initialize("distinctStrings(String)");
         for (String s : take(LIMIT, P.withScale(4).strings())) {
             Iterable<String> strings = EP.distinctStrings(s);
@@ -5985,12 +5973,12 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesDistinctStrings() {
+    private void propertiesDistinctStrings() {
         initializeConstant("distinctStrings()");
         biggerTest(EP, EP.distinctStrings(), IterableUtils::unique);
     }
 
-    private static void propertiesDistinctListsAtLeast() {
+    private void propertiesDistinctListsAtLeast() {
         initialize("distinctListsAtLeast(int, Iterable<T>)");
         Iterable<Pair<List<Integer>, Integer>> ps = P.pairsLogarithmicOrder(
                 P.withScale(4).lists(P.withNull(P.integersGeometric())),
@@ -6029,7 +6017,7 @@ public class ExhaustiveProviderProperties {
                 P.prefixPermutations(EP.withNull(EP.naturalIntegers())),
                 P.withScale(4).naturalIntegersGeometric()
         );
-        for (Pair<Iterable<Integer>, Integer> p : take(SMALL_LIMIT, ps2)) {
+        for (Pair<Iterable<Integer>, Integer> p : take(MEDIUM_LIMIT, ps2)) {
             Iterable<List<Integer>> lists = EP.distinctListsAtLeast(p.b, p.a);
             testNoRemove(TINY_LIMIT, lists);
             List<List<Integer>> listsList = toList(take(TINY_LIMIT, lists));
@@ -6058,7 +6046,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesDistinctStringsAtLeast_int_String() {
+    private void propertiesDistinctStringsAtLeast_int_String() {
         initialize("distinctStringsAtLeast(int, String)");
         Iterable<Pair<String, Integer>> ps = P.pairsLogarithmicOrder(
                 P.withScale(4).strings(),
@@ -6108,7 +6096,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesDistinctStringsAtLeast_int() {
+    private void propertiesDistinctStringsAtLeast_int() {
         initialize("distinctStringsAtLeast(int)");
         Iterable<Integer> is = filterInfinite(j -> j < (1 << 16) + 1, P.withScale(4).naturalIntegersGeometric());
         for (int i : take(TINY_LIMIT, is)) {
@@ -6121,7 +6109,7 @@ public class ExhaustiveProviderProperties {
             assertTrue(i, unique(stringsList));
         }
 
-        for (int i : take(SMALL_LIMIT, P.rangeUp((1 << 16) + 1))) {
+        for (int i : take(MEDIUM_LIMIT, P.rangeUp((1 << 16) + 1))) {
             assertEquals(i, toList(EP.distinctStringsAtLeast(i)), Collections.emptyList());
         }
 
@@ -6133,7 +6121,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesBagsLex_int_List() {
+    private void propertiesBagsLex_int_List() {
         initialize("bagsLex(int, List<T>)");
         Iterable<Pair<List<Integer>, Integer>> ps = P.pairsLogarithmicOrder(
                 P.withScale(4).lists(P.integersGeometric()),
@@ -6208,7 +6196,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesBagPairsLex() {
+    private void propertiesBagPairsLex() {
         initialize("bagPairsLex(List<T>)");
         for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.integersGeometric()))) {
             Iterable<Pair<Integer, Integer>> pairs = EP.bagPairsLex(xs);
@@ -6267,7 +6255,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesBagTriplesLex() {
+    private void propertiesBagTriplesLex() {
         initialize("bagTriplesLex(List<T>)");
         for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.integersGeometric()))) {
             Iterable<Triple<Integer, Integer, Integer>> triples = EP.bagTriplesLex(xs);
@@ -6331,7 +6319,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesBagQuadruplesLex() {
+    private void propertiesBagQuadruplesLex() {
         initialize("bagQuadruplesLex(List<T>)");
         for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.integersGeometric()))) {
             Iterable<Quadruple<Integer, Integer, Integer, Integer>> quadruples = EP.bagQuadruplesLex(xs);
@@ -6397,7 +6385,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesBagQuintuplesLex() {
+    private void propertiesBagQuintuplesLex() {
         initialize("bagQuintuplesLex(List<T>)");
         for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.integersGeometric()))) {
             Iterable<Quintuple<Integer, Integer, Integer, Integer, Integer>> quintuples = EP.bagQuintuplesLex(xs);
@@ -6474,7 +6462,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesBagSextuplesLex() {
+    private void propertiesBagSextuplesLex() {
         initialize("bagSextuplesLex(List<T>)");
         for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.integersGeometric()))) {
             Iterable<Sextuple<Integer, Integer, Integer, Integer, Integer, Integer>> sextuples =
@@ -6554,7 +6542,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesBagSeptuplesLex() {
+    private void propertiesBagSeptuplesLex() {
         initialize("bagSeptuplesLex(List<T>)");
         for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.integersGeometric()))) {
             Iterable<Septuple<Integer, Integer, Integer, Integer, Integer, Integer, Integer>> septuples =
@@ -6637,7 +6625,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesStringBagsLex() {
+    private void propertiesStringBagsLex() {
         initialize("stringBagsLex(int, String)");
         Iterable<Pair<String, Integer>> ps = P.pairsLogarithmicOrder(
                 P.withScale(4).strings(),
@@ -6698,7 +6686,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesBagsShortlex() {
+    private void propertiesBagsShortlex() {
         initialize("bagsShortlex(List<T>)");
         for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.integersGeometric()))) {
             Iterable<List<Integer>> lists = EP.bagsShortlex(xs);
@@ -6723,7 +6711,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesStringBagsShortlex() {
+    private void propertiesStringBagsShortlex() {
         initialize("stringsShortlex(String)");
         for (String s : take(LIMIT, P.withScale(4).strings())) {
             Iterable<String> strings = EP.stringBagsShortlex(s);
@@ -6741,7 +6729,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesBagsShortlexAtLeast() {
+    private void propertiesBagsShortlexAtLeast() {
         initialize("bagsShortlexAtLeast(int, List<T>)");
         Iterable<Pair<List<Integer>, Integer>> ps = P.pairsLogarithmicOrder(
                 P.withScale(4).lists(P.integersGeometric()),
@@ -6798,7 +6786,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesStringBagsShortlexAtLeast() {
+    private void propertiesStringBagsShortlexAtLeast() {
         initialize("stringBagsShortlexAtLeast(int, String)");
         Iterable<Pair<String, Integer>> ps = P.pairsLogarithmicOrder(
                 P.withScale(4).strings(),
@@ -6841,7 +6829,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesBags_int_Iterable() {
+    private void propertiesBags_int_Iterable() {
         initialize("bags(int, Iterable<T>)");
         Iterable<Pair<List<Integer>, Integer>> ps = P.pairsLogarithmicOrder(
                 P.withScale(4).lists(P.integersGeometric()),
@@ -6921,7 +6909,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesBagPairs() {
+    private void propertiesBagPairs() {
         initialize("bagPairs(Iterable<T>)");
         for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.integersGeometric()))) {
             Iterable<Pair<Integer, Integer>> pairs = EP.bagPairs(xs);
@@ -6969,7 +6957,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesBagTriples() {
+    private void propertiesBagTriples() {
         initialize("bagTriples(Iterable<T>)");
         for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.integersGeometric()))) {
             Iterable<Triple<Integer, Integer, Integer>> triples = EP.bagTriples(xs);
@@ -7019,7 +7007,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesBagQuadruples() {
+    private void propertiesBagQuadruples() {
         initialize("bagQuadruples(Iterable<T>)");
         for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.integersGeometric()))) {
             Iterable<Quadruple<Integer, Integer, Integer, Integer>> quadruples = EP.bagQuadruples(xs);
@@ -7071,7 +7059,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesBagQuintuples() {
+    private void propertiesBagQuintuples() {
         initialize("bagQuintuples(Iterable<T>)");
         for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.integersGeometric()))) {
             Iterable<Quintuple<Integer, Integer, Integer, Integer, Integer>> quintuples = EP.bagQuintuples(xs);
@@ -7135,7 +7123,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesBagSextuples() {
+    private void propertiesBagSextuples() {
         initialize("bagSextuples(Iterable<T>)");
         for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.integersGeometric()))) {
             Iterable<Sextuple<Integer, Integer, Integer, Integer, Integer, Integer>> sextuples = EP.bagSextuples(xs);
@@ -7201,7 +7189,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesBagSeptuples() {
+    private void propertiesBagSeptuples() {
         initialize("bagSeptuples(Iterable<T>)");
         for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.integersGeometric()))) {
             Iterable<Septuple<Integer, Integer, Integer, Integer, Integer, Integer, Integer>> septuples =
@@ -7272,7 +7260,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesStringBags_int_String() {
+    private void propertiesStringBags_int_String() {
         initialize("stringBags(int, String)");
         Iterable<Pair<String, Integer>> ps = P.pairsLogarithmicOrder(
                 P.withScale(4).strings(),
@@ -7323,9 +7311,9 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesStringBags_int() {
+    private void propertiesStringBags_int() {
         initialize("stringBags(int)");
-        for (int i : take(SMALL_LIMIT, P.withScale(4).naturalIntegersGeometric())) {
+        for (int i : take(MEDIUM_LIMIT, P.withScale(4).naturalIntegersGeometric())) {
             Iterable<String> strings = EP.stringBags(i);
             testNoRemove(TINY_LIMIT, strings);
             List<String> stringsList = toList(take(TINY_LIMIT, strings));
@@ -7343,7 +7331,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesBags_Iterable() {
+    private void propertiesBags_Iterable() {
         initialize("bags(Iterable<T>)");
         for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.integersGeometric()))) {
             Iterable<List<Integer>> lists = EP.bags(xs);
@@ -7359,7 +7347,7 @@ public class ExhaustiveProviderProperties {
             assertTrue(xs, all(IterableUtils::weaklyIncreasing, listsList));
         }
 
-        for (Iterable<Integer> xs : take(SMALL_LIMIT, P.prefixPermutations(EP.naturalIntegers()))) {
+        for (Iterable<Integer> xs : take(MEDIUM_LIMIT, P.prefixPermutations(EP.naturalIntegers()))) {
             Iterable<List<Integer>> lists = EP.bags(xs);
             testNoRemove(TINY_LIMIT, lists);
             List<List<Integer>> listsList = toList(take(TINY_LIMIT, lists));
@@ -7377,7 +7365,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesStringBags_String() {
+    private void propertiesStringBags_String() {
         initialize("stringBags(String)");
         for (String s : take(LIMIT, P.withScale(4).strings())) {
             Iterable<String> strings = EP.stringBags(s);
@@ -7395,12 +7383,12 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesStringBags() {
+    private void propertiesStringBags() {
         initializeConstant("stringBags()");
         biggerTest(EP, EP.stringBags(), s -> weaklyIncreasing(toList(s)));
     }
 
-    private static void propertiesBagsAtLeast() {
+    private void propertiesBagsAtLeast() {
         initialize("bagsAtLeast(int, Iterable<T>)");
         Iterable<Pair<List<Integer>, Integer>> ps = P.pairsLogarithmicOrder(
                 P.withScale(4).lists(P.integersGeometric()),
@@ -7431,7 +7419,7 @@ public class ExhaustiveProviderProperties {
                 P.prefixPermutations(EP.naturalIntegers()),
                 P.withScale(4).naturalIntegersGeometric()
         );
-        for (Pair<Iterable<Integer>, Integer> p : take(SMALL_LIMIT, ps2)) {
+        for (Pair<Iterable<Integer>, Integer> p : take(MEDIUM_LIMIT, ps2)) {
             Iterable<List<Integer>> lists = EP.bagsAtLeast(p.b, p.a);
             testNoRemove(TINY_LIMIT, lists);
             List<List<Integer>> listsList = toList(take(TINY_LIMIT, lists));
@@ -7471,7 +7459,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesStringBagsAtLeast_int_String() {
+    private void propertiesStringBagsAtLeast_int_String() {
         initialize("stringBagsAtLeast(int, String)");
         Iterable<Pair<String, Integer>> ps = P.pairsLogarithmicOrder(
                 P.withScale(4).strings(),
@@ -7513,7 +7501,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesStringBagsAtLeast_int() {
+    private void propertiesStringBagsAtLeast_int() {
         initialize("stringBagsAtLeast(int)");
         for (int i : take(TINY_LIMIT, P.withScale(4).naturalIntegersGeometric())) {
             Iterable<String> strings = EP.stringBagsAtLeast(i);
@@ -7533,7 +7521,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesSubsetsLex_int_List() {
+    private void propertiesSubsetsLex_int_List() {
         initialize("subsetsLex(int, List<T>)");
         Iterable<Pair<List<Integer>, Integer>> ps = P.pairsLogarithmicOrder(
                 P.withScale(4).lists(P.integersGeometric()),
@@ -7609,7 +7597,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesSubsetPairsLex() {
+    private void propertiesSubsetPairsLex() {
         initialize("subsetPairsLex(List<T>)");
         for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.integersGeometric()))) {
             Iterable<Pair<Integer, Integer>> pairs = EP.subsetPairsLex(xs);
@@ -7668,7 +7656,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesSubsetTriplesLex() {
+    private void propertiesSubsetTriplesLex() {
         initialize("subsetTriplesLex(List<T>)");
         for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.integersGeometric()))) {
             Iterable<Triple<Integer, Integer, Integer>> triples = EP.subsetTriplesLex(xs);
@@ -7733,7 +7721,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesSubsetQuadruplesLex() {
+    private void propertiesSubsetQuadruplesLex() {
         initialize("subsetQuadruplesLex(List<T>)");
         for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.integersGeometric()))) {
             Iterable<Quadruple<Integer, Integer, Integer, Integer>> quadruples = EP.subsetQuadruplesLex(xs);
@@ -7813,7 +7801,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesSubsetQuintuplesLex() {
+    private void propertiesSubsetQuintuplesLex() {
         initialize("subsetQuintuplesLex(List<T>)");
         for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.integersGeometric()))) {
             Iterable<Quintuple<Integer, Integer, Integer, Integer, Integer>> quintuples = EP.subsetQuintuplesLex(xs);
@@ -7896,7 +7884,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesSubsetSextuplesLex() {
+    private void propertiesSubsetSextuplesLex() {
         initialize("subsetSextuplesLex(List<T>)");
         for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.integersGeometric()))) {
             Iterable<Sextuple<Integer, Integer, Integer, Integer, Integer, Integer>> sextuples =
@@ -7983,7 +7971,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesSubsetSeptuplesLex() {
+    private void propertiesSubsetSeptuplesLex() {
         initialize("subsetSeptuplesLex(List<T>)");
         for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.integersGeometric()))) {
             Iterable<Septuple<Integer, Integer, Integer, Integer, Integer, Integer, Integer>> septuples =
@@ -8074,7 +8062,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesStringSubsetsLex_int_String() {
+    private void propertiesStringSubsetsLex_int_String() {
         initialize("stringSubsetsLex(int, String)");
         Iterable<Pair<String, Integer>> ps = P.pairsLogarithmicOrder(
                 P.withScale(4).strings(),
@@ -8139,7 +8127,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesSubsetsLex_List() {
+    private void propertiesSubsetsLex_List() {
         initialize("subsetsLex(List<T>)");
         for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.integersGeometric()))) {
             Iterable<List<Integer>> lists = EP.subsetsLex(xs);
@@ -8175,7 +8163,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesStringSubsetsLex_String() {
+    private void propertiesStringSubsetsLex_String() {
         initialize("stringSubsetsLex(String)");
         for (String s : take(LIMIT, P.withScale(4).strings())) {
             Iterable<String> strings = EP.stringSubsetsLex(s);
@@ -8204,7 +8192,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesSubsetsLexAtLeast() {
+    private void propertiesSubsetsLexAtLeast() {
         initialize("subsetsLexAtLeast(int, List<T>)");
         Iterable<Pair<List<Integer>, Integer>> ps = P.pairsLogarithmicOrder(
                 P.withScale(4).lists(P.integersGeometric()),
@@ -8269,7 +8257,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesStringSubsetsLexAtLeast() {
+    private void propertiesStringSubsetsLexAtLeast() {
         initialize("stringSubsetsLexAtLeast(int, String)");
         Iterable<Pair<String, Integer>> ps = P.pairsLogarithmicOrder(
                 P.withScale(4).strings(),
@@ -8320,7 +8308,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesSubsetsShortlex() {
+    private void propertiesSubsetsShortlex() {
         initialize("subsetsShortlex(List<T>)");
         for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.integersGeometric()))) {
             Iterable<List<Integer>> lists = EP.subsetsShortlex(xs);
@@ -8356,7 +8344,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesStringSubsetsShortlex() {
+    private void propertiesStringSubsetsShortlex() {
         initialize("stringSubsetsShortlex(String)");
         for (String s : take(LIMIT, P.withScale(4).strings())) {
             Iterable<String> strings = EP.stringSubsetsShortlex(s);
@@ -8385,7 +8373,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesSubsetsShortlexAtLeast() {
+    private void propertiesSubsetsShortlexAtLeast() {
         initialize("subsetsShortlexAtLeast(int, List<T>)");
         Iterable<Pair<List<Integer>, Integer>> ps = P.pairsLogarithmicOrder(
                 P.withScale(4).lists(P.integersGeometric()),
@@ -8439,7 +8427,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesStringSubsetsShortlexAtLeast() {
+    private void propertiesStringSubsetsShortlexAtLeast() {
         initialize("stringSubsetsShortlexAtLeast(int, String)");
         Iterable<Pair<String, Integer>> ps = P.pairsLogarithmicOrder(
                 P.withScale(4).strings(),
@@ -8490,7 +8478,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesSubsets_int_Iterable() {
+    private void propertiesSubsets_int_Iterable() {
         initialize("subsets(int, Iterable<T>)");
         Iterable<Pair<List<Integer>, Integer>> ps = P.pairsLogarithmicOrder(
                 P.withScale(4).lists(P.integersGeometric()),
@@ -8574,7 +8562,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesSubsetPairs() {
+    private void propertiesSubsetPairs() {
         initialize("subsetPairs(Iterable<T>)");
         for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.integersGeometric()))) {
             Iterable<Pair<Integer, Integer>> pairs = EP.subsetPairs(xs);
@@ -8629,7 +8617,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesSubsetTriples() {
+    private void propertiesSubsetTriples() {
         initialize("subsetTriples(Iterable<T>)");
         for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.integersGeometric()))) {
             Iterable<Triple<Integer, Integer, Integer>> triples = EP.subsetTriples(xs);
@@ -8688,7 +8676,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesSubsetQuadruples() {
+    private void propertiesSubsetQuadruples() {
         initialize("subsetQuadruples(Iterable<T>)");
         for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.integersGeometric()))) {
             Iterable<Quadruple<Integer, Integer, Integer, Integer>> quadruples = EP.subsetQuadruples(xs);
@@ -8762,7 +8750,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesSubsetQuintuples() {
+    private void propertiesSubsetQuintuples() {
         initialize("subsetQuintuples(Iterable<T>)");
         for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.integersGeometric()))) {
             Iterable<Quintuple<Integer, Integer, Integer, Integer, Integer>> quintuples = EP.subsetQuintuples(xs);
@@ -8841,7 +8829,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesSubsetSextuples() {
+    private void propertiesSubsetSextuples() {
         initialize("subsetSextuples(Iterable<T>)");
         for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.integersGeometric()))) {
             Iterable<Sextuple<Integer, Integer, Integer, Integer, Integer, Integer>> sextuples =
@@ -8934,7 +8922,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesSubsetSeptuples() {
+    private void propertiesSubsetSeptuples() {
         initialize("subsetSeptuples(Iterable<T>)");
         for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.integersGeometric()))) {
             Iterable<Septuple<Integer, Integer, Integer, Integer, Integer, Integer, Integer>> septuples =
@@ -9040,7 +9028,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesStringSubsets_int_String() {
+    private void propertiesStringSubsets_int_String() {
         initialize("stringSubsets(int, String)");
         Iterable<Pair<String, Integer>> ps = P.pairsLogarithmicOrder(
                 P.withScale(4).strings(),
@@ -9102,9 +9090,9 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesStringSubsets_int() {
+    private void propertiesStringSubsets_int() {
         initialize("stringSubsets(int)");
-        for (int i : take(SMALL_LIMIT, P.withScale(4).naturalIntegersGeometric())) {
+        for (int i : take(MEDIUM_LIMIT, P.withScale(4).naturalIntegersGeometric())) {
             Iterable<String> strings = EP.stringSubsets(i);
             testNoRemove(TINY_LIMIT, strings);
             List<String> stringsList = toList(take(TINY_LIMIT, strings));
@@ -9115,7 +9103,7 @@ public class ExhaustiveProviderProperties {
             assertTrue(i, unique(stringsList));
         }
 
-        for (int i : take(SMALL_LIMIT, P.rangeUp((1 << 16) + 1))) {
+        for (int i : take(MEDIUM_LIMIT, P.rangeUp((1 << 16) + 1))) {
             assertEquals(i, toList(EP.stringSubsets(i)), Collections.emptyList());
         }
 
@@ -9127,7 +9115,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesSubsets_Iterable() {
+    private void propertiesSubsets_Iterable() {
         initialize("subsets(Iterable<T>)");
 
         for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.integersGeometric()))) {
@@ -9154,7 +9142,7 @@ public class ExhaustiveProviderProperties {
             }
         }
 
-        for (Iterable<Integer> xs : take(SMALL_LIMIT, P.prefixPermutations(EP.naturalIntegers()))) {
+        for (Iterable<Integer> xs : take(MEDIUM_LIMIT, P.prefixPermutations(EP.naturalIntegers()))) {
             Iterable<List<Integer>> lists = EP.subsets(xs);
             testNoRemove(TINY_LIMIT, lists);
             List<List<Integer>> listsList = toList(take(TINY_LIMIT, lists));
@@ -9172,7 +9160,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesStringSubsets_String() {
+    private void propertiesStringSubsets_String() {
         initialize("stringSubsets(String)");
         for (String s : take(LIMIT, P.withScale(4).strings())) {
             Iterable<String> strings = EP.stringSubsets(s);
@@ -9199,12 +9187,12 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesStringSubsets() {
+    private void propertiesStringSubsets() {
         initializeConstant("stringSubsets()");
         biggerTest(EP, EP.stringSubsets(), s -> increasing(toList(s)));
     }
 
-    private static void propertiesSubsetsAtLeast() {
+    private void propertiesSubsetsAtLeast() {
         initialize("subsetsAtLeast(int, Iterable<T>)");
         Iterable<Pair<List<Integer>, Integer>> ps = P.pairsLogarithmicOrder(
                 P.withScale(4).lists(P.integersGeometric()),
@@ -9242,7 +9230,7 @@ public class ExhaustiveProviderProperties {
                 P.prefixPermutations(EP.naturalIntegers()),
                 P.withScale(4).naturalIntegersGeometric()
         );
-        for (Pair<Iterable<Integer>, Integer> p : take(SMALL_LIMIT, ps2)) {
+        for (Pair<Iterable<Integer>, Integer> p : take(MEDIUM_LIMIT, ps2)) {
             Iterable<List<Integer>> lists = EP.subsetsAtLeast(p.b, p.a);
             testNoRemove(TINY_LIMIT, lists);
             List<List<Integer>> listsList = toList(take(TINY_LIMIT, lists));
@@ -9271,7 +9259,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesStringSubsetsAtLeast_int_String() {
+    private void propertiesStringSubsetsAtLeast_int_String() {
         initialize("stringSubsetsAtLeast(int, String)");
         Iterable<Pair<String, Integer>> ps = P.pairsLogarithmicOrder(
                 P.withScale(4).strings(),
@@ -9320,7 +9308,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesStringSubsetsAtLeast_int() {
+    private void propertiesStringSubsetsAtLeast_int() {
         initialize("stringSubsetsAtLeast(int)");
         Iterable<Integer> is = filterInfinite(j -> j < (1 << 16) + 1, P.withScale(4).naturalIntegersGeometric());
         for (int i : take(TINY_LIMIT, is)) {
@@ -9333,7 +9321,7 @@ public class ExhaustiveProviderProperties {
             assertTrue(i, unique(stringsList));
         }
 
-        for (int i : take(SMALL_LIMIT, P.rangeUp((1 << 16) + 1))) {
+        for (int i : take(MEDIUM_LIMIT, P.rangeUp((1 << 16) + 1))) {
             assertEquals(i, toList(EP.stringSubsetsAtLeast(i)), Collections.emptyList());
         }
 
@@ -9345,7 +9333,248 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesCartesianProduct() {
+    private void propertiesEithersSuccessive() {
+        initialize("eithersSuccessive(Iterable<A>, Iterable<B>)");
+        Iterable<Pair<List<Integer>, List<Integer>>> ps = P.pairs(
+                P.withScale(4).lists(P.withNull(P.integersGeometric()))
+        );
+        for (Pair<List<Integer>, List<Integer>> p : take(LIMIT, ps)) {
+            Iterable<Either<Integer, Integer>> eithers = EP.eithersSuccessive(p.a, p.b);
+            testNoRemove(eithers);
+            testHasNext(eithers);
+            List<Either<Integer, Integer>> eithersList = toList(eithers);
+            if (!p.a.isEmpty()) {
+                assertEquals(p, head(eithersList), Either.ofA(head(p.a)));
+            }
+            assertEquals(p, eithersList.size(), p.a.size() + p.b.size());
+            assertTrue(p, all(e -> e.whichSlot() == Either.Slot.A ? elem(e.a(), p.a) : elem(e.b(), p.b), eithersList));
+        }
+
+        ps = P.pairs(P.withScale(4).distinctLists(P.withNull(P.integersGeometric())));
+        for (Pair<List<Integer>, List<Integer>> p : take(LIMIT, ps)) {
+            assertTrue(p, unique(EP.eithersSuccessive(p.a, p.b)));
+        }
+
+        Iterable<Pair<Iterable<Integer>, Iterable<Integer>>> ps2 = P.pairs(
+                P.prefixPermutations(EP.withNull(EP.naturalIntegers()))
+        );
+        for (Pair<Iterable<Integer>, Iterable<Integer>> p : take(LIMIT, ps2)) {
+            Iterable<Either<Integer, Integer>> eithers = EP.eithersSuccessive(p.a, p.b);
+            testNoRemove(TINY_LIMIT, eithers);
+            List<Either<Integer, Integer>> eithersList = toList(take(TINY_LIMIT, eithers));
+            if (!isEmpty(p.a)) {
+                assertEquals(p, head(eithersList), Either.ofA(head(p.a)));
+            }
+            assertTrue(p, all(e -> e.whichSlot() == Either.Slot.A ? elem(e.a(), p.a) : elem(e.b(), p.b), eithersList));
+            assertTrue(p, unique(eithersList));
+        }
+    }
+
+    private void propertiesEithersSquareRootOrder() {
+        initialize("eithersSquareRootOrder(Iterable<A>, Iterable<B>)");
+        Iterable<Pair<List<Integer>, List<Integer>>> ps = P.pairs(
+                P.withScale(4).lists(P.withNull(P.integersGeometric()))
+        );
+        for (Pair<List<Integer>, List<Integer>> p : take(LIMIT, ps)) {
+            Iterable<Either<Integer, Integer>> eithers = EP.eithersSquareRootOrder(p.a, p.b);
+            testNoRemove(eithers);
+            testHasNext(eithers);
+            List<Either<Integer, Integer>> eithersList = toList(eithers);
+            if (!p.b.isEmpty()) {
+                assertEquals(p, head(eithersList), Either.ofB(head(p.b)));
+            }
+            assertEquals(p, eithersList.size(), p.a.size() + p.b.size());
+            assertTrue(p, all(e -> e.whichSlot() == Either.Slot.A ? elem(e.a(), p.a) : elem(e.b(), p.b), eithersList));
+        }
+
+        ps = P.pairs(P.withScale(4).distinctLists(P.withNull(P.integersGeometric())));
+        for (Pair<List<Integer>, List<Integer>> p : take(LIMIT, ps)) {
+            assertTrue(p, unique(EP.eithersSquareRootOrder(p.a, p.b)));
+        }
+
+        Iterable<Pair<Iterable<Integer>, Iterable<Integer>>> ps2 = P.pairs(
+                P.prefixPermutations(EP.withNull(EP.naturalIntegers()))
+        );
+        for (Pair<Iterable<Integer>, Iterable<Integer>> p : take(LIMIT, ps2)) {
+            Iterable<Either<Integer, Integer>> eithers = EP.eithersSquareRootOrder(p.a, p.b);
+            testNoRemove(TINY_LIMIT, eithers);
+            List<Either<Integer, Integer>> eithersList = toList(take(TINY_LIMIT, eithers));
+            if (!isEmpty(p.b)) {
+                assertEquals(p, head(eithersList), Either.ofB(head(p.b)));
+            }
+            assertTrue(p, all(e -> e.whichSlot() == Either.Slot.A ? elem(e.a(), p.a) : elem(e.b(), p.b), eithersList));
+            assertTrue(p, unique(eithersList));
+        }
+    }
+
+    private void propertiesEithersLogarithmicOrder() {
+        initialize("eithersLogarithmicOrder(Iterable<A>, Iterable<B>)");
+        Iterable<Pair<List<Integer>, List<Integer>>> ps = P.pairs(
+                P.withScale(4).lists(P.withNull(P.integersGeometric()))
+        );
+        for (Pair<List<Integer>, List<Integer>> p : take(LIMIT, ps)) {
+            Iterable<Either<Integer, Integer>> eithers = EP.eithersLogarithmicOrder(p.a, p.b);
+            testNoRemove(eithers);
+            testHasNext(eithers);
+            List<Either<Integer, Integer>> eithersList = toList(eithers);
+            if (!p.a.isEmpty()) {
+                assertEquals(p, head(eithersList), Either.ofA(head(p.a)));
+            }
+            assertEquals(p, eithersList.size(), p.a.size() + p.b.size());
+            assertTrue(p, all(e -> e.whichSlot() == Either.Slot.A ? elem(e.a(), p.a) : elem(e.b(), p.b), eithersList));
+        }
+
+        ps = P.pairs(P.withScale(4).distinctLists(P.withNull(P.integersGeometric())));
+        for (Pair<List<Integer>, List<Integer>> p : take(LIMIT, ps)) {
+            assertTrue(p, unique(EP.eithersLogarithmicOrder(p.a, p.b)));
+        }
+
+        Iterable<Pair<Iterable<Integer>, Iterable<Integer>>> ps2 = P.pairs(
+                P.prefixPermutations(EP.withNull(EP.naturalIntegers()))
+        );
+        for (Pair<Iterable<Integer>, Iterable<Integer>> p : take(LIMIT, ps2)) {
+            Iterable<Either<Integer, Integer>> eithers = EP.eithersLogarithmicOrder(p.a, p.b);
+            testNoRemove(TINY_LIMIT, eithers);
+            List<Either<Integer, Integer>> eithersList = toList(take(TINY_LIMIT, eithers));
+            if (!isEmpty(p.a)) {
+                assertEquals(p, head(eithersList), Either.ofA(head(p.a)));
+            }
+            assertTrue(p, all(e -> e.whichSlot() == Either.Slot.A ? elem(e.a(), p.a) : elem(e.b(), p.b), eithersList));
+            assertTrue(p, unique(eithersList));
+        }
+    }
+
+    private void propertiesEithers() {
+        initialize("eithers(Iterable<A>, Iterable<B>)");
+        Iterable<Pair<List<Integer>, List<Integer>>> ps = P.pairs(
+                P.withScale(4).lists(P.withNull(P.integersGeometric()))
+        );
+        for (Pair<List<Integer>, List<Integer>> p : take(LIMIT, ps)) {
+            Iterable<Either<Integer, Integer>> eithers = EP.eithers(p.a, p.b);
+            testNoRemove(eithers);
+            testHasNext(eithers);
+            List<Either<Integer, Integer>> eithersList = toList(eithers);
+            if (!p.a.isEmpty()) {
+                assertEquals(p, head(eithersList), Either.ofA(head(p.a)));
+            }
+            assertEquals(p, eithersList.size(), p.a.size() + p.b.size());
+            assertTrue(p, all(e -> e.whichSlot() == Either.Slot.A ? elem(e.a(), p.a) : elem(e.b(), p.b), eithersList));
+        }
+
+        ps = P.pairs(P.withScale(4).distinctLists(P.withNull(P.integersGeometric())));
+        for (Pair<List<Integer>, List<Integer>> p : take(LIMIT, ps)) {
+            assertTrue(p, unique(EP.eithers(p.a, p.b)));
+        }
+
+        Iterable<Pair<Iterable<Integer>, Iterable<Integer>>> ps2 = P.pairs(
+                P.prefixPermutations(EP.withNull(EP.naturalIntegers()))
+        );
+        for (Pair<Iterable<Integer>, Iterable<Integer>> p : take(LIMIT, ps2)) {
+            Iterable<Either<Integer, Integer>> eithers = EP.eithers(p.a, p.b);
+            testNoRemove(TINY_LIMIT, eithers);
+            List<Either<Integer, Integer>> eithersList = toList(take(TINY_LIMIT, eithers));
+            if (!isEmpty(p.a)) {
+                assertEquals(p, head(eithersList), Either.ofA(head(p.a)));
+            }
+            assertTrue(p, all(e -> e.whichSlot() == Either.Slot.A ? elem(e.a(), p.a) : elem(e.b(), p.b), eithersList));
+            assertTrue(p, unique(eithersList));
+        }
+    }
+
+    private void propertiesChooseSquareRootOrder() {
+        initialize("chooseSquareRootOrder(Iterable<T>, Iterable<T>)");
+        Iterable<Pair<List<Integer>, List<Integer>>> ps = P.pairs(
+                P.withScale(4).lists(P.withNull(P.integersGeometric()))
+        );
+        for (Pair<List<Integer>, List<Integer>> p : take(LIMIT, ps)) {
+            Iterable<Integer> chosen = EP.chooseSquareRootOrder(p.a, p.b);
+            testNoRemove(chosen);
+            testHasNext(chosen);
+            List<Integer> chosenList = toList(chosen);
+            if (!p.b.isEmpty()) {
+                assertEquals(p, head(chosenList), head(p.b));
+            }
+            assertEquals(p, chosenList.size(), p.a.size() + p.b.size());
+            assertTrue(p, all(i -> elem(i, p.a) || elem(i, p.b), chosenList));
+        }
+
+        Iterable<Pair<Iterable<Integer>, Iterable<Integer>>> ps2 = P.pairs(
+                P.prefixPermutations(EP.withNull(EP.naturalIntegers()))
+        );
+        for (Pair<Iterable<Integer>, Iterable<Integer>> p : take(LIMIT, ps2)) {
+            Iterable<Integer> chosen = EP.chooseSquareRootOrder(p.a, p.b);
+            testNoRemove(TINY_LIMIT, chosen);
+            List<Integer> chosenList = toList(take(TINY_LIMIT, chosen));
+            if (!isEmpty(p.b)) {
+                assertEquals(p, head(chosenList), head(p.b));
+            }
+            assertTrue(p, all(i -> elem(i, p.a) || elem(i, p.b), chosenList));
+        }
+    }
+
+    private void propertiesChooseLogarithmicOrder() {
+        initialize("chooseLogarithmicOrder(Iterable<T>, Iterable<T>)");
+        Iterable<Pair<List<Integer>, List<Integer>>> ps = P.pairs(
+                P.withScale(4).lists(P.withNull(P.integersGeometric()))
+        );
+        for (Pair<List<Integer>, List<Integer>> p : take(LIMIT, ps)) {
+            Iterable<Integer> chosen = EP.chooseLogarithmicOrder(p.a, p.b);
+            testNoRemove(chosen);
+            testHasNext(chosen);
+            List<Integer> chosenList = toList(chosen);
+            if (!p.a.isEmpty()) {
+                assertEquals(p, head(chosenList), head(p.a));
+            }
+            assertEquals(p, chosenList.size(), p.a.size() + p.b.size());
+            assertTrue(p, all(i -> elem(i, p.a) || elem(i, p.b), chosenList));
+        }
+
+        Iterable<Pair<Iterable<Integer>, Iterable<Integer>>> ps2 = P.pairs(
+                P.prefixPermutations(EP.withNull(EP.naturalIntegers()))
+        );
+        for (Pair<Iterable<Integer>, Iterable<Integer>> p : take(LIMIT, ps2)) {
+            Iterable<Integer> chosen = EP.chooseLogarithmicOrder(p.a, p.b);
+            testNoRemove(TINY_LIMIT, chosen);
+            List<Integer> chosenList = toList(take(TINY_LIMIT, chosen));
+            if (!isEmpty(p.a)) {
+                assertEquals(p, head(chosenList), head(p.a));
+            }
+            assertTrue(p, all(i -> elem(i, p.a) || elem(i, p.b), chosenList));
+        }
+    }
+
+    private void propertiesChoose() {
+        initialize("choose(Iterable<T>, Iterable<T>)");
+        Iterable<Pair<List<Integer>, List<Integer>>> ps = P.pairs(
+                P.withScale(4).lists(P.withNull(P.integersGeometric()))
+        );
+        for (Pair<List<Integer>, List<Integer>> p : take(LIMIT, ps)) {
+            Iterable<Integer> chosen = EP.choose(p.a, p.b);
+            testNoRemove(chosen);
+            testHasNext(chosen);
+            List<Integer> chosenList = toList(chosen);
+            if (!p.a.isEmpty()) {
+                assertEquals(p, head(chosenList), head(p.a));
+            }
+            assertEquals(p, chosenList.size(), p.a.size() + p.b.size());
+            assertTrue(p, all(i -> elem(i, p.a) || elem(i, p.b), chosenList));
+        }
+
+        Iterable<Pair<Iterable<Integer>, Iterable<Integer>>> ps2 = P.pairs(
+                P.prefixPermutations(EP.withNull(EP.naturalIntegers()))
+        );
+        for (Pair<Iterable<Integer>, Iterable<Integer>> p : take(LIMIT, ps2)) {
+            Iterable<Integer> chosen = EP.choose(p.a, p.b);
+            testNoRemove(TINY_LIMIT, chosen);
+            List<Integer> chosenList = toList(take(TINY_LIMIT, chosen));
+            if (!isEmpty(p.a)) {
+                assertEquals(p, head(chosenList), head(p.a));
+            }
+            assertTrue(p, all(i -> elem(i, p.a) || elem(i, p.b), chosenList));
+        }
+    }
+
+    private void propertiesCartesianProduct() {
         initialize("cartesianProduct(List<List<T>>)");
         Iterable<List<List<Integer>>> xsss = P.withScale(4).lists(
                 P.withScale(4).lists(P.withNull(P.integersGeometric()))
@@ -9388,7 +9617,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesRepeatingIterables() {
+    private void propertiesRepeatingIterables() {
         initialize("repeatingIterables(Iterable<T>)");
         Iterable<List<Integer>> xss = filterInfinite(
                 ys -> length(nub(ys)) > 1,
@@ -9421,7 +9650,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesRepeatingIterablesDistinctAtLeast() {
+    private void propertiesRepeatingIterablesDistinctAtLeast() {
         initialize("repeatingIterablesDistinctAtLeast(int, Iterable<T>)");
         Iterable<Pair<Integer, List<Integer>>> ps = P.dependentPairsInfiniteLogarithmicOrder(
                 P.withScale(3).rangeUpGeometric(2),
@@ -9481,7 +9710,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesSublists() {
+    private void propertiesSublists() {
         initialize("sublists(List<T>)");
         for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
             List<List<Integer>> sublists = toList(EP.sublists(xs));
@@ -9500,7 +9729,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesSubstrings() {
+    private void propertiesSubstrings() {
         initialize("substrings(String)");
         for (String s : take(LIMIT, P.withScale(4).strings())) {
             List<String> substrings = toList(EP.substrings(s));
@@ -9519,7 +9748,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesListsWithElement() {
+    private void propertiesListsWithElement() {
         initialize("listsWithElement(T, Iterable<T>)");
         Iterable<Pair<Integer, List<Integer>>> ps = P.pairs(
                 P.withNull(P.integersGeometric()),
@@ -9554,14 +9783,14 @@ public class ExhaustiveProviderProperties {
 
         Iterable<Pair<Integer, Iterable<Integer>>> ps2 = P.pairs(
                 P.withNull(P.integersGeometric()),
-                P.prefixPermutations(P.withNull(EP.naturalIntegers()))
+                P.prefixPermutations(EP.withNull(EP.naturalIntegers()))
         );
-        for (Pair<Integer, Iterable<Integer>> p : take(SMALL_LIMIT, ps2)) {
+        for (Pair<Integer, Iterable<Integer>> p : take(MEDIUM_LIMIT, ps2)) {
             simpleTest(p, EP.listsWithElement(p.a, p.b), xs -> xs.contains(p.a));
         }
     }
 
-    private static void propertiesStringsWithChar_char_String() {
+    private void propertiesStringsWithChar_char_String() {
         initialize("stringsWithChar(char, String)");
         for (Pair<Character, String> p : take(LIMIT, P.pairs(P.characters(), P.withScale(4).strings()))) {
             String combined = cons(p.a, p.b);
@@ -9580,14 +9809,14 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesStringsWithChar_char() {
+    private void propertiesStringsWithChar_char() {
         initialize("stringsWithChar(char, String)");
-        for (char c : take(SMALL_LIMIT, P.characters())) {
+        for (char c : take(MEDIUM_LIMIT, P.characters())) {
             simpleTest(c, EP.stringsWithChar(c), s -> elem(c, s));
         }
     }
 
-    private static void propertiesSubsetsWithElement() {
+    private void propertiesSubsetsWithElement() {
         initialize("subsetsWithElement(T, Iterable<T>)");
         Iterable<Pair<Integer, List<Integer>>> ps = P.pairs(
                 P.integersGeometric(),
@@ -9621,7 +9850,7 @@ public class ExhaustiveProviderProperties {
                 P.integersGeometric(),
                 P.prefixPermutations(EP.naturalIntegers())
         );
-        for (Pair<Integer, Iterable<Integer>> p : take(SMALL_LIMIT, ps2)) {
+        for (Pair<Integer, Iterable<Integer>> p : take(MEDIUM_LIMIT, ps2)) {
             simpleTest(p, EP.subsetsWithElement(p.a, p.b), xs -> xs.contains(p.a));
         }
 
@@ -9644,7 +9873,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesStringSubsetsWithChar_char_String() {
+    private void propertiesStringSubsetsWithChar_char_String() {
         initialize("stringSubsetsWithChar(char, String)");
         for (Pair<Character, String> p : take(LIMIT, P.pairs(P.characters(), P.withScale(4).strings()))) {
             String combined = cons(p.a, p.b);
@@ -9666,14 +9895,14 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesStringSubsetsWithChar_char() {
+    private void propertiesStringSubsetsWithChar_char() {
         initialize("stringSubsetsWithChar(char)");
         for (char c : take(LIMIT, P.characters())) {
             simpleTest(c, EP.stringSubsetsWithChar(c), s -> elem(c, s) && weaklyIncreasing(toList(s)));
         }
     }
 
-    private static void propertiesListsWithSublists() {
+    private void propertiesListsWithSublists() {
         initialize("listsWithSublists(Iterable<List<T>>, Iterable<T>)");
         Iterable<List<Integer>> lists = P.withScale(4).lists(P.withNull(P.integersGeometric()));
         for (Pair<List<List<Integer>>, List<Integer>> p : take(LIMIT, P.pairs(P.withScale(4).lists(lists), lists))) {
@@ -9709,7 +9938,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesStringsWithSubstrings_Iterable_String_String() {
+    private void propertiesStringsWithSubstrings_Iterable_String_String() {
         initialize("stringsWithSubstrings(Iterable<String>, String)");
         Iterable<String> strings = P.withScale(4).strings();
         for (Pair<List<String>, String> p : take(LIMIT, P.pairs(P.withScale(4).lists(strings), strings))) {
@@ -9734,14 +9963,14 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesStringsWithSubstrings_Iterable_String() {
+    private void propertiesStringsWithSubstrings_Iterable_String() {
         initialize("stringsWithSubstrings(Iterable<String>)");
         for (List<String> ss : take(LIMIT, P.withScale(4).lists(P.withScale(4).strings()))) {
             simpleTest(ss, EP.stringsWithSubstrings(ss), s -> any(t -> isInfixOf(t, s), ss));
         }
     }
 
-    private static void propertiesMaps() {
+    private void propertiesMaps() {
         initialize("maps(List<K>, Iterable<V>)");
         Comparator<Integer> withNullComparator = new WithNullComparator<>();
         Iterable<Pair<List<Integer>, List<Integer>>> ps = P.pairs(
@@ -9806,41 +10035,36 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesRandomProvidersFixedScales() {
+    private void propertiesRandomProvidersFixedScales() {
         initialize("randomProvidersFixedScales(int, int)");
-        for (Pair<Integer, Integer> p : take(SMALL_LIMIT, P.pairs(P.integersGeometric()))) {
+        for (Pair<Integer, Integer> p : take(MEDIUM_LIMIT, P.pairs(P.integersGeometric()))) {
             Iterable<RandomProvider> rps = EP.randomProvidersFixedScales(p.a, p.b);
             testNoRemove(TINY_LIMIT, rps);
             List<RandomProvider> rpsList = toList(take(TINY_LIMIT, rps));
             for (RandomProvider rp : rpsList) {
                 rp.validate();
             }
+            take(TINY_LIMIT, rpsList).forEach(RandomProvider::validate);
             assertTrue(p, all(rp -> rp.getScale() == p.a && rp.getSecondaryScale() == p.b, rpsList));
             assertTrue(p, unique(rpsList));
         }
     }
 
-    private static void propertiesRandomProvidersDefault() {
+    private void propertiesRandomProvidersDefault() {
         initializeConstant("randomProvidersDefault()");
         biggerTest(EP, EP.randomProvidersDefault(), rp -> rp.getScale() == 32 && rp.getSecondaryScale() == 8);
-        for (RandomProvider rp : take(LARGE_LIMIT, EP.randomProvidersDefault())) {
-            rp.validate();
-        }
+        take(LARGE_LIMIT, EP.randomProvidersDefault()).forEach(RandomProvider::validate);
     }
 
-    private static void propertiesRandomProvidersDefaultSecondaryScale() {
+    private void propertiesRandomProvidersDefaultSecondaryScale() {
         initializeConstant("randomProvidersDefaulSecondaryScale()");
         biggerTest(EP, EP.randomProvidersDefaultSecondaryScale(), rp -> rp.getSecondaryScale() == 8);
-        for (RandomProvider rp : take(LARGE_LIMIT, EP.randomProvidersDefaultSecondaryScale())) {
-            rp.validate();
-        }
+        take(LARGE_LIMIT, EP.randomProvidersDefaultSecondaryScale()).forEach(RandomProvider::validate);
     }
 
-    private static void propertiesRandomProviders() {
+    private void propertiesRandomProviders() {
         initializeConstant("randomProviders()");
         biggerTest(EP, EP.randomProviders(), rp -> true);
-        for (RandomProvider rp : take(LARGE_LIMIT, EP.randomProviders())) {
-            rp.validate();
-        }
+        take(LARGE_LIMIT, EP.randomProviders()).forEach(RandomProvider::validate);
     }
 }

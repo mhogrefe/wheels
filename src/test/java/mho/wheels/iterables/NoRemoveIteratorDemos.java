@@ -1,33 +1,20 @@
 package mho.wheels.iterables;
 
-import org.jetbrains.annotations.NotNull;
+import mho.wheels.testing.Demos;
 
 import java.util.Iterator;
 import java.util.List;
 
 import static mho.wheels.iterables.IterableUtils.take;
-import static mho.wheels.testing.Testing.its;
+import static mho.wheels.testing.Testing.*;
 
 @SuppressWarnings("UnusedDeclaration")
-public class NoRemoveIteratorDemos {
-    private static final boolean USE_RANDOM = false;
-    private static final @NotNull ExhaustiveProvider EP = ExhaustiveProvider.INSTANCE;
-    private static int LIMIT;
-    private static final int SMALL_LIMIT = 1000;
-    private static IterableProvider P;
-
-    private static void initialize() {
-        if (USE_RANDOM) {
-            P = RandomProvider.example();
-            LIMIT = 1000;
-        } else {
-            P = ExhaustiveProvider.INSTANCE;
-            LIMIT = 10000;
-        }
+public class NoRemoveIteratorDemos extends Demos {
+    public NoRemoveIteratorDemos(boolean useRandom) {
+        super(useRandom);
     }
 
-    private static void demoConstructor_finite() {
-        initialize();
+    private void demoConstructor_finite() {
         for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
             NoRemoveIterator<Integer> it = new NoRemoveIterator<Integer>() {
                 private int i = 0;
@@ -46,9 +33,8 @@ public class NoRemoveIteratorDemos {
         }
     }
 
-    private static void demoConstructor_infinite() {
-        initialize();
-        for (Iterable<Integer> xs : take(SMALL_LIMIT, P.prefixPermutations(EP.withNull(EP.integers())))) {
+    private void demoConstructor_infinite() {
+        for (Iterable<Integer> xs : take(MEDIUM_LIMIT, P.prefixPermutations(EP.withNull(EP.integers())))) {
             NoRemoveIterator<Integer> it = new NoRemoveIterator<Integer>() {
                 private Iterator<Integer> iterator = xs.iterator();
 

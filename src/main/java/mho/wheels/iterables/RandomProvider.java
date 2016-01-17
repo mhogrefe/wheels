@@ -34,9 +34,9 @@ import static mho.wheels.testing.Testing.*;
  * an instance which copies the generator, use {@link RandomProvider#deepCopy()}.</p>
  *
  * <p>Note that sometimes the documentation will say things like "returns an {@code Iterable} containing all
- * {@code String}s". This cannot strictly be true, since {@link java.util.Random} has a finite period, and will
- * therefore produce only a finite number of {@code String}s. So in general, the documentation often pretends that the
- * source of randomness is perfect (but still deterministic).</p>
+ * {@code String}s". This cannot strictly be true, since {@code IsaacPRNG} has a finite period, and will therefore
+ * produce only a finite number of {@code String}s. So in general, the documentation often pretends that the source of
+ * randomness is perfect (but still deterministic).</p>
  */
 public final strictfp class RandomProvider extends IterableProvider {
     /**
@@ -968,6 +968,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      * @param b the inclusive upper bound of the generated elements
      * @return uniformly-distributed {@code Byte}s between {@code a} and {@code b}, inclusive
      */
+    //todo don't return empty list
     @Override
     public @NotNull Iterable<Byte> range(byte a, byte b) {
         if (a > b) return Collections.emptyList();
@@ -4130,6 +4131,52 @@ public final strictfp class RandomProvider extends IterableProvider {
                 },
                 distinctListsAtLeast(minSize, xs)
         );
+    }
+
+    /**
+     * An {@code Iterable} that generates all {@code Either}s generated from two {@code Iterable}s. The ratio of
+     * elements from {@code as} to elements from {@code bs} is {@code scale}:1. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code this} must have a positive {@code scale}.</li>
+     *  <li>{@code as} must be infinite.</li>
+     *  <li>{@code bs} must be infinite.</li>
+     *  <li>The result contains {@code Either}s.</li>
+     * </ul>
+     *
+     * Length is |{@code as}|+|{@code bs}|
+     *
+     * @param as the first {@code Iterable}
+     * @param bs the second {@code Iterable}
+     * @param <A> the type of the first {@code Iterable}'s elements
+     * @param <B> the type of the second {@code Iterable}'s elements
+     * @return all {@code Either}s created from {@code as} and {@code bs}
+     */
+    @Override
+    public @NotNull <A, B> Iterable<Either<A, B>> eithers(@NotNull Iterable<A> as, @NotNull Iterable<B> bs) {
+        if (scale < 1) {
+            throw new IllegalStateException("this must have a positive scale. Invalid scale: " + scale);
+        }
+        Iterable<Integer> range = range(0, scale);
+        return () -> new NoRemoveIterator<Either<A, B>>() {
+            private final @NotNull Iterator<Integer> indices = range.iterator();
+            private final @NotNull Iterator<A> asi = as.iterator();
+            private final @NotNull Iterator<B> bsi = bs.iterator();
+
+            @Override
+            public boolean hasNext() {
+                return true;
+            }
+
+            @Override
+            public Either<A, B> next() {
+                if (indices.next() == 0) {
+                    return Either.ofB(bsi.next());
+                } else {
+                    return Either.ofA(asi.next());
+                }
+            }
+        };
     }
 
     /**

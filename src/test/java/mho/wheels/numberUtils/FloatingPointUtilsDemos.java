@@ -1,188 +1,154 @@
 package mho.wheels.numberUtils;
 
-import mho.wheels.iterables.ExhaustiveProvider;
-import mho.wheels.iterables.IterableProvider;
-import mho.wheels.iterables.RandomProvider;
 import mho.wheels.structures.Pair;
+import mho.wheels.testing.Demos;
 
 import static mho.wheels.iterables.IterableUtils.filter;
 import static mho.wheels.iterables.IterableUtils.take;
 import static mho.wheels.numberUtils.FloatingPointUtils.*;
+import static mho.wheels.testing.Testing.MEDIUM_LIMIT;
 
 @SuppressWarnings("UnusedDeclaration")
-public strictfp class FloatingPointUtilsDemos {
-    private static final boolean USE_RANDOM = false;
-    private static int LIMIT;
-    private static final int SMALL_LIMIT = 1000;
-    private static IterableProvider P;
-
-    private static void initialize() {
-        if (USE_RANDOM) {
-            P = RandomProvider.example();
-            LIMIT = 1000;
-        } else {
-            P = ExhaustiveProvider.INSTANCE;
-            LIMIT = 10000;
-        }
+public strictfp class FloatingPointUtilsDemos extends Demos {
+    public FloatingPointUtilsDemos(boolean useRandom) {
+        super(useRandom);
     }
 
-    private static void demoIsNegativeZero_float() {
-        initialize();
+    private void demoIsNegativeZero_float() {
         for (float f : take(LIMIT, P.floats())) {
             System.out.println(f + " is " + (FloatingPointUtils.isNegativeZero(f) ? "" : "not ") + "negative zero");
         }
     }
 
-    private static void demoIsNegativeZero_double() {
-        initialize();
+    private void demoIsNegativeZero_double() {
         for (double d : take(LIMIT, P.doubles())) {
             System.out.println(d + " is " + (FloatingPointUtils.isNegativeZero(d) ? "" : "not ") + "negative zero");
         }
     }
 
-    private static void demoIsPositiveZero_float() {
-        initialize();
+    private void demoIsPositiveZero_float() {
         for (float f : take(LIMIT, P.floats())) {
             System.out.println(f + " is " + (FloatingPointUtils.isPositiveZero(f) ? "" : "not ") + "positive zero");
         }
     }
 
-    private static void demoIsPositiveZero_double() {
-        initialize();
+    private void demoIsPositiveZero_double() {
         for (double d : take(LIMIT, P.doubles())) {
             System.out.println(d + " is " + (FloatingPointUtils.isPositiveZero(d) ? "" : "not ") + "positive zero");
         }
     }
 
-    private static void demoSuccessor_float() {
-        initialize();
+    private void demoSuccessor_float() {
         Iterable<Float> fs = filter(f -> !Float.isNaN(f) && f != Float.POSITIVE_INFINITY, P.floats());
         for (float f : take(LIMIT, fs)) {
             System.out.println("successor(" + f + ") = " + successor(f));
         }
     }
 
-    private static void demoPredecessor_float() {
-        initialize();
+    private void demoPredecessor_float() {
         Iterable<Float> fs = filter(f -> !Float.isNaN(f) && f != Float.NEGATIVE_INFINITY, P.floats());
         for (float f : take(LIMIT, fs)) {
             System.out.println("predecessor(" + f + ") = " + predecessor(f));
         }
     }
 
-    private static void demoSuccessor_double() {
-        initialize();
+    private void demoSuccessor_double() {
         Iterable<Double> ds = filter(d -> !Double.isNaN(d) && d != Double.POSITIVE_INFINITY, P.doubles());
         for (double d : take(LIMIT, ds)) {
             System.out.println("successor(" + d + ") = " + successor(d));
         }
     }
 
-    private static void demoPredecessor_double() {
-        initialize();
+    private void demoPredecessor_double() {
         Iterable<Double> ds = filter(d -> !Double.isNaN(d) && d != Double.NEGATIVE_INFINITY, P.doubles());
         for (double d : take(LIMIT, ds)) {
             System.out.println("predecessor(" + d + ") = " + predecessor(d));
         }
     }
 
-    private static void demoToOrderedRepresentation_float() {
-        initialize();
+    private void demoToOrderedRepresentation_float() {
         for (float f : take(LIMIT, filter(g -> !Float.isNaN(g), P.floats()))) {
             System.out.println("toOrderedRepresentation(" + f + ") = " + toOrderedRepresentation(f));
         }
     }
 
-    private static void demoToOrderedRepresentation_double() {
-        initialize();
+    private void demoToOrderedRepresentation_double() {
         for (double d : take(LIMIT, filter(e -> !Double.isNaN(e), P.doubles()))) {
             System.out.println("toOrderedRepresentation(" + d + ") = " + toOrderedRepresentation(d));
         }
     }
 
-    private static void demoFloatFromOrderedRepresentation() {
-        initialize();
+    private void demoFloatFromOrderedRepresentation() {
         int maxAbs = FloatingPointUtils.POSITIVE_FINITE_FLOAT_COUNT + 1;
         for (int i : take(LIMIT, P.range(-maxAbs, maxAbs))) {
             System.out.println("floatFromOrderedRepresentation(" + i + ") = " + floatFromOrderedRepresentation(i));
         }
     }
 
-    private static void demoDoubleFromOrderedRepresentation() {
-        initialize();
+    private void demoDoubleFromOrderedRepresentation() {
         long maxAbs = FloatingPointUtils.POSITIVE_FINITE_DOUBLE_COUNT + 1;
         for (long l : take(LIMIT, P.range(-maxAbs, maxAbs))) {
             System.out.println("doubleFromOrderedRepresentation(" + l + ") = " + doubleFromOrderedRepresentation(l));
         }
     }
 
-    private static void demoFloatFromMantissaAndExponent() {
-        initialize();
+    private void demoFloatFromMantissaAndExponent() {
         for (Pair<Integer, Integer> p : take(LIMIT, P.pairs(P.integers()))) {
             System.out.println("floatFromMantissaAndExponent(" + p.a + ", " + p.b + ") = " +
                     floatFromMantissaAndExponent(p.a, p.b));
         }
     }
 
-    private static void demoDoubleFromMantissaAndExponent() {
-        initialize();
+    private void demoDoubleFromMantissaAndExponent() {
         for (Pair<Long, Integer> p : take(LIMIT, P.pairs(P.longs(), P.integers()))) {
             System.out.println("doubleFromMantissaAndExponent(" + p.a + ", " + p.b + ") = " +
                     doubleFromMantissaAndExponent(p.a, p.b));
         }
     }
 
-    private static void demoToMantissaAndExponent_float() {
-        initialize();
+    private void demoToMantissaAndExponent_float() {
         for (float f : take(LIMIT, P.floats())) {
             System.out.println("toMantissaAndExponent(" + f + ") = " + toMantissaAndExponent(f));
         }
     }
 
-    private static void demoToMantissaAndExponent_double() {
-        initialize();
+    private void demoToMantissaAndExponent_double() {
         for (double d : take(LIMIT, P.doubles())) {
             System.out.println("toMantissaAndExponent(" + d + ") = " + toMantissaAndExponent(d));
         }
     }
 
-    private static void demoAbsNegativeZeros_float() {
-        initialize();
+    private void demoAbsNegativeZeros_float() {
         for (float f : take(LIMIT, P.floats())) {
             System.out.println("absNegativeZeros(" + f + ") = " + absNegativeZeros(f));
         }
     }
 
-    private static void demoAbsNegativeZeros_double() {
-        initialize();
+    private void demoAbsNegativeZeros_double() {
         for (double d : take(LIMIT, P.doubles())) {
             System.out.println("absNegativeZeros(" + d + ") = " + absNegativeZeros(d));
         }
     }
 
-    private static void demoScaleUp_float() {
-        initialize();
+    private void demoScaleUp_float() {
         for (float f : take(LIMIT, P.floats())) {
             System.out.println("scaleUp(" + f + ") = " + scaleUp(f));
         }
     }
 
-    private static void demoScaleUp_double() {
-        initialize();
-        for (double d : take(SMALL_LIMIT, P.doubles())) {
+    private void demoScaleUp_double() {
+        for (double d : take(MEDIUM_LIMIT, P.doubles())) {
             System.out.println("scaleUp(" + d + ") = " + scaleUp(d));
         }
     }
 
-    private static void demoToStringCompact_float() {
-        initialize();
+    private void demoToStringCompact_float() {
         for (float f : take(LIMIT, P.floats())) {
             System.out.println("toStringCompact(" + f + ") = " + toStringCompact(f));
         }
     }
 
-    private static void demoToStringCompact_double() {
-        initialize();
+    private void demoToStringCompact_double() {
         for (double d : take(LIMIT, P.doubles())) {
             System.out.println("toStringCompact(" + d + ") = " + toStringCompact(d));
         }
