@@ -15,86 +15,87 @@ import static mho.wheels.testing.Testing.aeqit;
 import static org.junit.Assert.*;
 
 public class IntegerUtilsTest {
-    private static void isPowerOfTwo_int_true_helper(int n) {
-        assertTrue(isPowerOfTwo(n));
+    @Test
+    public void testConstants() {
+        aeq(NEGATIVE_ONE, "-1");
+        aeq(TWO, "2");
     }
 
-    private static void isPowerOfTwo_int_false_helper(int n) {
-        assertFalse(isPowerOfTwo(n));
+    private static void isPowerOfTwo_int_helper(int input, boolean output) {
+        aeq(isPowerOfTwo(input), output);
     }
 
-    private static void isPowerOfTwo_int_fail_helper(int n) {
+    private static void isPowerOfTwo_int_fail_helper(int input) {
         try {
-            isPowerOfTwo(n);
+            isPowerOfTwo(input);
             fail();
         } catch (ArithmeticException ignored) {}
     }
 
     @Test
     public void testIsPowerOfTwo_int() {
-        isPowerOfTwo_int_true_helper(1);
-        isPowerOfTwo_int_true_helper(2);
-        isPowerOfTwo_int_true_helper(4);
-        isPowerOfTwo_int_true_helper(8);
-        isPowerOfTwo_int_true_helper(16);
-        isPowerOfTwo_int_true_helper(1 << 30);
-        isPowerOfTwo_int_false_helper(3);
-        isPowerOfTwo_int_false_helper(13);
-        isPowerOfTwo_int_false_helper(100);
+        isPowerOfTwo_int_helper(1, true);
+        isPowerOfTwo_int_helper(2, true);
+        isPowerOfTwo_int_helper(4, true);
+        isPowerOfTwo_int_helper(8, true);
+        isPowerOfTwo_int_helper(16, true);
+        isPowerOfTwo_int_helper(1 << 30, true);
+        isPowerOfTwo_int_helper(3, false);
+        isPowerOfTwo_int_helper(13, false);
+        isPowerOfTwo_int_helper(100, false);
         isPowerOfTwo_int_fail_helper(0);
         isPowerOfTwo_int_fail_helper(-5);
     }
 
-    private static void isPowerOfTwo_long_fail_helper(long n) {
+    private static void isPowerOfTwo_long_helper(long input, boolean output) {
+        aeq(isPowerOfTwo(input), output);
+    }
+
+    private static void isPowerOfTwo_long_fail_helper(long input) {
         try {
-            isPowerOfTwo(n);
+            isPowerOfTwo(input);
             fail();
         } catch (ArithmeticException ignored) {}
     }
 
     @Test
     public void testIsPowerOfTwo_long() {
-        assertTrue(isPowerOfTwo(1L));
-        assertTrue(isPowerOfTwo(2L));
-        assertTrue(isPowerOfTwo(4L));
-        assertTrue(isPowerOfTwo(8L));
-        assertTrue(isPowerOfTwo(16L));
-        assertTrue(isPowerOfTwo(1L << 62));
-        assertFalse(isPowerOfTwo(3L));
-        assertFalse(isPowerOfTwo(13L));
-        assertFalse(isPowerOfTwo(100L));
-        isPowerOfTwo_long_fail_helper(0L);
-        isPowerOfTwo_long_fail_helper(-5L);
+        isPowerOfTwo_long_helper(1L, true);
+        isPowerOfTwo_long_helper(2L, true);
+        isPowerOfTwo_long_helper(4L, true);
+        isPowerOfTwo_long_helper(8L, true);
+        isPowerOfTwo_long_helper(16L, true);
+        isPowerOfTwo_long_helper(1L << 62, true);
+        isPowerOfTwo_long_helper(3L, false);
+        isPowerOfTwo_long_helper(13L, false);
+        isPowerOfTwo_long_helper(100L, false);
+        isPowerOfTwo_long_fail_helper(0);
+        isPowerOfTwo_long_fail_helper(-5);
     }
 
-    private static void isPowerOfTwo_BigInteger_helper(int n, boolean output) {
-        boolean isPowerOfTwo = isPowerOfTwo(BigInteger.valueOf(n));
-        if (output) {
-            assertTrue(isPowerOfTwo);
-        } else {
-            assertFalse(isPowerOfTwo);
-        }
+    private static void isPowerOfTwo_BigInteger_helper(@NotNull String input, boolean output) {
+        aeq(isPowerOfTwo(Readers.readBigInteger(input).get()), output);
     }
 
-    private static void isPowerOfTwo_BigInteger_fail_helper(int n) {
+    private static void isPowerOfTwo_BigInteger_fail_helper(@NotNull String input) {
         try {
-            isPowerOfTwo(BigInteger.valueOf(n));
+            isPowerOfTwo(Readers.readBigInteger(input).get());
             fail();
         } catch (ArithmeticException ignored) {}
     }
 
     @Test
     public void testIsPowerOfTwo_BigInteger() {
-        isPowerOfTwo_BigInteger_helper(1, true);
-        isPowerOfTwo_BigInteger_helper(2, true);
-        isPowerOfTwo_BigInteger_helper(4, true);
-        isPowerOfTwo_BigInteger_helper(8, true);
-        isPowerOfTwo_BigInteger_helper(16, true);
-        isPowerOfTwo_BigInteger_helper(3, false);
-        isPowerOfTwo_BigInteger_helper(13, false);
-        isPowerOfTwo_BigInteger_helper(100, false);
-        isPowerOfTwo_BigInteger_fail_helper(0);
-        isPowerOfTwo_BigInteger_fail_helper(-5);
+        isPowerOfTwo_BigInteger_helper("1", true);
+        isPowerOfTwo_BigInteger_helper("2", true);
+        isPowerOfTwo_BigInteger_helper("4", true);
+        isPowerOfTwo_BigInteger_helper("8", true);
+        isPowerOfTwo_BigInteger_helper("16", true);
+        isPowerOfTwo_BigInteger_helper("3", false);
+        isPowerOfTwo_BigInteger_helper("13", false);
+        isPowerOfTwo_BigInteger_helper("100", false);
+        isPowerOfTwo_BigInteger_fail_helper("0");
+        isPowerOfTwo_BigInteger_fail_helper("-5");
     }
 
     private static void ceilingLog2_int_fail_helper(int n) {

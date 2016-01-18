@@ -5,6 +5,7 @@ import mho.wheels.iterables.ExhaustiveProvider;
 import mho.wheels.iterables.IterableUtils;
 import mho.wheels.iterables.NoRemoveIterator;
 import mho.wheels.structures.Pair;
+import mho.wheels.testing.Testing;
 import org.jetbrains.annotations.NotNull;
 
 import java.math.BigInteger;
@@ -30,7 +31,7 @@ public class IntegerUtils {
     /**
      * The default maximum number of elements to print when printing an {@code Iterable}.
      */
-    private static final int ITERABLE_PRINT_LIMIT = 20;
+    private static final int ITERABLE_PRINT_LIMIT = Testing.SMALL_LIMIT;
 
     /**
      * Determines whether {@code n} is a power of 2.
@@ -121,7 +122,7 @@ public class IntegerUtils {
             throw new ArithmeticException("n must be positive. Invalid n: " + n);
         }
         int bitLength = 64 - Long.numberOfLeadingZeros(n);
-        return (n & (n - 1)) == 0 ? bitLength - 1 : bitLength;
+        return (n & (n - 1)) == 0L ? bitLength - 1 : bitLength;
     }
 
     /**

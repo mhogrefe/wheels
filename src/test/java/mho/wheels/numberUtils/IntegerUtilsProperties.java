@@ -9,10 +9,7 @@ import mho.wheels.testing.TestProperties;
 import org.jetbrains.annotations.NotNull;
 
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.function.Function;
 
 import static mho.wheels.iterables.IterableUtils.*;
@@ -31,6 +28,12 @@ public class IntegerUtilsProperties extends TestProperties {
 
     @Override
     protected void testBothModes() {
+        propertiesIsPowerOfTwo_int();
+        compareImplementationsIsPowerOfTwo_int();
+        propertiesIsPowerOfTwo_long();
+        compareImplementationsIsPowerOfTwo_long();
+        propertiesIsPowerOfTwo_BigInteger();
+        compareImplementationsIsPowerOfTwo_BigInteger();
         propertiesBits_int();
         compareImplementationsBits_int();
         propertiesBits_BigInteger();
@@ -80,6 +83,96 @@ public class IntegerUtilsProperties extends TestProperties {
         propertiesMux();
         propertiesDemux();
         compareImplementationsDemux();
+    }
+
+    private static boolean isPowerOfTwo_int_alt(int n) {
+        if (n <= 0) {
+            throw new ArithmeticException("n must be positive. Invalid n: " + n);
+        }
+        return Integer.lowestOneBit(n) == Integer.highestOneBit(n);
+    }
+
+    private void propertiesIsPowerOfTwo_int() {
+        initialize("isPowerOfTwo(int)");
+        for (int i : take(LIMIT, P.positiveIntegers())) {
+            boolean isPowerOfTwo = isPowerOfTwo(i);
+            assertEquals(i, isPowerOfTwo, isPowerOfTwo_int_alt(i));
+            assertEquals(i, isPowerOfTwo, 1 << ceilingLog2(i) == i);
+        }
+
+        for (int i : take(LIMIT, P.withElement(0, P.negativeIntegers()))) {
+            try {
+                isPowerOfTwo(i);
+                fail(i);
+            } catch (ArithmeticException ignored) {}
+        }
+    }
+
+    private void compareImplementationsIsPowerOfTwo_int() {
+        Map<String, Function<Integer, Boolean>> functions = new LinkedHashMap<>();
+        functions.put("alt", IntegerUtilsProperties::isPowerOfTwo_int_alt);
+        functions.put("standard", IntegerUtils::isPowerOfTwo);
+        compareImplementations("isPowerOfTwo(int)", take(LIMIT, P.positiveIntegers()), functions);
+    }
+
+    private static boolean isPowerOfTwo_long_alt(long n) {
+        if (n <= 0L) {
+            throw new ArithmeticException("n must be positive. Invalid n: " + n);
+        }
+        return Long.lowestOneBit(n) == Long.highestOneBit(n);
+    }
+
+    private void propertiesIsPowerOfTwo_long() {
+        initialize("isPowerOfTwo(long)");
+        for (long l : take(LIMIT, P.positiveLongs())) {
+            boolean isPowerOfTwo = isPowerOfTwo(l);
+            assertEquals(l, isPowerOfTwo, isPowerOfTwo_long_alt(l));
+            assertEquals(l, isPowerOfTwo, 1L << ceilingLog2(l) == l);
+        }
+
+        for (long l : take(LIMIT, P.withElement(0L, P.negativeLongs()))) {
+            try {
+                isPowerOfTwo(l);
+                fail(l);
+            } catch (ArithmeticException ignored) {}
+        }
+    }
+
+    private void compareImplementationsIsPowerOfTwo_long() {
+        Map<String, Function<Long, Boolean>> functions = new LinkedHashMap<>();
+        functions.put("alt", IntegerUtilsProperties::isPowerOfTwo_long_alt);
+        functions.put("standard", IntegerUtils::isPowerOfTwo);
+        compareImplementations("isPowerOfTwo(long)", take(LIMIT, P.positiveLongs()), functions);
+    }
+
+    private static boolean isPowerOfTwo_BigInteger_alt(@NotNull BigInteger n) {
+        if (n.signum() != 1) {
+            throw new ArithmeticException("n must be positive. Invalid n: " + n);
+        }
+        return n.and(n.subtract(BigInteger.ONE)).equals(BigInteger.ZERO);
+    }
+
+    private void propertiesIsPowerOfTwo_BigInteger() {
+        initialize("isPowerOfTwo(BigInteger)");
+        for (BigInteger i : take(LIMIT, P.positiveBigIntegers())) {
+            boolean isPowerOfTwo = isPowerOfTwo(i);
+            assertEquals(i, isPowerOfTwo, isPowerOfTwo_BigInteger_alt(i));
+            assertEquals(i, isPowerOfTwo, BigInteger.ONE.shiftLeft(ceilingLog2(i)).equals(i));
+        }
+
+        for (BigInteger i : take(LIMIT, P.withElement(BigInteger.ZERO, P.negativeBigIntegers()))) {
+            try {
+                isPowerOfTwo(i);
+                fail(i);
+            } catch (ArithmeticException ignored) {}
+        }
+    }
+
+    private void compareImplementationsIsPowerOfTwo_BigInteger() {
+        Map<String, Function<BigInteger, Boolean>> functions = new LinkedHashMap<>();
+        functions.put("alt", IntegerUtilsProperties::isPowerOfTwo_BigInteger_alt);
+        functions.put("standard", IntegerUtils::isPowerOfTwo);
+        compareImplementations("isPowerOfTwo(BigInteger)", take(LIMIT, P.positiveBigIntegers()), functions);
     }
 
     private static @NotNull Iterable<Boolean> bits_int_simplest(int n) {

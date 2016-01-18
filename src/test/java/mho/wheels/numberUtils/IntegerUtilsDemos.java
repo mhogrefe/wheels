@@ -22,6 +22,24 @@ public class IntegerUtilsDemos extends Demos {
         super(useRandom);
     }
 
+    private void demoIsPowerOfTwo_int() {
+        for (int i : take(LIMIT, P.positiveIntegers())) {
+            System.out.println(i + " is " + (isPowerOfTwo(i) ? "" : "not ") + "a power of two");
+        }
+    }
+
+    private void demoIsPowerOfTwo_long() {
+        for (long l : take(LIMIT, P.positiveLongs())) {
+            System.out.println(l + " is " + (isPowerOfTwo(l) ? "" : "not ") + "a power of two");
+        }
+    }
+
+    private void demoIsPowerOfTwo_BigInteger() {
+        for (BigInteger i : take(LIMIT, P.positiveBigIntegers())) {
+            System.out.println(i + " is " + (isPowerOfTwo(i) ? "" : "not ") + "a power of two");
+        }
+    }
+
     private void demoBits_int() {
         for (int i : take(LIMIT, P.naturalIntegers())) {
             System.out.println("bits(" + i + ") = " + toList(bits(i)));
