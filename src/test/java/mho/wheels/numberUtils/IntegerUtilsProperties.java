@@ -34,6 +34,9 @@ public class IntegerUtilsProperties extends TestProperties {
         compareImplementationsIsPowerOfTwo_long();
         propertiesIsPowerOfTwo_BigInteger();
         compareImplementationsIsPowerOfTwo_BigInteger();
+        propertiesCeilingLog2_int();
+        propertiesCeilingLog2_long();
+        propertiesCeilingLog2_BigInteger();
         propertiesBits_int();
         compareImplementationsBits_int();
         propertiesBits_BigInteger();
@@ -86,7 +89,7 @@ public class IntegerUtilsProperties extends TestProperties {
     }
 
     private static boolean isPowerOfTwo_int_alt(int n) {
-        if (n <= 0) {
+        if (n < 1) {
             throw new ArithmeticException("n must be positive. Invalid n: " + n);
         }
         return Integer.lowestOneBit(n) == Integer.highestOneBit(n);
@@ -116,7 +119,7 @@ public class IntegerUtilsProperties extends TestProperties {
     }
 
     private static boolean isPowerOfTwo_long_alt(long n) {
-        if (n <= 0L) {
+        if (n < 1L) {
             throw new ArithmeticException("n must be positive. Invalid n: " + n);
         }
         return Long.lowestOneBit(n) == Long.highestOneBit(n);
@@ -173,6 +176,54 @@ public class IntegerUtilsProperties extends TestProperties {
         functions.put("alt", IntegerUtilsProperties::isPowerOfTwo_BigInteger_alt);
         functions.put("standard", IntegerUtils::isPowerOfTwo);
         compareImplementations("isPowerOfTwo(BigInteger)", take(LIMIT, P.positiveBigIntegers()), functions);
+    }
+
+    private void propertiesCeilingLog2_int() {
+        initialize("ceilingLog2(int)");
+        for (int i : take(LIMIT, P.positiveIntegers())) {
+            int ceilingLog2 = ceilingLog2(i);
+            assertTrue(i, ceilingLog2 == 31 || 1 << ceilingLog2 >= i);
+            assertTrue(i, 1 << (ceilingLog2 - 1) < i);
+        }
+
+        for (int i : take(LIMIT, P.withElement(0, P.negativeIntegers()))) {
+            try {
+                ceilingLog2(i);
+                fail(i);
+            } catch (ArithmeticException ignored) {}
+        }
+    }
+
+    private void propertiesCeilingLog2_long() {
+        initialize("ceilingLog2(long)");
+        for (long l : take(LIMIT, P.positiveLongs())) {
+            int ceilingLog2 = ceilingLog2(l);
+            assertTrue(l, ceilingLog2 == 63 || 1L << ceilingLog2 >= l);
+            assertTrue(l, 1L << (ceilingLog2 - 1) < l);
+        }
+
+        for (long l : take(LIMIT, P.withElement(0L, P.negativeLongs()))) {
+            try {
+                ceilingLog2(l);
+                fail(l);
+            } catch (ArithmeticException ignored) {}
+        }
+    }
+
+    private void propertiesCeilingLog2_BigInteger() {
+        initialize("ceilingLog2(BigInteger)");
+        for (BigInteger i : take(LIMIT, P.positiveBigIntegers())) {
+            int ceilingLog2 = ceilingLog2(i);
+            assertTrue(i, ge(BigInteger.ONE.shiftLeft(ceilingLog2), i));
+            assertTrue(i, lt(BigInteger.ONE.shiftLeft(ceilingLog2 - 1), i));
+        }
+
+        for (BigInteger i : take(LIMIT, P.withElement(BigInteger.ZERO, P.negativeBigIntegers()))) {
+            try {
+                ceilingLog2(i);
+                fail(i);
+            } catch (ArithmeticException ignored) {}
+        }
     }
 
     private static @NotNull Iterable<Boolean> bits_int_simplest(int n) {

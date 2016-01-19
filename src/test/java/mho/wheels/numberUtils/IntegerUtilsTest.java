@@ -98,6 +98,10 @@ public class IntegerUtilsTest {
         isPowerOfTwo_BigInteger_fail_helper("-5");
     }
 
+    private static void ceilingLog2_int_helper(int input, int output) {
+        aeq(ceilingLog2(input), output);
+    }
+
     private static void ceilingLog2_int_fail_helper(int n) {
         try {
             ceilingLog2(n);
@@ -107,18 +111,23 @@ public class IntegerUtilsTest {
 
     @Test
     public void testCeilingLog2_int() {
-        aeq(ceilingLog2(1), 0);
-        aeq(ceilingLog2(2), 1);
-        aeq(ceilingLog2(3), 2);
-        aeq(ceilingLog2(4), 2);
-        aeq(ceilingLog2(5), 3);
-        aeq(ceilingLog2(6), 3);
-        aeq(ceilingLog2(7), 3);
-        aeq(ceilingLog2(8), 3);
-        aeq(ceilingLog2(9), 4);
-        aeq(ceilingLog2(1000), 10);
+        ceilingLog2_int_helper(1, 0);
+        ceilingLog2_int_helper(2, 1);
+        ceilingLog2_int_helper(3, 2);
+        ceilingLog2_int_helper(4, 2);
+        ceilingLog2_int_helper(5, 3);
+        ceilingLog2_int_helper(6, 3);
+        ceilingLog2_int_helper(7, 3);
+        ceilingLog2_int_helper(8, 3);
+        ceilingLog2_int_helper(9, 4);
+        ceilingLog2_int_helper(1000, 10);
+        ceilingLog2_int_helper(Integer.MAX_VALUE, 31);
         ceilingLog2_int_fail_helper(0);
         ceilingLog2_int_fail_helper(-5);
+    }
+
+    private static void ceilingLog2_long_helper(long input, int output) {
+        aeq(ceilingLog2(input), output);
     }
 
     private static void ceilingLog2_long_fail_helper(long n) {
@@ -130,45 +139,46 @@ public class IntegerUtilsTest {
 
     @Test
     public void testCeilingLog2_long() {
-        aeq(ceilingLog2(1L), 0);
-        aeq(ceilingLog2(2L), 1);
-        aeq(ceilingLog2(3L), 2);
-        aeq(ceilingLog2(4L), 2);
-        aeq(ceilingLog2(5L), 3);
-        aeq(ceilingLog2(6L), 3);
-        aeq(ceilingLog2(7L), 3);
-        aeq(ceilingLog2(8L), 3);
-        aeq(ceilingLog2(9L), 4);
-        aeq(ceilingLog2(1000L), 10);
+        ceilingLog2_long_helper(1L, 0);
+        ceilingLog2_long_helper(2L, 1);
+        ceilingLog2_long_helper(3L, 2);
+        ceilingLog2_long_helper(4L, 2);
+        ceilingLog2_long_helper(5L, 3);
+        ceilingLog2_long_helper(6L, 3);
+        ceilingLog2_long_helper(7L, 3);
+        ceilingLog2_long_helper(8L, 3);
+        ceilingLog2_long_helper(9L, 4);
+        ceilingLog2_long_helper(1000L, 10);
+        ceilingLog2_long_helper(Long.MAX_VALUE, 63);
         ceilingLog2_long_fail_helper(0L);
         ceilingLog2_long_fail_helper(-5L);
     }
 
-    private static void ceilingLog2_BigInteger_helper(int n, int output) {
-        aeq(ceilingLog2(BigInteger.valueOf(n)), output);
+    private static void ceilingLog2_BigInteger_helper(@NotNull String input, int output) {
+        aeq(ceilingLog2(Readers.readBigInteger(input).get()), output);
+    }
+
+    private static void ceilingLog2_BigInteger_fail_helper(@NotNull String input) {
+        try {
+            ceilingLog2(Readers.readBigInteger(input).get());
+            fail();
+        } catch (ArithmeticException ignored) {}
     }
 
     @Test
     public void testCeilingLog2_BigInteger() {
-        ceilingLog2_BigInteger_helper(1, 0);
-        ceilingLog2_BigInteger_helper(2, 1);
-        ceilingLog2_BigInteger_helper(3, 2);
-        ceilingLog2_BigInteger_helper(4, 2);
-        ceilingLog2_BigInteger_helper(5, 3);
-        ceilingLog2_BigInteger_helper(6, 3);
-        ceilingLog2_BigInteger_helper(7, 3);
-        ceilingLog2_BigInteger_helper(8, 3);
-        ceilingLog2_BigInteger_helper(9, 4);
-        ceilingLog2_BigInteger_helper(1000, 10);
-        ceilingLog2_BigInteger_fail_helper(0);
-        ceilingLog2_BigInteger_fail_helper(-5);
-    }
-
-    private static void ceilingLog2_BigInteger_fail_helper(int n) {
-        try {
-            ceilingLog2(BigInteger.valueOf(n));
-            fail();
-        } catch (ArithmeticException ignored) {}
+        ceilingLog2_BigInteger_helper("1", 0);
+        ceilingLog2_BigInteger_helper("2", 1);
+        ceilingLog2_BigInteger_helper("3", 2);
+        ceilingLog2_BigInteger_helper("4", 2);
+        ceilingLog2_BigInteger_helper("5", 3);
+        ceilingLog2_BigInteger_helper("6", 3);
+        ceilingLog2_BigInteger_helper("7", 3);
+        ceilingLog2_BigInteger_helper("8", 3);
+        ceilingLog2_BigInteger_helper("9", 4);
+        ceilingLog2_BigInteger_helper("1000", 10);
+        ceilingLog2_BigInteger_fail_helper("0");
+        ceilingLog2_BigInteger_fail_helper("-5");
     }
 
     @Test

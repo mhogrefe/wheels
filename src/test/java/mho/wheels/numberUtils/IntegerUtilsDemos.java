@@ -40,6 +40,24 @@ public class IntegerUtilsDemos extends Demos {
         }
     }
 
+    private void demoCeilingLog2_int() {
+        for (int i : take(LIMIT, P.positiveIntegers())) {
+            System.out.println("ceilingLog2(" + i + ") = " + ceilingLog2(i));
+        }
+    }
+
+    private void demoCeilingLog2_long() {
+        for (long l : take(LIMIT, P.positiveLongs())) {
+            System.out.println("ceilingLog2(" + l + ") = " + ceilingLog2(l));
+        }
+    }
+
+    private void demoCeilingLog2_BigInteger() {
+        for (BigInteger i : take(LIMIT, P.positiveBigIntegers())) {
+            System.out.println("ceilingLog2(" + i + ") = " + ceilingLog2(i));
+        }
+    }
+
     private void demoBits_int() {
         for (int i : take(LIMIT, P.naturalIntegers())) {
             System.out.println("bits(" + i + ") = " + toList(bits(i)));
