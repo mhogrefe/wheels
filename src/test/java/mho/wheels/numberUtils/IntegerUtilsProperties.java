@@ -35,7 +35,9 @@ public class IntegerUtilsProperties extends TestProperties {
         propertiesIsPowerOfTwo_BigInteger();
         compareImplementationsIsPowerOfTwo_BigInteger();
         propertiesCeilingLog2_int();
+        compareImplementationsCeilingLog2_int();
         propertiesCeilingLog2_long();
+        compareImplementationsCeilingLog2_long();
         propertiesCeilingLog2_BigInteger();
         propertiesBits_int();
         compareImplementationsBits_int();
@@ -88,6 +90,10 @@ public class IntegerUtilsProperties extends TestProperties {
         compareImplementationsDemux();
     }
 
+    private static boolean isPowerOfTwo_int_simplest(int n) {
+        return isPowerOfTwo(BigInteger.valueOf(n));
+    }
+
     private static boolean isPowerOfTwo_int_alt(int n) {
         if (n < 1) {
             throw new ArithmeticException("n must be positive. Invalid n: " + n);
@@ -113,9 +119,14 @@ public class IntegerUtilsProperties extends TestProperties {
 
     private void compareImplementationsIsPowerOfTwo_int() {
         Map<String, Function<Integer, Boolean>> functions = new LinkedHashMap<>();
+        functions.put("simplest", IntegerUtilsProperties::isPowerOfTwo_int_simplest);
         functions.put("alt", IntegerUtilsProperties::isPowerOfTwo_int_alt);
         functions.put("standard", IntegerUtils::isPowerOfTwo);
         compareImplementations("isPowerOfTwo(int)", take(LIMIT, P.positiveIntegers()), functions);
+    }
+
+    private static boolean isPowerOfTwo_long_simplest(long n) {
+        return isPowerOfTwo(BigInteger.valueOf(n));
     }
 
     private static boolean isPowerOfTwo_long_alt(long n) {
@@ -143,6 +154,7 @@ public class IntegerUtilsProperties extends TestProperties {
 
     private void compareImplementationsIsPowerOfTwo_long() {
         Map<String, Function<Long, Boolean>> functions = new LinkedHashMap<>();
+        functions.put("simplest", IntegerUtilsProperties::isPowerOfTwo_long_simplest);
         functions.put("alt", IntegerUtilsProperties::isPowerOfTwo_long_alt);
         functions.put("standard", IntegerUtils::isPowerOfTwo);
         compareImplementations("isPowerOfTwo(long)", take(LIMIT, P.positiveLongs()), functions);
@@ -178,6 +190,10 @@ public class IntegerUtilsProperties extends TestProperties {
         compareImplementations("isPowerOfTwo(BigInteger)", take(LIMIT, P.positiveBigIntegers()), functions);
     }
 
+    private static int ceilingLog2_int_simplest(int n) {
+        return ceilingLog2(BigInteger.valueOf(n));
+    }
+
     private void propertiesCeilingLog2_int() {
         initialize("ceilingLog2(int)");
         for (int i : take(LIMIT, P.positiveIntegers())) {
@@ -194,6 +210,17 @@ public class IntegerUtilsProperties extends TestProperties {
         }
     }
 
+    private void compareImplementationsCeilingLog2_int() {
+        Map<String, Function<Integer, Integer>> functions = new LinkedHashMap<>();
+        functions.put("simplest", IntegerUtilsProperties::ceilingLog2_int_simplest);
+        functions.put("standard", IntegerUtils::ceilingLog2);
+        compareImplementations("ceilingLog2(int)", take(LIMIT, P.positiveIntegers()), functions);
+    }
+
+    private static int ceilingLog2_long_simplest(long n) {
+        return ceilingLog2(BigInteger.valueOf(n));
+    }
+
     private void propertiesCeilingLog2_long() {
         initialize("ceilingLog2(long)");
         for (long l : take(LIMIT, P.positiveLongs())) {
@@ -208,6 +235,13 @@ public class IntegerUtilsProperties extends TestProperties {
                 fail(l);
             } catch (ArithmeticException ignored) {}
         }
+    }
+
+    private void compareImplementationsCeilingLog2_long() {
+        Map<String, Function<Long, Integer>> functions = new LinkedHashMap<>();
+        functions.put("simplest", IntegerUtilsProperties::ceilingLog2_long_simplest);
+        functions.put("standard", IntegerUtils::ceilingLog2);
+        compareImplementations("ceilingLog2(long)", take(LIMIT, P.positiveLongs()), functions);
     }
 
     private void propertiesCeilingLog2_BigInteger() {
