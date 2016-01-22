@@ -181,28 +181,44 @@ public class IntegerUtilsTest {
         ceilingLog2_BigInteger_fail_helper("-5");
     }
 
+    private static void bits_int_helper(int input, @NotNull String output) {
+        aeqit(bits(input), output);
+    }
+
+    private static void bits_int_fail_helper(int input) {
+        try {
+            bits(input);
+            fail();
+        } catch (ArithmeticException ignored) {}
+    }
+
     @Test
     public void testBits_int() {
-        aeqit(bits(0), "[]");
-        aeqit(bits(1), "[true]");
-        aeqit(bits(6), "[false, true, true]");
-        aeqit(bits(105), "[true, false, false, true, false, true, true]");
+        bits_int_helper(0, "[]");
+        bits_int_helper(1, "[true]");
+        bits_int_helper(6, "[false, true, true]");
+        bits_int_helper(105, "[true, false, false, true, false, true, true]");
+        bits_int_fail_helper(-1);
+    }
+
+    private static void bits_BigInteger_helper(@NotNull String input, @NotNull String output) {
+        aeqit(bits(Readers.readBigInteger(input).get()), output);
+    }
+
+    private static void bits_BigInteger_fail_helper(@NotNull String input) {
         try {
-            bits(-1);
+            bits(Readers.readBigInteger(input).get());
             fail();
         } catch (ArithmeticException ignored) {}
     }
 
     @Test
     public void testBits_BigInteger() {
-        aeqit(bits(BigInteger.ZERO), "[]");
-        aeqit(bits(BigInteger.ONE), "[true]");
-        aeqit(bits(BigInteger.valueOf(6)), "[false, true, true]");
-        aeqit(bits(BigInteger.valueOf(105)), "[true, false, false, true, false, true, true]");
-        try {
-            bits(-1);
-            fail();
-        } catch (ArithmeticException ignored) {}
+        bits_BigInteger_helper("0", "[]");
+        bits_BigInteger_helper("1", "[true]");
+        bits_BigInteger_helper("6", "[false, true, true]");
+        bits_BigInteger_helper("105", "[true, false, false, true, false, true, true]");
+        bits_BigInteger_fail_helper("-1");
     }
 
     @Test

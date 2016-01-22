@@ -265,9 +265,7 @@ public class IntegerUtilsProperties extends TestProperties {
     }
 
     private void propertiesBits_int() {
-        initialize("");
-        System.out.println("\t\ttesting bits(int) properties...");
-
+        initialize("bits(int)");
         for (int i : take(LIMIT, P.naturalIntegers())) {
             Iterable<Boolean> bitsIterable = bits(i);
             List<Boolean> bits = toList(bitsIterable);
@@ -276,10 +274,8 @@ public class IntegerUtilsProperties extends TestProperties {
             assertTrue(i, all(b -> b != null, bits));
             assertEquals(i, fromBits(bits).intValueExact(), i);
             assertEquals(i, bits.size(), BigInteger.valueOf(i).bitLength());
-            try {
-                bitsIterable.iterator().remove();
-                fail(i);
-            } catch (UnsupportedOperationException ignored) {}
+            testNoRemove(bitsIterable);
+            testHasNext(bitsIterable);
         }
 
         for (int i : take(LIMIT, P.positiveIntegers())) {
@@ -297,24 +293,10 @@ public class IntegerUtilsProperties extends TestProperties {
     }
 
     private void compareImplementationsBits_int() {
-        initialize("");
-        System.out.println("\t\tcomparing bits(int) implementations...");
-
-        long totalTime = 0;
-        for (int i : take(LIMIT, P.naturalIntegers())) {
-            long time = System.nanoTime();
-            toList(bits_int_simplest(i));
-            totalTime += (System.nanoTime() - time);
-        }
-        System.out.println("\t\t\tsimplest: " + ((double) totalTime) / 1e9 + " s");
-
-        totalTime = 0;
-        for (int i : take(LIMIT, P.naturalIntegers())) {
-            long time = System.nanoTime();
-            toList(bits(i));
-            totalTime += (System.nanoTime() - time);
-        }
-        System.out.println("\t\t\tstandard: " + ((double) totalTime) / 1e9 + " s");
+        Map<String, Function<Integer, List<Boolean>>> functions = new LinkedHashMap<>();
+        functions.put("simplest", i -> toList(bits_int_simplest(i)));
+        functions.put("standard", i -> toList(bits(i)));
+        compareImplementations("bits(int)", take(LIMIT, P.naturalIntegers()), functions);
     }
 
     private static @NotNull Iterable<Boolean> bits_BigInteger_alt(@NotNull BigInteger n) {
@@ -328,6 +310,9 @@ public class IntegerUtilsProperties extends TestProperties {
 
             @Override
             public Boolean next() {
+                if (remaining.equals(BigInteger.ZERO)) {
+                    throw new NoSuchElementException();
+                }
                 boolean bit = remaining.testBit(0);
                 remaining = remaining.shiftRight(1);
                 return bit;
@@ -336,9 +321,7 @@ public class IntegerUtilsProperties extends TestProperties {
     }
 
     private void propertiesBits_BigInteger() {
-        initialize("");
-        System.out.println("\t\ttesting bits(BigInteger) properties...");
-
+        initialize("bits(BigInteger)");
         for (BigInteger i : take(LIMIT, P.naturalBigIntegers())) {
             Iterable<Boolean> bitsIterable = bits(i);
             List<Boolean> bits = toList(bitsIterable);
@@ -347,10 +330,8 @@ public class IntegerUtilsProperties extends TestProperties {
             assertTrue(i, all(b -> b != null, bits));
             assertEquals(i, fromBits(bits), i);
             assertEquals(i, bits.size(), i.bitLength());
-            try {
-                bitsIterable.iterator().remove();
-                fail(i);
-            } catch (UnsupportedOperationException ignored) {}
+            testNoRemove(bitsIterable);
+            testHasNext(bitsIterable);
         }
 
         for (BigInteger i : take(LIMIT, P.positiveBigIntegers())) {
@@ -368,24 +349,10 @@ public class IntegerUtilsProperties extends TestProperties {
     }
 
     private void compareImplementationsBits_BigInteger() {
-        initialize("");
-        System.out.println("\t\tcomparing bits(BigInteger) implementations...");
-
-        long totalTime = 0;
-        for (BigInteger i : take(LIMIT, P.naturalBigIntegers())) {
-            long time = System.nanoTime();
-            toList(bits_BigInteger_alt(i));
-            totalTime += (System.nanoTime() - time);
-        }
-        System.out.println("\t\t\talt: " + ((double) totalTime) / 1e9 + " s");
-
-        totalTime = 0;
-        for (BigInteger i : take(LIMIT, P.naturalBigIntegers())) {
-            long time = System.nanoTime();
-            toList(bits(i));
-            totalTime += (System.nanoTime() - time);
-        }
-        System.out.println("\t\t\tstandard: " + ((double) totalTime) / 1e9 + " s");
+        Map<String, Function<BigInteger, List<Boolean>>> functions = new LinkedHashMap<>();
+        functions.put("alt", i -> toList(bits_BigInteger_alt(i)));
+        functions.put("standard", i -> toList(bits(i)));
+        compareImplementations("bits(BigInteger)", take(LIMIT, P.naturalBigIntegers()), functions);
     }
 
     private static @NotNull Iterable<Boolean> bitsPadded_int_int_simplest(int length, int n) {

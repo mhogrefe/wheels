@@ -9,10 +9,7 @@ import mho.wheels.testing.Testing;
 import org.jetbrains.annotations.NotNull;
 
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.ordering.Ordering.*;
@@ -174,6 +171,9 @@ public class IntegerUtils {
 
             @Override
             public Boolean next() {
+                if (remaining == 0) {
+                    throw new NoSuchElementException();
+                }
                 boolean bit = (remaining & 1) == 1;
                 remaining >>= 1;
                 return bit;

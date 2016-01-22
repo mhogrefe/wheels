@@ -2980,6 +2980,9 @@ public final strictfp class IterableUtils {
 
             @Override
             public T next() {
+                if (i == n) {
+                    throw new NoSuchElementException();
+                }
                 i++;
                 return xsi.next();
             }
