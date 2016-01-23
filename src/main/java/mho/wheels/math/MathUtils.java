@@ -37,7 +37,7 @@ public final class MathUtils {
      */
     private MathUtils() {}
 
-    private static @NotNull String variableIndexToString(int index) {
+    public static @NotNull String variableIndexToString(int index) {
         if (index < 0) {
             throw new IllegalArgumentException();
         }
@@ -46,7 +46,7 @@ public final class MathUtils {
         return replicate(multiplicity, letter);
     }
 
-    private static int stringToVariableIndex(@NotNull String s) {
+    public static int stringToVariableIndex(@NotNull String s) {
         if (s.isEmpty()) {
             throw new IllegalArgumentException();
         }
