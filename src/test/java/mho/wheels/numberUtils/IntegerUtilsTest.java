@@ -221,48 +221,58 @@ public class IntegerUtilsTest {
         bits_BigInteger_fail_helper("-1");
     }
 
-    @Test
-    public void testBitsPadded_int_int() {
-        aeqit(bitsPadded(8, 0), "[false, false, false, false, false, false, false, false]");
-        aeqit(bitsPadded(8, 1), "[true, false, false, false, false, false, false, false]");
-        aeqit(bitsPadded(8, 6), "[false, true, true, false, false, false, false, false]");
-        aeqit(bitsPadded(8, 105), "[true, false, false, true, false, true, true, false]");
-        aeqit(bitsPadded(8, 1000), "[false, false, false, true, false, true, true, true]");
-        aeqit(bitsPadded(2, 104), "[false, false]");
-        aeqit(bitsPadded(2, 105), "[true, false]");
-        aeqit(bitsPadded(1, 104), "[false]");
-        aeqit(bitsPadded(1, 105), "[true]");
-        aeqit(bitsPadded(0, 104), "[]");
+    private static void bitsPadded_int_int_helper(int length, int n, @NotNull String output) {
+        aeqit(bitsPadded(length, n), output);
+    }
+
+    private static void bitsPadded_int_int_fail_helper(int length, int n) {
         try {
-            bitsPadded(8, -1);
-            fail();
-        } catch (ArithmeticException ignored) {}
-        try {
-            bitsPadded(-1, 8);
+            bitsPadded(length, n);
             fail();
         } catch (ArithmeticException ignored) {}
     }
 
     @Test
-    public void testBitsPadded_BigInteger_BigInteger() {
-        aeqit(bitsPadded(8, BigInteger.ZERO), "[false, false, false, false, false, false, false, false]");
-        aeqit(bitsPadded(8, BigInteger.ONE), "[true, false, false, false, false, false, false, false]");
-        aeqit(bitsPadded(8, BigInteger.valueOf(6)), "[false, true, true, false, false, false, false, false]");
-        aeqit(bitsPadded(8, BigInteger.valueOf(105)), "[true, false, false, true, false, true, true, false]");
-        aeqit(bitsPadded(8, BigInteger.valueOf(1000)), "[false, false, false, true, false, true, true, true]");
-        aeqit(bitsPadded(2, BigInteger.valueOf(104)), "[false, false]");
-        aeqit(bitsPadded(2, BigInteger.valueOf(105)), "[true, false]");
-        aeqit(bitsPadded(1, BigInteger.valueOf(104)), "[false]");
-        aeqit(bitsPadded(1, BigInteger.valueOf(105)), "[true]");
-        aeqit(bitsPadded(0, BigInteger.valueOf(104)), "[]");
+    public void testBitsPadded_int_int() {
+        bitsPadded_int_int_helper(8, 0, "[false, false, false, false, false, false, false, false]");
+        bitsPadded_int_int_helper(8, 1, "[true, false, false, false, false, false, false, false]");
+        bitsPadded_int_int_helper(8, 6, "[false, true, true, false, false, false, false, false]");
+        bitsPadded_int_int_helper(8, 105, "[true, false, false, true, false, true, true, false]");
+        bitsPadded_int_int_helper(8, 1000, "[false, false, false, true, false, true, true, true]");
+        bitsPadded_int_int_helper(2, 104, "[false, false]");
+        bitsPadded_int_int_helper(2, 105, "[true, false]");
+        bitsPadded_int_int_helper(1, 104, "[false]");
+        bitsPadded_int_int_helper(1, 105, "[true]");
+        bitsPadded_int_int_helper(0, 104, "[]");
+        bitsPadded_int_int_fail_helper(8, -1);
+        bitsPadded_int_int_fail_helper(-1, 8);
+    }
+
+    private static void bitsPadded_int_BigInteger_helper(int length, @NotNull String n, @NotNull String output) {
+        aeqit(bitsPadded(length, Readers.readBigInteger(n).get()), output);
+    }
+
+    private static void bitsPadded_int_BigInteger_fail_helper(int length, @NotNull String n) {
         try {
-            bitsPadded(8, NEGATIVE_ONE);
+            bitsPadded(length, Readers.readBigInteger(n).get());
             fail();
         } catch (ArithmeticException ignored) {}
-        try {
-            bitsPadded(-1, BigInteger.valueOf(8));
-            fail();
-        } catch (ArithmeticException ignored) {}
+    }
+
+    @Test
+    public void testBitsPadded_int_BigInteger() {
+        bitsPadded_int_BigInteger_helper(8, "0", "[false, false, false, false, false, false, false, false]");
+        bitsPadded_int_BigInteger_helper(8, "1", "[true, false, false, false, false, false, false, false]");
+        bitsPadded_int_BigInteger_helper(8, "6", "[false, true, true, false, false, false, false, false]");
+        bitsPadded_int_BigInteger_helper(8, "105", "[true, false, false, true, false, true, true, false]");
+        bitsPadded_int_BigInteger_helper(8, "1000", "[false, false, false, true, false, true, true, true]");
+        bitsPadded_int_BigInteger_helper(2, "104", "[false, false]");
+        bitsPadded_int_BigInteger_helper(2, "105", "[true, false]");
+        bitsPadded_int_BigInteger_helper(1, "104", "[false]");
+        bitsPadded_int_BigInteger_helper(1, "105", "[true]");
+        bitsPadded_int_BigInteger_helper(0, "104", "[]");
+        bitsPadded_int_BigInteger_fail_helper(8, "-1");
+        bitsPadded_int_BigInteger_fail_helper(-1, "8");
     }
 
     @Test

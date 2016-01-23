@@ -360,33 +360,28 @@ public class IntegerUtilsProperties extends TestProperties {
     }
 
     private void propertiesBitsPadded_int_int() {
-        initialize("");
-        System.out.println("\t\ttesting bitsPadded(int, int) properties...");
-
+        initialize("bitsPadded(int, int)");
         Iterable<Pair<Integer, Integer>> ps = P.pairsSquareRootOrder(
                 P.naturalIntegers(),
-                P.withScale(20).naturalIntegersGeometric()
+                P.naturalIntegersGeometric()
         );
         for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
             Iterable<Boolean> bitsIterable = bitsPadded(p.b, p.a);
             List<Boolean> bits = toList(bitsIterable);
             aeqit(p, bits, bitsPadded_int_int_simplest(p.b, p.a));
             aeqit(p, bits, reverse(bigEndianBitsPadded(p.b, p.a)));
-            assertTrue(p, all(b -> b != null, bits));
-            assertEquals(p, bits.size(), p.b.intValue());
-            try {
-                bitsIterable.iterator().remove();
-                fail(p);
-            } catch (UnsupportedOperationException ignored) {}
+            assertFalse(p, any(b -> b == null, bits));
+            assertEquals(p, bits.size(), p.b);
+            testNoRemove(bitsIterable);
+            testHasNext(bitsIterable);
         }
 
         ps = map(
                 p -> new Pair<>(p.a, BigInteger.valueOf(p.a).bitLength() + p.b),
-                P.pairs(P.naturalIntegers(), P.naturalIntegersGeometric())
+                P.pairsSquareRootOrder(P.naturalIntegers(), P.naturalIntegersGeometric())
         );
         for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
-            List<Boolean> bits = toList(bitsPadded(p.b, p.a));
-            assertEquals(p, fromBits(bits).intValueExact(), p.a.intValue());
+            inverse(i -> toList(bitsPadded(p.b, i)), (List<Boolean> bs) -> fromBits(bs).intValueExact(), p.a);
         }
 
         for (Pair<Integer, Integer> p : take(LIMIT, P.pairs(P.naturalIntegers(), P.negativeIntegers()))) {
@@ -406,66 +401,46 @@ public class IntegerUtilsProperties extends TestProperties {
     }
 
     private void compareImplementationsBitsPadded_int_int() {
-        initialize("");
-        System.out.println("\t\tcomparing bitsPadded(int, int) implementations...");
-
-        long totalTime = 0;
+        Map<String, Function<Pair<Integer, Integer>, List<Boolean>>> functions = new LinkedHashMap<>();
+        functions.put("simplest", p -> toList(bitsPadded_int_int_simplest(p.b, p.a)));
+        functions.put("standard", p -> toList(bitsPadded(p.b, p.a)));
         Iterable<Pair<Integer, Integer>> ps = P.pairsSquareRootOrder(
                 P.naturalIntegers(),
-                P.withScale(20).naturalIntegersGeometric()
+                P.naturalIntegersGeometric()
         );
-        for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
-            long time = System.nanoTime();
-            toList(bitsPadded_int_int_simplest(p.b, p.a));
-            totalTime += (System.nanoTime() - time);
-        }
-        System.out.println("\t\t\tsimplest: " + ((double) totalTime) / 1e9 + " s");
-
-        totalTime = 0;
-        for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
-            long time = System.nanoTime();
-            toList(bitsPadded(p.b, p.a));
-            totalTime += (System.nanoTime() - time);
-        }
-        System.out.println("\t\t\tstandard: " + ((double) totalTime) / 1e9 + " s");
+        compareImplementations("bitsPadded(int, int)", take(LIMIT, ps), functions);
     }
 
     private void propertiesBitsPadded_int_BigInteger() {
-        initialize("");
-        System.out.println("\t\ttesting bitsPadded(int, BigInteger) properties...");
-
-        Iterable<Pair<BigInteger, Integer>> ps;
-        if (P instanceof ExhaustiveProvider) {
-            ps = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.naturalBigIntegers(), P.naturalIntegers());
-        } else {
-            ps = P.pairs(P.naturalBigIntegers(), P.withScale(20).naturalIntegersGeometric());
-        }
+        initialize("bitsPadded(int, BigInteger)");
+        Iterable<Pair<BigInteger, Integer>> ps = P.pairsSquareRootOrder(
+                P.naturalBigIntegers(),
+                P.naturalIntegersGeometric()
+        );
         for (Pair<BigInteger, Integer> p : take(LIMIT, ps)) {
             Iterable<Boolean> bitsIterable = bitsPadded(p.b, p.a);
             List<Boolean> bits = toList(bitsIterable);
             aeqit(p, bits, reverse(bigEndianBitsPadded(p.b, p.a)));
-            assertTrue(p, all(b -> b != null, bits));
-            assertEquals(p, bits.size(), p.b.intValue());
-            try {
-                bitsIterable.iterator().remove();
-                fail(p);
-            } catch (UnsupportedOperationException ignored) {}
+            assertFalse(p, any(b -> b == null, bits));
+            assertEquals(p, bits.size(), p.b);
+            testNoRemove(bitsIterable);
+            testHasNext(bitsIterable);
         }
 
         ps = map(
                 p -> new Pair<>(p.a, p.a.bitLength() + p.b),
-                P.pairs(P.naturalBigIntegers(), P.naturalIntegersGeometric())
+                P.pairsSquareRootOrder(P.naturalBigIntegers(), P.naturalIntegersGeometric())
         );
         for (Pair<BigInteger, Integer> p : take(LIMIT, ps)) {
-            List<Boolean> bits = toList(bitsPadded(p.b, p.a));
-            assertEquals(p.toString(), fromBits(bits), p.a);
+            inverse(i -> toList(bitsPadded(p.b, i)), IntegerUtils::fromBits, p.a);
         }
 
         for (Pair<BigInteger, Integer> p : take(LIMIT, P.pairs(P.naturalBigIntegers(), P.negativeIntegers()))) {
             try {
                 bitsPadded(p.b, p.a);
                 fail(p);
-            } catch (ArithmeticException ignored) {}
+            } catch (ArithmeticException ignored) {
+            }
         }
 
         for (Pair<BigInteger, Integer> p : take(LIMIT, P.pairs(P.negativeBigIntegers(), P.naturalIntegers()))) {
