@@ -60,13 +60,13 @@ public class IntegerUtilsDemos extends Demos {
 
     private void demoBits_int() {
         for (int i : take(LIMIT, P.naturalIntegers())) {
-            System.out.println("bits(" + i + ") = " + toList(bits(i)));
+            System.out.println("bits(" + i + ") = " + bits(i));
         }
     }
 
     private void demoBits_BigInteger() {
         for (BigInteger i : take(LIMIT, P.naturalBigIntegers())) {
-            System.out.println("bits(" + i + ") = " + toList(bits(i)));
+            System.out.println("bits(" + i + ") = " + bits(i));
         }
     }
 
@@ -76,7 +76,7 @@ public class IntegerUtilsDemos extends Demos {
                 P.naturalIntegersGeometric()
         );
         for (Pair<Integer, Integer> p : take(MEDIUM_LIMIT, ps)) {
-            System.out.println("bitsPadded(" + p.b + ", " + p.a + ") = " + toList(bitsPadded(p.b, p.a)));
+            System.out.println("bitsPadded(" + p.b + ", " + p.a + ") = " + bitsPadded(p.b, p.a));
         }
     }
 
@@ -86,7 +86,7 @@ public class IntegerUtilsDemos extends Demos {
                 P.naturalIntegersGeometric()
         );
         for (Pair<BigInteger, Integer> p : take(MEDIUM_LIMIT, ps)) {
-            System.out.println("bitsPadded(" + p.b + ", " + p.a + ") = " + toList(bitsPadded(p.b, p.a)));
+            System.out.println("bitsPadded(" + p.b + ", " + p.a + ") = " + bitsPadded(p.b, p.a));
         }
     }
 

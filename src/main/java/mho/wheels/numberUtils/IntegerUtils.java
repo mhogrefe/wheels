@@ -14,6 +14,9 @@ import java.util.*;
 import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.ordering.Ordering.*;
 
+/**
+ * Some utilities for dealing with integers.
+ */
 public class IntegerUtils {
     /**
      * –1
@@ -26,9 +29,9 @@ public class IntegerUtils {
     public static final @NotNull BigInteger TWO = BigInteger.valueOf(2);
 
     /**
-     * The default maximum number of elements to print when printing an {@code Iterable}.
+     * Disallow instantiation
      */
-    private static final int ITERABLE_PRINT_LIMIT = Testing.SMALL_LIMIT;
+    private IntegerUtils() {}
 
     /**
      * Determines whether {@code n} is a power of 2.
@@ -157,28 +160,15 @@ public class IntegerUtils {
      * @param n a number
      * @return {@code n}'s bits in little-endian order
      */
-    public static @NotNull Iterable<Boolean> bits(int n) {
+    public static @NotNull List<Boolean> bits(int n) {
         if (n < 0) {
             throw new ArithmeticException("n cannot be negative. Invalid n: " + n);
         }
-        return () -> new NoRemoveIterator<Boolean>() {
-            private int remaining = n;
-
-            @Override
-            public boolean hasNext() {
-                return remaining != 0;
-            }
-
-            @Override
-            public Boolean next() {
-                if (remaining == 0) {
-                    throw new NoSuchElementException();
-                }
-                boolean bit = (remaining & 1) == 1;
-                remaining >>= 1;
-                return bit;
-            }
-        };
+        List<Boolean> bits = new ArrayList<>();
+        for (int remaining = n; remaining != 0; remaining >>= 1) {
+            bits.add((remaining & 1) != 0);
+        }
+        return bits;
     }
 
     /**
@@ -197,11 +187,16 @@ public class IntegerUtils {
      * @param n a number
      * @return {@code n}'s bits in little-endian order
      */
-    public static @NotNull Iterable<Boolean> bits(@NotNull BigInteger n) {
+    public static @NotNull List<Boolean> bits(@NotNull BigInteger n) {
         if (n.signum() == -1) {
             throw new ArithmeticException("n cannot be negative. Invalid n: " + n);
         }
-        return take(n.bitLength(), map(n::testBit, rangeUp(0)));
+        List<Boolean> bits = new ArrayList<>();
+        int bitLength = n.bitLength();
+        for (int i = 0; i < bitLength; i++) {
+            bits.add(n.testBit(i));
+        }
+        return bits;
     }
 
     /**
@@ -221,11 +216,20 @@ public class IntegerUtils {
      * @param n a number
      * @return {@code n}'s bits in little-endian order
      */
-    public static @NotNull Iterable<Boolean> bitsPadded(int length, int n) {
+    public static @NotNull List<Boolean> bitsPadded(int length, int n) {
         if (length < 0) {
             throw new ArithmeticException("length cannot be negative. Invalid length: " + length);
         }
-        return pad(false, length, bits(n));
+        if (n < 0) {
+            throw new ArithmeticException("n cannot be negative. Invalid n: " + n);
+        }
+        List<Boolean> bits = new ArrayList<>();
+        int remaining = n;
+        for (int i = 0; i < length; i++) {
+            bits.add((remaining & 1) != 0);
+            remaining >>= 1;
+        }
+        return bits;
     }
 
     /**
@@ -245,14 +249,18 @@ public class IntegerUtils {
      * @param n a number
      * @return {@code n}'s bits in little-endian order
      */
-    public static @NotNull Iterable<Boolean> bitsPadded(int length, @NotNull BigInteger n) {
+    public static @NotNull List<Boolean> bitsPadded(int length, @NotNull BigInteger n) {
         if (length < 0) {
             throw new ArithmeticException("length cannot be negative. Invalid length: " + length);
         }
         if (n.signum() == -1) {
             throw new ArithmeticException("n cannot be negative. Invalid n: " + n);
         }
-        return take(length, map(n::testBit, rangeUp(0)));
+        List<Boolean> bits = new ArrayList<>();
+        for (int i = 0; i < length; i++) {
+            bits.add(n.testBit(i));
+        }
+        return bits;
     }
 
     /**
@@ -270,7 +278,14 @@ public class IntegerUtils {
      * @return {@code n}'s bits in big-endian order
      */
     public static @NotNull List<Boolean> bigEndianBits(int n) {
-        return reverse(bits(n));
+        if (n < 0) {
+            throw new ArithmeticException("n cannot be negative. Invalid n: " + n);
+        }
+        List<Boolean> bits = new ArrayList<>();
+        for (int mask = Integer.highestOneBit(n); mask != 0; mask >>= 1) {
+            bits.add((n & mask) != 0);
+        }
+        return bits;
     }
 
     /**
@@ -288,7 +303,14 @@ public class IntegerUtils {
      * @return {@code n}'s bits in big-endian order
      */
     public static @NotNull List<Boolean> bigEndianBits(@NotNull BigInteger n) {
-        return reverse(bits(n));
+        if (n.signum() == -1) {
+            throw new ArithmeticException("n cannot be negative. Invalid n: " + n);
+        }
+        List<Boolean> bits = new ArrayList<>();
+        for (int i = n.bitLength() - 1; i >= 0; i--) {
+            bits.add(n.testBit(i));
+        }
+        return bits;
     }
 
     /**
@@ -655,11 +677,11 @@ public class IntegerUtils {
         BigInteger n = BigInteger.ZERO;
         for (int digit : digits) {
             if (digit < 0) {
-                String digitsString = IterableUtils.toString(ITERABLE_PRINT_LIMIT, digits);
+                String digitsString = IterableUtils.toString(Testing.SMALL_LIMIT, digits);
                 throw new IllegalArgumentException("Each element of digits must be non-negative. Invalid digit: " +
                         digit + " in " + digitsString);
             } else if (digit >= base) {
-                String digitsString = IterableUtils.toString(ITERABLE_PRINT_LIMIT, digits);
+                String digitsString = IterableUtils.toString(Testing.SMALL_LIMIT, digits);
                 throw new IllegalArgumentException("Each element of digits must be less than base, which is " + base +
                         ". Invalid digit: " + digit + " in " + digitsString);
             }
@@ -694,11 +716,11 @@ public class IntegerUtils {
             if (digit.signum() == -1 || ge(digit, base))
                 throw new IllegalArgumentException("every digit must be at least zero and less than the base");
             if (digit.signum() == -1) {
-                String digitsString = IterableUtils.toString(ITERABLE_PRINT_LIMIT, digits);
+                String digitsString = IterableUtils.toString(Testing.SMALL_LIMIT, digits);
                 throw new IllegalArgumentException("Each element of digits must be non-negative. Invalid digit: " +
                         digit + " in " + digitsString);
             } else if (ge(digit, base)) {
-                String digitsString = IterableUtils.toString(ITERABLE_PRINT_LIMIT, digits);
+                String digitsString = IterableUtils.toString(Testing.SMALL_LIMIT, digits);
                 throw new IllegalArgumentException("Each element of digits must be less than base, which is " + base +
                         ". Invalid digit: " + digit + " in " + digitsString);
             }
@@ -1021,8 +1043,8 @@ public class IntegerUtils {
      * @return a {@code BigInteger} generated bijectively from {@code x} and {@code y}
      */
     public static @NotNull BigInteger squareRootMux(@NotNull BigInteger x, @NotNull BigInteger y) {
-        List<Boolean> xBits = toList(bits(x));
-        List<Boolean> yBits = toList(bits(y));
+        List<Boolean> xBits = bits(x);
+        List<Boolean> yBits = bits(y);
         int outputSize = max(xBits.size(), yBits.size()) * 3;
         Iterable<Iterable<Boolean>> xChunks = map(w -> w, chunk(2, concat(xBits, repeat(false))));
         Iterable<Iterable<Boolean>> yChunks = map(Arrays::asList, concat(yBits, repeat(false)));
@@ -1043,7 +1065,7 @@ public class IntegerUtils {
      * @return a pair of {@code BigInteger}s generated bijectively from {@code n}
      */
     public static @NotNull Pair<BigInteger, BigInteger> squareRootDemux(@NotNull BigInteger n) {
-        List<Boolean> bits = toList(bits(n));
+        List<Boolean> bits = bits(n);
         Iterable<Boolean> xMask = cycle(Arrays.asList(false, true, true));
         Iterable<Boolean> yMask = cycle(Arrays.asList(true, false, false));
         return new Pair<>(fromBits(select(xMask, bits)), fromBits(select(yMask, bits)));

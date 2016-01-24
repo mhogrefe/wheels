@@ -2,7 +2,6 @@ package mho.wheels.numberUtils;
 
 import mho.wheels.iterables.ExhaustiveProvider;
 import mho.wheels.iterables.IterableUtils;
-import mho.wheels.iterables.NoRemoveIterator;
 import mho.wheels.structures.Pair;
 import mho.wheels.structures.Triple;
 import mho.wheels.testing.TestProperties;
@@ -49,6 +48,7 @@ public class IntegerUtilsProperties extends TestProperties {
         propertiesBigEndianBits_int();
         compareImplementationsBigEndianBits_int();
         propertiesBigEndianBits_BigInteger();
+        compareImplementationsBigEndianBits_BigInteger();
         propertiesBigEndianBitsPadded_int_int();
         compareImplementationsBigEndianBitsPadded_int_int();
         propertiesBigEndianBitsPadded_int_BigInteger();
@@ -260,26 +260,23 @@ public class IntegerUtilsProperties extends TestProperties {
         }
     }
 
-    private static @NotNull Iterable<Boolean> bits_int_simplest(int n) {
+    private static @NotNull List<Boolean> bits_int_simplest(int n) {
         return bits(BigInteger.valueOf(n));
     }
 
     private void propertiesBits_int() {
         initialize("bits(int)");
         for (int i : take(LIMIT, P.naturalIntegers())) {
-            Iterable<Boolean> bitsIterable = bits(i);
-            List<Boolean> bits = toList(bitsIterable);
+            List<Boolean> bits = bits(i);
             aeqit(i, bits, bits_int_simplest(i));
             aeqit(i, bits, reverse(bigEndianBits(i)));
             assertTrue(i, all(b -> b != null, bits));
-            assertEquals(i, fromBits(bits).intValueExact(), i);
+            inverse(IntegerUtils::bits, (List<Boolean> bs) -> fromBits(bs).intValueExact(), i);
             assertEquals(i, bits.size(), BigInteger.valueOf(i).bitLength());
-            testNoRemove(bitsIterable);
-            testHasNext(bitsIterable);
         }
 
         for (int i : take(LIMIT, P.positiveIntegers())) {
-            List<Boolean> bits = toList(bits(i));
+            List<Boolean> bits = bits(i);
             assertFalse(i, bits.isEmpty());
             assertEquals(i, last(bits), true);
         }
@@ -294,48 +291,35 @@ public class IntegerUtilsProperties extends TestProperties {
 
     private void compareImplementationsBits_int() {
         Map<String, Function<Integer, List<Boolean>>> functions = new LinkedHashMap<>();
-        functions.put("simplest", i -> toList(bits_int_simplest(i)));
-        functions.put("standard", i -> toList(bits(i)));
+        functions.put("simplest", IntegerUtilsProperties::bits_int_simplest);
+        functions.put("standard", IntegerUtils::bits);
         compareImplementations("bits(int)", take(LIMIT, P.naturalIntegers()), functions);
     }
 
-    private static @NotNull Iterable<Boolean> bits_BigInteger_alt(@NotNull BigInteger n) {
-        return () -> new NoRemoveIterator<Boolean>() {
-            private BigInteger remaining = n;
-
-            @Override
-            public boolean hasNext() {
-                return !remaining.equals(BigInteger.ZERO);
-            }
-
-            @Override
-            public Boolean next() {
-                if (remaining.equals(BigInteger.ZERO)) {
-                    throw new NoSuchElementException();
-                }
-                boolean bit = remaining.testBit(0);
-                remaining = remaining.shiftRight(1);
-                return bit;
-            }
-        };
+    private static @NotNull List<Boolean> bits_BigInteger_alt(@NotNull BigInteger n) {
+        if (n.signum() == -1) {
+            throw new ArithmeticException("n cannot be negative. Invalid n: " + n);
+        }
+        List<Boolean> bits = new ArrayList<>();
+        for (BigInteger remaining = n; !remaining.equals(BigInteger.ZERO); remaining = remaining.shiftRight(1)) {
+            bits.add(!remaining.and(BigInteger.ONE).equals(BigInteger.ZERO));
+        }
+        return bits;
     }
 
     private void propertiesBits_BigInteger() {
         initialize("bits(BigInteger)");
         for (BigInteger i : take(LIMIT, P.naturalBigIntegers())) {
-            Iterable<Boolean> bitsIterable = bits(i);
-            List<Boolean> bits = toList(bitsIterable);
+            List<Boolean> bits = bits(i);
             aeqit(i, bits, bits_BigInteger_alt(i));
             aeqit(i, bits, reverse(bigEndianBits(i)));
             assertTrue(i, all(b -> b != null, bits));
-            assertEquals(i, fromBits(bits), i);
+            inverse(IntegerUtils::bits, IntegerUtils::fromBits, i);
             assertEquals(i, bits.size(), i.bitLength());
-            testNoRemove(bitsIterable);
-            testHasNext(bitsIterable);
         }
 
         for (BigInteger i : take(LIMIT, P.positiveBigIntegers())) {
-            List<Boolean> bits = toList(bits(i));
+            List<Boolean> bits = bits(i);
             assertFalse(i, bits.isEmpty());
             assertEquals(i, last(bits), true);
         }
@@ -350,12 +334,12 @@ public class IntegerUtilsProperties extends TestProperties {
 
     private void compareImplementationsBits_BigInteger() {
         Map<String, Function<BigInteger, List<Boolean>>> functions = new LinkedHashMap<>();
-        functions.put("alt", i -> toList(bits_BigInteger_alt(i)));
-        functions.put("standard", i -> toList(bits(i)));
+        functions.put("alt", IntegerUtilsProperties::bits_BigInteger_alt);
+        functions.put("standard", IntegerUtils::bits);
         compareImplementations("bits(BigInteger)", take(LIMIT, P.naturalBigIntegers()), functions);
     }
 
-    private static @NotNull Iterable<Boolean> bitsPadded_int_int_simplest(int length, int n) {
+    private static @NotNull List<Boolean> bitsPadded_int_int_simplest(int length, int n) {
         return bitsPadded(length, BigInteger.valueOf(n));
     }
 
@@ -366,14 +350,11 @@ public class IntegerUtilsProperties extends TestProperties {
                 P.naturalIntegersGeometric()
         );
         for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
-            Iterable<Boolean> bitsIterable = bitsPadded(p.b, p.a);
-            List<Boolean> bits = toList(bitsIterable);
+            List<Boolean> bits = bitsPadded(p.b, p.a);
             aeqit(p, bits, bitsPadded_int_int_simplest(p.b, p.a));
             aeqit(p, bits, reverse(bigEndianBitsPadded(p.b, p.a)));
             assertFalse(p, any(b -> b == null, bits));
             assertEquals(p, bits.size(), p.b);
-            testNoRemove(bitsIterable);
-            testHasNext(bitsIterable);
         }
 
         ps = map(
@@ -381,7 +362,7 @@ public class IntegerUtilsProperties extends TestProperties {
                 P.pairsSquareRootOrder(P.naturalIntegers(), P.naturalIntegersGeometric())
         );
         for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
-            inverse(i -> toList(bitsPadded(p.b, i)), (List<Boolean> bs) -> fromBits(bs).intValueExact(), p.a);
+            inverse(i -> bitsPadded(p.b, i), (List<Boolean> bs) -> fromBits(bs).intValueExact(), p.a);
         }
 
         for (Pair<Integer, Integer> p : take(LIMIT, P.pairs(P.naturalIntegers(), P.negativeIntegers()))) {
@@ -402,8 +383,8 @@ public class IntegerUtilsProperties extends TestProperties {
 
     private void compareImplementationsBitsPadded_int_int() {
         Map<String, Function<Pair<Integer, Integer>, List<Boolean>>> functions = new LinkedHashMap<>();
-        functions.put("simplest", p -> toList(bitsPadded_int_int_simplest(p.b, p.a)));
-        functions.put("standard", p -> toList(bitsPadded(p.b, p.a)));
+        functions.put("simplest", p -> bitsPadded_int_int_simplest(p.b, p.a));
+        functions.put("standard", p -> bitsPadded(p.b, p.a));
         Iterable<Pair<Integer, Integer>> ps = P.pairsSquareRootOrder(
                 P.naturalIntegers(),
                 P.naturalIntegersGeometric()
@@ -418,13 +399,10 @@ public class IntegerUtilsProperties extends TestProperties {
                 P.naturalIntegersGeometric()
         );
         for (Pair<BigInteger, Integer> p : take(LIMIT, ps)) {
-            Iterable<Boolean> bitsIterable = bitsPadded(p.b, p.a);
-            List<Boolean> bits = toList(bitsIterable);
+            List<Boolean> bits = bitsPadded(p.b, p.a);
             aeqit(p, bits, reverse(bigEndianBitsPadded(p.b, p.a)));
             assertFalse(p, any(b -> b == null, bits));
             assertEquals(p, bits.size(), p.b);
-            testNoRemove(bitsIterable);
-            testHasNext(bitsIterable);
         }
 
         ps = map(
@@ -432,7 +410,7 @@ public class IntegerUtilsProperties extends TestProperties {
                 P.pairsSquareRootOrder(P.naturalBigIntegers(), P.naturalIntegersGeometric())
         );
         for (Pair<BigInteger, Integer> p : take(LIMIT, ps)) {
-            inverse(i -> toList(bitsPadded(p.b, i)), IntegerUtils::fromBits, p.a);
+            inverse(i -> bitsPadded(p.b, i), IntegerUtils::fromBits, p.a);
         }
 
         for (Pair<BigInteger, Integer> p : take(LIMIT, P.pairs(P.naturalBigIntegers(), P.negativeIntegers()))) {
@@ -455,13 +433,16 @@ public class IntegerUtilsProperties extends TestProperties {
         return bigEndianBits(BigInteger.valueOf(n));
     }
 
-    private void propertiesBigEndianBits_int() {
-        initialize("");
-        System.out.println("\t\ttesting bigEndianBits(int) properties...");
+    private static @NotNull List<Boolean> bigEndianBits_int_alt(int n) {
+        return reverse(bits(n));
+    }
 
+    private void propertiesBigEndianBits_int() {
+        initialize("bigEndianBits(int)");
         for (int i : take(LIMIT, P.naturalIntegers())) {
             List<Boolean> bits = bigEndianBits(i);
             aeqit(i, bits, bigEndianBits_int_simplest(i));
+            aeqit(i, bits, bigEndianBits_int_alt(i));
             aeqit(i, bits, reverse(bits(i)));
             assertTrue(i, all(b -> b != null, bits));
             assertEquals(i, fromBigEndianBits(bits).intValueExact(), i);
@@ -471,7 +452,7 @@ public class IntegerUtilsProperties extends TestProperties {
         for (int i : take(LIMIT, P.positiveIntegers())) {
             List<Boolean> bits = bigEndianBits(i);
             assertFalse(i, bits.isEmpty());
-            assertEquals(i, head(bits), true);
+            assertTrue(i, head(bits));
         }
 
         for (int i : take(LIMIT, P.negativeIntegers())) {
@@ -483,32 +464,22 @@ public class IntegerUtilsProperties extends TestProperties {
     }
 
     private void compareImplementationsBigEndianBits_int() {
-        initialize("");
-        System.out.println("\t\tcomparing bigEndianBits(int) implementations...");
+        Map<String, Function<Integer, List<Boolean>>> functions = new LinkedHashMap<>();
+        functions.put("simplest", IntegerUtilsProperties::bigEndianBits_int_simplest);
+        functions.put("alt", IntegerUtilsProperties::bigEndianBits_int_alt);
+        functions.put("standard", IntegerUtils::bigEndianBits);
+        compareImplementations("bigEndianBits(int)", take(LIMIT, P.naturalIntegers()), functions);
+    }
 
-        long totalTime = 0;
-        for (int i : take(LIMIT, P.naturalIntegers())) {
-            long time = System.nanoTime();
-            bigEndianBits_int_simplest(i);
-            totalTime += (System.nanoTime() - time);
-        }
-        System.out.println("\t\t\tsimplest: " + ((double) totalTime) / 1e9 + " s");
-
-        totalTime = 0;
-        for (int i : take(LIMIT, P.naturalIntegers())) {
-            long time = System.nanoTime();
-            bigEndianBits(i);
-            totalTime += (System.nanoTime() - time);
-        }
-        System.out.println("\t\t\tstandard: " + ((double) totalTime) / 1e9 + " s");
+    private static @NotNull List<Boolean> bigEndianBits_BigInteger_simplest(@NotNull BigInteger n) {
+        return reverse(bits(n));
     }
 
     private void propertiesBigEndianBits_BigInteger() {
-        initialize("");
-        System.out.println("\t\ttesting bigEndianBits(BigInteger) properties...");
-
+        initialize("bigEndianBits(BigInteger)");
         for (BigInteger i : take(LIMIT, P.naturalBigIntegers())) {
             List<Boolean> bits = bigEndianBits(i);
+            aeqit(i, bits, bigEndianBits_BigInteger_simplest(i));
             aeqit(i, bits, reverse(bits(i)));
             assertTrue(i, all(b -> b != null, bits));
             assertEquals(i, fromBigEndianBits(bits), i);
@@ -518,7 +489,7 @@ public class IntegerUtilsProperties extends TestProperties {
         for (BigInteger i : take(LIMIT, P.positiveBigIntegers())) {
             List<Boolean> bits = bigEndianBits(i);
             assertFalse(i, bits.isEmpty());
-            assertEquals(i, head(bits), true);
+            assertTrue(i, head(bits));
         }
 
         for (BigInteger i : take(LIMIT, P.negativeBigIntegers())) {
@@ -527,6 +498,13 @@ public class IntegerUtilsProperties extends TestProperties {
                 fail(i);
             } catch (ArithmeticException ignored) {}
         }
+    }
+
+    private void compareImplementationsBigEndianBits_BigInteger() {
+        Map<String, Function<BigInteger, List<Boolean>>> functions = new LinkedHashMap<>();
+        functions.put("simplest", IntegerUtilsProperties::bigEndianBits_BigInteger_simplest);
+        functions.put("standard", IntegerUtils::bigEndianBits);
+        compareImplementations("bigEndianBits(BigInteger)", take(LIMIT, P.naturalBigIntegers()), functions);
     }
 
     private static @NotNull Iterable<Boolean> bigEndianBitsPadded_int_int_simplest(int length, int n) {

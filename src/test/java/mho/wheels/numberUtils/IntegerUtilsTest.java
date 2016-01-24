@@ -202,7 +202,7 @@ public class IntegerUtilsTest {
     }
 
     private static void bits_BigInteger_helper(@NotNull String input, @NotNull String output) {
-        aeqit(bits(Readers.readBigInteger(input).get()), output);
+        aeq(bits(Readers.readBigInteger(input).get()), output);
     }
 
     private static void bits_BigInteger_fail_helper(@NotNull String input) {
@@ -222,7 +222,7 @@ public class IntegerUtilsTest {
     }
 
     private static void bitsPadded_int_int_helper(int length, int n, @NotNull String output) {
-        aeqit(bitsPadded(length, n), output);
+        aeq(bitsPadded(length, n), output);
     }
 
     private static void bitsPadded_int_int_fail_helper(int length, int n) {
@@ -249,7 +249,7 @@ public class IntegerUtilsTest {
     }
 
     private static void bitsPadded_int_BigInteger_helper(int length, @NotNull String n, @NotNull String output) {
-        aeqit(bitsPadded(length, Readers.readBigInteger(n).get()), output);
+        aeq(bitsPadded(length, Readers.readBigInteger(n).get()), output);
     }
 
     private static void bitsPadded_int_BigInteger_fail_helper(int length, @NotNull String n) {
@@ -275,28 +275,44 @@ public class IntegerUtilsTest {
         bitsPadded_int_BigInteger_fail_helper(-1, "8");
     }
 
+    private static void bigEndianBits_int_helper(int input, @NotNull String output) {
+        aeq(bigEndianBits(input), output);
+    }
+
+    private static void bigEndianBits_int_fail_helper(int input) {
+        try {
+            bigEndianBits(input);
+            fail();
+        } catch (ArithmeticException ignored) {}
+    }
+
     @Test
     public void testBigEndianBits_int() {
-        aeq(bigEndianBits(0), "[]");
-        aeq(bigEndianBits(1), "[true]");
-        aeq(bigEndianBits(6), "[true, true, false]");
-        aeq(bigEndianBits(105), "[true, true, false, true, false, false, true]");
+        bigEndianBits_int_helper(0, "[]");
+        bigEndianBits_int_helper(1, "[true]");
+        bigEndianBits_int_helper(6, "[true, true, false]");
+        bigEndianBits_int_helper(105, "[true, true, false, true, false, false, true]");
+        bigEndianBits_int_fail_helper(-1);
+    }
+
+    private static void bigEndianBits_BigInteger_helper(@NotNull String input, @NotNull String output) {
+        aeq(bigEndianBits(Readers.readBigInteger(input).get()), output);
+    }
+
+    private static void bigEndianBits_BigInteger_fail_helper(@NotNull String input) {
         try {
-            bigEndianBits(-1);
+            bigEndianBits(Readers.readBigInteger(input).get());
             fail();
         } catch (ArithmeticException ignored) {}
     }
 
     @Test
     public void testBigEndianBits_BigInteger() {
-        aeq(bigEndianBits(BigInteger.ZERO), "[]");
-        aeq(bigEndianBits(BigInteger.ONE), "[true]");
-        aeq(bigEndianBits(BigInteger.valueOf(6)), "[true, true, false]");
-        aeq(bigEndianBits(BigInteger.valueOf(105)), "[true, true, false, true, false, false, true]");
-        try {
-            bigEndianBits(-1);
-            fail();
-        } catch (ArithmeticException ignored) {}
+        bigEndianBits_BigInteger_helper("0", "[]");
+        bigEndianBits_BigInteger_helper("1", "[true]");
+        bigEndianBits_BigInteger_helper("6", "[true, true, false]");
+        bigEndianBits_BigInteger_helper("105", "[true, true, false, true, false, false, true]");
+        bigEndianBits_BigInteger_fail_helper("-1");
     }
 
     @Test
