@@ -46,18 +46,12 @@ public final class MathUtils {
         return replicate(multiplicity, letter);
     }
 
-    public static int stringToVariableIndex(@NotNull String s) {
-        if (s.isEmpty()) {
-            throw new IllegalArgumentException();
-        }
+    public static @NotNull Optional<Integer> stringToVariableIndex(@NotNull String s) {
+        if (s.isEmpty()) return Optional.empty();
         char letter = head(s);
-        if (letter < 'a' || letter > 'z') {
-            throw new IllegalArgumentException();
-        }
-        if (any(c -> c != letter, s)) {
-            throw new IllegalArgumentException();
-        }
-        return LETTERS_IN_ALPHABET * (s.length() - 1) + letter - 'a';
+        if (letter < 'a' || letter > 'z') return Optional.empty();
+        if (any(c -> c != letter, s)) return Optional.empty();
+        return Optional.of(LETTERS_IN_ALPHABET * (s.length() - 1) + letter - 'a');
     }
 
     /**
