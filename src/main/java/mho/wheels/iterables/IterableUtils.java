@@ -2118,6 +2118,9 @@ public final strictfp class IterableUtils {
                 started = true;
             }
         }
+        if (!started) {
+            throw new IllegalArgumentException();
+        }
         return result;
     }
 
