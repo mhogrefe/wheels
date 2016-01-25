@@ -5,6 +5,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.function.Function;
 
 /**
  * This class is just like {@link Optional}, but it can also contain nulls.
@@ -99,6 +100,15 @@ public class NullableOptional<T> {
      */
     public static @NotNull <T> NullableOptional<T> fromOptional(@NotNull Optional<T> ot) {
         return ot.isPresent() ? of(ot.get()) : empty();
+    }
+
+    //todo test and document
+    public T orElse(@Nullable T other) {
+        return present ? x : other;
+    }
+
+    public @NotNull <V> NullableOptional<V> map(@NotNull Function<T, V> f) {
+        return present ? empty() : of(f.apply(x));
     }
 
     /**
