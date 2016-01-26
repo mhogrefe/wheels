@@ -102,13 +102,37 @@ public class NullableOptional<T> {
         return ot.isPresent() ? of(ot.get()) : empty();
     }
 
-    //todo test and document
+    /**
+     * Return the value if present, otherwise return {@code other}.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code NullableOptional}.</li>
+     *  <li>{@code other} may be any value of type {@code T}, or null.</li>
+     *  <li>The result may be any value of type {@code T}, or null.</li>
+     * </ul>
+     *
+     * @param other the value to be returned if there is no value present
+     * @return the value, if present, otherwise {@code other}
+     */
     public T orElse(@Nullable T other) {
         return present ? x : other;
     }
 
+    /**
+     * Returns the value of {@code this} mapped by function; or, if there is no value, returns empty.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code NullableOptional}.</li>
+     *  <li>{@code f} must terminate without throwing an exception when applied to {@code this.x}.</li>
+     *  <li>The result may be any {@code NullableOptional}.</li>
+     * </ul>
+     *
+     * @param f a mapping function
+     * @param <V> the return type of the mapping function
+     * @return {@code this} mapped by a function
+     */
     public @NotNull <V> NullableOptional<V> map(@NotNull Function<T, V> f) {
-        return present ? empty() : of(f.apply(x));
+        return present ? of(f.apply(x)) : empty();
     }
 
     /**

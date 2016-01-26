@@ -4,6 +4,7 @@ import mho.wheels.io.Readers;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -75,6 +76,53 @@ public class NullableOptionalTest {
         fromOptional_helper("Optional[1]", "NullableOptional[1]");
         fromOptional_helper("Optional[-5]", "NullableOptional[-5]");
         fromOptional_helper("Optional.empty", "NullableOptional.empty");
+    }
+
+    private static void orElse_helper(@NotNull String no, Integer other, Integer output) {
+        aeq(readNullableOptionalInteger(no).orElse(other), output);
+    }
+
+    @Test
+    public void testOrElse() {
+        orElse_helper("NullableOptional.empty", 0, 0);
+        orElse_helper("NullableOptional.empty", 5, 5);
+        orElse_helper("NullableOptional.empty", null, null);
+        orElse_helper("NullableOptional[null]", 0, null);
+        orElse_helper("NullableOptional[null]", 5, null);
+        orElse_helper("NullableOptional[null]", null, null);
+        orElse_helper("NullableOptional[3]", 0, 3);
+        orElse_helper("NullableOptional[3]", 5, 3);
+        orElse_helper("NullableOptional[3]", null, 3);
+    }
+
+    private static void map_helper(@NotNull String no, Integer k, Integer v, @NotNull String output) {
+        aeq(
+                readNullableOptionalInteger(no)
+                        .map(new FiniteDomainFunction<>(Collections.singletonList(new Pair<>(k, v)))),
+                output
+        );
+    }
+
+    private static void map_fail_helper(@NotNull String no, Integer k, Integer v) {
+        try {
+            readNullableOptionalInteger(no)
+                    .map(new FiniteDomainFunction<>(Collections.singletonList(new Pair<>(k, v))));
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+    }
+
+    @Test
+    public void testMap() {
+        map_helper("NullableOptional.empty", 2, 3, "NullableOptional.empty");
+        map_helper("NullableOptional.empty", 2, null, "NullableOptional.empty");
+        map_helper("NullableOptional.empty", null, 3, "NullableOptional.empty");
+        map_helper("NullableOptional.empty", null, null, "NullableOptional.empty");
+        map_helper("NullableOptional[2]", 2, 3, "NullableOptional[3]");
+        map_helper("NullableOptional[2]", 2, null, "NullableOptional[null]");
+        map_helper("NullableOptional[null]", null, 3, "NullableOptional[3]");
+        map_helper("NullableOptional[null]", null, null, "NullableOptional[null]");
+        map_fail_helper("NullableOptional[2]", 1, 3);
+        map_fail_helper("NullableOptional[null]", 1, 3);
     }
 
     @Test

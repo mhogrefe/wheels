@@ -59,8 +59,8 @@ public strictfp class Testing {
         assertEquals(message, Double.toString(d1), Double.toString(d2));
     }
 
-    public static void aeq(@NotNull Object a, @NotNull Object b) {
-        Assert.assertEquals(a.toString(), b.toString());
+    public static void aeq(@Nullable Object a, @Nullable Object b) {
+        Assert.assertEquals(Objects.toString(a), Objects.toString(b));
     }
 
     public static void aeqcs(@NotNull Iterable<Character> cs, @NotNull String s) {

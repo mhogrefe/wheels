@@ -2,9 +2,11 @@ package mho.wheels.structures;
 
 import mho.wheels.testing.Demos;
 
+import java.util.Collections;
 import java.util.Optional;
 
-import static mho.wheels.iterables.IterableUtils.take;
+import static mho.wheels.iterables.IterableUtils.*;
+import static mho.wheels.structures.NullableOptional.empty;
 import static mho.wheels.structures.NullableOptional.fromOptional;
 import static mho.wheels.structures.NullableOptional.of;
 
@@ -35,6 +37,29 @@ public class NullableOptionalDemos extends Demos {
     private void demoFromOptional_Integer() {
         for (Optional<Integer> oi : take(LIMIT, P.optionals(P.integers()))) {
             System.out.println("fromOptional(" + oi + ") = " + fromOptional(oi));
+        }
+    }
+
+    private void demoOrElse() {
+        Iterable<Pair<NullableOptional<Integer>, Integer>> ps = P.pairs(
+                P.nullableOptionals(P.integers()),
+                P.integers()
+        );
+        for (Pair<NullableOptional<Integer>, Integer> p : take(LIMIT, ps)) {
+            System.out.println("orElse(" + p.a + ", " + p.b + ") = " + p.a.orElse(p.b));
+        }
+    }
+
+    private void demoMap() {
+        Iterable<Pair<NullableOptional<Integer>, FiniteDomainFunction<Integer, Integer>>> ps = P.withElement(
+                new Pair<>(empty(), new FiniteDomainFunction<>(Collections.emptyMap())),
+                map(
+                        p -> new Pair<>(of(p.a), new FiniteDomainFunction<>(Collections.singletonList(p))),
+                        P.pairs(P.integers())
+                )
+        );
+        for (Pair<NullableOptional<Integer>, FiniteDomainFunction<Integer, Integer>> p : take(LIMIT, ps)) {
+            System.out.println("map(" + p.a + ", " + p.b + ") = " + p.a.map(p.b));
         }
     }
 
