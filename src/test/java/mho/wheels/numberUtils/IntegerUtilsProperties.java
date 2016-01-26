@@ -52,6 +52,7 @@ public class IntegerUtilsProperties extends TestProperties {
         propertiesBigEndianBitsPadded_int_int();
         compareImplementationsBigEndianBitsPadded_int_int();
         propertiesBigEndianBitsPadded_int_BigInteger();
+        compareImplementationsBigEndianBitsPadded_int_BigInteger();
         propertiesFromBigEndianBits();
         propertiesFromBits();
         compareImplementationsFromBits();
@@ -507,26 +508,27 @@ public class IntegerUtilsProperties extends TestProperties {
         compareImplementations("bigEndianBits(BigInteger)", take(LIMIT, P.naturalBigIntegers()), functions);
     }
 
-    private static @NotNull Iterable<Boolean> bigEndianBitsPadded_int_int_simplest(int length, int n) {
+    private static @NotNull List<Boolean> bigEndianBitsPadded_int_int_simplest(int length, int n) {
         return bigEndianBitsPadded(length, BigInteger.valueOf(n));
     }
 
-    private void propertiesBigEndianBitsPadded_int_int() {
-        initialize("");
-        System.out.println("\t\ttesting bigEndianBitsPadded(int, int) properties...");
+    private static @NotNull List<Boolean> bigEndianBitsPadded_int_int_alt(int length, int n) {
+        return reverse(bitsPadded(length, n));
+    }
 
-        Iterable<Pair<Integer, Integer>> ps;
-        if (P instanceof ExhaustiveProvider) {
-            ps = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.naturalIntegers());
-        } else {
-            ps = P.pairs(P.naturalIntegers(), P.withScale(20).naturalIntegersGeometric());
-        }
+    private void propertiesBigEndianBitsPadded_int_int() {
+        initialize("bigEndianBitsPadded(int, int)");
+        Iterable<Pair<Integer, Integer>> ps = P.pairsSquareRootOrder(
+                P.naturalIntegers(),
+                P.naturalIntegersGeometric()
+        );
         for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
             List<Boolean> bits = bigEndianBitsPadded(p.b, p.a);
             aeqit(p, bits, bigEndianBitsPadded_int_int_simplest(p.b, p.a));
+            aeqit(p, bits, bigEndianBitsPadded_int_int_alt(p.b, p.a));
             aeqit(p, bits, reverse(bitsPadded(p.b, p.a)));
             assertTrue(p, all(b -> b != null, bits));
-            assertEquals(p, bits.size(), p.b.intValue());
+            assertEquals(p, bits.size(), p.b);
         }
 
         ps = map(
@@ -535,7 +537,7 @@ public class IntegerUtilsProperties extends TestProperties {
         );
         for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
             List<Boolean> bits = bigEndianBitsPadded(p.b, p.a);
-            assertEquals(p, fromBigEndianBits(bits).intValueExact(), p.a.intValue());
+            assertEquals(p, fromBigEndianBits(bits).intValueExact(), p.a);
         }
 
         for (Pair<Integer, Integer> p : take(LIMIT, P.pairs(P.naturalIntegers(), P.negativeIntegers()))) {
@@ -554,47 +556,33 @@ public class IntegerUtilsProperties extends TestProperties {
     }
 
     private void compareImplementationsBigEndianBitsPadded_int_int() {
-        initialize("");
-        System.out.println("\t\tcomparing bigEndianBitsPadded(int, int) implementations...");
+        Map<String, Function<Pair<Integer, Integer>, List<Boolean>>> functions = new LinkedHashMap<>();
+        functions.put("simplest", p -> bigEndianBitsPadded_int_int_simplest(p.b, p.a));
+        functions.put("alt", p -> bigEndianBitsPadded_int_int_alt(p.b, p.a));
+        functions.put("standard", p -> bigEndianBitsPadded(p.b, p.a));
+        Iterable<Pair<Integer, Integer>> ps = P.pairsSquareRootOrder(
+                P.naturalIntegers(),
+                P.naturalIntegersGeometric()
+        );
+        compareImplementations("bigEndianBitsPadded(int, int)", take(LIMIT, ps), functions);
+    }
 
-        long totalTime = 0;
-        Iterable<Pair<Integer, Integer>> ps;
-        if (P instanceof ExhaustiveProvider) {
-            ps = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.naturalIntegers());
-        } else {
-            ps = P.pairs(P.naturalIntegers(), P.withScale(20).naturalIntegersGeometric());
-        }
-        for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
-            long time = System.nanoTime();
-            toList(bigEndianBitsPadded_int_int_simplest(p.b, p.a));
-            totalTime += (System.nanoTime() - time);
-        }
-        System.out.println("\t\t\tsimplest: " + ((double) totalTime) / 1e9 + " s");
-
-        totalTime = 0;
-        for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
-            long time = System.nanoTime();
-            bigEndianBitsPadded(p.b, p.a);
-            totalTime += (System.nanoTime() - time);
-        }
-        System.out.println("\t\t\tstandard: " + ((double) totalTime) / 1e9 + " s");
+    private static @NotNull List<Boolean> bigEndianBitsPadded_int_BigInteger_alt(int length, @NotNull BigInteger n) {
+        return reverse(bitsPadded(length, n));
     }
 
     private void propertiesBigEndianBitsPadded_int_BigInteger() {
-        initialize("");
-        System.out.println("\t\ttesting bigEndianBitsPadded(int, BigInteger) properties...");
-
-        Iterable<Pair<BigInteger, Integer>> ps;
-        if (P instanceof ExhaustiveProvider) {
-            ps = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.naturalBigIntegers(), P.naturalIntegers());
-        } else {
-            ps = P.pairs(P.naturalBigIntegers(), P.withScale(20).naturalIntegersGeometric());
-        }
+        initialize("bigEndianBitsPadded(int, BigInteger)");
+        Iterable<Pair<BigInteger, Integer>> ps = P.pairsSquareRootOrder(
+                P.naturalBigIntegers(),
+                P.naturalIntegersGeometric()
+        );
         for (Pair<BigInteger, Integer> p : take(LIMIT, ps)) {
             List<Boolean> bits = bigEndianBitsPadded(p.b, p.a);
+            aeqit(p, bits, bigEndianBitsPadded_int_BigInteger_alt(p.b, p.a));
             aeqit(p, bits, reverse(bitsPadded(p.b, p.a)));
             assertTrue(p, all(b -> b != null, bits));
-            assertEquals(p, bits.size(), p.b.intValue());
+            assertEquals(p, bits.size(), p.b);
         }
 
         ps = map(
@@ -619,6 +607,17 @@ public class IntegerUtilsProperties extends TestProperties {
                 fail(p);
             } catch (ArithmeticException ignored) {}
         }
+    }
+
+    private void compareImplementationsBigEndianBitsPadded_int_BigInteger() {
+        Map<String, Function<Pair<BigInteger, Integer>, List<Boolean>>> functions = new LinkedHashMap<>();
+        functions.put("alt", p -> bigEndianBitsPadded_int_BigInteger_alt(p.b, p.a));
+        functions.put("standard", p -> bigEndianBitsPadded(p.b, p.a));
+        Iterable<Pair<BigInteger, Integer>> ps = P.pairsSquareRootOrder(
+                P.naturalBigIntegers(),
+                P.naturalIntegersGeometric()
+        );
+        compareImplementations("bigEndianBitsPadded(int, BigInteger)", take(LIMIT, ps), functions);
     }
 
     private static @NotNull BigInteger fromBits_alt(@NotNull Iterable<Boolean> xs) {

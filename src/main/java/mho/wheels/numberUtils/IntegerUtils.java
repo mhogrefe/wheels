@@ -331,7 +331,21 @@ public class IntegerUtils {
      * @return {@code n}'s bits in big-endian order
      */
     public static @NotNull List<Boolean> bigEndianBitsPadded(int length, int n) {
-        return reverse(bitsPadded(length, n));
+        if (length < 0) {
+            throw new ArithmeticException("length cannot be negative. Invalid length: " + length);
+        }
+        if (n < 0) {
+            throw new ArithmeticException("n cannot be negative. Invalid n: " + n);
+        }
+        List<Boolean> bits = new ArrayList<>();
+        if (length == 0) return bits;
+        for (; length > 31; length--) {
+            bits.add(false);
+        }
+        for (int mask = 1 << (length - 1); mask != 0; mask >>= 1) {
+            bits.add((n & mask) != 0);
+        }
+        return bits;
     }
 
     /**
@@ -352,7 +366,17 @@ public class IntegerUtils {
      * @return {@code n}'s bits in big-endian order
      */
     public static @NotNull List<Boolean> bigEndianBitsPadded(int length, BigInteger n) {
-        return reverse(bitsPadded(length, n));
+        if (length < 0) {
+            throw new ArithmeticException("length cannot be negative. Invalid length: " + length);
+        }
+        if (n.signum() == -1) {
+            throw new ArithmeticException("n cannot be negative. Invalid n: " + n);
+        }
+        List<Boolean> bits = new ArrayList<>();
+        for (int i = length - 1; i >= 0; i--) {
+            bits.add(n.testBit(i));
+        }
+        return bits;
     }
 
     /**

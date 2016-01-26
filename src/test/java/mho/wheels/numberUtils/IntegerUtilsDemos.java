@@ -103,25 +103,21 @@ public class IntegerUtilsDemos extends Demos {
     }
 
     private void demoBigEndianBitsPadded_int_int() {
-        Iterable<Pair<Integer, Integer>> ps;
-        if (P instanceof ExhaustiveProvider) {
-            ps = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.naturalIntegers());
-        } else {
-            ps = P.pairs(P.naturalIntegers(), P.withScale(20).naturalIntegersGeometric());
-        }
-        for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
+        Iterable<Pair<Integer, Integer>> ps = P.pairsSquareRootOrder(
+                P.naturalIntegers(),
+                P.naturalIntegersGeometric()
+        );
+        for (Pair<Integer, Integer> p : take(MEDIUM_LIMIT, ps)) {
             System.out.println("bigEndianBitsPadded(" + p.b + ", " + p.a + ") = " + bigEndianBitsPadded(p.b, p.a));
         }
     }
 
     private void demoBigEndianBitsPadded_int_BigInteger() {
-        Iterable<Pair<BigInteger, Integer>> ps;
-        if (P instanceof ExhaustiveProvider) {
-            ps = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.naturalBigIntegers(), P.naturalIntegers());
-        } else {
-            ps = P.pairs(P.naturalBigIntegers(), P.withScale(20).naturalIntegersGeometric());
-        }
-        for (Pair<BigInteger, Integer> p : take(LIMIT, ps)) {
+        Iterable<Pair<BigInteger, Integer>> ps = P.pairsSquareRootOrder(
+                P.naturalBigIntegers(),
+                P.naturalIntegersGeometric()
+        );
+        for (Pair<BigInteger, Integer> p : take(MEDIUM_LIMIT, ps)) {
             System.out.println("bigEndianBitsPadded(" + p.b + ", " + p.a + ") = " + bigEndianBitsPadded(p.b, p.a));
         }
     }

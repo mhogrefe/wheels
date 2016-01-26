@@ -315,48 +315,62 @@ public class IntegerUtilsTest {
         bigEndianBits_BigInteger_fail_helper("-1");
     }
 
-    @Test
-    public void testBigEndianBitsPadded_int_int() {
-        aeq(bigEndianBitsPadded(8, 0), "[false, false, false, false, false, false, false, false]");
-        aeq(bigEndianBitsPadded(8, 1), "[false, false, false, false, false, false, false, true]");
-        aeq(bigEndianBitsPadded(8, 6), "[false, false, false, false, false, true, true, false]");
-        aeq(bigEndianBitsPadded(8, 105), "[false, true, true, false, true, false, false, true]");
-        aeq(bigEndianBitsPadded(8, 1000), "[true, true, true, false, true, false, false, false]");
-        aeq(bigEndianBitsPadded(2, 104), "[false, false]");
-        aeq(bigEndianBitsPadded(2, 105), "[false, true]");
-        aeq(bigEndianBitsPadded(1, 104), "[false]");
-        aeq(bigEndianBitsPadded(1, 105), "[true]");
-        aeq(bigEndianBitsPadded(0, 104), "[]");
+    private static void bigEndianBitsPadded_int_int_helper(int length, int n, @NotNull String output) {
+        aeq(bigEndianBitsPadded(length, n), output);
+    }
+
+    private static void bigEndianBitsPadded_int_int_fail_helper(int length, int n) {
         try {
-            bigEndianBitsPadded(8, -1);
+            bigEndianBitsPadded(length, n);
             fail();
         } catch (ArithmeticException ignored) {}
+    }
+
+    @Test
+    public void testBigEndianBitsPadded_int_int() {
+        bigEndianBitsPadded_int_int_helper(8, 0, "[false, false, false, false, false, false, false, false]");
+        bigEndianBitsPadded_int_int_helper(8, 1, "[false, false, false, false, false, false, false, true]");
+        bigEndianBitsPadded_int_int_helper(8, 6, "[false, false, false, false, false, true, true, false]");
+        bigEndianBitsPadded_int_int_helper(8, 105, "[false, true, true, false, true, false, false, true]");
+        bigEndianBitsPadded_int_int_helper(8, 1000, "[true, true, true, false, true, false, false, false]");
+        bigEndianBitsPadded_int_int_helper(2, 104, "[false, false]");
+        bigEndianBitsPadded_int_int_helper(2, 105, "[false, true]");
+        bigEndianBitsPadded_int_int_helper(1, 104, "[false]");
+        bigEndianBitsPadded_int_int_helper(1, 105, "[true]");
+        bigEndianBitsPadded_int_int_helper(0, 104, "[]");
+        bigEndianBitsPadded_int_int_fail_helper(8, -1);
+        bigEndianBitsPadded_int_int_fail_helper(-1, 8);
+    }
+
+    private static void bigEndianBitsPadded_int_BigInteger_helper(
+            int length,
+            @NotNull String n,
+            @NotNull String output
+    ) {
+        aeq(bigEndianBitsPadded(length, Readers.readBigInteger(n).get()), output);
+    }
+
+    private static void bigEndianBitsPadded_int_BigInteger_fail_helper(int length, @NotNull String n) {
         try {
-            bigEndianBitsPadded(-1, 8);
+            bigEndianBitsPadded(length, Readers.readBigInteger(n).get());
             fail();
         } catch (ArithmeticException ignored) {}
     }
 
     @Test
     public void testBigEndianBitsPadded_BigInteger_BigInteger() {
-        aeq(bigEndianBitsPadded(8, BigInteger.ZERO), "[false, false, false, false, false, false, false, false]");
-        aeq(bigEndianBitsPadded(8, BigInteger.ONE), "[false, false, false, false, false, false, false, true]");
-        aeq(bigEndianBitsPadded(8, BigInteger.valueOf(6)), "[false, false, false, false, false, true, true, false]");
-        aeq(bigEndianBitsPadded(8, BigInteger.valueOf(105)), "[false, true, true, false, true, false, false, true]");
-        aeq(bigEndianBitsPadded(8, BigInteger.valueOf(1000)), "[true, true, true, false, true, false, false, false]");
-        aeq(bigEndianBitsPadded(2, BigInteger.valueOf(104)), "[false, false]");
-        aeq(bigEndianBitsPadded(2, BigInteger.valueOf(105)), "[false, true]");
-        aeq(bigEndianBitsPadded(1, BigInteger.valueOf(104)), "[false]");
-        aeq(bigEndianBitsPadded(1, BigInteger.valueOf(105)), "[true]");
-        aeq(bigEndianBitsPadded(0, BigInteger.valueOf(104)), "[]");
-        try {
-            bigEndianBitsPadded(8, NEGATIVE_ONE);
-            fail();
-        } catch (ArithmeticException ignored) {}
-        try {
-            bigEndianBitsPadded(-1, BigInteger.valueOf(8));
-            fail();
-        } catch (ArithmeticException ignored) {}
+        bigEndianBitsPadded_int_BigInteger_helper(8, "0", "[false, false, false, false, false, false, false, false]");
+        bigEndianBitsPadded_int_BigInteger_helper(8, "1", "[false, false, false, false, false, false, false, true]");
+        bigEndianBitsPadded_int_BigInteger_helper(8, "6", "[false, false, false, false, false, true, true, false]");
+        bigEndianBitsPadded_int_BigInteger_helper(8, "105", "[false, true, true, false, true, false, false, true]");
+        bigEndianBitsPadded_int_BigInteger_helper(8, "1000", "[true, true, true, false, true, false, false, false]");
+        bigEndianBitsPadded_int_BigInteger_helper(2, "104", "[false, false]");
+        bigEndianBitsPadded_int_BigInteger_helper(2, "105", "[false, true]");
+        bigEndianBitsPadded_int_BigInteger_helper(1, "104", "[false]");
+        bigEndianBitsPadded_int_BigInteger_helper(1, "105", "[true]");
+        bigEndianBitsPadded_int_BigInteger_helper(0, "104", "[]");
+        bigEndianBitsPadded_int_BigInteger_fail_helper(8, "-1");
+        bigEndianBitsPadded_int_BigInteger_fail_helper(-1, "8");
     }
 
     @Test
