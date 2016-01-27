@@ -5682,11 +5682,59 @@ public final strictfp class IterableUtils {
     }
 
     public static @NotNull <T> Iterable<T> intersect(@NotNull Iterable<T> xs, @NotNull Iterable<T> ys) {
-        return filter(x -> elem(x, ys), xs);
+        return () -> new NoRemoveIterator<T>() {
+            private final @NotNull Iterator<T> xsi = xs.iterator();
+            private final @NotNull Iterator<T> ysi = ys.iterator();
+            private final @NotNull Map<T, Integer> seenXs = new HashMap<>();
+            private final @NotNull Map<T, Integer> seenYs = new HashMap<>();
+
+            @Override
+            public boolean hasNext() {
+                return xsi.hasNext() && ysi.hasNext();
+            }
+
+            @Override
+            public T next() {
+                while (xsi.hasNext() && ysi.hasNext()) {
+                    T x = xsi.next();
+                    Integer xCount = seenYs.get(x);
+                    if (xCount != null) {
+                        if (xCount == 1) {
+                            seenYs.remove(x);
+                        } else {
+                            seenYs.put(x, xCount - 1);
+                        }
+                        return x;
+                    }
+                    xCount = seenXs.get(x);
+                    if (xCount == null) {
+                        xCount = 0;
+                    }
+                    seenXs.put(x, xCount + 1);
+
+                    T y = ysi.next();
+                    Integer yCount = seenXs.get(y);
+                    if (yCount != null) {
+                        if (yCount == 1) {
+                            seenXs.remove(y);
+                        } else {
+                            seenXs.put(y, yCount - 1);
+                        }
+                        return y;
+                    }
+                    yCount = seenYs.get(y);
+                    if (yCount == null) {
+                        yCount = 0;
+                    }
+                    seenYs.put(y, yCount + 1);
+                }
+                throw new NoSuchElementException();
+            }
+        };
     }
 
     public static @NotNull String intersect(@NotNull String s, @NotNull String t) {
-        return filter(c -> elem(c, t), s);
+        return charsToString(intersect(fromString(s), fromString(t)));
     }
 
     public static @NotNull <T extends Comparable<T>> Iterable<T> merge(
