@@ -5687,14 +5687,10 @@ public final strictfp class IterableUtils {
             private final @NotNull Iterator<T> ysi = ys.iterator();
             private final @NotNull Map<T, Integer> seenXs = new HashMap<>();
             private final @NotNull Map<T, Integer> seenYs = new HashMap<>();
+            private T next_;
+            private boolean hasNext_ = advance();
 
-            @Override
-            public boolean hasNext() {
-                return xsi.hasNext() && ysi.hasNext();
-            }
-
-            @Override
-            public T next() {
+            private boolean advance() {
                 while (xsi.hasNext() && ysi.hasNext()) {
                     T x = xsi.next();
                     Integer xCount = seenYs.get(x);
@@ -5704,7 +5700,8 @@ public final strictfp class IterableUtils {
                         } else {
                             seenYs.put(x, xCount - 1);
                         }
-                        return x;
+                        next_ = x;
+                        return true;
                     }
                     xCount = seenXs.get(x);
                     if (xCount == null) {
@@ -5720,7 +5717,8 @@ public final strictfp class IterableUtils {
                         } else {
                             seenXs.put(y, yCount - 1);
                         }
-                        return y;
+                        next_ = y;
+                        return true;
                     }
                     yCount = seenYs.get(y);
                     if (yCount == null) {
@@ -5728,7 +5726,45 @@ public final strictfp class IterableUtils {
                     }
                     seenYs.put(y, yCount + 1);
                 }
-                throw new NoSuchElementException();
+                while (xsi.hasNext()) {
+                    T x = xsi.next();
+                    Integer xCount = seenYs.get(x);
+                    if (xCount != null) {
+                        if (xCount == 1) {
+                            seenYs.remove(x);
+                        } else {
+                            seenYs.put(x, xCount - 1);
+                        }
+                        next_ = x;
+                        return true;
+                    }
+                }
+                while (ysi.hasNext()) {
+                    T y = ysi.next();
+                    Integer yCount = seenXs.get(y);
+                    if (yCount != null) {
+                        if (yCount == 1) {
+                            seenXs.remove(y);
+                        } else {
+                            seenXs.put(y, yCount - 1);
+                        }
+                        next_ = y;
+                        return true;
+                    }
+                }
+                return false;
+            }
+
+            @Override
+            public boolean hasNext() {
+                return hasNext_;
+            }
+
+            @Override
+            public T next() {
+                T oldNext = next_;
+                hasNext_ = advance();
+                return oldNext;
             }
         };
     }
