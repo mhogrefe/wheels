@@ -373,30 +373,46 @@ public class IntegerUtilsTest {
         bigEndianBitsPadded_int_BigInteger_fail_helper(-1, "8");
     }
 
+    private static void fromBits_helper(@NotNull String input, @NotNull String output) {
+        aeq(fromBits(readBooleanList(input)), output);
+    }
+
+    private static void fromBits_fail_helper(@NotNull String input) {
+        try {
+            fromBits(readBooleanListWithNulls(input));
+            fail();
+        } catch (NullPointerException ignored) {}
+    }
+
     @Test
     public void testFromBits() {
-        aeq(fromBits(new ArrayList<>()), 0);
-        aeq(fromBits(Arrays.asList(false, false)), 0);
-        aeq(fromBits(Arrays.asList(true, false)), 1);
-        aeq(fromBits(Arrays.asList(false, true, true, false, false, false, false, false)), 6);
-        aeq(fromBits(Arrays.asList(true, false, false, true, false, true, true)), 105);
+        fromBits_helper("[]", "0");
+        fromBits_helper("[false, false]", "0");
+        fromBits_helper("[true, false]", "1");
+        fromBits_helper("[false, true, true, false, false, false, false, false]", "6");
+        fromBits_helper("[true, false, false, true, false, true, true]", "105");
+        fromBits_fail_helper("[true, null, true]");
+    }
+
+    private static void fromBigEndianBits_helper(@NotNull String input, @NotNull String output) {
+        aeq(fromBigEndianBits(readBooleanList(input)), output);
+    }
+
+    private static void fromBigEndianBits_fail_helper(@NotNull String input) {
         try {
-            fromBits(Arrays.asList(true, null, true));
+            fromBigEndianBits(readBooleanListWithNulls(input));
             fail();
         } catch (NullPointerException ignored) {}
     }
 
     @Test
     public void testFromBigEndianBits() {
-        aeq(fromBigEndianBits(new ArrayList<>()), 0);
-        aeq(fromBigEndianBits(Arrays.asList(false, false)), 0);
-        aeq(fromBigEndianBits(Arrays.asList(false, true)), 1);
-        aeq(fromBigEndianBits(Arrays.asList(false, false, false, false, false, true, true, false)), 6);
-        aeq(fromBigEndianBits(Arrays.asList(true, true, false, true, false, false, true)), 105);
-        try {
-            fromBigEndianBits(Arrays.asList(true, null, true));
-            fail();
-        } catch (NullPointerException ignored) {}
+        fromBigEndianBits_helper("[]", "0");
+        fromBigEndianBits_helper("[false, false]", "0");
+        fromBigEndianBits_helper("[false, true]", "1");
+        fromBigEndianBits_helper("[false, false, false, false, false, true, true, false]", "6");
+        fromBigEndianBits_helper("[true, true, false, true, false, false, true]", "105");
+        fromBigEndianBits_fail_helper("[true, null, true]");
     }
 
     @Test
@@ -1511,6 +1527,14 @@ public class IntegerUtilsTest {
             demux(2, BigInteger.valueOf(-5));
             fail();
         } catch (ArithmeticException ignored) {}
+    }
+
+    private static @NotNull List<Boolean> readBooleanList(@NotNull String s) {
+        return Readers.readList(Readers::readBoolean).apply(s).get();
+    }
+
+    private static @NotNull List<Boolean> readBooleanListWithNulls(@NotNull String s) {
+        return Readers.readListWithNulls(Readers::readBoolean).apply(s).get();
     }
 
     private static @NotNull List<BigInteger> readBigIntegerList(@NotNull String s) {

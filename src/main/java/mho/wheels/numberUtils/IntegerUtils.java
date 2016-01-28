@@ -392,11 +392,17 @@ public class IntegerUtils {
      * @return The {@code BigInteger} represented by {@code bits}
      */
     public static @NotNull BigInteger fromBits(@NotNull Iterable<Boolean> bits) {
-        BigInteger n = BigInteger.ZERO;
-        for (int i : select(bits, rangeUp(0))) {
-            n = n.setBit(i);
+        List<Boolean> bitsList = toList(bits);
+        byte[] bytes = new byte[bitsList.size() / 8 + 1]; // if bits.size() is a multiple of 8, we get an extra zero to
+        int byteIndex = bytes.length;                     // the left which ensures a positive sign
+        for (int i = 0; i < bitsList.size(); i++) {
+            int j = i % 8;
+            if (j == 0) byteIndex--;
+            if (bitsList.get(i)) {
+                bytes[byteIndex] |= 1 << j;
+            }
         }
-        return n;
+        return new BigInteger(bytes);
     }
 
     /**
@@ -412,7 +418,18 @@ public class IntegerUtils {
      * @return The {@code BigInteger} represented by {@code bits}
      */
     public static @NotNull BigInteger fromBigEndianBits(@NotNull Iterable<Boolean> bits) {
-        return fromBits(reverse(bits));
+        List<Boolean> bitsList = toList(bits);
+        byte[] bytes = new byte[bitsList.size() / 8 + 1]; // if bits.size() is a multiple of 8, we get an extra zero to
+        int byteIndex = bytes.length;                     // the left which ensures a positive sign
+        int limit = bitsList.size() - 1;
+        for (int i = 0; i < bitsList.size(); i++) {
+            int j = i % 8;
+            if (j == 0) byteIndex--;
+            if (bitsList.get(limit - i)) {
+                bytes[byteIndex] |= 1 << j;
+            }
+        }
+        return new BigInteger(bytes);
     }
 
     /**
