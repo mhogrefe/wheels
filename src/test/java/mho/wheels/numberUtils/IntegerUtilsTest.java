@@ -415,92 +415,94 @@ public class IntegerUtilsTest {
         fromBigEndianBits_fail_helper("[true, null, true]");
     }
 
+    private static void digits_int_int_helper(int base, int n, @NotNull String output) {
+        aeqit(digits(base, n), output);
+    }
+
+    private static void digits_int_int_fail_helper(int base, int n) {
+        try {
+            digits(base, n);
+            fail();
+        } catch (IllegalArgumentException | ArithmeticException ignored) {}
+    }
+
     @Test
     public void testDigits_int_int() {
-        aeqit(digits(2, 0), "[]");
-        aeqit(digits(3, 0), "[]");
-        aeqit(digits(8, 0), "[]");
-        aeqit(digits(10, 0), "[]");
-        aeqit(digits(12, 0), "[]");
-        aeqit(digits(57, 0), "[]");
-        aeqit(digits(2, 1), "[1]");
-        aeqit(digits(3, 1), "[1]");
-        aeqit(digits(8, 1), "[1]");
-        aeqit(digits(10, 1), "[1]");
-        aeqit(digits(12, 1), "[1]");
-        aeqit(digits(57, 1), "[1]");
-        aeqit(digits(2, 10), "[0, 1, 0, 1]");
-        aeqit(digits(3, 10), "[1, 0, 1]");
-        aeqit(digits(8, 10), "[2, 1]");
-        aeqit(digits(10, 10), "[0, 1]");
-        aeqit(digits(12, 10), "[10]");
-        aeqit(digits(57, 10), "[10]");
-        aeqit(digits(2, 187), "[1, 1, 0, 1, 1, 1, 0, 1]");
-        aeqit(digits(3, 187), "[1, 2, 2, 0, 2]");
-        aeqit(digits(8, 187), "[3, 7, 2]");
-        aeqit(digits(10, 187), "[7, 8, 1]");
-        aeqit(digits(12, 187), "[7, 3, 1]");
-        aeqit(digits(57, 187), "[16, 3]");
+        digits_int_int_helper(2, 0, "[]");
+        digits_int_int_helper(3, 0, "[]");
+        digits_int_int_helper(8, 0, "[]");
+        digits_int_int_helper(10, 0, "[]");
+        digits_int_int_helper(12, 0, "[]");
+        digits_int_int_helper(57, 0, "[]");
+        digits_int_int_helper(2, 1, "[1]");
+        digits_int_int_helper(3, 1, "[1]");
+        digits_int_int_helper(8, 1, "[1]");
+        digits_int_int_helper(10, 1, "[1]");
+        digits_int_int_helper(12, 1, "[1]");
+        digits_int_int_helper(57, 1, "[1]");
+        digits_int_int_helper(2, 10, "[0, 1, 0, 1]");
+        digits_int_int_helper(3, 10, "[1, 0, 1]");
+        digits_int_int_helper(8, 10, "[2, 1]");
+        digits_int_int_helper(10, 10, "[0, 1]");
+        digits_int_int_helper(12, 10, "[10]");
+        digits_int_int_helper(57, 10, "[10]");
+        digits_int_int_helper(2, 187, "[1, 1, 0, 1, 1, 1, 0, 1]");
+        digits_int_int_helper(3, 187, "[1, 2, 2, 0, 2]");
+        digits_int_int_helper(8, 187, "[3, 7, 2]");
+        digits_int_int_helper(10, 187, "[7, 8, 1]");
+        digits_int_int_helper(12, 187, "[7, 3, 1]");
+        digits_int_int_helper(57, 187, "[16, 3]");
+        digits_int_int_fail_helper(1, 10);
+        digits_int_int_fail_helper(0, 10);
+        digits_int_int_fail_helper(2, -1);
+        digits_int_int_fail_helper(0, -1);
+    }
+
+    private static void digits_BigInteger_BigInteger_helper(
+            @NotNull String base,
+            @NotNull String n,
+            @NotNull String output
+    ) {
+        aeqit(digits(Readers.readBigInteger(base).get(), Readers.readBigInteger(n).get()), output);
+    }
+
+    private static void digits_BigInteger_BigInteger_fail_helper(@NotNull String base, @NotNull String n) {
         try {
-            digits(1, 10);
+            digits(Readers.readBigInteger(base).get(), Readers.readBigInteger(n).get());
             fail();
-        } catch (IllegalArgumentException ignored) {}
-        try {
-            digits(0, 10);
-            fail();
-        } catch (IllegalArgumentException ignored) {}
-        try {
-            digits(2, -1);
-            fail();
-        } catch (ArithmeticException ignored) {}
-        try {
-            digits(0, -1);
-            fail();
-        } catch (IllegalArgumentException ignored) {}
+        } catch (IllegalArgumentException | ArithmeticException ignored) {}
     }
 
     @Test
     public void testDigits_BigInteger_BigInteger() {
-        aeqit(digits(TWO, BigInteger.ZERO), "[]");
-        aeqit(digits(BigInteger.valueOf(3), BigInteger.ZERO), "[]");
-        aeqit(digits(BigInteger.valueOf(8), BigInteger.ZERO), "[]");
-        aeqit(digits(BigInteger.valueOf(10), BigInteger.ZERO), "[]");
-        aeqit(digits(BigInteger.valueOf(12), BigInteger.ZERO), "[]");
-        aeqit(digits(BigInteger.valueOf(57), BigInteger.ZERO), "[]");
-        aeqit(digits(TWO, BigInteger.ONE), "[1]");
-        aeqit(digits(BigInteger.valueOf(3), BigInteger.ONE), "[1]");
-        aeqit(digits(BigInteger.valueOf(8), BigInteger.ONE), "[1]");
-        aeqit(digits(BigInteger.valueOf(10), BigInteger.ONE), "[1]");
-        aeqit(digits(BigInteger.valueOf(12), BigInteger.ONE), "[1]");
-        aeqit(digits(BigInteger.valueOf(57), BigInteger.ONE), "[1]");
-        aeqit(digits(TWO, BigInteger.valueOf(10)), "[0, 1, 0, 1]");
-        aeqit(digits(BigInteger.valueOf(3), BigInteger.valueOf(10)), "[1, 0, 1]");
-        aeqit(digits(BigInteger.valueOf(8), BigInteger.valueOf(10)), "[2, 1]");
-        aeqit(digits(BigInteger.valueOf(10), BigInteger.valueOf(10)), "[0, 1]");
-        aeqit(digits(BigInteger.valueOf(12), BigInteger.valueOf(10)), "[10]");
-        aeqit(digits(BigInteger.valueOf(57), BigInteger.valueOf(10)), "[10]");
-        aeqit(digits(TWO, BigInteger.valueOf(187)), "[1, 1, 0, 1, 1, 1, 0, 1]");
-        aeqit(digits(BigInteger.valueOf(3), BigInteger.valueOf(187)), "[1, 2, 2, 0, 2]");
-        aeqit(digits(BigInteger.valueOf(8), BigInteger.valueOf(187)), "[3, 7, 2]");
-        aeqit(digits(BigInteger.valueOf(10), BigInteger.valueOf(187)), "[7, 8, 1]");
-        aeqit(digits(BigInteger.valueOf(12), BigInteger.valueOf(187)), "[7, 3, 1]");
-        aeqit(digits(BigInteger.valueOf(57), BigInteger.valueOf(187)), "[16, 3]");
-        try {
-            digits(BigInteger.ONE, BigInteger.valueOf(10));
-            fail();
-        } catch (IllegalArgumentException ignored) {}
-        try {
-            digits(BigInteger.ZERO, BigInteger.valueOf(10));
-            fail();
-        } catch (IllegalArgumentException ignored) {}
-        try {
-            digits(TWO, NEGATIVE_ONE);
-            fail();
-        } catch (ArithmeticException ignored) {}
-        try {
-            digits(BigInteger.ZERO, NEGATIVE_ONE);
-            fail();
-        } catch (IllegalArgumentException ignored) {}
+        digits_BigInteger_BigInteger_helper("2", "0", "[]");
+        digits_BigInteger_BigInteger_helper("3", "0", "[]");
+        digits_BigInteger_BigInteger_helper("8", "0", "[]");
+        digits_BigInteger_BigInteger_helper("10", "0", "[]");
+        digits_BigInteger_BigInteger_helper("12", "0", "[]");
+        digits_BigInteger_BigInteger_helper("57", "0", "[]");
+        digits_BigInteger_BigInteger_helper("2", "1", "[1]");
+        digits_BigInteger_BigInteger_helper("3", "1", "[1]");
+        digits_BigInteger_BigInteger_helper("8", "1", "[1]");
+        digits_BigInteger_BigInteger_helper("10", "1", "[1]");
+        digits_BigInteger_BigInteger_helper("12", "1", "[1]");
+        digits_BigInteger_BigInteger_helper("57", "1", "[1]");
+        digits_BigInteger_BigInteger_helper("2", "10", "[0, 1, 0, 1]");
+        digits_BigInteger_BigInteger_helper("3", "10", "[1, 0, 1]");
+        digits_BigInteger_BigInteger_helper("8", "10", "[2, 1]");
+        digits_BigInteger_BigInteger_helper("10", "10", "[0, 1]");
+        digits_BigInteger_BigInteger_helper("12", "10", "[10]");
+        digits_BigInteger_BigInteger_helper("57", "10", "[10]");
+        digits_BigInteger_BigInteger_helper("2", "187", "[1, 1, 0, 1, 1, 1, 0, 1]");
+        digits_BigInteger_BigInteger_helper("3", "187", "[1, 2, 2, 0, 2]");
+        digits_BigInteger_BigInteger_helper("8", "187", "[3, 7, 2]");
+        digits_BigInteger_BigInteger_helper("10", "187", "[7, 8, 1]");
+        digits_BigInteger_BigInteger_helper("12", "187", "[7, 3, 1]");
+        digits_BigInteger_BigInteger_helper("57", "187", "[16, 3]");
+        digits_BigInteger_BigInteger_fail_helper("1", "10");
+        digits_BigInteger_BigInteger_fail_helper("0", "10");
+        digits_BigInteger_BigInteger_fail_helper("2", "-1");
+        digits_BigInteger_BigInteger_fail_helper("0", "-1");
     }
 
     @Test

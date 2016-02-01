@@ -3,7 +3,6 @@ package mho.wheels.numberUtils;
 import mho.wheels.io.Readers;
 import mho.wheels.iterables.ExhaustiveProvider;
 import mho.wheels.iterables.IterableUtils;
-import mho.wheels.iterables.NoRemoveIterator;
 import mho.wheels.structures.Pair;
 import mho.wheels.testing.Testing;
 import org.jetbrains.annotations.NotNull;
@@ -450,28 +449,29 @@ public class IntegerUtils {
      * @param n a number
      * @return {@code n}'s digits in little-endian order
      */
-    public static @NotNull Iterable<Integer> digits(int base, int n) {
+    public static @NotNull List<Integer> digits(int base, int n) {
         if (base < 2) {
             throw new IllegalArgumentException("base must be at least 2. Invalid base: " + base);
         }
         if (n < 0) {
             throw new ArithmeticException("n cannot be negative. Invalid n: " + n);
         }
-        return () -> new NoRemoveIterator<Integer>() {
-            private int remaining = n;
-
-            @Override
-            public boolean hasNext() {
-                return remaining != 0;
+        List<Integer> digits = new ArrayList<>();
+        int log = ceilingLog2(base);
+        if (1 << log == base) {
+            int mask = base - 1;
+            while (n != 0) {
+                digits.add(n & mask);
+                n >>= log;
             }
-
-            @Override
-            public Integer next() {
-                int digit = remaining % base;
+        } else {
+            int remaining = n;
+            while (remaining != 0) {
+                digits.add(remaining % base);
                 remaining /= base;
-                return digit;
             }
-        };
+        }
+        return digits;
     }
 
     /**
@@ -492,28 +492,29 @@ public class IntegerUtils {
      * @param n a number
      * @return {@code n}'s digits in little-endian order
      */
-    public static @NotNull Iterable<BigInteger> digits(@NotNull BigInteger base, @NotNull final BigInteger n) {
+    public static @NotNull List<BigInteger> digits(@NotNull BigInteger base, @NotNull BigInteger n) {
         if (lt(base, TWO)) {
             throw new IllegalArgumentException("base must be at least 2. Invalid base: " + base);
         }
         if (n.signum() == -1) {
             throw new ArithmeticException("n cannot be negative. Invalid n: " + n);
         }
-        return () -> new NoRemoveIterator<BigInteger>() {
-            private BigInteger remaining = n;
-
-            @Override
-            public boolean hasNext() {
-                return !remaining.equals(BigInteger.ZERO);
+        List<BigInteger> digits = new ArrayList<>();
+        if (isPowerOfTwo(base)) {
+            int log = ceilingLog2(base);
+            BigInteger mask = base.subtract(BigInteger.ONE);
+            while (!n.equals(BigInteger.ZERO)) {
+                digits.add(n.and(mask));
+                n = n.shiftRight(log);
             }
-
-            @Override
-            public BigInteger next() {
-                BigInteger digit = remaining.mod(base);
+        } else {
+            BigInteger remaining = n;
+            while (!remaining.equals(BigInteger.ZERO)) {
+                digits.add(remaining.mod(base));
                 remaining = remaining.divide(base);
-                return digit;
             }
-        };
+        }
+        return digits;
     }
 
     /**
@@ -583,7 +584,7 @@ public class IntegerUtils {
      * @param n a number
      * @return {@code n}'s digits in big-endian order
      */
-    public static @NotNull List<Integer> bigEndianDigits(int base, final int n) {
+    public static @NotNull List<Integer> bigEndianDigits(int base, int n) {
         return reverse(digits(base, n));
     }
 
@@ -604,7 +605,7 @@ public class IntegerUtils {
      * @param n a number
      * @return {@code n}'s digits in big-endian order
      */
-    public static @NotNull List<BigInteger> bigEndianDigits(@NotNull BigInteger base, final @NotNull BigInteger n) {
+    public static @NotNull List<BigInteger> bigEndianDigits(@NotNull BigInteger base, @NotNull BigInteger n) {
         return reverse(digits(base, n));
     }
 

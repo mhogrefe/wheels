@@ -60,6 +60,7 @@ public class IntegerUtilsProperties extends TestProperties {
         propertiesDigits_int_int();
         compareImplementationsDigits_int_int();
         propertiesDigits_BigInteger_BigInteger();
+        compareImplementationsDigits_BigInteger_BigInteger();
         propertiesDigitsPadded_int_int_int();
         compareImplementationsDigitsPadded_int_int_int();
         propertiesDigitsPadded_int_BigInteger_BigInteger();
@@ -695,42 +696,44 @@ public class IntegerUtilsProperties extends TestProperties {
         compareImplementations("fromBigEndianBits(Iterable<Boolean>)", take(LIMIT, P.lists(P.booleans())), functions);
     }
 
-    private static @NotNull Iterable<Integer> digits_int_int_simplest(int base, int n) {
-        return map(BigInteger::intValue, digits(BigInteger.valueOf(base), BigInteger.valueOf(n)));
+    private static @NotNull List<Integer> digits_int_int_simplest(int base, int n) {
+        return toList(map(BigInteger::intValue, digits(BigInteger.valueOf(base), BigInteger.valueOf(n))));
+    }
+
+    private static @NotNull List<Integer> digits_int_int_alt(int base, int n) {
+        if (base < 2) {
+            throw new IllegalArgumentException("base must be at least 2. Invalid base: " + base);
+        }
+        if (n < 0) {
+            throw new ArithmeticException("n cannot be negative. Invalid n: " + n);
+        }
+        List<Integer> digits = new ArrayList<>();
+        int remaining = n;
+        while (remaining != 0) {
+            digits.add(remaining % base);
+            remaining /= base;
+        }
+        return digits;
     }
 
     private void propertiesDigits_int_int() {
-        initialize("");
-        System.out.println("\t\ttesting digits(int, int) properties...");
-
-        Iterable<Pair<Integer, Integer>> ps;
-        if (P instanceof ExhaustiveProvider) {
-            ps = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.naturalIntegers(), P.rangeUp(2));
-        } else {
-            ps = P.pairs(P.naturalIntegers(), map(i -> i + 2, P.withScale(20).naturalIntegersGeometric()));
-        }
+        initialize("digits(int, int)");
+        Iterable<Pair<Integer, Integer>> ps = P.pairsSquareRootOrder(P.naturalIntegers(), P.rangeUpGeometric(2));
         for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
-            Iterable<Integer> digitsIterable = digits(p.b, p.a);
-            List<Integer> digits = toList(digitsIterable);
+            List<Integer> digits = digits(p.b, p.a);
             aeqit(p, digits, digits_int_int_simplest(p.b, p.a));
+            aeqit(p, digits, digits_int_int_alt(p.b, p.a));
             aeqit(p, digits, reverse(bigEndianDigits(p.b, p.a)));
-            assertTrue(p, all(i -> i != null && i >= 0 && i < p.b, digits));
-            assertEquals(p, fromDigits(p.b, digits).intValueExact(), p.a.intValue());
-            try {
-                digitsIterable.iterator().remove();
-                fail(p);
-            } catch (UnsupportedOperationException ignored) {}
+            assertTrue(p, all(i -> i >= 0 && i < p.b, digits));
+            inverse(i -> digits(p.b, i), (List<Integer> is) -> fromDigits(p.b, is).intValueExact(), p.a);
+            assertEquals(p, fromDigits(p.b, digits).intValueExact(), p.a);
         }
 
-        if (P instanceof ExhaustiveProvider) {
-            ps = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.positiveIntegers(), P.rangeUp(2));
-        } else {
-            ps = P.pairs(P.positiveIntegers(), map(i -> i + 2, P.withScale(20).naturalIntegersGeometric()));
-        }
+        ps = P.pairsSquareRootOrder(P.positiveIntegers(), P.rangeUpGeometric(2));
         for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
             List<Integer> digits = toList(digits(p.b, p.a));
             assertFalse(p, digits.isEmpty());
-            assertNotEquals(p, last(digits).intValue(), 0);
+            assertNotEquals(p, last(digits), 0);
             int targetDigitCount = ceilingLog(BigInteger.valueOf(p.b), BigInteger.valueOf(p.a)).intValueExact();
             if (BigInteger.valueOf(p.b).pow(targetDigitCount).equals(BigInteger.valueOf(p.a))) {
                 targetDigitCount++;
@@ -770,65 +773,82 @@ public class IntegerUtilsProperties extends TestProperties {
     }
 
     private void compareImplementationsDigits_int_int() {
-        initialize("");
-        System.out.println("\t\tcomparing digits(int, int) implementations...");
+        Map<String, Function<Pair<Integer, Integer>, List<Integer>>> functions = new LinkedHashMap<>();
+        functions.put("simplest", p -> digits_int_int_simplest(p.b, p.a));
+        functions.put("alt", p -> digits_int_int_alt(p.b, p.a));
+        functions.put("standard", p -> digits(p.b, p.a));
+        Iterable<Pair<Integer, Integer>> ps = P.pairsSquareRootOrder(P.naturalIntegers(), P.rangeUpGeometric(2));
+        compareImplementations("digits(int, int)", take(LIMIT, ps), functions);
+    }
 
-        long totalTime = 0;
-        Iterable<Pair<Integer, Integer>> ps;
-        if (P instanceof ExhaustiveProvider) {
-            ps = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.naturalIntegers(), P.rangeUp(2));
+    private static @NotNull List<BigInteger> digits_BigInteger_BigInteger_alt(
+            @NotNull BigInteger base,
+            @NotNull BigInteger n
+    ) {
+        if (lt(base, TWO)) {
+            throw new IllegalArgumentException("base must be at least 2. Invalid base: " + base);
+        }
+        if (n.signum() == -1) {
+            throw new ArithmeticException("n cannot be negative. Invalid n: " + n);
+        }
+        List<BigInteger> digits = new ArrayList<>();
+        BigInteger remaining = n;
+        while (!remaining.equals(BigInteger.ZERO)) {
+            digits.add(remaining.mod(base));
+            remaining = remaining.divide(base);
+        }
+        return digits;
+    }
+
+    private static @NotNull List<BigInteger> digits_BigInteger_BigInteger_alt2(
+            @NotNull BigInteger base,
+            @NotNull BigInteger n
+    ) {
+        if (lt(base, TWO)) {
+            throw new IllegalArgumentException("base must be at least 2. Invalid base: " + base);
+        }
+        if (n.signum() == -1) {
+            throw new ArithmeticException("n cannot be negative. Invalid n: " + n);
+        }
+        List<BigInteger> digits = new ArrayList<>();
+        if (isPowerOfTwo(base)) {
+            int log = ceilingLog2(base);
+            BigInteger mask = base.subtract(BigInteger.ONE);
+            int shift = 0;
+            int bitLength = n.bitLength();
+            while (shift < bitLength) {
+                digits.add(n.and(mask).shiftRight(shift));
+                mask = mask.shiftLeft(log);
+                shift += log;
+            }
         } else {
-            ps = P.pairs(P.naturalIntegers(), map(i -> i + 2, P.withScale(20).naturalIntegersGeometric()));
+            BigInteger remaining = n;
+            while (!remaining.equals(BigInteger.ZERO)) {
+                digits.add(remaining.mod(base));
+                remaining = remaining.divide(base);
+            }
         }
-        for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
-            long time = System.nanoTime();
-            toList(digits_int_int_simplest(p.b, p.a));
-            totalTime += (System.nanoTime() - time);
-        }
-        System.out.println("\t\t\tsimplest: " + ((double) totalTime) / 1e9 + " s");
-
-        totalTime = 0;
-        for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
-            long time = System.nanoTime();
-            toList(digits(p.b, p.a));
-            totalTime += (System.nanoTime() - time);
-        }
-        System.out.println("\t\t\tstandard: " + ((double) totalTime) / 1e9 + " s");
+        return digits;
     }
 
     private void propertiesDigits_BigInteger_BigInteger() {
-        initialize("");
-        System.out.println("\t\ttesting digits(BigInteger, BigInteger) properties...");
-
-        Iterable<Pair<BigInteger, BigInteger>> ps;
-        if (P instanceof ExhaustiveProvider) {
-            ps = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.naturalBigIntegers(), P.rangeUp(TWO));
-        } else {
-            ps = P.pairs(
-                    P.naturalBigIntegers(),
-                    map(i -> BigInteger.valueOf(i + 2), P.withScale(20).naturalIntegersGeometric())
-            );
-        }
+        initialize("digits(BigInteger, BigInteger)");
+        //noinspection Convert2MethodRef
+        Iterable<Pair<BigInteger, BigInteger>> ps = P.pairsSquareRootOrder(
+                P.naturalBigIntegers(),
+                map(i -> BigInteger.valueOf(i), P.rangeUpGeometric(2))
+        );
         for (Pair<BigInteger, BigInteger> p : take(LIMIT, ps)) {
-            Iterable<BigInteger> digitsIterable = digits(p.b, p.a);
-            List<BigInteger> digits = toList(digitsIterable);
+            List<BigInteger> digits = digits(p.b, p.a);
+            aeqit(p, digits, digits_BigInteger_BigInteger_alt(p.b, p.a));
+            aeqit(p, digits, digits_BigInteger_BigInteger_alt2(p.b, p.a));
             aeqit(p, digits, reverse(bigEndianDigits(p.b, p.a)));
-            assertTrue(p, all(i -> i != null && i.signum() != -1 && lt(i, p.b), digits));
-            assertEquals(p, fromDigits(p.b, digits), p.a);
-            try {
-                digitsIterable.iterator().remove();
-                fail(p);
-            } catch (UnsupportedOperationException ignored) {}
+            assertTrue(p, all(i -> i.signum() != -1 && lt(i, p.b), digits));
+            inverse(i -> digits(p.b, i), (List<BigInteger> is) -> fromDigits(p.b, is), p.a);
         }
 
-        if (P instanceof ExhaustiveProvider) {
-            ps = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.positiveBigIntegers(), P.rangeUp(TWO));
-        } else {
-            ps = P.pairs(
-                    P.positiveBigIntegers(),
-                    map(i -> BigInteger.valueOf(i + 2), P.withScale(20).naturalIntegersGeometric())
-            );
-        }
+        //noinspection Convert2MethodRef
+        ps = P.pairsSquareRootOrder(P.positiveBigIntegers(), map(i -> BigInteger.valueOf(i), P.rangeUpGeometric(2)));
         for (Pair<BigInteger, BigInteger> p : take(LIMIT, ps)) {
             List<BigInteger> digits = toList(digits(p.b, p.a));
             assertFalse(p, digits.isEmpty());
@@ -854,10 +874,7 @@ public class IntegerUtilsProperties extends TestProperties {
             assertTrue(i, isEmpty(digits(i, BigInteger.ZERO)));
         }
 
-        Iterable<Pair<BigInteger, BigInteger>> psFail = P.pairs(
-                P.naturalBigIntegers(),
-                P.rangeDown(NEGATIVE_ONE)
-        );
+        Iterable<Pair<BigInteger, BigInteger>> psFail = P.pairs(P.naturalBigIntegers(), P.rangeDown(NEGATIVE_ONE));
         for (Pair<BigInteger, BigInteger> p : take(LIMIT, psFail)) {
             try {
                 digits(p.b, p.a);
@@ -872,6 +889,19 @@ public class IntegerUtilsProperties extends TestProperties {
                 fail(p);
             } catch (ArithmeticException ignored) {}
         }
+    }
+
+    private void compareImplementationsDigits_BigInteger_BigInteger() {
+        Map<String, Function<Pair<BigInteger, BigInteger>, List<BigInteger>>> functions = new LinkedHashMap<>();
+        functions.put("alt", p -> digits_BigInteger_BigInteger_alt(p.b, p.a));
+        functions.put("alt2", p -> digits_BigInteger_BigInteger_alt2(p.b, p.a));
+        functions.put("standard", p -> digits(p.b, p.a));
+        //noinspection Convert2MethodRef
+        Iterable<Pair<BigInteger, BigInteger>> ps = P.pairsSquareRootOrder(
+                P.naturalBigIntegers(),
+                map(i -> BigInteger.valueOf(i), P.rangeUpGeometric(2))
+        );
+        compareImplementations("digits(BigInteger, BigInteger)", take(LIMIT, ps), functions);
     }
 
     private static @NotNull Iterable<Integer> digitsPadded_int_int_int_simplest(int length, int base, int n) {
