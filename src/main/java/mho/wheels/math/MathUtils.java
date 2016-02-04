@@ -25,8 +25,6 @@ public final class MathUtils {
      */
     private static final int PRIME_SIEVE_SIZE = 1 << 16;
 
-    private static final int LETTERS_IN_ALPHABET = 26;
-
     /**
      * A cache of small primes, generated using the Sieve of Eratosthenes algorithm.
      */
@@ -36,23 +34,6 @@ public final class MathUtils {
      * Disallow instantiation
      */
     private MathUtils() {}
-
-    public static @NotNull String variableIndexToString(int index) {
-        if (index < 0) {
-            throw new IllegalArgumentException();
-        }
-        char letter = (char) ('a' + index % LETTERS_IN_ALPHABET);
-        int multiplicity = 1 + index / LETTERS_IN_ALPHABET;
-        return replicate(multiplicity, letter);
-    }
-
-    public static @NotNull Optional<Integer> stringToVariableIndex(@NotNull String s) {
-        if (s.isEmpty()) return Optional.empty();
-        char letter = head(s);
-        if (letter < 'a' || letter > 'z') return Optional.empty();
-        if (any(c -> c != letter, s)) return Optional.empty();
-        return Optional.of(LETTERS_IN_ALPHABET * (s.length() - 1) + letter - 'a');
-    }
 
     /**
      * The greatest common divisor of two {@link int}s. If both {@code x} and {@code y} are zero, the result is
