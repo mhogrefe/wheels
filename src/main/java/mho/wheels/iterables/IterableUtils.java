@@ -133,6 +133,18 @@ public final strictfp class IterableUtils {
         return list;
     }
 
+    public static @NotNull <T> HashSet<T> toHashSet(@NotNull Iterable<T> xs) {
+        HashSet<T> set = new HashSet<>();
+        addTo(xs, set);
+        return set;
+    }
+
+    public static @NotNull <T extends Comparable<T>> TreeSet<T> toTreeSet(@NotNull Iterable<T> xs) {
+        TreeSet<T> set = new TreeSet<>();
+        addTo(xs, set);
+        return set;
+    }
+
     /**
      * Creates a {@code String} representation of {@code xs}. Each element is converted to a {@code String} and
      * those {@code String}s are placed in a comma-separated list surrounded by square brackets. Only works for finite
@@ -5668,8 +5680,7 @@ public final strictfp class IterableUtils {
 
     public static <T> boolean isSubsetOf(@NotNull Iterable<T> xs, @NotNull Iterable<T> ys) {
         if (isEmpty(xs)) return true;
-        HashSet<T> set = new HashSet<>();
-        addTo(xs, set);
+        HashSet<T> set = toHashSet(xs);
         for (T y : ys) {
             set.remove(y);
             if (set.isEmpty()) return true;
