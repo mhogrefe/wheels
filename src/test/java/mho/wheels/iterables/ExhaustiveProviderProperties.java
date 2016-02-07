@@ -2512,7 +2512,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
     }
 
     private void propertiesSextuplesLex() {
-        initialize("sexuplesLex(Iterable<A>, List<B>, List<C>, List<D>, List<E>, List<F>)");
+        initialize("sextuplesLex(Iterable<A>, List<B>, List<C>, List<D>, List<E>, List<F>)");
         Iterable<Sextuple<
                 List<Integer>,
                 List<Integer>,
