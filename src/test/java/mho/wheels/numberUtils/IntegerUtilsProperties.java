@@ -64,6 +64,7 @@ public class IntegerUtilsProperties extends TestProperties {
         propertiesDigitsPadded_int_int_int();
         compareImplementationsDigitsPadded_int_int_int();
         propertiesDigitsPadded_int_BigInteger_BigInteger();
+        compareImplementationsDigitsPadded_int_BigInteger_BigInteger();
         propertiesBigEndianDigits_int_int();
         compareImplementationsBigEndianDigits_int_int();
         propertiesBigEndianDigits_BigInteger_BigInteger();
@@ -372,7 +373,7 @@ public class IntegerUtilsProperties extends TestProperties {
             try {
                 bitsPadded(p.b, p.a);
                 fail(p);
-            } catch (ArithmeticException ignored) {
+            } catch (IllegalArgumentException ignored) {
             }
         }
 
@@ -420,7 +421,7 @@ public class IntegerUtilsProperties extends TestProperties {
             try {
                 bitsPadded(p.b, p.a);
                 fail(p);
-            } catch (ArithmeticException ignored) {
+            } catch (IllegalArgumentException ignored) {
             }
         }
 
@@ -546,7 +547,7 @@ public class IntegerUtilsProperties extends TestProperties {
             try {
                 bigEndianBitsPadded(p.b, p.a);
                 fail(p);
-            } catch (ArithmeticException ignored) {}
+            } catch (IllegalArgumentException ignored) {}
         }
 
         for (Pair<Integer, Integer> p : take(LIMIT, P.pairs(P.negativeIntegers(), P.naturalIntegers()))) {
@@ -600,7 +601,7 @@ public class IntegerUtilsProperties extends TestProperties {
             try {
                 bigEndianBitsPadded(p.b, p.a);
                 fail(p);
-            } catch (ArithmeticException ignored) {}
+            } catch (IllegalArgumentException ignored) {}
         }
 
         for (Pair<BigInteger, Integer> p : take(LIMIT, P.pairs(P.negativeBigIntegers(), P.naturalIntegers()))) {
@@ -904,97 +905,51 @@ public class IntegerUtilsProperties extends TestProperties {
         compareImplementations("digits(BigInteger, BigInteger)", take(LIMIT, ps), functions);
     }
 
-    private static @NotNull Iterable<Integer> digitsPadded_int_int_int_simplest(int length, int base, int n) {
-        return map(BigInteger::intValue, digitsPadded(length, BigInteger.valueOf(base), BigInteger.valueOf(n)));
+    private static @NotNull List<Integer> digitsPadded_int_int_int_simplest(int length, int base, int n) {
+        return toList(
+                map(BigInteger::intValue, digitsPadded(length, BigInteger.valueOf(base), BigInteger.valueOf(n)))
+        );
+    }
+
+    private static @NotNull List<Integer> digitsPadded_int_int_int_alt(int length, int base, int n) {
+        return toList(pad(0, length, digits(base, n)));
     }
 
     private void propertiesDigitsPadded_int_int_int() {
-        initialize("");
-        System.out.println("\t\ttesting digitsPadded(int, int, int) properties...");
-
-        Iterable<Triple<Integer, Integer, Integer>> ts;
-        if (P instanceof ExhaustiveProvider) {
-            ts = map(
-                    p -> new Triple<>(p.a.a, p.a.b, p.b),
-                    (Iterable<Pair<Pair<Integer, Integer>, Integer>>) P.pairs(
-                            P.pairs(P.naturalIntegers(), map(i -> i + 2, P.naturalIntegers())),
-                            P.naturalIntegers()
-                    )
-            );
-        } else {
-            Iterable<Integer> is = P.withScale(20).naturalIntegersGeometric();
-            ts = P.triples(is, map(i -> i + 2, is), P.naturalIntegers());
-        }
+        initialize("digitsPadded(int, int, int)");
+        Iterable<Triple<Integer, Integer, Integer>> ts = P.triples(
+                P.naturalIntegersGeometric(), P.rangeUpGeometric(2), P.naturalIntegers());
         for (Triple<Integer, Integer, Integer> t : take(LIMIT, ts)) {
-            Iterable<Integer> digitsIterable = digitsPadded(t.a, t.b, t.c);
-            List<Integer> digits = toList(digitsIterable);
+            List<Integer> digits = digitsPadded(t.a, t.b, t.c);
             aeqit(t, digits, digitsPadded_int_int_int_simplest(t.a, t.b, t.c));
+            aeqit(t, digits, digitsPadded_int_int_int_alt(t.a, t.b, t.c));
             aeqit(t, digits, reverse(bigEndianDigitsPadded(t.a, t.b, t.c)));
-            assertTrue(t, all(i -> i != null && i >= 0 && i < t.b, digits));
-            assertEquals(t, digits.size(), t.a.intValue());
-            try {
-                digitsIterable.iterator().remove();
-                fail(t);
-            } catch (UnsupportedOperationException ignored) {}
+            assertTrue(t, all(i -> i >= 0 && i < t.b, digits));
+            assertEquals(t, digits.size(), t.a);
         }
-
-        if (P instanceof ExhaustiveProvider) {
-            ts = map(
-                    q -> new Triple<>(q.b, q.a.b, q.a.a),
-                    P.dependentPairs(
-                            ((ExhaustiveProvider) P).pairsLogarithmicOrder(P.naturalIntegers(), P.rangeUp(2)),
-                            p -> {
-                                int targetDigitCount = 0;
-                                if (p.a > 0) {
-                                    targetDigitCount = ceilingLog(
-                                            BigInteger.valueOf(p.b),
-                                            BigInteger.valueOf(p.a)
-                                    ).intValueExact();
-                                    BigInteger x = BigInteger.valueOf(p.b).pow(targetDigitCount);
-                                    BigInteger y = BigInteger.valueOf(p.a);
-                                    //noinspection SuspiciousNameCombination
-                                    if (x.equals(y)) {
-                                        targetDigitCount++;
-                                    }
+        ts = map(
+                q -> new Triple<>(q.b, q.a.b, q.a.a),
+                P.dependentPairs(
+                        P.pairsLogarithmicOrder(P.naturalIntegers(), P.rangeUpGeometric(2)),
+                        p -> {
+                            int targetDigitCount = 0;
+                            if (p.a > 0) {
+                                targetDigitCount = ceilingLog(BigInteger.valueOf(p.b), BigInteger.valueOf(p.a))
+                                        .intValueExact();
+                                BigInteger x = BigInteger.valueOf(p.b).pow(targetDigitCount);
+                                BigInteger y = BigInteger.valueOf(p.a);
+                                //noinspection SuspiciousNameCombination
+                                if (x.equals(y)) {
+                                    targetDigitCount++;
                                 }
-                                return P.rangeUp(targetDigitCount);
                             }
-                    )
-            );
-        } else {
-            ts = map(
-                    q -> new Triple<>(q.b, q.a.b, q.a.a),
-                    P.dependentPairs(
-                            P.pairs(
-                                    P.naturalIntegers(),
-                                    map(i -> i + 2, P.withScale(20).naturalIntegersGeometric())
-                            ),
-                            p -> {
-                                int targetDigitCount = 0;
-                                if (p.a > 0) {
-                                    targetDigitCount = ceilingLog(
-                                            BigInteger.valueOf(p.b),
-                                            BigInteger.valueOf(p.a)
-                                    ).intValueExact();
-                                    BigInteger x = BigInteger.valueOf(p.b).pow(targetDigitCount);
-                                    BigInteger y = BigInteger.valueOf(p.a);
-                                    //noinspection SuspiciousNameCombination
-                                    if (x.equals(y)) {
-                                        targetDigitCount++;
-                                    }
-                                }
-                                final int c = targetDigitCount;
-                                return (Iterable<Integer>) map(
-                                        i -> i + c,
-                                        P.withScale(20).naturalIntegersGeometric()
-                                );
-                            }
-                    )
-            );
-        }
+                            return P.rangeUpGeometric(targetDigitCount);
+                        }
+                )
+        );
         for (Triple<Integer, Integer, Integer> t : take(LIMIT, ts)) {
-            List<Integer> digits = toList(digitsPadded(t.a, t.b, t.c));
-            assertEquals(t, fromDigits(t.b, digits).intValueExact(), t.c.intValue());
+            List<Integer> digits = digitsPadded(t.a, t.b, t.c);
+            assertEquals(t, fromDigits(t.b, digits).intValueExact(), t.c);
         }
 
         Function<Integer, Boolean> digitsToBits = i -> {
@@ -1005,14 +960,12 @@ public class IntegerUtilsProperties extends TestProperties {
             }
         };
 
-        Iterable<Pair<Integer, Integer>> ps;
-        if (P instanceof ExhaustiveProvider) {
-            ps = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.naturalIntegers());
-        } else {
-            ps = P.pairs(P.naturalIntegers(), P.withScale(20).naturalIntegersGeometric());
-        }
+        Iterable<Pair<Integer, Integer>> ps = P.pairsSquareRootOrder(
+                P.naturalIntegers(),
+                P.naturalIntegersGeometric()
+        );
         for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
-            List<Integer> digits = toList(digitsPadded(p.b, 2, p.a));
+            List<Integer> digits = digitsPadded(p.b, 2, p.a);
             aeqit(p, map(digitsToBits, digits), bitsPadded(p.b, p.a));
         }
 
@@ -1036,7 +989,7 @@ public class IntegerUtilsProperties extends TestProperties {
             } catch (IllegalArgumentException ignored) {}
         }
 
-        tsFail = P.triples(P.naturalIntegers(), P.rangeDown(-1), P.negativeIntegers());
+        tsFail = P.triples(P.naturalIntegers(), P.negativeIntegers(), P.negativeIntegers());
         for (Triple<Integer, Integer, Integer> t : take(LIMIT, tsFail)) {
             try {
                 digitsPadded(t.a, t.b, t.c);
@@ -1046,140 +999,86 @@ public class IntegerUtilsProperties extends TestProperties {
     }
 
     private void compareImplementationsDigitsPadded_int_int_int() {
-        initialize("");
-        System.out.println("\t\tcomparing digitsPadded(int, int, int) implementations...");
+        Map<String, Function<Triple<Integer, Integer, Integer>, List<Integer>>> functions = new LinkedHashMap<>();
+        functions.put("simplest", t -> digitsPadded_int_int_int_simplest(t.a, t.b, t.c));
+        functions.put("alt", t -> digitsPadded_int_int_int_alt(t.a, t.b, t.c));
+        functions.put("standard", t -> digitsPadded(t.a, t.b, t.c));
+        Iterable<Triple<Integer, Integer, Integer>> ts = P.triples(
+                P.naturalIntegersGeometric(), P.rangeUpGeometric(2), P.naturalIntegers());
+        compareImplementations("digitsPadded(int, int, int)", take(LIMIT, ts), functions);
+    }
 
-        long totalTime = 0;
-        Iterable<Triple<Integer, Integer, Integer>> ts;
-        if (P instanceof ExhaustiveProvider) {
-            ts = map(
-                    p -> new Triple<>(p.a.a, p.a.b, p.b),
-                    (Iterable<Pair<Pair<Integer, Integer>, Integer>>) P.pairs(
-                            P.pairs(P.naturalIntegers(), map(i -> i + 2, P.naturalIntegers())),
-                            P.naturalIntegers()
-                    )
-            );
-        } else {
-            Iterable<Integer> is = P.withScale(20).naturalIntegersGeometric();
-            ts = P.triples(is, map(i -> i + 2, is), P.naturalIntegers());
-        }
-        for (Triple<Integer, Integer, Integer> t : take(LIMIT, ts)) {
-            long time = System.nanoTime();
-            toList(digitsPadded_int_int_int_simplest(t.a, t.b, t.c));
-            totalTime += (System.nanoTime() - time);
-        }
-        System.out.println("\t\t\tsimplest: " + ((double) totalTime) / 1e9 + " s");
-
-        totalTime = 0;
-        for (Triple<Integer, Integer, Integer> t : take(LIMIT, ts)) {
-            long time = System.nanoTime();
-            toList(digitsPadded(t.a, t.b, t.c));
-            totalTime += (System.nanoTime() - time);
-        }
-        System.out.println("\t\t\tstandard: " + ((double) totalTime) / 1e9 + " s");
+    private static @NotNull List<BigInteger> digitsPadded_int_BigInteger_BigInteger_alt(
+            int length,
+            @NotNull BigInteger base,
+            @NotNull BigInteger n
+    ) {
+        return toList(pad(BigInteger.ZERO, length, digits(base, n)));
     }
 
     private void propertiesDigitsPadded_int_BigInteger_BigInteger() {
-        initialize("");
-        System.out.println("\t\ttesting digitsPadded(int, BigInteger, BigInteger) properties...");
-
-        Iterable<Triple<Integer, BigInteger, BigInteger>> ts;
-        if (P instanceof ExhaustiveProvider) {
-            ts = map(
-                    p -> new Triple<>(p.a.a, p.a.b, p.b),
-                    (Iterable<Pair<Pair<Integer, BigInteger>, BigInteger>>) P.pairs(
-                            P.pairs(P.naturalIntegers(), map(i -> BigInteger.valueOf(i + 2), P.naturalIntegers())),
-                            P.naturalBigIntegers()
-                    )
-            );
-        } else {
-            Iterable<Integer> is = P.withScale(20).naturalIntegersGeometric();
-            ts = P.triples(is, map(i -> BigInteger.valueOf(i + 2), is), P.naturalBigIntegers());
-        }
+        initialize("digitsPadded(int, BigInteger, BigInteger)");
+        //noinspection Convert2MethodRef
+        Iterable<Triple<Integer, BigInteger, BigInteger>> ts = P.triples(
+                P.naturalIntegersGeometric(),
+                map(i -> BigInteger.valueOf(i), P.rangeUpGeometric(2)),
+                P.naturalBigIntegers()
+        );
         for (Triple<Integer, BigInteger, BigInteger> t : take(LIMIT, ts)) {
-            Iterable<BigInteger> digitsIterable = digitsPadded(t.a, t.b, t.c);
-            List<BigInteger> digits = toList(digitsIterable);
+            List<BigInteger> digits = digitsPadded(t.a, t.b, t.c);
+            aeqit(t, digits, digitsPadded_int_BigInteger_BigInteger_alt(t.a, t.b, t.c));
             aeqit(t, digits, reverse(bigEndianDigitsPadded(t.a, t.b, t.c)));
-            assertTrue(t, all(i -> i != null && i.signum() != -1 && lt(i, t.b), digits));
-            assertEquals(t, digits.size(), t.a.intValue());
-            try {
-                digitsIterable.iterator().remove();
-                fail(t);
-            } catch (UnsupportedOperationException ignored) {}
+            assertTrue(t, all(i -> i.signum() != -1 && lt(i, t.b), digits));
+            assertEquals(t, digits.size(), t.a);
         }
-
-        if (P instanceof ExhaustiveProvider) {
-            ts = map(
-                    q -> new Triple<>(q.b, q.a.b, q.a.a),
-                    P.dependentPairs(
-                            ((ExhaustiveProvider) P).pairsLogarithmicOrder(P.naturalBigIntegers(), P.rangeUp(TWO)),
-                            p -> {
-                                int targetDigitCount = 0;
-                                if (p.a.signum() == 1) {
-                                    targetDigitCount = ceilingLog(p.b, p.a).intValueExact();
-                                    //noinspection SuspiciousNameCombination
-                                    if (p.b.pow(targetDigitCount).equals(p.a)) {
-                                        targetDigitCount++;
-                                    }
+        //noinspection Convert2MethodRef
+        ts = map(
+                q -> new Triple<>(q.b, q.a.b, q.a.a),
+                P.dependentPairs(
+                        P.pairsLogarithmicOrder(
+                                P.naturalBigIntegers(),
+                                map(i -> BigInteger.valueOf(i), P.rangeUpGeometric(2))
+                        ),
+                        p -> {
+                            int targetDigitCount = 0;
+                            if (p.a.signum() == 1) {
+                                targetDigitCount = ceilingLog(p.b, p.a).intValueExact();
+                                if (p.b.pow(targetDigitCount).equals(p.a)) {
+                                    targetDigitCount++;
                                 }
-                                return P.rangeUp(targetDigitCount);
                             }
-                    )
-            );
-        } else {
-            ts = map(
-                    q -> new Triple<>(q.b, q.a.b, q.a.a),
-                    P.dependentPairs(
-                            P.pairs(
-                                    P.naturalBigIntegers(),
-                                    map(
-                                            i -> BigInteger.valueOf(i + 2),
-                                            P.withScale(20).naturalIntegersGeometric()
-                                    )
-                            ),
-                            p -> {
-                                int targetDigitCount = 0;
-                                if (p.a.signum() == 1) {
-                                    targetDigitCount = ceilingLog(p.b, p.a).intValueExact();
-                                    //noinspection SuspiciousNameCombination
-                                    if (p.b.pow(targetDigitCount).equals(p.a)) {
-                                        targetDigitCount++;
-                                    }
-                                }
-                                final int c = targetDigitCount;
-                                return (Iterable<Integer>) map(
-                                        i -> i + c,
-                                        P.withScale(20).naturalIntegersGeometric()
-                                );
-                            }
-                    )
-            );
-        }
+                            return P.withScale(targetDigitCount + 1).rangeUpGeometric(targetDigitCount);
+                        }
+                )
+        );
         for (Triple<Integer, BigInteger, BigInteger> t : take(LIMIT, ts)) {
-            List<BigInteger> digits = toList(digitsPadded(t.a, t.b, t.c));
+            List<BigInteger> digits = digitsPadded(t.a, t.b, t.c);
             assertEquals(t, fromDigits(t.b, digits), t.c);
         }
 
         Function<BigInteger, Boolean> digitsToBits = i -> {
-            if (i.equals(BigInteger.ZERO)) return false;
-            if (i.equals(BigInteger.ONE)) return true;
-            throw new IllegalArgumentException();
+            if (i.equals(BigInteger.ZERO)) {
+                return false;
+            } else if (i.equals(BigInteger.ONE)) {
+                return true;
+            } else {
+                throw new IllegalArgumentException();
+            }
         };
 
-        Iterable<Pair<BigInteger, Integer>> ps;
-        if (P instanceof ExhaustiveProvider) {
-            ps = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.naturalBigIntegers(), P.naturalIntegers());
-        } else {
-            ps = P.pairs(P.naturalBigIntegers(), P.withScale(20).naturalIntegersGeometric());
-        }
+        Iterable<Pair<BigInteger, Integer>> ps = P.pairsSquareRootOrder(
+                P.naturalBigIntegers(),
+                P.naturalIntegersGeometric()
+        );
         for (Pair<BigInteger, Integer> p : take(LIMIT, ps)) {
-            List<BigInteger> digits = toList(digitsPadded(p.b, TWO, p.a));
+            List<BigInteger> digits = digitsPadded(p.b, IntegerUtils.TWO, p.a);
             aeqit(p, map(digitsToBits, digits), bitsPadded(p.b, p.a));
         }
 
+        //noinspection Convert2MethodRef
         Iterable<Triple<Integer, BigInteger, BigInteger>> tsFail = P.triples(
                 P.naturalIntegers(),
-                P.rangeUp(TWO),
+                map(i -> BigInteger.valueOf(i), P.rangeUpGeometric(2)),
                 P.negativeBigIntegers()
         );
         for (Triple<Integer, BigInteger, BigInteger> t : take(LIMIT, tsFail)) {
@@ -1189,7 +1088,12 @@ public class IntegerUtilsProperties extends TestProperties {
             } catch (ArithmeticException ignored) {}
         }
 
-        tsFail = P.triples(P.negativeIntegers(), P.rangeUp(TWO), P.naturalBigIntegers());
+        //noinspection Convert2MethodRef
+        tsFail = P.triples(
+                P.negativeIntegers(),
+                map(i -> BigInteger.valueOf(i), P.rangeUpGeometric(2)),
+                P.naturalBigIntegers()
+        );
         for (Triple<Integer, BigInteger, BigInteger> t : take(LIMIT, tsFail)) {
             try {
                 digitsPadded(t.a, t.b, t.c);
@@ -1197,13 +1101,27 @@ public class IntegerUtilsProperties extends TestProperties {
             } catch (IllegalArgumentException ignored) {}
         }
 
-        tsFail = P.triples(P.naturalIntegers(), P.rangeDown(BigInteger.ONE), P.naturalBigIntegers());
+        tsFail = P.triples(P.naturalIntegers(), P.negativeBigIntegers(), P.negativeBigIntegers());
         for (Triple<Integer, BigInteger, BigInteger> t : take(LIMIT, tsFail)) {
             try {
                 digitsPadded(t.a, t.b, t.c);
                 fail(t);
             } catch (IllegalArgumentException ignored) {}
         }
+    }
+
+    private void compareImplementationsDigitsPadded_int_BigInteger_BigInteger() {
+        Map<String, Function<Triple<Integer, BigInteger, BigInteger>, List<BigInteger>>> functions =
+                new LinkedHashMap<>();
+        functions.put("alt", t -> digitsPadded_int_BigInteger_BigInteger_alt(t.a, t.b, t.c));
+        functions.put("standard", t -> digitsPadded(t.a, t.b, t.c));
+        //noinspection Convert2MethodRef
+        Iterable<Triple<Integer, BigInteger, BigInteger>> ts = P.triples(
+                P.naturalIntegersGeometric(),
+                map(i -> BigInteger.valueOf(i), P.rangeUpGeometric(2)),
+                P.naturalBigIntegers()
+        );
+        compareImplementations("digitsPadded(int, BigInteger, BigInteger)", take(LIMIT, ts), functions);
     }
 
     private static @NotNull Iterable<Integer> bigEndianDigits_int_int_simplest(int base, int n) {

@@ -217,7 +217,7 @@ public class IntegerUtils {
      */
     public static @NotNull List<Boolean> bitsPadded(int length, int n) {
         if (length < 0) {
-            throw new ArithmeticException("length cannot be negative. Invalid length: " + length);
+            throw new IllegalArgumentException("length cannot be negative. Invalid length: " + length);
         }
         if (n < 0) {
             throw new ArithmeticException("n cannot be negative. Invalid n: " + n);
@@ -250,7 +250,7 @@ public class IntegerUtils {
      */
     public static @NotNull List<Boolean> bitsPadded(int length, @NotNull BigInteger n) {
         if (length < 0) {
-            throw new ArithmeticException("length cannot be negative. Invalid length: " + length);
+            throw new IllegalArgumentException("length cannot be negative. Invalid length: " + length);
         }
         if (n.signum() == -1) {
             throw new ArithmeticException("n cannot be negative. Invalid n: " + n);
@@ -331,7 +331,7 @@ public class IntegerUtils {
      */
     public static @NotNull List<Boolean> bigEndianBitsPadded(int length, int n) {
         if (length < 0) {
-            throw new ArithmeticException("length cannot be negative. Invalid length: " + length);
+            throw new IllegalArgumentException("length cannot be negative. Invalid length: " + length);
         }
         if (n < 0) {
             throw new ArithmeticException("n cannot be negative. Invalid n: " + n);
@@ -366,7 +366,7 @@ public class IntegerUtils {
      */
     public static @NotNull List<Boolean> bigEndianBitsPadded(int length, BigInteger n) {
         if (length < 0) {
-            throw new ArithmeticException("length cannot be negative. Invalid length: " + length);
+            throw new IllegalArgumentException("length cannot be negative. Invalid length: " + length);
         }
         if (n.signum() == -1) {
             throw new ArithmeticException("n cannot be negative. Invalid n: " + n);
@@ -536,8 +536,32 @@ public class IntegerUtils {
      * @param n a number
      * @return {@code n}'s digits in little-endian order
      */
-    public static @NotNull Iterable<Integer> digitsPadded(int length, int base, int n) {
-        return pad(0, length, digits(base, n));
+    public static @NotNull List<Integer> digitsPadded(int length, int base, int n) {
+        if (length < 0) {
+            throw new IllegalArgumentException("length cannot be negative. Invalid length: " + length);
+        }
+        if (base < 2) {
+            throw new IllegalArgumentException("base must be at least 2. Invalid base: " + base);
+        }
+        if (n < 0) {
+            throw new ArithmeticException("n cannot be negative. Invalid n: " + n);
+        }
+        List<Integer> digits = new ArrayList<>();
+        int log = ceilingLog2(base);
+        if (1 << log == base) {
+            int mask = base - 1;
+            for (int i = 0; i < length; i++) {
+                digits.add(n & mask);
+                n >>= log;
+            }
+        } else {
+            int remaining = n;
+            for (int i = 0; i < length; i++) {
+                digits.add(remaining % base);
+                remaining /= base;
+            }
+        }
+        return digits;
     }
 
     /**
@@ -559,12 +583,32 @@ public class IntegerUtils {
      * @param n a number
      * @return {@code n}'s digits in little-endian order
      */
-    public static @NotNull Iterable<BigInteger> digitsPadded(
-            int length,
-            @NotNull BigInteger base,
-            @NotNull BigInteger n
-    ) {
-        return pad(BigInteger.ZERO, length, digits(base, n));
+    public static @NotNull List<BigInteger> digitsPadded(int length, @NotNull BigInteger base, @NotNull BigInteger n) {
+        if (length < 0) {
+            throw new IllegalArgumentException("length cannot be negative. Invalid length: " + length);
+        }
+        if (lt(base, TWO)) {
+            throw new IllegalArgumentException("base must be at least 2. Invalid base: " + base);
+        }
+        if (n.signum() == -1) {
+            throw new ArithmeticException("n cannot be negative. Invalid n: " + n);
+        }
+        List<BigInteger> digits = new ArrayList<>();
+        if (isPowerOfTwo(base)) {
+            int log = ceilingLog2(base);
+            BigInteger mask = base.subtract(BigInteger.ONE);
+            for (int i = 0; i < length; i++) {
+                digits.add(n.and(mask));
+                n = n.shiftRight(log);
+            }
+        } else {
+            BigInteger remaining = n;
+            for (int i = 0; i < length; i++) {
+                digits.add(remaining.mod(base));
+                remaining = remaining.divide(base);
+            }
+        }
+        return digits;
     }
 
     /**

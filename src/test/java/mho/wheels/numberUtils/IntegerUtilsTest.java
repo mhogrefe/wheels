@@ -229,7 +229,7 @@ public class IntegerUtilsTest {
         try {
             bitsPadded(length, n);
             fail();
-        } catch (ArithmeticException ignored) {}
+        } catch (ArithmeticException | IllegalArgumentException ignored) {}
     }
 
     @Test
@@ -256,7 +256,7 @@ public class IntegerUtilsTest {
         try {
             bitsPadded(length, Readers.readBigInteger(n).get());
             fail();
-        } catch (ArithmeticException ignored) {}
+        } catch (ArithmeticException | IllegalArgumentException ignored) {}
     }
 
     @Test
@@ -323,7 +323,7 @@ public class IntegerUtilsTest {
         try {
             bigEndianBitsPadded(length, n);
             fail();
-        } catch (ArithmeticException ignored) {}
+        } catch (ArithmeticException | IllegalArgumentException ignored) {}
     }
 
     @Test
@@ -354,7 +354,7 @@ public class IntegerUtilsTest {
         try {
             bigEndianBitsPadded(length, Readers.readBigInteger(n).get());
             fail();
-        } catch (ArithmeticException ignored) {}
+        } catch (ArithmeticException | IllegalArgumentException ignored) {}
     }
 
     @Test
@@ -505,152 +505,151 @@ public class IntegerUtilsTest {
         digits_BigInteger_BigInteger_fail_helper("0", "-1");
     }
 
-    @Test
-    public void testDigitsPadded_int_int_int() {
-        aeqit(digitsPadded(0, 2, 0), "[]");
-        aeqit(digitsPadded(0, 3, 0), "[]");
-        aeqit(digitsPadded(0, 57, 0), "[]");
-        aeqit(digitsPadded(0, 2, 1), "[]");
-        aeqit(digitsPadded(0, 3, 1), "[]");
-        aeqit(digitsPadded(0, 57, 1), "[]");
-        aeqit(digitsPadded(0, 2, 10), "[]");
-        aeqit(digitsPadded(0, 3, 10), "[]");
-        aeqit(digitsPadded(0, 57, 10), "[]");
-        aeqit(digitsPadded(0, 2, 187), "[]");
-        aeqit(digitsPadded(0, 3, 187), "[]");
-        aeqit(digitsPadded(0, 57, 187), "[]");
-        aeqit(digitsPadded(1, 2, 0), "[0]");
-        aeqit(digitsPadded(1, 3, 0), "[0]");
-        aeqit(digitsPadded(1, 57, 0), "[0]");
-        aeqit(digitsPadded(1, 2, 1), "[1]");
-        aeqit(digitsPadded(1, 3, 1), "[1]");
-        aeqit(digitsPadded(1, 57, 1), "[1]");
-        aeqit(digitsPadded(1, 2, 10), "[0]");
-        aeqit(digitsPadded(1, 3, 10), "[1]");
-        aeqit(digitsPadded(1, 57, 10), "[10]");
-        aeqit(digitsPadded(1, 2, 187), "[1]");
-        aeqit(digitsPadded(1, 3, 187), "[1]");
-        aeqit(digitsPadded(1, 57, 187), "[16]");
-        aeqit(digitsPadded(2, 2, 0), "[0, 0]");
-        aeqit(digitsPadded(2, 3, 0), "[0, 0]");
-        aeqit(digitsPadded(2, 57, 0), "[0, 0]");
-        aeqit(digitsPadded(2, 2, 1), "[1, 0]");
-        aeqit(digitsPadded(2, 3, 1), "[1, 0]");
-        aeqit(digitsPadded(2, 57, 1), "[1, 0]");
-        aeqit(digitsPadded(2, 2, 10), "[0, 1]");
-        aeqit(digitsPadded(2, 3, 10), "[1, 0]");
-        aeqit(digitsPadded(2, 57, 10), "[10, 0]");
-        aeqit(digitsPadded(2, 2, 187), "[1, 1]");
-        aeqit(digitsPadded(2, 3, 187), "[1, 2]");
-        aeqit(digitsPadded(2, 57, 187), "[16, 3]");
-        aeqit(digitsPadded(8, 2, 0), "[0, 0, 0, 0, 0, 0, 0, 0]");
-        aeqit(digitsPadded(8, 3, 0), "[0, 0, 0, 0, 0, 0, 0, 0]");
-        aeqit(digitsPadded(8, 57, 0), "[0, 0, 0, 0, 0, 0, 0, 0]");
-        aeqit(digitsPadded(8, 2, 1), "[1, 0, 0, 0, 0, 0, 0, 0]");
-        aeqit(digitsPadded(8, 3, 1), "[1, 0, 0, 0, 0, 0, 0, 0]");
-        aeqit(digitsPadded(8, 57, 1), "[1, 0, 0, 0, 0, 0, 0, 0]");
-        aeqit(digitsPadded(8, 2, 10), "[0, 1, 0, 1, 0, 0, 0, 0]");
-        aeqit(digitsPadded(8, 3, 10), "[1, 0, 1, 0, 0, 0, 0, 0]");
-        aeqit(digitsPadded(8, 57, 10), "[10, 0, 0, 0, 0, 0, 0, 0]");
-        aeqit(digitsPadded(8, 2, 187), "[1, 1, 0, 1, 1, 1, 0, 1]");
-        aeqit(digitsPadded(8, 3, 187), "[1, 2, 2, 0, 2, 0, 0, 0]");
-        aeqit(digitsPadded(8, 57, 187), "[16, 3, 0, 0, 0, 0, 0, 0]");
+    private static void digitsPadded_int_int_int_helper(int length, int base, int n, @NotNull String output) {
+        aeqit(digitsPadded(length, base, n), output);
+    }
+
+    private static void digitsPadded_int_int_int_fail_helper(int length, int base, int n) {
         try {
-            digitsPadded(3, 1, 10);
+            digitsPadded(length, base, n);
             fail();
-        } catch (IllegalArgumentException ignored) {}
-        try {
-            digitsPadded(3, 0, 10);
-            fail();
-        } catch (IllegalArgumentException ignored) {}
-        try {
-            digitsPadded(3, 2, -1);
-            fail();
-        } catch (ArithmeticException ignored) {}
-        try {
-            digitsPadded(3, 0, -1);
-            fail();
-        } catch (IllegalArgumentException ignored) {}
-        try {
-            digitsPadded(-1, 2, 3);
-        } catch (IllegalArgumentException ignored) {}
-        try {
-            digitsPadded(-1, 0, -1);
-        } catch (IllegalArgumentException ignored) {}
+        } catch (IllegalArgumentException | ArithmeticException ignored) {}
     }
 
     @Test
-    public void testDigitsPadded_BigInteger_BigInteger_BigInteger() {
-        aeqit(digitsPadded(0, TWO, BigInteger.ZERO), "[]");
-        aeqit(digitsPadded(0, BigInteger.valueOf(3), BigInteger.ZERO), "[]");
-        aeqit(digitsPadded(0, BigInteger.valueOf(57), BigInteger.ZERO), "[]");
-        aeqit(digitsPadded(0, TWO, BigInteger.ONE), "[]");
-        aeqit(digitsPadded(0, BigInteger.valueOf(3), BigInteger.ONE), "[]");
-        aeqit(digitsPadded(0, BigInteger.valueOf(57), BigInteger.ONE), "[]");
-        aeqit(digitsPadded(0, TWO, BigInteger.valueOf(10)), "[]");
-        aeqit(digitsPadded(0, BigInteger.valueOf(3), BigInteger.valueOf(10)), "[]");
-        aeqit(digitsPadded(0, BigInteger.valueOf(57), BigInteger.valueOf(10)), "[]");
-        aeqit(digitsPadded(0, TWO, BigInteger.valueOf(187)), "[]");
-        aeqit(digitsPadded(0, BigInteger.valueOf(3), BigInteger.valueOf(187)), "[]");
-        aeqit(digitsPadded(0, BigInteger.valueOf(57), BigInteger.valueOf(187)), "[]");
-        aeqit(digitsPadded(1, TWO, BigInteger.ZERO), "[0]");
-        aeqit(digitsPadded(1, BigInteger.valueOf(3), BigInteger.ZERO), "[0]");
-        aeqit(digitsPadded(1, BigInteger.valueOf(57), BigInteger.ZERO), "[0]");
-        aeqit(digitsPadded(1, TWO, BigInteger.ONE), "[1]");
-        aeqit(digitsPadded(1, BigInteger.valueOf(3), BigInteger.ONE), "[1]");
-        aeqit(digitsPadded(1, BigInteger.valueOf(57), BigInteger.ONE), "[1]");
-        aeqit(digitsPadded(1, TWO, BigInteger.valueOf(10)), "[0]");
-        aeqit(digitsPadded(1, BigInteger.valueOf(3), BigInteger.valueOf(10)), "[1]");
-        aeqit(digitsPadded(1, BigInteger.valueOf(57), BigInteger.valueOf(10)), "[10]");
-        aeqit(digitsPadded(1, TWO, BigInteger.valueOf(187)), "[1]");
-        aeqit(digitsPadded(1, BigInteger.valueOf(3), BigInteger.valueOf(187)), "[1]");
-        aeqit(digitsPadded(1, BigInteger.valueOf(57), BigInteger.valueOf(187)), "[16]");
-        aeqit(digitsPadded(2, TWO, BigInteger.ZERO), "[0, 0]");
-        aeqit(digitsPadded(2, BigInteger.valueOf(3), BigInteger.ZERO), "[0, 0]");
-        aeqit(digitsPadded(2, BigInteger.valueOf(57), BigInteger.ZERO), "[0, 0]");
-        aeqit(digitsPadded(2, TWO, BigInteger.ONE), "[1, 0]");
-        aeqit(digitsPadded(2, BigInteger.valueOf(3), BigInteger.ONE), "[1, 0]");
-        aeqit(digitsPadded(2, BigInteger.valueOf(57), BigInteger.ONE), "[1, 0]");
-        aeqit(digitsPadded(2, TWO, BigInteger.valueOf(10)), "[0, 1]");
-        aeqit(digitsPadded(2, BigInteger.valueOf(3), BigInteger.valueOf(10)), "[1, 0]");
-        aeqit(digitsPadded(2, BigInteger.valueOf(57), BigInteger.valueOf(10)), "[10, 0]");
-        aeqit(digitsPadded(2, TWO, BigInteger.valueOf(187)), "[1, 1]");
-        aeqit(digitsPadded(2, BigInteger.valueOf(3), BigInteger.valueOf(187)), "[1, 2]");
-        aeqit(digitsPadded(2, BigInteger.valueOf(57), BigInteger.valueOf(187)), "[16, 3]");
-        aeqit(digitsPadded(8, TWO, BigInteger.ZERO), "[0, 0, 0, 0, 0, 0, 0, 0]");
-        aeqit(digitsPadded(8, BigInteger.valueOf(3), BigInteger.ZERO), "[0, 0, 0, 0, 0, 0, 0, 0]");
-        aeqit(digitsPadded(8, BigInteger.valueOf(57), BigInteger.ZERO), "[0, 0, 0, 0, 0, 0, 0, 0]");
-        aeqit(digitsPadded(8, TWO, BigInteger.ONE), "[1, 0, 0, 0, 0, 0, 0, 0]");
-        aeqit(digitsPadded(8, BigInteger.valueOf(3), BigInteger.ONE), "[1, 0, 0, 0, 0, 0, 0, 0]");
-        aeqit(digitsPadded(8, BigInteger.valueOf(57), BigInteger.ONE), "[1, 0, 0, 0, 0, 0, 0, 0]");
-        aeqit(digitsPadded(8, TWO, BigInteger.valueOf(10)), "[0, 1, 0, 1, 0, 0, 0, 0]");
-        aeqit(digitsPadded(8, BigInteger.valueOf(3), BigInteger.valueOf(10)), "[1, 0, 1, 0, 0, 0, 0, 0]");
-        aeqit(digitsPadded(8, BigInteger.valueOf(57), BigInteger.valueOf(10)), "[10, 0, 0, 0, 0, 0, 0, 0]");
-        aeqit(digitsPadded(8, TWO, BigInteger.valueOf(187)), "[1, 1, 0, 1, 1, 1, 0, 1]");
-        aeqit(digitsPadded(8, BigInteger.valueOf(3), BigInteger.valueOf(187)), "[1, 2, 2, 0, 2, 0, 0, 0]");
-        aeqit(digitsPadded(8, BigInteger.valueOf(57), BigInteger.valueOf(187)), "[16, 3, 0, 0, 0, 0, 0, 0]");
+    public void testDigitsPadded_int_int_int() {
+        digitsPadded_int_int_int_helper(0, 2, 0, "[]");
+        digitsPadded_int_int_int_helper(0, 3, 0, "[]");
+        digitsPadded_int_int_int_helper(0, 57, 0, "[]");
+        digitsPadded_int_int_int_helper(0, 2, 1, "[]");
+        digitsPadded_int_int_int_helper(0, 3, 1, "[]");
+        digitsPadded_int_int_int_helper(0, 57, 1, "[]");
+        digitsPadded_int_int_int_helper(0, 2, 10, "[]");
+        digitsPadded_int_int_int_helper(0, 3, 10, "[]");
+        digitsPadded_int_int_int_helper(0, 57, 10, "[]");
+        digitsPadded_int_int_int_helper(0, 2, 187, "[]");
+        digitsPadded_int_int_int_helper(0, 3, 187, "[]");
+        digitsPadded_int_int_int_helper(0, 57, 187, "[]");
+        digitsPadded_int_int_int_helper(1, 2, 0, "[0]");
+        digitsPadded_int_int_int_helper(1, 3, 0, "[0]");
+        digitsPadded_int_int_int_helper(1, 57, 0, "[0]");
+        digitsPadded_int_int_int_helper(1, 2, 1, "[1]");
+        digitsPadded_int_int_int_helper(1, 3, 1, "[1]");
+        digitsPadded_int_int_int_helper(1, 57, 1, "[1]");
+        digitsPadded_int_int_int_helper(1, 2, 10, "[0]");
+        digitsPadded_int_int_int_helper(1, 3, 10, "[1]");
+        digitsPadded_int_int_int_helper(1, 57, 10, "[10]");
+        digitsPadded_int_int_int_helper(1, 2, 187, "[1]");
+        digitsPadded_int_int_int_helper(1, 3, 187, "[1]");
+        digitsPadded_int_int_int_helper(1, 57, 187, "[16]");
+        digitsPadded_int_int_int_helper(2, 2, 0, "[0, 0]");
+        digitsPadded_int_int_int_helper(2, 3, 0, "[0, 0]");
+        digitsPadded_int_int_int_helper(2, 57, 0, "[0, 0]");
+        digitsPadded_int_int_int_helper(2, 2, 1, "[1, 0]");
+        digitsPadded_int_int_int_helper(2, 3, 1, "[1, 0]");
+        digitsPadded_int_int_int_helper(2, 57, 1, "[1, 0]");
+        digitsPadded_int_int_int_helper(2, 2, 10, "[0, 1]");
+        digitsPadded_int_int_int_helper(2, 3, 10, "[1, 0]");
+        digitsPadded_int_int_int_helper(2, 57, 10, "[10, 0]");
+        digitsPadded_int_int_int_helper(2, 2, 187, "[1, 1]");
+        digitsPadded_int_int_int_helper(2, 3, 187, "[1, 2]");
+        digitsPadded_int_int_int_helper(2, 57, 187, "[16, 3]");
+        digitsPadded_int_int_int_helper(8, 2, 0, "[0, 0, 0, 0, 0, 0, 0, 0]");
+        digitsPadded_int_int_int_helper(8, 3, 0, "[0, 0, 0, 0, 0, 0, 0, 0]");
+        digitsPadded_int_int_int_helper(8, 57, 0, "[0, 0, 0, 0, 0, 0, 0, 0]");
+        digitsPadded_int_int_int_helper(8, 2, 1, "[1, 0, 0, 0, 0, 0, 0, 0]");
+        digitsPadded_int_int_int_helper(8, 3, 1, "[1, 0, 0, 0, 0, 0, 0, 0]");
+        digitsPadded_int_int_int_helper(8, 57, 1, "[1, 0, 0, 0, 0, 0, 0, 0]");
+        digitsPadded_int_int_int_helper(8, 2, 10, "[0, 1, 0, 1, 0, 0, 0, 0]");
+        digitsPadded_int_int_int_helper(8, 3, 10, "[1, 0, 1, 0, 0, 0, 0, 0]");
+        digitsPadded_int_int_int_helper(8, 57, 10, "[10, 0, 0, 0, 0, 0, 0, 0]");
+        digitsPadded_int_int_int_helper(8, 2, 187, "[1, 1, 0, 1, 1, 1, 0, 1]");
+        digitsPadded_int_int_int_helper(8, 3, 187, "[1, 2, 2, 0, 2, 0, 0, 0]");
+        digitsPadded_int_int_int_helper(8, 57, 187, "[16, 3, 0, 0, 0, 0, 0, 0]");
+        digitsPadded_int_int_int_fail_helper(3, 1, 10);
+        digitsPadded_int_int_int_fail_helper(3, 0, 10);
+        digitsPadded_int_int_int_fail_helper(3, 2, -1);
+        digitsPadded_int_int_int_fail_helper(3, 0, -1);
+        digitsPadded_int_int_int_fail_helper(-1, 2, 3);
+        digitsPadded_int_int_int_fail_helper(-1, 0, -1);
+    }
+
+    private static void digitsPadded_int_BigInteger_BigInteger_helper(
+            int length,
+            @NotNull String base,
+            @NotNull String n,
+            @NotNull String output
+    ) {
+        aeqit(digitsPadded(length, Readers.readBigInteger(base).get(), Readers.readBigInteger(n).get()), output);
+    }
+
+    private static void digitsPadded_int_BigInteger_BigInteger_fail_helper(
+            int length,
+            @NotNull String base,
+            @NotNull String n
+    ) {
         try {
-            digitsPadded(3, BigInteger.ONE, BigInteger.valueOf(10));
+            digitsPadded(length, Readers.readBigInteger(base).get(), Readers.readBigInteger(n).get());
             fail();
-        } catch (IllegalArgumentException ignored) {}
-        try {
-            digitsPadded(3, BigInteger.ZERO, BigInteger.valueOf(10));
-            fail();
-        } catch (IllegalArgumentException ignored) {}
-        try {
-            digitsPadded(3, TWO, NEGATIVE_ONE);
-            fail();
-        } catch (ArithmeticException ignored) {}
-        try {
-            digitsPadded(3, BigInteger.ZERO, NEGATIVE_ONE);
-            fail();
-        } catch (IllegalArgumentException ignored) {}
-        try {
-            digitsPadded(-1, TWO, BigInteger.valueOf(3));
-        } catch (IllegalArgumentException ignored) {}
-        try {
-            digitsPadded(-1, BigInteger.ZERO, NEGATIVE_ONE);
-        } catch (IllegalArgumentException ignored) {}
+        } catch (IllegalArgumentException | ArithmeticException ignored) {}
+    }
+
+    @Test
+    public void testDigitsPadded_int_BigInteger_BigInteger() {
+        digitsPadded_int_BigInteger_BigInteger_helper(0, "2", "0", "[]");
+        digitsPadded_int_BigInteger_BigInteger_helper(0, "3", "0", "[]");
+        digitsPadded_int_BigInteger_BigInteger_helper(0, "57", "0", "[]");
+        digitsPadded_int_BigInteger_BigInteger_helper(0, "2", "1", "[]");
+        digitsPadded_int_BigInteger_BigInteger_helper(0, "3", "1", "[]");
+        digitsPadded_int_BigInteger_BigInteger_helper(0, "57", "1", "[]");
+        digitsPadded_int_BigInteger_BigInteger_helper(0, "2", "10", "[]");
+        digitsPadded_int_BigInteger_BigInteger_helper(0, "3", "10", "[]");
+        digitsPadded_int_BigInteger_BigInteger_helper(0, "57", "10", "[]");
+        digitsPadded_int_BigInteger_BigInteger_helper(0, "2", "187", "[]");
+        digitsPadded_int_BigInteger_BigInteger_helper(0, "3", "187", "[]");
+        digitsPadded_int_BigInteger_BigInteger_helper(0, "57", "187", "[]");
+        digitsPadded_int_BigInteger_BigInteger_helper(1, "2", "0", "[0]");
+        digitsPadded_int_BigInteger_BigInteger_helper(1, "3", "0", "[0]");
+        digitsPadded_int_BigInteger_BigInteger_helper(1, "57", "0", "[0]");
+        digitsPadded_int_BigInteger_BigInteger_helper(1, "2", "1", "[1]");
+        digitsPadded_int_BigInteger_BigInteger_helper(1, "3", "1", "[1]");
+        digitsPadded_int_BigInteger_BigInteger_helper(1, "57", "1", "[1]");
+        digitsPadded_int_BigInteger_BigInteger_helper(1, "2", "10", "[0]");
+        digitsPadded_int_BigInteger_BigInteger_helper(1, "3", "10", "[1]");
+        digitsPadded_int_BigInteger_BigInteger_helper(1, "57", "10", "[10]");
+        digitsPadded_int_BigInteger_BigInteger_helper(1, "2", "187", "[1]");
+        digitsPadded_int_BigInteger_BigInteger_helper(1, "3", "187", "[1]");
+        digitsPadded_int_BigInteger_BigInteger_helper(1, "57", "187", "[16]");
+        digitsPadded_int_BigInteger_BigInteger_helper(2, "2", "0", "[0, 0]");
+        digitsPadded_int_BigInteger_BigInteger_helper(2, "3", "0", "[0, 0]");
+        digitsPadded_int_BigInteger_BigInteger_helper(2, "57", "0", "[0, 0]");
+        digitsPadded_int_BigInteger_BigInteger_helper(2, "2", "1", "[1, 0]");
+        digitsPadded_int_BigInteger_BigInteger_helper(2, "3", "1", "[1, 0]");
+        digitsPadded_int_BigInteger_BigInteger_helper(2, "57", "1", "[1, 0]");
+        digitsPadded_int_BigInteger_BigInteger_helper(2, "2", "10", "[0, 1]");
+        digitsPadded_int_BigInteger_BigInteger_helper(2, "3", "10", "[1, 0]");
+        digitsPadded_int_BigInteger_BigInteger_helper(2, "57", "10", "[10, 0]");
+        digitsPadded_int_BigInteger_BigInteger_helper(2, "2", "187", "[1, 1]");
+        digitsPadded_int_BigInteger_BigInteger_helper(2, "3", "187", "[1, 2]");
+        digitsPadded_int_BigInteger_BigInteger_helper(2, "57", "187", "[16, 3]");
+        digitsPadded_int_BigInteger_BigInteger_helper(8, "2", "0", "[0, 0, 0, 0, 0, 0, 0, 0]");
+        digitsPadded_int_BigInteger_BigInteger_helper(8, "3", "0", "[0, 0, 0, 0, 0, 0, 0, 0]");
+        digitsPadded_int_BigInteger_BigInteger_helper(8, "57", "0", "[0, 0, 0, 0, 0, 0, 0, 0]");
+        digitsPadded_int_BigInteger_BigInteger_helper(8, "2", "1", "[1, 0, 0, 0, 0, 0, 0, 0]");
+        digitsPadded_int_BigInteger_BigInteger_helper(8, "3", "1", "[1, 0, 0, 0, 0, 0, 0, 0]");
+        digitsPadded_int_BigInteger_BigInteger_helper(8, "57", "1", "[1, 0, 0, 0, 0, 0, 0, 0]");
+        digitsPadded_int_BigInteger_BigInteger_helper(8, "2", "10", "[0, 1, 0, 1, 0, 0, 0, 0]");
+        digitsPadded_int_BigInteger_BigInteger_helper(8, "3", "10", "[1, 0, 1, 0, 0, 0, 0, 0]");
+        digitsPadded_int_BigInteger_BigInteger_helper(8, "57", "10", "[10, 0, 0, 0, 0, 0, 0, 0]");
+        digitsPadded_int_BigInteger_BigInteger_helper(8, "2", "187", "[1, 1, 0, 1, 1, 1, 0, 1]");
+        digitsPadded_int_BigInteger_BigInteger_helper(8, "3", "187", "[1, 2, 2, 0, 2, 0, 0, 0]");
+        digitsPadded_int_BigInteger_BigInteger_helper(8, "57", "187", "[16, 3, 0, 0, 0, 0, 0, 0]");
+        digitsPadded_int_BigInteger_BigInteger_fail_helper(3, "1", "10");
+        digitsPadded_int_BigInteger_BigInteger_fail_helper(3, "0", "10");
+        digitsPadded_int_BigInteger_BigInteger_fail_helper(3, "2", "-1");
+        digitsPadded_int_BigInteger_BigInteger_fail_helper(3, "0", "-1");
+        digitsPadded_int_BigInteger_BigInteger_fail_helper(-1, "2", "3");
+        digitsPadded_int_BigInteger_BigInteger_fail_helper(-1, "0", "-1");
     }
 
     @Test
