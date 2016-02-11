@@ -141,6 +141,14 @@ public final class MathUtils {
         return x.divide(x.gcd(y)).multiply(y);
     }
 
+    public static @NotNull BigInteger gcd(@NotNull Iterable<BigInteger> xs) {
+        return foldl(BigInteger::gcd, BigInteger.ZERO, xs);
+    }
+
+    public static @NotNull BigInteger lcm(@NotNull Iterable<BigInteger> xs) {
+        return foldl1(MathUtils::lcm, xs);
+    }
+
     /**
      * The factorial function {@code n}!
      *
