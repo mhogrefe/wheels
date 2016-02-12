@@ -36,6 +36,7 @@ public class ResultCache<A, B> {
             synchronized (this) {
                 if (!resultMap.containsKey(input)) {
                     Pair<Integer, Long> costPair = costMap.remove(input);
+                    System.out.println(">> Cached result reused: " + input + ", count " + costPair.a);
                     costMap.put(input, new Pair<>(costPair.a + 1, costPair.b));
                     long cost = costPair.b * costPair.a;
                     costQueue.remove(new Pair<>(cost, input));
