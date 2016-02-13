@@ -12,6 +12,7 @@ Progress
 | Class                       | Methods | JavaDoc | Tests | Demos | Properties |
 |:--------------------------- |:-------:|:-------:|:-----:|:-----:|:----------:|
 | ConcurrencyUtils            | ✔       | ✘       | ✘     | ✘     | ✘          |
+| ResultCache                 | ✔       | ✘       | ✘     | ✘     | ✘          |
 | Readers                     | ✔       | ✘       | ✘     | ✘     | ✘          |
 | TextInput                   | ✔       | ✘       | ✘     | ✘     | ✘          |
 | TextOutput                  | ✔       | ✘       | ✘     | ✘     | ✘          |
