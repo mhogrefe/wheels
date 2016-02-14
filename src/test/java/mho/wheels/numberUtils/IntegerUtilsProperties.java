@@ -1135,7 +1135,11 @@ public class IntegerUtilsProperties extends TestProperties {
             assertEquals(p, digits, bigEndianDigits_int_int_simplest(p.b, p.a));
             assertEquals(p, digits, reverse(digits(p.b, p.a)));
             assertTrue(p, all(i -> i >= 0 && i < p.b, digits));
-            inverse(i -> bigEndianDigits(p.b, i), (List<Integer> is) -> fromBigEndianDigits(p.b, is).intValueExact(), p.a);
+            inverse(
+                    i -> bigEndianDigits(p.b, i),
+                    (List<Integer> is) -> fromBigEndianDigits(p.b, is).intValueExact(),
+                    p.a
+            );
         }
 
         ps = P.pairsSquareRootOrder(P.positiveIntegers(), P.rangeUpGeometric(2));
