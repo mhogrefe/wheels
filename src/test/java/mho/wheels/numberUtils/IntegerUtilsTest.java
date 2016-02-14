@@ -652,92 +652,94 @@ public class IntegerUtilsTest {
         digitsPadded_int_BigInteger_BigInteger_fail_helper(-1, "0", "-1");
     }
 
+    private static void bigEndianDigits_int_int_helper(int base, int n, @NotNull String output) {
+        aeq(bigEndianDigits(base, n), output);
+    }
+
+    private static void bigEndianDigits_int_int_fail_helper(int base, int n) {
+        try {
+            bigEndianDigits(base, n);
+            fail();
+        } catch (IllegalArgumentException | ArithmeticException ignored) {}
+    }
+
     @Test
     public void testBigEndianDigits_int_int() {
-        aeq(bigEndianDigits(2, 0), "[]");
-        aeq(bigEndianDigits(3, 0), "[]");
-        aeq(bigEndianDigits(8, 0), "[]");
-        aeq(bigEndianDigits(10, 0), "[]");
-        aeq(bigEndianDigits(12, 0), "[]");
-        aeq(bigEndianDigits(57, 0), "[]");
-        aeq(bigEndianDigits(2, 1), "[1]");
-        aeq(bigEndianDigits(3, 1), "[1]");
-        aeq(bigEndianDigits(8, 1), "[1]");
-        aeq(bigEndianDigits(10, 1), "[1]");
-        aeq(bigEndianDigits(12, 1), "[1]");
-        aeq(bigEndianDigits(57, 1), "[1]");
-        aeq(bigEndianDigits(2, 10), "[1, 0, 1, 0]");
-        aeq(bigEndianDigits(3, 10), "[1, 0, 1]");
-        aeq(bigEndianDigits(8, 10), "[1, 2]");
-        aeq(bigEndianDigits(10, 10), "[1, 0]");
-        aeq(bigEndianDigits(12, 10), "[10]");
-        aeq(bigEndianDigits(57, 10), "[10]");
-        aeq(bigEndianDigits(2, 187), "[1, 0, 1, 1, 1, 0, 1, 1]");
-        aeq(bigEndianDigits(3, 187), "[2, 0, 2, 2, 1]");
-        aeq(bigEndianDigits(8, 187), "[2, 7, 3]");
-        aeq(bigEndianDigits(10, 187), "[1, 8, 7]");
-        aeq(bigEndianDigits(12, 187), "[1, 3, 7]");
-        aeq(bigEndianDigits(57, 187), "[3, 16]");
+        bigEndianDigits_int_int_helper(2, 0, "[]");
+        bigEndianDigits_int_int_helper(3, 0, "[]");
+        bigEndianDigits_int_int_helper(8, 0, "[]");
+        bigEndianDigits_int_int_helper(10, 0, "[]");
+        bigEndianDigits_int_int_helper(12, 0, "[]");
+        bigEndianDigits_int_int_helper(57, 0, "[]");
+        bigEndianDigits_int_int_helper(2, 1, "[1]");
+        bigEndianDigits_int_int_helper(3, 1, "[1]");
+        bigEndianDigits_int_int_helper(8, 1, "[1]");
+        bigEndianDigits_int_int_helper(10, 1, "[1]");
+        bigEndianDigits_int_int_helper(12, 1, "[1]");
+        bigEndianDigits_int_int_helper(57, 1, "[1]");
+        bigEndianDigits_int_int_helper(2, 10, "[1, 0, 1, 0]");
+        bigEndianDigits_int_int_helper(3, 10, "[1, 0, 1]");
+        bigEndianDigits_int_int_helper(8, 10, "[1, 2]");
+        bigEndianDigits_int_int_helper(10, 10, "[1, 0]");
+        bigEndianDigits_int_int_helper(12, 10, "[10]");
+        bigEndianDigits_int_int_helper(57, 10, "[10]");
+        bigEndianDigits_int_int_helper(2, 187, "[1, 0, 1, 1, 1, 0, 1, 1]");
+        bigEndianDigits_int_int_helper(3, 187, "[2, 0, 2, 2, 1]");
+        bigEndianDigits_int_int_helper(8, 187, "[2, 7, 3]");
+        bigEndianDigits_int_int_helper(10, 187, "[1, 8, 7]");
+        bigEndianDigits_int_int_helper(12, 187, "[1, 3, 7]");
+        bigEndianDigits_int_int_helper(57, 187, "[3, 16]");
+        bigEndianDigits_int_int_fail_helper(1, 10);
+        bigEndianDigits_int_int_fail_helper(0, 10);
+        bigEndianDigits_int_int_fail_helper(2, -1);
+        bigEndianDigits_int_int_fail_helper(0, -1);
+    }
+
+    private static void bigEndianDigits_BigInteger_BigInteger_helper(
+            @NotNull String base,
+            @NotNull String n,
+            @NotNull String output
+    ) {
+        aeq(bigEndianDigits(Readers.readBigInteger(base).get(), Readers.readBigInteger(n).get()), output);
+    }
+
+    private static void bigEndianDigits_BigInteger_BigInteger_fail_helper(@NotNull String base, @NotNull String n) {
         try {
-            bigEndianDigits(1, 10);
+            bigEndianDigits(Readers.readBigInteger(base).get(), Readers.readBigInteger(n).get());
             fail();
-        } catch (IllegalArgumentException ignored) {}
-        try {
-            bigEndianDigits(0, 10);
-            fail();
-        } catch (IllegalArgumentException ignored) {}
-        try {
-            bigEndianDigits(2, -1);
-            fail();
-        } catch (ArithmeticException ignored) {}
-        try {
-            bigEndianDigits(0, -1);
-            fail();
-        } catch (IllegalArgumentException ignored) {}
+        } catch (IllegalArgumentException | ArithmeticException ignored) {}
     }
 
     @Test
     public void testBigEndianDigits_BigInteger_BigInteger() {
-        aeq(bigEndianDigits(TWO, BigInteger.ZERO), "[]");
-        aeq(bigEndianDigits(BigInteger.valueOf(3), BigInteger.ZERO), "[]");
-        aeq(bigEndianDigits(BigInteger.valueOf(8), BigInteger.ZERO), "[]");
-        aeq(bigEndianDigits(BigInteger.valueOf(10), BigInteger.ZERO), "[]");
-        aeq(bigEndianDigits(BigInteger.valueOf(12), BigInteger.ZERO), "[]");
-        aeq(bigEndianDigits(BigInteger.valueOf(57), BigInteger.ZERO), "[]");
-        aeq(bigEndianDigits(TWO, BigInteger.ONE), "[1]");
-        aeq(bigEndianDigits(BigInteger.valueOf(3), BigInteger.ONE), "[1]");
-        aeq(bigEndianDigits(BigInteger.valueOf(8), BigInteger.ONE), "[1]");
-        aeq(bigEndianDigits(BigInteger.valueOf(10), BigInteger.ONE), "[1]");
-        aeq(bigEndianDigits(BigInteger.valueOf(12), BigInteger.ONE), "[1]");
-        aeq(bigEndianDigits(BigInteger.valueOf(57), BigInteger.ONE), "[1]");
-        aeq(bigEndianDigits(TWO, BigInteger.valueOf(10)), "[1, 0, 1, 0]");
-        aeq(bigEndianDigits(BigInteger.valueOf(3), BigInteger.valueOf(10)), "[1, 0, 1]");
-        aeq(bigEndianDigits(BigInteger.valueOf(8), BigInteger.valueOf(10)), "[1, 2]");
-        aeq(bigEndianDigits(BigInteger.valueOf(10), BigInteger.valueOf(10)), "[1, 0]");
-        aeq(bigEndianDigits(BigInteger.valueOf(12), BigInteger.valueOf(10)), "[10]");
-        aeq(bigEndianDigits(BigInteger.valueOf(57), BigInteger.valueOf(10)), "[10]");
-        aeq(bigEndianDigits(TWO, BigInteger.valueOf(187)), "[1, 0, 1, 1, 1, 0, 1, 1]");
-        aeq(bigEndianDigits(BigInteger.valueOf(3), BigInteger.valueOf(187)), "[2, 0, 2, 2, 1]");
-        aeq(bigEndianDigits(BigInteger.valueOf(8), BigInteger.valueOf(187)), "[2, 7, 3]");
-        aeq(bigEndianDigits(BigInteger.valueOf(10), BigInteger.valueOf(187)), "[1, 8, 7]");
-        aeq(bigEndianDigits(BigInteger.valueOf(12), BigInteger.valueOf(187)), "[1, 3, 7]");
-        aeq(bigEndianDigits(BigInteger.valueOf(57), BigInteger.valueOf(187)), "[3, 16]");
-        try {
-            bigEndianDigits(BigInteger.ONE, BigInteger.valueOf(10));
-            fail();
-        } catch (IllegalArgumentException ignored) {}
-        try {
-            bigEndianDigits(BigInteger.ZERO, BigInteger.valueOf(10));
-            fail();
-        } catch (IllegalArgumentException ignored) {}
-        try {
-            bigEndianDigits(TWO, NEGATIVE_ONE);
-            fail();
-        } catch (ArithmeticException ignored) {}
-        try {
-            bigEndianDigits(BigInteger.ZERO, NEGATIVE_ONE);
-            fail();
-        } catch (IllegalArgumentException ignored) {}
+        bigEndianDigits_BigInteger_BigInteger_helper("2", "0", "[]");
+        bigEndianDigits_BigInteger_BigInteger_helper("3", "0", "[]");
+        bigEndianDigits_BigInteger_BigInteger_helper("8", "0", "[]");
+        bigEndianDigits_BigInteger_BigInteger_helper("10", "0", "[]");
+        bigEndianDigits_BigInteger_BigInteger_helper("12", "0", "[]");
+        bigEndianDigits_BigInteger_BigInteger_helper("57", "0", "[]");
+        bigEndianDigits_BigInteger_BigInteger_helper("2", "1", "[1]");
+        bigEndianDigits_BigInteger_BigInteger_helper("3", "1", "[1]");
+        bigEndianDigits_BigInteger_BigInteger_helper("8", "1", "[1]");
+        bigEndianDigits_BigInteger_BigInteger_helper("10", "1", "[1]");
+        bigEndianDigits_BigInteger_BigInteger_helper("12", "1", "[1]");
+        bigEndianDigits_BigInteger_BigInteger_helper("57", "1", "[1]");
+        bigEndianDigits_BigInteger_BigInteger_helper("2", "10", "[1, 0, 1, 0]");
+        bigEndianDigits_BigInteger_BigInteger_helper("3", "10", "[1, 0, 1]");
+        bigEndianDigits_BigInteger_BigInteger_helper("8", "10", "[1, 2]");
+        bigEndianDigits_BigInteger_BigInteger_helper("10", "10", "[1, 0]");
+        bigEndianDigits_BigInteger_BigInteger_helper("12", "10", "[10]");
+        bigEndianDigits_BigInteger_BigInteger_helper("57", "10", "[10]");
+        bigEndianDigits_BigInteger_BigInteger_helper("2", "187", "[1, 0, 1, 1, 1, 0, 1, 1]");
+        bigEndianDigits_BigInteger_BigInteger_helper("3", "187", "[2, 0, 2, 2, 1]");
+        bigEndianDigits_BigInteger_BigInteger_helper("8", "187", "[2, 7, 3]");
+        bigEndianDigits_BigInteger_BigInteger_helper("10", "187", "[1, 8, 7]");
+        bigEndianDigits_BigInteger_BigInteger_helper("12", "187", "[1, 3, 7]");
+        bigEndianDigits_BigInteger_BigInteger_helper("57", "187", "[3, 16]");
+        bigEndianDigits_BigInteger_BigInteger_fail_helper("1", "10");
+        bigEndianDigits_BigInteger_BigInteger_fail_helper("0", "10");
+        bigEndianDigits_BigInteger_BigInteger_fail_helper("2", "-1");
+        bigEndianDigits_BigInteger_BigInteger_fail_helper("0", "-1");
     }
 
     @Test

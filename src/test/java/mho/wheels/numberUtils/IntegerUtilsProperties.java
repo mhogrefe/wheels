@@ -272,8 +272,8 @@ public class IntegerUtilsProperties extends TestProperties {
         initialize("bits(int)");
         for (int i : take(LIMIT, P.naturalIntegers())) {
             List<Boolean> bits = bits(i);
-            aeqit(i, bits, bits_int_simplest(i));
-            aeqit(i, bits, reverse(bigEndianBits(i)));
+            assertEquals(i, bits, bits_int_simplest(i));
+            assertEquals(i, bits, reverse(bigEndianBits(i)));
             assertTrue(i, all(b -> b != null, bits));
             inverse(IntegerUtils::bits, (List<Boolean> bs) -> fromBits(bs).intValueExact(), i);
             assertEquals(i, bits.size(), BigInteger.valueOf(i).bitLength());
@@ -315,8 +315,8 @@ public class IntegerUtilsProperties extends TestProperties {
         initialize("bits(BigInteger)");
         for (BigInteger i : take(LIMIT, P.naturalBigIntegers())) {
             List<Boolean> bits = bits(i);
-            aeqit(i, bits, bits_BigInteger_alt(i));
-            aeqit(i, bits, reverse(bigEndianBits(i)));
+            assertEquals(i, bits, bits_BigInteger_alt(i));
+            assertEquals(i, bits, reverse(bigEndianBits(i)));
             assertTrue(i, all(b -> b != null, bits));
             inverse(IntegerUtils::bits, IntegerUtils::fromBits, i);
             assertEquals(i, bits.size(), i.bitLength());
@@ -355,8 +355,8 @@ public class IntegerUtilsProperties extends TestProperties {
         );
         for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
             List<Boolean> bits = bitsPadded(p.b, p.a);
-            aeqit(p, bits, bitsPadded_int_int_simplest(p.b, p.a));
-            aeqit(p, bits, reverse(bigEndianBitsPadded(p.b, p.a)));
+            assertEquals(p, bits, bitsPadded_int_int_simplest(p.b, p.a));
+            assertEquals(p, bits, reverse(bigEndianBitsPadded(p.b, p.a)));
             assertFalse(p, any(b -> b == null, bits));
             assertEquals(p, bits.size(), p.b);
         }
@@ -404,7 +404,7 @@ public class IntegerUtilsProperties extends TestProperties {
         );
         for (Pair<BigInteger, Integer> p : take(LIMIT, ps)) {
             List<Boolean> bits = bitsPadded(p.b, p.a);
-            aeqit(p, bits, reverse(bigEndianBitsPadded(p.b, p.a)));
+            assertEquals(p, bits, reverse(bigEndianBitsPadded(p.b, p.a)));
             assertFalse(p, any(b -> b == null, bits));
             assertEquals(p, bits.size(), p.b);
         }
@@ -445,9 +445,9 @@ public class IntegerUtilsProperties extends TestProperties {
         initialize("bigEndianBits(int)");
         for (int i : take(LIMIT, P.naturalIntegers())) {
             List<Boolean> bits = bigEndianBits(i);
-            aeqit(i, bits, bigEndianBits_int_simplest(i));
-            aeqit(i, bits, bigEndianBits_int_alt(i));
-            aeqit(i, bits, reverse(bits(i)));
+            assertEquals(i, bits, bigEndianBits_int_simplest(i));
+            assertEquals(i, bits, bigEndianBits_int_alt(i));
+            assertEquals(i, bits, reverse(bits(i)));
             assertTrue(i, all(b -> b != null, bits));
             assertEquals(i, fromBigEndianBits(bits).intValueExact(), i);
             assertEquals(i, bits.size(), BigInteger.valueOf(i).bitLength());
@@ -483,8 +483,8 @@ public class IntegerUtilsProperties extends TestProperties {
         initialize("bigEndianBits(BigInteger)");
         for (BigInteger i : take(LIMIT, P.naturalBigIntegers())) {
             List<Boolean> bits = bigEndianBits(i);
-            aeqit(i, bits, bigEndianBits_BigInteger_simplest(i));
-            aeqit(i, bits, reverse(bits(i)));
+            assertEquals(i, bits, bigEndianBits_BigInteger_simplest(i));
+            assertEquals(i, bits, reverse(bits(i)));
             assertTrue(i, all(b -> b != null, bits));
             inverse(IntegerUtils::bigEndianBits, IntegerUtils::fromBigEndianBits, i);
             assertEquals(i, bits.size(), i.bitLength());
@@ -527,9 +527,9 @@ public class IntegerUtilsProperties extends TestProperties {
         );
         for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
             List<Boolean> bits = bigEndianBitsPadded(p.b, p.a);
-            aeqit(p, bits, bigEndianBitsPadded_int_int_simplest(p.b, p.a));
-            aeqit(p, bits, bigEndianBitsPadded_int_int_alt(p.b, p.a));
-            aeqit(p, bits, reverse(bitsPadded(p.b, p.a)));
+            assertEquals(p, bits, bigEndianBitsPadded_int_int_simplest(p.b, p.a));
+            assertEquals(p, bits, bigEndianBitsPadded_int_int_alt(p.b, p.a));
+            assertEquals(p, bits, reverse(bitsPadded(p.b, p.a)));
             assertTrue(p, all(b -> b != null, bits));
             assertEquals(p, bits.size(), p.b);
         }
@@ -582,8 +582,8 @@ public class IntegerUtilsProperties extends TestProperties {
         );
         for (Pair<BigInteger, Integer> p : take(LIMIT, ps)) {
             List<Boolean> bits = bigEndianBitsPadded(p.b, p.a);
-            aeqit(p, bits, bigEndianBitsPadded_int_BigInteger_alt(p.b, p.a));
-            aeqit(p, bits, reverse(bitsPadded(p.b, p.a)));
+            assertEquals(p, bits, bigEndianBitsPadded_int_BigInteger_alt(p.b, p.a));
+            assertEquals(p, bits, reverse(bitsPadded(p.b, p.a)));
             assertTrue(p, all(b -> b != null, bits));
             assertEquals(p, bits.size(), p.b);
         }
@@ -722,12 +722,11 @@ public class IntegerUtilsProperties extends TestProperties {
         Iterable<Pair<Integer, Integer>> ps = P.pairsSquareRootOrder(P.naturalIntegers(), P.rangeUpGeometric(2));
         for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
             List<Integer> digits = digits(p.b, p.a);
-            aeqit(p, digits, digits_int_int_simplest(p.b, p.a));
-            aeqit(p, digits, digits_int_int_alt(p.b, p.a));
-            aeqit(p, digits, reverse(bigEndianDigits(p.b, p.a)));
+            assertEquals(p, digits, digits_int_int_simplest(p.b, p.a));
+            assertEquals(p, digits, digits_int_int_alt(p.b, p.a));
+            assertEquals(p, digits, reverse(bigEndianDigits(p.b, p.a)));
             assertTrue(p, all(i -> i >= 0 && i < p.b, digits));
             inverse(i -> digits(p.b, i), (List<Integer> is) -> fromDigits(p.b, is).intValueExact(), p.a);
-            assertEquals(p, fromDigits(p.b, digits).intValueExact(), p.a);
         }
 
         ps = P.pairsSquareRootOrder(P.positiveIntegers(), P.rangeUpGeometric(2));
@@ -841,9 +840,9 @@ public class IntegerUtilsProperties extends TestProperties {
         );
         for (Pair<BigInteger, BigInteger> p : take(LIMIT, ps)) {
             List<BigInteger> digits = digits(p.b, p.a);
-            aeqit(p, digits, digits_BigInteger_BigInteger_alt(p.b, p.a));
-            aeqit(p, digits, digits_BigInteger_BigInteger_alt2(p.b, p.a));
-            aeqit(p, digits, reverse(bigEndianDigits(p.b, p.a)));
+            assertEquals(p, digits, digits_BigInteger_BigInteger_alt(p.b, p.a));
+            assertEquals(p, digits, digits_BigInteger_BigInteger_alt2(p.b, p.a));
+            assertEquals(p, digits, reverse(bigEndianDigits(p.b, p.a)));
             assertTrue(p, all(i -> i.signum() != -1 && lt(i, p.b), digits));
             inverse(i -> digits(p.b, i), (List<BigInteger> is) -> fromDigits(p.b, is), p.a);
         }
@@ -921,9 +920,9 @@ public class IntegerUtilsProperties extends TestProperties {
                 P.naturalIntegersGeometric(), P.rangeUpGeometric(2), P.naturalIntegers());
         for (Triple<Integer, Integer, Integer> t : take(LIMIT, ts)) {
             List<Integer> digits = digitsPadded(t.a, t.b, t.c);
-            aeqit(t, digits, digitsPadded_int_int_int_simplest(t.a, t.b, t.c));
-            aeqit(t, digits, digitsPadded_int_int_int_alt(t.a, t.b, t.c));
-            aeqit(t, digits, reverse(bigEndianDigitsPadded(t.a, t.b, t.c)));
+            assertEquals(t, digits, digitsPadded_int_int_int_simplest(t.a, t.b, t.c));
+            assertEquals(t, digits, digitsPadded_int_int_int_alt(t.a, t.b, t.c));
+            assertEquals(t, digits, reverse(bigEndianDigitsPadded(t.a, t.b, t.c)));
             assertTrue(t, all(i -> i >= 0 && i < t.b, digits));
             assertEquals(t, digits.size(), t.a);
         }
@@ -1026,8 +1025,8 @@ public class IntegerUtilsProperties extends TestProperties {
         );
         for (Triple<Integer, BigInteger, BigInteger> t : take(LIMIT, ts)) {
             List<BigInteger> digits = digitsPadded(t.a, t.b, t.c);
-            aeqit(t, digits, digitsPadded_int_BigInteger_BigInteger_alt(t.a, t.b, t.c));
-            aeqit(t, digits, reverse(bigEndianDigitsPadded(t.a, t.b, t.c)));
+            assertEquals(t, digits, digitsPadded_int_BigInteger_BigInteger_alt(t.a, t.b, t.c));
+            assertEquals(t, digits, reverse(bigEndianDigitsPadded(t.a, t.b, t.c)));
             assertTrue(t, all(i -> i.signum() != -1 && lt(i, t.b), digits));
             assertEquals(t, digits.size(), t.a);
         }
@@ -1124,37 +1123,26 @@ public class IntegerUtilsProperties extends TestProperties {
         compareImplementations("digitsPadded(int, BigInteger, BigInteger)", take(LIMIT, ts), functions);
     }
 
-    private static @NotNull Iterable<Integer> bigEndianDigits_int_int_simplest(int base, int n) {
-        return map(BigInteger::intValue, bigEndianDigits(BigInteger.valueOf(base), BigInteger.valueOf(n)));
+    private static @NotNull List<Integer> bigEndianDigits_int_int_simplest(int base, int n) {
+        return toList(map(BigInteger::intValue, bigEndianDigits(BigInteger.valueOf(base), BigInteger.valueOf(n))));
     }
 
     private void propertiesBigEndianDigits_int_int() {
-        initialize("");
-        System.out.println("\t\ttesting bigEndianDigits(int, int) properties...");
-
-        Iterable<Pair<Integer, Integer>> ps;
-        if (P instanceof ExhaustiveProvider) {
-            ps = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.naturalIntegers(), P.rangeUp(2));
-        } else {
-            ps = P.pairs(P.naturalIntegers(), map(i -> i + 2, P.withScale(20).naturalIntegersGeometric()));
-        }
+        initialize("bigEndianDigits(int, int)");
+        Iterable<Pair<Integer, Integer>> ps = P.pairsSquareRootOrder(P.naturalIntegers(), P.rangeUpGeometric(2));
         for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
             List<Integer> digits = bigEndianDigits(p.b, p.a);
-            aeqit(p, digits, bigEndianDigits_int_int_simplest(p.b, p.a));
-            aeqit(p, digits, reverse(digits(p.b, p.a)));
-            assertTrue(p, all(i -> i != null && i >= 0 && i < p.b, digits));
-            assertEquals(p, fromBigEndianDigits(p.b, digits).intValueExact(), p.a.intValue());
+            assertEquals(p, digits, bigEndianDigits_int_int_simplest(p.b, p.a));
+            assertEquals(p, digits, reverse(digits(p.b, p.a)));
+            assertTrue(p, all(i -> i >= 0 && i < p.b, digits));
+            inverse(i -> bigEndianDigits(p.b, i), (List<Integer> is) -> fromBigEndianDigits(p.b, is).intValueExact(), p.a);
         }
 
-        if (P instanceof ExhaustiveProvider) {
-            ps = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.positiveIntegers(), P.rangeUp(2));
-        } else {
-            ps = P.pairs(P.positiveIntegers(), map(i -> i + 2, P.withScale(20).naturalIntegersGeometric()));
-        }
+        ps = P.pairsSquareRootOrder(P.positiveIntegers(), P.rangeUpGeometric(2));
         for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
             List<Integer> digits = bigEndianDigits(p.b, p.a);
             assertFalse(p, digits.isEmpty());
-            assertNotEquals(p, head(digits).intValue(), 0);
+            assertNotEquals(p, head(digits), 0);
             int targetDigitCount = ceilingLog(BigInteger.valueOf(p.b), BigInteger.valueOf(p.a)).intValueExact();
             if (BigInteger.valueOf(p.b).pow(targetDigitCount).equals(BigInteger.valueOf(p.a))) {
                 targetDigitCount++;
@@ -1194,60 +1182,30 @@ public class IntegerUtilsProperties extends TestProperties {
     }
 
     private void compareImplementationsBigEndianDigits_int_int() {
-        initialize("");
-        System.out.println("\t\tcomparing bigEndianDigits(int, int) implementations...");
-
-        long totalTime = 0;
-        Iterable<Pair<Integer, Integer>> ps;
-        if (P instanceof ExhaustiveProvider) {
-            ps = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.naturalIntegers(), P.rangeUp(2));
-        } else {
-            ps = P.pairs(P.naturalIntegers(), map(i -> i + 2, P.withScale(20).naturalIntegersGeometric()));
-        }
-        for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
-            long time = System.nanoTime();
-            toList(bigEndianDigits_int_int_simplest(p.b, p.a));
-            totalTime += (System.nanoTime() - time);
-        }
-        System.out.println("\t\t\tsimplest: " + ((double) totalTime) / 1e9 + " s");
-
-        totalTime = 0;
-        for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
-            long time = System.nanoTime();
-            bigEndianDigits(p.b, p.a);
-            totalTime += (System.nanoTime() - time);
-        }
-        System.out.println("\t\t\tstandard: " + ((double) totalTime) / 1e9 + " s");
+        Map<String, Function<Pair<Integer, Integer>, List<Integer>>> functions =
+                new LinkedHashMap<>();
+        functions.put("simplest", p -> bigEndianDigits_int_int_simplest(p.b, p.a));
+        functions.put("standard", p -> bigEndianDigits(p.b, p.a));
+        Iterable<Pair<Integer, Integer>> ps = P.pairsSquareRootOrder(P.naturalIntegers(), P.rangeUpGeometric(2));
+        compareImplementations("bigEndianDigits(int, int)", take(LIMIT, ps), functions);
     }
 
     private void propertiesBigEndianDigits_BigInteger_BigInteger() {
-        initialize("");
-        System.out.println("\t\ttesting bigEndianDigits(BigInteger, BigInteger) properties...");
-
-        Iterable<Pair<BigInteger, BigInteger>> ps;
-        if (P instanceof ExhaustiveProvider) {
-            ps = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.naturalBigIntegers(), P.rangeUp(TWO));
-        } else {
-            ps = P.pairs(
-                    P.naturalBigIntegers(),
-                    map(i -> BigInteger.valueOf(i + 2), P.withScale(20).naturalIntegersGeometric())
-            );
-        }
+        initialize("bigEndianDigits(BigInteger, BigInteger)");
+        //noinspection Convert2MethodRef
+        Iterable<Pair<BigInteger, BigInteger>> ps = P.pairsSquareRootOrder(
+                P.naturalBigIntegers(),
+                map(i -> BigInteger.valueOf(i), P.rangeUpGeometric(2))
+        );
         for (Pair<BigInteger, BigInteger> p : take(LIMIT, ps)) {
             List<BigInteger> digits = bigEndianDigits(p.b, p.a);
-            aeqit(p, digits, reverse(digits(p.b, p.a)));
-            assertTrue(p, all(i -> i != null && i.signum() != -1 && lt(i, p.b), digits));
-            assertEquals(p, fromBigEndianDigits(p.b, digits), p.a);
+            assertEquals(p, digits, reverse(digits(p.b, p.a)));
+            assertTrue(p, all(i -> i.signum() != -1 && lt(i, p.b), digits));
+            inverse(i -> bigEndianDigits(p.b, i), (List<BigInteger> is) -> fromBigEndianDigits(p.b, is), p.a);
         }
 
-        if (P instanceof ExhaustiveProvider) {
-            ps = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.positiveBigIntegers(), P.rangeUp(TWO));
-        } else {
-            ps = P.pairs(
-                    P.positiveBigIntegers(),
-                    map(i -> BigInteger.valueOf(i + 2), P.withScale(20).naturalIntegersGeometric())
-            );
-        }
+        //noinspection Convert2MethodRef
+        ps = P.pairsSquareRootOrder(P.positiveBigIntegers(), map(i -> BigInteger.valueOf(i), P.rangeUpGeometric(2)));
         for (Pair<BigInteger, BigInteger> p : take(LIMIT, ps)) {
             List<BigInteger> digits = bigEndianDigits(p.b, p.a);
             assertFalse(p, digits.isEmpty());

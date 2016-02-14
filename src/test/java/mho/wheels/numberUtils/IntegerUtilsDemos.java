@@ -175,27 +175,18 @@ public class IntegerUtilsDemos extends Demos {
     }
 
     private void demoBigEndianDigits_int_int() {
-        Iterable<Pair<Integer, Integer>> ps;
-        if (P instanceof ExhaustiveProvider) {
-            ps = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.naturalIntegers(), P.rangeUp(2));
-        } else {
-            ps = P.pairs(P.naturalIntegers(), map(i -> i + 2, P.withScale(20).naturalIntegersGeometric()));
-        }
+        Iterable<Pair<Integer, Integer>> ps = P.pairsSquareRootOrder(P.naturalIntegers(), P.rangeUpGeometric(2));
         for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
             System.out.println("bigEndianDigits(" + p.b + ", " + p.a + ") = " + bigEndianDigits(p.b, p.a));
         }
     }
 
     private void demoBigEndianDigits_BigInteger_BigInteger() {
-        Iterable<Pair<BigInteger, BigInteger>> ps;
-        if (P instanceof ExhaustiveProvider) {
-            ps = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.naturalBigIntegers(), P.rangeUp(TWO));
-        } else {
-            ps = P.pairs(
-                    P.naturalBigIntegers(),
-                    map(i -> BigInteger.valueOf(i + 2), P.withScale(20).naturalIntegersGeometric())
-            );
-        }
+        //noinspection Convert2MethodRef
+        Iterable<Pair<BigInteger, BigInteger>> ps = P.pairsSquareRootOrder(
+                P.naturalBigIntegers(),
+                map(i -> BigInteger.valueOf(i), P.rangeUpGeometric(2))
+        );
         for (Pair<BigInteger, BigInteger> p : take(LIMIT, ps)) {
             System.out.println("bigEndianDigits(" + p.b + ", " + p.a + ") = " + bigEndianDigits(p.b, p.a));
         }
