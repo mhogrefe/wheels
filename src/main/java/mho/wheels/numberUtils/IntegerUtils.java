@@ -673,7 +673,31 @@ public class IntegerUtils {
      * @return {@code n}'s digits in big-endian order
      */
     public static @NotNull List<Integer> bigEndianDigitsPadded(int length, int base, int n) {
-        return reverse(digitsPadded(length, base, n));
+        if (length < 0) {
+            throw new IllegalArgumentException("length cannot be negative. Invalid length: " + length);
+        }
+        if (base < 2) {
+            throw new IllegalArgumentException("base must be at least 2. Invalid base: " + base);
+        }
+        if (n < 0) {
+            throw new ArithmeticException("n cannot be negative. Invalid n: " + n);
+        }
+        List<Integer> digits = toList(replicate(length, 0));
+        int log = ceilingLog2(base);
+        if (1 << log == base) {
+            int mask = base - 1;
+            for (int i = length - 1; i >= 0; i--) {
+                digits.set(i, n & mask);
+                n >>= log;
+            }
+        } else {
+            int remaining = n;
+            for (int i = length - 1; i >= 0; i--) {
+                digits.set(i, remaining % base);
+                remaining /= base;
+            }
+        }
+        return digits;
     }
 
     /**
@@ -700,7 +724,31 @@ public class IntegerUtils {
             @NotNull BigInteger base,
             @NotNull BigInteger n
     ) {
-        return reverse(digitsPadded(length, base, n));
+        if (length < 0) {
+            throw new IllegalArgumentException("length cannot be negative. Invalid length: " + length);
+        }
+        if (lt(base, TWO)) {
+            throw new IllegalArgumentException("base must be at least 2. Invalid base: " + base);
+        }
+        if (n.signum() == -1) {
+            throw new ArithmeticException("n cannot be negative. Invalid n: " + n);
+        }
+        List<BigInteger> digits = toList(replicate(length, BigInteger.ZERO));
+        if (isPowerOfTwo(base)) {
+            int log = ceilingLog2(base);
+            BigInteger mask = base.subtract(BigInteger.ONE);
+            for (int i = length - 1; i >= 0; i--) {
+                digits.set(i, n.and(mask));
+                n = n.shiftRight(log);
+            }
+        } else {
+            BigInteger remaining = n;
+            for (int i = length - 1; i >= 0; i--) {
+                digits.set(i, remaining.mod(base));
+                remaining = remaining.divide(base);
+            }
+        }
+        return digits;
     }
 
     /**

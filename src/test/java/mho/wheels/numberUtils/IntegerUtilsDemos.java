@@ -156,7 +156,10 @@ public class IntegerUtilsDemos extends Demos {
 
     private void demoDigitsPadded_int_int_int() {
         Iterable<Triple<Integer, Integer, Integer>> ts = P.triples(
-                P.naturalIntegersGeometric(), P.rangeUpGeometric(2), P.naturalIntegers());
+                P.naturalIntegersGeometric(),
+                P.rangeUpGeometric(2),
+                P.naturalIntegers()
+        );
         for (Triple<Integer, Integer, Integer> t : take(LIMIT, ts)) {
             System.out.println("digitsPadded(" + t.a + ", " + t.b + ", " + t.c + ") = " + digitsPadded(t.a, t.b, t.c));
         }
@@ -193,19 +196,11 @@ public class IntegerUtilsDemos extends Demos {
     }
 
     private void demoBigEndianDigitsPadded_int_int_int() {
-        Iterable<Triple<Integer, Integer, Integer>> ts;
-        if (P instanceof ExhaustiveProvider) {
-            ts = map(
-                    p -> new Triple<>(p.a.a, p.a.b, p.b),
-                    (Iterable<Pair<Pair<Integer, Integer>, Integer>>) P.pairs(
-                            P.pairs(P.naturalIntegers(), map(i -> i + 2, P.naturalIntegers())),
-                            P.naturalIntegers()
-                    )
-            );
-        } else {
-            Iterable<Integer> is = P.withScale(20).naturalIntegersGeometric();
-            ts = P.triples(is, map(i -> i + 2, is), P.naturalIntegers());
-        }
+        Iterable<Triple<Integer, Integer, Integer>> ts = P.triples(
+                P.naturalIntegersGeometric(),
+                P.rangeUpGeometric(2),
+                P.naturalIntegers()
+        );
         for (Triple<Integer, Integer, Integer> t : take(LIMIT, ts)) {
             System.out.println("bigEndianDigitsPadded(" + t.a + ", " + t.b + ", " + t.c + ") = " +
                     bigEndianDigitsPadded(t.a, t.b, t.c));
@@ -213,19 +208,12 @@ public class IntegerUtilsDemos extends Demos {
     }
 
     private void demoBigEndianDigitsPadded_BigInteger_BigInteger_BigInteger() {
-        Iterable<Triple<Integer, BigInteger, BigInteger>> ts;
-        if (P instanceof ExhaustiveProvider) {
-            ts = map(
-                    p -> new Triple<>(p.a.a, p.a.b, p.b),
-                    (Iterable<Pair<Pair<Integer, BigInteger>, BigInteger>>) P.pairs(
-                            P.pairs(P.naturalIntegers(), map(i -> i.add(TWO), P.naturalBigIntegers())),
-                            P.naturalBigIntegers()
-                    )
-            );
-        } else {
-            Iterable<Integer> is = P.withScale(20).naturalIntegersGeometric();
-            ts = P.triples(is, map(i -> BigInteger.valueOf(i + 2), is), P.naturalBigIntegers());
-        }
+        //noinspection Convert2MethodRef
+        Iterable<Triple<Integer, BigInteger, BigInteger>> ts = P.triples(
+                P.naturalIntegersGeometric(),
+                map(i -> BigInteger.valueOf(i), P.rangeUpGeometric(2)),
+                P.naturalBigIntegers()
+        );
         for (Triple<Integer, BigInteger, BigInteger> t : take(LIMIT, ts)) {
             System.out.println("bigEndianDigitsPadded(" + t.a + ", " + t.b + ", " + t.c + ") = " +
                     bigEndianDigitsPadded(t.a, t.b, t.c));
