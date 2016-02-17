@@ -891,64 +891,69 @@ public class IntegerUtilsTest {
         bigEndianDigitsPadded_int_BigInteger_BigInteger_fail_helper(-1, "0", "-1");
     }
 
+    private static void fromDigits_int_Iterable_Integer_helper(
+            int base,
+            @NotNull String digits,
+            @NotNull String output
+    ) {
+        aeq(fromDigits(base, readIntegerList(digits)), output);
+    }
+
+    private static void fromDigits_int_Iterable_Integer_fail_helper(int base, @NotNull String digits) {
+        try {
+            fromDigits(base, readIntegerListWithNulls(digits));
+            fail();
+        } catch (IllegalArgumentException | NullPointerException ignored) {}
+    }
+
     @Test
     public void testFromDigits_int_Iterable_Integer() {
-        aeq(fromDigits(2, Arrays.asList(0, 0)), 0);
-        aeq(fromDigits(2, Arrays.asList(1, 0)), 1);
-        aeq(fromDigits(2, Arrays.asList(1, 0, 1, 1, 1, 0)), 29);
-        aeq(fromDigits(10, Arrays.asList(9, 5, 1, 4, 1, 3)), 314159);
-        aeq(fromDigits(70, Arrays.asList(8, 0, 20, 5, 43)), 1034243008);
-        aeq(fromDigits(70, new ArrayList<Integer>()), 0);
+        fromDigits_int_Iterable_Integer_helper(2, "[0, 0]", "0");
+        fromDigits_int_Iterable_Integer_helper(2, "[1, 0]", "1");
+        fromDigits_int_Iterable_Integer_helper(2, "[1, 0, 1, 1, 1, 0]", "29");
+        fromDigits_int_Iterable_Integer_helper(10, "[9, 5, 1, 4, 1, 3]", "314159");
+        fromDigits_int_Iterable_Integer_helper(70, "[8, 0, 20, 5, 43]", "1034243008");
+        fromDigits_int_Iterable_Integer_helper(70, "[]", "0");
+        fromDigits_int_Iterable_Integer_fail_helper(2, "[0, null]");
+        fromDigits_int_Iterable_Integer_fail_helper(1, "[1, 2, 3]");
+        fromDigits_int_Iterable_Integer_fail_helper(0, "[1, 2, 3]");
+        fromDigits_int_Iterable_Integer_fail_helper(-1, "[1, 2, 3]");
+        fromDigits_int_Iterable_Integer_fail_helper(10, "[-1, 2, 3]");
+        fromDigits_int_Iterable_Integer_fail_helper(10, "[1, 2, 10]");
+    }
+
+    private static void fromDigits_BigInteger_Iterable_BigInteger_helper(
+            @NotNull String base,
+            @NotNull String digits,
+            @NotNull String output
+    ) {
+        aeq(fromDigits(Readers.readBigInteger(base).get(), readBigIntegerList(digits)), output);
+    }
+
+    private static void fromDigits_BigInteger_Iterable_BigInteger_fail_helper(
+            @NotNull String base,
+            @NotNull String digits
+    ) {
         try {
-            fromDigits(1, Arrays.asList(1, 2, 3));
+            fromDigits(Readers.readBigInteger(base).get(), readBigIntegerListWithNulls(digits));
             fail();
-        } catch (IllegalArgumentException ignored) {}
-        try {
-            fromDigits(0, Arrays.asList(1, 2, 3));
-            fail();
-        } catch (IllegalArgumentException ignored) {}
-        try {
-            fromDigits(-1, Arrays.asList(1, 2, 3));
-            fail();
-        } catch (IllegalArgumentException ignored) {}
-        try {
-            fromDigits(10, Arrays.asList(-1, 2, 3));
-            fail();
-        } catch (IllegalArgumentException ignored) {}
-        try {
-            fromDigits(10, Arrays.asList(1, 2, 10));
-            fail();
-        } catch (IllegalArgumentException ignored) {}
+        } catch (IllegalArgumentException | NullPointerException ignored) {}
     }
 
     @Test
     public void testFromDigits_BigInteger_Iterable_BigInteger() {
-        aeq(fromDigits(TWO, readBigIntegerList("[0, 0]")), 0);
-        aeq(fromDigits(TWO, readBigIntegerList("[1, 0]")), 1);
-        aeq(fromDigits(TWO, readBigIntegerList("[1, 0, 1, 1, 1, 0]")), 29);
-        aeq(fromDigits(BigInteger.valueOf(10), readBigIntegerList("[9, 5, 1, 4, 1, 3]")), 314159);
-        aeq(fromDigits(BigInteger.valueOf(70), readBigIntegerList("[8, 0, 20, 5, 43]")), 1034243008);
-        aeq(fromDigits(BigInteger.valueOf(70), readBigIntegerList("[]")), 0);
-        try {
-            fromDigits(BigInteger.ONE, readBigIntegerList("[1, 2, 3]"));
-            fail();
-        } catch (IllegalArgumentException ignored) {}
-        try {
-            fromDigits(BigInteger.ZERO, readBigIntegerList("[1, 2, 3]"));
-            fail();
-        } catch (IllegalArgumentException ignored) {}
-        try {
-            fromDigits(NEGATIVE_ONE, readBigIntegerList("[1, 2, 3]"));
-            fail();
-        } catch (IllegalArgumentException ignored) {}
-        try {
-            fromDigits(BigInteger.valueOf(10), readBigIntegerList("[-1, 2, 3]"));
-            fail();
-        } catch (IllegalArgumentException ignored) {}
-        try {
-            fromDigits(BigInteger.valueOf(10), readBigIntegerList("[1, 2, 10]"));
-            fail();
-        } catch (IllegalArgumentException ignored) {}
+        fromDigits_BigInteger_Iterable_BigInteger_helper("2", "[0, 0]", "0");
+        fromDigits_BigInteger_Iterable_BigInteger_helper("2", "[1, 0]", "1");
+        fromDigits_BigInteger_Iterable_BigInteger_helper("2", "[1, 0, 1, 1, 1, 0]", "29");
+        fromDigits_BigInteger_Iterable_BigInteger_helper("10", "[9, 5, 1, 4, 1, 3]", "314159");
+        fromDigits_BigInteger_Iterable_BigInteger_helper("70", "[8, 0, 20, 5, 43]", "1034243008");
+        fromDigits_BigInteger_Iterable_BigInteger_helper("70", "[]", "0");
+        fromDigits_BigInteger_Iterable_BigInteger_fail_helper("2", "[0, null]");
+        fromDigits_BigInteger_Iterable_BigInteger_fail_helper("1", "[1, 2, 3]");
+        fromDigits_BigInteger_Iterable_BigInteger_fail_helper("0", "[1, 2, 3]");
+        fromDigits_BigInteger_Iterable_BigInteger_fail_helper("-1", "[1, 2, 3]");
+        fromDigits_BigInteger_Iterable_BigInteger_fail_helper("10", "[-1, 2, 3]");
+        fromDigits_BigInteger_Iterable_BigInteger_fail_helper("10", "[1, 2, 10]");
     }
 
     @Test
@@ -1539,6 +1544,14 @@ public class IntegerUtilsTest {
 
     private static @NotNull List<Boolean> readBooleanListWithNulls(@NotNull String s) {
         return Readers.readListWithNulls(Readers::readBoolean).apply(s).get();
+    }
+
+    private static @NotNull List<Integer> readIntegerList(@NotNull String s) {
+        return Readers.readList(Readers::readInteger).apply(s).get();
+    }
+
+    private static @NotNull List<Integer> readIntegerListWithNulls(@NotNull String s) {
+        return Readers.readListWithNulls(Readers::readInteger).apply(s).get();
     }
 
     private static @NotNull List<BigInteger> readBigIntegerList(@NotNull String s) {

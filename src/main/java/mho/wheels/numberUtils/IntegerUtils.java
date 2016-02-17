@@ -811,11 +811,11 @@ public class IntegerUtils {
         BigInteger n = BigInteger.ZERO;
         for (int digit : digits) {
             if (digit < 0) {
-                String digitsString = IterableUtils.toString(Testing.SMALL_LIMIT, digits);
+                String digitsString = Testing.its(digits);
                 throw new IllegalArgumentException("Each element of digits must be non-negative. Invalid digit: " +
                         digit + " in " + digitsString);
             } else if (digit >= base) {
-                String digitsString = IterableUtils.toString(Testing.SMALL_LIMIT, digits);
+                String digitsString = Testing.its(digits);
                 throw new IllegalArgumentException("Each element of digits must be less than base, which is " + base +
                         ". Invalid digit: " + digit + " in " + digitsString);
             }
@@ -850,11 +850,11 @@ public class IntegerUtils {
             if (digit.signum() == -1 || ge(digit, base))
                 throw new IllegalArgumentException("every digit must be at least zero and less than the base");
             if (digit.signum() == -1) {
-                String digitsString = IterableUtils.toString(Testing.SMALL_LIMIT, digits);
+                String digitsString = Testing.its(digits);
                 throw new IllegalArgumentException("Each element of digits must be non-negative. Invalid digit: " +
                         digit + " in " + digitsString);
             } else if (ge(digit, base)) {
-                String digitsString = IterableUtils.toString(Testing.SMALL_LIMIT, digits);
+                String digitsString = Testing.its(digits);
                 throw new IllegalArgumentException("Each element of digits must be less than base, which is " + base +
                         ". Invalid digit: " + digit + " in " + digitsString);
             }
