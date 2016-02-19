@@ -2363,9 +2363,9 @@ public class ExhaustiveProviderDemos extends Demos {
     }
 
     private void demoRandomProvidersFixedScales() {
-        for (Pair<Integer, Integer> p : take(MEDIUM_LIMIT, P.pairs(P.integersGeometric()))) {
-            System.out.println("randomProvidersFixedScales(" + p.a + ", " + p.b + ") = " +
-                    its(P.randomProvidersFixedScales(p.a, p.b)));
+        for (Triple<Integer, Integer, Integer> t : take(SMALL_LIMIT, P.triples(P.integersGeometric()))) {
+            System.out.println("randomProvidersFixedScales(" + t.a + ", " + t.b + ", " + t.c + ") = " +
+                    its(P.randomProvidersFixedScales(t.a, t.b, t.c)));
         }
     }
 }

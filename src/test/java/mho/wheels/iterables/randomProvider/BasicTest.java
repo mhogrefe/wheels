@@ -38,21 +38,22 @@ public strictfp class BasicTest {
         RandomProvider provider = new RandomProvider();
         aeq(provider.getScale(), 32);
         aeq(provider.getSecondaryScale(), 8);
+        aeq(provider.getTertiaryScale(), 2);
     }
 
     @Test
     public void testConstructor_int() {
-        aeq(Q, "RandomProvider[@-7948823947390831374, 32, 8]");
-        aeq(R, "RandomProvider[@2449928962525148503, 32, 8]");
+        aeq(Q, "RandomProvider[@-7948823947390831374, 32, 8, 2]");
+        aeq(R, "RandomProvider[@2449928962525148503, 32, 8, 2]");
         aeq(
                 new RandomProvider(toList(IterableUtils.rangeBy(-1, -1, -IsaacPRNG.SIZE))),
-                "RandomProvider[@3417306423260907531, 32, 8]"
+                "RandomProvider[@3417306423260907531, 32, 8, 2]"
         );
     }
 
     @Test
     public void testExample() {
-        aeq(RandomProvider.example(), "RandomProvider[@-8800290164235921060, 32, 8]");
+        aeq(RandomProvider.example(), "RandomProvider[@-8800290164235921060, 32, 8, 2]");
     }
 
     @Test
@@ -67,6 +68,13 @@ public strictfp class BasicTest {
         aeq(P.getSecondaryScale(), 8);
         aeq(new RandomProvider().withSecondaryScale(100).getSecondaryScale(), 100);
         aeq(new RandomProvider().withSecondaryScale(3).getSecondaryScale(), 3);
+    }
+
+    @Test
+    public void testGetTertiaryScale() {
+        aeq(P.getTertiaryScale(), 2);
+        aeq(new RandomProvider().withTertiaryScale(100).getTertiaryScale(), 100);
+        aeq(new RandomProvider().withTertiaryScale(3).getTertiaryScale(), 3);
     }
 
     @Test
@@ -145,16 +153,23 @@ public strictfp class BasicTest {
 
     @Test
     public void testWithScale() {
-        aeq(P.withScale(100), "RandomProvider[@-8800290164235921060, 100, 8]");
-        aeq(Q.withScale(3), "RandomProvider[@-7948823947390831374, 3, 8]");
-        aeq(R.withScale(0), "RandomProvider[@2449928962525148503, 0, 8]");
+        aeq(P.withScale(100), "RandomProvider[@-8800290164235921060, 100, 8, 2]");
+        aeq(Q.withScale(3), "RandomProvider[@-7948823947390831374, 3, 8, 2]");
+        aeq(R.withScale(0), "RandomProvider[@2449928962525148503, 0, 8, 2]");
     }
 
     @Test
     public void testWithSecondaryScale() {
-        aeq(P.withSecondaryScale(100), "RandomProvider[@-8800290164235921060, 32, 100]");
-        aeq(Q.withSecondaryScale(3), "RandomProvider[@-7948823947390831374, 32, 3]");
-        aeq(R.withSecondaryScale(0), "RandomProvider[@2449928962525148503, 32, 0]");
+        aeq(P.withSecondaryScale(100), "RandomProvider[@-8800290164235921060, 32, 100, 2]");
+        aeq(Q.withSecondaryScale(3), "RandomProvider[@-7948823947390831374, 32, 3, 2]");
+        aeq(R.withSecondaryScale(0), "RandomProvider[@2449928962525148503, 32, 0, 2]");
+    }
+
+    @Test
+    public void testWithTertiaryScale() {
+        aeq(P.withTertiaryScale(100), "RandomProvider[@-8800290164235921060, 32, 8, 100]");
+        aeq(Q.withTertiaryScale(3), "RandomProvider[@-7948823947390831374, 32, 8, 3]");
+        aeq(R.withTertiaryScale(0), "RandomProvider[@2449928962525148503, 32, 8, 0]");
     }
 
     @Test
@@ -2259,71 +2274,88 @@ public strictfp class BasicTest {
         rangeDown_BigInteger_fail_helper(Integer.MAX_VALUE, 10);
     }
 
-    private static void randomProvidersFixedScales_helper(int scale, int secondaryScale, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.randomProvidersFixedScales(scale, secondaryScale), output);
+    private static void randomProvidersFixedScales_helper(
+            int scale,
+            int secondaryScale,
+            int tertiaryScale,
+            @NotNull String output
+    ) {
+        aeqitLimit(TINY_LIMIT, P.randomProvidersFixedScales(scale, secondaryScale, tertiaryScale), output);
         P.reset();
     }
 
     @Test
     public void testRandomProvidersFixedScales() {
-        randomProvidersFixedScales_helper(8, 32,
-                "[RandomProvider[@6307004437655165633, 8, 32], RandomProvider[@-4519915686575036879, 8, 32]," +
-                " RandomProvider[@-7025638243439307050, 8, 32], RandomProvider[@-4126903833619919214, 8, 32]," +
-                " RandomProvider[@-5427694677045639344, 8, 32], RandomProvider[@7348552576951528188, 8, 32]," +
-                " RandomProvider[@246622893618704701, 8, 32], RandomProvider[@5121732865777267992, 8, 32]," +
-                " RandomProvider[@5759987607678616363, 8, 32], RandomProvider[@-2677195354266163888, 8, 32]," +
-                " RandomProvider[@-5880388881439538439, 8, 32], RandomProvider[@-6955429462754504210, 8, 32]," +
-                " RandomProvider[@-2860702685178448944, 8, 32], RandomProvider[@-6467372047465124781, 8, 32]," +
-                " RandomProvider[@7320181434752204060, 8, 32], RandomProvider[@782469688557640613, 8, 32]," +
-                " RandomProvider[@2774874340225596175, 8, 32], RandomProvider[@3359862785424331688, 8, 32]," +
-                " RandomProvider[@-8433319027656919289, 8, 32], RandomProvider[@1111804850476602072, 8, 32], ...]");
-        randomProvidersFixedScales_helper(0, 0,
-                "[RandomProvider[@6307004437655165633, 0, 0], RandomProvider[@-4519915686575036879, 0, 0]," +
-                " RandomProvider[@-7025638243439307050, 0, 0], RandomProvider[@-4126903833619919214, 0, 0]," +
-                " RandomProvider[@-5427694677045639344, 0, 0], RandomProvider[@7348552576951528188, 0, 0]," +
-                " RandomProvider[@246622893618704701, 0, 0], RandomProvider[@5121732865777267992, 0, 0]," +
-                " RandomProvider[@5759987607678616363, 0, 0], RandomProvider[@-2677195354266163888, 0, 0]," +
-                " RandomProvider[@-5880388881439538439, 0, 0], RandomProvider[@-6955429462754504210, 0, 0]," +
-                " RandomProvider[@-2860702685178448944, 0, 0], RandomProvider[@-6467372047465124781, 0, 0]," +
-                " RandomProvider[@7320181434752204060, 0, 0], RandomProvider[@782469688557640613, 0, 0]," +
-                " RandomProvider[@2774874340225596175, 0, 0], RandomProvider[@3359862785424331688, 0, 0]," +
-                " RandomProvider[@-8433319027656919289, 0, 0], RandomProvider[@1111804850476602072, 0, 0], ...]");
-        randomProvidersFixedScales_helper(-5, -10,
-                "[RandomProvider[@6307004437655165633, -5, -10], RandomProvider[@-4519915686575036879, -5, -10]," +
-                " RandomProvider[@-7025638243439307050, -5, -10], RandomProvider[@-4126903833619919214, -5, -10]," +
-                " RandomProvider[@-5427694677045639344, -5, -10], RandomProvider[@7348552576951528188, -5, -10]," +
-                " RandomProvider[@246622893618704701, -5, -10], RandomProvider[@5121732865777267992, -5, -10]," +
-                " RandomProvider[@5759987607678616363, -5, -10], RandomProvider[@-2677195354266163888, -5, -10]," +
-                " RandomProvider[@-5880388881439538439, -5, -10], RandomProvider[@-6955429462754504210, -5, -10]," +
-                " RandomProvider[@-2860702685178448944, -5, -10], RandomProvider[@-6467372047465124781, -5, -10]," +
-                " RandomProvider[@7320181434752204060, -5, -10], RandomProvider[@782469688557640613, -5, -10]," +
-                " RandomProvider[@2774874340225596175, -5, -10], RandomProvider[@3359862785424331688, -5, -10]," +
-                " RandomProvider[@-8433319027656919289, -5, -10], RandomProvider[@1111804850476602072, -5, -10]," +
+        randomProvidersFixedScales_helper(8, 32, 2,
+                "[RandomProvider[@6307004437655165633, 8, 32, 2], RandomProvider[@-4519915686575036879, 8, 32, 2]," +
+                " RandomProvider[@-7025638243439307050, 8, 32, 2], RandomProvider[@-4126903833619919214, 8, 32, 2]," +
+                " RandomProvider[@-5427694677045639344, 8, 32, 2], RandomProvider[@7348552576951528188, 8, 32, 2]," +
+                " RandomProvider[@246622893618704701, 8, 32, 2], RandomProvider[@5121732865777267992, 8, 32, 2]," +
+                " RandomProvider[@5759987607678616363, 8, 32, 2], RandomProvider[@-2677195354266163888, 8, 32, 2]," +
+                " RandomProvider[@-5880388881439538439, 8, 32, 2], RandomProvider[@-6955429462754504210, 8, 32, 2]," +
+                " RandomProvider[@-2860702685178448944, 8, 32, 2], RandomProvider[@-6467372047465124781, 8, 32, 2]," +
+                " RandomProvider[@7320181434752204060, 8, 32, 2], RandomProvider[@782469688557640613, 8, 32, 2]," +
+                " RandomProvider[@2774874340225596175, 8, 32, 2], RandomProvider[@3359862785424331688, 8, 32, 2]," +
+                " RandomProvider[@-8433319027656919289, 8, 32, 2], RandomProvider[@1111804850476602072, 8, 32, 2]," +
                 " ...]");
+        randomProvidersFixedScales_helper(0, 0, 0,
+                "[RandomProvider[@6307004437655165633, 0, 0, 0], RandomProvider[@-4519915686575036879, 0, 0, 0]," +
+                " RandomProvider[@-7025638243439307050, 0, 0, 0], RandomProvider[@-4126903833619919214, 0, 0, 0]," +
+                " RandomProvider[@-5427694677045639344, 0, 0, 0], RandomProvider[@7348552576951528188, 0, 0, 0]," +
+                " RandomProvider[@246622893618704701, 0, 0, 0], RandomProvider[@5121732865777267992, 0, 0, 0]," +
+                " RandomProvider[@5759987607678616363, 0, 0, 0], RandomProvider[@-2677195354266163888, 0, 0, 0]," +
+                " RandomProvider[@-5880388881439538439, 0, 0, 0], RandomProvider[@-6955429462754504210, 0, 0, 0]," +
+                " RandomProvider[@-2860702685178448944, 0, 0, 0], RandomProvider[@-6467372047465124781, 0, 0, 0]," +
+                " RandomProvider[@7320181434752204060, 0, 0, 0], RandomProvider[@782469688557640613, 0, 0, 0]," +
+                " RandomProvider[@2774874340225596175, 0, 0, 0], RandomProvider[@3359862785424331688, 0, 0, 0]," +
+                " RandomProvider[@-8433319027656919289, 0, 0, 0], RandomProvider[@1111804850476602072, 0, 0, 0]," +
+                " ...]");
+        randomProvidersFixedScales_helper(-5, -10, -1,
+                "[RandomProvider[@6307004437655165633, -5, -10, -1]," +
+                " RandomProvider[@-4519915686575036879, -5, -10, -1]," +
+                " RandomProvider[@-7025638243439307050, -5, -10, -1]," +
+                " RandomProvider[@-4126903833619919214, -5, -10, -1]," +
+                " RandomProvider[@-5427694677045639344, -5, -10, -1]," +
+                " RandomProvider[@7348552576951528188, -5, -10, -1]," +
+                " RandomProvider[@246622893618704701, -5, -10, -1]," +
+                " RandomProvider[@5121732865777267992, -5, -10, -1]," +
+                " RandomProvider[@5759987607678616363, -5, -10, -1]," +
+                " RandomProvider[@-2677195354266163888, -5, -10, -1]," +
+                " RandomProvider[@-5880388881439538439, -5, -10, -1]," +
+                " RandomProvider[@-6955429462754504210, -5, -10, -1]," +
+                " RandomProvider[@-2860702685178448944, -5, -10, -1]," +
+                " RandomProvider[@-6467372047465124781, -5, -10, -1]," +
+                " RandomProvider[@7320181434752204060, -5, -10, -1]," +
+                " RandomProvider[@782469688557640613, -5, -10, -1]," +
+                " RandomProvider[@2774874340225596175, -5, -10, -1]," +
+                " RandomProvider[@3359862785424331688, -5, -10, -1]," +
+                " RandomProvider[@-8433319027656919289, -5, -10, -1]," +
+                " RandomProvider[@1111804850476602072, -5, -10, -1], ...]");
     }
 
     @Test
     public void testRandomProvidersDefault() {
         aeqitLimit(TINY_LIMIT, P.randomProvidersDefault(),
-                "[RandomProvider[@6307004437655165633, 32, 8], RandomProvider[@-4519915686575036879, 32, 8]," +
-                " RandomProvider[@-7025638243439307050, 32, 8], RandomProvider[@-4126903833619919214, 32, 8]," +
-                " RandomProvider[@-5427694677045639344, 32, 8], RandomProvider[@7348552576951528188, 32, 8]," +
-                " RandomProvider[@246622893618704701, 32, 8], RandomProvider[@5121732865777267992, 32, 8]," +
-                " RandomProvider[@5759987607678616363, 32, 8], RandomProvider[@-2677195354266163888, 32, 8]," +
-                " RandomProvider[@-5880388881439538439, 32, 8], RandomProvider[@-6955429462754504210, 32, 8]," +
-                " RandomProvider[@-2860702685178448944, 32, 8], RandomProvider[@-6467372047465124781, 32, 8]," +
-                " RandomProvider[@7320181434752204060, 32, 8], RandomProvider[@782469688557640613, 32, 8]," +
-                " RandomProvider[@2774874340225596175, 32, 8], RandomProvider[@3359862785424331688, 32, 8]," +
-                " RandomProvider[@-8433319027656919289, 32, 8], RandomProvider[@1111804850476602072, 32, 8], ...]");
+                "[RandomProvider[@6307004437655165633, 32, 8, 2], RandomProvider[@-4519915686575036879, 32, 8, 2]," +
+                " RandomProvider[@-7025638243439307050, 32, 8, 2], RandomProvider[@-4126903833619919214, 32, 8, 2]," +
+                " RandomProvider[@-5427694677045639344, 32, 8, 2], RandomProvider[@7348552576951528188, 32, 8, 2]," +
+                " RandomProvider[@246622893618704701, 32, 8, 2], RandomProvider[@5121732865777267992, 32, 8, 2]," +
+                " RandomProvider[@5759987607678616363, 32, 8, 2], RandomProvider[@-2677195354266163888, 32, 8, 2]," +
+                " RandomProvider[@-5880388881439538439, 32, 8, 2], RandomProvider[@-6955429462754504210, 32, 8, 2]," +
+                " RandomProvider[@-2860702685178448944, 32, 8, 2], RandomProvider[@-6467372047465124781, 32, 8, 2]," +
+                " RandomProvider[@7320181434752204060, 32, 8, 2], RandomProvider[@782469688557640613, 32, 8, 2]," +
+                " RandomProvider[@2774874340225596175, 32, 8, 2], RandomProvider[@3359862785424331688, 32, 8, 2]," +
+                " RandomProvider[@-8433319027656919289, 32, 8, 2], RandomProvider[@1111804850476602072, 32, 8, 2]," +
+                " ...]");
     }
 
-    private static void randomProvidersDefaultSecondaryScale_helper(int scale, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.withScale(scale).randomProvidersDefaultSecondaryScale(), output);
+    private static void randomProvidersDefaultSecondaryAndTertiaryScale_helper(int scale, @NotNull String output) {
+        aeqitLimit(TINY_LIMIT, P.withScale(scale).randomProvidersDefaultSecondaryAndTertiaryScale(), output);
     }
 
-    private static void randomProvidersDefaultSecondaryScale_fail_helper(int scale) {
+    private static void randomProvidersDefaultSecondaryAndTertiaryScale_fail_helper(int scale) {
         try {
-            P.withScale(scale).randomProvidersDefaultSecondaryScale();
+            P.withScale(scale).randomProvidersDefaultSecondaryAndTertiaryScale();
             fail();
         } catch (IllegalStateException ignored) {}
         finally{
@@ -2332,31 +2364,84 @@ public strictfp class BasicTest {
     }
 
     @Test
-    public void testRandomProvidersDefaultSecondaryScale() {
-        randomProvidersDefaultSecondaryScale_helper(1,
-                "[RandomProvider[@6307004437655165633, -5, 8], RandomProvider[@-7770852755974855344, 0, 8]," +
-                " RandomProvider[@6832674836478317052, 0, 8], RandomProvider[@2348979093764503707, 0, 8]," +
-                " RandomProvider[@-3311771976522419646, 0, 8], RandomProvider[@-7634280196942541620, 1, 8]," +
-                " RandomProvider[@-7767705787531644917, 0, 8], RandomProvider[@81421145801651884, 0, 8]," +
-                " RandomProvider[@-6552540366894552383, 0, 8], RandomProvider[@7587196352192942386, 0, 8]," +
-                " RandomProvider[@-8246943450391907254, -3, 8], RandomProvider[@-820566476981084482, 1, 8]," +
-                " RandomProvider[@2186418457431307206, 0, 8], RandomProvider[@-5224324213007012299, 4, 8]," +
-                " RandomProvider[@-4563547075322936850, -1, 8], RandomProvider[@-6789389732339265485, 0, 8]," +
-                " RandomProvider[@2363691026006694815, -2, 8], RandomProvider[@3709336108842122753, 2, 8]," +
-                " RandomProvider[@3790936233798178647, 0, 8], RandomProvider[@-3688180373504387923, 0, 8], ...]");
-        randomProvidersDefaultSecondaryScale_helper(8,
-                "[RandomProvider[@3887373508347741101, 0, 8], RandomProvider[@7489240012074539148, 0, 8]," +
-                " RandomProvider[@6700805681412473352, -1, 8], RandomProvider[@-1374926170863284819, -8, 8]," +
-                " RandomProvider[@-3848183273460469121, 37, 8], RandomProvider[@-49450811760821044, 0, 8]," +
-                " RandomProvider[@4430970725363059248, -2, 8], RandomProvider[@-5482300470053986377, 0, 8]," +
-                " RandomProvider[@1538407982862159616, -23, 8], RandomProvider[@7336982826946736739, 0, 8]," +
-                " RandomProvider[@-2938230294926391142, -6, 8], RandomProvider[@-3485615571225768952, 7, 8]," +
-                " RandomProvider[@996423837391949024, 1, 8], RandomProvider[@1456970389750881923, 8, 8]," +
-                " RandomProvider[@-6637239735594790750, -8, 8], RandomProvider[@-2747177645903728981, 2, 8]," +
-                " RandomProvider[@740372212332383945, 7, 8], RandomProvider[@-9195285235564984364, -18, 8]," +
-                " RandomProvider[@-527513867224610970, -10, 8], RandomProvider[@-7292629687871019766, -14, 8], ...]");
-        randomProvidersDefaultSecondaryScale_fail_helper(0);
-        randomProvidersDefaultSecondaryScale_fail_helper(-1);
+    public void testRandomProvidersDefaultSecondaryAndTertiaryScale() {
+        randomProvidersDefaultSecondaryAndTertiaryScale_helper(1,
+                "[RandomProvider[@6307004437655165633, -5, 8, 2], RandomProvider[@-7770852755974855344, 0, 8, 2]," +
+                " RandomProvider[@6832674836478317052, 0, 8, 2], RandomProvider[@2348979093764503707, 0, 8, 2]," +
+                " RandomProvider[@-3311771976522419646, 0, 8, 2], RandomProvider[@-7634280196942541620, 1, 8, 2]," +
+                " RandomProvider[@-7767705787531644917, 0, 8, 2], RandomProvider[@81421145801651884, 0, 8, 2]," +
+                " RandomProvider[@-6552540366894552383, 0, 8, 2], RandomProvider[@7587196352192942386, 0, 8, 2]," +
+                " RandomProvider[@-8246943450391907254, -3, 8, 2], RandomProvider[@-820566476981084482, 1, 8, 2]," +
+                " RandomProvider[@2186418457431307206, 0, 8, 2], RandomProvider[@-5224324213007012299, 4, 8, 2]," +
+                " RandomProvider[@-4563547075322936850, -1, 8, 2], RandomProvider[@-6789389732339265485, 0, 8, 2]," +
+                " RandomProvider[@2363691026006694815, -2, 8, 2], RandomProvider[@3709336108842122753, 2, 8, 2]," +
+                " RandomProvider[@3790936233798178647, 0, 8, 2], RandomProvider[@-3688180373504387923, 0, 8, 2]," +
+                " ...]");
+        randomProvidersDefaultSecondaryAndTertiaryScale_helper(8,
+                "[RandomProvider[@3887373508347741101, 0, 8, 2], RandomProvider[@7489240012074539148, 0, 8, 2]," +
+                " RandomProvider[@6700805681412473352, -1, 8, 2], RandomProvider[@-1374926170863284819, -8, 8, 2]," +
+                " RandomProvider[@-3848183273460469121, 37, 8, 2], RandomProvider[@-49450811760821044, 0, 8, 2]," +
+                " RandomProvider[@4430970725363059248, -2, 8, 2], RandomProvider[@-5482300470053986377, 0, 8, 2]," +
+                " RandomProvider[@1538407982862159616, -23, 8, 2], RandomProvider[@7336982826946736739, 0, 8, 2]," +
+                " RandomProvider[@-2938230294926391142, -6, 8, 2], RandomProvider[@-3485615571225768952, 7, 8, 2]," +
+                " RandomProvider[@996423837391949024, 1, 8, 2], RandomProvider[@1456970389750881923, 8, 8, 2]," +
+                " RandomProvider[@-6637239735594790750, -8, 8, 2], RandomProvider[@-2747177645903728981, 2, 8, 2]," +
+                " RandomProvider[@740372212332383945, 7, 8, 2], RandomProvider[@-9195285235564984364, -18, 8, 2]," +
+                " RandomProvider[@-527513867224610970, -10, 8, 2], RandomProvider[@-7292629687871019766, -14, 8, 2]," +
+                " ...]");
+        randomProvidersDefaultSecondaryAndTertiaryScale_fail_helper(0);
+        randomProvidersDefaultSecondaryAndTertiaryScale_fail_helper(-1);
+    }
+
+    private static void randomProvidersDefaultTertiaryScale_helper(
+            int scale,
+            int secondaryScale,
+            @NotNull String output
+    ) {
+        aeqitLimit(
+                TINY_LIMIT,
+                P.withScale(scale).withSecondaryScale(secondaryScale).randomProvidersDefaultTertiaryScale(),
+                output
+        );
+    }
+
+    private static void randomProvidersDefaultTertiaryScale_fail_helper(int scale, int secondaryScale) {
+        try {
+            P.withScale(scale).withSecondaryScale(secondaryScale).randomProvidersDefaultTertiaryScale();
+            fail();
+        } catch (IllegalStateException ignored) {}
+        finally{
+            P.reset();
+        }
+    }
+
+    @Test
+    public void testRandomProvidersDefaultTertiaryScale() {
+        randomProvidersDefaultTertiaryScale_helper(1, 10,
+                "[RandomProvider[@6307004437655165633, -5, 0, 2], RandomProvider[@-6171431263397241906, 0, 0, 2]," +
+                " RandomProvider[@-1848836459362430551, -1, 1, 2], RandomProvider[@4117319870858322367, 1, 0, 2]," +
+                " RandomProvider[@-1980397111602854804, 0, 0, 2], RandomProvider[@9043088029279530162, 0, 0, 2]," +
+                " RandomProvider[@3798757115854213964, 0, -1, 2], RandomProvider[@-4388439033826358752, -1, -1, 2]," +
+                " RandomProvider[@-6385331079771071403, -2, -6, 2], RandomProvider[@-8783571164295275862, -3, 0, 2]," +
+                " RandomProvider[@-6017058958409844511, 0, 0, 2], RandomProvider[@-8489446225902946620, 0, 1, 2]," +
+                " RandomProvider[@2332760258481133325, 2, 0, 2], RandomProvider[@8234428250670004417, 0, 0, 2]," +
+                " RandomProvider[@2791533226707083522, -1, 0, 2], RandomProvider[@-3075859140743035913, -2, 0, 2]," +
+                " RandomProvider[@-5529583516561931219, 1, 0, 2], RandomProvider[@-3450294338751092713, 0, 0, 2]," +
+                " RandomProvider[@8375083899504250850, 1, 2, 2], RandomProvider[@1358604122880332696, 2, 0, 2], ...]");
+        randomProvidersDefaultTertiaryScale_helper(8, 5,
+                "[RandomProvider[@-7930238353239242110, -2, 2, 2], RandomProvider[@8121741449231013813, -6, 0, 2]," +
+                " RandomProvider[@3075629249571270827, 0, -6, 2], RandomProvider[@7250712286939599965, 8, -2, 2]," +
+                " RandomProvider[@-1625758914952969695, 7, -4, 2], RandomProvider[@-2252948204333303243, 2, -11, 2]," +
+                " RandomProvider[@-6560316366330489585, -9, 12, 2], RandomProvider[@1732114681838405558, 1, 10, 2]," +
+                " RandomProvider[@8481290765385111525, -6, -8, 2], RandomProvider[@-2851664326566691393, -2, 53, 2]," +
+                " RandomProvider[@-8448663629993551207, 4, 10, 2], RandomProvider[@7917521134228965409, -11, 1, 2]," +
+                " RandomProvider[@4266384421149219084, 15, -11, 2]," +
+                " RandomProvider[@-3356991513602379740, 6, -12, 2], RandomProvider[@-6164819607534227449, 9, 1, 2]," +
+                " RandomProvider[@1451132675867871265, 6, 17, 2], RandomProvider[@8575705307132439150, 11, 0, 2]," +
+                " RandomProvider[@9124218868602319196, 1, -1, 2], RandomProvider[@8680823873053448635, 1, -18, 2]," +
+                " RandomProvider[@-511767027727822272, -1, -5, 2], ...]");
+        randomProvidersDefaultTertiaryScale_fail_helper(0, -5);
+        randomProvidersDefaultTertiaryScale_fail_helper(-1, 5);
     }
 
     private static void randomProviders_helper(int scale, @NotNull String output) {
@@ -2376,27 +2461,32 @@ public strictfp class BasicTest {
     @Test
     public void testRandomProviders() {
         randomProviders_helper(1,
-                "[RandomProvider[@6307004437655165633, -5, 0], RandomProvider[@-6171431263397241906, 0, 0]," +
-                " RandomProvider[@-1848836459362430551, -1, 1], RandomProvider[@4117319870858322367, 1, 0]," +
-                " RandomProvider[@-1980397111602854804, 0, 0], RandomProvider[@9043088029279530162, 0, 0]," +
-                " RandomProvider[@3798757115854213964, 0, -1], RandomProvider[@-4388439033826358752, -1, -1]," +
-                " RandomProvider[@-6385331079771071403, -2, -6], RandomProvider[@-8783571164295275862, -3, 0]," +
-                " RandomProvider[@-6017058958409844511, 0, 0], RandomProvider[@-8489446225902946620, 0, 1]," +
-                " RandomProvider[@2332760258481133325, 2, 0], RandomProvider[@8234428250670004417, 0, 0]," +
-                " RandomProvider[@2791533226707083522, -1, 0], RandomProvider[@-3075859140743035913, -2, 0]," +
-                " RandomProvider[@-5529583516561931219, 1, 0], RandomProvider[@-3450294338751092713, 0, 0]," +
-                " RandomProvider[@8375083899504250850, 1, 2], RandomProvider[@1358604122880332696, 2, 0], ...]");
+                "[RandomProvider[@6307004437655165633, -5, 0, -1], RandomProvider[@-2164058141773875473, -2, -1, 0]," +
+                " RandomProvider[@-8673382113360763284, 1, 0, 0], RandomProvider[@2340806036351914368, 0, -1, 0]," +
+                " RandomProvider[@-1405990713230511685, 0, 0, 0], RandomProvider[@3583690730334262517, 0, 0, 0]," +
+                " RandomProvider[@-1765586312930096474, 0, 0, 1], RandomProvider[@-5049557932898541532, 1, 2, 0]," +
+                " RandomProvider[@-1886753891110093763, -2, -3, 3], RandomProvider[@-2240132514146400831, 0, 3, 0]," +
+                " RandomProvider[@-66506097629859838, 1, -2, 0], RandomProvider[@-600402736355833231, 1, -2, 0]," +
+                " RandomProvider[@1665673473376977262, 0, 0, -2], RandomProvider[@8485604864171982830, 2, 0, -5]," +
+                " RandomProvider[@6970041540771143295, 1, 0, -1], RandomProvider[@-5197820436891692579, -1, 0, -3]," +
+                " RandomProvider[@4497665493626278145, 1, 0, 0], RandomProvider[@-9090554980022590090, 1, 0, 0]," +
+                " RandomProvider[@-9166376787865155184, 0, 1, 1], RandomProvider[@1162418687312963091, 0, -1, 0]," +
+                " ...]");
         randomProviders_helper(8,
-                "[RandomProvider[@-7930238353239242110, -2, 2], RandomProvider[@8121741449231013813, -6, 0]," +
-                " RandomProvider[@3075629249571270827, 0, -6], RandomProvider[@7250712286939599965, 8, -2]," +
-                " RandomProvider[@-1625758914952969695, 7, -4], RandomProvider[@-2252948204333303243, 2, -11]," +
-                " RandomProvider[@-6560316366330489585, -9, 12], RandomProvider[@1732114681838405558, 1, 10]," +
-                " RandomProvider[@8481290765385111525, -6, -8], RandomProvider[@-2851664326566691393, -2, 53]," +
-                " RandomProvider[@-8448663629993551207, 4, 10], RandomProvider[@7917521134228965409, -11, 1]," +
-                " RandomProvider[@4266384421149219084, 15, -11], RandomProvider[@-3356991513602379740, 6, -12]," +
-                " RandomProvider[@-6164819607534227449, 9, 1], RandomProvider[@1451132675867871265, 6, 17]," +
-                " RandomProvider[@8575705307132439150, 11, 0], RandomProvider[@9124218868602319196, 1, -1]," +
-                " RandomProvider[@8680823873053448635, 1, -18], RandomProvider[@-511767027727822272, -1, -5], ...]");
+                "[RandomProvider[@1407012230448997866, -5, 0, 6], RandomProvider[@4398829686418147516, 0, 8, -12]," +
+                " RandomProvider[@-3714734985478712389, 0, 0, 24], RandomProvider[@4812290183660938574, 0, -4, 14]," +
+                " RandomProvider[@1465093423371142335, -2, 0, 0], RandomProvider[@72183019512228281, 17, 2, -2]," +
+                " RandomProvider[@5604138525455037432, -7, 3, 6]," +
+                " RandomProvider[@1538407982862159616, -23, -10, -5]," +
+                " RandomProvider[@-3573607485612529784, -2, -1, -5]," +
+                " RandomProvider[@-1957751325601548703, 18, -13, 0]," +
+                " RandomProvider[@-6013738702941258732, 0, 2, -19], RandomProvider[@-4494889013192701264, 4, 4, 6]," +
+                " RandomProvider[@561508256824797692, 1, -17, 0], RandomProvider[@6209673873373544388, 0, 7, 0]," +
+                " RandomProvider[@6275790472149024274, -10, -1, 0]," +
+                " RandomProvider[@4014080165189533624, -11, -36, 6]," +
+                " RandomProvider[@3800236844360757756, -4, -17, 3], RandomProvider[@-4720459891865792453, 5, -4, 6]," +
+                " RandomProvider[@1210364901413161385, -6, 5, -1], RandomProvider[@6939589116879036549, -14, 9, -4]," +
+                " ...]");
         randomProviders_fail_helper(0);
         randomProviders_fail_helper(-1);
     }
@@ -2405,13 +2495,13 @@ public strictfp class BasicTest {
     public void testEquals() {
         List<RandomProvider> xs = Arrays.asList(
                 RandomProvider.example(),
-                Q.withScale(3).withSecondaryScale(0),
-                R.withScale(0).withSecondaryScale(10)
+                Q.withScale(3).withSecondaryScale(0).withTertiaryScale(-1),
+                R.withScale(0).withSecondaryScale(10).withTertiaryScale(5)
         );
         List<RandomProvider> ys = Arrays.asList(
                 RandomProvider.example(),
-                Q.withScale(3).withSecondaryScale(0),
-                R.withScale(0).withSecondaryScale(10)
+                Q.withScale(3).withSecondaryScale(0).withTertiaryScale(-1),
+                R.withScale(0).withSecondaryScale(10).withTertiaryScale(5)
         );
         testEqualsHelper(xs, ys);
         //noinspection EqualsBetweenInconvertibleTypes
@@ -2420,16 +2510,22 @@ public strictfp class BasicTest {
 
     @Test
     public void testHashCode() {
-        aeq(P.hashCode(), 1620921090);
-        aeq(Q.withScale(3).withSecondaryScale(0).hashCode(), 607613738);
-        aeq(R.withScale(0).withSecondaryScale(10).hashCode(), 816647836);
+        aeq(P.hashCode(), -1291053760);
+        aeq(Q.withScale(3).withSecondaryScale(0).withTertiaryScale(-1).hashCode(), 1656156693);
+        aeq(R.withScale(0).withSecondaryScale(10).withTertiaryScale(5).hashCode(), -453720855);
     }
 
     @Test
     public void testToString() {
-        aeq(P, "RandomProvider[@-8800290164235921060, 32, 8]");
-        aeq(Q.withScale(3).withSecondaryScale(0), "RandomProvider[@-7948823947390831374, 3, 0]");
-        aeq(R.withScale(0).withSecondaryScale(10), "RandomProvider[@2449928962525148503, 0, 10]");
+        aeq(P, "RandomProvider[@-8800290164235921060, 32, 8, 2]");
+        aeq(
+                Q.withScale(3).withSecondaryScale(0).withTertiaryScale(-1),
+                "RandomProvider[@-7948823947390831374, 3, 0, -1]"
+        );
+        aeq(
+                R.withScale(0).withSecondaryScale(10).withTertiaryScale(5),
+                "RandomProvider[@2449928962525148503, 0, 10, 5]"
+        );
     }
 
     private static double meanOfIntegers(@NotNull List<Integer> xs) {

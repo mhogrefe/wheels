@@ -59,6 +59,15 @@ public abstract strictfp class IterableProvider {
     }
 
     /**
+     * Returns a shallow copy of {@code this} with a given tertiary scale.
+     *
+     * @param tertiaryScale the tertiary scale.
+     */
+    public @NotNull IterableProvider withTertiaryScale(int tertiaryScale) {
+        return this;
+    }
+
+    /**
      * Generates {@code Boolean}s.
      */
     public abstract @NotNull Iterable<Boolean> booleans();
@@ -2426,6 +2435,7 @@ public abstract strictfp class IterableProvider {
      * @param bs the second {@code Iterable}
      * @param <T> the type of the {@code Iterables}' elements
      */
+    @SuppressWarnings("unused")
     public @NotNull <T> Iterable<T> chooseSuccessive(@NotNull Iterable<T> as, @NotNull Iterable<T> bs) {
         return map(e -> e.whichSlot() == Either.Slot.A ? e.a() : e.b(), eithersSuccessive(as, bs));
     }
@@ -2644,32 +2654,50 @@ public abstract strictfp class IterableProvider {
     }
 
     /**
-     * Generates all {@code RandomProvider}s with a fixed {@code scale} and {@code secondaryScale}.
+     * Generates all {@code RandomProvider}s with a fixed {@code scale}, {@code secondaryScale}, and
+     * {@code tertiaryScale}.
      *
      * @param scale the {@code scale} of the generated {@code RandomProvider}s
      * @param secondaryScale the {@code secondaryScale} of the generated {@code RandomProvider}s
+     * @param tertiaryScale the {@code tertiaryScale} of the generated {@code RandomProvider}s
      */
-    public @NotNull Iterable<RandomProvider> randomProvidersFixedScales(int scale, int secondaryScale) {
+    public @NotNull Iterable<RandomProvider> randomProvidersFixedScales(
+            int scale,
+            int secondaryScale,
+            int tertiaryScale
+    ) {
         return map(
-                is -> new RandomProvider(is).withScale(scale).withSecondaryScale(secondaryScale),
+                is -> new RandomProvider(is).withScale(scale).withSecondaryScale(secondaryScale)
+                        .withTertiaryScale(tertiaryScale),
                 lists(IsaacPRNG.SIZE, integers())
         );
     }
 
     /**
-     * Generates all {@code RandomProvider}s with the default {@code scale} and {@code secondaryScale}.
+     * Generates all {@code RandomProvider}s with the default {@code scale}, {@code secondaryScale}, and
+     * {@code tertiaryScale}.
      */
     public @NotNull Iterable<RandomProvider> randomProvidersDefault() {
         return map(RandomProvider::new, lists(IsaacPRNG.SIZE, integers()));
     }
 
     /**
-     * Generates all {@code RandomProvider}s with the default {@code secondaryScale}.
+     * Generates all {@code RandomProvider}s with the default {@code secondaryScale} and {@code tertiaryScale}.
      */
-    public @NotNull Iterable<RandomProvider> randomProvidersDefaultSecondaryScale() {
+    public @NotNull Iterable<RandomProvider> randomProvidersDefaultSecondaryAndTertiaryScale() {
         return map(
                 p -> new RandomProvider(p.a).withScale(p.b),
                 pairs(lists(IsaacPRNG.SIZE, integers()), integersGeometric())
+        );
+    }
+
+    /**
+     * Generates all {@code RandomProvider}s with the default {@code tertiaryScale}.
+     */
+    public @NotNull Iterable<RandomProvider> randomProvidersDefaultTertiaryScale() {
+        return map(
+                p -> new RandomProvider(p.a).withScale(p.b.a).withSecondaryScale(p.b.b),
+                pairs(lists(IsaacPRNG.SIZE, integers()), pairs(integersGeometric()))
         );
     }
 
@@ -2678,8 +2706,8 @@ public abstract strictfp class IterableProvider {
      */
     public @NotNull Iterable<RandomProvider> randomProviders() {
         return map(
-                p -> new RandomProvider(p.a).withScale(p.b.a).withSecondaryScale(p.b.b),
-                pairs(lists(IsaacPRNG.SIZE, integers()), pairs(integersGeometric()))
+                p -> new RandomProvider(p.a).withScale(p.b.a).withSecondaryScale(p.b.b).withTertiaryScale(p.b.c),
+                pairs(lists(IsaacPRNG.SIZE, integers()), triples(integersGeometric()))
         );
     }
 }

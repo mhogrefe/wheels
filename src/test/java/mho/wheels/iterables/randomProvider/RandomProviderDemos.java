@@ -7,6 +7,7 @@ import mho.wheels.math.BinaryFraction;
 import mho.wheels.random.IsaacPRNG;
 import mho.wheels.structures.FiniteDomainFunction;
 import mho.wheels.structures.Pair;
+import mho.wheels.structures.Quadruple;
 import mho.wheels.structures.Triple;
 import mho.wheels.testing.Demos;
 import mho.wheels.testing.Testing;
@@ -50,6 +51,12 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
+    private void demoGetTertiaryScale() {
+        for (RandomProvider rp : take(LIMIT, P.randomProviders())) {
+            System.out.println("getTertiaryScale(" + rp + ") = " + rp.getTertiaryScale());
+        }
+    }
+
     private void demoGetSeed() {
         for (RandomProvider rp : take(LIMIT, P.randomProviders())) {
             System.out.println("getSeed(" + rp + ") = " + rp.getSeed());
@@ -57,14 +64,20 @@ public class RandomProviderDemos extends Demos {
     }
 
     private void demoWithScale() {
-        for (Pair<RandomProvider, Integer> p : take(LIMIT, P.pairs(P.randomProviders(), P.naturalIntegers()))) {
+        for (Pair<RandomProvider, Integer> p : take(MEDIUM_LIMIT, P.pairs(P.randomProviders(), P.naturalIntegers()))) {
             System.out.println("withScale(" + p.a + ", " + p.b + ") = " + p.a.withScale(p.b));
         }
     }
 
     private void demoWithSecondaryScale() {
-        for (Pair<RandomProvider, Integer> p : take(LIMIT, P.pairs(P.randomProviders(), P.naturalIntegers()))) {
+        for (Pair<RandomProvider, Integer> p : take(MEDIUM_LIMIT, P.pairs(P.randomProviders(), P.naturalIntegers()))) {
             System.out.println("withSecondaryScale(" + p.a + ", " + p.b + ") = " + p.a.withSecondaryScale(p.b));
+        }
+    }
+
+    private void demoWithTertiaryScale() {
+        for (Pair<RandomProvider, Integer> p : take(MEDIUM_LIMIT, P.pairs(P.randomProviders(), P.naturalIntegers()))) {
+            System.out.println("withTertiaryScale(" + p.a + ", " + p.b + ") = " + p.a.withTertiaryScale(p.b));
         }
     }
 
@@ -390,7 +403,7 @@ public class RandomProviderDemos extends Demos {
     private void demoPositiveIntegersGeometric() {
         Iterable<RandomProvider> rps = filterInfinite(
                 x -> x.getScale() >= 2,
-                P.randomProvidersDefaultSecondaryScale()
+                P.randomProvidersDefaultSecondaryAndTertiaryScale()
         );
         for (RandomProvider rp : take(MEDIUM_LIMIT, rps)) {
             System.out.println("positiveIntegersGeometric(" + rp + ") = " + its(rp.positiveIntegersGeometric()));
@@ -400,7 +413,7 @@ public class RandomProviderDemos extends Demos {
     private void demoNegativeIntegersGeometric() {
         Iterable<RandomProvider> rps = filterInfinite(
                 x -> x.getScale() >= 2,
-                P.randomProvidersDefaultSecondaryScale()
+                P.randomProvidersDefaultSecondaryAndTertiaryScale()
         );
         for (RandomProvider rp : take(MEDIUM_LIMIT, rps)) {
             System.out.println("negativeIntegersGeometric(" + rp + ") = " + its(rp.negativeIntegersGeometric()));
@@ -410,7 +423,7 @@ public class RandomProviderDemos extends Demos {
     private void demoNaturalIntegersGeometric() {
         Iterable<RandomProvider> rps = filterInfinite(
                 x -> x.getScale() > 0 && x.getScale() != Integer.MAX_VALUE,
-                P.randomProvidersDefaultSecondaryScale()
+                P.randomProvidersDefaultSecondaryAndTertiaryScale()
         );
         for (RandomProvider rp : take(MEDIUM_LIMIT, rps)) {
             System.out.println("naturalIntegersGeometric(" + rp + ") = " + its(rp.naturalIntegersGeometric()));
@@ -420,7 +433,7 @@ public class RandomProviderDemos extends Demos {
     private void demoNonzeroIntegersGeometric() {
         Iterable<RandomProvider> rps = filterInfinite(
                 x -> x.getScale() >= 2,
-                P.randomProvidersDefaultSecondaryScale()
+                P.randomProvidersDefaultSecondaryAndTertiaryScale()
         );
         for (RandomProvider rp : take(MEDIUM_LIMIT, rps)) {
             System.out.println("nonzeroIntegersGeometric(" + rp + ") = " + its(rp.nonzeroIntegersGeometric()));
@@ -430,7 +443,7 @@ public class RandomProviderDemos extends Demos {
     private void demoIntegersGeometric() {
         Iterable<RandomProvider> rps = filterInfinite(
                 x -> x.getScale() > 0 && x.getScale() != Integer.MAX_VALUE,
-                P.randomProvidersDefaultSecondaryScale()
+                P.randomProvidersDefaultSecondaryAndTertiaryScale()
         );
         for (RandomProvider rp : take(MEDIUM_LIMIT, rps)) {
             System.out.println("integersGeometric(" + rp + ") = " + its(rp.integersGeometric()));
@@ -440,7 +453,7 @@ public class RandomProviderDemos extends Demos {
     private void demoRangeUpGeometric() {
         Iterable<Pair<RandomProvider, Integer>> ps = filterInfinite(
                 p -> p.a.getScale() > p.b && (p.b > 1 || p.a.getScale() >= Integer.MAX_VALUE + p.b),
-                P.pairs(P.randomProvidersDefaultSecondaryScale(), P.integersGeometric())
+                P.pairs(P.randomProvidersDefaultSecondaryAndTertiaryScale(), P.integersGeometric())
         );
         for (Pair<RandomProvider, Integer> p : take(MEDIUM_LIMIT, ps)) {
             System.out.println("rangeUpGeometric(" + p.a + ", " + p.b + ") = " + its(p.a.rangeUpGeometric(p.b)));
@@ -450,7 +463,7 @@ public class RandomProviderDemos extends Demos {
     private void demoRangeDownGeometric() {
         Iterable<Pair<RandomProvider, Integer>> ps = filterInfinite(
                 p -> p.a.getScale() < p.b && (p.b <= -1 || p.a.getScale() > p.b - Integer.MAX_VALUE),
-                P.pairs(P.randomProvidersDefaultSecondaryScale(), P.integersGeometric())
+                P.pairs(P.randomProvidersDefaultSecondaryAndTertiaryScale(), P.integersGeometric())
         );
         for (Pair<RandomProvider, Integer> p : take(MEDIUM_LIMIT, ps)) {
             System.out.println("rangeDownGeometric(" + p.a + ", " + p.b + ") = " + its(p.a.rangeDownGeometric(p.b)));
@@ -460,7 +473,7 @@ public class RandomProviderDemos extends Demos {
     private void demoPositiveBigIntegers() {
         Iterable<RandomProvider> rps = filterInfinite(
                 x -> x.getScale() >= 2,
-                P.randomProvidersDefaultSecondaryScale()
+                P.randomProvidersDefaultSecondaryAndTertiaryScale()
         );
         for (RandomProvider rp : take(MEDIUM_LIMIT, rps)) {
             System.out.println("positiveBigIntegers(" + rp + ") = " + its(rp.positiveBigIntegers()));
@@ -470,7 +483,7 @@ public class RandomProviderDemos extends Demos {
     private void demoNegativeBigIntegers() {
         Iterable<RandomProvider> rps = filterInfinite(
                 x -> x.getScale() >= 2,
-                P.randomProvidersDefaultSecondaryScale()
+                P.randomProvidersDefaultSecondaryAndTertiaryScale()
         );
         for (RandomProvider rp : take(MEDIUM_LIMIT, rps)) {
             System.out.println("negativeBigIntegers(" + rp + ") = " + its(rp.negativeBigIntegers()));
@@ -480,7 +493,7 @@ public class RandomProviderDemos extends Demos {
     private void demoNaturalBigIntegers() {
         Iterable<RandomProvider> rps = filterInfinite(
                 x -> x.getScale() > 0 && x.getScale() != Integer.MAX_VALUE,
-                P.randomProvidersDefaultSecondaryScale()
+                P.randomProvidersDefaultSecondaryAndTertiaryScale()
         );
         for (RandomProvider rp : take(MEDIUM_LIMIT, rps)) {
             System.out.println("naturalBigIntegers(" + rp + ") = " + its(rp.naturalBigIntegers()));
@@ -490,7 +503,7 @@ public class RandomProviderDemos extends Demos {
     private void demoNonzeroBigIntegers() {
         Iterable<RandomProvider> rps = filterInfinite(
                 x -> x.getScale() >= 2,
-                P.randomProvidersDefaultSecondaryScale()
+                P.randomProvidersDefaultSecondaryAndTertiaryScale()
         );
         for (RandomProvider rp : take(MEDIUM_LIMIT, rps)) {
             System.out.println("nonzeroBigIntegers(" + rp + ") = " + its(rp.nonzeroBigIntegers()));
@@ -500,7 +513,7 @@ public class RandomProviderDemos extends Demos {
     private void demoBigIntegers() {
         Iterable<RandomProvider> rps = filterInfinite(
                 x -> x.getScale() > 0 && x.getScale() != Integer.MAX_VALUE,
-                P.randomProvidersDefaultSecondaryScale()
+                P.randomProvidersDefaultSecondaryAndTertiaryScale()
         );
         for (RandomProvider rp : take(MEDIUM_LIMIT, rps)) {
             System.out.println("bigIntegers(" + rp + ") = " + its(rp.bigIntegers()));
@@ -513,7 +526,7 @@ public class RandomProviderDemos extends Demos {
                     int minBitLength = p.b.signum() == -1 ? 0 : p.b.bitLength();
                     return p.a.getScale() > minBitLength && (minBitLength == 0 || p.a.getScale() != Integer.MAX_VALUE);
                 },
-                P.pairs(P.randomProvidersDefaultSecondaryScale(), P.bigIntegers())
+                P.pairs(P.randomProvidersDefaultSecondaryAndTertiaryScale(), P.bigIntegers())
         );
         for (Pair<RandomProvider, BigInteger> p : take(MEDIUM_LIMIT, ps)) {
             System.out.println("rangeUp(" + p.a + ", " + p.b + ") = " + its(p.a.rangeUp(p.b)));
@@ -526,7 +539,7 @@ public class RandomProviderDemos extends Demos {
                     int minBitLength = p.b.signum() == 1 ? 0 : p.b.negate().bitLength();
                     return p.a.getScale() > minBitLength && (minBitLength == 0 || p.a.getScale() != Integer.MAX_VALUE);
                 },
-                P.pairs(P.randomProvidersDefaultSecondaryScale(), P.bigIntegers())
+                P.pairs(P.randomProvidersDefaultSecondaryAndTertiaryScale(), P.bigIntegers())
         );
         for (Pair<RandomProvider, BigInteger> p : take(MEDIUM_LIMIT, ps)) {
             System.out.println("rangeDown(" + p.a + ", " + p.b + ") = " + its(p.a.rangeDown(p.b)));
@@ -536,7 +549,7 @@ public class RandomProviderDemos extends Demos {
     private void demoPositiveBinaryFractions() {
         Iterable<RandomProvider> rps = filterInfinite(
                 x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
-                P.randomProviders()
+                P.randomProvidersDefaultTertiaryScale()
         );
         for (RandomProvider rp : take(MEDIUM_LIMIT, rps)) {
             System.out.println("positiveBinaryFractions(" + rp + ") = " + its(rp.positiveBinaryFractions()));
@@ -546,7 +559,7 @@ public class RandomProviderDemos extends Demos {
     private void demoNegativeBinaryFractions() {
         Iterable<RandomProvider> rps = filterInfinite(
                 x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
-                P.randomProviders()
+                P.randomProvidersDefaultTertiaryScale()
         );
         for (RandomProvider rp : take(MEDIUM_LIMIT, rps)) {
             System.out.println("negativeBinaryFractions(" + rp + ") = " + its(rp.negativeBinaryFractions()));
@@ -556,7 +569,7 @@ public class RandomProviderDemos extends Demos {
     private void demoNonzeroBinaryFractions() {
         Iterable<RandomProvider> rps = filterInfinite(
                 x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
-                P.randomProviders()
+                P.randomProvidersDefaultTertiaryScale()
         );
         for (RandomProvider rp : take(MEDIUM_LIMIT, rps)) {
             System.out.println("nonzeroBinaryFractions(" + rp + ") = " + its(rp.nonzeroBinaryFractions()));
@@ -566,7 +579,7 @@ public class RandomProviderDemos extends Demos {
     private void demoBinaryFractions() {
         Iterable<RandomProvider> rps = filterInfinite(
                 x -> x.getScale() > 0 && x.getSecondaryScale() > 0,
-                P.randomProviders()
+                P.randomProvidersDefaultTertiaryScale()
         );
         for (RandomProvider rp : take(MEDIUM_LIMIT, rps)) {
             System.out.println("binaryFractions(" + rp + ") = " + its(rp.binaryFractions()));
@@ -575,7 +588,10 @@ public class RandomProviderDemos extends Demos {
 
     private void demoRangeUp_BinaryFraction() {
         Iterable<Pair<RandomProvider, BinaryFraction>> ps = P.pairs(
-                filterInfinite(x -> x.getScale() > 0 && x.getSecondaryScale() > 0, P.randomProviders()),
+                filterInfinite(
+                        x -> x.getScale() > 0 && x.getSecondaryScale() > 0,
+                        P.randomProvidersDefaultTertiaryScale()
+                ),
                 P.binaryFractions()
         );
         for (Pair<RandomProvider, BinaryFraction> p : take(MEDIUM_LIMIT, ps)) {
@@ -585,7 +601,10 @@ public class RandomProviderDemos extends Demos {
 
     private void demoRangeDown_BinaryFraction() {
         Iterable<Pair<RandomProvider, BinaryFraction>> ps = P.pairs(
-                filterInfinite(x -> x.getScale() > 0 && x.getSecondaryScale() > 0, P.randomProviders()),
+                filterInfinite(
+                        x -> x.getScale() > 0 && x.getSecondaryScale() > 0,
+                        P.randomProvidersDefaultTertiaryScale()
+                ),
                 P.binaryFractions()
         );
         for (Pair<RandomProvider, BinaryFraction> p : take(MEDIUM_LIMIT, ps)) {
@@ -597,7 +616,7 @@ public class RandomProviderDemos extends Demos {
         Iterable<Triple<RandomProvider, BinaryFraction, BinaryFraction>> ts = P.triples(
                 filterInfinite(
                         x -> x.getScale() > 0 && x.getScale() != Integer.MAX_VALUE,
-                        P.randomProvidersDefaultSecondaryScale()
+                        P.randomProvidersDefaultSecondaryAndTertiaryScale()
                 ),
                 P.binaryFractions(),
                 P.binaryFractions()
@@ -832,7 +851,7 @@ public class RandomProviderDemos extends Demos {
     private void demoPositiveBigDecimals() {
         Iterable<RandomProvider> rps = filterInfinite(
                 x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
-                P.randomProviders()
+                P.randomProvidersDefaultTertiaryScale()
         );
         for (RandomProvider rp : take(MEDIUM_LIMIT, rps)) {
             System.out.println("positiveBigDecimals(" + rp + ") = " + its(rp.positiveBigDecimals()));
@@ -842,7 +861,7 @@ public class RandomProviderDemos extends Demos {
     private void demoNegativeBigDecimals() {
         Iterable<RandomProvider> rps = filterInfinite(
                 x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
-                P.randomProviders()
+                P.randomProvidersDefaultTertiaryScale()
         );
         for (RandomProvider rp : take(MEDIUM_LIMIT, rps)) {
             System.out.println("negativeBigDecimals(" + rp + ") = " + its(rp.negativeBigDecimals()));
@@ -852,7 +871,7 @@ public class RandomProviderDemos extends Demos {
     private void demoNonzeroBigDecimals() {
         Iterable<RandomProvider> rps = filterInfinite(
                 x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
-                P.randomProviders()
+                P.randomProvidersDefaultTertiaryScale()
         );
         for (RandomProvider rp : take(MEDIUM_LIMIT, rps)) {
             System.out.println("nonzeroBigDecimals(" + rp + ") = " + its(rp.nonzeroBigDecimals()));
@@ -862,7 +881,7 @@ public class RandomProviderDemos extends Demos {
     private void demoBigDecimals() {
         Iterable<RandomProvider> rps = filterInfinite(
                 x -> x.getScale() > 0 && x.getSecondaryScale() > 0,
-                P.randomProviders()
+                P.randomProvidersDefaultTertiaryScale()
         );
         for (RandomProvider rp : take(MEDIUM_LIMIT, rps)) {
             System.out.println("bigDecimals(" + rp + ") = " + its(rp.bigDecimals()));
@@ -872,7 +891,7 @@ public class RandomProviderDemos extends Demos {
     private void demoPositiveCanonicalBigDecimals() {
         Iterable<RandomProvider> rps = filterInfinite(
                 x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
-                P.randomProviders()
+                P.randomProvidersDefaultTertiaryScale()
         );
         for (RandomProvider rp : take(MEDIUM_LIMIT, rps)) {
             System.out.println("positiveCanonicalBigDecimals(" + rp + ") = " + its(rp.positiveCanonicalBigDecimals()));
@@ -882,7 +901,7 @@ public class RandomProviderDemos extends Demos {
     private void demoNegativeCanonicalBigDecimals() {
         Iterable<RandomProvider> rps = filterInfinite(
                 x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
-                P.randomProviders()
+                P.randomProvidersDefaultTertiaryScale()
         );
         for (RandomProvider rp : take(MEDIUM_LIMIT, rps)) {
             System.out.println("negativeCanonicalBigDecimals(" + rp + ") = " + its(rp.negativeCanonicalBigDecimals()));
@@ -892,7 +911,7 @@ public class RandomProviderDemos extends Demos {
     private void demoNonzeroCanonicalBigDecimals() {
         Iterable<RandomProvider> rps = filterInfinite(
                 x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
-                P.randomProviders()
+                P.randomProvidersDefaultTertiaryScale()
         );
         for (RandomProvider rp : take(MEDIUM_LIMIT, rps)) {
             System.out.println("nonzeroCanonicalBigDecimals(" + rp + ") = " + its(rp.nonzeroCanonicalBigDecimals()));
@@ -902,7 +921,7 @@ public class RandomProviderDemos extends Demos {
     private void demoCanonicalBigDecimals() {
         Iterable<RandomProvider> rps = filterInfinite(
                 x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
-                P.randomProviders()
+                P.randomProvidersDefaultTertiaryScale()
         );
         for (RandomProvider rp : take(MEDIUM_LIMIT, rps)) {
             System.out.println("canonicalBigDecimals(" + rp + ") = " + its(rp.canonicalBigDecimals()));
@@ -911,7 +930,10 @@ public class RandomProviderDemos extends Demos {
 
     private void demoRangeUp_BigDecimal() {
         Iterable<Pair<RandomProvider, BigDecimal>> ps = P.pairs(
-                filterInfinite(x -> x.getScale() >= 2 && x.getSecondaryScale() > 0, P.randomProviders()),
+                filterInfinite(
+                        x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
+                        P.randomProvidersDefaultTertiaryScale()
+                ),
                 P.bigDecimals()
         );
         for (Pair<RandomProvider, BigDecimal> p : take(SMALL_LIMIT, ps)) {
@@ -921,7 +943,10 @@ public class RandomProviderDemos extends Demos {
 
     private void demoRangeDown_BigDecimal() {
         Iterable<Pair<RandomProvider, BigDecimal>> ps = P.pairs(
-                filterInfinite(x -> x.getScale() >= 2 && x.getSecondaryScale() > 0, P.randomProviders()),
+                filterInfinite(
+                        x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
+                        P.randomProvidersDefaultTertiaryScale()
+                ),
                 P.bigDecimals()
         );
         for (Pair<RandomProvider, BigDecimal> p : take(SMALL_LIMIT, ps)) {
@@ -931,7 +956,10 @@ public class RandomProviderDemos extends Demos {
 
     private void demoRange_BigDecimal_BigDecimal() {
         Iterable<Triple<RandomProvider, BigDecimal, BigDecimal>> ts = P.triples(
-                filterInfinite(x -> x.getScale() > 0 && x.getSecondaryScale() > 0, P.randomProviders()),
+                filterInfinite(
+                        x -> x.getScale() > 0 && x.getSecondaryScale() > 0,
+                        P.randomProvidersDefaultTertiaryScale()
+                ),
                 P.bigDecimals(),
                 P.bigDecimals()
         );
@@ -942,7 +970,10 @@ public class RandomProviderDemos extends Demos {
 
     private void demoRangeUpCanonical_BigDecimal() {
         Iterable<Pair<RandomProvider, BigDecimal>> ps = P.pairs(
-                filterInfinite(x -> x.getScale() >= 2 && x.getSecondaryScale() > 0, P.randomProviders()),
+                filterInfinite(
+                        x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
+                        P.randomProvidersDefaultTertiaryScale()
+                ),
                 P.bigDecimals()
         );
         for (Pair<RandomProvider, BigDecimal> p : take(SMALL_LIMIT, ps)) {
@@ -952,7 +983,10 @@ public class RandomProviderDemos extends Demos {
 
     private void demoRangeDownCanonical_BigDecimal() {
         Iterable<Pair<RandomProvider, BigDecimal>> ps = P.pairs(
-                filterInfinite(x -> x.getScale() >= 2 && x.getSecondaryScale() > 0, P.randomProviders()),
+                filterInfinite(
+                        x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
+                        P.randomProvidersDefaultTertiaryScale()
+                ),
                 P.bigDecimals()
         );
         for (Pair<RandomProvider, BigDecimal> p : take(SMALL_LIMIT, ps)) {
@@ -962,7 +996,10 @@ public class RandomProviderDemos extends Demos {
 
     private void demoRangeCanonical_BigDecimal_BigDecimal() {
         Iterable<Triple<RandomProvider, BigDecimal, BigDecimal>> ts = P.triples(
-                filterInfinite(x -> x.getScale() > 0 && x.getSecondaryScale() > 0, P.randomProviders()),
+                filterInfinite(
+                        x -> x.getScale() > 0 && x.getSecondaryScale() > 0,
+                        P.randomProvidersDefaultTertiaryScale()
+                ),
                 P.bigDecimals(),
                 P.bigDecimals()
         );
@@ -974,7 +1011,7 @@ public class RandomProviderDemos extends Demos {
 
     private void demoWithElement() {
         Iterable<Triple<RandomProvider, Integer, Iterable<Integer>>> ts = P.triples(
-                filterInfinite(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale()),
+                filterInfinite(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryAndTertiaryScale()),
                 P.withNull(P.integersGeometric()),
                 P.prefixPermutations(EP.withNull(EP.naturalIntegers()))
         );
@@ -986,7 +1023,7 @@ public class RandomProviderDemos extends Demos {
 
     private void demoWithNull() {
         Iterable<Pair<RandomProvider, Iterable<Integer>>> ps = P.pairs(
-                filterInfinite(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale()),
+                filterInfinite(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryAndTertiaryScale()),
                 P.prefixPermutations(EP.naturalIntegers())
         );
         for (Pair<RandomProvider, Iterable<Integer>> p : take(MEDIUM_LIMIT, ps)) {
@@ -996,7 +1033,7 @@ public class RandomProviderDemos extends Demos {
 
     private void demoOptionals() {
         Iterable<Pair<RandomProvider, Iterable<Integer>>> ps = P.pairs(
-                filterInfinite(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale()),
+                filterInfinite(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryAndTertiaryScale()),
                 P.prefixPermutations(EP.naturalIntegers())
         );
         for (Pair<RandomProvider, Iterable<Integer>> p : take(MEDIUM_LIMIT, ps)) {
@@ -1006,7 +1043,7 @@ public class RandomProviderDemos extends Demos {
 
     private void demoNullableOptionals() {
         Iterable<Pair<RandomProvider, Iterable<Integer>>> ps = P.pairs(
-                filterInfinite(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale()),
+                filterInfinite(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryAndTertiaryScale()),
                 P.prefixPermutations(EP.withNull(EP.naturalIntegers()))
         );
         for (Pair<RandomProvider, Iterable<Integer>> p : take(MEDIUM_LIMIT, ps)) {
@@ -1079,7 +1116,7 @@ public class RandomProviderDemos extends Demos {
 
     private void demoPrefixPermutations_finite() {
         Iterable<Pair<RandomProvider, List<Integer>>> ps = P.pairs(
-                filterInfinite(rp -> rp.getScale() > 0, P.randomProvidersDefaultSecondaryScale()),
+                filterInfinite(rp -> rp.getScale() > 0, P.randomProvidersDefaultSecondaryAndTertiaryScale()),
                 P.withScale(4).lists(P.withNull(P.naturalIntegersGeometric()))
         );
         for (Pair<RandomProvider, List<Integer>> p : take(MEDIUM_LIMIT, ps)) {
@@ -1090,7 +1127,7 @@ public class RandomProviderDemos extends Demos {
 
     private void demoPrefixPermutations_infinite() {
         Iterable<Pair<RandomProvider, Iterable<Integer>>> ps = P.pairs(
-                filterInfinite(rp -> rp.getScale() > 0, P.randomProvidersDefaultSecondaryScale()),
+                filterInfinite(rp -> rp.getScale() > 0, P.randomProvidersDefaultSecondaryAndTertiaryScale()),
                 P.prefixPermutations(EP.withNull(EP.naturalIntegers()))
         );
         for (Pair<RandomProvider, Iterable<Integer>> p : take(SMALL_LIMIT, ps)) {
@@ -1128,7 +1165,10 @@ public class RandomProviderDemos extends Demos {
 
     private void demoLists() {
         Iterable<Pair<RandomProvider, Iterable<Integer>>> ps = P.pairs(
-                filterInfinite(rp -> rp.getScale() > 0, P.withScale(4).randomProvidersDefaultSecondaryScale()),
+                filterInfinite(
+                        rp -> rp.getScale() > 0,
+                        P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale()
+                ),
                 P.prefixPermutations(EP.withNull(EP.naturalIntegers()))
         );
         for (Pair<RandomProvider, Iterable<Integer>> p : take(MEDIUM_LIMIT, ps)) {
@@ -1138,7 +1178,10 @@ public class RandomProviderDemos extends Demos {
 
     private void demoStrings_String() {
         Iterable<Pair<RandomProvider, String>> ps = P.pairs(
-                filterInfinite(rp -> rp.getScale() > 0, P.withScale(4).randomProvidersDefaultSecondaryScale()),
+                filterInfinite(
+                        rp -> rp.getScale() > 0,
+                        P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale()
+                ),
                 P.withScale(4).stringsAtLeast(1)
         );
         for (Pair<RandomProvider, String> p : take(MEDIUM_LIMIT, ps)) {
@@ -1149,7 +1192,7 @@ public class RandomProviderDemos extends Demos {
     private void demoStrings() {
         Iterable<RandomProvider> rps = filterInfinite(
                 s -> s.getScale() > 0,
-                P.withScale(4).randomProvidersDefaultSecondaryScale()
+                P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale()
         );
         for (RandomProvider rp : take(MEDIUM_LIMIT, rps)) {
             System.out.println("strings(" + rp + ") = " + sits(rp.strings()));
@@ -1160,7 +1203,7 @@ public class RandomProviderDemos extends Demos {
         Iterable<Triple<RandomProvider, Integer, Iterable<Integer>>> ts = filterInfinite(
                 t -> t.a.getScale() > t.b,
                 P.triples(
-                        P.withScale(4).randomProvidersDefaultSecondaryScale(),
+                        P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale(),
                         P.withScale(4).naturalIntegersGeometric(),
                         P.prefixPermutations(EP.withNull(EP.naturalIntegers()))
                 )
@@ -1175,7 +1218,7 @@ public class RandomProviderDemos extends Demos {
         Iterable<Triple<RandomProvider, Integer, String>> ts = filterInfinite(
                 t -> t.a.getScale() > t.b,
                 P.triples(
-                        P.withScale(4).randomProvidersDefaultSecondaryScale(),
+                        P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale(),
                         P.withScale(4).naturalIntegersGeometric(),
                         P.withScale(4).stringsAtLeast(1)
                 )
@@ -1190,7 +1233,7 @@ public class RandomProviderDemos extends Demos {
         Iterable<Pair<RandomProvider, Integer>> ps = filterInfinite(
                 p -> p.a.getScale() > p.b,
                 P.pairs(
-                        P.withScale(4).randomProvidersDefaultSecondaryScale(),
+                        P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale(),
                         P.withScale(4).naturalIntegersGeometric()
                 )
         );
@@ -1206,7 +1249,7 @@ public class RandomProviderDemos extends Demos {
                         filterInfinite(
                                 p -> p.a.getScale() > p.b,
                                 P.pairs(
-                                        P.withScale(4).randomProvidersDefaultSecondaryScale(),
+                                        P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale(),
                                         P.withScale(4).naturalIntegersGeometric()
                                 )
                         ),
@@ -1234,7 +1277,10 @@ public class RandomProviderDemos extends Demos {
 
     private void demoDistinctLists() {
         Iterable<Pair<RandomProvider, Iterable<Integer>>> ps = P.pairs(
-                filterInfinite(rp -> rp.getScale() > 0, P.withScale(4).randomProvidersDefaultSecondaryScale()),
+                filterInfinite(
+                        rp -> rp.getScale() > 0,
+                        P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale()
+                ),
                 P.withScale(4).repeatingIterables(P.withNull(P.naturalIntegers()))
         );
         for (Pair<RandomProvider, Iterable<Integer>> p : take(MEDIUM_LIMIT, ps)) {
@@ -1244,7 +1290,10 @@ public class RandomProviderDemos extends Demos {
 
     private void demoDistinctStrings_String() {
         Iterable<Pair<RandomProvider, String>> ps = P.pairs(
-                filterInfinite(rp -> rp.getScale() > 0, P.withScale(4).randomProvidersDefaultSecondaryScale()),
+                filterInfinite(
+                        rp -> rp.getScale() > 0,
+                        P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale()
+                ),
                 P.withScale(4).stringsAtLeast(1)
         );
         for (Pair<RandomProvider, String> p : take(MEDIUM_LIMIT, ps)) {
@@ -1256,7 +1305,7 @@ public class RandomProviderDemos extends Demos {
     private void demoDistinctStrings() {
         Iterable<RandomProvider> rps = filterInfinite(
                 s -> s.getScale() > 0,
-                P.withScale(4).randomProvidersDefaultSecondaryScale()
+                P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale()
         );
         for (RandomProvider rp : take(MEDIUM_LIMIT, rps)) {
             System.out.println("distinctStrings(" + rp + ") = " + sits(rp.distinctStrings()));
@@ -1270,7 +1319,7 @@ public class RandomProviderDemos extends Demos {
                         filterInfinite(
                                 p -> p.a.getScale() > p.b,
                                 P.pairs(
-                                        P.withScale(4).randomProvidersDefaultSecondaryScale(),
+                                        P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale(),
                                         P.withScale(4).rangeUpGeometric(2)
                                 )
                         ),
@@ -1293,7 +1342,7 @@ public class RandomProviderDemos extends Demos {
                         filterInfinite(
                                 p -> p.a.getScale() > p.b,
                                 P.pairs(
-                                        P.withScale(4).randomProvidersDefaultSecondaryScale(),
+                                        P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale(),
                                         P.withScale(4).naturalIntegersGeometric()
                                 )
                         ),
@@ -1313,7 +1362,7 @@ public class RandomProviderDemos extends Demos {
         Iterable<Pair<RandomProvider, Integer>> ps = filterInfinite(
                 p -> p.a.getScale() > p.b,
                 P.pairs(
-                        P.withScale(4).randomProvidersDefaultSecondaryScale(),
+                        P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale(),
                         filterInfinite(i -> i <= (1 << 16), P.withScale(4).naturalIntegersGeometric())
                 )
         );
@@ -1352,7 +1401,10 @@ public class RandomProviderDemos extends Demos {
 
     private void demoBags() {
         Iterable<Pair<RandomProvider, Iterable<Integer>>> ps = P.pairs(
-                filterInfinite(rp -> rp.getScale() > 0, P.withScale(4).randomProvidersDefaultSecondaryScale()),
+                filterInfinite(
+                        rp -> rp.getScale() > 0,
+                        P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale()
+                ),
                 P.prefixPermutations(EP.naturalIntegers())
         );
         for (Pair<RandomProvider, Iterable<Integer>> p : take(MEDIUM_LIMIT, ps)) {
@@ -1362,7 +1414,10 @@ public class RandomProviderDemos extends Demos {
 
     private void demoStringBags_String() {
         Iterable<Pair<RandomProvider, String>> ps = P.pairs(
-                filterInfinite(rp -> rp.getScale() > 0, P.withScale(4).randomProvidersDefaultSecondaryScale()),
+                filterInfinite(
+                        rp -> rp.getScale() > 0,
+                        P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale()
+                ),
                 P.withScale(4).stringsAtLeast(1)
         );
         for (Pair<RandomProvider, String> p : take(MEDIUM_LIMIT, ps)) {
@@ -1373,7 +1428,7 @@ public class RandomProviderDemos extends Demos {
     private void demoStringBags() {
         Iterable<RandomProvider> rps = filterInfinite(
                 s -> s.getScale() > 0,
-                P.withScale(4).randomProvidersDefaultSecondaryScale()
+                P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale()
         );
         for (RandomProvider rp : take(MEDIUM_LIMIT, rps)) {
             System.out.println("stringBags(" + rp + ") = " + sits(rp.stringBags()));
@@ -1384,7 +1439,7 @@ public class RandomProviderDemos extends Demos {
         Iterable<Triple<RandomProvider, Integer, Iterable<Integer>>> ts = filterInfinite(
                 t -> t.a.getScale() > t.b,
                 P.triples(
-                        P.withScale(4).randomProvidersDefaultSecondaryScale(),
+                        P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale(),
                         P.withScale(4).naturalIntegersGeometric(),
                         P.prefixPermutations(EP.naturalIntegers())
                 )
@@ -1399,7 +1454,7 @@ public class RandomProviderDemos extends Demos {
         Iterable<Triple<RandomProvider, Integer, String>> ts = filterInfinite(
                 t -> t.a.getScale() > t.b,
                 P.triples(
-                        P.withScale(4).randomProvidersDefaultSecondaryScale(),
+                        P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale(),
                         P.withScale(4).naturalIntegersGeometric(),
                         P.withScale(4).stringsAtLeast(1)
                 )
@@ -1414,7 +1469,7 @@ public class RandomProviderDemos extends Demos {
         Iterable<Pair<RandomProvider, Integer>> ps = filterInfinite(
                 p -> p.a.getScale() > p.b,
                 P.pairs(
-                        P.withScale(4).randomProvidersDefaultSecondaryScale(),
+                        P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale(),
                         P.withScale(4).naturalIntegersGeometric()
                 )
         );
@@ -1430,7 +1485,7 @@ public class RandomProviderDemos extends Demos {
                         filterInfinite(
                                 p -> p.a.getScale() > p.b,
                                 P.pairs(
-                                        P.withScale(4).randomProvidersDefaultSecondaryScale(),
+                                        P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale(),
                                         P.withScale(4).naturalIntegersGeometric()
                                 )
                         ),
@@ -1458,7 +1513,10 @@ public class RandomProviderDemos extends Demos {
 
     private void demoSubsets() {
         Iterable<Pair<RandomProvider, Iterable<Integer>>> ps = P.pairs(
-                filterInfinite(rp -> rp.getScale() > 0, P.withScale(4).randomProvidersDefaultSecondaryScale()),
+                filterInfinite(
+                        rp -> rp.getScale() > 0,
+                        P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale()
+                ),
                 P.withScale(4).repeatingIterables(P.naturalIntegers())
         );
         for (Pair<RandomProvider, Iterable<Integer>> p : take(MEDIUM_LIMIT, ps)) {
@@ -1468,7 +1526,10 @@ public class RandomProviderDemos extends Demos {
 
     private void demoStringSubsets_String() {
         Iterable<Pair<RandomProvider, String>> ps = P.pairs(
-                filterInfinite(rp -> rp.getScale() > 0, P.withScale(4).randomProvidersDefaultSecondaryScale()),
+                filterInfinite(
+                        rp -> rp.getScale() > 0,
+                        P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale()
+                ),
                 P.withScale(4).stringsAtLeast(1)
         );
         for (Pair<RandomProvider, String> p : take(MEDIUM_LIMIT, ps)) {
@@ -1480,7 +1541,7 @@ public class RandomProviderDemos extends Demos {
     private void demoStringSubsets() {
         Iterable<RandomProvider> rps = filterInfinite(
                 s -> s.getScale() > 0,
-                P.withScale(4).randomProvidersDefaultSecondaryScale()
+                P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale()
         );
         for (RandomProvider rp : take(MEDIUM_LIMIT, rps)) {
             System.out.println("stringSubsets(" + rp + ") = " + sits(rp.stringSubsets()));
@@ -1494,7 +1555,7 @@ public class RandomProviderDemos extends Demos {
                         filterInfinite(
                                 p -> p.a.getScale() > p.b,
                                 P.pairs(
-                                        P.withScale(4).randomProvidersDefaultSecondaryScale(),
+                                        P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale(),
                                         P.withScale(4).rangeUpGeometric(2)
                                 )
                         ),
@@ -1515,7 +1576,7 @@ public class RandomProviderDemos extends Demos {
                         filterInfinite(
                                 p -> p.a.getScale() > p.b,
                                 P.pairs(
-                                        P.withScale(4).randomProvidersDefaultSecondaryScale(),
+                                        P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale(),
                                         P.withScale(4).naturalIntegersGeometric()
                                 )
                         ),
@@ -1535,7 +1596,7 @@ public class RandomProviderDemos extends Demos {
         Iterable<Pair<RandomProvider, Integer>> ps = filterInfinite(
                 p -> p.a.getScale() > p.b,
                 P.pairs(
-                        P.withScale(4).randomProvidersDefaultSecondaryScale(),
+                        P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale(),
                         filterInfinite(i -> i <= (1 << 16), P.withScale(4).naturalIntegersGeometric())
                 )
         );
@@ -1547,7 +1608,7 @@ public class RandomProviderDemos extends Demos {
 
     private void demoEithers() {
         Iterable<Triple<RandomProvider, Iterable<Integer>, Iterable<Integer>>> ts = P.triples(
-                filterInfinite(rp -> rp.getScale() > 0, P.randomProvidersDefaultSecondaryScale()),
+                filterInfinite(rp -> rp.getScale() > 0, P.randomProvidersDefaultSecondaryAndTertiaryScale()),
                 P.prefixPermutations(EP.naturalIntegers()),
                 P.prefixPermutations(EP.naturalIntegers())
         );
@@ -1559,7 +1620,7 @@ public class RandomProviderDemos extends Demos {
 
     private void demoChoose() {
         Iterable<Triple<RandomProvider, Iterable<Integer>, Iterable<Integer>>> ts = P.triples(
-                filterInfinite(rp -> rp.getScale() > 0, P.randomProvidersDefaultSecondaryScale()),
+                filterInfinite(rp -> rp.getScale() > 0, P.randomProvidersDefaultSecondaryAndTertiaryScale()),
                 P.prefixPermutations(EP.naturalIntegers()),
                 P.prefixPermutations(EP.naturalIntegers())
         );
@@ -1581,7 +1642,7 @@ public class RandomProviderDemos extends Demos {
 
     private void demoRepeatingIterables() {
         Iterable<Pair<RandomProvider, Iterable<Integer>>> ps = P.pairs(
-                filterInfinite(rp -> rp.getScale() > 1, P.randomProvidersDefaultSecondaryScale()),
+                filterInfinite(rp -> rp.getScale() > 1, P.randomProvidersDefaultSecondaryAndTertiaryScale()),
                 P.prefixPermutations(EP.withNull(EP.naturalIntegers()))
         );
         for (Pair<RandomProvider, Iterable<Integer>> p : take(SMALL_LIMIT, ps)) {
@@ -1596,7 +1657,7 @@ public class RandomProviderDemos extends Demos {
                 filterInfinite(
                         p -> p.a.getScale() > p.b.b,
                         P.pairs(
-                                P.randomProvidersDefaultSecondaryScale(),
+                                P.randomProvidersDefaultSecondaryAndTertiaryScale(),
                                 P.pairsLogarithmicOrder(
                                         P.prefixPermutations(EP.withNull(EP.naturalIntegers())),
                                         P.withScale(4).rangeUpGeometric(2)
@@ -1629,7 +1690,10 @@ public class RandomProviderDemos extends Demos {
 
     private void demoListsWithElement() {
         Iterable<Triple<RandomProvider, Integer, Iterable<Integer>>> ts = P.triples(
-                filterInfinite(rp -> rp.getScale() >= 3, P.withScale(4).randomProvidersDefaultSecondaryScale()),
+                filterInfinite(
+                        rp -> rp.getScale() >= 3,
+                        P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale()
+                ),
                 P.withNull(P.integersGeometric()),
                 P.prefixPermutations(EP.withNull(EP.naturalIntegers()))
         );
@@ -1645,7 +1709,7 @@ public class RandomProviderDemos extends Demos {
                 P.triples(
                         filterInfinite(
                                 rp -> rp.getScale() >= 3,
-                                P.withScale(4).randomProvidersDefaultSecondaryScale()
+                                P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale()
                         ),
                         P.characters(),
                         P.withScale(4).stringsAtLeast(1)
@@ -1659,7 +1723,10 @@ public class RandomProviderDemos extends Demos {
 
     private void demoStringsWithChar_char() {
         Iterable<Pair<RandomProvider, Character>> ps = P.pairs(
-                filterInfinite(rp -> rp.getScale() >= 3, P.withScale(4).randomProvidersDefaultSecondaryScale()),
+                filterInfinite(
+                        rp -> rp.getScale() >= 3,
+                        P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale()
+                ),
                 P.characters()
         );
         for (Pair<RandomProvider, Character> p : take(MEDIUM_LIMIT, ps)) {
@@ -1670,7 +1737,10 @@ public class RandomProviderDemos extends Demos {
 
     private void demoSubsetsWithElement() {
         Iterable<Triple<RandomProvider, Integer, Iterable<Integer>>> ts = P.triples(
-                filterInfinite(rp -> rp.getScale() >= 2, P.withScale(4).randomProvidersDefaultSecondaryScale()),
+                filterInfinite(
+                        rp -> rp.getScale() >= 2,
+                        P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale()
+                ),
                 P.integersGeometric(),
                 P.prefixPermutations(EP.naturalIntegers())
         );
@@ -1686,7 +1756,7 @@ public class RandomProviderDemos extends Demos {
                 P.triples(
                         filterInfinite(
                                 rp -> rp.getScale() >= 2,
-                                P.withScale(4).randomProvidersDefaultSecondaryScale()
+                                P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale()
                         ),
                         P.characters(),
                         P.withScale(4).stringsAtLeast(1)
@@ -1700,7 +1770,10 @@ public class RandomProviderDemos extends Demos {
 
     private void demoStringSubsetsWithChar_char() {
         Iterable<Pair<RandomProvider, Character>> ps = P.pairs(
-                filterInfinite(rp -> rp.getScale() >= 2, P.withScale(4).randomProvidersDefaultSecondaryScale()),
+                filterInfinite(
+                        rp -> rp.getScale() >= 2,
+                        P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale()
+                ),
                 P.characters()
         );
         for (Pair<RandomProvider, Character> p : take(MEDIUM_LIMIT, ps)) {
@@ -1711,7 +1784,10 @@ public class RandomProviderDemos extends Demos {
 
     private void demoListsWithSublists() {
         Iterable<Triple<RandomProvider, Iterable<List<Integer>>, Iterable<Integer>>> ts = P.triples(
-                filterInfinite(rp -> rp.getScale() > 1, P.withScale(4).randomProvidersDefaultSecondaryScale()),
+                filterInfinite(
+                        rp -> rp.getScale() > 1,
+                        P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale()
+                ),
                 P.prefixPermutations(EP.lists(EP.withNull(EP.naturalIntegers()))),
                 P.prefixPermutations(EP.withNull(EP.naturalIntegers()))
         );
@@ -1723,7 +1799,10 @@ public class RandomProviderDemos extends Demos {
 
     private void demoStringsWithSubstrings_Iterable_String_String() {
         Iterable<Triple<RandomProvider, Iterable<String>, String>> ts = P.triples(
-                filterInfinite(rp -> rp.getScale() > 1, P.withScale(4).randomProvidersDefaultSecondaryScale()),
+                filterInfinite(
+                        rp -> rp.getScale() > 1,
+                        P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale()
+                ),
                 P.prefixPermutations(EP.strings()),
                 P.withScale(4).stringsAtLeast(1)
         );
@@ -1735,7 +1814,10 @@ public class RandomProviderDemos extends Demos {
 
     private void demoStringsWithSubstrings_Iterable_String() {
         Iterable<Pair<RandomProvider, Iterable<String>>> ps = P.pairs(
-                filterInfinite(rp -> rp.getScale() > 1, P.withScale(4).randomProvidersDefaultSecondaryScale()),
+                filterInfinite(
+                        rp -> rp.getScale() > 1,
+                        P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale()
+                ),
                 P.prefixPermutations(EP.strings())
         );
         for (Pair<RandomProvider, Iterable<String>> p : take(MEDIUM_LIMIT, ps)) {
@@ -1756,14 +1838,15 @@ public class RandomProviderDemos extends Demos {
     }
 
     private void demoRandomProvidersFixedScales() {
-        Iterable<Triple<RandomProvider, Integer, Integer>> ts = P.triples(
+        Iterable<Quadruple<RandomProvider, Integer, Integer, Integer>> qs = P.quadruples(
                 P.randomProvidersDefault(),
+                P.integersGeometric(),
                 P.integersGeometric(),
                 P.integersGeometric()
         );
-        for (Triple<RandomProvider, Integer, Integer> t : take(MEDIUM_LIMIT, ts)) {
-            System.out.println("randomProvidersFixedScales(" + t.a + ", " + t.b + ", " + t.c + ") = " +
-                    its(t.a.randomProvidersFixedScales(t.b, t.c)));
+        for (Quadruple<RandomProvider, Integer, Integer, Integer> q : take(SMALL_LIMIT, qs)) {
+            System.out.println("randomProvidersFixedScales(" + q.a + ", " + q.b + ", " + q.c + ") = " +
+                    its(q.a.randomProvidersFixedScales(q.b, q.c, q.d)));
         }
     }
 
@@ -1773,21 +1856,32 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private void demoRandomProvidersDefaultSecondaryScale() {
+    private void demoRandomProvidersDefaultSecondaryAndTertiaryScale() {
         Iterable<RandomProvider> rps = filterInfinite(
                 rp -> rp.getScale() > 0,
-                P.randomProvidersDefaultSecondaryScale()
+                P.randomProvidersDefaultSecondaryAndTertiaryScale()
         );
-        for (RandomProvider rp : take(MEDIUM_LIMIT, rps)) {
-            System.out.println("randomProvidersDefaultSecondaryScale(" + rp + ") = " +
-                    its(rp.randomProvidersDefaultSecondaryScale()));
+        for (RandomProvider rp : take(SMALL_LIMIT, rps)) {
+            System.out.println("randomProvidersDefaultSecondaryAndTertiaryScale(" + rp + ") = " +
+                    its(rp.randomProvidersDefaultSecondaryAndTertiaryScale()));
+        }
+    }
+
+    private void demoRandomProvidersDefaultTertiaryScale() {
+        Iterable<RandomProvider> rps = filterInfinite(
+                rp -> rp.getScale() > 0,
+                P.randomProvidersDefaultSecondaryAndTertiaryScale()
+        );
+        for (RandomProvider rp : take(SMALL_LIMIT, rps)) {
+            System.out.println("randomProvidersDefaultTertiaryScale(" + rp + ") = " +
+                    its(rp.randomProvidersDefaultTertiaryScale()));
         }
     }
 
     private void demoRandomProviders() {
         Iterable<RandomProvider> rps = filterInfinite(
                 rp -> rp.getScale() > 0,
-                P.randomProvidersDefaultSecondaryScale()
+                P.randomProvidersDefaultSecondaryAndTertiaryScale()
         );
         for (RandomProvider rp : take(MEDIUM_LIMIT, rps)) {
             System.out.println("randomProviders(" + rp + ") = " + its(rp.randomProviders()));
