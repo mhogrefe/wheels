@@ -245,41 +245,23 @@ public class IntegerUtilsDemos extends Demos {
     }
 
     private void demoFromBigEndianDigits_int_Iterable_Integer() {
-        Iterable<Pair<List<Integer>, Integer>> unfilteredPs;
-        if (P instanceof ExhaustiveProvider) {
-            unfilteredPs = ((ExhaustiveProvider) P).pairsLogarithmicOrder(
-                    P.lists(P.naturalIntegers()),
-                    map(i -> i + 2, P.naturalIntegers())
-            );
-        } else {
-            unfilteredPs = P.pairs(
-                    P.lists(P.withScale(10).naturalIntegersGeometric()),
-                    map(i -> i + 2, P.withScale(20).naturalIntegersGeometric())
-            );
-        }
-        Iterable<Pair<List<Integer>, Integer>> ps = filter(p -> all(i -> i < p.b, p.a), unfilteredPs);
+        Iterable<Pair<List<Integer>, Integer>> ps = filterInfinite(
+                p -> all(i -> i < p.b, p.a),
+                P.pairsLogarithmicOrder(P.lists(P.naturalIntegersGeometric()), P.rangeUpGeometric(2))
+        );
         for (Pair<List<Integer>, Integer> p : take(LIMIT, ps)) {
             System.out.println("fromBigEndianDigits(" + p.b + ", " + p.a + ") = " + fromBigEndianDigits(p.b, p.a));
         }
     }
 
     private void demoFromBigEndianDigits_BigInteger_Iterable_BigInteger() {
-        Iterable<Pair<List<BigInteger>, BigInteger>> unfilteredPs;
-        if (P instanceof ExhaustiveProvider) {
-            unfilteredPs = ((ExhaustiveProvider) P).pairsLogarithmicOrder(
-                    P.lists(P.naturalBigIntegers()),
-                    map(i -> i.add(TWO), P.naturalBigIntegers())
-            );
-        } else {
-            //noinspection Convert2MethodRef
-            unfilteredPs = P.pairs(
-                    P.lists(map(i -> BigInteger.valueOf(i), P.withScale(10).naturalIntegersGeometric())),
-                    map(i -> BigInteger.valueOf(i + 2), P.withScale(20).naturalIntegersGeometric())
-            );
-        }
+        //noinspection Convert2MethodRef
         Iterable<Pair<List<BigInteger>, BigInteger>> ps = filterInfinite(
-                p -> all((BigInteger i) -> lt(i, p.b), p.a),
-                unfilteredPs
+                p -> all(i -> lt(i, p.b), p.a),
+                P.pairsLogarithmicOrder(
+                        P.lists(map(i -> BigInteger.valueOf(i), P.naturalIntegersGeometric())),
+                        map(i -> BigInteger.valueOf(i), P.rangeUpGeometric(2))
+                )
         );
         for (Pair<List<BigInteger>, BigInteger> p : take(LIMIT, ps)) {
             System.out.println("fromBigEndianDigits(" + p.b + ", " + p.a + ") = " + fromBigEndianDigits(p.b, p.a));

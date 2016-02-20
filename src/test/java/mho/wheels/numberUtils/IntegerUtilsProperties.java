@@ -1518,7 +1518,6 @@ public class IntegerUtilsProperties extends TestProperties {
                 default: throw new IllegalArgumentException();
             }
         };
-
         for (List<Integer> is : take(LIMIT, P.lists(P.range(0, 1)))) {
             assertEquals(is, fromDigits(2, is), fromBits(map(digitsToBits, is)));
         }
@@ -1590,7 +1589,6 @@ public class IntegerUtilsProperties extends TestProperties {
             if (i.equals(BigInteger.ONE)) return true;
             throw new IllegalArgumentException();
         };
-
         for (List<BigInteger> is : take(LIMIT, P.lists(P.range(BigInteger.ZERO, BigInteger.ONE)))) {
             assertEquals(is, fromDigits(TWO, is), fromBits(map(digitsToBits, is)));
         }
@@ -1638,19 +1636,11 @@ public class IntegerUtilsProperties extends TestProperties {
     }
 
     private void propertiesFromBigEndianDigits_int_Iterable_Integer() {
-        initialize("");
-        System.out.println("\t\ttesting fromBigEndianDigits(int, Iterable<Integer>) properties...");
-
-        Iterable<Pair<List<Integer>, Integer>> unfilteredPs;
-        if (P instanceof ExhaustiveProvider) {
-            unfilteredPs = ((ExhaustiveProvider) P).pairsLogarithmicOrder(P.lists(P.naturalIntegers()), P.rangeUp(2));
-        } else {
-            unfilteredPs = P.pairs(
-                    P.lists(P.withScale(10).naturalIntegersGeometric()),
-                    map(i -> i + 2, P.withScale(20).naturalIntegersGeometric())
-            );
-        }
-        Iterable<Pair<List<Integer>, Integer>> ps = filter(p -> all(i -> i < p.b, p.a), unfilteredPs);
+        initialize("fromBigEndianDigits(int, Iterable<Integer>)");
+        Iterable<Pair<List<Integer>, Integer>> ps = filterInfinite(
+                p -> all(i -> i < p.b, p.a),
+                P.pairsLogarithmicOrder(P.lists(P.naturalIntegersGeometric()), P.rangeUpGeometric(2))
+        );
         for (Pair<List<Integer>, Integer> p : take(LIMIT, ps)) {
             BigInteger n = fromBigEndianDigits(p.b, p.a);
             assertEquals(p, n, fromBigEndianDigits_int_Iterable_Integer_simplest(p.b, p.a));
@@ -1658,7 +1648,10 @@ public class IntegerUtilsProperties extends TestProperties {
             assertNotEquals(p, n.signum(), -1);
         }
 
-        ps = filter(p -> p.a.isEmpty() || head(p.a) != 0, ps);
+        ps = filterInfinite(
+                p -> (p.a.isEmpty() || head(p.a) != 0) && all(i -> i < p.b, p.a),
+                P.pairsLogarithmicOrder(P.lists(P.naturalIntegersGeometric()), P.rangeUpGeometric(2))
+        );
         for (Pair<List<Integer>, Integer> p : take(LIMIT, ps)) {
             BigInteger n = fromBigEndianDigits(p.b, p.a);
             aeqit(p, p.a, map(BigInteger::intValueExact, bigEndianDigits(BigInteger.valueOf(p.b), n)));
@@ -1671,12 +1664,11 @@ public class IntegerUtilsProperties extends TestProperties {
                 default: throw new IllegalArgumentException();
             }
         };
-
         for (List<Integer> is : take(LIMIT, P.lists(P.range(0, 1)))) {
             assertEquals(is, fromBigEndianDigits(2, is), fromBigEndianBits(map(digitsToBits, is)));
         }
 
-        Iterable<Pair<List<Integer>, Integer>> psFail = filter(
+        Iterable<Pair<List<Integer>, Integer>> psFail = filterInfinite(
                 p -> all(i -> i < p.b, p.a),
                 P.pairs(P.lists(P.integers()), P.rangeDown(1))
         );
@@ -1687,7 +1679,7 @@ public class IntegerUtilsProperties extends TestProperties {
             } catch (IllegalArgumentException ignored) {}
         }
 
-        psFail = filter(p -> any(i -> i < 0, p.a), P.pairs(P.lists(P.integers()), P.rangeUp(2)));
+        psFail = filterInfinite(p -> any(i -> i < 0, p.a), P.pairs(P.lists(P.integers()), P.rangeDown(1)));
         for (Pair<List<Integer>, Integer> p : take(LIMIT, psFail)) {
             try {
                 fromBigEndianDigits(p.b, p.a);
@@ -1695,7 +1687,7 @@ public class IntegerUtilsProperties extends TestProperties {
             } catch (IllegalArgumentException ignored) {}
         }
 
-        psFail = filter(p -> any(i -> i >= p.b, p.a), P.pairs(P.lists(P.integers()), P.rangeUp(2)));
+        psFail = filterInfinite(p -> any(i -> i >= p.b, p.a), P.pairs(P.lists(P.integers()), P.rangeDown(1)));
         for (Pair<List<Integer>, Integer> p : take(LIMIT, psFail)) {
             try {
                 fromBigEndianDigits(p.b, p.a);
@@ -1705,64 +1697,37 @@ public class IntegerUtilsProperties extends TestProperties {
     }
 
     private void compareImplementationsFromBigEndianDigits_int_Iterable_Integer() {
-        initialize("");
-        System.out.println("\t\tcomparing fromBigEndianDigits(int, Iterable<Integer>) implementations...");
-
-        long totalTime = 0;
-        Iterable<Pair<List<Integer>, Integer>> unfilteredPs;
-        if (P instanceof ExhaustiveProvider) {
-            unfilteredPs = ((ExhaustiveProvider) P).pairsLogarithmicOrder(P.lists(P.naturalIntegers()), P.rangeUp(2));
-        } else {
-            unfilteredPs = P.pairs(
-                    P.lists(P.withScale(10).naturalIntegersGeometric()),
-                    map(i -> i + 2, P.withScale(20).naturalIntegersGeometric())
-            );
-        }
-        Iterable<Pair<List<Integer>, Integer>> ps = filter(p -> all(i -> i < p.b, p.a), unfilteredPs);
-        for (Pair<List<Integer>, Integer> p : take(LIMIT, ps)) {
-            long time = System.nanoTime();
-            fromBigEndianDigits_int_Iterable_Integer_simplest(p.b, p.a);
-            totalTime += (System.nanoTime() - time);
-        }
-        System.out.println("\t\t\tsimplest: " + ((double) totalTime) / 1e9 + " s");
-
-        totalTime = 0;
-        for (Pair<List<Integer>, Integer> p : take(LIMIT, ps)) {
-            long time = System.nanoTime();
-            fromBigEndianDigits(p.b, p.a);
-            totalTime += (System.nanoTime() - time);
-        }
-        System.out.println("\t\t\tstandard: " + ((double) totalTime) / 1e9 + " s");
+        Map<String, Function<Pair<List<Integer>, Integer>, BigInteger>> functions =
+                new LinkedHashMap<>();
+        functions.put("simplest", p -> fromBigEndianDigits_int_Iterable_Integer_simplest(p.b, p.a));
+        functions.put("standard", p -> fromBigEndianDigits(p.b, p.a));
+        Iterable<Pair<List<Integer>, Integer>> ps = filterInfinite(
+                p -> all(i -> i < p.b, p.a),
+                P.pairsLogarithmicOrder(P.lists(P.naturalIntegersGeometric()), P.rangeUpGeometric(2))
+        );
+        compareImplementations("fromBigEndianDigits(int, Iterable<Integer>)", take(LIMIT, ps), functions);
     }
 
     private void propertiesFromBigEndianDigits_int_Iterable_BigInteger() {
-        initialize("");
-        System.out.println("\t\ttesting fromBigEndianDigits(int, Iterable<BigInteger>) properties...");
-
-        Iterable<Pair<List<BigInteger>, BigInteger>> unfilteredPs;
-        if (P instanceof ExhaustiveProvider) {
-            unfilteredPs = ((ExhaustiveProvider) P).pairsLogarithmicOrder(
-                    P.lists(P.naturalBigIntegers()),
-                    P.rangeUp(TWO)
-            );
-        } else {
-            //noinspection Convert2MethodRef
-            unfilteredPs = P.pairs(
-                    P.lists(map(i -> BigInteger.valueOf(i), P.withScale(10).naturalIntegersGeometric())),
-                    map(i -> BigInteger.valueOf(i + 2), P.withScale(20).naturalIntegersGeometric())
-            );
-        }
-        Iterable<Pair<List<BigInteger>, BigInteger>> ps = filter(p -> all(i -> lt(i, p.b), p.a), unfilteredPs);
+        initialize("fromBigEndianDigits(BigInteger, Iterable<BigInteger>)");
+        //noinspection Convert2MethodRef
+        Iterable<Pair<List<BigInteger>, BigInteger>> ps = filterInfinite(
+                p -> all(i -> lt(i, p.b), p.a),
+                P.pairsLogarithmicOrder(
+                        P.lists(map(i -> BigInteger.valueOf(i), P.naturalIntegersGeometric())),
+                        map(i -> BigInteger.valueOf(i), P.rangeUpGeometric(2))
+                )
+        );
         for (Pair<List<BigInteger>, BigInteger> p : take(LIMIT, ps)) {
             BigInteger n = fromBigEndianDigits(p.b, p.a);
             assertEquals(p, n, fromDigits(p.b, reverse(p.a)));
             assertNotEquals(p, n.signum(), -1);
         }
 
-        ps = filter(p -> p.a.isEmpty() || !head(p.a).equals(BigInteger.ZERO), ps);
+        ps = filterInfinite(p -> p.a.isEmpty() || !head(p.a).equals(BigInteger.ZERO), ps);
         for (Pair<List<BigInteger>, BigInteger> p : take(LIMIT, ps)) {
             BigInteger n = fromBigEndianDigits(p.b, p.a);
-            aeqit(p, p.a, bigEndianDigits(p.b, n));
+            assertEquals(p, p.a, bigEndianDigits(p.b, n));
         }
 
         Function<BigInteger, Boolean> digitsToBits = i -> {
@@ -1770,16 +1735,17 @@ public class IntegerUtilsProperties extends TestProperties {
             if (i.equals(BigInteger.ONE)) return true;
             throw new IllegalArgumentException();
         };
-
         for (List<BigInteger> is : take(LIMIT, P.lists(P.range(BigInteger.ZERO, BigInteger.ONE)))) {
             assertEquals(is, fromBigEndianDigits(TWO, is), fromBigEndianBits(map(digitsToBits, is)));
         }
 
-        Iterable<Pair<List<BigInteger>, BigInteger>> unfilteredPsFail = P.pairs(
-                P.lists(P.bigIntegers()),
-                P.rangeDown(BigInteger.ONE)
+        Iterable<Pair<List<BigInteger>, BigInteger>> psFail = filterInfinite(
+                p -> all(i -> lt(i, p.b), p.a),
+                P.pairs(
+                        P.lists(P.bigIntegers()),
+                        P.rangeDown(BigInteger.ONE)
+                )
         );
-        Iterable<Pair<List<BigInteger>, BigInteger>> psFail = filter(p -> all(i -> lt(i, p.b), p.a), unfilteredPsFail);
         for (Pair<List<BigInteger>, BigInteger> p : take(LIMIT, psFail)) {
             try {
                 fromBigEndianDigits(p.b, p.a);
@@ -1787,8 +1753,10 @@ public class IntegerUtilsProperties extends TestProperties {
             } catch (IllegalArgumentException ignored) {}
         }
 
-        unfilteredPsFail = P.pairs(P.lists(P.bigIntegers()), P.rangeUp(TWO));
-        psFail = filter(p -> any(i -> i.signum() == -1, p.a), unfilteredPsFail);
+        psFail = filterInfinite(
+                p -> any(i -> i.signum() == -1, p.a),
+                P.pairs(P.lists(P.bigIntegers()), P.rangeUp(TWO))
+        );
         for (Pair<List<BigInteger>, BigInteger> p : take(LIMIT, psFail)) {
             try {
                 fromBigEndianDigits(p.b, p.a);
@@ -1796,7 +1764,7 @@ public class IntegerUtilsProperties extends TestProperties {
             } catch (IllegalArgumentException ignored) {}
         }
 
-        psFail = filter(p -> any(i -> ge(i, p.b), p.a), unfilteredPsFail);
+        psFail = filterInfinite(p -> any(i -> ge(i, p.b), p.a), P.pairs(P.lists(P.bigIntegers()), P.rangeUp(TWO)));
         for (Pair<List<BigInteger>, BigInteger> p : take(LIMIT, psFail)) {
             try {
                 fromBigEndianDigits(p.b, p.a);

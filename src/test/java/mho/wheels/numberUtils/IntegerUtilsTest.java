@@ -5,8 +5,6 @@ import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
 
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static mho.wheels.numberUtils.IntegerUtils.*;
@@ -956,64 +954,67 @@ public class IntegerUtilsTest {
         fromDigits_BigInteger_Iterable_BigInteger_fail_helper("10", "[1, 2, 10]");
     }
 
-    @Test
-    public void testFromBigEndianDigits_int_Iterable_Integer() {
-        aeq(fromBigEndianDigits(2, Arrays.asList(0, 0)), 0);
-        aeq(fromBigEndianDigits(2, Arrays.asList(0, 1)), 1);
-        aeq(fromBigEndianDigits(2, Arrays.asList(0, 1, 1, 1, 0, 1)), 29);
-        aeq(fromBigEndianDigits(10, Arrays.asList(3, 1, 4, 1, 5, 9)), 314159);
-        aeq(fromBigEndianDigits(70, Arrays.asList(43, 5, 20, 0, 8)), 1034243008);
-        aeq(fromBigEndianDigits(70, new ArrayList<Integer>()), 0);
+    private static void fromBigEndianDigits_int_Iterable_Integer_helper(
+            int base,
+            @NotNull String digits,
+            @NotNull String output
+    ) {
+        aeq(fromBigEndianDigits(base, readIntegerList(digits)), output);
+    }
+
+    private static void fromBigEndianDigits_int_Iterable_Integer_fail_helper(int base, @NotNull String digits) {
         try {
-            fromBigEndianDigits(1, Arrays.asList(1, 2, 3));
+            fromBigEndianDigits(base, readIntegerListWithNulls(digits));
             fail();
-        } catch (IllegalArgumentException ignored) {}
-        try {
-            fromBigEndianDigits(0, Arrays.asList(1, 2, 3));
-            fail();
-        } catch (IllegalArgumentException ignored) {}
-        try {
-            fromBigEndianDigits(-1, Arrays.asList(1, 2, 3));
-            fail();
-        } catch (IllegalArgumentException ignored) {}
-        try {
-            fromBigEndianDigits(10, Arrays.asList(-1, 2, 3));
-            fail();
-        } catch (IllegalArgumentException ignored) {}
-        try {
-            fromBigEndianDigits(10, Arrays.asList(1, 2, 10));
-            fail();
-        } catch (IllegalArgumentException ignored) {}
+        } catch (IllegalArgumentException | NullPointerException ignored) {}
     }
 
     @Test
-    public void testFromBigEndianDigits_int_Iterable_BigInteger() {
-        aeq(fromBigEndianDigits(TWO, readBigIntegerList("[0, 0]")), 0);
-        aeq(fromBigEndianDigits(TWO, readBigIntegerList("[0, 1]")), 1);
-        aeq(fromBigEndianDigits(TWO, readBigIntegerList("[0, 1, 1, 1, 0, 1]")), 29);
-        aeq(fromBigEndianDigits(BigInteger.valueOf(10), readBigIntegerList("[3, 1, 4, 1, 5, 9]")), 314159);
-        aeq(fromBigEndianDigits(BigInteger.valueOf(70), readBigIntegerList("[43, 5, 20, 0, 8]")), 1034243008);
-        aeq(fromBigEndianDigits(BigInteger.valueOf(70), readBigIntegerList("[]")), 0);
+    public void testFromBigEndianDigits_int_Iterable_Integer() {
+        fromBigEndianDigits_int_Iterable_Integer_helper(2, "[0, 0]", "0");
+        fromBigEndianDigits_int_Iterable_Integer_helper(2, "[0, 1]", "1");
+        fromBigEndianDigits_int_Iterable_Integer_helper(2, "[0, 1, 1, 1, 0, 1]", "29");
+        fromBigEndianDigits_int_Iterable_Integer_helper(10, "[3, 1, 4, 1, 5, 9]", "314159");
+        fromBigEndianDigits_int_Iterable_Integer_helper(70, "[43, 5, 20, 0, 8]", "1034243008");
+        fromBigEndianDigits_int_Iterable_Integer_helper(70, "[]", "0");
+        fromBigEndianDigits_int_Iterable_Integer_fail_helper(1, "[1, 2, 3]");
+        fromBigEndianDigits_int_Iterable_Integer_fail_helper(0, "[1, 2, 3]");
+        fromBigEndianDigits_int_Iterable_Integer_fail_helper(-1, "[1, 2, 3]");
+        fromBigEndianDigits_int_Iterable_Integer_fail_helper(10, "[-1, 2, 3]");
+        fromBigEndianDigits_int_Iterable_Integer_fail_helper(10, "[1, 2, 10]");
+    }
+
+    private static void fromBigEndianDigits_BigInteger_Iterable_BigInteger_helper(
+            @NotNull String base,
+            @NotNull String digits,
+            @NotNull String output
+    ) {
+        aeq(fromBigEndianDigits(Readers.readBigInteger(base).get(), readBigIntegerList(digits)), output);
+    }
+
+    private static void fromBigEndianDigits_BigInteger_Iterable_BigInteger_fail_helper(
+            @NotNull String base,
+            @NotNull String digits
+    ) {
         try {
-            fromBigEndianDigits(BigInteger.ONE, readBigIntegerList("[1, 2, 3]"));
+            fromBigEndianDigits(Readers.readBigInteger(base).get(), readBigIntegerListWithNulls(digits));
             fail();
-        } catch (IllegalArgumentException ignored) {}
-        try {
-            fromBigEndianDigits(BigInteger.ZERO, readBigIntegerList("[1, 2, 3]"));
-            fail();
-        } catch (IllegalArgumentException ignored) {}
-        try {
-            fromBigEndianDigits(NEGATIVE_ONE, readBigIntegerList("[1, 2, 3]"));
-            fail();
-        } catch (IllegalArgumentException ignored) {}
-        try {
-            fromBigEndianDigits(BigInteger.valueOf(10), readBigIntegerList("[-1, 2, 3]"));
-            fail();
-        } catch (IllegalArgumentException ignored) {}
-        try {
-            fromBigEndianDigits(BigInteger.valueOf(10), readBigIntegerList("[1, 2, 10]"));
-            fail();
-        } catch (IllegalArgumentException ignored) {}
+        } catch (IllegalArgumentException | NullPointerException ignored) {}
+    }
+
+    @Test
+    public void testFromBigEndianDigits_BigInteger_Iterable_BigInteger() {
+        fromBigEndianDigits_BigInteger_Iterable_BigInteger_helper("2", "[0, 0]", "0");
+        fromBigEndianDigits_BigInteger_Iterable_BigInteger_helper("2", "[0, 1]", "1");
+        fromBigEndianDigits_BigInteger_Iterable_BigInteger_helper("2", "[0, 1, 1, 1, 0, 1]", "29");
+        fromBigEndianDigits_BigInteger_Iterable_BigInteger_helper("10", "[3, 1, 4, 1, 5, 9]", "314159");
+        fromBigEndianDigits_BigInteger_Iterable_BigInteger_helper("70", "[43, 5, 20, 0, 8]", "1034243008");
+        fromBigEndianDigits_BigInteger_Iterable_BigInteger_helper("70", "[]", "0");
+        fromBigEndianDigits_BigInteger_Iterable_BigInteger_fail_helper("1", "[1, 2, 3]");
+        fromBigEndianDigits_BigInteger_Iterable_BigInteger_fail_helper("0", "[1, 2, 3]");
+        fromBigEndianDigits_BigInteger_Iterable_BigInteger_fail_helper("-1", "[1, 2, 3]");
+        fromBigEndianDigits_BigInteger_Iterable_BigInteger_fail_helper("10", "[-1, 2, 3]");
+        fromBigEndianDigits_BigInteger_Iterable_BigInteger_fail_helper("10", "[1, 2, 10]");
     }
 
     @Test
