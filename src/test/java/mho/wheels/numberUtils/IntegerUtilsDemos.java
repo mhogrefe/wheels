@@ -275,7 +275,7 @@ public class IntegerUtilsDemos extends Demos {
     }
 
     private void demoFromDigit() {
-        for (char c : take(LIMIT, ExhaustiveProvider.INSTANCE.choose(P.range('0', '9'), P.range('A', 'Z')))) {
+        for (char c : take(LIMIT, P.withScale(1).choose(P.range('0', '9'), P.range('A', 'Z')))) {
             System.out.println("fromDigit(" + c + ") = " + fromDigit(c));
         }
     }

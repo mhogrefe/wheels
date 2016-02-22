@@ -1774,13 +1774,11 @@ public class IntegerUtilsProperties extends TestProperties {
     }
 
     private void propertiesToDigit() {
-        initialize("");
-        System.out.println("\t\ttesting toDigit(int) properties...");
-
+        initialize("toDigit(int)");
         for (int i : take(LIMIT, P.range(0, 35))) {
             char digit = toDigit(i);
             assertTrue(i, elem(digit, range('0', '9')) || elem(digit, range('A', 'Z')));
-            assertEquals(i, i, fromDigit(digit));
+            inverse(IntegerUtils::toDigit, IntegerUtils::fromDigit, i);
         }
 
         for (int i : take(LIMIT, P.negativeIntegers())) {
@@ -1799,20 +1797,16 @@ public class IntegerUtilsProperties extends TestProperties {
     }
 
     private void propertiesFromDigit() {
-        initialize("");
-        System.out.println("\t\ttesting fromDigit(char) properties...");
-
-        for (char c : take(LIMIT, EP.choose(P.range('0', '9'), P.range('A', 'Z')))) {
+        initialize("fromDigit(char)");
+        for (char c : take(LIMIT, P.withScale(1).choose(P.range('0', '9'), P.range('A', 'Z')))) {
             int i = fromDigit(c);
             assertTrue(c, i >= 0 && i < 36);
-            assertEquals(c, c, toDigit(i));
+            inverse(IntegerUtils::fromDigit, IntegerUtils::toDigit, c);
         }
 
-        Iterable<Character> csFail = filter(
-                d -> !elem(d, range('0', '9')) && !elem(d, range('A', 'Z')),
-                P.characters()
-        );
-        for (char c : take(LIMIT, csFail)) {
+        Set<Character> numbers = toHashSet(range('0', '9'));
+        Set<Character> letters = toHashSet(range('A', 'Z'));
+        for (char c : take(LIMIT, filter(d -> !numbers.contains(d) && !letters.contains(d), P.characters()))) {
             try {
                 fromDigit(c);
                 fail(c);

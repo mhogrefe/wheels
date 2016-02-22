@@ -1017,38 +1017,48 @@ public class IntegerUtilsTest {
         fromBigEndianDigits_BigInteger_Iterable_BigInteger_fail_helper("10", "[1, 2, 10]");
     }
 
-    @Test
-    public void testToDigit() {
-        aeq(toDigit(0), '0');
-        aeq(toDigit(6), '6');
-        aeq(toDigit(10), 'A');
-        aeq(toDigit(20), 'K');
-        aeq(toDigit(35), 'Z');
+    private static void toDigit_helper(int i, char c) {
+        aeq(toDigit(i), c);
+    }
+
+    private static void toDigit_fail_helper(int i) {
         try {
-            toDigit(-1);
+            toDigit(i);
             fail();
         } catch (IllegalArgumentException ignored) {}
+    }
+
+    @Test
+    public void testToDigit() {
+        toDigit_helper(0, '0');
+        toDigit_helper(6, '6');
+        toDigit_helper(10, 'A');
+        toDigit_helper(20, 'K');
+        toDigit_helper(35, 'Z');
+        toDigit_fail_helper(-1);
+        toDigit_fail_helper(36);
+    }
+
+    private static void fromDigit_helper(char c, int i) {
+        aeq(fromDigit(c), i);
+    }
+
+    private static void fromDigit_fail_helper(char c) {
         try {
-            toDigit(36);
+            fromDigit(c);
             fail();
         } catch (IllegalArgumentException ignored) {}
     }
 
     @Test
     public void testFromDigit() {
-        aeq(fromDigit('0'), 0);
-        aeq(fromDigit('6'), 6);
-        aeq(fromDigit('A'), 10);
-        aeq(fromDigit('K'), 20);
-        aeq(fromDigit('Z'), 35);
-        try {
-            fromDigit(' ');
-            fail();
-        } catch (IllegalArgumentException ignored) {}
-        try {
-            fromDigit('a');
-            fail();
-        } catch (IllegalArgumentException ignored) {}
+        fromDigit_helper('0', 0);
+        fromDigit_helper('6', 6);
+        fromDigit_helper('A', 10);
+        fromDigit_helper('K', 20);
+        fromDigit_helper('Z', 35);
+        fromDigit_fail_helper(' ');
+        fromDigit_fail_helper('a');
     }
 
     @Test
