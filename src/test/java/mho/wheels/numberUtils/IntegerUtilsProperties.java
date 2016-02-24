@@ -1775,9 +1775,11 @@ public class IntegerUtilsProperties extends TestProperties {
 
     private void propertiesToDigit() {
         initialize("toDigit(int)");
+        Set<Character> numbers = toHashSet(range('0', '9'));
+        Set<Character> letters = toHashSet(range('A', 'Z'));
         for (int i : take(LIMIT, P.range(0, 35))) {
             char digit = toDigit(i);
-            assertTrue(i, elem(digit, range('0', '9')) || elem(digit, range('A', 'Z')));
+            assertTrue(i, numbers.contains(digit) || letters.contains(digit));
             inverse(IntegerUtils::toDigit, IntegerUtils::fromDigit, i);
         }
 
@@ -1819,37 +1821,22 @@ public class IntegerUtilsProperties extends TestProperties {
     }
 
     private void propertiesToStringBase_int_int() {
-        initialize("");
-        System.out.println("\t\ttesting toStringBase(int, int) properties...");
-
-        Iterable<Pair<Integer, Integer>> ps;
-        if (P instanceof ExhaustiveProvider) {
-            ps = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.integers(), P.rangeUp(2));
-        } else {
-            ps = P.pairs(P.integers(), map(i -> i + 2, P.withScale(20).naturalIntegersGeometric()));
-        }
+        initialize("toStringBase(int, int)");
+        Iterable<Pair<Integer, Integer>> ps = P.pairsSquareRootOrder(P.naturalIntegers(), P.rangeUpGeometric(2));
         for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
             String s = toStringBase(p.b, p.a);
             assertEquals(p, toStringBase_int_int_simplest(p.b, p.a), s);
             assertEquals(p, fromStringBase(p.b, s), BigInteger.valueOf(p.a));
         }
 
-        String chars = charsToString(cons('-', concat(range('0', '9'), range('A', 'Z'))));
-        if (P instanceof ExhaustiveProvider) {
-            ps = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.integers(), P.range(2, 36));
-        } else {
-            ps = P.pairs(P.integers(), P.range(2, 36));
-        }
-        for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
+        Set<Character> numbers = toHashSet(range('0', '9'));
+        Set<Character> letters = toHashSet(range('A', 'Z'));
+        for (Pair<Integer, Integer> p : take(LIMIT, P.pairsSquareRootOrder(P.integers(), P.range(2, 36)))) {
             String s = toStringBase(p.b, p.a);
-            assertTrue(p, all(c -> elem(c, chars), s));
+            assertTrue(p, all(c -> c == '-' || numbers.contains(c) || letters.contains(c), s));
         }
 
-        if (P instanceof ExhaustiveProvider) {
-            ps = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.integers(), P.rangeUp(37));
-        } else {
-            ps = P.pairs(P.integers(), map(i -> i + 37, P.withScale(20).naturalIntegersGeometric()));
-        }
+        ps = P.pairsSquareRootOrder(P.integers(), P.withScale(38).rangeUpGeometric(37));
         for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
             String s = toStringBase(p.b, p.a);
             if (head(s) == '-') s = tail(s);
@@ -1871,69 +1858,39 @@ public class IntegerUtilsProperties extends TestProperties {
     }
 
     private void compareImplementationsToStringBase_int_int() {
-        initialize("");
-        System.out.println("\t\tcomparing toStringBase(int, int) implementations...");
-
-        long totalTime = 0;
-        Iterable<Pair<Integer, Integer>> ps;
-        if (P instanceof ExhaustiveProvider) {
-            ps = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.integers(), P.rangeUp(2));
-        } else {
-            ps = P.pairs(P.integers(), map(i -> i + 2, P.withScale(20).naturalIntegersGeometric()));
-        }
-        for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
-            long time = System.nanoTime();
-            toStringBase_int_int_simplest(p.b, p.a);
-            totalTime += (System.nanoTime() - time);
-        }
-        System.out.println("\t\t\tsimplest: " + ((double) totalTime) / 1e9 + " s");
-
-        totalTime = 0;
-        for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
-            long time = System.nanoTime();
-            toStringBase(p.b, p.a);
-            totalTime += (System.nanoTime() - time);
-        }
-        System.out.println("\t\t\tstandard: " + ((double) totalTime) / 1e9 + " s");
+        Map<String, Function<Pair<Integer, Integer>, String>> functions = new LinkedHashMap<>();
+        functions.put("simplest", p -> toStringBase_int_int_simplest(p.b, p.a));
+        functions.put("standard", p -> toStringBase(p.b, p.a));
+        Iterable<Pair<Integer, Integer>> ps = P.pairsSquareRootOrder(P.naturalIntegers(), P.rangeUpGeometric(2));
+        compareImplementations("fromBigEndianDigits(int, Iterable<Integer>)", take(LIMIT, ps), functions);
     }
 
     private void propertiesToStringBase_BigInteger_BigInteger() {
-        initialize("");
-        System.out.println("\t\ttesting toStringBase(BigInteger, BigInteger) properties...");
-
-        Iterable<Pair<BigInteger, BigInteger>> ps;
-        if (P instanceof ExhaustiveProvider) {
-            ps = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.bigIntegers(), P.rangeUp(TWO));
-        } else {
-            ps = P.pairs(
-                    P.bigIntegers(),
-                    map(i -> BigInteger.valueOf(i + 2), P.withScale(20).naturalIntegersGeometric())
-            );
-        }
+        initialize("toStringBase(BigInteger, BigInteger)");
+        //noinspection Convert2MethodRef
+        Iterable<Pair<BigInteger, BigInteger>> ps = P.pairsSquareRootOrder(
+                P.naturalBigIntegers(),
+                map(i -> BigInteger.valueOf(i), P.rangeUpGeometric(2))
+        );
         for (Pair<BigInteger, BigInteger> p : take(LIMIT, ps)) {
             String s = toStringBase(p.b, p.a);
             assertEquals(p, fromStringBase(p.b, s), p.a);
         }
 
-        String chars = charsToString(cons('-', concat(range('0', '9'), range('A', 'Z'))));
-        if (P instanceof ExhaustiveProvider) {
-            ps = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.bigIntegers(), P.range(TWO, BigInteger.valueOf(36)));
-        } else {
-            ps = P.pairs(P.bigIntegers(), P.range(TWO, BigInteger.valueOf(36)));
-        }
+        Set<Character> numbers = toHashSet(range('0', '9'));
+        Set<Character> letters = toHashSet(range('A', 'Z'));
+        //noinspection Convert2MethodRef
+        ps = P.pairsSquareRootOrder(P.bigIntegers(), map(i -> BigInteger.valueOf(i), P.range(2, 36)));
         for (Pair<BigInteger, BigInteger> p : take(LIMIT, ps)) {
             String s = toStringBase(p.b, p.a);
-            assertTrue(p, all(c -> elem(c, chars), s));
+            assertTrue(p, all(c -> c == '-' || numbers.contains(c) || letters.contains(c), s));
         }
 
-        if (P instanceof ExhaustiveProvider) {
-            ps = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.bigIntegers(), P.rangeUp(BigInteger.valueOf(37)));
-        } else {
-            ps = P.pairs(
-                    P.bigIntegers(),
-                    map(i -> BigInteger.valueOf(i + 37), P.withScale(20).naturalIntegersGeometric())
-            );
-        }
+        //noinspection Convert2MethodRef
+        ps = P.pairsSquareRootOrder(
+                P.bigIntegers(),
+                map(i -> BigInteger.valueOf(i), P.withScale(38).rangeUpGeometric(37))
+        );
         for (Pair<BigInteger, BigInteger> p : take(LIMIT, ps)) {
             String s = toStringBase(p.b, p.a);
             if (head(s) == '-') s = tail(s);

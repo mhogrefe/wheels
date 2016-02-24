@@ -28,6 +28,11 @@ public class IntegerUtils {
     public static final @NotNull BigInteger TWO = BigInteger.valueOf(2);
 
     /**
+     * The number of alphanumeric characters, or 36.
+     */
+    private static final @NotNull BigInteger ALPHANUMERIC_COUNT = BigInteger.valueOf(36);
+
+    /**
      * Disallow instantiation
      */
     private IntegerUtils() {}
@@ -971,7 +976,7 @@ public class IntegerUtils {
         if (lt(base, TWO)) {
             throw new IllegalArgumentException("base must be at least 2. Invalid base: " + base);
         }
-        boolean bigBase = gt(base, BigInteger.valueOf(36));
+        boolean bigBase = gt(base, ALPHANUMERIC_COUNT);
         if (n.equals(BigInteger.ZERO)) {
             return bigBase ? "(0)" : "0";
         }
@@ -1087,7 +1092,7 @@ public class IntegerUtils {
             negative = true;
         }
         List<BigInteger> digits;
-        if (le(base, BigInteger.valueOf(36))) {
+        if (le(base, ALPHANUMERIC_COUNT)) {
             digits = toList(map(c -> BigInteger.valueOf(fromDigit(c)), fromString(s)));
         } else {
             if (head(s) != '(' || last(s) != ')' || s.contains("()")) {
