@@ -1572,13 +1572,12 @@ public strictfp class BasicTest {
     private static void bigIntegerHelper(
             @NotNull Iterable<BigInteger> xs,
             @NotNull String output,
-            @NotNull String topSampleCount,
             double sampleMean,
             double bitSizeMean
     ) {
         List<BigInteger> sample = toList(take(DEFAULT_SAMPLE_SIZE, xs));
         aeqitLimitLog(TINY_LIMIT, sample, output);
-        aeqMapLog(topSampleCount(DEFAULT_TOP_COUNT, sample), topSampleCount);
+        aeqMapLog(topSampleCount(DEFAULT_TOP_COUNT, sample), output);
         aeq(meanOfBigIntegers(sample), sampleMean);
         aeq(meanOfIntegers(toList(map(x -> x.abs().bitLength(), sample))), bitSizeMean);
     }
@@ -1586,17 +1585,10 @@ public strictfp class BasicTest {
     private static void positiveBigIntegers_helper(
             int meanBitSize,
             @NotNull String output,
-            @NotNull String topSampleCount,
             double sampleMean,
             double bitSizeMean
     ) {
-        bigIntegerHelper(
-                P.withScale(meanBitSize).positiveBigIntegers(),
-                output,
-                topSampleCount,
-                sampleMean,
-                bitSizeMean
-        );
+        bigIntegerHelper(P.withScale(meanBitSize).positiveBigIntegers(), output, sampleMean, bitSizeMean);
         P.reset();
     }
 
@@ -1612,45 +1604,19 @@ public strictfp class BasicTest {
 
     @Test
     public void testPositiveBigIntegers() {
-        positiveBigIntegers_helper(
-                2,
-                "RandomProvider_PositiveBigIntegers_2",
-                "RandomProvider_PositiveBigIntegers_2",
-                114.05128999981362,
-                1.9994539999798795
-        );
-        positiveBigIntegers_helper(
-                3,
-                "RandomProvider_PositiveBigIntegers_3",
-                "RandomProvider_PositiveBigIntegers_3",
-                42053.996647257176,
-                3.00330199998982
-        );
-        positiveBigIntegers_helper(
-                4,
-                "RandomProvider_PositiveBigIntegers_4",
-                "RandomProvider_PositiveBigIntegers_4",
-                3.923720245917525E8,
-                4.005570999990192
-        );
-        positiveBigIntegers_helper(
-                5,
-                "RandomProvider_PositiveBigIntegers_5",
-                "RandomProvider_PositiveBigIntegers_5",
-                8.95688013930559E12,
-                5.006042000008429
-        );
+        positiveBigIntegers_helper(2, "RandomProvider_positiveBigIntegers_2", 114.05128999981362, 1.9994539999798795);
+        positiveBigIntegers_helper(3, "RandomProvider_positiveBigIntegers_3", 42053.996647257176, 3.00330199998982);
+        positiveBigIntegers_helper(4, "RandomProvider_positiveBigIntegers_4", 3.923720245917525E8, 4.005570999990192);
+        positiveBigIntegers_helper(5, "RandomProvider_positiveBigIntegers_5", 8.95688013930559E12, 5.006042000008429);
         positiveBigIntegers_helper(
                 10,
-                "RandomProvider_PositiveBigIntegers_10",
-                "RandomProvider_PositiveBigIntegers_10",
+                "RandomProvider_positiveBigIntegers_10",
                 4.456452305288997E35,
                 9.998937000005219
         );
         positiveBigIntegers_helper(
                 100,
-                "RandomProvider_PositiveBigIntegers_100",
-                "RandomProvider_PositiveBigIntegers_100",
+                "RandomProvider_positiveBigIntegers_100",
                 Double.POSITIVE_INFINITY,
                 99.9771549999987
         );
@@ -1662,14 +1628,12 @@ public strictfp class BasicTest {
     private static void negativeBigIntegers_helper(
             int meanBitSize,
             @NotNull String output,
-            @NotNull String topSampleCount,
             double sampleMean,
             double bitSizeMean
     ) {
         bigIntegerHelper(
                 P.withScale(meanBitSize).negativeBigIntegers(),
                 output,
-                topSampleCount,
                 sampleMean,
                 bitSizeMean
         );
@@ -1690,56 +1654,37 @@ public strictfp class BasicTest {
     public void testNegativeBigIntegers() {
         negativeBigIntegers_helper(
                 2,
-                "[-13, -3, -477, -3, -2, -3, -4, -1, -3, -3, -2, -4, -1, -1, -1, -3, -3, -2, -1, -1, ...]",
-                "{-1=500069, -3=125042, -2=125020, -7=31426, -4=31262, -5=31128, -6=31004, -12=8028, -14=7919," +
-                " -11=7903}",
+                "RandomProvider_negativeBigIntegers_2",
                 -114.05128999981362,
                 1.9994539999798795
         );
         negativeBigIntegers_helper(
                 3,
-                "[-21, -21, -31, -26, -3, -36, -3, -3, -1, -10, -61, -1, -2, -2, -2, -9, -2, -117, -111, -3, ...]",
-                "{-1=332729, -2=111051, -3=110952, -6=37298, -7=37247, -4=37029, -5=37013, -11=12459, -14=12431," +
-                " -9=12346}",
+                "RandomProvider_negativeBigIntegers_3",
                 -42053.996647257176,
                 3.00330199998982
         );
         negativeBigIntegers_helper(
                 4,
-                "[-101, -477, -63, -42, -7, -343, -5, -3, -1, -50, -125, -1, -2, -2, -2, -220, -10, -240, -12106," +
-                " -19, ...]",
-                "{-1=249786, -2=93630, -3=93458, -4=35330, -6=35235, -5=35059, -7=34998, -11=13349, -9=13332," +
-                " -15=13286}",
+                "RandomProvider_negativeBigIntegers_4",
                 -3.923720245917525E8,
                 4.005570999990192
         );
         negativeBigIntegers_helper(
                 5,
-                "[-21, -13, -207646, -125, -4, -2, -2, -41, -53, -219224, -22, -6, -171, -9881, -1, -192, -1, -12," +
-                " -70, -1, ...]",
-                "{-1=199913, -2=80195, -3=79601, -6=32178, -4=31857, -5=31838, -7=31756, -11=12990, -9=12954," +
-                " -15=12943}",
+                "RandomProvider_negativeBigIntegers_5",
                 -8.95688013930559E12,
                 5.006042000008429
         );
         negativeBigIntegers_helper(
                 10,
-                "[-47968091191, -209, -348, -117, -1719440537, -956748, -1, -60, -1, -131900, -437219, -1, -566," +
-                " -245, -6, -8, -2, -13, -30, -3272, ...]",
-                "{-1=99896, -2=45185, -3=45008, -5=20574, -7=20224, -6=20173, -4=20083, -13=9246, -9=9174, -14=9159}",
+                "RandomProvider_negativeBigIntegers_10",
                 -4.456452305288997E35,
                 9.998937000005219
         );
         negativeBigIntegers_helper(
                 100,
-                "[-94790976865653102300816908025048767680216168, -3762255186221726870, -5994570771, -823422155," +
-                " -10161754415810092830165715486885560643885805, -1484539043, -53285321364040890158634366042166836," +
-                " -7412492, -14380290507177291615829493, -51, -2378861914519634593, -456, -16636," +
-                " -53988143125609611862402328554695182710088, -1233903230," +
-                " -729330608188823656079318880504880068799735087660742104048519512109274590562188282621450," +
-                " -1772557890515702532927646423272573535, -2528945640266242272, -267516009518392367893913935," +
-                " -5791822, ...]",
-                "{-1=9825, -3=5010, -2=5000, -5=2554, -7=2419, -4=2398, -6=2371, -12=1269, -10=1255, -13=1232}",
+                "RandomProvider_negativeBigIntegers_100",
                 Double.NEGATIVE_INFINITY,
                 99.9771549999987
         );
@@ -1751,17 +1696,10 @@ public strictfp class BasicTest {
     private static void naturalBigIntegers_helper(
             int meanBitSize,
             @NotNull String output,
-            @NotNull String topSampleCount,
             double sampleMean,
             double bitSizeMean
     ) {
-        bigIntegerHelper(
-                P.withScale(meanBitSize).naturalBigIntegers(),
-                output,
-                topSampleCount,
-                sampleMean,
-                bitSizeMean
-        );
+        bigIntegerHelper(P.withScale(meanBitSize).naturalBigIntegers(), output, sampleMean, bitSizeMean);
         P.reset();
     }
 
@@ -1777,59 +1715,15 @@ public strictfp class BasicTest {
 
     @Test
     public void testNaturalBigIntegers() {
-        naturalBigIntegers_helper(
-                1,
-                "[5, 1, 221, 1, 1, 1, 2, 0, 3, 1, 1, 2, 0, 1, 0, 0, 1, 1, 1, 0, ...]",
-                "{0=499823, 1=250086, 3=62677, 2=62065, 7=15883, 4=15841, 6=15689, 5=15562, 11=3976, 9=3968}",
-                7.527205000038622,
-                1.00042899999766
-        );
-        naturalBigIntegers_helper(
-                2,
-                "[13, 13, 15, 10, 1, 20, 1, 1, 0, 6, 29, 0, 2, 1, 1, 5, 1, 53, 47, 1, ...]",
-                "{0=333328, 1=221250, 2=74321, 3=74204, 6=24839, 5=24776, 7=24739, 4=24646, 11=8423, 8=8278}",
-                18553.42636205894,
-                2.0026819999891274
-        );
-        naturalBigIntegers_helper(
-                3,
-                "[37, 221, 31, 26, 3, 215, 3, 1, 0, 50, 61, 0, 2, 1, 1, 105, 6, 117, 8010, 11, ...]",
-                "{0=249917, 1=187110, 2=70224, 3=70017, 7=26517, 4=26460, 6=26427, 5=26386, 11=9973, 12=9950}",
-                2.0721683567389777E8,
-                3.0050639999915902
-        );
-        naturalBigIntegers_helper(
-                4,
-                "[13, 5, 76574, 61, 2, 1, 1, 25, 21, 88152, 14, 2, 67, 5785, 0, 192, 0, 12, 38, 0, ...]",
-                "{0=199981, 1=159902, 2=64013, 3=63667, 7=25747, 5=25585, 4=25557, 6=25379, 15=10419, 11=10368}",
-                6.063391150606273E12,
-                4.006382999991641
-        );
-        naturalBigIntegers_helper(
-                5,
-                "[21, 53, 2304798, 233, 2, 1, 1, 25, 117, 1661016, 14, 2, 67, 104780, 0, 576, 0, 28, 70, 0, ...]",
-                "{0=166661, 1=138858, 2=57786, 3=57583, 4=24131, 7=24083, 5=24044, 6=23950, 9=10179, 15=10166}",
-                7.6975225805449024E16,
-                5.008064000005
-        );
-        naturalBigIntegers_helper(
-                10,
-                "[47968091191, 593, 348, 117, 1719440537, 4626764, 0, 124, 0, 66364, 437219, 0, 566, 88, 2, 4, 1, 5," +
-                " 30, 3272, ...]",
-                "{0=90425, 1=83151, 3=37762, 2=37465, 5=17197, 6=17184, 7=17024, 4=16953, 9=7894, 11=7839}",
-                6.216950515561165E39,
-                9.998042000004142
-        );
+        naturalBigIntegers_helper(1, "RandomProvider_naturalBigIntegers_1", 7.527205000038622, 1.00042899999766);
+        naturalBigIntegers_helper(2, "RandomProvider_naturalBigIntegers_2", 18553.42636205894, 2.0026819999891274);
+        naturalBigIntegers_helper(3, "RandomProvider_naturalBigIntegers_3", 2.0721683567389777E8, 3.0050639999915902);
+        naturalBigIntegers_helper(4, "RandomProvider_naturalBigIntegers_4", 6.063391150606273E12, 4.006382999991641);
+        naturalBigIntegers_helper(5, "RandomProvider_naturalBigIntegers_5", 7.6975225805449024E16, 5.008064000005);
+        naturalBigIntegers_helper(10, "RandomProvider_naturalBigIntegers_10", 6.216950515561165E39, 9.998042000004142);
         naturalBigIntegers_helper(
                 100,
-                "[630008861630388057697674146568609443823746152, 3762255186221726870, 3847087123, 286551243," +
-                " 10161754415810092830165715486885560643885805, 947668131, 32516133929901579644512380725286452," +
-                " 3218188, 9544587228718774917004789, 19, 2378861914519634593, 200, 8444," +
-                " 141100429057369858509026228057227844842824, 2346614327," +
-                " 220427863617519248349539572941206305312698531160014400224142519234934133812366899774702," +
-                " 3101785886300618405831453483552918111, 2528945640266242272, 267516009518392367893913935, 3694670," +
-                " ...]",
-                "{1=9886, 0=9752, 3=4895, 2=4740, 4=2448, 6=2435, 7=2434, 5=2416, 14=1221, 9=1189}",
+                "RandomProvider_naturalBigIntegers_100",
                 Double.POSITIVE_INFINITY,
                 99.9762349999981
         );
@@ -1841,17 +1735,10 @@ public strictfp class BasicTest {
     private static void nonzeroBigIntegers_helper(
             int meanBitSize,
             @NotNull String output,
-            @NotNull String topSampleCount,
             double sampleMean,
             double bitSizeMean
     ) {
-        bigIntegerHelper(
-                P.withScale(meanBitSize).nonzeroBigIntegers(),
-                output,
-                topSampleCount,
-                sampleMean,
-                bitSizeMean
-        );
+        bigIntegerHelper(P.withScale(meanBitSize).nonzeroBigIntegers(), output, sampleMean, bitSizeMean);
         P.reset();
     }
 
@@ -1867,56 +1754,17 @@ public strictfp class BasicTest {
 
     @Test
     public void testNonzeroBigIntegers() {
-        nonzeroBigIntegers_helper(
-                2,
-                "[13, 1, 221, 1, 1, 1, -2, 7, 1, 1, -2, -3, -1, 5, -1, 2, -1, -2, -1, -1, ...]",
-                "{1=250554, -1=249443, -2=62808, 3=62414, -3=62365, 2=62172, -7=15986, -5=15888, 5=15650, -6=15633}",
-                -51.040697000000215,
-                1.9999089999798014
-        );
-        nonzeroBigIntegers_helper(
-                3,
-                "[21, 13, -15, 10, 3, -36, -1, -1, 10, -61, -4, -1, -1, 5, -2, -53, 47, 3, -89, -2, ...]",
-                "{1=166707, -1=166490, 3=55535, 2=55481, -2=55345, -3=55270, -7=18716, 6=18667, -5=18655, -6=18561}",
-                -12560.956458999866,
-                3.0034329999897373
-        );
-        nonzeroBigIntegers_helper(
-                4,
-                "[101, 221, -31, 26, 3, -215, -3, -1, 114, -61, -4, -1, -1, 105, -6, -117, 8010, 11, -856, -8, ...]",
-                "{1=124984, -1=124598, 2=46841, 3=46727, -2=46702, -3=46654, -7=17851, 6=17685, 7=17652, 4=17596}",
-                6.9148732007788E7,
-                4.007541999990144
-        );
-        nonzeroBigIntegers_helper(
-                5,
-                "[21, 13, 76574, -125, -2, -1, 2, 25, -53, -219224, -14, -2, -171, -5785, -320, -28, -38, -8797," +
-                " -46, 30, ...]",
-                "{1=100089, -1=99842, -2=40214, -3=39991, 2=39913, 3=39839, -7=16152, 7=16022, -5=15990, -6=15923}",
-                5.064110348766358E12,
-                5.006230000008758
-        );
+        nonzeroBigIntegers_helper(2, "RandomProvider_nonzeroBigIntegers_2", -51.040697000000215, 1.9999089999798014);
+        nonzeroBigIntegers_helper(3, "RandomProvider_nonzeroBigIntegers_3", -12560.956458999866, 3.0034329999897373);
+        nonzeroBigIntegers_helper(4, "RandomProvider_nonzeroBigIntegers_4", 6.9148732007788E7, 4.007541999990144);
+        nonzeroBigIntegers_helper(5, "RandomProvider_nonzeroBigIntegers_5", 5.064110348766358E12, 5.006230000008758);
         nonzeroBigIntegers_helper(
                 10,
-                "[-47968091191, -104, 348, -117, -645698713, -956748, -60, -131900, -437219, 1078, 88, 2, -4, 2, -5," +
-                " 14, 1224, 81, 4, -79, ...]",
-                "{-1=50380, 1=49812, 3=22663, -3=22545, 2=22409, -2=22339, -5=10288, -7=10249, 5=10208, -6=10181}",
+                "RandomProvider_nonzeroBigIntegers_10",
                 -2.4957396868152156E35,
                 9.995175000005379
         );
-        nonzeroBigIntegers_helper(
-                100,
-                "[94790976865653102300816908025048767680216168, 1456412177008032918, -5994570771, 286551243," +
-                " 4586568116177437044781785918723470267390701, -947668131, -32516133929901579644512380725286452," +
-                " 3218188, 9544587228718774917004789, 19, -1225940409912787617, 200, -8444," +
-                " -53988143125609611862402328554695182710088, 697032318," +
-                " 480668989983930335001627756431469648749507012262068245328287523662694842055921594854922," +
-                " -1107943892623244596475742893132401247, 1376024135659395296, -117101863095185620958878497," +
-                " 3694670, ...]",
-                "{1=5017, -1=5000, -3=2500, 3=2458, 2=2453, -2=2440, 4=1301, -5=1262, 6=1257, -7=1253}",
-                Double.NaN,
-                99.9676500000014
-        );
+        nonzeroBigIntegers_helper(100, "RandomProvider_nonzeroBigIntegers_100", Double.NaN, 99.9676500000014);
         nonzeroBigIntegers_fail_helper(1);
         nonzeroBigIntegers_fail_helper(0);
         nonzeroBigIntegers_fail_helper(-1);
@@ -1925,14 +1773,12 @@ public strictfp class BasicTest {
     private static void bigIntegers_helper(
             int meanBitSize,
             @NotNull String output,
-            @NotNull String topSampleCount,
             double sampleMean,
             double bitSizeMean
     ) {
         bigIntegerHelper(
                 P.withScale(meanBitSize).bigIntegers(),
                 output,
-                topSampleCount,
                 sampleMean,
                 bitSizeMean
         );
@@ -1951,64 +1797,13 @@ public strictfp class BasicTest {
 
     @Test
     public void testBigIntegers() {
-        bigIntegers_helper(
-                1,
-                "[5, 0, 221, 0, 1, 0, -2, 3, 0, 1, -1, -1, 0, 0, 1, 0, 0, 0, -1, -1, ...]",
-                "{0=499795, -1=125124, 1=124571, -3=31728, -2=31436, 3=31363, 2=31091, -7=7886, 5=7885, 4=7862}",
-                -21.962919999999734,
-                1.0003699999976585
-        );
-        bigIntegers_helper(
-                2,
-                "[13, 5, -7, 6, 1, -20, 0, -1, 6, -29, -2, 0, -1, 3, -1, -21, 31, 1, -57, -1, ...]",
-                "{0=332694, 1=110999, -1=110797, -3=37312, 2=37226, 3=37138, -2=37133, 7=12528, -5=12466, -4=12334}",
-                652.206306000023,
-                2.004140999989157
-        );
-        bigIntegers_helper(
-                3,
-                "[37, 85, -15, 10, 1, -100, -1, 0, 0, 18, -29, -2, 0, -1, 41, -2, -53, 3914, 7, -344, ...]",
-                "{0=249213, 1=93921, -1=93517, -3=35287, 2=35230, 3=35001, -2=34821, 5=13295, -6=13287, -4=13264}",
-                3.8147781719932765E7,
-                3.008166999991507
-        );
-        bigIntegers_helper(
-                4,
-                "[13, 5, 43806, -61, -1, 0, 1, 9, -21, -88152, -6, -1, -67, -3737, -192, -12, -22, -4701, -30, 14," +
-                " ...]",
-                "{0=199552, -1=80147, 1=79812, -3=32188, -2=31996, 3=31903, 2=31772, -5=13020, 7=12904, 5=12799}",
-                3.0232412271737646E12,
-                4.00732099999149
-        );
-        bigIntegers_helper(
-                5,
-                "[21, 21, 1256222, -233, -1, 0, 1, 9, -117, -1661016, -6, -1, -67, -39244, -576, -28, -38, -16989," +
-                " -46, 30, ...]",
-                "{0=165977, -1=69743, 1=69535, -3=28984, 3=28968, -2=28966, 2=28680, 6=12162, -4=12155, -5=12141}",
-                5.6936067849711536E16,
-                5.009217000005041
-        );
-        bigIntegers_helper(
-                10,
-                "[-47968091191, -337, 220, -117, -645698713, -4626764, -124, -66364, -437219, 566, 56, 1, -2, 1, -3," +
-                " 14, 1224, 81, 2, -232, ...]",
-                "{0=90999, 1=41389, -1=41275, -3=18996, 3=18823, -2=18748, 2=18717, -5=8699, 6=8690, 5=8545}",
-                -3.800274840387793E39,
-                9.993747000004165
-        );
-        bigIntegers_helper(
-                100,
-                "[630008861630388057697674146568609443823746152, 1456412177008032918, -3847087123, 152333515," +
-                " 4586568116177437044781785918723470267390701, -410797219, -11746946495762269130390395408406068," +
-                " 1121036, 4708883950260258218180085, 11, -1225940409912787617, 114, -4348," +
-                " -141100429057369858509026228057227844842824, 1233903230," +
-                " -220427863617519248349539572941206305312698531160014400224142519234934133812366899774702," +
-                " -1772557890515702532927646423272573535, 1376024135659395296, -117101863095185620958878497," +
-                " 1597518, ...]",
-                "{0=9917, 1=4883, -1=4852, 2=2533, -3=2503, 3=2411, -2=2405, -6=1237, 7=1219, -4=1202}",
-                Double.NaN,
-                99.96628299999787
-        );
+        bigIntegers_helper(1, "RandomProvider_bigIntegers_1", -21.962919999999734, 1.0003699999976585);
+        bigIntegers_helper(2, "RandomProvider_bigIntegers_2", 652.206306000023, 2.004140999989157);
+        bigIntegers_helper(3, "RandomProvider_bigIntegers_3", 3.8147781719932765E7, 3.008166999991507);
+        bigIntegers_helper(4, "RandomProvider_bigIntegers_4", 3.0232412271737646E12, 4.00732099999149);
+        bigIntegers_helper(5, "RandomProvider_bigIntegers_5", 5.6936067849711536E16, 5.009217000005041);
+        bigIntegers_helper(10, "RandomProvider_bigIntegers_10", -3.800274840387793E39, 9.993747000004165);
+        bigIntegers_helper(100, "RandomProvider_bigIntegers_100", Double.NaN, 99.96628299999787);
         bigIntegers_fail_helper(0);
         bigIntegers_fail_helper(-1);
         bigIntegers_fail_helper(Integer.MAX_VALUE);
@@ -2018,17 +1813,10 @@ public strictfp class BasicTest {
             int meanBitSize,
             int a,
             @NotNull String output,
-            @NotNull String topSampleCount,
             double sampleMean,
             double bitSizeMean
     ) {
-        bigIntegerHelper(
-                P.withScale(meanBitSize).rangeUp(BigInteger.valueOf(a)),
-                output,
-                topSampleCount,
-                sampleMean,
-                bitSizeMean
-        );
+        bigIntegerHelper(P.withScale(meanBitSize).rangeUp(BigInteger.valueOf(a)), output, sampleMean, bitSizeMean);
         P.reset();
     }
 
@@ -2044,88 +1832,67 @@ public strictfp class BasicTest {
 
     @Test
     public void testRangeUp_BigInteger() {
-        rangeUp_BigInteger_helper(
-                5,
-                8,
-                "[117, 21, 3549, 31, 28, 21, 60, 15, 23, 27, 18, 36, 11, 13, 12, 19, 21, 28, 11, 10, ...]",
-                "{11=62758, 8=62664, 10=62529, 13=62511, 14=62497, 15=62490, 9=62457, 12=62163, 19=15819, 25=15812}",
-                900.8645519990359,
-                4.999453999951416
-        );
+        rangeUp_BigInteger_helper(5, 8, "RandomProvider_rangeUp_BigInteger_5_8", 900.8645519990359, 4.999453999951416);
         rangeUp_BigInteger_helper(
                 10,
                 8,
-                "[305, 989, 2870934583, 32233, 104, 24, 46, 348, 13680, 425220133, 191, 38, 5035, 26823934, 10," +
-                " 7232, 11, 11449, 3621, 10, ...]",
-                "{15=18196, 13=17980, 8=17959, 12=17924, 10=17868, 9=17747, 11=17709, 14=17599, 28=7743, 30=7716}",
+                "RandomProvider_rangeUp_BigInteger_10_8",
                 7.070709518052013E21,
                 10.008093999993136
         );
         rangeUp_BigInteger_helper(
                 5,
                 10,
-                "[117, 21, 3549, 31, 28, 21, 60, 11, 13, 18, 36, 13, 15, 14, 19, 21, 28, 13, 12, 26, ...]",
-                "{10=83635, 15=83453, 12=83407, 13=83388, 11=83086, 14=83073, 25=15868, 19=15768, 22=15712, 29=15707}",
+                "RandomProvider_rangeUp_BigInteger_5_10",
                 894.1639779982157,
                 4.999280999951436
         );
         rangeUp_BigInteger_helper(
                 10,
                 10,
-                "[305, 989, 2870934583, 32233, 104, 24, 46, 348, 13680, 425220133, 191, 38, 5035, 26823934, 12," +
-                " 7232, 13, 11449, 3621, 12, ...]",
-                "{15=24036, 14=24011, 10=23917, 11=23879, 12=23741, 13=23572, 28=7748, 27=7733, 30=7713, 23=7670}",
+                "RandomProvider_rangeUp_BigInteger_10_10",
                 7.070705170732308E21,
                 10.006835999993193
         );
         rangeUp_BigInteger_helper(
                 1,
                 0,
-                "[5, 1, 221, 1, 1, 1, 2, 0, 3, 1, 1, 2, 0, 1, 0, 0, 1, 1, 1, 0, ...]",
-                "{0=499823, 1=250086, 3=62677, 2=62065, 7=15883, 4=15841, 6=15689, 5=15562, 11=3976, 9=3968}",
+                "RandomProvider_rangeUp_BigInteger_1_0",
                 7.527205000038622,
                 1.00042899999766
         );
         rangeUp_BigInteger_helper(
                 10,
                 0,
-                "[47968091191, 593, 348, 117, 1719440537, 4626764, 0, 124, 0, 66364, 437219, 0, 566, 88, 2, 4, 1, 5," +
-                " 30, 3272, ...]",
-                "{0=90425, 1=83151, 3=37762, 2=37465, 5=17197, 6=17184, 7=17024, 4=16953, 9=7894, 11=7839}",
+                "RandomProvider_rangeUp_BigInteger_10_0",
                 6.216950515561165E39,
                 9.998042000004142
         );
         rangeUp_BigInteger_helper(
                 5,
                 -8,
-                "[21, 53, 2304798, 233, -2, -1, -1, 25, 117, 1661016, 14, 2, 67, 104780, 0, 576, 0, 28, 70, 0, ...]",
-                "{0=166826, -1=69668, 1=69233, 2=29112, 3=28791, -3=28686, -2=28548, -4=12165, 4=12071, -5=12065}",
+                "RandomProvider_rangeUp_BigInteger_5_-8",
                 7.6976860134970016E16,
                 5.007767000005044
         );
         rangeUp_BigInteger_helper(
                 10,
                 -8,
-                "[47968091191, 593, 348, 117, 1719440537, 4626764, 0, 124, 0, 66364, 437219, 0, 566, 88, 2, -4, -1," +
-                " 5, 30, 3272, ...]",
-                "{0=90514, 1=41621, -1=41465, -3=18990, 2=18857, 3=18796, -2=18647, -6=8643, 5=8630, 4=8548}",
+                "RandomProvider_rangeUp_BigInteger_10_-8",
                 6.216950511573439E39,
                 9.99805800000423
         );
         rangeUp_BigInteger_helper(
                 5,
                 -10,
-                "[21, 53, 2304798, 233, -2, -1, -1, 25, 117, 1661016, 14, 2, 67, 104780, 0, 576, 0, 28, 70, 0, ...]",
-                "{0=166764, -1=69685, 1=69236, 2=29122, 3=28824, -3=28712, -2=28582, -4=12143, 7=12053, 4=12046}",
+                "RandomProvider_rangeUp_BigInteger_5_-10",
                 7.6975187379143424E16,
                 5.007546000005042
         );
         rangeUp_BigInteger_helper(
                 10,
                 -10,
-                "[47968091191, 593, 348, 117, 1719440537, 4626764, 0, 124, 0, 66364, 437219, 0, 566, 88, 2, -4, -1," +
-                " 5, 30, 3272, ...]",
-                "{0=90458, 1=41619, -1=41503, -3=18974, 2=18852, 3=18779, -2=18615, 5=8663, -6=8661, 4=8565}",
+                "RandomProvider_rangeUp_BigInteger_10_-10",
                 6.216950512238074E39,
                 9.998103000004235
         );
@@ -2138,14 +1905,12 @@ public strictfp class BasicTest {
             int meanBitSize,
             int a,
             @NotNull String output,
-            @NotNull String topSampleCount,
             double sampleMean,
             double bitSizeMean
     ) {
         bigIntegerHelper(
                 P.withScale(meanBitSize).rangeDown(BigInteger.valueOf(a)),
                 output,
-                topSampleCount,
                 sampleMean,
                 bitSizeMean
         );
@@ -2167,93 +1932,70 @@ public strictfp class BasicTest {
         rangeDown_BigInteger_helper(
                 5,
                 8,
-                "[-21, -53, -2304798, -233, 2, 1, 1, -25, -117, -1661016, -14, -2, -67, -104780, 0, -576, 0, -28," +
-                " -70, 0, ...]",
-                "{0=166826, 1=69668, -1=69233, -2=29112, -3=28791, 3=28686, 2=28548, 4=12165, -4=12071, 5=12065}",
+                "RandomProvider_rangeDown_BigInteger_5_8",
                 -7.6976860134970016E16,
                 5.007767000005044
         );
         rangeDown_BigInteger_helper(
                 10,
                 8,
-                "[-47968091191, -593, -348, -117, -1719440537, -4626764, 0, -124, 0, -66364, -437219, 0, -566, -88," +
-                " -2, 4, 1, -5, -30, -3272, ...]",
-                "{0=90514, -1=41621, 1=41465, 3=18990, -2=18857, -3=18796, 2=18647, 6=8643, -5=8630, -4=8548}",
+                "RandomProvider_rangeDown_BigInteger_10_8",
                 -6.216950511573439E39,
                 9.99805800000423
         );
         rangeDown_BigInteger_helper(
                 5,
                 10,
-                "[-21, -53, -2304798, -233, 2, 1, 1, -25, -117, -1661016, -14, -2, -67, -104780, 0, -576, 0, -28," +
-                " -70, 0, ...]",
-                "{0=166764, 1=69685, -1=69236, -2=29122, -3=28824, 3=28712, 2=28582, 4=12143, -7=12053, -4=12046}",
+                "RandomProvider_rangeDown_BigInteger_5_10",
                 -7.6975187379143424E16,
                 5.007546000005042
         );
         rangeDown_BigInteger_helper(
                 10,
                 10,
-                "[-47968091191, -593, -348, -117, -1719440537, -4626764, 0, -124, 0, -66364, -437219, 0, -566, -88," +
-                " -2, 4, 1, -5, -30, -3272, ...]",
-                "{0=90458, -1=41619, 1=41503, 3=18974, -2=18852, -3=18779, 2=18615, -5=8663, 6=8661, -4=8565}",
+                "RandomProvider_rangeDown_BigInteger_10_10",
                 -6.216950512238074E39,
                 9.998103000004235
         );
         rangeDown_BigInteger_helper(
                 1,
                 0,
-                "[-5, -1, -221, -1, -1, -1, -2, 0, -3, -1, -1, -2, 0, -1, 0, 0, -1, -1, -1, 0, ...]",
-                "{0=499823, -1=250086, -3=62677, -2=62065, -7=15883, -4=15841, -6=15689, -5=15562, -11=3976, -9=3968}",
+                "RandomProvider_rangeDown_BigInteger_1_0",
                 -7.527205000038622,
                 1.00042899999766
         );
         rangeDown_BigInteger_helper(
                 10,
                 0,
-                "[-47968091191, -593, -348, -117, -1719440537, -4626764, 0, -124, 0, -66364, -437219, 0, -566, -88," +
-                " -2, -4, -1, -5, -30, -3272, ...]",
-                "{0=90425, -1=83151, -3=37762, -2=37465, -5=17197, -6=17184, -7=17024, -4=16953, -9=7894, -11=7839}",
+                "RandomProvider_rangeDown_BigInteger_10_0",
                 -6.216950515561165E39,
                 9.998042000004142
         );
         rangeDown_BigInteger_helper(
                 5,
                 -8,
-                "[-117, -21, -3549, -31, -28, -21, -60, -15, -23, -27, -18, -36, -11, -13, -12, -19, -21, -28, -11," +
-                " -10, ...]",
-                "{-11=62758, -8=62664, -10=62529, -13=62511, -14=62497, -15=62490, -9=62457, -12=62163, -19=15819," +
-                " -25=15812}",
+                "RandomProvider_rangeDown_BigInteger_5_-8",
                 -900.8645519990359,
                 4.999453999951416
         );
         rangeDown_BigInteger_helper(
                 10,
                 -8,
-                "[-305, -989, -2870934583, -32233, -104, -24, -46, -348, -13680, -425220133, -191, -38, -5035," +
-                " -26823934, -10, -7232, -11, -11449, -3621, -10, ...]",
-                "{-15=18196, -13=17980, -8=17959, -12=17924, -10=17868, -9=17747, -11=17709, -14=17599, -28=7743," +
-                " -30=7716}",
+                "RandomProvider_rangeDown_BigInteger_10_-8",
                 -7.070709518052013E21,
                 10.008093999993136
         );
         rangeDown_BigInteger_helper(
                 5,
                 -10,
-                "[-117, -21, -3549, -31, -28, -21, -60, -11, -13, -18, -36, -13, -15, -14, -19, -21, -28, -13, -12," +
-                " -26, ...]",
-                "{-10=83635, -15=83453, -12=83407, -13=83388, -11=83086, -14=83073, -25=15868, -19=15768, -22=15712," +
-                " -29=15707}",
+                "RandomProvider_rangeDown_BigInteger_5_-10",
                 -894.1639779982157,
                 4.999280999951436
         );
         rangeDown_BigInteger_helper(
                 10,
                 -10,
-                "[-305, -989, -2870934583, -32233, -104, -24, -46, -348, -13680, -425220133, -191, -38, -5035," +
-                " -26823934, -12, -7232, -13, -11449, -3621, -12, ...]",
-                "{-15=24036, -14=24011, -10=23917, -11=23879, -12=23741, -13=23572, -28=7748, -27=7733, -30=7713," +
-                " -23=7670}",
+                "RandomProvider_rangeDown_BigInteger_10_-10",
                 -7.070705170732308E21,
                 10.006835999993193
         );
