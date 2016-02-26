@@ -1577,8 +1577,8 @@ public strictfp class BasicTest {
             double bitSizeMean
     ) {
         List<BigInteger> sample = toList(take(DEFAULT_SAMPLE_SIZE, xs));
-        aeqitLimit(TINY_LIMIT, sample, output);
-        aeq(topSampleCount(DEFAULT_TOP_COUNT, sample), topSampleCount);
+        aeqitLimitLog(TINY_LIMIT, sample, output);
+        aeqMapLog(topSampleCount(DEFAULT_TOP_COUNT, sample), topSampleCount);
         aeq(meanOfBigIntegers(sample), sampleMean);
         aeq(meanOfIntegers(toList(map(x -> x.abs().bitLength(), sample))), bitSizeMean);
     }
@@ -1614,50 +1614,43 @@ public strictfp class BasicTest {
     public void testPositiveBigIntegers() {
         positiveBigIntegers_helper(
                 2,
-                "[13, 3, 477, 3, 2, 3, 4, 1, 3, 3, 2, 4, 1, 1, 1, 3, 3, 2, 1, 1, ...]",
-                "{1=500069, 3=125042, 2=125020, 7=31426, 4=31262, 5=31128, 6=31004, 12=8028, 14=7919, 11=7903}",
+                "RandomProvider_PositiveBigIntegers_2",
+                "RandomProvider_PositiveBigIntegers_2",
                 114.05128999981362,
                 1.9994539999798795
         );
         positiveBigIntegers_helper(
                 3,
-                "[21, 21, 31, 26, 3, 36, 3, 3, 1, 10, 61, 1, 2, 2, 2, 9, 2, 117, 111, 3, ...]",
-                "{1=332729, 2=111051, 3=110952, 6=37298, 7=37247, 4=37029, 5=37013, 11=12459, 14=12431, 9=12346}",
+                "RandomProvider_PositiveBigIntegers_3",
+                "RandomProvider_PositiveBigIntegers_3",
                 42053.996647257176,
                 3.00330199998982
         );
         positiveBigIntegers_helper(
                 4,
-                "[101, 477, 63, 42, 7, 343, 5, 3, 1, 50, 125, 1, 2, 2, 2, 220, 10, 240, 12106, 19, ...]",
-                "{1=249786, 2=93630, 3=93458, 4=35330, 6=35235, 5=35059, 7=34998, 11=13349, 9=13332, 15=13286}",
+                "RandomProvider_PositiveBigIntegers_4",
+                "RandomProvider_PositiveBigIntegers_4",
                 3.923720245917525E8,
                 4.005570999990192
         );
         positiveBigIntegers_helper(
                 5,
-                "[21, 13, 207646, 125, 4, 2, 2, 41, 53, 219224, 22, 6, 171, 9881, 1, 192, 1, 12, 70, 1, ...]",
-                "{1=199913, 2=80195, 3=79601, 6=32178, 4=31857, 5=31838, 7=31756, 11=12990, 9=12954, 15=12943}",
+                "RandomProvider_PositiveBigIntegers_5",
+                "RandomProvider_PositiveBigIntegers_5",
                 8.95688013930559E12,
                 5.006042000008429
         );
         positiveBigIntegers_helper(
                 10,
-                "[47968091191, 209, 348, 117, 1719440537, 956748, 1, 60, 1, 131900, 437219, 1, 566, 245, 6, 8, 2," +
-                " 13, 30, 3272, ...]",
-                "{1=99896, 2=45185, 3=45008, 5=20574, 7=20224, 6=20173, 4=20083, 13=9246, 9=9174, 14=9159}",
+                "RandomProvider_PositiveBigIntegers_10",
+                "RandomProvider_PositiveBigIntegers_10",
                 4.456452305288997E35,
                 9.998937000005219
         );
         positiveBigIntegers_helper(
                 100,
-                "[94790976865653102300816908025048767680216168, 3762255186221726870, 5994570771, 823422155," +
-                " 10161754415810092830165715486885560643885805, 1484539043, 53285321364040890158634366042166836," +
-                " 7412492, 14380290507177291615829493, 51, 2378861914519634593, 456, 16636," +
-                " 53988143125609611862402328554695182710088, 1233903230," +
-                " 729330608188823656079318880504880068799735087660742104048519512109274590562188282621450," +
-                " 1772557890515702532927646423272573535, 2528945640266242272, 267516009518392367893913935, 5791822," +
-                " ...]",
-                "{1=9825, 3=5010, 2=5000, 5=2554, 7=2419, 4=2398, 6=2371, 12=1269, 10=1255, 13=1232}",
+                "RandomProvider_PositiveBigIntegers_100",
+                "RandomProvider_PositiveBigIntegers_100",
                 Double.POSITIVE_INFINITY,
                 99.9771549999987
         );

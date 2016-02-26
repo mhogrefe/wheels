@@ -218,6 +218,14 @@ public final strictfp class IterableUtils {
         return out;
     }
 
+    public static @NotNull <A, B> Map<String, String> itsMap(@NotNull Map<A, B> map) {
+        Map<String, String> out = new HashMap<>();
+        for (Map.Entry<A, B> entry : map.entrySet()) {
+            out.put(entry.getKey().toString(), entry.getValue().toString());
+        }
+        return out;
+    }
+
     /**
      * Converts a {@code String} to an {@code Iterable} of {@code Character}s. The order of the characters is
      * preserved. Uses O(1) additional memory. Does not support removal.

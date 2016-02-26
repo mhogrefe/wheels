@@ -99,100 +99,84 @@ public strictfp class ExhaustiveProviderTest {
     @Test
     public void testPositiveShorts() {
         aeq(length(EP.positiveShorts()), 32767);
-        simpleProviderHelper(EP.positiveShorts(),
-                "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]");
+        simpleProviderHelper(EP.positiveShorts(), "ExhaustiveProvider_positiveShorts");
     }
 
     @Test
     public void testPositiveIntegers() {
-        simpleProviderHelper(EP.positiveIntegers(),
-                "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]");
+        simpleProviderHelper(EP.positiveIntegers(), "ExhaustiveProvider_positiveIntegers");
     }
 
     @Test
     public void testPositiveLongs() {
-        simpleProviderHelper(EP.positiveLongs(),
-                "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]");
+        simpleProviderHelper(EP.positiveLongs(), "ExhaustiveProvider_positiveLongs");
     }
 
     @Test
     public void testPositiveBigIntegers() {
-        simpleProviderHelper(EP.positiveBigIntegers(),
-                "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]");
+        simpleProviderHelper(EP.positiveBigIntegers(), "ExhaustiveProvider_positiveBigIntegers");
     }
 
     @Test
     public void testNegativeBytes() {
         aeq(length(EP.negativeBytes()), 128);
-        simpleProviderHelper(EP.negativeBytes(),
-                "[-1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13, -14, -15, -16, -17, -18, -19, -20, ...]");
+        simpleProviderHelper(EP.negativeBytes(), "ExhaustiveProvider_negativeBytes");
     }
 
     @Test
     public void testNegativeShorts() {
         aeq(length(EP.negativeShorts()), 32768);
-        simpleProviderHelper(EP.negativeShorts(),
-                "[-1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13, -14, -15, -16, -17, -18, -19, -20, ...]");
+        simpleProviderHelper(EP.negativeShorts(), "ExhaustiveProvider_negativeShorts");
     }
 
     @Test
     public void testNegativeIntegers() {
-        simpleProviderHelper(EP.negativeIntegers(),
-                "[-1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13, -14, -15, -16, -17, -18, -19, -20, ...]");
+        simpleProviderHelper(EP.negativeIntegers(), "ExhaustiveProvider_negativeIntegers");
     }
 
     @Test
     public void testNegativeLongs() {
-        simpleProviderHelper(EP.negativeLongs(),
-                "[-1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13, -14, -15, -16, -17, -18, -19, -20, ...]");
+        simpleProviderHelper(EP.negativeLongs(), "ExhaustiveProvider_negativeLongs");
     }
 
     @Test
     public void testNegativeBigIntegers() {
-        simpleProviderHelper(EP.negativeBigIntegers(),
-                "[-1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13, -14, -15, -16, -17, -18, -19, -20, ...]");
+        simpleProviderHelper(EP.negativeBigIntegers(), "ExhaustiveProvider_negativeBigIntegers");
     }
 
     @Test
     public void testNaturalBytes() {
         aeq(length(EP.naturalBytes()), 128);
-        simpleProviderHelper(EP.naturalBytes(),
-                "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, ...]");
+        simpleProviderHelper(EP.naturalBytes(), "ExhaustiveProvider_naturalBytes");
     }
 
     @Test
     public void testNaturalShorts() {
         aeq(length(EP.naturalShorts()), 32768);
-        simpleProviderHelper(EP.naturalShorts(),
-                "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, ...]");
+        simpleProviderHelper(EP.naturalShorts(), "ExhaustiveProvider_naturalShorts");
     }
 
     @Test
     public void testNaturalIntegers() {
-        simpleProviderHelper(EP.naturalIntegers(),
-                "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, ...]");
+        simpleProviderHelper(EP.naturalIntegers(), "ExhaustiveProvider_naturalIntegers");
     }
 
     @Test
     public void testNaturalLongs() {
-        simpleProviderHelper(EP.naturalLongs(),
-                "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, ...]");
+        simpleProviderHelper(EP.naturalLongs(), "ExhaustiveProvider_naturalLongs");
     }
 
     @Test
     public void testNaturalBigIntegers() {
-        simpleProviderHelper(EP.naturalBigIntegers(),
-                "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, ...]");
+        simpleProviderHelper(EP.naturalBigIntegers(), "ExhaustiveProvider_naturalBigIntegers");
     }
 
     @Test
     public void testNonzeroBytes() {
         Iterable<Byte> bs = EP.nonzeroBytes();
         aeq(length(bs), 255);
-        aeqitLimit(TINY_LIMIT, reverse(bs),
-                "[-128, -127, 127, -126, 126, -125, 125, -124, 124, -123, 123, -122, 122, -121, 121, -120, 120," +
-                " -119, 119, -118, ...]");
-        simpleProviderHelper(bs, "[1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6, 7, -7, 8, -8, 9, -9, 10, -10, ...]");
+        aeqitLimitLog(TINY_LIMIT, reverse(bs), "ExhaustiveProvider_nonzeroBytes_reverse");
+        simpleProviderHelper(bs, "ExhaustiveProvider_nonzeroBytes");
     }
 
     @Test

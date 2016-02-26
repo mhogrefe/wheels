@@ -32,9 +32,10 @@ public strictfp class Testing {
     public static final int TINY_LIMIT = 20;
 
     private enum ReadState { NONE, LIST, MAP }
-    private static final Map<String, List<String>> testingLists;
-    private static final Map<String, Map<String, String>> testingMaps;
-    static {
+    private static Map<String, List<String>> testingLists = null;
+    private static Map<String, Map<String, String>> testingMaps = null;
+
+    private static void initializeTestData() {
         testingLists = new HashMap<>();
         testingMaps = new HashMap<>();
         ReadState state = ReadState.NONE;
@@ -143,6 +144,9 @@ public strictfp class Testing {
     }
 
     public static void aeqitLog(Iterable<?> a, String b) {
+        if (testingLists == null) {
+            initializeTestData();
+        }
         List<String> list = testingLists.get(b);
         if (list == null) {
             list = new ArrayList<>();
@@ -159,6 +163,9 @@ public strictfp class Testing {
     }
 
     public static void aeqitLimitLog(int limit, Iterable<?> a, String b) {
+        if (testingLists == null) {
+            initializeTestData();
+        }
         List<String> list = testingLists.get(b);
         if (list == null) {
             list = new ArrayList<>();
@@ -169,6 +176,26 @@ public strictfp class Testing {
             System.out.println(b + " list " + actual.size());
             for (String s : actual) {
                 System.out.println(s);
+            }
+            fail("No match for " + b);
+        }
+    }
+
+    public static void aeqMapLog(Map<?, ?> a, String b) {
+        if (testingLists == null) {
+            initializeTestData();
+        }
+        Map<String, String> map = testingMaps.get(b);
+        if (map == null) {
+            map = new HashMap<>();
+        }
+        Map<String, String> actual = itsMap(a);
+        if (!map.equals(actual)) {
+            System.out.println();
+            System.out.println(b + " map " + actual.size());
+            for (Map.Entry<String, String> entry : actual.entrySet()) {
+                System.out.println(entry.getKey());
+                System.out.println(entry.getValue());
             }
             fail("No match for " + b);
         }
