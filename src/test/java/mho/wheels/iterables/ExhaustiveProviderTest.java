@@ -25,23 +25,23 @@ import static org.junit.Assert.fail;
 // @formatter:off
 public strictfp class ExhaustiveProviderTest {
     private static <T> void simpleProviderHelper(@NotNull Iterable<T> xs, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, xs, output);
+        aeqitLimitLog(TINY_LIMIT, xs, output);
         testNoRemove(TINY_LIMIT, xs);
     }
 
     @Test
     public void testBooleans() {
-        simpleProviderHelper(EP.booleans(), "[false, true]");
+        simpleProviderHelper(EP.booleans(), "ExhaustiveProvider_booleans");
     }
 
     @Test
     public void testOrderingsIncreasing() {
-        simpleProviderHelper(EP.orderingsIncreasing(), "[LT, EQ, GT]");
+        simpleProviderHelper(EP.orderingsIncreasing(), "ExhaustiveProvider_orderingsIncreasing");
     }
 
     @Test
     public void testOrderings() {
-        simpleProviderHelper(EP.orderings(), "[EQ, LT, GT]");
+        simpleProviderHelper(EP.orderings(), "ExhaustiveProvider_orderings");
     }
 
     private static void uniformSample_Iterable_helper_1(@NotNull String xs, @NotNull String output) {
@@ -72,42 +72,28 @@ public strictfp class ExhaustiveProviderTest {
     @Test
     public void testBytesIncreasing() {
         aeq(length(EP.bytesIncreasing()), 256);
-        simpleProviderHelper(EP.bytesIncreasing(),
-                "[-128, -127, -126, -125, -124, -123, -122, -121, -120, -119, -118, -117, -116, -115, -114, -113," +
-                " -112, -111, -110, -109, ...]");
+        simpleProviderHelper(EP.bytesIncreasing(), "ExhaustiveProvider_bytesIncreasing");
     }
 
     @Test
     public void testShortsIncreasing() {
         aeq(length(EP.shortsIncreasing()), 65536);
-        simpleProviderHelper(EP.shortsIncreasing(),
-                "[-32768, -32767, -32766, -32765, -32764, -32763, -32762, -32761, -32760, -32759, -32758, -32757," +
-                " -32756, -32755, -32754, -32753, -32752, -32751, -32750, -32749, ...]");
+        simpleProviderHelper(EP.shortsIncreasing(), "ExhaustiveProvider_shortsIncreasing");
     }
 
     @Test
     public void testIntegersIncreasing() {
-        simpleProviderHelper(EP.integersIncreasing(),
-                "[-2147483648, -2147483647, -2147483646, -2147483645, -2147483644, -2147483643, -2147483642," +
-                " -2147483641, -2147483640, -2147483639, -2147483638, -2147483637, -2147483636, -2147483635," +
-                " -2147483634, -2147483633, -2147483632, -2147483631, -2147483630, -2147483629, ...]");
-    }
+        simpleProviderHelper(EP.integersIncreasing(), "ExhaustiveProvider_integersIncreasing");}
 
     @Test
     public void testLongsIncreasing() {
-        simpleProviderHelper(EP.longsIncreasing(),
-                "[-9223372036854775808, -9223372036854775807, -9223372036854775806, -9223372036854775805," +
-                " -9223372036854775804, -9223372036854775803, -9223372036854775802, -9223372036854775801," +
-                " -9223372036854775800, -9223372036854775799, -9223372036854775798, -9223372036854775797," +
-                " -9223372036854775796, -9223372036854775795, -9223372036854775794, -9223372036854775793," +
-                " -9223372036854775792, -9223372036854775791, -9223372036854775790, -9223372036854775789, ...]");
+        simpleProviderHelper(EP.longsIncreasing(), "ExhaustiveProvider_longsIncreasing");
     }
 
     @Test
     public void testPositiveBytes() {
         aeq(length(EP.positiveBytes()), 127);
-        simpleProviderHelper(EP.positiveBytes(),
-                "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]");
+        simpleProviderHelper(EP.positiveBytes(), "ExhaustiveProvider_positiveBytes");
     }
 
     @Test

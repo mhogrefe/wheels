@@ -224,12 +224,7 @@ public strictfp class BasicTest {
 
     @Test
     public void testIntegers() {
-        aeqit(
-                take(TINY_LIMIT, P.integers()),
-                "[-1084795351, 1143001545, -1986160253, -1177145870, -968883275, -1465892161, -470080200," +
-                " -2011352603, -248472835, 1997176995, 293205759, -106693423, -1593537177, -206249451, 565581811," +
-                " -195502731, 102870776, -1612587755, -483804495, -831718234]"
-        );
+        aeqitLimitLog(TINY_LIMIT, P.integers(), "RandomProvider_integers");
     }
 
     @Test

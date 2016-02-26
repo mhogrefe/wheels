@@ -202,6 +202,22 @@ public final strictfp class IterableUtils {
         return sb.toString();
     }
 
+    public static @NotNull <T> List<String> itsList(int size, @NotNull Iterable<T> xs) {
+        if (size < 0)
+            throw new IllegalArgumentException("size cannot be negative");
+        List<String> out = new ArrayList<>();
+        Iterator<T> it = xs.iterator();
+        int i = 0;
+        while (it.hasNext() && i < size) {
+            out.add(Objects.toString(it.next()));
+            i++;
+        }
+        if (it.hasNext()) {
+            out.add("...");
+        }
+        return out;
+    }
+
     /**
      * Converts a {@code String} to an {@code Iterable} of {@code Character}s. The order of the characters is
      * preserved. Uses O(1) additional memory. Does not support removal.

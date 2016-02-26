@@ -1,5 +1,6 @@
 package mho.wheels.testing;
 
+import mho.wheels.io.TextInput;
 import mho.wheels.iterables.ExhaustiveProvider;
 import mho.wheels.iterables.IterableProvider;
 import mho.wheels.iterables.IterableUtils;
@@ -29,6 +30,71 @@ public strictfp class Testing {
     public static final int SMALL_LIMIT = 100;
     public static final int SMALLER_LIMIT = 50;
     public static final int TINY_LIMIT = 20;
+
+    private enum ReadState { NONE, LIST, MAP }
+    private static final Map<String, List<String>> testingLists;
+    private static final Map<String, Map<String, String>> testingMaps;
+    static {
+        testingLists = new HashMap<>();
+        testingMaps = new HashMap<>();
+        ReadState state = ReadState.NONE;
+        int counter = 0;
+        String name = "";
+        List<String> list = new ArrayList<>();
+        Map<String, String> map = new HashMap<>();
+        String key = null;
+        for (String line : new TextInput(Testing.class, "propertiesOutput.txt")) {
+            switch (state) {
+                case NONE:
+                    if (line.isEmpty()) break;
+                    String[] tokens = line.split(" ");
+                    if (tokens.length != 3) {
+                        throw new IllegalStateException("Bad data header: " + line);
+                    }
+                    name = tokens[0];
+                    counter = Integer.parseInt(tokens[2]);
+                    if (counter < 0) {
+                        throw new IllegalStateException("Bad counter: " + counter);
+                    }
+                    if (counter == 0) break;
+                    switch (tokens[1]) {
+                        case "list":
+                            state = ReadState.LIST;
+                            break;
+                        case "map":
+                            state = ReadState.MAP;
+                            break;
+                        default:
+                            throw new IllegalStateException("Bad data type: " + tokens[1]);
+                    }
+                    break;
+                case LIST:
+                    list.add(line);
+                    counter--;
+                    if (counter == 0) {
+                        testingLists.put(name, list);
+                        list = new ArrayList<>();
+                        state = ReadState.NONE;
+                    }
+                    break;
+                case MAP:
+                    if (key == null) {
+                        key = line;
+                    } else {
+                        map.put(key, line);
+                        key = null;
+                        counter--;
+                        if (counter == 0) {
+                            testingMaps.put(name, map);
+                            map = new HashMap<>();
+                            state = ReadState.NONE;
+                        }
+                    }
+            }
+        }
+        list = null;
+        map = null;
+    }
 
     /**
      * Disallow instantiation
@@ -74,6 +140,38 @@ public strictfp class Testing {
 
     public static void aeqitLimit(int limit, Iterable<?> a, Object b) {
         Assert.assertEquals(IterableUtils.toString(limit, a), b.toString());
+    }
+
+    public static void aeqitLog(Iterable<?> a, String b) {
+        List<String> list = testingLists.get(b);
+        if (list == null) {
+            list = new ArrayList<>();
+        }
+        List<String> actual = toList(map(Object::toString, a));
+        if (!list.equals(actual)) {
+            System.out.println("Error! No match for " + b);
+            System.out.println();
+            System.out.println(b + " list " + list.size());
+            for (String s : list) {
+                System.out.println(s);
+            }
+        }
+    }
+
+    public static void aeqitLimitLog(int limit, Iterable<?> a, String b) {
+        List<String> list = testingLists.get(b);
+        if (list == null) {
+            list = new ArrayList<>();
+        }
+        List<String> actual = itsList(limit, a);
+        if (!list.equals(actual)) {
+            System.out.println();
+            System.out.println(b + " list " + actual.size());
+            for (String s : actual) {
+                System.out.println(s);
+            }
+            fail("No match for " + b);
+        }
     }
 
     public static <T> void aeqit(@NotNull Object message, @NotNull Iterable<T> xs, @NotNull Iterable<T> ys) {
