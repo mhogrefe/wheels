@@ -319,7 +319,6 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     @Test
-
     public void testRangeUp_BigInteger() {
         rangeUp_BigInteger_helper(0, "ExhaustiveProvider_rangeUp_BigInteger_0");
         rangeUp_BigInteger_helper(5, "ExhaustiveProvider_rangeUp_BigInteger_5");
@@ -327,32 +326,15 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void rangeUp_char_helper(char a, @NotNull String output) {
-        aeqcs(EP.rangeUp(a), output);
+        aeqitLimitLog(SMALL_LIMIT, EP.rangeUp(a), output);
     }
 
     @Test
     public void testRangeUp_char() {
-        rangeUp_char_helper(
-                '\0',
-                "\0\1\2\3\4\5\6\7\b\t\n\13\f\r\16\17\20\21\22\23\24\25\26\27\30\31\32\33\34\35\36\37" +
-                " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abc"
-        );
-        rangeUp_char_helper(
-                'a',
-                "abcdefghijklmnopqrstuvwxyz{|}~" +
-                "\177" +
-                "\u0080\u0081\u0082\u0083\u0084\u0085\u0086\u0087\u0088\u0089\u008a\u008b\u008c\u008d\u008e\u008f" +
-                "\u0090\u0091\u0092\u0093\u0094\u0095\u0096\u0097\u0098\u0099\u009a\u009b\u009c\u009d\u009e\u009f" +
-                "\u00a0" +
-                "¡¢£¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄ"
-        );
-        rangeUp_char_helper(
-                'Ш',
-                "ШЩЪЫЬЭЮЯабвгдежзийклмнопрстуфхцчшщъыьэюяѐёђѓєѕіїјљњћќѝўџѠѡѢѣѤѥѦѧѨѩѪѫѬѭѮѯѰѱѲѳѴѵѶѷѸѹѺѻѼѽѾѿҀҁ" +
-                "\u0482\u0483\u0484\u0485\u0486\u0487\u0488\u0489" +
-                "Ҋҋ"
-        );
-        rangeUp_char_helper(Character.MAX_VALUE, "\uffff");
+        rangeUp_char_helper('\0', "ExhaustiveProvider_rangeUp_char_\\u0000");
+        rangeUp_char_helper('a', "ExhaustiveProvider_rangeUp_char_a");
+        rangeUp_char_helper('Ш', "ExhaustiveProvider_rangeUp_char_\\u0428");
+        rangeUp_char_helper(Character.MAX_VALUE, "ExhaustiveProvider_rangeUp_char_MAX_VALUE");
     }
 
     private static void rangeDown_byte_helper(int a, @NotNull String output) {
@@ -361,16 +343,11 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testRangeDown_byte() {
-        rangeDown_byte_helper(0,
-                "[0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13, -14, -15, -16, -17, -18, -19, ...]");
-        rangeDown_byte_helper(5,
-                "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, -6, -7, -8, -9, -10, -11, -12, -13, -14, ...]");
-        rangeDown_byte_helper(-5,
-                "[-5, -6, -7, -8, -9, -10, -11, -12, -13, -14, -15, -16, -17, -18, -19, -20, -21, -22, -23, -24," +
-                " ...]");
-        rangeDown_byte_helper(Byte.MAX_VALUE,
-                "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6, 7, -7, 8, -8, 9, -9, 10, ...]");
-        rangeDown_byte_helper(Byte.MIN_VALUE, "[-128]");
+        rangeDown_byte_helper(0, "ExhaustiveProvider_rangeDown_byte_0");
+        rangeDown_byte_helper(5, "ExhaustiveProvider_rangeDown_byte_5");
+        rangeDown_byte_helper(-5,"ExhaustiveProvider_rangeDown_byte_-5");
+        rangeDown_byte_helper(Byte.MAX_VALUE, "ExhaustiveProvider_rangeDown_byte_MAX_VALUE");
+        rangeDown_byte_helper(Byte.MIN_VALUE, "ExhaustiveProvider_rangeDown_byte_MIN_VALUE");
     }
 
     private static void rangeDown_short_helper(int a, @NotNull String output) {
@@ -379,16 +356,11 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testRangeDown_short() {
-        rangeDown_short_helper(0,
-                "[0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13, -14, -15, -16, -17, -18, -19, ...]");
-        rangeDown_short_helper(5,
-                "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, -6, -7, -8, -9, -10, -11, -12, -13, -14, ...]");
-        rangeDown_short_helper(-5,
-                "[-5, -6, -7, -8, -9, -10, -11, -12, -13, -14, -15, -16, -17, -18, -19, -20, -21, -22, -23, -24," +
-                " ...]");
-        rangeDown_short_helper(Short.MAX_VALUE,
-                "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6, 7, -7, 8, -8, 9, -9, 10, ...]");
-        rangeDown_short_helper(Short.MIN_VALUE, "[-32768]");
+        rangeDown_short_helper(0, "ExhaustiveProvider_rangeDown_short_0");
+        rangeDown_short_helper(5, "ExhaustiveProvider_rangeDown_short_5");
+        rangeDown_short_helper(-5,"ExhaustiveProvider_rangeDown_short_-5");
+        rangeDown_short_helper(Short.MAX_VALUE, "ExhaustiveProvider_rangeDown_short_MAX_VALUE");
+        rangeDown_short_helper(Short.MIN_VALUE, "ExhaustiveProvider_rangeDown_short_MIN_VALUE");
     }
 
     private static void rangeDown_int_helper(int a, @NotNull String output) {
@@ -397,16 +369,11 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testRangeDown_int() {
-        rangeDown_int_helper(0,
-                "[0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13, -14, -15, -16, -17, -18, -19, ...]");
-        rangeDown_int_helper(5,
-                "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, -6, -7, -8, -9, -10, -11, -12, -13, -14, ...]");
-        rangeDown_int_helper(-5,
-                "[-5, -6, -7, -8, -9, -10, -11, -12, -13, -14, -15, -16, -17, -18, -19, -20, -21, -22, -23, -24," +
-                " ...]");
-        rangeDown_int_helper(Integer.MAX_VALUE,
-                "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6, 7, -7, 8, -8, 9, -9, 10, ...]");
-        rangeDown_int_helper(Integer.MIN_VALUE, "[-2147483648]");
+        rangeDown_int_helper(0, "ExhaustiveProvider_rangeDown_int_0");
+        rangeDown_int_helper(5, "ExhaustiveProvider_rangeDown_int_5");
+        rangeDown_int_helper(-5,"ExhaustiveProvider_rangeDown_int_-5");
+        rangeDown_int_helper(Integer.MAX_VALUE, "ExhaustiveProvider_rangeDown_int_MAX_VALUE");
+        rangeDown_int_helper(Integer.MIN_VALUE, "ExhaustiveProvider_rangeDown_int_MIN_VALUE");
     }
 
     private static void rangeDown_long_helper(long a, @NotNull String output) {
@@ -415,16 +382,11 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testRangeDown_long() {
-        rangeDown_long_helper(0L,
-                "[0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13, -14, -15, -16, -17, -18, -19, ...]");
-        rangeDown_long_helper(5L,
-                "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, -6, -7, -8, -9, -10, -11, -12, -13, -14, ...]");
-        rangeDown_long_helper(-5L,
-                "[-5, -6, -7, -8, -9, -10, -11, -12, -13, -14, -15, -16, -17, -18, -19, -20, -21, -22, -23, -24," +
-                " ...]");
-        rangeDown_long_helper(Long.MAX_VALUE,
-                "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6, 7, -7, 8, -8, 9, -9, 10, ...]");
-        rangeDown_int_helper(Integer.MIN_VALUE, "[-2147483648]");
+        rangeDown_long_helper(0, "ExhaustiveProvider_rangeDown_long_0");
+        rangeDown_long_helper(5, "ExhaustiveProvider_rangeDown_long_5");
+        rangeDown_long_helper(-5,"ExhaustiveProvider_rangeDown_long_-5");
+        rangeDown_long_helper(Long.MAX_VALUE, "ExhaustiveProvider_rangeDown_long_MAX_VALUE");
+        rangeDown_long_helper(Long.MIN_VALUE, "ExhaustiveProvider_rangeDown_long_MIN_VALUE");
     }
 
     private static void rangeDown_BigInteger_helper(int a, @NotNull String output) {
@@ -433,37 +395,21 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testRangeDown_BigInteger() {
-        rangeDown_BigInteger_helper(0,
-                "[0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13, -14, -15, -16, -17, -18, -19, ...]");
-        rangeDown_BigInteger_helper(5,
-                "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, -6, -7, -8, -9, -10, -11, -12, -13, -14, ...]");
-        rangeDown_BigInteger_helper(-5,
-                "[-5, -6, -7, -8, -9, -10, -11, -12, -13, -14, -15, -16, -17, -18, -19, -20, -21, -22, -23, -24," +
-                " ...]");
+        rangeDown_BigInteger_helper(0, "ExhaustiveProvider_rangeDown_BigInteger_0");
+        rangeDown_BigInteger_helper(5, "ExhaustiveProvider_rangeDown_BigInteger_5");
+        rangeDown_BigInteger_helper(-5, "ExhaustiveProvider_rangeDown_BigInteger_-5");
     }
 
     private static void rangeDown_char_helper(char a, @NotNull String output) {
-        aeqcs(EP.rangeDown(a), output);
+        aeqitLimitLog(SMALL_LIMIT, EP.rangeDown(a), output);
     }
 
     @Test
     public void testRangeDown_char() {
-        rangeDown_char_helper('\0', "\0");
-        rangeDown_char_helper(
-                'a',
-                "\0\1\2\3\4\5\6\7\b\t\n\13\f\r\16\17\20\21\22\23\24\25\26\27\30\31\32\33\34\35\36\37" +
-                " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`a"
-        );
-        rangeDown_char_helper(
-                'Ш',
-                "\0\1\2\3\4\5\6\7\b\t\n\13\f\r\16\17\20\21\22\23\24\25\26\27\30\31\32\33\34\35\36\37" +
-                " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abc"
-        );
-        rangeDown_char_helper(
-                Character.MAX_VALUE,
-                "\0\1\2\3\4\5\6\7\b\t\n\13\f\r\16\17\20\21\22\23\24\25\26\27\30\31\32\33\34\35\36\37" +
-                " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abc"
-        );
+        rangeDown_char_helper('\0', "ExhaustiveProvider_rangeDown_char_\\u0000");
+        rangeDown_char_helper('a', "ExhaustiveProvider_rangeDown_char_a");
+        rangeDown_char_helper('Ш', "ExhaustiveProvider_rangeDown_char_\\u0428");
+        rangeDown_char_helper(Character.MAX_VALUE, "ExhaustiveProvider_rangeDown_char_MAX_VALUE");
     }
 
     private static void range_byte_byte_helper(int a, int b, @NotNull String output) {
@@ -580,30 +526,22 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testPositiveBinaryFractions() {
-        simpleProviderHelper(EP.positiveBinaryFractions(),
-                "[1, 1 << 1, 3, 1 >> 1, 5, 3 << 1, 7, 1 << 2, 9, 5 << 1, 11, 3 >> 1, 13, 7 << 1, 15, 1 >> 2, 17," +
-                " 9 << 1, 19, 5 >> 1, ...]");
+        simpleProviderHelper(EP.positiveBinaryFractions(), "ExhaustiveProvider_positiveBinaryFractions");
     }
 
     @Test
     public void testNegativeBinaryFractions() {
-        simpleProviderHelper(EP.negativeBinaryFractions(),
-                "[-1, -1 << 1, -3, -1 >> 1, -5, -3 << 1, -7, -1 << 2, -9, -5 << 1, -11, -3 >> 1, -13, -7 << 1, -15," +
-                " -1 >> 2, -17, -9 << 1, -19, -5 >> 1, ...]");
+        simpleProviderHelper(EP.negativeBinaryFractions(), "ExhaustiveProvider_negativeBinaryFractions");
     }
 
     @Test
     public void testNonzeroBinaryFractions() {
-        simpleProviderHelper(EP.nonzeroBinaryFractions(),
-                "[1, -1, 1 << 1, -1 << 1, 3, -3, 1 >> 1, -1 >> 1, 5, -5, 3 << 1, -3 << 1, 7, -7, 1 << 2, -1 << 2, 9," +
-                " -9, 5 << 1, -5 << 1, ...]");
+        simpleProviderHelper(EP.nonzeroBinaryFractions(), "ExhaustiveProvider_nonzeroBinaryFractions");
     }
 
     @Test
     public void testBinaryFractions() {
-        simpleProviderHelper(EP.binaryFractions(),
-                "[0, 1, -1, 1 << 1, -1 << 1, 3, -3, 1 >> 1, -1 >> 1, 5, -5, 3 << 1, -3 << 1, 7, -7, 1 << 2, -1 << 2," +
-                " 9, -9, 5 << 1, ...]");
+        simpleProviderHelper(EP.binaryFractions(), "ExhaustiveProvider_binaryFractions");
     }
 
     private static void rangeUp_BinaryFraction_helper(@NotNull String a, @NotNull String output) {
@@ -612,35 +550,15 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testRangeUp_BinaryFraction() {
-        rangeUp_BinaryFraction_helper("0",
-                "[0, 1, 1 << 1, 3, 1 >> 1, 5, 3 << 1, 7, 1 << 2, 9, 5 << 1, 11, 3 >> 1, 13, 7 << 1, 15, 1 >> 2, 17," +
-                " 9 << 1, 19, ...]");
-        rangeUp_BinaryFraction_helper("1",
-                "[1, 1 << 1, 3, 1 << 2, 3 >> 1, 3 << 1, 7, 1 << 3, 5, 5 << 1, 11, 3 << 2, 5 >> 1, 7 << 1, 15," +
-                " 1 << 4, 5 >> 2, 9 << 1, 19, 5 << 2, ...]");
-        rangeUp_BinaryFraction_helper("11",
-                "[11, 3 << 2, 13, 7 << 1, 23 >> 1, 1 << 4, 17, 9 << 1, 15, 5 << 2, 21, 11 << 1, 25 >> 1, 3 << 3, 25," +
-                " 13 << 1, 45 >> 2, 7 << 2, 29, 15 << 1, ...]");
-        rangeUp_BinaryFraction_helper("5 << 20",
-                "[5 << 20, 3 << 21, 7 << 20, 1 << 23, 11 << 19, 5 << 21, 11 << 20, 3 << 22, 9 << 20, 7 << 21," +
-                " 15 << 20, 1 << 24, 13 << 19, 9 << 21, 19 << 20, 5 << 22, 21 << 18, 11 << 21, 23 << 20, 3 << 23," +
-                " ...]");
-        rangeUp_BinaryFraction_helper("5 >> 20",
-                "[5 >> 20, 3 >> 19, 7 >> 20, 1 >> 17, 11 >> 21, 5 >> 19, 11 >> 20, 3 >> 18, 9 >> 20, 7 >> 19," +
-                " 15 >> 20, 1 >> 16, 13 >> 21, 9 >> 19, 19 >> 20, 5 >> 18, 21 >> 22, 11 >> 19, 23 >> 20, 3 >> 17," +
-                " ...]");
-        rangeUp_BinaryFraction_helper("-1",
-                "[-1, 0, 1, 1 << 1, -1 >> 1, 1 << 2, 5, 3 << 1, 3, 1 << 3, 9, 5 << 1, 1 >> 1, 3 << 2, 13, 7 << 1," +
-                " -3 >> 2, 1 << 4, 17, 9 << 1, ...]");
-        rangeUp_BinaryFraction_helper("-11",
-                "[-11, -5 << 1, -9, -1 << 3, -21 >> 1, -3 << 1, -5, -1 << 2, -7, -1 << 1, -1, 0, -19 >> 1, 1 << 1," +
-                " 3, 1 << 2, -43 >> 2, 3 << 1, 7, 1 << 3, ...]");
-        rangeUp_BinaryFraction_helper("-5 << 20",
-                "[-5 << 20, -1 << 22, -3 << 20, -1 << 21, -9 << 19, 0, 1 << 20, 1 << 21, -1 << 20, 1 << 22, 5 << 20," +
-                " 3 << 21, -7 << 19, 1 << 23, 9 << 20, 5 << 21, -19 << 18, 3 << 22, 13 << 20, 7 << 21, ...]");
-        rangeUp_BinaryFraction_helper("-5 >> 20",
-                "[-5 >> 20, -1 >> 18, -3 >> 20, -1 >> 19, -9 >> 21, 0, 1 >> 20, 1 >> 19, -1 >> 20, 1 >> 18, 5 >> 20," +
-                " 3 >> 19, -7 >> 21, 1 >> 17, 9 >> 20, 5 >> 19, -19 >> 22, 3 >> 18, 13 >> 20, 7 >> 19, ...]");
+        rangeUp_BinaryFraction_helper("0", "ExhaustiveProvider_rangeUp_BinaryFraction_0");
+        rangeUp_BinaryFraction_helper("1", "ExhaustiveProvider_rangeUp_BinaryFraction_1");
+        rangeUp_BinaryFraction_helper("11", "ExhaustiveProvider_rangeUp_BinaryFraction_11");
+        rangeUp_BinaryFraction_helper("5 << 20", "ExhaustiveProvider_rangeUp_BinaryFraction_5_<<_20");
+        rangeUp_BinaryFraction_helper("5 >> 20", "ExhaustiveProvider_rangeUp_BinaryFraction_5_>>_20");
+        rangeUp_BinaryFraction_helper("-1", "ExhaustiveProvider_rangeUp_BinaryFraction_-1");
+        rangeUp_BinaryFraction_helper("-11", "ExhaustiveProvider_rangeUp_BinaryFraction_-11");
+        rangeUp_BinaryFraction_helper("-5 << 20", "ExhaustiveProvider_rangeUp_BinaryFraction_-5_<<_20");
+        rangeUp_BinaryFraction_helper("-5 >> 20", "ExhaustiveProvider_rangeUp_BinaryFraction_-5_>>_20");
     }
 
     private static void rangeDown_BinaryFraction_helper(@NotNull String a, @NotNull String output) {
@@ -649,35 +567,15 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testRangeDown_BinaryFraction() {
-        rangeDown_BinaryFraction_helper("0",
-                "[0, -1, -1 << 1, -3, -1 >> 1, -5, -3 << 1, -7, -1 << 2, -9, -5 << 1, -11, -3 >> 1, -13, -7 << 1," +
-                " -15, -1 >> 2, -17, -9 << 1, -19, ...]");
-        rangeDown_BinaryFraction_helper("1",
-                "[1, 0, -1, -1 << 1, 1 >> 1, -1 << 2, -5, -3 << 1, -3, -1 << 3, -9, -5 << 1, -1 >> 1, -3 << 2, -13," +
-                " -7 << 1, 3 >> 2, -1 << 4, -17, -9 << 1, ...]");
-        rangeDown_BinaryFraction_helper("11",
-                "[11, 5 << 1, 9, 1 << 3, 21 >> 1, 3 << 1, 5, 1 << 2, 7, 1 << 1, 1, 0, 19 >> 1, -1 << 1, -3, -1 << 2," +
-                " 43 >> 2, -3 << 1, -7, -1 << 3, ...]");
-        rangeDown_BinaryFraction_helper("5 << 20",
-                "[5 << 20, 1 << 22, 3 << 20, 1 << 21, 9 << 19, 0, -1 << 20, -1 << 21, 1 << 20, -1 << 22, -5 << 20," +
-                " -3 << 21, 7 << 19, -1 << 23, -9 << 20, -5 << 21, 19 << 18, -3 << 22, -13 << 20, -7 << 21, ...]");
-        rangeDown_BinaryFraction_helper("5 >> 20",
-                "[5 >> 20, 1 >> 18, 3 >> 20, 1 >> 19, 9 >> 21, 0, -1 >> 20, -1 >> 19, 1 >> 20, -1 >> 18, -5 >> 20," +
-                " -3 >> 19, 7 >> 21, -1 >> 17, -9 >> 20, -5 >> 19, 19 >> 22, -3 >> 18, -13 >> 20, -7 >> 19, ...]");
-        rangeDown_BinaryFraction_helper("-1",
-                "[-1, -1 << 1, -3, -1 << 2, -3 >> 1, -3 << 1, -7, -1 << 3, -5, -5 << 1, -11, -3 << 2, -5 >> 1," +
-                " -7 << 1, -15, -1 << 4, -5 >> 2, -9 << 1, -19, -5 << 2, ...]");
-        rangeDown_BinaryFraction_helper("-11",
-                "[-11, -3 << 2, -13, -7 << 1, -23 >> 1, -1 << 4, -17, -9 << 1, -15, -5 << 2, -21, -11 << 1," +
-                " -25 >> 1, -3 << 3, -25, -13 << 1, -45 >> 2, -7 << 2, -29, -15 << 1, ...]");
-        rangeDown_BinaryFraction_helper("-5 << 20",
-                "[-5 << 20, -3 << 21, -7 << 20, -1 << 23, -11 << 19, -5 << 21, -11 << 20, -3 << 22, -9 << 20," +
-                " -7 << 21, -15 << 20, -1 << 24, -13 << 19, -9 << 21, -19 << 20, -5 << 22, -21 << 18, -11 << 21," +
-                " -23 << 20, -3 << 23, ...]");
-        rangeDown_BinaryFraction_helper("-5 >> 20",
-                "[-5 >> 20, -3 >> 19, -7 >> 20, -1 >> 17, -11 >> 21, -5 >> 19, -11 >> 20, -3 >> 18, -9 >> 20," +
-                " -7 >> 19, -15 >> 20, -1 >> 16, -13 >> 21, -9 >> 19, -19 >> 20, -5 >> 18, -21 >> 22, -11 >> 19," +
-                " -23 >> 20, -3 >> 17, ...]");
+        rangeDown_BinaryFraction_helper("0", "ExhaustiveProvider_rangeDown_BinaryFraction_0");
+        rangeDown_BinaryFraction_helper("1", "ExhaustiveProvider_rangeDown_BinaryFraction_1");
+        rangeDown_BinaryFraction_helper("11", "ExhaustiveProvider_rangeDown_BinaryFraction_11");
+        rangeDown_BinaryFraction_helper("5 << 20", "ExhaustiveProvider_rangeDown_BinaryFraction_5_<<_20");
+        rangeDown_BinaryFraction_helper("5 >> 20", "ExhaustiveProvider_rangeDown_BinaryFraction_5_>>_20");
+        rangeDown_BinaryFraction_helper("-1", "ExhaustiveProvider_rangeDown_BinaryFraction_-1");
+        rangeDown_BinaryFraction_helper("-11", "ExhaustiveProvider_rangeDown_BinaryFraction_-11");
+        rangeDown_BinaryFraction_helper("-5 << 20", "ExhaustiveProvider_rangeDown_BinaryFraction_-5_<<_20");
+        rangeDown_BinaryFraction_helper("-5 >> 20", "ExhaustiveProvider_rangeDown_BinaryFraction_-5_>>_20");
     }
 
     private static void range_BinaryFraction_BinaryFraction_helper(
@@ -691,32 +589,29 @@ public strictfp class ExhaustiveProviderTest {
     @Test
     public void testRange_BinaryFraction_BinaryFraction() {
         range_BinaryFraction_BinaryFraction_helper("0", "1",
-                "[0, 1, 1 >> 1, 1 >> 2, 3 >> 2, 1 >> 3, 3 >> 3, 5 >> 3, 7 >> 3, 1 >> 4, 3 >> 4, 5 >> 4, 7 >> 4," +
-                " 9 >> 4, 11 >> 4, 13 >> 4, 15 >> 4, 1 >> 5, 3 >> 5, 5 >> 5, ...]");
+                "ExhaustiveProvider_range_BinaryFraction_BinaryFraction_0_1");
         range_BinaryFraction_BinaryFraction_helper("1", "11",
-                "[1, 3, 5, 7, 9, 11, 1 << 1, 1 << 2, 3 << 1, 1 << 3, 5 << 1, 3 >> 1, 7 >> 1, 11 >> 1, 15 >> 1," +
-                " 19 >> 1, 5 >> 1, 9 >> 1, 13 >> 1, 17 >> 1, ...]");
-        range_BinaryFraction_BinaryFraction_helper("11", "11", "[11]");
-        range_BinaryFraction_BinaryFraction_helper("11", "1", "[]");
+                "ExhaustiveProvider_range_BinaryFraction_BinaryFraction_1_11");
+        range_BinaryFraction_BinaryFraction_helper("11", "11",
+                "ExhaustiveProvider_range_BinaryFraction_BinaryFraction_11_11");
+        range_BinaryFraction_BinaryFraction_helper("11", "1",
+                "ExhaustiveProvider_range_BinaryFraction_BinaryFraction_11_1");
         range_BinaryFraction_BinaryFraction_helper("-11", "-1",
-                "[-11, -9, -7, -5, -3, -1, -5 << 1, -1 << 3, -3 << 1, -1 << 2, -1 << 1, -21 >> 1, -17 >> 1," +
-                " -13 >> 1, -9 >> 1, -5 >> 1, -19 >> 1, -15 >> 1, -11 >> 1, -7 >> 1, ...]");
-        range_BinaryFraction_BinaryFraction_helper("-11", "-11", "[-11]");
-        range_BinaryFraction_BinaryFraction_helper("-1", "-11", "[]");
-        range_BinaryFraction_BinaryFraction_helper("0", "0", "[0]");
+                "ExhaustiveProvider_range_BinaryFraction_BinaryFraction_-11_-1");
+        range_BinaryFraction_BinaryFraction_helper("-11", "-11",
+                "ExhaustiveProvider_range_BinaryFraction_BinaryFraction_-11_-11");
+        range_BinaryFraction_BinaryFraction_helper("-1", "-11",
+                "ExhaustiveProvider_range_BinaryFraction_BinaryFraction_-1_-11");
+        range_BinaryFraction_BinaryFraction_helper("0", "0",
+                "ExhaustiveProvider_range_BinaryFraction_BinaryFraction_0_0");
         range_BinaryFraction_BinaryFraction_helper("0", "11",
-                "[0, 1, 1 << 1, 3, 1 << 2, 5, 3 << 1, 7, 1 << 3, 9, 5 << 1, 11, 1 >> 1, 3 >> 1, 5 >> 1, 7 >> 1," +
-                " 9 >> 1, 11 >> 1, 13 >> 1, 15 >> 1, ...]");
+                "ExhaustiveProvider_range_BinaryFraction_BinaryFraction_0_11");
         range_BinaryFraction_BinaryFraction_helper("-1", "11",
-                "[-1, 3, 7, 11, 1, 5, 9, 0, 1 << 2, 1 << 3, 1 << 1, 3 << 1, 5 << 1, -1 >> 1, 7 >> 1, 15 >> 1," +
-                " 1 >> 1, 9 >> 1, 17 >> 1, 3 >> 1, ...]");
+                "ExhaustiveProvider_range_BinaryFraction_BinaryFraction_-1_11");
         range_BinaryFraction_BinaryFraction_helper("5 >> 20", "1",
-                "[5 >> 20, 3 >> 19, 7 >> 20, 1 >> 17, 9 >> 20, 5 >> 19, 11 >> 20, 3 >> 18, 13 >> 20, 7 >> 19," +
-                " 15 >> 20, 1 >> 16, 17 >> 20, 9 >> 19, 19 >> 20, 5 >> 18, 21 >> 20, 11 >> 19, 23 >> 20, 3 >> 17," +
-                " ...]");
+                "ExhaustiveProvider_range_BinaryFraction_BinaryFraction_5_>>_20_1");
         range_BinaryFraction_BinaryFraction_helper("1", "5 << 20",
-                "[1, 1 << 1, 3, 1 << 2, 5, 3 << 1, 7, 1 << 3, 9, 5 << 1, 11, 3 << 2, 13, 7 << 1, 15, 1 << 4, 17," +
-                " 9 << 1, 19, 5 << 2, ...]");
+                "ExhaustiveProvider_range_BinaryFraction_BinaryFraction_1_5_<<_20");
     }
 
     @Test

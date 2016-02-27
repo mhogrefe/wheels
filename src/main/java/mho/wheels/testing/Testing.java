@@ -120,6 +120,7 @@ public strictfp class Testing {
             }
             s = s.substring(1, s.length() - 1);
         }
+        if (!elem('\\', s)) return s;
         StringBuilder sb = new StringBuilder();
         boolean sawBackslash = false;
         int counter4 = -1;
