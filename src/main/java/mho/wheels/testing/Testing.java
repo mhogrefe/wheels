@@ -4,6 +4,7 @@ import mho.wheels.io.TextInput;
 import mho.wheels.iterables.ExhaustiveProvider;
 import mho.wheels.iterables.IterableProvider;
 import mho.wheels.iterables.IterableUtils;
+import mho.wheels.numberUtils.IntegerUtils;
 import mho.wheels.ordering.Ordering;
 import mho.wheels.structures.Pair;
 import mho.wheels.structures.Triple;
@@ -41,16 +42,25 @@ public strictfp class Testing {
         ReadState state = ReadState.NONE;
         int counter = 0;
         String name = "";
-        List<String> list = new ArrayList<>();
-        Map<String, String> map = new HashMap<>();
+        List<String> list = null;
+        Map<String, String> map = null;
         String key = null;
+        boolean quoted = false;
         for (String line : new TextInput(Testing.class, "testOutput.txt")) {
             switch (state) {
                 case NONE:
                     if (line.isEmpty()) break;
                     String[] tokens = line.split(" ");
-                    if (tokens.length != 3) {
+                    if (tokens.length != 3 && tokens.length != 4) {
                         throw new IllegalStateException("Bad data header: " + line);
+                    }
+                    if (tokens.length == 4) {
+                        if (!tokens[3].equals("q")) {
+                            throw new IllegalStateException("Bad 4th token: " + tokens[3]);
+                        }
+                        quoted = true;
+                    } else {
+                        quoted = false;
                     }
                     name = tokens[0];
                     counter = Integer.parseInt(tokens[2]);
@@ -60,34 +70,40 @@ public strictfp class Testing {
                     if (counter == 0) break;
                     switch (tokens[1]) {
                         case "list":
+                            if (testingLists.containsKey(name)) {
+                                throw new IllegalStateException("Duplicate list name: " + name);
+                            }
                             state = ReadState.LIST;
+                            list = new ArrayList<>(counter);
                             break;
                         case "map":
+                            if (testingMaps.containsKey(name)) {
+                                throw new IllegalStateException("Duplicate map name: " + name);
+                            }
                             state = ReadState.MAP;
+                            map = new HashMap<>(counter);
                             break;
                         default:
                             throw new IllegalStateException("Bad data type: " + tokens[1]);
                     }
                     break;
                 case LIST:
-                    list.add(line);
+                    list.add(readTestOutput(line, quoted));
                     counter--;
                     if (counter == 0) {
                         testingLists.put(name, list);
-                        list = new ArrayList<>();
                         state = ReadState.NONE;
                     }
                     break;
                 case MAP:
                     if (key == null) {
-                        key = line;
+                        key = readTestOutput(line, quoted);
                     } else {
-                        map.put(key, line);
+                        map.put(key, readTestOutput(line, quoted));
                         key = null;
                         counter--;
                         if (counter == 0) {
                             testingMaps.put(name, map);
-                            map = new HashMap<>();
                             state = ReadState.NONE;
                         }
                     }
@@ -95,6 +111,48 @@ public strictfp class Testing {
         }
         list = null;
         map = null;
+    }
+
+    private static @NotNull String readTestOutput(@NotNull String s, boolean quoted) {
+        if (quoted) {
+            if (s.length() < 2 || head(s) != '\'' || last(s) != '\'') {
+                throw new IllegalStateException("line should be quoted: " + s);
+            }
+            s = s.substring(1, s.length() - 1);
+        }
+        StringBuilder sb = new StringBuilder();
+        boolean sawBackslash = false;
+        int counter4 = -1;
+        int cAcc = 0;
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (sawBackslash) {
+                if (c == '\\') {
+                    sb.append('\\');
+                    sawBackslash = false;
+                    continue;
+                } else if (c == 'u') {
+                    counter4 = 4;
+                    sawBackslash = false;
+                    continue;
+                } else {
+                    throw new IllegalStateException("Improperly escaped backslash: " + s);
+                }
+            }
+            if (counter4 != -1) {
+                cAcc = cAcc * 16 + IntegerUtils.fromDigit(Character.toUpperCase(c));
+                counter4--;
+                if (counter4 == 0) {
+                    sb.append((char) cAcc);
+                    counter4 = -1;
+                    cAcc = 0;
+                }
+            } else if (c != '\\') {
+                sb.append(c);
+            }
+            sawBackslash = c == '\\';
+        }
+        return sb.toString();
     }
 
     /**
@@ -153,12 +211,24 @@ public strictfp class Testing {
         }
         List<String> actual = toList(map(Object::toString, a));
         if (!list.equals(actual)) {
-            System.out.println("Error! No match for " + b);
+            boolean quote = containsTrailingSpaces(actual);
             System.out.println();
-            System.out.println(b + " list " + list.size());
-            for (String s : list) {
-                System.out.println(s);
+            System.out.print(b + " list " + actual.size());
+            if (quote) {
+                System.out.println(" q");
+            } else {
+                System.out.println();
             }
+            for (String s : actual) {
+                if (quote) System.out.print('\'');
+                System.out.print(escape(s));
+                if (quote) {
+                    System.out.println('\'');
+                } else {
+                    System.out.println();
+                }
+            }
+            fail("No match for " + b);
         }
     }
 
@@ -172,12 +242,24 @@ public strictfp class Testing {
         }
         List<String> actual = itsList(limit, a);
         if (!list.equals(actual)) {
+            boolean quote = containsTrailingSpaces(actual);
             System.out.println();
-            System.out.println(b + " list " + actual.size());
-            for (String s : actual) {
-                System.out.println(s);
+            System.out.print(b + " list " + actual.size());
+            if (quote) {
+                System.out.println(" q");
+            } else {
+                System.out.println();
             }
-            //fail("No match for " + b);
+            for (String s : actual) {
+                if (quote) System.out.print('\'');
+                System.out.print(escape(s));
+                if (quote) {
+                    System.out.println('\'');
+                } else {
+                    System.out.println();
+                }
+            }
+            fail("No match for " + b);
         }
     }
 
@@ -191,14 +273,63 @@ public strictfp class Testing {
         }
         Map<String, String> actual = itsMap(a);
         if (!map.equals(actual)) {
+            boolean quote = containsTrailingSpaces(actual);
             System.out.println();
-            System.out.println(b + " map " + actual.size());
-            for (Map.Entry<String, String> entry : actual.entrySet()) {
-                System.out.println(entry.getKey());
-                System.out.println(entry.getValue());
+            System.out.print(b + " map " + actual.size());
+            if (quote) {
+                System.out.println(" q");
+            } else {
+                System.out.println();
             }
-            //fail("No match for " + b);
+            for (Map.Entry<String, String> entry : actual.entrySet()) {
+                if (quote) System.out.print('\'');
+                System.out.print(escape(entry.getKey()));
+                if (quote) {
+                    System.out.println('\'');
+                } else {
+                    System.out.println();
+                }
+                if (quote) System.out.print('\'');
+                System.out.print(escape(entry.getValue()));
+                if (quote) {
+                    System.out.println('\'');
+                } else {
+                    System.out.println();
+                }
+            }
+            fail("No match for " + b);
         }
+    }
+
+    private static boolean containsTrailingSpaces(@NotNull List<String> strings) {
+        for (String s : strings) {
+            if (!s.isEmpty() && last(s) == ' ') return true;
+        }
+        return false;
+    }
+
+    private static boolean containsTrailingSpaces(@NotNull Map<String, String> strings) {
+        for (Map.Entry<String, String> entry : strings.entrySet()) {
+            if (!entry.getKey().isEmpty() && last(entry.getKey()) == ' ') return true;
+            if (!entry.getValue().isEmpty() && last(entry.getValue()) == ' ') return true;
+        }
+        return false;
+    }
+
+    private static @NotNull String escape(@NotNull String s) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (c < ' ' || c > '~') {
+                sb.append("\\u").append(String.format("%4s", Integer.toHexString(c)).replace(' ', '0'));
+            } else {
+                if (c == '\\') {
+                    sb.append('\\');
+                }
+                sb.append(c);
+            }
+        }
+        return sb.toString();
     }
 
     public static <T> void aeqit(@NotNull Object message, @NotNull Iterable<T> xs, @NotNull Iterable<T> ys) {

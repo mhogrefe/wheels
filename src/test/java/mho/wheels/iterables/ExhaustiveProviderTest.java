@@ -183,120 +183,83 @@ public strictfp class ExhaustiveProviderTest {
     public void testNonzeroShorts() {
         Iterable<Short> ss = EP.nonzeroShorts();
         aeq(length(ss), 65535);
-        aeqitLimit(TINY_LIMIT, reverse(ss),
-                "[-32768, -32767, 32767, -32766, 32766, -32765, 32765, -32764, 32764, -32763, 32763, -32762, 32762," +
-                " -32761, 32761, -32760, 32760, -32759, 32759, -32758, ...]");
-        simpleProviderHelper(ss, "[1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6, 7, -7, 8, -8, 9, -9, 10, -10, ...]");
+        aeqitLimitLog(TINY_LIMIT, reverse(ss), "ExhaustiveProvider_nonzeroShorts_reverse");
+        simpleProviderHelper(ss, "ExhaustiveProvider_nonzeroShorts");
     }
 
     @Test
     public void testNonzeroIntegers() {
-        simpleProviderHelper(EP.nonzeroIntegers(),
-                "[1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6, 7, -7, 8, -8, 9, -9, 10, -10, ...]");
+        simpleProviderHelper(EP.nonzeroIntegers(), "ExhaustiveProvider_nonzeroIntegers");
     }
 
     @Test
     public void testNonzeroLongs() {
-        simpleProviderHelper(EP.nonzeroLongs(),
-                "[1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6, 7, -7, 8, -8, 9, -9, 10, -10, ...]");
+        simpleProviderHelper(EP.nonzeroLongs(), "ExhaustiveProvider_nonzeroLongs");
     }
 
     @Test
     public void testNonzeroBigIntegers() {
-        simpleProviderHelper(EP.nonzeroBigIntegers(),
-                "[1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6, 7, -7, 8, -8, 9, -9, 10, -10, ...]");
+        simpleProviderHelper(EP.nonzeroBigIntegers(), "ExhaustiveProvider_nonzeroBigIntegers");
     }
 
     @Test
     public void testBytes() {
         Iterable<Byte> bs = EP.bytes();
         aeq(length(bs), 256);
-        aeqitLimit(TINY_LIMIT, reverse(bs),
-                "[-128, -127, 127, -126, 126, -125, 125, -124, 124, -123, 123, -122, 122, -121, 121, -120, 120," +
-                " -119, 119, -118, ...]");
-        simpleProviderHelper(bs, "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6, 7, -7, 8, -8, 9, -9, 10, ...]");
+        aeqitLimitLog(TINY_LIMIT, reverse(bs), "ExhaustiveProvider_bytes_reverse");
+        simpleProviderHelper(bs, "ExhaustiveProvider_bytes");
     }
 
     @Test
     public void testShorts() {
         Iterable<Short> ss = EP.shorts();
         aeq(length(ss), 65536);
-        aeqitLimit(TINY_LIMIT, reverse(ss),
-                "[-32768, -32767, 32767, -32766, 32766, -32765, 32765, -32764, 32764, -32763, 32763, -32762, 32762," +
-                " -32761, 32761, -32760, 32760, -32759, 32759, -32758, ...]");
-        simpleProviderHelper(ss, "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6, 7, -7, 8, -8, 9, -9, 10, ...]");
+        aeqitLimitLog(TINY_LIMIT, reverse(ss), "ExhaustiveProvider_shorts_reverse");
+        simpleProviderHelper(ss, "ExhaustiveProvider_shorts");
     }
 
     @Test
     public void testIntegers() {
-        simpleProviderHelper(EP.integers(),
-                "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6, 7, -7, 8, -8, 9, -9, 10, ...]");
+        simpleProviderHelper(EP.integers(), "ExhaustiveProvider_integers");
     }
 
     @Test
     public void testLongs() {
-        simpleProviderHelper(EP.longs(),
-                "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6, 7, -7, 8, -8, 9, -9, 10, ...]");
+        simpleProviderHelper(EP.longs(), "ExhaustiveProvider_longs");
     }
 
     @Test
     public void testBigIntegers() {
-        simpleProviderHelper(EP.bigIntegers(),
-                "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6, 7, -7, 8, -8, 9, -9, 10, ...]");
+        simpleProviderHelper(EP.bigIntegers(), "ExhaustiveProvider_bigIntegers");
     }
 
     @Test
     public void testAsciiCharactersIncreasing() {
         aeq(length(EP.asciiCharactersIncreasing()), 128);
-        aeq(charsToString(EP.asciiCharactersIncreasing()),
-                "\0\1\2\3\4\5\6\7\b\t\n\13\f\r\16\17\20\21\22\23\24\25\26\27\30\31\32\33\34\35\36\37" +
-                " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~" +
-                "\177"
-        );
+        aeqitLog(EP.asciiCharactersIncreasing(),"ExhaustiveProvider_asciiCharactersIncreasing");
     }
 
     @Test
     public void testAsciiCharacters() {
         aeq(length(EP.asciiCharacters()), 128);
-        aeq(charsToString(EP.asciiCharacters()),
-                "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~ " +
-                "\0\1\2\3\4\5\6\7\b\t\n\13\f\r\16\17\20\21\22\23\24\25\26\27\30\31\32\33\34\35\36\37\177"
-        );
+        aeqitLog(EP.asciiCharacters(), "ExhaustiveProvider_asciiCharacters");
     }
 
     @Test
     public void testCharactersIncreasing() {
         aeq(length(EP.charactersIncreasing()), 65536);
-        aeq(charsToString(take(256, EP.charactersIncreasing())),
-                "\0\1\2\3\4\5\6\7\b\t\n\13\f\r\16\17\20\21\22\23\24\25\26\27\30\31\32\33\34\35\36\37" +
-                " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~" +
-                "\177" +
-                "\u0080\u0081\u0082\u0083\u0084\u0085\u0086\u0087\u0088\u0089\u008a\u008b\u008c\u008d\u008e\u008f" +
-                "\u0090\u0091\u0092\u0093\u0094\u0095\u0096\u0097\u0098\u0099\u009a\u009b\u009c\u009d\u009e\u009f" +
-                "\u00a0" +
-                "¡¢£¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõö÷øùúûüýþÿ"
-        );
+        aeqitLimitLog(256, EP.charactersIncreasing(), "ExhaustiveProvider_charactersIncreasing");
     }
 
     @Test
     public void testCharacters() {
         aeq(length(EP.characters()), 65536);
-        aeq(charsToString(take(256, EP.characters())),
-                "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~ " +
-                "\0\1\2\3\4\5\6\7\b\t\n\13\f\r\16\17\20\21\22\23\24\25\26\27\30\31\32\33\34\35\36\37\177" +
-                "\u0080\u0081\u0082\u0083\u0084\u0085\u0086\u0087\u0088\u0089\u008a\u008b\u008c\u008d\u008e\u008f" +
-                "\u0090\u0091\u0092\u0093\u0094\u0095\u0096\u0097\u0098\u0099\u009a\u009b\u009c\u009d\u009e\u009f" +
-                "\u00a0" +
-                "¡¢£¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõö÷øùúûüýþÿ"
-        );
+        aeqitLimitLog(256, EP.characters(), "ExhaustiveProvider_characters");
     }
 
     @Test
     public void testRoundingModes() {
-        simpleProviderHelper(
-                EP.roundingModes(),
-                "[UNNECESSARY, UP, DOWN, CEILING, FLOOR, HALF_UP, HALF_DOWN, HALF_EVEN]"
-        );
+        simpleProviderHelper(EP.roundingModes(), "ExhaustiveProvider_roundingModes");
     }
 
     private static void rangeUp_byte_helper(int a, @NotNull String output) {
@@ -305,12 +268,11 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testRangeUp_byte() {
-        rangeUp_byte_helper(0, "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, ...]");
-        rangeUp_byte_helper(5, "[5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, ...]");
-        rangeUp_byte_helper(-5, "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, 7, 8, 9, 10, 11, 12, 13, 14, ...]");
-        rangeUp_byte_helper(Byte.MAX_VALUE, "[127]");
-        rangeUp_byte_helper(Byte.MIN_VALUE,
-                "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6, 7, -7, 8, -8, 9, -9, 10, ...]");
+        rangeUp_byte_helper(0, "ExhaustiveProvider_rangeUp_byte_0");
+        rangeUp_byte_helper(5, "ExhaustiveProvider_rangeUp_byte_5");
+        rangeUp_byte_helper(-5, "ExhaustiveProvider_rangeUp_byte_-5");
+        rangeUp_byte_helper(Byte.MAX_VALUE, "ExhaustiveProvider_rangeUp_byte_MAX_VALUE");
+        rangeUp_byte_helper(Byte.MIN_VALUE, "ExhaustiveProvider_rangeUp_byte_MIN_VALUE");
     }
 
     private static void rangeUp_short_helper(int a, @NotNull String output) {
@@ -319,12 +281,11 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testRangeUp_short() {
-        rangeUp_short_helper(0, "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, ...]");
-        rangeUp_short_helper(5, "[5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, ...]");
-        rangeUp_short_helper(-5, "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, 7, 8, 9, 10, 11, 12, 13, 14, ...]");
-        rangeUp_short_helper(Short.MAX_VALUE, "[32767]");
-        rangeUp_short_helper(Short.MIN_VALUE,
-                "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6, 7, -7, 8, -8, 9, -9, 10, ...]");
+        rangeUp_short_helper(0, "ExhaustiveProvider_rangeUp_short_0");
+        rangeUp_short_helper(5, "ExhaustiveProvider_rangeUp_short_5");
+        rangeUp_short_helper(-5, "ExhaustiveProvider_rangeUp_short_-5");
+        rangeUp_short_helper(Short.MAX_VALUE, "ExhaustiveProvider_rangeUp_short_MAX_VALUE");
+        rangeUp_short_helper(Short.MIN_VALUE, "ExhaustiveProvider_rangeUp_short_MIN_VALUE");
     }
 
     private static void rangeUp_int_helper(int a, @NotNull String output) {
@@ -333,12 +294,11 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testRangeUp_int() {
-        rangeUp_int_helper(0, "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, ...]");
-        rangeUp_int_helper(5, "[5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, ...]");
-        rangeUp_int_helper(-5, "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, 7, 8, 9, 10, 11, 12, 13, 14, ...]");
-        rangeUp_int_helper(Integer.MAX_VALUE, "[2147483647]");
-        rangeUp_int_helper(Integer.MIN_VALUE,
-                "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6, 7, -7, 8, -8, 9, -9, 10, ...]");
+        rangeUp_int_helper(0, "ExhaustiveProvider_rangeUp_int_0");
+        rangeUp_int_helper(5, "ExhaustiveProvider_rangeUp_int_5");
+        rangeUp_int_helper(-5, "ExhaustiveProvider_rangeUp_int_-5");
+        rangeUp_int_helper(Integer.MAX_VALUE, "ExhaustiveProvider_rangeUp_int_MAX_VALUE");
+        rangeUp_int_helper(Integer.MIN_VALUE, "ExhaustiveProvider_rangeUp_int_MIN_VALUE");
     }
 
     private static void rangeUp_long_helper(long a, @NotNull String output) {
@@ -347,12 +307,11 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testRangeUp_long() {
-        rangeUp_long_helper(0L, "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, ...]");
-        rangeUp_long_helper(5L, "[5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, ...]");
-        rangeUp_long_helper(-5L, "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, 7, 8, 9, 10, 11, 12, 13, 14, ...]");
-        rangeUp_long_helper(Long.MAX_VALUE, "[9223372036854775807]");
-        rangeUp_long_helper(Long.MIN_VALUE,
-                "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6, 7, -7, 8, -8, 9, -9, 10, ...]");
+        rangeUp_long_helper(0, "ExhaustiveProvider_rangeUp_long_0");
+        rangeUp_long_helper(5, "ExhaustiveProvider_rangeUp_long_5");
+        rangeUp_long_helper(-5, "ExhaustiveProvider_rangeUp_long_-5");
+        rangeUp_long_helper(Long.MAX_VALUE, "ExhaustiveProvider_rangeUp_long_MAX_VALUE");
+        rangeUp_long_helper(Long.MIN_VALUE, "ExhaustiveProvider_rangeUp_long_MIN_VALUE");
     }
 
     private static void rangeUp_BigInteger_helper(int a, @NotNull String output) {
@@ -362,10 +321,9 @@ public strictfp class ExhaustiveProviderTest {
     @Test
 
     public void testRangeUp_BigInteger() {
-        rangeUp_BigInteger_helper(0, "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, ...]");
-        rangeUp_BigInteger_helper(5,
-                "[5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, ...]");
-        rangeUp_BigInteger_helper(-5, "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, 7, 8, 9, 10, 11, 12, 13, 14, ...]");
+        rangeUp_BigInteger_helper(0, "ExhaustiveProvider_rangeUp_BigInteger_0");
+        rangeUp_BigInteger_helper(5, "ExhaustiveProvider_rangeUp_BigInteger_5");
+        rangeUp_BigInteger_helper(-5, "ExhaustiveProvider_rangeUp_BigInteger_-5");
     }
 
     private static void rangeUp_char_helper(char a, @NotNull String output) {
