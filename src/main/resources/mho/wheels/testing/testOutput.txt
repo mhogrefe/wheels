@@ -10083,6 +10083,444 @@ ExhaustiveProvider_rangeCanonical_BigDecimal_BigDecimal_xx list 1
 
 ExhaustiveProvider_rangeCanonical_BigDecimal_BigDecimal_xxi list 0
 
+ExhaustiveProvider_withNull_i list 1
+null
+
+ExhaustiveProvider_withNull_ii list 4
+null
+1
+2
+3
+
+ExhaustiveProvider_withNull_iii list 4
+null
+1
+null
+3
+
+ExhaustiveProvider_withNull_iv list 21
+null
+1
+2
+3
+1
+2
+3
+1
+2
+3
+1
+2
+3
+1
+2
+3
+1
+2
+3
+1
+...
+
+ExhaustiveProvider_withNull_v list 21
+null
+1
+null
+3
+1
+null
+3
+1
+null
+3
+1
+null
+3
+1
+null
+3
+1
+null
+3
+1
+...
+
+ExhaustiveProvider_nonEmptyOptionals_i list 21
+Optional[0]
+Optional[1]
+Optional[-1]
+Optional[2]
+Optional[-2]
+Optional[3]
+Optional[-3]
+Optional[4]
+Optional[-4]
+Optional[5]
+Optional[-5]
+Optional[6]
+Optional[-6]
+Optional[7]
+Optional[-7]
+Optional[8]
+Optional[-8]
+Optional[9]
+Optional[-9]
+Optional[10]
+...
+
+ExhaustiveProvider_nonEmptyOptionals_ii list 21
+Optional[]
+Optional[a]
+Optional[aa]
+Optional[b]
+Optional[aaa]
+Optional[c]
+Optional[ab]
+Optional[d]
+Optional[aaaa]
+Optional[e]
+Optional[ba]
+Optional[f]
+Optional[aab]
+Optional[g]
+Optional[bb]
+Optional[h]
+Optional[aaaaa]
+Optional[i]
+Optional[ac]
+Optional[j]
+...
+
+ExhaustiveProvider_nonEmptyOptionals_iii list 3
+Optional[1]
+Optional[2]
+Optional[3]
+
+ExhaustiveProvider_nonEmptyOptionals_iv list 0
+
+ExhaustiveProvider_nonOptionals_i list 21
+Optional.empty
+Optional[0]
+Optional[1]
+Optional[-1]
+Optional[2]
+Optional[-2]
+Optional[3]
+Optional[-3]
+Optional[4]
+Optional[-4]
+Optional[5]
+Optional[-5]
+Optional[6]
+Optional[-6]
+Optional[7]
+Optional[-7]
+Optional[8]
+Optional[-8]
+Optional[9]
+Optional[-9]
+...
+
+ExhaustiveProvider_nonOptionals_ii list 21
+Optional.empty
+Optional[]
+Optional[a]
+Optional[aa]
+Optional[b]
+Optional[aaa]
+Optional[c]
+Optional[ab]
+Optional[d]
+Optional[aaaa]
+Optional[e]
+Optional[ba]
+Optional[f]
+Optional[aab]
+Optional[g]
+Optional[bb]
+Optional[h]
+Optional[aaaaa]
+Optional[i]
+Optional[ac]
+...
+
+ExhaustiveProvider_nonOptionals_iii list 4
+Optional.empty
+Optional[1]
+Optional[2]
+Optional[3]
+
+ExhaustiveProvider_nonOptionals_iv list 1
+Optional.empty
+
+ExhaustiveProvider_nonEmptyNullableOptionals_i list 21
+NullableOptional[null]
+NullableOptional[0]
+NullableOptional[1]
+NullableOptional[-1]
+NullableOptional[2]
+NullableOptional[-2]
+NullableOptional[3]
+NullableOptional[-3]
+NullableOptional[4]
+NullableOptional[-4]
+NullableOptional[5]
+NullableOptional[-5]
+NullableOptional[6]
+NullableOptional[-6]
+NullableOptional[7]
+NullableOptional[-7]
+NullableOptional[8]
+NullableOptional[-8]
+NullableOptional[9]
+NullableOptional[-9]
+...
+
+ExhaustiveProvider_nonEmptyNullableOptionals_ii list 21
+NullableOptional[null]
+NullableOptional[]
+NullableOptional[a]
+NullableOptional[aa]
+NullableOptional[b]
+NullableOptional[aaa]
+NullableOptional[c]
+NullableOptional[ab]
+NullableOptional[d]
+NullableOptional[aaaa]
+NullableOptional[e]
+NullableOptional[ba]
+NullableOptional[f]
+NullableOptional[aab]
+NullableOptional[g]
+NullableOptional[bb]
+NullableOptional[h]
+NullableOptional[aaaaa]
+NullableOptional[i]
+NullableOptional[ac]
+...
+
+ExhaustiveProvider_nonEmptyNullableOptionals_iii list 3
+NullableOptional[1]
+NullableOptional[2]
+NullableOptional[3]
+
+ExhaustiveProvider_nonEmptyNullableOptionals_iv list 0
+
+ExhaustiveProvider_nullableOptionals_i list 21
+NullableOptional.empty
+NullableOptional[null]
+NullableOptional[0]
+NullableOptional[1]
+NullableOptional[-1]
+NullableOptional[2]
+NullableOptional[-2]
+NullableOptional[3]
+NullableOptional[-3]
+NullableOptional[4]
+NullableOptional[-4]
+NullableOptional[5]
+NullableOptional[-5]
+NullableOptional[6]
+NullableOptional[-6]
+NullableOptional[7]
+NullableOptional[-7]
+NullableOptional[8]
+NullableOptional[-8]
+NullableOptional[9]
+...
+
+ExhaustiveProvider_nullableOptionals_ii list 21
+NullableOptional.empty
+NullableOptional[null]
+NullableOptional[]
+NullableOptional[a]
+NullableOptional[aa]
+NullableOptional[b]
+NullableOptional[aaa]
+NullableOptional[c]
+NullableOptional[ab]
+NullableOptional[d]
+NullableOptional[aaaa]
+NullableOptional[e]
+NullableOptional[ba]
+NullableOptional[f]
+NullableOptional[aab]
+NullableOptional[g]
+NullableOptional[bb]
+NullableOptional[h]
+NullableOptional[aaaaa]
+NullableOptional[i]
+...
+
+ExhaustiveProvider_nullableOptionals_iii list 4
+NullableOptional.empty
+NullableOptional[1]
+NullableOptional[2]
+NullableOptional[3]
+
+ExhaustiveProvider_nullableOptionals_iv list 1
+NullableOptional.empty
+
+ExhaustiveProvider_dependentPairs_i list 21
+(3, foo)
+(2, a)
+(2, b)
+(2, c)
+(0, beep)
+(0, beep)
+(0, beep)
+(0, beep)
+(0, beep)
+(0, beep)
+(0, beep)
+(0, beep)
+(0, beep)
+(0, beep)
+(0, beep)
+(0, beep)
+(0, beep)
+(0, beep)
+(0, beep)
+(0, beep)
+...
+
+ExhaustiveProvider_dependentPairsInfinite_i list 21
+(0, 0)
+(0, 1)
+(1, 0)
+(1, 1)
+(0, 2)
+(0, 3)
+(1, 2)
+(1, 3)
+(2, 0)
+(2, 1)
+(3, 0)
+(3, 1)
+(2, 2)
+(2, 3)
+(3, 2)
+(3, 3)
+(0, 4)
+(0, 5)
+(1, 4)
+(1, 5)
+...
+
+ExhaustiveProvider_dependentPairsInfinite_ii list 21
+(1, a)
+(1, b)
+(0, beep)
+(0, beep)
+(1, a)
+(1, b)
+(0, beep)
+(0, beep)
+(1, a)
+(1, b)
+(0, beep)
+(0, beep)
+(1, a)
+(1, b)
+(0, beep)
+(0, beep)
+(1, a)
+(1, b)
+(0, beep)
+(0, beep)
+...
+
+ExhaustiveProvider_dependentPairsInfiniteLogarithmicOrder_i list 21
+(0, 0)
+(1, 0)
+(0, 1)
+(2, 0)
+(0, 2)
+(1, 1)
+(0, 3)
+(3, 0)
+(0, 4)
+(1, 2)
+(0, 5)
+(2, 1)
+(0, 6)
+(1, 3)
+(0, 7)
+(4, 0)
+(0, 8)
+(1, 4)
+(0, 9)
+(2, 2)
+...
+
+ExhaustiveProvider_dependentPairsInfiniteLogarithmicOrder_ii list 21
+(1, a)
+(0, beep)
+(1, b)
+(1, a)
+(1, b)
+(0, beep)
+(1, a)
+(0, beep)
+(1, b)
+(0, beep)
+(1, a)
+(1, b)
+(1, a)
+(0, beep)
+(1, b)
+(1, a)
+(1, b)
+(0, beep)
+(1, a)
+(1, b)
+...
+
+ExhaustiveProvider_dependentPairsInfiniteSquareRootOrder_i list 21
+(0, 0)
+(1, 0)
+(0, 1)
+(1, 1)
+(0, 2)
+(1, 2)
+(0, 3)
+(1, 3)
+(2, 0)
+(3, 0)
+(2, 1)
+(3, 1)
+(2, 2)
+(3, 2)
+(2, 3)
+(3, 3)
+(0, 4)
+(1, 4)
+(0, 5)
+(1, 5)
+...
+
+ExhaustiveProvider_dependentPairsInfiniteSquareRootOrder_ii list 21
+(1, a)
+(0, beep)
+(1, b)
+(0, beep)
+(1, a)
+(0, beep)
+(1, b)
+(0, beep)
+(1, a)
+(0, beep)
+(1, b)
+(0, beep)
+(1, a)
+(0, beep)
+(1, b)
+(0, beep)
+(1, a)
+(0, beep)
+(1, b)
+(0, beep)
+...
+
 RandomProvider_integers list 21
 -1084795351
 1143001545

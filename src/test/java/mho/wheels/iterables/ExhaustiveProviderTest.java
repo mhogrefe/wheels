@@ -1159,7 +1159,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void withNull_finite_helper(@NotNull String x, @NotNull String output) {
-        aeqit(EP.withNull(readIntegerListWithNulls(x)), output);
+        aeqitLog(EP.withNull(readIntegerListWithNulls(x)), output);
     }
 
     private static void withNull_cyclic_helper(@NotNull String x, @NotNull String output) {
@@ -1168,26 +1168,19 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testWithNull() {
-        withNull_finite_helper("[]", "[null]");
-        withNull_finite_helper("[1, 2, 3]", "[null, 1, 2, 3]");
-        withNull_finite_helper("[1, null, 3]", "[null, 1, null, 3]");
-        withNull_cyclic_helper("[1, 2, 3]", "[null, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, ...]");
-        withNull_cyclic_helper("[1, null, 3]",
-                "[null, 1, null, 3, 1, null, 3, 1, null, 3, 1, null, 3, 1, null, 3, 1, null, 3, 1, ...]");
+        withNull_finite_helper("[]", "ExhaustiveProvider_withNull_i");
+        withNull_finite_helper("[1, 2, 3]", "ExhaustiveProvider_withNull_ii");
+        withNull_finite_helper("[1, null, 3]", "ExhaustiveProvider_withNull_iii");
+        withNull_cyclic_helper("[1, 2, 3]", "ExhaustiveProvider_withNull_iv");
+        withNull_cyclic_helper("[1, null, 3]", "ExhaustiveProvider_withNull_v");
     }
 
     @Test
     public void testNonEmptyOptionals() {
-        simpleProviderHelper(EP.nonEmptyOptionals(EP.integers()),
-                "[Optional[0], Optional[1], Optional[-1], Optional[2], Optional[-2], Optional[3], Optional[-3]," +
-                " Optional[4], Optional[-4], Optional[5], Optional[-5], Optional[6], Optional[-6], Optional[7]," +
-                " Optional[-7], Optional[8], Optional[-8], Optional[9], Optional[-9], Optional[10], ...]");
-        simpleProviderHelper(EP.nonEmptyOptionals(EP.strings()),
-                "[Optional[], Optional[a], Optional[aa], Optional[b], Optional[aaa], Optional[c], Optional[ab]," +
-                " Optional[d], Optional[aaaa], Optional[e], Optional[ba], Optional[f], Optional[aab], Optional[g]," +
-                " Optional[bb], Optional[h], Optional[aaaaa], Optional[i], Optional[ac], Optional[j], ...]");
-        aeqit(EP.nonEmptyOptionals(Arrays.asList(1, 2, 3)), "[Optional[1], Optional[2], Optional[3]]");
-        aeqit(EP.nonEmptyOptionals(Collections.emptyList()), "[]");
+        simpleProviderHelper(EP.nonEmptyOptionals(EP.integers()), "ExhaustiveProvider_nonEmptyOptionals_i");
+        simpleProviderHelper(EP.nonEmptyOptionals(EP.strings()), "ExhaustiveProvider_nonEmptyOptionals_ii");
+        aeqitLog(EP.nonEmptyOptionals(Arrays.asList(1, 2, 3)), "ExhaustiveProvider_nonEmptyOptionals_iii");
+        aeqitLog(EP.nonEmptyOptionals(Collections.emptyList()), "ExhaustiveProvider_nonEmptyOptionals_iv");
         try {
             toList(take(TINY_LIMIT, EP.nonEmptyOptionals(EP.withNull(EP.integers()))));
             fail();
@@ -1196,16 +1189,10 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testOptionals() {
-        simpleProviderHelper(EP.optionals(EP.integers()),
-                "[Optional.empty, Optional[0], Optional[1], Optional[-1], Optional[2], Optional[-2], Optional[3]," +
-                " Optional[-3], Optional[4], Optional[-4], Optional[5], Optional[-5], Optional[6], Optional[-6]," +
-                " Optional[7], Optional[-7], Optional[8], Optional[-8], Optional[9], Optional[-9], ...]");
-        simpleProviderHelper(EP.optionals(EP.strings()),
-                "[Optional.empty, Optional[], Optional[a], Optional[aa], Optional[b], Optional[aaa], Optional[c]," +
-                " Optional[ab], Optional[d], Optional[aaaa], Optional[e], Optional[ba], Optional[f], Optional[aab]," +
-                " Optional[g], Optional[bb], Optional[h], Optional[aaaaa], Optional[i], Optional[ac], ...]");
-        aeqit(EP.optionals(Arrays.asList(1, 2, 3)), "[Optional.empty, Optional[1], Optional[2], Optional[3]]");
-        aeqit(EP.optionals(Collections.emptyList()), "[Optional.empty]");
+        simpleProviderHelper(EP.optionals(EP.integers()), "ExhaustiveProvider_nonOptionals_i");
+        simpleProviderHelper(EP.optionals(EP.strings()), "ExhaustiveProvider_nonOptionals_ii");
+        aeqitLog(EP.optionals(Arrays.asList(1, 2, 3)), "ExhaustiveProvider_nonOptionals_iii");
+        aeqitLog(EP.optionals(Collections.emptyList()), "ExhaustiveProvider_nonOptionals_iv");
         try {
             toList(take(TINY_LIMIT, EP.optionals(EP.withNull(EP.integers()))));
             fail();
@@ -1215,39 +1202,23 @@ public strictfp class ExhaustiveProviderTest {
     @Test
     public void testNonEmptyNullableOptionals() {
         simpleProviderHelper(EP.nonEmptyNullableOptionals(EP.withNull(EP.integers())),
-                "[NullableOptional[null], NullableOptional[0], NullableOptional[1], NullableOptional[-1]," +
-                " NullableOptional[2], NullableOptional[-2], NullableOptional[3], NullableOptional[-3]," +
-                " NullableOptional[4], NullableOptional[-4], NullableOptional[5], NullableOptional[-5]," +
-                " NullableOptional[6], NullableOptional[-6], NullableOptional[7], NullableOptional[-7]," +
-                " NullableOptional[8], NullableOptional[-8], NullableOptional[9], NullableOptional[-9], ...]");
+                "ExhaustiveProvider_nonEmptyNullableOptionals_i");
         simpleProviderHelper(EP.nonEmptyNullableOptionals(EP.withNull(EP.strings())),
-                "[NullableOptional[null], NullableOptional[], NullableOptional[a], NullableOptional[aa]," +
-                " NullableOptional[b], NullableOptional[aaa], NullableOptional[c], NullableOptional[ab]," +
-                " NullableOptional[d], NullableOptional[aaaa], NullableOptional[e], NullableOptional[ba]," +
-                " NullableOptional[f], NullableOptional[aab], NullableOptional[g], NullableOptional[bb]," +
-                " NullableOptional[h], NullableOptional[aaaaa], NullableOptional[i], NullableOptional[ac], ...]");
-        aeqit(EP.nonEmptyNullableOptionals(Arrays.asList(1, 2, 3)),
-                "[NullableOptional[1], NullableOptional[2], NullableOptional[3]]");
-        aeqit(EP.nonEmptyNullableOptionals(Collections.emptyList()), "[]");
+                "ExhaustiveProvider_nonEmptyNullableOptionals_ii");
+        aeqitLog(EP.nonEmptyNullableOptionals(Arrays.asList(1, 2, 3)),
+                "ExhaustiveProvider_nonEmptyNullableOptionals_iii");
+        aeqitLog(EP.nonEmptyNullableOptionals(Collections.emptyList()),
+                "ExhaustiveProvider_nonEmptyNullableOptionals_iv");
     }
 
     @Test
     public void testNullableOptionals() {
         simpleProviderHelper(EP.nullableOptionals(EP.withNull(EP.integers())),
-                "[NullableOptional.empty, NullableOptional[null], NullableOptional[0], NullableOptional[1]," +
-                " NullableOptional[-1], NullableOptional[2], NullableOptional[-2], NullableOptional[3]," +
-                " NullableOptional[-3], NullableOptional[4], NullableOptional[-4], NullableOptional[5]," +
-                " NullableOptional[-5], NullableOptional[6], NullableOptional[-6], NullableOptional[7]," +
-                " NullableOptional[-7], NullableOptional[8], NullableOptional[-8], NullableOptional[9], ...]");
+                "ExhaustiveProvider_nullableOptionals_i");
         simpleProviderHelper(EP.nullableOptionals(EP.withNull(EP.strings())),
-                "[NullableOptional.empty, NullableOptional[null], NullableOptional[], NullableOptional[a]," +
-                " NullableOptional[aa], NullableOptional[b], NullableOptional[aaa], NullableOptional[c]," +
-                " NullableOptional[ab], NullableOptional[d], NullableOptional[aaaa], NullableOptional[e]," +
-                " NullableOptional[ba], NullableOptional[f], NullableOptional[aab], NullableOptional[g]," +
-                " NullableOptional[bb], NullableOptional[h], NullableOptional[aaaaa], NullableOptional[i], ...]");
-        aeqit(EP.nullableOptionals(Arrays.asList(1, 2, 3)),
-                "[NullableOptional.empty, NullableOptional[1], NullableOptional[2], NullableOptional[3]]");
-        aeqit(EP.nullableOptionals(Collections.emptyList()), "[NullableOptional.empty]");
+                "ExhaustiveProvider_nullableOptionals_ii");
+        aeqitLog(EP.nullableOptionals(Arrays.asList(1, 2, 3)), "ExhaustiveProvider_nullableOptionals_iii");
+        aeqitLog(EP.nullableOptionals(Collections.emptyList()), "ExhaustiveProvider_nullableOptionals_iv");
     }
 
     @Test
@@ -1261,14 +1232,12 @@ public strictfp class ExhaustiveProviderTest {
             }
             throw new IllegalArgumentException();
         };
-        simpleProviderHelper(EP.dependentPairs(Arrays.asList(3, 1, 2, 0), f),
-                "[(3, foo), (2, a), (2, b), (2, c), (0, beep), (0, beep), (0, beep), (0, beep), (0, beep)," +
-                " (0, beep), (0, beep), (0, beep), (0, beep), (0, beep), (0, beep), (0, beep), (0, beep), (0, beep)," +
-                " (0, beep), (0, beep), ...]");
+        simpleProviderHelper(EP.dependentPairs(Arrays.asList(3, 1, 2, 0), f), "ExhaustiveProvider_dependentPairs_i");
 
-        aeqit(EP.dependentPairs(Collections.emptyList(), f), "[]");
+        aeqitLog(EP.dependentPairs(Collections.emptyList(), f), "ExhaustiveProvider_dependentPairs_ii");
 
-        simpleProviderHelper(EP.dependentPairs(Arrays.asList(3, 1, 2, 0), i -> Collections.emptyList()), "[]");
+        simpleProviderHelper(EP.dependentPairs(Arrays.asList(3, 1, 2, 0), i -> Collections.emptyList()),
+                "ExhaustiveProvider_dependentPairs_iii");
 
         try {
             toList(EP.dependentPairs(Arrays.asList(3, 1, 2, 0), i -> null));
@@ -1279,8 +1248,7 @@ public strictfp class ExhaustiveProviderTest {
     @Test
     public void testDependentPairsInfinite() {
         simpleProviderHelper(EP.dependentPairsInfinite(EP.naturalBigIntegers(), i -> EP.naturalBigIntegers()),
-                "[(0, 0), (0, 1), (1, 0), (1, 1), (0, 2), (0, 3), (1, 2), (1, 3), (2, 0), (2, 1), (3, 0), (3, 1)," +
-                " (2, 2), (2, 3), (3, 2), (3, 3), (0, 4), (0, 5), (1, 4), (1, 5), ...]");
+                "ExhaustiveProvider_dependentPairsInfinite_i");
 
         Function<Integer, Iterable<String>> f = i -> {
             switch (i) {
@@ -1290,9 +1258,7 @@ public strictfp class ExhaustiveProviderTest {
             throw new IllegalArgumentException();
         };
         simpleProviderHelper(EP.dependentPairsInfinite(cycle(Arrays.asList(1, 0)), f),
-                "[(1, a), (1, b), (0, beep), (0, beep), (1, a), (1, b), (0, beep), (0, beep), (1, a), (1, b)," +
-                " (0, beep), (0, beep), (1, a), (1, b), (0, beep), (0, beep), (1, a), (1, b), (0, beep)," +
-                " (0, beep), ...]");
+                "ExhaustiveProvider_dependentPairsInfinite_ii");
 
         try {
             toList(EP.dependentPairsInfinite(cycle(Arrays.asList(1, 0)), i -> null));
@@ -1313,12 +1279,8 @@ public strictfp class ExhaustiveProviderTest {
     @Test
     public void testDependentPairsInfiniteLogarithmicOrder() {
         simpleProviderHelper(
-                EP.dependentPairsInfiniteLogarithmicOrder(
-                        EP.naturalBigIntegers(),
-                        i -> EP.naturalBigIntegers()
-                ),
-                "[(0, 0), (1, 0), (0, 1), (2, 0), (0, 2), (1, 1), (0, 3), (3, 0), (0, 4), (1, 2), (0, 5), (2, 1)," +
-                " (0, 6), (1, 3), (0, 7), (4, 0), (0, 8), (1, 4), (0, 9), (2, 2), ...]"
+                EP.dependentPairsInfiniteLogarithmicOrder(EP.naturalBigIntegers(), i -> EP.naturalBigIntegers()),
+                "ExhaustiveProvider_dependentPairsInfiniteLogarithmicOrder_i"
         );
 
         Function<Integer, Iterable<String>> f = i -> {
@@ -1329,8 +1291,7 @@ public strictfp class ExhaustiveProviderTest {
             throw new IllegalArgumentException();
         };
         simpleProviderHelper(EP.dependentPairsInfiniteLogarithmicOrder(cycle(Arrays.asList(1, 0)), f),
-                "[(1, a), (0, beep), (1, b), (1, a), (1, b), (0, beep), (1, a), (0, beep), (1, b), (0, beep)," +
-                " (1, a), (1, b), (1, a), (0, beep), (1, b), (1, a), (1, b), (0, beep), (1, a), (1, b), ...]");
+                "ExhaustiveProvider_dependentPairsInfiniteLogarithmicOrder_ii");
 
         try {
             toList(EP.dependentPairsInfiniteLogarithmicOrder(cycle(Arrays.asList(1, 0)), i -> null));
@@ -1356,12 +1317,8 @@ public strictfp class ExhaustiveProviderTest {
     @Test
     public void testDependentPairsInfiniteSquareRootOrder() {
         simpleProviderHelper(
-                EP.dependentPairsInfiniteSquareRootOrder(
-                        EP.naturalBigIntegers(),
-                        i -> EP.naturalBigIntegers()
-                ),
-                "[(0, 0), (1, 0), (0, 1), (1, 1), (0, 2), (1, 2), (0, 3), (1, 3), (2, 0), (3, 0), (2, 1), (3, 1)," +
-                " (2, 2), (3, 2), (2, 3), (3, 3), (0, 4), (1, 4), (0, 5), (1, 5), ...]"
+                EP.dependentPairsInfiniteSquareRootOrder(EP.naturalBigIntegers(), i -> EP.naturalBigIntegers()),
+                "ExhaustiveProvider_dependentPairsInfiniteSquareRootOrder_i"
         );
 
         Function<Integer, Iterable<String>> f = i -> {
@@ -1372,9 +1329,7 @@ public strictfp class ExhaustiveProviderTest {
             throw new IllegalArgumentException();
         };
         simpleProviderHelper(EP.dependentPairsInfiniteSquareRootOrder(cycle(Arrays.asList(1, 0)), f),
-                "[(1, a), (0, beep), (1, b), (0, beep), (1, a), (0, beep), (1, b), (0, beep), (1, a), (0, beep)," +
-                " (1, b), (0, beep), (1, a), (0, beep), (1, b), (0, beep), (1, a), (0, beep), (1, b), (0, beep)," +
-                " ...]");
+                "ExhaustiveProvider_dependentPairsInfiniteSquareRootOrder_ii");
 
         try {
             toList(EP.dependentPairsInfiniteSquareRootOrder(cycle(Arrays.asList(1, 0)), i -> null));
