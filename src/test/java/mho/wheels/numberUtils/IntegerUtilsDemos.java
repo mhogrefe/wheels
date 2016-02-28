@@ -303,7 +303,7 @@ public class IntegerUtilsDemos extends Demos {
                 p -> new Pair<>(p.a, toStringBase(BigInteger.valueOf(p.a), p.b)),
                 P.pairs(P.rangeUpGeometric(2), P.bigIntegers())
         );
-        for (Pair<Integer, String> p : take(MEDIUM_LIMIT, ps)) {
+        for (Pair<Integer, String> p : take(LIMIT, ps)) {
             System.out.println("fromStringBase(" + p.a + ", " + p.b + ") = " + fromStringBase(p.a, p.b));
         }
     }
@@ -313,7 +313,7 @@ public class IntegerUtilsDemos extends Demos {
                 p -> new Pair<>(p.a, toStringBase(p.a, p.b)),
                 P.pairs(P.rangeUp(TWO), P.bigIntegers())
         );
-        for (Pair<BigInteger, String> p : take(MEDIUM_LIMIT, ps)) {
+        for (Pair<BigInteger, String> p : take(LIMIT, ps)) {
             System.out.println("fromStringBase(" + p.a + ", " + p.b + ") = " + fromStringBase(p.a, p.b));
         }
     }

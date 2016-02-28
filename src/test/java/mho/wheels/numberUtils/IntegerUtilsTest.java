@@ -1153,282 +1153,246 @@ public class IntegerUtilsTest {
         toStringBase_BigInteger_BigInteger_fail_helper("0", "524393454");
     }
 
+    private static void fromStringBase_int_String_helper(int base, @NotNull String s, @NotNull String output) {
+        aeq(fromStringBase(base, s), output);
+    }
+
+    private static void fromStringBase_int_String_fail_helper(int base, @NotNull String s) {
+        try {
+            fromStringBase(base, s);
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+    }
+
     @Test
     public void testFromStringBase_int_String() {
-        aeq(fromStringBase(2, ""), 0);
-        aeq(fromStringBase(3, ""), 0);
-        aeq(fromStringBase(4, ""), 0);
-        aeq(fromStringBase(10, ""), 0);
-        aeq(fromStringBase(12, ""), 0);
-        aeq(fromStringBase(16, ""), 0);
-        aeq(fromStringBase(36, ""), 0);
-        aeq(fromStringBase(88, ""), 0);
-        aeq(fromStringBase(100, ""), 0);
-        aeq(fromStringBase(2, "0"), 0);
-        aeq(fromStringBase(3, "0"), 0);
-        aeq(fromStringBase(4, "0"), 0);
-        aeq(fromStringBase(10, "0"), 0);
-        aeq(fromStringBase(12, "0"), 0);
-        aeq(fromStringBase(16, "0"), 0);
-        aeq(fromStringBase(36, "0"), 0);
-        aeq(fromStringBase(88, "(0)"), 0);
-        aeq(fromStringBase(100, "(0)"), 0);
-        aeq(fromStringBase(2, "00"), 0);
-        aeq(fromStringBase(3, "00"), 0);
-        aeq(fromStringBase(4, "00"), 0);
-        aeq(fromStringBase(10, "00"), 0);
-        aeq(fromStringBase(12, "00"), 0);
-        aeq(fromStringBase(16, "00"), 0);
-        aeq(fromStringBase(36, "00"), 0);
-        aeq(fromStringBase(88, "(0)(0)"), 0);
-        aeq(fromStringBase(100, "(0)(0)"), 0);
-        aeq(fromStringBase(2, "-0"), 0);
-        aeq(fromStringBase(3, "-0"), 0);
-        aeq(fromStringBase(4, "-0"), 0);
-        aeq(fromStringBase(10, "-0"), 0);
-        aeq(fromStringBase(12, "-0"), 0);
-        aeq(fromStringBase(16, "-0"), 0);
-        aeq(fromStringBase(36, "-0"), 0);
-        aeq(fromStringBase(88, "-(0)"), 0);
-        aeq(fromStringBase(100, "-(0)"), 0);
-        aeq(fromStringBase(2, "-00"), 0);
-        aeq(fromStringBase(3, "-00"), 0);
-        aeq(fromStringBase(4, "-00"), 0);
-        aeq(fromStringBase(10, "-00"), 0);
-        aeq(fromStringBase(12, "-00"), 0);
-        aeq(fromStringBase(16, "-00"), 0);
-        aeq(fromStringBase(36, "-00"), 0);
-        aeq(fromStringBase(88, "-(0)(0)"), 0);
-        aeq(fromStringBase(100, "-(0)(0)"), 0);
-        aeq(fromStringBase(2, "11111010000011001101111101110"), 524393454);
-        aeq(fromStringBase(3, "1100112201221120210"), 524393454);
-        aeq(fromStringBase(4, "133100121233232"), 524393454);
-        aeq(fromStringBase(10, "524393454"), 524393454);
-        aeq(fromStringBase(12, "127750526"), 524393454);
-        aeq(fromStringBase(16, "1F419BEE"), 524393454);
-        aeq(fromStringBase(36, "8O7KKU"), 524393454);
-        aeq(fromStringBase(88, "(8)(65)(44)(8)(46)"), 524393454);
-        aeq(fromStringBase(100, "(5)(24)(39)(34)(54)"), 524393454);
-        aeq(fromStringBase(2, "00011111010000011001101111101110"), 524393454);
-        aeq(fromStringBase(3, "0001100112201221120210"), 524393454);
-        aeq(fromStringBase(4, "000133100121233232"), 524393454);
-        aeq(fromStringBase(10, "000524393454"), 524393454);
-        aeq(fromStringBase(12, "000127750526"), 524393454);
-        aeq(fromStringBase(16, "0001F419BEE"), 524393454);
-        aeq(fromStringBase(36, "0008O7KKU"), 524393454);
-        aeq(fromStringBase(88, "(0)(0)(0)(8)(65)(44)(8)(46)"), 524393454);
-        aeq(fromStringBase(100, "(0)(0)(0)(5)(24)(39)(34)(54)"), 524393454);
-        aeq(fromStringBase(2, "-11111010000011001101111101110"), -524393454);
-        aeq(fromStringBase(3, "-1100112201221120210"), -524393454);
-        aeq(fromStringBase(4, "-133100121233232"), -524393454);
-        aeq(fromStringBase(10, "-524393454"), -524393454);
-        aeq(fromStringBase(12, "-127750526"), -524393454);
-        aeq(fromStringBase(16, "-1F419BEE"), -524393454);
-        aeq(fromStringBase(36, "-8O7KKU"), -524393454);
-        aeq(fromStringBase(88, "-(8)(65)(44)(8)(46)"), -524393454);
-        aeq(fromStringBase(100, "-(5)(24)(39)(34)(54)"), -524393454);
-        aeq(fromStringBase(2, "-00011111010000011001101111101110"), -524393454);
-        aeq(fromStringBase(3, "-0001100112201221120210"), -524393454);
-        aeq(fromStringBase(4, "-000133100121233232"), -524393454);
-        aeq(fromStringBase(10, "-000524393454"), -524393454);
-        aeq(fromStringBase(12, "-000127750526"), -524393454);
-        aeq(fromStringBase(16, "-0001F419BEE"), -524393454);
-        aeq(fromStringBase(36, "-0008O7KKU"), -524393454);
-        aeq(fromStringBase(88, "-(0)(0)(0)(8)(65)(44)(8)(46)"), -524393454);
-        aeq(fromStringBase(100, "-(0)(0)(0)(5)(24)(39)(34)(54)"), -524393454);
+        fromStringBase_int_String_helper(2, "", "0");
+        fromStringBase_int_String_helper(3, "", "0");
+        fromStringBase_int_String_helper(4, "", "0");
+        fromStringBase_int_String_helper(10, "", "0");
+        fromStringBase_int_String_helper(12, "", "0");
+        fromStringBase_int_String_helper(16, "", "0");
+        fromStringBase_int_String_helper(36, "", "0");
+        fromStringBase_int_String_helper(88, "", "0");
+        fromStringBase_int_String_helper(100, "", "0");
+
+        fromStringBase_int_String_helper(2, "0", "0");
+        fromStringBase_int_String_helper(3, "0", "0");
+        fromStringBase_int_String_helper(4, "0", "0");
+        fromStringBase_int_String_helper(10, "0", "0");
+        fromStringBase_int_String_helper(12, "0", "0");
+        fromStringBase_int_String_helper(16, "0", "0");
+        fromStringBase_int_String_helper(36, "0", "0");
+        fromStringBase_int_String_helper(88, "(0)", "0");
+        fromStringBase_int_String_helper(100, "(0)", "0");
+
+        fromStringBase_int_String_helper(2, "00", "0");
+        fromStringBase_int_String_helper(3, "00", "0");
+        fromStringBase_int_String_helper(4, "00", "0");
+        fromStringBase_int_String_helper(10, "00", "0");
+        fromStringBase_int_String_helper(12, "00", "0");
+        fromStringBase_int_String_helper(16, "00", "0");
+        fromStringBase_int_String_helper(36, "00", "0");
+        fromStringBase_int_String_helper(88, "(0)(0)", "0");
+        fromStringBase_int_String_helper(100, "(0)(0)", "0");
+
+        fromStringBase_int_String_helper(2, "-0", "0");
+        fromStringBase_int_String_helper(3, "-0", "0");
+        fromStringBase_int_String_helper(4, "-0", "0");
+        fromStringBase_int_String_helper(10, "-0", "0");
+        fromStringBase_int_String_helper(12, "-0", "0");
+        fromStringBase_int_String_helper(16, "-0", "0");
+        fromStringBase_int_String_helper(36, "-0", "0");
+        fromStringBase_int_String_helper(88, "-(0)", "0");
+        fromStringBase_int_String_helper(100, "-(0)", "0");
+
+        fromStringBase_int_String_helper(2, "-00", "0");
+        fromStringBase_int_String_helper(3, "-00", "0");
+        fromStringBase_int_String_helper(4, "-00", "0");
+        fromStringBase_int_String_helper(10, "-00", "0");
+        fromStringBase_int_String_helper(12, "-00", "0");
+        fromStringBase_int_String_helper(16, "-00", "0");
+        fromStringBase_int_String_helper(36, "-00", "0");
+        fromStringBase_int_String_helper(88, "-(0)(0)", "0");
+        fromStringBase_int_String_helper(100, "-(0)(0)", "0");
+
+        fromStringBase_int_String_helper(2, "11111010000011001101111101110", "524393454");
+        fromStringBase_int_String_helper(3, "1100112201221120210", "524393454");
+        fromStringBase_int_String_helper(4, "133100121233232", "524393454");
+        fromStringBase_int_String_helper(10, "524393454", "524393454");
+        fromStringBase_int_String_helper(12, "127750526", "524393454");
+        fromStringBase_int_String_helper(16, "1F419BEE", "524393454");
+        fromStringBase_int_String_helper(36, "8O7KKU", "524393454");
+        fromStringBase_int_String_helper(88, "(8)(65)(44)(8)(46)", "524393454");
+        fromStringBase_int_String_helper(100, "(5)(24)(39)(34)(54)", "524393454");
+
+        fromStringBase_int_String_helper(2, "00011111010000011001101111101110", "524393454");
+        fromStringBase_int_String_helper(3, "0001100112201221120210", "524393454");
+        fromStringBase_int_String_helper(4, "000133100121233232", "524393454");
+        fromStringBase_int_String_helper(10, "000524393454", "524393454");
+        fromStringBase_int_String_helper(12, "000127750526", "524393454");
+        fromStringBase_int_String_helper(16, "0001F419BEE", "524393454");
+        fromStringBase_int_String_helper(36, "0008O7KKU", "524393454");
+        fromStringBase_int_String_helper(88, "(0)(0)(0)(8)(65)(44)(8)(46)", "524393454");
+        fromStringBase_int_String_helper(100, "(0)(0)(0)(5)(24)(39)(34)(54)", "524393454");
+
+        fromStringBase_int_String_helper(2, "-11111010000011001101111101110", "-524393454");
+        fromStringBase_int_String_helper(3, "-1100112201221120210", "-524393454");
+        fromStringBase_int_String_helper(4, "-133100121233232", "-524393454");
+        fromStringBase_int_String_helper(10, "-524393454", "-524393454");
+        fromStringBase_int_String_helper(12, "-127750526", "-524393454");
+        fromStringBase_int_String_helper(16, "-1F419BEE", "-524393454");
+        fromStringBase_int_String_helper(36, "-8O7KKU", "-524393454");
+        fromStringBase_int_String_helper(88, "-(8)(65)(44)(8)(46)", "-524393454");
+        fromStringBase_int_String_helper(100, "-(5)(24)(39)(34)(54)", "-524393454");
+
+        fromStringBase_int_String_helper(2, "-00011111010000011001101111101110", "-524393454");
+        fromStringBase_int_String_helper(3, "-0001100112201221120210", "-524393454");
+        fromStringBase_int_String_helper(4, "-000133100121233232", "-524393454");
+        fromStringBase_int_String_helper(10, "-000524393454", "-524393454");
+        fromStringBase_int_String_helper(12, "-000127750526", "-524393454");
+        fromStringBase_int_String_helper(16, "-0001F419BEE", "-524393454");
+        fromStringBase_int_String_helper(36, "-0008O7KKU", "-524393454");
+        fromStringBase_int_String_helper(88, "-(0)(0)(0)(8)(65)(44)(8)(46)", "-524393454");
+        fromStringBase_int_String_helper(100, "-(0)(0)(0)(5)(24)(39)(34)(54)", "-524393454");
+
+        fromStringBase_int_String_fail_helper(1, "");
+        fromStringBase_int_String_fail_helper(0, "");
+        fromStringBase_int_String_fail_helper(2, "-");
+        fromStringBase_int_String_fail_helper(2, "3");
+        fromStringBase_int_String_fail_helper(2, "*");
+        fromStringBase_int_String_fail_helper(100, "12");
+        fromStringBase_int_String_fail_helper(100, "(-12)");
+        fromStringBase_int_String_fail_helper(100, "(3F)");
+        fromStringBase_int_String_fail_helper(100, "-");
+        fromStringBase_int_String_fail_helper(100, "()");
+        fromStringBase_int_String_fail_helper(100, "()()");
+        fromStringBase_int_String_fail_helper(100, "(00)");
+        fromStringBase_int_String_fail_helper(100, "(02)");
+        fromStringBase_int_String_fail_helper(100, "(2)()");
+    }
+
+    private static void fromStringBase_BigInteger_String_helper(
+            @NotNull String base,
+            @NotNull String s,
+            @NotNull String output
+    ) {
+        aeq(fromStringBase(Readers.readBigInteger(base).get(), s), output);
+    }
+
+    private static void fromStringBase_BigInteger_String_fail_helper(@NotNull String base, @NotNull String s) {
         try {
-            fromStringBase(1, "");
-            fail();
-        } catch (IllegalArgumentException ignored) {}
-        try {
-            fromStringBase(0, "");
-            fail();
-        } catch (IllegalArgumentException ignored) {}
-        try {
-            fromStringBase(2, "-");
-            fail();
-        } catch (IllegalArgumentException ignored) {}
-        try {
-            fromStringBase(2, "3");
-            fail();
-        } catch (IllegalArgumentException ignored) {}
-        try {
-            fromStringBase(2, "*");
-            fail();
-        } catch (IllegalArgumentException ignored) {}
-        try {
-            fromStringBase(100, "12");
-            fail();
-        } catch (IllegalArgumentException ignored) {}
-        try {
-            fromStringBase(100, "(-12)");
-            fail();
-        } catch (IllegalArgumentException ignored) {}
-        try {
-            fromStringBase(100, "(3F)");
-            fail();
-        } catch (IllegalArgumentException ignored) {}
-        try {
-            fromStringBase(100, "-");
-            fail();
-        } catch (IllegalArgumentException ignored) {}
-        try {
-            fromStringBase(100, "()");
-            fail();
-        } catch (IllegalArgumentException ignored) {}
-        try {
-            fromStringBase(100, "()()");
-            fail();
-        } catch (IllegalArgumentException ignored) {}
-        try {
-            fromStringBase(100, "(00)");
-            fail();
-        } catch (IllegalArgumentException ignored) {}
-        try {
-            fromStringBase(100, "(02)");
+            fromStringBase(Readers.readBigInteger(base).get(), s);
             fail();
         } catch (IllegalArgumentException ignored) {}
     }
 
     @Test
     public void testFromStringBase_BigInteger_String() {
-        aeq(fromStringBase(TWO, ""), 0);
-        aeq(fromStringBase(BigInteger.valueOf(3), ""), 0);
-        aeq(fromStringBase(BigInteger.valueOf(4), ""), 0);
-        aeq(fromStringBase(BigInteger.valueOf(10), ""), 0);
-        aeq(fromStringBase(BigInteger.valueOf(12), ""), 0);
-        aeq(fromStringBase(BigInteger.valueOf(16), ""), 0);
-        aeq(fromStringBase(BigInteger.valueOf(36), ""), 0);
-        aeq(fromStringBase(BigInteger.valueOf(88), ""), 0);
-        aeq(fromStringBase(BigInteger.valueOf(100), ""), 0);
-        aeq(fromStringBase(TWO, "0"), 0);
-        aeq(fromStringBase(BigInteger.valueOf(3), "0"), 0);
-        aeq(fromStringBase(BigInteger.valueOf(4), "0"), 0);
-        aeq(fromStringBase(BigInteger.valueOf(10), "0"), 0);
-        aeq(fromStringBase(BigInteger.valueOf(12), "0"), 0);
-        aeq(fromStringBase(BigInteger.valueOf(16), "0"), 0);
-        aeq(fromStringBase(BigInteger.valueOf(36), "0"), 0);
-        aeq(fromStringBase(BigInteger.valueOf(88), "(0)"), 0);
-        aeq(fromStringBase(BigInteger.valueOf(100), "(0)"), 0);
-        aeq(fromStringBase(TWO, "00"), 0);
-        aeq(fromStringBase(BigInteger.valueOf(3), "00"), 0);
-        aeq(fromStringBase(BigInteger.valueOf(4), "00"), 0);
-        aeq(fromStringBase(BigInteger.valueOf(10), "00"), 0);
-        aeq(fromStringBase(BigInteger.valueOf(12), "00"), 0);
-        aeq(fromStringBase(BigInteger.valueOf(16), "00"), 0);
-        aeq(fromStringBase(BigInteger.valueOf(36), "00"), 0);
-        aeq(fromStringBase(BigInteger.valueOf(88), "(0)(0)"), 0);
-        aeq(fromStringBase(BigInteger.valueOf(100), "(0)(0)"), 0);
-        aeq(fromStringBase(TWO, "-0"), 0);
-        aeq(fromStringBase(BigInteger.valueOf(3), "-0"), 0);
-        aeq(fromStringBase(BigInteger.valueOf(4), "-0"), 0);
-        aeq(fromStringBase(BigInteger.valueOf(10), "-0"), 0);
-        aeq(fromStringBase(BigInteger.valueOf(12), "-0"), 0);
-        aeq(fromStringBase(BigInteger.valueOf(16), "-0"), 0);
-        aeq(fromStringBase(BigInteger.valueOf(36), "-0"), 0);
-        aeq(fromStringBase(BigInteger.valueOf(88), "-(0)"), 0);
-        aeq(fromStringBase(BigInteger.valueOf(100), "-(0)"), 0);
-        aeq(fromStringBase(TWO, "-00"), 0);
-        aeq(fromStringBase(BigInteger.valueOf(3), "-00"), 0);
-        aeq(fromStringBase(BigInteger.valueOf(4), "-00"), 0);
-        aeq(fromStringBase(BigInteger.valueOf(10), "-00"), 0);
-        aeq(fromStringBase(BigInteger.valueOf(12), "-00"), 0);
-        aeq(fromStringBase(BigInteger.valueOf(16), "-00"), 0);
-        aeq(fromStringBase(BigInteger.valueOf(36), "-00"), 0);
-        aeq(fromStringBase(BigInteger.valueOf(88), "-(0)(0)"), 0);
-        aeq(fromStringBase(BigInteger.valueOf(100), "-(0)(0)"), 0);
-        aeq(fromStringBase(TWO, "11111010000011001101111101110"), 524393454);
-        aeq(fromStringBase(BigInteger.valueOf(3), "1100112201221120210"), 524393454);
-        aeq(fromStringBase(BigInteger.valueOf(4), "133100121233232"), 524393454);
-        aeq(fromStringBase(BigInteger.valueOf(10), "524393454"), 524393454);
-        aeq(fromStringBase(BigInteger.valueOf(12), "127750526"), 524393454);
-        aeq(fromStringBase(BigInteger.valueOf(16), "1F419BEE"), 524393454);
-        aeq(fromStringBase(BigInteger.valueOf(36), "8O7KKU"), 524393454);
-        aeq(fromStringBase(BigInteger.valueOf(88), "(8)(65)(44)(8)(46)"), 524393454);
-        aeq(fromStringBase(BigInteger.valueOf(100), "(5)(24)(39)(34)(54)"), 524393454);
-        aeq(fromStringBase(TWO, "00011111010000011001101111101110"), 524393454);
-        aeq(fromStringBase(BigInteger.valueOf(3), "0001100112201221120210"), 524393454);
-        aeq(fromStringBase(BigInteger.valueOf(4), "000133100121233232"), 524393454);
-        aeq(fromStringBase(BigInteger.valueOf(10), "000524393454"), 524393454);
-        aeq(fromStringBase(BigInteger.valueOf(12), "000127750526"), 524393454);
-        aeq(fromStringBase(BigInteger.valueOf(16), "0001F419BEE"), 524393454);
-        aeq(fromStringBase(BigInteger.valueOf(36), "0008O7KKU"), 524393454);
-        aeq(fromStringBase(BigInteger.valueOf(88), "(0)(0)(0)(8)(65)(44)(8)(46)"), 524393454);
-        aeq(fromStringBase(BigInteger.valueOf(100), "(0)(0)(0)(5)(24)(39)(34)(54)"), 524393454);
-        aeq(fromStringBase(TWO, "-11111010000011001101111101110"), -524393454);
-        aeq(fromStringBase(BigInteger.valueOf(3), "-1100112201221120210"), -524393454);
-        aeq(fromStringBase(BigInteger.valueOf(4), "-133100121233232"), -524393454);
-        aeq(fromStringBase(BigInteger.valueOf(10), "-524393454"), -524393454);
-        aeq(fromStringBase(BigInteger.valueOf(12), "-127750526"), -524393454);
-        aeq(fromStringBase(BigInteger.valueOf(16), "-1F419BEE"), -524393454);
-        aeq(fromStringBase(BigInteger.valueOf(36), "-8O7KKU"), -524393454);
-        aeq(fromStringBase(BigInteger.valueOf(88), "-(8)(65)(44)(8)(46)"), -524393454);
-        aeq(fromStringBase(BigInteger.valueOf(100), "-(5)(24)(39)(34)(54)"), -524393454);
-        aeq(fromStringBase(TWO, "-00011111010000011001101111101110"), -524393454);
-        aeq(fromStringBase(BigInteger.valueOf(3), "-0001100112201221120210"), -524393454);
-        aeq(fromStringBase(BigInteger.valueOf(4), "-000133100121233232"), -524393454);
-        aeq(fromStringBase(BigInteger.valueOf(10), "-000524393454"), -524393454);
-        aeq(fromStringBase(BigInteger.valueOf(12), "-000127750526"), -524393454);
-        aeq(fromStringBase(BigInteger.valueOf(16), "-0001F419BEE"), -524393454);
-        aeq(fromStringBase(BigInteger.valueOf(36), "-0008O7KKU"), -524393454);
-        aeq(fromStringBase(BigInteger.valueOf(88), "-(0)(0)(0)(8)(65)(44)(8)(46)"), -524393454);
-        aeq(fromStringBase(BigInteger.valueOf(100), "-(0)(0)(0)(5)(24)(39)(34)(54)"), -524393454);
-        try {
-            fromStringBase(BigInteger.ONE, "");
-            fail();
-        } catch (IllegalArgumentException ignored) {}
-        try {
-            fromStringBase(BigInteger.ZERO, "");
-            fail();
-        } catch (IllegalArgumentException ignored) {}
-        try {
-            fromStringBase(TWO, "-");
-            fail();
-        } catch (IllegalArgumentException ignored) {}
-        try {
-            fromStringBase(TWO, "3");
-            fail();
-        } catch (IllegalArgumentException ignored) {}
-        try {
-            fromStringBase(TWO, "*");
-            fail();
-        } catch (IllegalArgumentException ignored) {}
-        try {
-            fromStringBase(BigInteger.valueOf(100), "12");
-            fail();
-        } catch (IllegalArgumentException ignored) {}
-        try {
-            fromStringBase(BigInteger.valueOf(100), "(-12)");
-            fail();
-        } catch (IllegalArgumentException ignored) {}
-        try {
-            fromStringBase(BigInteger.valueOf(100), "()");
-            fail();
-        } catch (IllegalArgumentException ignored) {}
-        try {
-            fromStringBase(BigInteger.valueOf(100), "()()");
-            fail();
-        } catch (IllegalArgumentException ignored) {}
-        try {
-            fromStringBase(BigInteger.valueOf(100), "(3F)");
-            fail();
-        } catch (IllegalArgumentException ignored) {}
-        try {
-            fromStringBase(BigInteger.valueOf(100), "-");
-            fail();
-        } catch (IllegalArgumentException ignored) {}
-        try {
-            fromStringBase(BigInteger.valueOf(100), "()");
-            fail();
-        } catch (IllegalArgumentException ignored) {}
-        try {
-            fromStringBase(BigInteger.valueOf(100), "(00)");
-            fail();
-        } catch (IllegalArgumentException ignored) {}
-        try {
-            fromStringBase(BigInteger.valueOf(100), "(02)");
-            fail();
-        } catch (IllegalArgumentException ignored) {}
+        fromStringBase_BigInteger_String_helper("2", "", "0");
+        fromStringBase_BigInteger_String_helper("3", "", "0");
+        fromStringBase_BigInteger_String_helper("4", "", "0");
+        fromStringBase_BigInteger_String_helper("10", "", "0");
+        fromStringBase_BigInteger_String_helper("12", "", "0");
+        fromStringBase_BigInteger_String_helper("16", "", "0");
+        fromStringBase_BigInteger_String_helper("36", "", "0");
+        fromStringBase_BigInteger_String_helper("88", "", "0");
+        fromStringBase_BigInteger_String_helper("100", "", "0");
+
+        fromStringBase_BigInteger_String_helper("2", "0", "0");
+        fromStringBase_BigInteger_String_helper("3", "0", "0");
+        fromStringBase_BigInteger_String_helper("4", "0", "0");
+        fromStringBase_BigInteger_String_helper("10", "0", "0");
+        fromStringBase_BigInteger_String_helper("12", "0", "0");
+        fromStringBase_BigInteger_String_helper("16", "0", "0");
+        fromStringBase_BigInteger_String_helper("36", "0", "0");
+        fromStringBase_BigInteger_String_helper("88", "(0)", "0");
+        fromStringBase_BigInteger_String_helper("100", "(0)", "0");
+
+        fromStringBase_BigInteger_String_helper("2", "00", "0");
+        fromStringBase_BigInteger_String_helper("3", "00", "0");
+        fromStringBase_BigInteger_String_helper("4", "00", "0");
+        fromStringBase_BigInteger_String_helper("10", "00", "0");
+        fromStringBase_BigInteger_String_helper("12", "00", "0");
+        fromStringBase_BigInteger_String_helper("16", "00", "0");
+        fromStringBase_BigInteger_String_helper("36", "00", "0");
+        fromStringBase_BigInteger_String_helper("88", "(0)(0)", "0");
+        fromStringBase_BigInteger_String_helper("100", "(0)(0)", "0");
+
+        fromStringBase_BigInteger_String_helper("2", "-0", "0");
+        fromStringBase_BigInteger_String_helper("3", "-0", "0");
+        fromStringBase_BigInteger_String_helper("4", "-0", "0");
+        fromStringBase_BigInteger_String_helper("10", "-0", "0");
+        fromStringBase_BigInteger_String_helper("12", "-0", "0");
+        fromStringBase_BigInteger_String_helper("16", "-0", "0");
+        fromStringBase_BigInteger_String_helper("36", "-0", "0");
+        fromStringBase_BigInteger_String_helper("88", "-(0)", "0");
+        fromStringBase_BigInteger_String_helper("100", "-(0)", "0");
+
+        fromStringBase_BigInteger_String_helper("2", "-00", "0");
+        fromStringBase_BigInteger_String_helper("3", "-00", "0");
+        fromStringBase_BigInteger_String_helper("4", "-00", "0");
+        fromStringBase_BigInteger_String_helper("10", "-00", "0");
+        fromStringBase_BigInteger_String_helper("12", "-00", "0");
+        fromStringBase_BigInteger_String_helper("16", "-00", "0");
+        fromStringBase_BigInteger_String_helper("36", "-00", "0");
+        fromStringBase_BigInteger_String_helper("88", "-(0)(0)", "0");
+        fromStringBase_BigInteger_String_helper("100", "-(0)(0)", "0");
+
+        fromStringBase_BigInteger_String_helper("2", "11111010000011001101111101110", "524393454");
+        fromStringBase_BigInteger_String_helper("3", "1100112201221120210", "524393454");
+        fromStringBase_BigInteger_String_helper("4", "133100121233232", "524393454");
+        fromStringBase_BigInteger_String_helper("10", "524393454", "524393454");
+        fromStringBase_BigInteger_String_helper("12", "127750526", "524393454");
+        fromStringBase_BigInteger_String_helper("16", "1F419BEE", "524393454");
+        fromStringBase_BigInteger_String_helper("36", "8O7KKU", "524393454");
+        fromStringBase_BigInteger_String_helper("88", "(8)(65)(44)(8)(46)", "524393454");
+        fromStringBase_BigInteger_String_helper("100", "(5)(24)(39)(34)(54)", "524393454");
+
+        fromStringBase_BigInteger_String_helper("2", "00011111010000011001101111101110", "524393454");
+        fromStringBase_BigInteger_String_helper("3", "0001100112201221120210", "524393454");
+        fromStringBase_BigInteger_String_helper("4", "000133100121233232", "524393454");
+        fromStringBase_BigInteger_String_helper("10", "000524393454", "524393454");
+        fromStringBase_BigInteger_String_helper("12", "000127750526", "524393454");
+        fromStringBase_BigInteger_String_helper("16", "0001F419BEE", "524393454");
+        fromStringBase_BigInteger_String_helper("36", "0008O7KKU", "524393454");
+        fromStringBase_BigInteger_String_helper("88", "(0)(0)(0)(8)(65)(44)(8)(46)", "524393454");
+        fromStringBase_BigInteger_String_helper("100", "(0)(0)(0)(5)(24)(39)(34)(54)", "524393454");
+
+        fromStringBase_BigInteger_String_helper("2", "-11111010000011001101111101110", "-524393454");
+        fromStringBase_BigInteger_String_helper("3", "-1100112201221120210", "-524393454");
+        fromStringBase_BigInteger_String_helper("4", "-133100121233232", "-524393454");
+        fromStringBase_BigInteger_String_helper("10", "-524393454", "-524393454");
+        fromStringBase_BigInteger_String_helper("12", "-127750526", "-524393454");
+        fromStringBase_BigInteger_String_helper("16", "-1F419BEE", "-524393454");
+        fromStringBase_BigInteger_String_helper("36", "-8O7KKU", "-524393454");
+        fromStringBase_BigInteger_String_helper("88", "-(8)(65)(44)(8)(46)", "-524393454");
+        fromStringBase_BigInteger_String_helper("100", "-(5)(24)(39)(34)(54)", "-524393454");
+
+        fromStringBase_BigInteger_String_helper("2", "-00011111010000011001101111101110", "-524393454");
+        fromStringBase_BigInteger_String_helper("3", "-0001100112201221120210", "-524393454");
+        fromStringBase_BigInteger_String_helper("4", "-000133100121233232", "-524393454");
+        fromStringBase_BigInteger_String_helper("10", "-000524393454", "-524393454");
+        fromStringBase_BigInteger_String_helper("12", "-000127750526", "-524393454");
+        fromStringBase_BigInteger_String_helper("16", "-0001F419BEE", "-524393454");
+        fromStringBase_BigInteger_String_helper("36", "-0008O7KKU", "-524393454");
+        fromStringBase_BigInteger_String_helper("88", "-(0)(0)(0)(8)(65)(44)(8)(46)", "-524393454");
+        fromStringBase_BigInteger_String_helper("100", "-(0)(0)(0)(5)(24)(39)(34)(54)", "-524393454");
+
+        fromStringBase_BigInteger_String_fail_helper("1", "");
+        fromStringBase_BigInteger_String_fail_helper("0", "");
+        fromStringBase_BigInteger_String_fail_helper("2", "-");
+        fromStringBase_BigInteger_String_fail_helper("2", "3");
+        fromStringBase_BigInteger_String_fail_helper("2", "*");
+        fromStringBase_BigInteger_String_fail_helper("100", "12");
+        fromStringBase_BigInteger_String_fail_helper("100", "(-12)");
+        fromStringBase_BigInteger_String_fail_helper("100", "(3F)");
+        fromStringBase_BigInteger_String_fail_helper("100", "-");
+        fromStringBase_BigInteger_String_fail_helper("100", "()");
+        fromStringBase_BigInteger_String_fail_helper("100", "()()");
+        fromStringBase_BigInteger_String_fail_helper("100", "(00)");
+        fromStringBase_BigInteger_String_fail_helper("100", "(02)");
+        fromStringBase_BigInteger_String_fail_helper("100", "(2)()");
     }
 
     @Test

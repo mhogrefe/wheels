@@ -1916,9 +1916,7 @@ public class IntegerUtilsProperties extends TestProperties {
     }
 
     private void propertiesFromStringBase_int_String() {
-        initialize("");
-        System.out.println("\t\ttesting fromString(int, String) properties...");
-
+        initialize("fromString(int, String)");
         Iterable<Pair<Integer, String>> ps = map(
                 p -> new Pair<>(p.a, toStringBase(BigInteger.valueOf(p.a), p.b)),
                 P.pairs(P.rangeUpGeometric(2), P.bigIntegers())
@@ -1939,39 +1937,21 @@ public class IntegerUtilsProperties extends TestProperties {
                 fail(p);
             } catch (IllegalArgumentException ignored) {}
         }
-
-        //improper String left untested
     }
 
     private void compareImplementationsFromStringBase_int_String() {
-        initialize("");
-        System.out.println("\t\tcomparing fromStringBase(int, String) implementations...");
-
-        long totalTime = 0;
+        Map<String, Function<Pair<Integer, String>, BigInteger>> functions = new LinkedHashMap<>();
+        functions.put("simplest", p -> fromStringBase_int_String_simplest(p.a, p.b));
+        functions.put("standard", p -> fromStringBase(p.a, p.b));
         Iterable<Pair<Integer, String>> ps = map(
                 p -> new Pair<>(p.a, toStringBase(BigInteger.valueOf(p.a), p.b)),
                 P.pairs(P.rangeUpGeometric(2), P.bigIntegers())
         );
-        for (Pair<Integer, String> p : take(LIMIT, ps)) {
-            long time = System.nanoTime();
-            fromStringBase_int_String_simplest(p.a, p.b);
-            totalTime += (System.nanoTime() - time);
-        }
-        System.out.println("\t\t\tsimplest: " + ((double) totalTime) / 1e9 + " s");
-
-        totalTime = 0;
-        for (Pair<Integer, String> p : take(LIMIT, ps)) {
-            long time = System.nanoTime();
-            fromStringBase(p.a, p.b);
-            totalTime += (System.nanoTime() - time);
-        }
-        System.out.println("\t\t\tstandard: " + ((double) totalTime) / 1e9 + " s");
+        compareImplementations("fromString(int, String)", take(LIMIT, ps), functions);
     }
 
     private void propertiesFromStringBase_BigInteger_String() {
-        initialize("");
-        System.out.println("\t\ttesting fromStringBase(BigInteger, String) properties...");
-
+        initialize("fromStringBase(BigInteger, String)");
         Iterable<Pair<BigInteger, String>> ps = map(
                 p -> new Pair<>(p.a, toStringBase(p.a, p.b)),
                 P.pairs(P.rangeUp(TWO), P.bigIntegers())
@@ -1991,8 +1971,6 @@ public class IntegerUtilsProperties extends TestProperties {
                 fail(p);
             } catch (IllegalArgumentException ignored) {}
         }
-
-        //improper String left untested
     }
 
     private void propertiesLogarithmicMux() {

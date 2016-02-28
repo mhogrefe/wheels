@@ -1019,8 +1019,9 @@ public class IntegerUtils {
         if (base < 2) {
             throw new IllegalArgumentException("base must be at least 2. Invalid base: " + base);
         }
-        if (s.isEmpty())
+        if (s.isEmpty()) {
             return BigInteger.ZERO;
+        }
         boolean negative = false;
         if (head(s) == '-') {
             s = tail(s);
@@ -1081,8 +1082,9 @@ public class IntegerUtils {
         if (lt(base, TWO)) {
             throw new IllegalArgumentException("base must be at least 2. Invalid base: " + base);
         }
-        if (s.isEmpty())
+        if (s.isEmpty()) {
             return BigInteger.ZERO;
+        }
         boolean negative = false;
         if (head(s) == '-') {
             s = tail(s);
