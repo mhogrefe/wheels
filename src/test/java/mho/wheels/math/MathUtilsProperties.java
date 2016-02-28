@@ -7,6 +7,9 @@ import mho.wheels.testing.TestProperties;
 import org.jetbrains.annotations.NotNull;
 
 import java.math.BigInteger;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.function.Function;
 
 import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.math.MathUtils.*;
@@ -26,6 +29,8 @@ public class MathUtilsProperties extends TestProperties {
         compareImplementationsGcd_long_long();
         propertiesLcm();
         compareImplementationsLcm();
+        propertiesReversePermutationSign();
+        compareImplementationsReversePermutationSign();
     }
 
     private static int gcd_int_int_simplest(int x, int y) {
@@ -270,5 +275,25 @@ public class MathUtilsProperties extends TestProperties {
             totalTime += (System.nanoTime() - time);
         }
         System.out.println("\t\t\tstandard: " + ((double) totalTime) / 1e9 + " s");
+    }
+
+    private static boolean reversePermutationSign_alt(int i) {
+        return BigInteger.valueOf(i).multiply(BigInteger.valueOf(i - 1)).shiftRight(1).and(BigInteger.ONE)
+                .equals(BigInteger.ZERO);
+    }
+
+    private void propertiesReversePermutationSign() {
+        initialize("reversePermutationSign()");
+        for (int i : take(LIMIT, P.integers())) {
+            boolean reversePermutationSign = reversePermutationSign(i);
+            assertEquals(i, reversePermutationSign, reversePermutationSign_alt(i));
+        }
+    }
+
+    private void compareImplementationsReversePermutationSign() {
+        Map<String, Function<Integer, Boolean>> functions = new LinkedHashMap<>();
+        functions.put("alt", MathUtilsProperties::reversePermutationSign_alt);
+        functions.put("standard", MathUtils::reversePermutationSign);
+        compareImplementations("reversePermutationSign()", take(LIMIT, P.integers()), functions);
     }
 }

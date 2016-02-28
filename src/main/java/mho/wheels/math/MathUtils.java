@@ -273,6 +273,10 @@ public final class MathUtils {
         return binomialCoefficient(n.add(BigInteger.valueOf(k - 1)), k);
     }
 
+    public static boolean reversePermutationSign(int i) {
+        return (i & 2) == 0;
+    }
+
     public static @NotNull BigInteger fastGrowingCeilingInverse(
             @NotNull Function<BigInteger, BigInteger> f,
             @NotNull BigInteger y,

@@ -9,6 +9,7 @@ import static mho.wheels.iterables.IterableUtils.filter;
 import static mho.wheels.iterables.IterableUtils.take;
 import static mho.wheels.math.MathUtils.gcd;
 import static mho.wheels.math.MathUtils.lcm;
+import static mho.wheels.math.MathUtils.reversePermutationSign;
 
 @SuppressWarnings("UnusedDeclaration")
 public class MathUtilsDemos extends Demos {
@@ -33,6 +34,12 @@ public class MathUtilsDemos extends Demos {
     private void demoLcm() {
         for (Pair<BigInteger, BigInteger> p : take(LIMIT, P.pairs(P.positiveBigIntegers()))) {
             System.out.println("lcm(" + p.a + ", " + p.b + ") = " + lcm(p.a, p.b));
+        }
+    }
+
+    private void demoReversePermutationSign() {
+        for (int i : take(LIMIT, P.integers())) {
+            System.out.println("reversePermutationSign(" + i + ") = " + reversePermutationSign(i));
         }
     }
 }

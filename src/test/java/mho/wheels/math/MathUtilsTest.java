@@ -153,4 +153,23 @@ public class MathUtilsTest {
             fail();
         } catch (ArithmeticException ignored) {}
     }
+
+    private static void reversePermutationsSign_helper(int i, boolean output) {
+        aeq(reversePermutationSign(i), output);
+    }
+
+    @Test
+    public void testReversePermutationSign() {
+        reversePermutationsSign_helper(0, true);
+        reversePermutationsSign_helper(1, true);
+        reversePermutationsSign_helper(2, false);
+        reversePermutationsSign_helper(3, false);
+        reversePermutationsSign_helper(4, true);
+        reversePermutationsSign_helper(5, true);
+        reversePermutationsSign_helper(-1, false);
+        reversePermutationsSign_helper(-2, false);
+        reversePermutationsSign_helper(-3, true);
+        reversePermutationsSign_helper(-4, true);
+        reversePermutationsSign_helper(-5, false);
+    }
 }
