@@ -735,66 +735,49 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testRange_float_float() {
-        range_float_float_helper(1.0f, 2.0f,
-                "[1.0, 2.0, 1.5, 1.25, 1.75, 1.125, 1.375, 1.625, 1.875, 1.0625, 1.1875, 1.3125, 1.4375, 1.5625," +
-                " 1.6875, 1.8125, 1.9375, 1.03125, 1.09375, 1.15625, ...]");
-        range_float_float_helper(1.0f, 3.0f,
-                "[1.0, 3.0, 2.0, 1.5, 2.5, 1.25, 1.75, 2.25, 2.75, 1.125, 1.375, 1.625, 1.875, 2.125, 2.375, 2.625," +
-                " 2.875, 1.0625, 1.1875, 1.3125, ...]");
-        range_float_float_helper(1.0f, 4.0f,
-                "[1.0, 2.0, 3.0, 4.0, 1.5, 2.5, 3.5, 1.25, 2.25, 3.25, 1.75, 2.75, 3.75, 1.125, 2.125, 3.125, 1.375," +
-                " 2.375, 3.375, 1.625, ...]");
-        range_float_float_helper(1.0f, 257.0f,
-                "[1.0, 257.0, 129.0, 65.0, 193.0, 33.0, 97.0, 161.0, 225.0, 17.0, 49.0, 81.0, 113.0, 145.0, 177.0," +
-                " 209.0, 241.0, 9.0, 25.0, 41.0, ...]");
-        range_float_float_helper(-257.0f, -1.0f,
-                "[-257.0, -1.0, -129.0, -193.0, -65.0, -225.0, -161.0, -97.0, -33.0, -241.0, -209.0, -177.0, -145.0," +
-                " -113.0, -81.0, -49.0, -17.0, -249.0, -233.0, -217.0, ...]");
-        range_float_float_helper(1.0f, 1.0E20f,
-                "[1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0, 17.0, 18.0," +
-                " 19.0, 20.0, ...]");
-        range_float_float_helper(-1.0E20f, -1.0f,
-                "[-1.0, -2.0, -3.0, -4.0, -5.0, -6.0, -7.0, -8.0, -9.0, -10.0, -11.0, -12.0, -13.0, -14.0, -15.0," +
-                " -16.0, -17.0, -18.0, -19.0, -20.0, ...]");
+        range_float_float_helper(1.0f, 2.0f, "ExhaustiveProvider_range_float_float_1.0f_2.0f");
+        range_float_float_helper(1.0f, 3.0f, "ExhaustiveProvider_range_float_float_1.0f_3.0f");
+        range_float_float_helper(1.0f, 4.0f,"ExhaustiveProvider_range_float_float_1.0f_4.0f");
+        range_float_float_helper(1.0f, 257.0f, "ExhaustiveProvider_range_float_float_1.0f_257.0f");
+        range_float_float_helper(-257.0f, -1.0f, "ExhaustiveProvider_range_float_float_-257.0f_-1.0f");
+        range_float_float_helper(1.0f, 1.0E20f, "ExhaustiveProvider_range_float_float_1.0f_1.0E20f");
+        range_float_float_helper(-1.0E20f, -1.0f, "ExhaustiveProvider_range_float_float_-1.0E20f_-1.0f");
         range_float_float_helper((float) Math.sqrt(2), (float) Math.PI,
-                "[1.4142135, 1.4142137, 1.4142138, 1.4142139, 1.414214, 1.4142141, 1.4142143, 1.4142144, 1.4142145," +
-                " 1.4142146, 1.4142147, 1.4142148, 1.414215, 1.4142151, 1.4142152, 1.4142153, 1.4142154, 1.4142156," +
-                " 1.4142157, 1.4142158, ...]");
+                "ExhaustiveProvider_range_float_float_(float)_Math.sqrt(2)_(float)_Math.PI");
         range_float_float_helper((float) Math.PI, FloatingPointUtils.successor((float) Math.PI),
-                "[3.1415927, 3.141593]");
-        range_float_float_helper(0.0f, 1.0f,
-                "[0.0, -0.0, 1.0, 0.5, 0.25, 0.75, 0.125, 0.375, 0.625, 0.875, 0.0625, 0.1875, 0.3125, 0.4375," +
-                " 0.5625, 0.6875, 0.8125, 0.9375, 0.03125, 0.09375, ...]");
-        range_float_float_helper(-1.0f, 1.0f,
-                "[-1.0, 1.0, 0.0, -0.0, -0.5, 0.5, -0.75, -0.25, 0.25, 0.75, -0.875, -0.625, -0.375, -0.125, 0.125," +
-                " 0.375, 0.625, 0.875, -0.9375, -0.8125, ...]");
-        range_float_float_helper(1.0f, 1.0f, "[1.0]");
-        range_float_float_helper((float) Math.PI, (float) Math.PI, "[3.1415927]");
+                "ExhaustiveProvider_range_float_float_(float)_Math.sqrt(2)_successor((float)_Math.PI)");
+        range_float_float_helper(0.0f, 1.0f, "ExhaustiveProvider_range_float_float_0.0f_1.0f");
+        range_float_float_helper(-1.0f, 1.0f, "ExhaustiveProvider_range_float_float_-1.0f_1.0f");
+        range_float_float_helper(1.0f, 1.0f, "ExhaustiveProvider_range_float_float_1.0f_1.0f");
+        range_float_float_helper((float) Math.PI, (float) Math.PI,
+                "ExhaustiveProvider_range_float_float_(float)_Math.PI_(float)_Math.PI");
         range_float_float_helper((float) -Math.PI, (float) Math.PI,
-                "[-3.1415927, -3.1415923, -3.1415918, -3.1415913, -3.1415908, -3.1415904, -3.1415899, -3.1415894," +
-                " -3.141589, -3.1415884, -3.141588, -3.1415875, -3.141587, -3.1415865, -3.141586, -3.1415856," +
-                " -3.141585, -3.1415846, -3.1415842, -3.1415837, ...]");
+                "ExhaustiveProvider_range_float_float_(float)_-Math.PI_(float)_Math.PI");
         range_float_float_helper(1.0f, Float.POSITIVE_INFINITY,
-                "[Infinity, 1.0, 2.0, 3.0, 4.0, 1.5, 6.0, 7.0, 8.0, 5.0, 10.0, 11.0, 12.0, 2.5, 14.0, 15.0, 16.0," +
-                " 1.25, 18.0, 19.0, ...]");
+                "ExhaustiveProvider_range_float_float_1.0f_POSITIVE_INFINITY");
         range_float_float_helper(Float.NEGATIVE_INFINITY, 1.0f,
-                "[-Infinity, 1.0, -0.0, 0.0, -1.0, -2.0, 0.5, -4.0, -5.0, -6.0, -3.0, -8.0, -9.0, -10.0, -0.5," +
-                " -12.0, -13.0, -14.0, 0.75, -16.0, ...]");
-        range_float_float_helper(Float.MAX_VALUE, Float.POSITIVE_INFINITY, "[Infinity, 3.4028235E38]");
-        range_float_float_helper(Float.NEGATIVE_INFINITY, -Float.MAX_VALUE, "[-Infinity, -3.4028235E38]");
+                "ExhaustiveProvider_range_float_float_NEGATIVE_INFINITY_1.0f");
+        range_float_float_helper(Float.MAX_VALUE, Float.POSITIVE_INFINITY,
+                "ExhaustiveProvider_range_float_float_MAX_VALUE_POSITIVE_INFINITY");
+        range_float_float_helper(Float.NEGATIVE_INFINITY, -Float.MAX_VALUE,
+                "ExhaustiveProvider_range_float_float_NEGATIVE_INFINITY_-MAX_VALUE");
         range_float_float_helper(Float.NEGATIVE_INFINITY, Float.POSITIVE_INFINITY,
-                "[-Infinity, Infinity, -0.0, 0.0, -1.0, 1.0, -2.0, 2.0, -3.0, 3.0, -6.0, 6.0, -0.5, 0.5, -4.0, 4.0," +
-                " -1.5, 1.5, -12.0, 12.0, ...]");
-        range_float_float_helper(0.0f, 0.0f, "[0.0, -0.0]");
-        range_float_float_helper(-0.0f, -0.0f, "[0.0, -0.0]");
-        range_float_float_helper(-0.0f, 0.0f, "[0.0, -0.0]");
-        range_float_float_helper(0.0f, -0.0f, "[0.0, -0.0]");
-        range_float_float_helper(Float.POSITIVE_INFINITY, Float.POSITIVE_INFINITY, "[Infinity]");
-        range_float_float_helper(Float.NEGATIVE_INFINITY, Float.NEGATIVE_INFINITY, "[-Infinity]");
-        range_float_float_helper(1.0f, -1.0f, "[]");
-        range_float_float_helper(Float.POSITIVE_INFINITY, Float.NEGATIVE_INFINITY, "[]");
-        range_float_float_helper(Float.POSITIVE_INFINITY, 1.0f, "[]");
-        range_float_float_helper(1.0f, Float.NEGATIVE_INFINITY, "[]");
+                "ExhaustiveProvider_range_float_float_NEGATIVE_INFINITY_POSITIVE_INFINITY");
+        range_float_float_helper(0.0f, 0.0f, "ExhaustiveProvider_range_float_float_0.0f_0.0f");
+        range_float_float_helper(-0.0f, -0.0f, "ExhaustiveProvider_range_float_float_-0.0f_-0.0f");
+        range_float_float_helper(-0.0f, 0.0f, "ExhaustiveProvider_range_float_float_-0.0f_0.0f");
+        range_float_float_helper(0.0f, -0.0f, "ExhaustiveProvider_range_float_float_0.0f_-0.0f");
+        range_float_float_helper(Float.POSITIVE_INFINITY, Float.POSITIVE_INFINITY,
+                "ExhaustiveProvider_range_float_float_POSITIVE_INFINITY_POSITIVE_INFINITY");
+        range_float_float_helper(Float.NEGATIVE_INFINITY, Float.NEGATIVE_INFINITY,
+                "ExhaustiveProvider_range_float_float_NEGATIVE_INFINITY_NEGATIVE_INFINITY");
+        range_float_float_helper(1.0f, -1.0f, "ExhaustiveProvider_range_float_float_1.0f_-1.0f");
+        range_float_float_helper(Float.POSITIVE_INFINITY, Float.NEGATIVE_INFINITY,
+                "ExhaustiveProvider_range_float_float_POSITIVE_INFINITY_NEGATIVE_INFINITY");
+        range_float_float_helper(Float.POSITIVE_INFINITY, 1.0f,
+                "ExhaustiveProvider_range_float_float_POSITIVE_INFINITY_1.0f");
+        range_float_float_helper(1.0f, Float.NEGATIVE_INFINITY,
+                "ExhaustiveProvider_range_float_float_1.0f_NEGATIVE_INFINITY");
         range_float_float_fail_helper(Float.NaN, 1.0f);
         range_float_float_fail_helper(Float.NaN, Float.POSITIVE_INFINITY);
         range_float_float_fail_helper(Float.NaN, Float.NEGATIVE_INFINITY);
@@ -817,87 +800,24 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testRangeUp_double() {
-        rangeUp_double_helper(1.0,
-                "[Infinity, 1.0, 2.0, 3.0, 4.0, 1.5, 6.0, 7.0, 8.0, 5.0, 10.0, 11.0, 12.0, 2.5, 14.0, 15.0, 16.0," +
-                " 1.25, 18.0, 19.0, ...]");
-        rangeUp_double_helper(1.0E20,
-                "[Infinity, 1.0E20, 1.0000000000000105E20, 1.000000000000021E20, 1.0000000000000315E20," +
-                " 1.0000000000000052E20, 1.0000000000000524E20, 1.0000000000000629E20, 1.0000000000000734E20," +
-                " 1.000000000000042E20, 1.0000000000000944E20, 1.0000000000001049E20, 1.0000000000001153E20," +
-                " 1.0000000000000157E20, 1.0000000000001363E20, 1.0000000000001468E20, 1.0000000000001573E20," +
-                " 1.0000000000000026E20, 1.0000000000001783E20, 1.0000000000001887E20, ...]");
-        rangeUp_double_helper(-1.0,
-                "[Infinity, -1.0, 0.0, -0.0, 1.0, 2.0, -0.5, 4.0, 5.0, 6.0, 3.0, 8.0, 9.0, 10.0, 0.5, 12.0, 13.0," +
-                " 14.0, -0.75, 16.0, ...]");
-        rangeUp_double_helper(-1.0E20,
-                "[Infinity, -1.0E20, -9.999999999999895E19, -9.99999999999979E19, -9.999999999999685E19," +
-                " -9.999999999999948E19, -9.999999999999476E19, -9.999999999999371E19, -9.999999999999266E19," +
-                " -9.99999999999958E19, -9.999999999999056E19, -9.999999999998951E19, -9.999999999998847E19," +
-                " -9.999999999999843E19, -9.999999999998637E19, -9.999999999998532E19, -9.999999999998427E19," +
-                " -9.999999999999974E19, -9.999999999998217E19, -9.999999999998113E19, ...]");
-        rangeUp_double_helper(Math.PI,
-                "[Infinity, 3.141592653589793, 3.1415926535897967, 3.1415926535898, 3.1415926535898038," +
-                " 3.141592653589795, 3.141592653589811, 3.1415926535898144, 3.141592653589818, 3.1415926535898073," +
-                " 3.141592653589825, 3.1415926535898286, 3.141592653589832, 3.1415926535897984, 3.1415926535898393," +
-                " 3.141592653589843, 3.1415926535898464, 3.141592653589794, 3.1415926535898535, 3.141592653589857," +
-                " ...]");
-        rangeUp_double_helper(Math.sqrt(2),
-                "[Infinity, 1.4142135623730951, 1.4142135623730954, 1.4142135623730956, 1.4142135623730958," +
-                " 1.4142135623730963, 1.4142135623730965, 1.4142135623730967, 1.414213562373096, 1.4142135623730971," +
-                " 1.4142135623730974, 1.4142135623730976, 1.414213562373098, 1.4142135623730983, 1.4142135623730985," +
-                " 1.414213562373099, 1.4142135623730991, 1.4142135623730994, 1.4142135623730998, 1.4142135623731," +
-                " ...]");
-        rangeUp_double_helper(-Math.PI,
-                "[Infinity, -3.141592653589793, -3.1415926535897896, -3.141592653589786, -3.1415926535897825," +
-                " -3.1415926535897913, -3.1415926535897754, -3.141592653589772, -3.1415926535897682," +
-                " -3.141592653589779, -3.141592653589761, -3.1415926535897576, -3.141592653589754," +
-                " -3.141592653589788, -3.141592653589747, -3.1415926535897434, -3.14159265358974," +
-                " -3.1415926535897922, -3.1415926535897327, -3.141592653589729, ...]");
-        rangeUp_double_helper(-Math.sqrt(2),
-                "[Infinity, -1.4142135623730951, -1.414213562373095, -1.4142135623730947, -1.4142135623730945," +
-                " -1.414213562373094, -1.4142135623730938, -1.4142135623730936, -1.4142135623730943," +
-                " -1.4142135623730931, -1.414213562373093, -1.4142135623730927, -1.4142135623730923," +
-                " -1.414213562373092, -1.4142135623730918, -1.4142135623730914, -1.4142135623730911," +
-                " -1.414213562373091, -1.4142135623730905, -1.4142135623730903, ...]");
-        rangeUp_double_helper(0.0,
-                "[Infinity, 0.0, -0.0, 1.0, 2.0, 3.0, 0.5, 5.0, 6.0, 7.0, 4.0, 9.0, 10.0, 11.0, 1.5, 13.0, 14.0," +
-                " 15.0, 0.25, 17.0, ...]");
-        rangeUp_double_helper(-0.0,
-                "[Infinity, 0.0, -0.0, 1.0, 2.0, 3.0, 0.5, 5.0, 6.0, 7.0, 4.0, 9.0, 10.0, 11.0, 1.5, 13.0, 14.0," +
-                " 15.0, 0.25, 17.0, ...]");
-        rangeUp_double_helper(Double.MIN_VALUE,
-                "[Infinity, 4.9E-324, 1.0E-323, 1.5E-323, 2.0E-323, 3.0E-323, 3.5E-323, 4.0E-323, 2.5E-323," +
-                " 4.9E-323, 5.4E-323, 5.9E-323, 6.9E-323, 7.4E-323, 7.9E-323, 8.9E-323, 9.4E-323, 1.0E-322," +
-                " 1.1E-322, 1.14E-322, ...]");
-        rangeUp_double_helper(Double.MIN_NORMAL,
-                "[Infinity, 2.2250738585072014E-308, 4.450147717014403E-308, 6.675221575521604E-308," +
-                " 8.900295434028806E-308, 3.337610787760802E-308, 1.3350443151043208E-307, 1.557551700955041E-307," +
-                " 1.7800590868057611E-307, 1.1125369292536007E-307, 2.2250738585072014E-307," +
-                " 2.4475812443579215E-307, 2.6700886302086417E-307, 5.562684646268003E-308, 3.115103401910082E-307," +
-                " 3.337610787760802E-307, 3.5601181736115222E-307, 2.7813423231340017E-308, 4.0051329453129625E-307," +
-                " 4.227640331163683E-307, ...]");
-        rangeUp_double_helper(-Double.MIN_VALUE,
-                "[Infinity, -4.9E-324, 0.0, -0.0, 4.9E-324, 1.0E-323, 2.0E-323, 2.5E-323, 3.0E-323, 1.5E-323," +
-                " 4.0E-323, 4.4E-323, 4.9E-323, 5.9E-323, 6.4E-323, 6.9E-323, 7.9E-323, 8.4E-323, 8.9E-323," +
-                " 1.0E-322, ...]");
-        rangeUp_double_helper(-Double.MIN_NORMAL,
-                "[Infinity, -2.2250738585072014E-308, 0.0, -0.0, 2.2250738585072014E-308, 4.450147717014403E-308," +
-                " -1.1125369292536007E-308, 8.900295434028806E-308, 1.1125369292536007E-307," +
-                " 1.3350443151043208E-307, 6.675221575521604E-308, 1.7800590868057611E-307, 2.0025664726564812E-307," +
-                " 2.2250738585072014E-307, 1.1125369292536007E-308, 2.6700886302086417E-307," +
-                " 2.8925960160593618E-307, 3.115103401910082E-307, -1.668805393880401E-308, 3.5601181736115222E-307," +
-                " ...]");
-        rangeUp_double_helper(-Double.MAX_VALUE,
-                "[Infinity, -1.7976931348623157E308, -1.7976931348623155E308, -1.7976931348623153E308," +
-                " -1.7976931348623151E308, -1.7976931348623147E308, -1.7976931348623145E308," +
-                " -1.7976931348623143E308, -1.797693134862315E308, -1.797693134862314E308, -1.7976931348623137E308," +
-                " -1.7976931348623135E308, -1.7976931348623131E308, -1.797693134862313E308, -1.7976931348623127E308," +
-                " -1.7976931348623123E308, -1.7976931348623121E308, -1.797693134862312E308, -1.7976931348623115E308," +
-                " -1.7976931348623113E308, ...]");
-        rangeUp_double_helper(Double.POSITIVE_INFINITY, "[Infinity]");
-        rangeUp_double_helper(Double.NEGATIVE_INFINITY,
-                "[Infinity, -Infinity, 0.0, -0.0, 1.0, -1.0, 2.0, -2.0, 3.0, -3.0, 6.0, -6.0, 0.5, -0.5, 4.0, -4.0," +
-                " 1.5, -1.5, 12.0, -12.0, ...]");
+        rangeUp_double_helper(1.0, "ExhaustiveProvider_rangeUp_double_1.0");
+        rangeUp_double_helper(1.0E20, "ExhaustiveProvider_rangeUp_double_1.0E20");
+        rangeUp_double_helper(-1.0, "ExhaustiveProvider_rangeUp_double_-1.0");
+        rangeUp_double_helper(-1.0E20, "ExhaustiveProvider_rangeUp_double_-1.0E20");
+        rangeUp_double_helper(Math.PI, "ExhaustiveProvider_rangeUp_double_Math.PI");
+        rangeUp_double_helper(Math.sqrt(2), "ExhaustiveProvider_rangeUp_double_Math.sqrt(2)");
+        rangeUp_double_helper(-Math.PI, "ExhaustiveProvider_rangeUp_double_-Math.PI");
+        rangeUp_double_helper(-Math.sqrt(2), "ExhaustiveProvider_rangeUp_double_-Math.sqrt(2)");
+        rangeUp_double_helper(0.0, "ExhaustiveProvider_rangeUp_double_0.0");
+        rangeUp_double_helper(-0.0, "ExhaustiveProvider_rangeUp_double_-0.0");
+        rangeUp_double_helper(Double.MIN_VALUE, "ExhaustiveProvider_rangeUp_double_MIN_VALUE");
+        rangeUp_double_helper(Double.MIN_NORMAL, "ExhaustiveProvider_rangeUp_double_MIN_NORMAL");
+        rangeUp_double_helper(-Double.MIN_VALUE, "ExhaustiveProvider_rangeUp_double_-MIN_VALUE");
+        rangeUp_double_helper(-Double.MIN_NORMAL, "ExhaustiveProvider_rangeUp_double_-MIN_NORMAL");
+        rangeUp_double_helper(Double.MAX_VALUE, "ExhaustiveProvider_rangeUp_double_MAX_VALUE");
+        rangeUp_double_helper(-Double.MAX_VALUE, "ExhaustiveProvider_rangeUp_double_-MAX_VALUE");
+        rangeUp_double_helper(Double.POSITIVE_INFINITY, "ExhaustiveProvider_rangeUp_double_POSITIVE_INFINITY");
+        rangeUp_double_helper(Double.NEGATIVE_INFINITY, "ExhaustiveProvider_rangeUp_double_NEGATIVE_INFINITY");
         rangeUp_double_fail_helper(Double.NaN);
     }
 
@@ -914,89 +834,24 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testRangeDown_double() {
-        rangeDown_double_helper(1.0,
-                "[-Infinity, 1.0, -0.0, 0.0, -1.0, -2.0, 0.5, -4.0, -5.0, -6.0, -3.0, -8.0, -9.0, -10.0, -0.5," +
-                " -12.0, -13.0, -14.0, 0.75, -16.0, ...]");
-        rangeDown_double_helper(1.0E20,
-                "[-Infinity, 1.0E20, 9.999999999999895E19, 9.99999999999979E19, 9.999999999999685E19," +
-                " 9.999999999999948E19, 9.999999999999476E19, 9.999999999999371E19, 9.999999999999266E19," +
-                " 9.99999999999958E19, 9.999999999999056E19, 9.999999999998951E19, 9.999999999998847E19," +
-                " 9.999999999999843E19, 9.999999999998637E19, 9.999999999998532E19, 9.999999999998427E19," +
-                " 9.999999999999974E19, 9.999999999998217E19, 9.999999999998113E19, ...]");
-        rangeDown_double_helper(-1.0,
-                "[-Infinity, -1.0, -2.0, -3.0, -4.0, -1.5, -6.0, -7.0, -8.0, -5.0, -10.0, -11.0, -12.0, -2.5, -14.0," +
-                " -15.0, -16.0, -1.25, -18.0, -19.0, ...]");
-        rangeDown_double_helper(-1.0E20,
-                "[-Infinity, -1.0E20, -1.0000000000000105E20, -1.000000000000021E20, -1.0000000000000315E20," +
-                " -1.0000000000000052E20, -1.0000000000000524E20, -1.0000000000000629E20, -1.0000000000000734E20," +
-                " -1.000000000000042E20, -1.0000000000000944E20, -1.0000000000001049E20, -1.0000000000001153E20," +
-                " -1.0000000000000157E20, -1.0000000000001363E20, -1.0000000000001468E20, -1.0000000000001573E20," +
-                " -1.0000000000000026E20, -1.0000000000001783E20, -1.0000000000001887E20, ...]");
-        rangeDown_double_helper(Math.PI,
-                "[-Infinity, 3.141592653589793, 3.1415926535897896, 3.141592653589786, 3.1415926535897825," +
-                " 3.1415926535897913, 3.1415926535897754, 3.141592653589772, 3.1415926535897682, 3.141592653589779," +
-                " 3.141592653589761, 3.1415926535897576, 3.141592653589754, 3.141592653589788, 3.141592653589747," +
-                " 3.1415926535897434, 3.14159265358974, 3.1415926535897922, 3.1415926535897327, 3.141592653589729," +
-                " ...]");
-        rangeDown_double_helper(Math.sqrt(2),
-                "[-Infinity, 1.4142135623730951, 1.414213562373095, 1.4142135623730947, 1.4142135623730945," +
-                " 1.414213562373094, 1.4142135623730938, 1.4142135623730936, 1.4142135623730943, 1.4142135623730931," +
-                " 1.414213562373093, 1.4142135623730927, 1.4142135623730923, 1.414213562373092, 1.4142135623730918," +
-                " 1.4142135623730914, 1.4142135623730911, 1.414213562373091, 1.4142135623730905, 1.4142135623730903," +
-                " ...]");
-        rangeDown_double_helper(-Math.PI,
-                "[-Infinity, -3.141592653589793, -3.1415926535897967, -3.1415926535898, -3.1415926535898038," +
-                " -3.141592653589795, -3.141592653589811, -3.1415926535898144, -3.141592653589818," +
-                " -3.1415926535898073, -3.141592653589825, -3.1415926535898286, -3.141592653589832," +
-                " -3.1415926535897984, -3.1415926535898393, -3.141592653589843, -3.1415926535898464," +
-                " -3.141592653589794, -3.1415926535898535, -3.141592653589857, ...]");
-        rangeDown_double_helper(-Math.sqrt(2),
-                "[-Infinity, -1.4142135623730951, -1.4142135623730954, -1.4142135623730956, -1.4142135623730958," +
-                " -1.4142135623730963, -1.4142135623730965, -1.4142135623730967, -1.414213562373096," +
-                " -1.4142135623730971, -1.4142135623730974, -1.4142135623730976, -1.414213562373098," +
-                " -1.4142135623730983, -1.4142135623730985, -1.414213562373099, -1.4142135623730991," +
-                " -1.4142135623730994, -1.4142135623730998, -1.4142135623731, ...]");
-        rangeDown_double_helper(0.0,
-                "[-Infinity, -0.0, 0.0, -1.0, -2.0, -3.0, -0.5, -5.0, -6.0, -7.0, -4.0, -9.0, -10.0, -11.0, -1.5," +
-                " -13.0, -14.0, -15.0, -0.25, -17.0, ...]");
-        rangeDown_double_helper(-0.0,
-                "[-Infinity, -0.0, 0.0, -1.0, -2.0, -3.0, -0.5, -5.0, -6.0, -7.0, -4.0, -9.0, -10.0, -11.0, -1.5," +
-                " -13.0, -14.0, -15.0, -0.25, -17.0, ...]");
-        rangeDown_double_helper(Double.MIN_VALUE,
-                "[-Infinity, 4.9E-324, -0.0, 0.0, -4.9E-324, -1.0E-323, -2.0E-323, -2.5E-323, -3.0E-323, -1.5E-323," +
-                " -4.0E-323, -4.4E-323, -4.9E-323, -5.9E-323, -6.4E-323, -6.9E-323, -7.9E-323, -8.4E-323, -8.9E-323," +
-                " -1.0E-322, ...]");
-        rangeDown_double_helper(Double.MIN_NORMAL,
-                "[-Infinity, 2.2250738585072014E-308, -0.0, 0.0, -2.2250738585072014E-308, -4.450147717014403E-308," +
-                " 1.1125369292536007E-308, -8.900295434028806E-308, -1.1125369292536007E-307," +
-                " -1.3350443151043208E-307, -6.675221575521604E-308, -1.7800590868057611E-307," +
-                " -2.0025664726564812E-307, -2.2250738585072014E-307, -1.1125369292536007E-308," +
-                " -2.6700886302086417E-307, -2.8925960160593618E-307, -3.115103401910082E-307," +
-                " 1.668805393880401E-308, -3.5601181736115222E-307, ...]");
-        rangeDown_double_helper(-Double.MIN_VALUE,
-                "[-Infinity, -4.9E-324, -1.0E-323, -1.5E-323, -2.0E-323, -3.0E-323, -3.5E-323, -4.0E-323, -2.5E-323," +
-                " -4.9E-323, -5.4E-323, -5.9E-323, -6.9E-323, -7.4E-323, -7.9E-323, -8.9E-323, -9.4E-323, -1.0E-322," +
-                " -1.1E-322, -1.14E-322, ...]");
-        rangeDown_double_helper(-Double.MIN_NORMAL,
-                "[-Infinity, -2.2250738585072014E-308, -4.450147717014403E-308, -6.675221575521604E-308," +
-                " -8.900295434028806E-308, -3.337610787760802E-308, -1.3350443151043208E-307," +
-                " -1.557551700955041E-307, -1.7800590868057611E-307, -1.1125369292536007E-307," +
-                " -2.2250738585072014E-307, -2.4475812443579215E-307, -2.6700886302086417E-307," +
-                " -5.562684646268003E-308, -3.115103401910082E-307, -3.337610787760802E-307," +
-                " -3.5601181736115222E-307, -2.7813423231340017E-308, -4.0051329453129625E-307," +
-                " -4.227640331163683E-307, ...]");
-        rangeDown_double_helper(Double.MAX_VALUE,
-                "[-Infinity, 1.7976931348623157E308, 1.7976931348623155E308, 1.7976931348623153E308," +
-                " 1.7976931348623151E308, 1.7976931348623147E308, 1.7976931348623145E308, 1.7976931348623143E308," +
-                " 1.797693134862315E308, 1.797693134862314E308, 1.7976931348623137E308, 1.7976931348623135E308," +
-                " 1.7976931348623131E308, 1.797693134862313E308, 1.7976931348623127E308, 1.7976931348623123E308," +
-                " 1.7976931348623121E308, 1.797693134862312E308, 1.7976931348623115E308, 1.7976931348623113E308," +
-                " ...]");
-        rangeDown_double_helper(-Double.MAX_VALUE, "[-Infinity, -1.7976931348623157E308]");
-        rangeDown_double_helper(Double.POSITIVE_INFINITY,
-                "[-Infinity, Infinity, -0.0, 0.0, -1.0, 1.0, -2.0, 2.0, -3.0, 3.0, -6.0, 6.0, -0.5, 0.5, -4.0, 4.0," +
-                " -1.5, 1.5, -12.0, 12.0, ...]");
-        rangeDown_double_helper(Double.NEGATIVE_INFINITY, "[-Infinity]");
+        rangeDown_double_helper(1.0, "ExhaustiveProvider_rangeDown_double_1.0");
+        rangeDown_double_helper(1.0E20, "ExhaustiveProvider_rangeDown_double_1.0E20");
+        rangeDown_double_helper(-1.0, "ExhaustiveProvider_rangeDown_double_-1.0");
+        rangeDown_double_helper(-1.0E20, "ExhaustiveProvider_rangeDown_double_-1.0E20");
+        rangeDown_double_helper(Math.PI, "ExhaustiveProvider_rangeDown_double_Math.PI");
+        rangeDown_double_helper(Math.sqrt(2), "ExhaustiveProvider_rangeDown_double_Math.sqrt(2)");
+        rangeDown_double_helper(-Math.PI, "ExhaustiveProvider_rangeDown_double_-Math.PI");
+        rangeDown_double_helper(-Math.sqrt(2), "ExhaustiveProvider_rangeDown_double_-Math.sqrt(2)");
+        rangeDown_double_helper(0.0, "ExhaustiveProvider_rangeDown_double_0.0");
+        rangeDown_double_helper(-0.0, "ExhaustiveProvider_rangeDown_double_-0.0");
+        rangeDown_double_helper(Double.MIN_VALUE, "ExhaustiveProvider_rangeDown_double_MIN_VALUE");
+        rangeDown_double_helper(Double.MIN_NORMAL, "ExhaustiveProvider_rangeDown_double_MIN_NORMAL");
+        rangeDown_double_helper(-Double.MIN_VALUE, "ExhaustiveProvider_rangeDown_double_-MIN_VALUE");
+        rangeDown_double_helper(-Double.MIN_NORMAL, "ExhaustiveProvider_rangeDown_double_-MIN_NORMAL");
+        rangeDown_double_helper(Double.MAX_VALUE, "ExhaustiveProvider_rangeDown_double_MAX_VALUE");
+        rangeDown_double_helper(-Double.MAX_VALUE, "ExhaustiveProvider_rangeDown_double_-MAX_VALUE");
+        rangeDown_double_helper(Double.POSITIVE_INFINITY, "ExhaustiveProvider_rangeDown_double_POSITIVE_INFINITY");
+        rangeDown_double_helper(Double.NEGATIVE_INFINITY, "ExhaustiveProvider_rangeDown_double_NEGATIVE_INFINITY");
         rangeDown_double_fail_helper(Double.NaN);
     }
 
@@ -1013,71 +868,47 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testRange_double_double() {
-        range_double_double_helper(1.0, 2.0,
-                "[1.0, 2.0, 1.5, 1.25, 1.75, 1.125, 1.375, 1.625, 1.875, 1.0625, 1.1875, 1.3125, 1.4375, 1.5625," +
-                " 1.6875, 1.8125, 1.9375, 1.03125, 1.09375, 1.15625, ...]");
-        range_double_double_helper(1.0, 3.0,
-                "[1.0, 3.0, 2.0, 1.5, 2.5, 1.25, 1.75, 2.25, 2.75, 1.125, 1.375, 1.625, 1.875, 2.125, 2.375, 2.625," +
-                " 2.875, 1.0625, 1.1875, 1.3125, ...]");
-        range_double_double_helper(1.0, 4.0,
-                "[1.0, 2.0, 3.0, 4.0, 1.5, 2.5, 3.5, 1.25, 2.25, 3.25, 1.75, 2.75, 3.75, 1.125, 2.125, 3.125, 1.375," +
-                " 2.375, 3.375, 1.625, ...]");
-        range_double_double_helper(1.0, 257.0,
-                "[1.0, 257.0, 129.0, 65.0, 193.0, 33.0, 97.0, 161.0, 225.0, 17.0, 49.0, 81.0, 113.0, 145.0, 177.0," +
-                " 209.0, 241.0, 9.0, 25.0, 41.0, ...]");
-        range_double_double_helper(-257.0, -1.0,
-                "[-257.0, -1.0, -129.0, -193.0, -65.0, -225.0, -161.0, -97.0, -33.0, -241.0, -209.0, -177.0, -145.0," +
-                " -113.0, -81.0, -49.0, -17.0, -249.0, -233.0, -217.0, ...]");
-        range_double_double_helper(1.0, 1.0E20,
-                "[1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0, 17.0, 18.0," +
-                " 19.0, 20.0, ...]");
-        range_double_double_helper(-1.0E20, -1.0,
-                "[-1.0, -2.0, -3.0, -4.0, -5.0, -6.0, -7.0, -8.0, -9.0, -10.0, -11.0, -12.0, -13.0, -14.0, -15.0," +
-                " -16.0, -17.0, -18.0, -19.0, -20.0, ...]");
+        range_double_double_helper(1.0, 2.0, "ExhaustiveProvider_range_double_double_1.0_2.0");
+        range_double_double_helper(1.0, 3.0, "ExhaustiveProvider_range_double_double_1.0_3.0");
+        range_double_double_helper(1.0, 4.0,"ExhaustiveProvider_range_double_double_1.0_4.0");
+        range_double_double_helper(1.0, 257.0, "ExhaustiveProvider_range_double_double_1.0_257.0");
+        range_double_double_helper(-257.0, -1.0, "ExhaustiveProvider_range_double_double_-257.0_-1.0");
+        range_double_double_helper(1.0, 1.0E20, "ExhaustiveProvider_range_double_double_1.0_1.0E20");
+        range_double_double_helper(-1.0E20, -1.0, "ExhaustiveProvider_range_double_double_-1.0E20_-1.0");
         range_double_double_helper(Math.sqrt(2), Math.PI,
-                "[1.4142135623730951, 1.4142135623730954, 1.4142135623730956, 1.4142135623730958, 1.414213562373096," +
-                " 1.4142135623730963, 1.4142135623730965, 1.4142135623730967, 1.414213562373097, 1.4142135623730971," +
-                " 1.4142135623730974, 1.4142135623730976, 1.4142135623730978, 1.414213562373098, 1.4142135623730983," +
-                " 1.4142135623730985, 1.4142135623730987, 1.414213562373099, 1.4142135623730991, 1.4142135623730994," +
-                " ...]");
+                "ExhaustiveProvider_range_double_double_Math.sqrt(2)_Math.PI");
         range_double_double_helper(Math.PI, FloatingPointUtils.successor(Math.PI),
-                "[3.1415926535897936, 3.141592653589793]");
-        range_double_double_helper(0.0, 1.0,
-                "[0.0, -0.0, 1.0, 0.5, 0.25, 0.75, 0.125, 0.375, 0.625, 0.875, 0.0625, 0.1875, 0.3125, 0.4375," +
-                " 0.5625, 0.6875, 0.8125, 0.9375, 0.03125, 0.09375, ...]");
-        range_double_double_helper(-1.0, 1.0,
-                "[-1.0, 1.0, 0.0, -0.0, -0.5, 0.5, -0.75, -0.25, 0.25, 0.75, -0.875, -0.625, -0.375, -0.125, 0.125," +
-                " 0.375, 0.625, 0.875, -0.9375, -0.8125, ...]");
-        range_double_double_helper(1.0, 1.0, "[1.0]");
-        range_double_double_helper(Math.PI, Math.PI, "[3.141592653589793]");
-        range_double_double_helper(-Math.PI, Math.PI,
-                "[-3.141592653589793, -3.141592653589786, -3.141592653589779, -3.141592653589772," +
-                " -3.1415926535897647, -3.1415926535897576, -3.1415926535897505, -3.1415926535897434," +
-                " -3.1415926535897363, -3.141592653589729, -3.141592653589722, -3.141592653589715," +
-                " -3.141592653589708, -3.1415926535897007, -3.1415926535896936, -3.1415926535896865," +
-                " -3.1415926535896794, -3.1415926535896723, -3.141592653589665, -3.141592653589658, ...]");
+                "ExhaustiveProvider_range_double_double_Math.sqrt(2)_successor(Math.PI)");
+        range_double_double_helper(0.0, 1.0, "ExhaustiveProvider_range_double_double_0.0_1.0");
+        range_double_double_helper(-1.0, 1.0, "ExhaustiveProvider_range_double_double_-1.0_1.0");
+        range_double_double_helper(1.0, 1.0, "ExhaustiveProvider_range_double_double_1.0_1.0");
+        range_double_double_helper(Math.PI, Math.PI, "ExhaustiveProvider_range_double_double_Math.PI_Math.PI");
+        range_double_double_helper(-Math.PI, Math.PI, "ExhaustiveProvider_range_double_double_-Math.PI_Math.PI");
         range_double_double_helper(1.0, Double.POSITIVE_INFINITY,
-                "[Infinity, 1.0, 2.0, 3.0, 4.0, 1.5, 6.0, 7.0, 8.0, 5.0, 10.0, 11.0, 12.0, 2.5, 14.0, 15.0, 16.0," +
-                " 1.25, 18.0, 19.0, ...]");
+                "ExhaustiveProvider_range_double_double_1.0_POSITIVE_INFINITY");
         range_double_double_helper(Double.NEGATIVE_INFINITY, 1.0,
-                "[-Infinity, 1.0, -0.0, 0.0, -1.0, -2.0, 0.5, -4.0, -5.0, -6.0, -3.0, -8.0, -9.0, -10.0, -0.5," +
-                " -12.0, -13.0, -14.0, 0.75, -16.0, ...]");
-        range_double_double_helper(Double.MAX_VALUE, Double.POSITIVE_INFINITY, "[Infinity, 1.7976931348623157E308]");
+                "ExhaustiveProvider_range_double_double_NEGATIVE_INFINITY_1.0f");
+        range_double_double_helper(Double.MAX_VALUE, Double.POSITIVE_INFINITY,
+                "ExhaustiveProvider_range_double_double_MAX_VALUE_POSITIVE_INFINITY");
         range_double_double_helper(Double.NEGATIVE_INFINITY, -Double.MAX_VALUE,
-                "[-Infinity, -1.7976931348623157E308]");
+                "ExhaustiveProvider_range_double_double_NEGATIVE_INFINITY_-MAX_VALUE");
         range_double_double_helper(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY,
-                "[-Infinity, Infinity, -0.0, 0.0, -1.0, 1.0, -2.0, 2.0, -3.0, 3.0, -6.0, 6.0, -0.5, 0.5, -4.0, 4.0," +
-                " -1.5, 1.5, -12.0, 12.0, ...]");
-        range_double_double_helper(0.0, 0.0, "[0.0, -0.0]");
-        range_double_double_helper(-0.0, -0.0, "[0.0, -0.0]");
-        range_double_double_helper(-0.0, 0.0, "[0.0, -0.0]");
-        range_double_double_helper(0.0, -0.0, "[0.0, -0.0]");
-        range_double_double_helper(Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY, "[Infinity]");
-        range_double_double_helper(Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY, "[-Infinity]");
-        range_double_double_helper(1.0, -1.0, "[]");
-        range_double_double_helper(Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY, "[]");
-        range_double_double_helper(Double.POSITIVE_INFINITY, 1.0, "[]");
-        range_double_double_helper(1.0, Double.NEGATIVE_INFINITY, "[]");
+                "ExhaustiveProvider_range_double_double_NEGATIVE_INFINITY_POSITIVE_INFINITY");
+        range_double_double_helper(0.0, 0.0, "ExhaustiveProvider_range_double_double_0.0_0.0");
+        range_double_double_helper(-0.0, -0.0, "ExhaustiveProvider_range_double_double_-0.0_-0.0");
+        range_double_double_helper(-0.0, 0.0, "ExhaustiveProvider_range_double_double_-0.0_0.0");
+        range_double_double_helper(0.0, -0.0, "ExhaustiveProvider_range_double_double_0.0_-0.0");
+        range_double_double_helper(Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY,
+                "ExhaustiveProvider_range_double_double_POSITIVE_INFINITY_POSITIVE_INFINITY");
+        range_double_double_helper(Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY,
+                "ExhaustiveProvider_range_double_double_NEGATIVE_INFINITY_NEGATIVE_INFINITY");
+        range_double_double_helper(1.0f, -1.0f, "ExhaustiveProvider_range_double_double_1.0_-1.0");
+        range_double_double_helper(Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY,
+                "ExhaustiveProvider_range_double_double_POSITIVE_INFINITY_NEGATIVE_INFINITY");
+        range_double_double_helper(Double.POSITIVE_INFINITY, 1.0f,
+                "ExhaustiveProvider_range_double_double_POSITIVE_INFINITY_1.0");
+        range_double_double_helper(1.0f, Double.NEGATIVE_INFINITY,
+                "ExhaustiveProvider_range_double_double_1.0_NEGATIVE_INFINITY");
         range_double_double_fail_helper(Double.NaN, 1.0);
         range_double_double_fail_helper(Double.NaN, Double.POSITIVE_INFINITY);
         range_double_double_fail_helper(Double.NaN, Double.NEGATIVE_INFINITY);

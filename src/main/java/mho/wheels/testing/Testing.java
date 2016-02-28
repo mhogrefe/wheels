@@ -67,7 +67,6 @@ public strictfp class Testing {
                     if (counter < 0) {
                         throw new IllegalStateException("Bad counter: " + counter);
                     }
-                    if (counter == 0) break;
                     switch (tokens[1]) {
                         case "list":
                             if (testingLists.containsKey(name)) {
@@ -85,6 +84,15 @@ public strictfp class Testing {
                             break;
                         default:
                             throw new IllegalStateException("Bad data type: " + tokens[1]);
+                    }
+                    if (counter == 0) {
+                        if (state == ReadState.LIST) {
+                            testingLists.put(name, list);
+                            state = ReadState.NONE;
+                        } else {
+                            testingMaps.put(name, map);
+                            state = ReadState.NONE;
+                        }
                     }
                     break;
                 case LIST:
@@ -207,11 +215,8 @@ public strictfp class Testing {
             initializeTestData();
         }
         List<String> list = testingLists.get(b);
-        if (list == null) {
-            list = new ArrayList<>();
-        }
         List<String> actual = toList(map(Object::toString, a));
-        if (!list.equals(actual)) {
+        if (!Objects.equals(list, actual)) {
             boolean quote = containsTrailingSpaces(actual);
             System.out.println();
             System.out.print(b + " list " + actual.size());
@@ -238,11 +243,8 @@ public strictfp class Testing {
             initializeTestData();
         }
         List<String> list = testingLists.get(b);
-        if (list == null) {
-            list = new ArrayList<>();
-        }
         List<String> actual = itsList(limit, a);
-        if (!list.equals(actual)) {
+        if (!Objects.equals(list, actual)) {
             boolean quote = containsTrailingSpaces(actual);
             System.out.println();
             System.out.print(b + " list " + actual.size());
@@ -269,11 +271,8 @@ public strictfp class Testing {
             initializeTestData();
         }
         Map<String, String> map = testingMaps.get(b);
-        if (map == null) {
-            map = new HashMap<>();
-        }
         Map<String, String> actual = itsMap(a);
-        if (!map.equals(actual)) {
+        if (!Objects.equals(map, actual)) {
             boolean quote = containsTrailingSpaces(actual);
             System.out.println();
             System.out.print(b + " map " + actual.size());
