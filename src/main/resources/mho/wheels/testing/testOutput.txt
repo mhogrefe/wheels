@@ -1,3 +1,26 @@
+ExhaustiveProvider_uniformSample_Iterable_i list 4
+3
+1
+4
+1
+
+ExhaustiveProvider_uniformSample_Iterable_ii list 0
+
+ExhaustiveProvider_uniformSample_Iterable_iii list 4
+3
+1
+null
+1
+
+ExhaustiveProvider_uniformSample_String_i list 5
+h
+e
+l
+l
+o
+
+ExhaustiveProvider_uniformSample_String_ii list 0
+
 ExhaustiveProvider_booleans list 2
 false
 true
@@ -449,7 +472,7 @@ ExhaustiveProvider_naturalBigIntegers list 21
 19
 ...
 
-ExhaustiveProvider_nonzeroBytes_reverse list 21
+ExhaustiveProvider_nonzeroBytes_i list 21
 -128
 -127
 127
@@ -472,7 +495,7 @@ ExhaustiveProvider_nonzeroBytes_reverse list 21
 -118
 ...
 
-ExhaustiveProvider_nonzeroBytes list 21
+ExhaustiveProvider_nonzeroBytes_ii list 21
 1
 -1
 2
@@ -495,7 +518,7 @@ ExhaustiveProvider_nonzeroBytes list 21
 -10
 ...
 
-ExhaustiveProvider_nonzeroShorts_reverse list 21
+ExhaustiveProvider_nonzeroShorts_i list 21
 -32768
 -32767
 32767
@@ -518,7 +541,7 @@ ExhaustiveProvider_nonzeroShorts_reverse list 21
 -32758
 ...
 
-ExhaustiveProvider_nonzeroShorts list 21
+ExhaustiveProvider_nonzeroShorts_ii list 21
 1
 -1
 2
@@ -610,7 +633,7 @@ ExhaustiveProvider_nonzeroBigIntegers list 21
 -10
 ...
 
-ExhaustiveProvider_bytes_reverse list 21
+ExhaustiveProvider_bytes_i list 21
 -128
 -127
 127
@@ -633,7 +656,7 @@ ExhaustiveProvider_bytes_reverse list 21
 -118
 ...
 
-ExhaustiveProvider_bytes list 21
+ExhaustiveProvider_bytes_ii list 21
 0
 1
 -1
@@ -656,7 +679,7 @@ ExhaustiveProvider_bytes list 21
 10
 ...
 
-ExhaustiveProvider_shorts_reverse list 21
+ExhaustiveProvider_shorts_i list 21
 -32768
 -32767
 32767
@@ -679,7 +702,7 @@ ExhaustiveProvider_shorts_reverse list 21
 -32758
 ...
 
-ExhaustiveProvider_shorts list 21
+ExhaustiveProvider_shorts_ii list 21
 0
 1
 -1
@@ -1559,7 +1582,7 @@ HALF_UP
 HALF_DOWN
 HALF_EVEN
 
-ExhaustiveProvider_rangeUp_byte_0 list 21
+ExhaustiveProvider_rangeUp_byte_i list 21
 0
 1
 2
@@ -1582,7 +1605,7 @@ ExhaustiveProvider_rangeUp_byte_0 list 21
 19
 ...
 
-ExhaustiveProvider_rangeUp_byte_5 list 21
+ExhaustiveProvider_rangeUp_byte_ii list 21
 5
 6
 7
@@ -1605,7 +1628,7 @@ ExhaustiveProvider_rangeUp_byte_5 list 21
 24
 ...
 
-ExhaustiveProvider_rangeUp_byte_-5 list 21
+ExhaustiveProvider_rangeUp_byte_iii list 21
 0
 1
 -1
@@ -1628,10 +1651,10 @@ ExhaustiveProvider_rangeUp_byte_-5 list 21
 14
 ...
 
-ExhaustiveProvider_rangeUp_byte_MAX_VALUE list 1
+ExhaustiveProvider_rangeUp_byte_iv list 1
 127
 
-ExhaustiveProvider_rangeUp_byte_MIN_VALUE list 21
+ExhaustiveProvider_rangeUp_byte_v list 21
 0
 1
 -1
@@ -1654,7 +1677,7 @@ ExhaustiveProvider_rangeUp_byte_MIN_VALUE list 21
 10
 ...
 
-ExhaustiveProvider_rangeUp_short_0 list 21
+ExhaustiveProvider_rangeUp_short_i list 21
 0
 1
 2
@@ -1677,7 +1700,7 @@ ExhaustiveProvider_rangeUp_short_0 list 21
 19
 ...
 
-ExhaustiveProvider_rangeUp_short_5 list 21
+ExhaustiveProvider_rangeUp_short_ii list 21
 5
 6
 7
@@ -1700,7 +1723,7 @@ ExhaustiveProvider_rangeUp_short_5 list 21
 24
 ...
 
-ExhaustiveProvider_rangeUp_short_-5 list 21
+ExhaustiveProvider_rangeUp_short_iii list 21
 0
 1
 -1
@@ -1723,10 +1746,10 @@ ExhaustiveProvider_rangeUp_short_-5 list 21
 14
 ...
 
-ExhaustiveProvider_rangeUp_short_MAX_VALUE list 1
+ExhaustiveProvider_rangeUp_short_iv list 1
 32767
 
-ExhaustiveProvider_rangeUp_short_MIN_VALUE list 21
+ExhaustiveProvider_rangeUp_short_v list 21
 0
 1
 -1
@@ -1749,7 +1772,7 @@ ExhaustiveProvider_rangeUp_short_MIN_VALUE list 21
 10
 ...
 
-ExhaustiveProvider_rangeUp_int_0 list 21
+ExhaustiveProvider_rangeUp_int_i list 21
 0
 1
 2
@@ -1772,7 +1795,7 @@ ExhaustiveProvider_rangeUp_int_0 list 21
 19
 ...
 
-ExhaustiveProvider_rangeUp_int_5 list 21
+ExhaustiveProvider_rangeUp_int_ii list 21
 5
 6
 7
@@ -1795,7 +1818,7 @@ ExhaustiveProvider_rangeUp_int_5 list 21
 24
 ...
 
-ExhaustiveProvider_rangeUp_int_-5 list 21
+ExhaustiveProvider_rangeUp_int_iii list 21
 0
 1
 -1
@@ -1818,10 +1841,10 @@ ExhaustiveProvider_rangeUp_int_-5 list 21
 14
 ...
 
-ExhaustiveProvider_rangeUp_int_MAX_VALUE list 1
+ExhaustiveProvider_rangeUp_int_iv list 1
 2147483647
 
-ExhaustiveProvider_rangeUp_int_MIN_VALUE list 21
+ExhaustiveProvider_rangeUp_int_v list 21
 0
 1
 -1
@@ -1844,7 +1867,7 @@ ExhaustiveProvider_rangeUp_int_MIN_VALUE list 21
 10
 ...
 
-ExhaustiveProvider_rangeUp_long_0 list 21
+ExhaustiveProvider_rangeUp_long_i list 21
 0
 1
 2
@@ -1867,7 +1890,7 @@ ExhaustiveProvider_rangeUp_long_0 list 21
 19
 ...
 
-ExhaustiveProvider_rangeUp_long_5 list 21
+ExhaustiveProvider_rangeUp_long_ii list 21
 5
 6
 7
@@ -1890,7 +1913,7 @@ ExhaustiveProvider_rangeUp_long_5 list 21
 24
 ...
 
-ExhaustiveProvider_rangeUp_long_-5 list 21
+ExhaustiveProvider_rangeUp_long_iii list 21
 0
 1
 -1
@@ -1913,10 +1936,10 @@ ExhaustiveProvider_rangeUp_long_-5 list 21
 14
 ...
 
-ExhaustiveProvider_rangeUp_long_MAX_VALUE list 1
+ExhaustiveProvider_rangeUp_long_iv list 1
 9223372036854775807
 
-ExhaustiveProvider_rangeUp_long_MIN_VALUE list 21
+ExhaustiveProvider_rangeUp_long_v list 21
 0
 1
 -1
@@ -1939,7 +1962,7 @@ ExhaustiveProvider_rangeUp_long_MIN_VALUE list 21
 10
 ...
 
-ExhaustiveProvider_rangeUp_BigInteger_0 list 21
+ExhaustiveProvider_rangeUp_BigInteger_i list 21
 0
 1
 2
@@ -1962,7 +1985,7 @@ ExhaustiveProvider_rangeUp_BigInteger_0 list 21
 19
 ...
 
-ExhaustiveProvider_rangeUp_BigInteger_5 list 21
+ExhaustiveProvider_rangeUp_BigInteger_ii list 21
 5
 6
 7
@@ -1985,7 +2008,7 @@ ExhaustiveProvider_rangeUp_BigInteger_5 list 21
 24
 ...
 
-ExhaustiveProvider_rangeUp_BigInteger_-5 list 21
+ExhaustiveProvider_rangeUp_BigInteger_iii list 21
 0
 1
 -1
@@ -2008,7 +2031,7 @@ ExhaustiveProvider_rangeUp_BigInteger_-5 list 21
 14
 ...
 
-ExhaustiveProvider_rangeUp_char_\u0000 list 101 q
+ExhaustiveProvider_rangeUp_char_i list 101 q
 '\u0000'
 '\u0001'
 '\u0002'
@@ -2111,7 +2134,7 @@ ExhaustiveProvider_rangeUp_char_\u0000 list 101 q
 'c'
 '...'
 
-ExhaustiveProvider_rangeUp_char_a list 101
+ExhaustiveProvider_rangeUp_char_ii list 101
 a
 b
 c
@@ -2214,7 +2237,7 @@ z
 \u00c4
 ...
 
-ExhaustiveProvider_rangeUp_char_\u0428 list 101
+ExhaustiveProvider_rangeUp_char_iii list 101
 \u0428
 \u0429
 \u042a
@@ -2317,10 +2340,10 @@ ExhaustiveProvider_rangeUp_char_\u0428 list 101
 \u048b
 ...
 
-ExhaustiveProvider_rangeUp_char_MAX_VALUE list 1
+ExhaustiveProvider_rangeUp_char_iv list 1
 \uffff
 
-ExhaustiveProvider_rangeDown_byte_0 list 21
+ExhaustiveProvider_rangeDown_byte_i list 21
 0
 -1
 -2
@@ -2343,7 +2366,7 @@ ExhaustiveProvider_rangeDown_byte_0 list 21
 -19
 ...
 
-ExhaustiveProvider_rangeDown_byte_5 list 21
+ExhaustiveProvider_rangeDown_byte_ii list 21
 0
 1
 -1
@@ -2366,7 +2389,7 @@ ExhaustiveProvider_rangeDown_byte_5 list 21
 -14
 ...
 
-ExhaustiveProvider_rangeDown_byte_-5 list 21
+ExhaustiveProvider_rangeDown_byte_iii list 21
 -5
 -6
 -7
@@ -2389,7 +2412,7 @@ ExhaustiveProvider_rangeDown_byte_-5 list 21
 -24
 ...
 
-ExhaustiveProvider_rangeDown_byte_MAX_VALUE list 21
+ExhaustiveProvider_rangeDown_byte_iv list 21
 0
 1
 -1
@@ -2412,10 +2435,10 @@ ExhaustiveProvider_rangeDown_byte_MAX_VALUE list 21
 10
 ...
 
-ExhaustiveProvider_rangeDown_byte_MIN_VALUE list 1
+ExhaustiveProvider_rangeDown_byte_v list 1
 -128
 
-ExhaustiveProvider_rangeDown_short_0 list 21
+ExhaustiveProvider_rangeDown_short_i list 21
 0
 -1
 -2
@@ -2438,7 +2461,7 @@ ExhaustiveProvider_rangeDown_short_0 list 21
 -19
 ...
 
-ExhaustiveProvider_rangeDown_short_5 list 21
+ExhaustiveProvider_rangeDown_short_ii list 21
 0
 1
 -1
@@ -2461,7 +2484,7 @@ ExhaustiveProvider_rangeDown_short_5 list 21
 -14
 ...
 
-ExhaustiveProvider_rangeDown_short_-5 list 21
+ExhaustiveProvider_rangeDown_short_iii list 21
 -5
 -6
 -7
@@ -2484,7 +2507,7 @@ ExhaustiveProvider_rangeDown_short_-5 list 21
 -24
 ...
 
-ExhaustiveProvider_rangeDown_short_MAX_VALUE list 21
+ExhaustiveProvider_rangeDown_short_iv list 21
 0
 1
 -1
@@ -2507,10 +2530,10 @@ ExhaustiveProvider_rangeDown_short_MAX_VALUE list 21
 10
 ...
 
-ExhaustiveProvider_rangeDown_short_MIN_VALUE list 1
+ExhaustiveProvider_rangeDown_short_v list 1
 -32768
 
-ExhaustiveProvider_rangeDown_int_0 list 21
+ExhaustiveProvider_rangeDown_int_i list 21
 0
 -1
 -2
@@ -2533,7 +2556,7 @@ ExhaustiveProvider_rangeDown_int_0 list 21
 -19
 ...
 
-ExhaustiveProvider_rangeDown_int_5 list 21
+ExhaustiveProvider_rangeDown_int_ii list 21
 0
 1
 -1
@@ -2556,7 +2579,7 @@ ExhaustiveProvider_rangeDown_int_5 list 21
 -14
 ...
 
-ExhaustiveProvider_rangeDown_int_-5 list 21
+ExhaustiveProvider_rangeDown_int_iii list 21
 -5
 -6
 -7
@@ -2579,7 +2602,7 @@ ExhaustiveProvider_rangeDown_int_-5 list 21
 -24
 ...
 
-ExhaustiveProvider_rangeDown_int_MAX_VALUE list 21
+ExhaustiveProvider_rangeDown_int_iv list 21
 0
 1
 -1
@@ -2602,10 +2625,10 @@ ExhaustiveProvider_rangeDown_int_MAX_VALUE list 21
 10
 ...
 
-ExhaustiveProvider_rangeDown_int_MIN_VALUE list 1
+ExhaustiveProvider_rangeDown_int_v list 1
 -2147483648
 
-ExhaustiveProvider_rangeDown_long_0 list 21
+ExhaustiveProvider_rangeDown_long_i list 21
 0
 -1
 -2
@@ -2628,7 +2651,7 @@ ExhaustiveProvider_rangeDown_long_0 list 21
 -19
 ...
 
-ExhaustiveProvider_rangeDown_long_5 list 21
+ExhaustiveProvider_rangeDown_long_ii list 21
 0
 1
 -1
@@ -2651,7 +2674,7 @@ ExhaustiveProvider_rangeDown_long_5 list 21
 -14
 ...
 
-ExhaustiveProvider_rangeDown_long_-5 list 21
+ExhaustiveProvider_rangeDown_long_iii list 21
 -5
 -6
 -7
@@ -2674,7 +2697,7 @@ ExhaustiveProvider_rangeDown_long_-5 list 21
 -24
 ...
 
-ExhaustiveProvider_rangeDown_long_MAX_VALUE list 21
+ExhaustiveProvider_rangeDown_long_iv list 21
 0
 1
 -1
@@ -2697,10 +2720,10 @@ ExhaustiveProvider_rangeDown_long_MAX_VALUE list 21
 10
 ...
 
-ExhaustiveProvider_rangeDown_long_MIN_VALUE list 1
+ExhaustiveProvider_rangeDown_long_v list 1
 -9223372036854775808
 
-ExhaustiveProvider_rangeDown_BigInteger_0 list 21
+ExhaustiveProvider_rangeDown_BigInteger_i list 21
 0
 -1
 -2
@@ -2723,7 +2746,7 @@ ExhaustiveProvider_rangeDown_BigInteger_0 list 21
 -19
 ...
 
-ExhaustiveProvider_rangeDown_BigInteger_5 list 21
+ExhaustiveProvider_rangeDown_BigInteger_ii list 21
 0
 1
 -1
@@ -2746,7 +2769,7 @@ ExhaustiveProvider_rangeDown_BigInteger_5 list 21
 -14
 ...
 
-ExhaustiveProvider_rangeDown_BigInteger_-5 list 21
+ExhaustiveProvider_rangeDown_BigInteger_iii list 21
 -5
 -6
 -7
@@ -2769,10 +2792,10 @@ ExhaustiveProvider_rangeDown_BigInteger_-5 list 21
 -24
 ...
 
-ExhaustiveProvider_rangeDown_char_\u0000 list 1
+ExhaustiveProvider_rangeDown_char_i list 1
 \u0000
 
-ExhaustiveProvider_rangeDown_char_a list 98 q
+ExhaustiveProvider_rangeDown_char_ii list 98 q
 '\u0000'
 '\u0001'
 '\u0002'
@@ -2872,7 +2895,7 @@ ExhaustiveProvider_rangeDown_char_a list 98 q
 '`'
 'a'
 
-ExhaustiveProvider_rangeDown_char_\u0428 list 101 q
+ExhaustiveProvider_rangeDown_char_iii list 101 q
 '\u0000'
 '\u0001'
 '\u0002'
@@ -2975,7 +2998,7 @@ ExhaustiveProvider_rangeDown_char_\u0428 list 101 q
 'c'
 '...'
 
-ExhaustiveProvider_rangeDown_char_MAX_VALUE list 101 q
+ExhaustiveProvider_rangeDown_char_iv list 101 q
 '\u0000'
 '\u0001'
 '\u0002'
@@ -3077,6 +3100,556 @@ ExhaustiveProvider_rangeDown_char_MAX_VALUE list 101 q
 'b'
 'c'
 '...'
+
+ExhaustiveProvider_range_byte_byte_i list 11
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+
+ExhaustiveProvider_range_byte_byte_ii list 1
+10
+
+ExhaustiveProvider_range_byte_byte_iii list 0
+
+ExhaustiveProvider_range_byte_byte_iv list 11
+-10
+-11
+-12
+-13
+-14
+-15
+-16
+-17
+-18
+-19
+-20
+
+ExhaustiveProvider_range_byte_byte_v list 1
+-20
+
+ExhaustiveProvider_range_byte_byte_vi list 0
+
+ExhaustiveProvider_range_byte_byte_vii list 1
+0
+
+ExhaustiveProvider_range_byte_byte_viii list 11
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+
+ExhaustiveProvider_range_byte_byte_ix list 6
+0
+-1
+-2
+-3
+-4
+-5
+
+ExhaustiveProvider_range_byte_byte_x list 16
+0
+1
+-1
+2
+-2
+3
+-3
+4
+-4
+5
+-5
+6
+7
+8
+9
+10
+
+ExhaustiveProvider_range_byte_byte_xi list 16
+0
+1
+-1
+2
+-2
+3
+-3
+4
+-4
+5
+-5
+-6
+-7
+-8
+-9
+-10
+
+ExhaustiveProvider_range_byte_byte_xii list 0
+
+ExhaustiveProvider_range_short_short_i list 11
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+
+ExhaustiveProvider_range_short_short_ii list 1
+10
+
+ExhaustiveProvider_range_short_short_iii list 0
+
+ExhaustiveProvider_range_short_short_iv list 11
+-10
+-11
+-12
+-13
+-14
+-15
+-16
+-17
+-18
+-19
+-20
+
+ExhaustiveProvider_range_short_short_v list 1
+-20
+
+ExhaustiveProvider_range_short_short_vi list 0
+
+ExhaustiveProvider_range_short_short_vii list 1
+0
+
+ExhaustiveProvider_range_short_short_viii list 11
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+
+ExhaustiveProvider_range_short_short_ix list 6
+0
+-1
+-2
+-3
+-4
+-5
+
+ExhaustiveProvider_range_short_short_x list 16
+0
+1
+-1
+2
+-2
+3
+-3
+4
+-4
+5
+-5
+6
+7
+8
+9
+10
+
+ExhaustiveProvider_range_short_short_xi list 16
+0
+1
+-1
+2
+-2
+3
+-3
+4
+-4
+5
+-5
+-6
+-7
+-8
+-9
+-10
+
+ExhaustiveProvider_range_short_short_xii list 0
+
+ExhaustiveProvider_range_int_int_i list 11
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+
+ExhaustiveProvider_range_int_int_ii list 1
+10
+
+ExhaustiveProvider_range_int_int_iii list 0
+
+ExhaustiveProvider_range_int_int_iv list 11
+-10
+-11
+-12
+-13
+-14
+-15
+-16
+-17
+-18
+-19
+-20
+
+ExhaustiveProvider_range_int_int_v list 1
+-20
+
+ExhaustiveProvider_range_int_int_vi list 0
+
+ExhaustiveProvider_range_int_int_vii list 1
+0
+
+ExhaustiveProvider_range_int_int_viii list 11
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+
+ExhaustiveProvider_range_int_int_ix list 6
+0
+-1
+-2
+-3
+-4
+-5
+
+ExhaustiveProvider_range_int_int_x list 16
+0
+1
+-1
+2
+-2
+3
+-3
+4
+-4
+5
+-5
+6
+7
+8
+9
+10
+
+ExhaustiveProvider_range_int_int_xi list 16
+0
+1
+-1
+2
+-2
+3
+-3
+4
+-4
+5
+-5
+-6
+-7
+-8
+-9
+-10
+
+ExhaustiveProvider_range_int_int_xii list 0
+
+ExhaustiveProvider_range_long_long_i list 11
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+
+ExhaustiveProvider_range_long_long_ii list 1
+10
+
+ExhaustiveProvider_range_long_long_iii list 0
+
+ExhaustiveProvider_range_long_long_iv list 11
+-10
+-11
+-12
+-13
+-14
+-15
+-16
+-17
+-18
+-19
+-20
+
+ExhaustiveProvider_range_long_long_v list 1
+-20
+
+ExhaustiveProvider_range_long_long_vi list 0
+
+ExhaustiveProvider_range_long_long_vii list 1
+0
+
+ExhaustiveProvider_range_long_long_viii list 11
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+
+ExhaustiveProvider_range_long_long_ix list 6
+0
+-1
+-2
+-3
+-4
+-5
+
+ExhaustiveProvider_range_long_long_x list 16
+0
+1
+-1
+2
+-2
+3
+-3
+4
+-4
+5
+-5
+6
+7
+8
+9
+10
+
+ExhaustiveProvider_range_long_long_xi list 16
+0
+1
+-1
+2
+-2
+3
+-3
+4
+-4
+5
+-5
+-6
+-7
+-8
+-9
+-10
+
+ExhaustiveProvider_range_long_long_xii list 0
+
+ExhaustiveProvider_range_BigInteger_BigInteger_i list 11
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+
+ExhaustiveProvider_range_BigInteger_BigInteger_ii list 1
+10
+
+ExhaustiveProvider_range_BigInteger_BigInteger_iii list 0
+
+ExhaustiveProvider_range_BigInteger_BigInteger_iv list 11
+-10
+-11
+-12
+-13
+-14
+-15
+-16
+-17
+-18
+-19
+-20
+
+ExhaustiveProvider_range_BigInteger_BigInteger_v list 1
+-20
+
+ExhaustiveProvider_range_BigInteger_BigInteger_vi list 0
+
+ExhaustiveProvider_range_BigInteger_BigInteger_vii list 1
+0
+
+ExhaustiveProvider_range_BigInteger_BigInteger_viii list 11
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+
+ExhaustiveProvider_range_BigInteger_BigInteger_ix list 6
+0
+-1
+-2
+-3
+-4
+-5
+
+ExhaustiveProvider_range_BigInteger_BigInteger_x list 16
+0
+1
+-1
+2
+-2
+3
+-3
+4
+-4
+5
+-5
+6
+7
+8
+9
+10
+
+ExhaustiveProvider_range_BigInteger_BigInteger_xi list 16
+0
+1
+-1
+2
+-2
+3
+-3
+4
+-4
+5
+-5
+-6
+-7
+-8
+-9
+-10
+
+ExhaustiveProvider_range_BigInteger_BigInteger_xii list 0
+
+ExhaustiveProvider_range_char_char_i list 26
+a
+b
+c
+d
+e
+f
+g
+h
+i
+j
+k
+l
+m
+n
+o
+p
+q
+r
+s
+t
+u
+v
+w
+x
+y
+z
+
+ExhaustiveProvider_range_char_char_ii list 1
+a
+
+ExhaustiveProvider_range_char_char_iii list 0
+
+ExhaustiveProvider_range_char_char_iv list 25
+!
+"
+#
+$
+%
+&
+'
+(
+)
+*
++
+,
+-
+.
+/
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
 
 ExhaustiveProvider_positiveBinaryFractions list 21
 1
@@ -3170,7 +3743,7 @@ ExhaustiveProvider_binaryFractions list 21
 5 << 1
 ...
 
-ExhaustiveProvider_rangeUp_BinaryFraction_0 list 21
+ExhaustiveProvider_rangeUp_BinaryFraction_i list 21
 0
 1
 1 << 1
@@ -3193,7 +3766,7 @@ ExhaustiveProvider_rangeUp_BinaryFraction_0 list 21
 19
 ...
 
-ExhaustiveProvider_rangeUp_BinaryFraction_1 list 21
+ExhaustiveProvider_rangeUp_BinaryFraction_ii list 21
 1
 1 << 1
 3
@@ -3216,7 +3789,7 @@ ExhaustiveProvider_rangeUp_BinaryFraction_1 list 21
 5 << 2
 ...
 
-ExhaustiveProvider_rangeUp_BinaryFraction_11 list 21
+ExhaustiveProvider_rangeUp_BinaryFraction_iii list 21
 11
 3 << 2
 13
@@ -3239,7 +3812,7 @@ ExhaustiveProvider_rangeUp_BinaryFraction_11 list 21
 15 << 1
 ...
 
-ExhaustiveProvider_rangeUp_BinaryFraction_5_<<_20 list 21
+ExhaustiveProvider_rangeUp_BinaryFraction_iv list 21
 5 << 20
 3 << 21
 7 << 20
@@ -3262,7 +3835,7 @@ ExhaustiveProvider_rangeUp_BinaryFraction_5_<<_20 list 21
 3 << 23
 ...
 
-ExhaustiveProvider_rangeUp_BinaryFraction_5_>>_20 list 21
+ExhaustiveProvider_rangeUp_BinaryFraction_v list 21
 5 >> 20
 3 >> 19
 7 >> 20
@@ -3285,7 +3858,7 @@ ExhaustiveProvider_rangeUp_BinaryFraction_5_>>_20 list 21
 3 >> 17
 ...
 
-ExhaustiveProvider_rangeUp_BinaryFraction_-1 list 21
+ExhaustiveProvider_rangeUp_BinaryFraction_vi list 21
 -1
 0
 1
@@ -3308,7 +3881,7 @@ ExhaustiveProvider_rangeUp_BinaryFraction_-1 list 21
 9 << 1
 ...
 
-ExhaustiveProvider_rangeUp_BinaryFraction_-11 list 21
+ExhaustiveProvider_rangeUp_BinaryFraction_vii list 21
 -11
 -5 << 1
 -9
@@ -3331,7 +3904,7 @@ ExhaustiveProvider_rangeUp_BinaryFraction_-11 list 21
 1 << 3
 ...
 
-ExhaustiveProvider_rangeUp_BinaryFraction_-5_<<_20 list 21
+ExhaustiveProvider_rangeUp_BinaryFraction_viii list 21
 -5 << 20
 -1 << 22
 -3 << 20
@@ -3354,7 +3927,7 @@ ExhaustiveProvider_rangeUp_BinaryFraction_-5_<<_20 list 21
 7 << 21
 ...
 
-ExhaustiveProvider_rangeUp_BinaryFraction_-5_>>_20 list 21
+ExhaustiveProvider_rangeUp_BinaryFraction_ix list 21
 -5 >> 20
 -1 >> 18
 -3 >> 20
@@ -3377,7 +3950,7 @@ ExhaustiveProvider_rangeUp_BinaryFraction_-5_>>_20 list 21
 7 >> 19
 ...
 
-ExhaustiveProvider_rangeDown_BinaryFraction_0 list 21
+ExhaustiveProvider_rangeDown_BinaryFraction_i list 21
 0
 -1
 -1 << 1
@@ -3400,7 +3973,7 @@ ExhaustiveProvider_rangeDown_BinaryFraction_0 list 21
 -19
 ...
 
-ExhaustiveProvider_rangeDown_BinaryFraction_1 list 21
+ExhaustiveProvider_rangeDown_BinaryFraction_ii list 21
 1
 0
 -1
@@ -3423,7 +3996,7 @@ ExhaustiveProvider_rangeDown_BinaryFraction_1 list 21
 -9 << 1
 ...
 
-ExhaustiveProvider_rangeDown_BinaryFraction_11 list 21
+ExhaustiveProvider_rangeDown_BinaryFraction_iii list 21
 11
 5 << 1
 9
@@ -3446,7 +4019,7 @@ ExhaustiveProvider_rangeDown_BinaryFraction_11 list 21
 -1 << 3
 ...
 
-ExhaustiveProvider_rangeDown_BinaryFraction_5_<<_20 list 21
+ExhaustiveProvider_rangeDown_BinaryFraction_iv list 21
 5 << 20
 1 << 22
 3 << 20
@@ -3469,7 +4042,7 @@ ExhaustiveProvider_rangeDown_BinaryFraction_5_<<_20 list 21
 -7 << 21
 ...
 
-ExhaustiveProvider_rangeDown_BinaryFraction_5_>>_20 list 21
+ExhaustiveProvider_rangeDown_BinaryFraction_v list 21
 5 >> 20
 1 >> 18
 3 >> 20
@@ -3492,7 +4065,7 @@ ExhaustiveProvider_rangeDown_BinaryFraction_5_>>_20 list 21
 -7 >> 19
 ...
 
-ExhaustiveProvider_rangeDown_BinaryFraction_-1 list 21
+ExhaustiveProvider_rangeDown_BinaryFraction_vi list 21
 -1
 -1 << 1
 -3
@@ -3515,7 +4088,7 @@ ExhaustiveProvider_rangeDown_BinaryFraction_-1 list 21
 -5 << 2
 ...
 
-ExhaustiveProvider_rangeDown_BinaryFraction_-11 list 21
+ExhaustiveProvider_rangeDown_BinaryFraction_vii list 21
 -11
 -3 << 2
 -13
@@ -3538,7 +4111,7 @@ ExhaustiveProvider_rangeDown_BinaryFraction_-11 list 21
 -15 << 1
 ...
 
-ExhaustiveProvider_rangeDown_BinaryFraction_-5_<<_20 list 21
+ExhaustiveProvider_rangeDown_BinaryFraction_viii list 21
 -5 << 20
 -3 << 21
 -7 << 20
@@ -3561,7 +4134,7 @@ ExhaustiveProvider_rangeDown_BinaryFraction_-5_<<_20 list 21
 -3 << 23
 ...
 
-ExhaustiveProvider_rangeDown_BinaryFraction_-5_>>_20 list 21
+ExhaustiveProvider_rangeDown_BinaryFraction_ix list 21
 -5 >> 20
 -3 >> 19
 -7 >> 20
@@ -3584,7 +4157,7 @@ ExhaustiveProvider_rangeDown_BinaryFraction_-5_>>_20 list 21
 -3 >> 17
 ...
 
-ExhaustiveProvider_range_BinaryFraction_BinaryFraction_0_1 list 21
+ExhaustiveProvider_range_BinaryFraction_BinaryFraction_i list 21
 0
 1
 1 >> 1
@@ -3607,7 +4180,7 @@ ExhaustiveProvider_range_BinaryFraction_BinaryFraction_0_1 list 21
 5 >> 5
 ...
 
-ExhaustiveProvider_range_BinaryFraction_BinaryFraction_1_11 list 21
+ExhaustiveProvider_range_BinaryFraction_BinaryFraction_ii list 21
 1
 3
 5
@@ -3630,10 +4203,12 @@ ExhaustiveProvider_range_BinaryFraction_BinaryFraction_1_11 list 21
 17 >> 1
 ...
 
-ExhaustiveProvider_range_BinaryFraction_BinaryFraction_11_11 list 1
+ExhaustiveProvider_range_BinaryFraction_BinaryFraction_iii list 1
 11
 
-ExhaustiveProvider_range_BinaryFraction_BinaryFraction_-11_-1 list 21
+ExhaustiveProvider_range_BinaryFraction_BinaryFraction_iv list 0
+
+ExhaustiveProvider_range_BinaryFraction_BinaryFraction_v list 21
 -11
 -9
 -7
@@ -3656,13 +4231,15 @@ ExhaustiveProvider_range_BinaryFraction_BinaryFraction_-11_-1 list 21
 -7 >> 1
 ...
 
-ExhaustiveProvider_range_BinaryFraction_BinaryFraction_-11_-11 list 1
+ExhaustiveProvider_range_BinaryFraction_BinaryFraction_vi list 1
 -11
 
-ExhaustiveProvider_range_BinaryFraction_BinaryFraction_0_0 list 1
+ExhaustiveProvider_range_BinaryFraction_BinaryFraction_vii list 0
+
+ExhaustiveProvider_range_BinaryFraction_BinaryFraction_viii list 1
 0
 
-ExhaustiveProvider_range_BinaryFraction_BinaryFraction_0_11 list 21
+ExhaustiveProvider_range_BinaryFraction_BinaryFraction_ix list 21
 0
 1
 1 << 1
@@ -3685,7 +4262,7 @@ ExhaustiveProvider_range_BinaryFraction_BinaryFraction_0_11 list 21
 15 >> 1
 ...
 
-ExhaustiveProvider_range_BinaryFraction_BinaryFraction_-1_11 list 21
+ExhaustiveProvider_range_BinaryFraction_BinaryFraction_x list 21
 -1
 3
 7
@@ -3708,7 +4285,7 @@ ExhaustiveProvider_range_BinaryFraction_BinaryFraction_-1_11 list 21
 3 >> 1
 ...
 
-ExhaustiveProvider_range_BinaryFraction_BinaryFraction_5_>>_20_1 list 21
+ExhaustiveProvider_range_BinaryFraction_BinaryFraction_xi list 21
 5 >> 20
 3 >> 19
 7 >> 20
@@ -3731,7 +4308,7 @@ ExhaustiveProvider_range_BinaryFraction_BinaryFraction_5_>>_20_1 list 21
 3 >> 17
 ...
 
-ExhaustiveProvider_range_BinaryFraction_BinaryFraction_1_5_<<_20 list 21
+ExhaustiveProvider_range_BinaryFraction_BinaryFraction_xii list 21
 1
 1 << 1
 3
@@ -4178,7 +4755,7 @@ Infinity
 0.375
 ...
 
-ExhaustiveProvider_rangeUp_float_1.0f list 21
+ExhaustiveProvider_rangeUp_float_i list 21
 Infinity
 1.0
 2.0
@@ -4201,7 +4778,7 @@ Infinity
 19.0
 ...
 
-ExhaustiveProvider_rangeUp_float_1.0E20f list 21
+ExhaustiveProvider_rangeUp_float_ii list 21
 Infinity
 1.0E20
 1.0000004E20
@@ -4224,7 +4801,7 @@ Infinity
 1.00000635E20
 ...
 
-ExhaustiveProvider_rangeUp_float_-1.0f list 21
+ExhaustiveProvider_rangeUp_float_iii list 21
 Infinity
 -1.0
 0.0
@@ -4247,7 +4824,7 @@ Infinity
 16.0
 ...
 
-ExhaustiveProvider_rangeUp_float_-1.0E20f list 21
+ExhaustiveProvider_rangeUp_float_iv list 21
 Infinity
 -1.0E20
 -9.999997E19
@@ -4270,7 +4847,7 @@ Infinity
 -9.999937E19
 ...
 
-ExhaustiveProvider_rangeUp_float_(float)_Math.PI list 21
+ExhaustiveProvider_rangeUp_float_v list 21
 Infinity
 3.1415927
 3.141593
@@ -4293,7 +4870,7 @@ Infinity
 3.141598
 ...
 
-ExhaustiveProvider_rangeUp_float_(float)_Math.sqrt(2) list 21
+ExhaustiveProvider_rangeUp_float_vi list 21
 Infinity
 1.4142135
 1.4142137
@@ -4316,7 +4893,7 @@ Infinity
 1.4142162
 ...
 
-ExhaustiveProvider_rangeUp_float_(float)_-Math.PI list 21
+ExhaustiveProvider_rangeUp_float_vii list 21
 Infinity
 -3.1415927
 -3.1415925
@@ -4339,7 +4916,7 @@ Infinity
 -3.1415875
 ...
 
-ExhaustiveProvider_rangeUp_float_(float)_-Math.sqrt(2) list 21
+ExhaustiveProvider_rangeUp_float_viii list 21
 Infinity
 -1.4142135
 -1.4142134
@@ -4362,7 +4939,7 @@ Infinity
 -1.4142109
 ...
 
-ExhaustiveProvider_rangeUp_float_0.0f list 21
+ExhaustiveProvider_rangeUp_float_ix list 21
 Infinity
 0.0
 -0.0
@@ -4385,7 +4962,7 @@ Infinity
 17.0
 ...
 
-ExhaustiveProvider_rangeUp_float_-0.0f list 21
+ExhaustiveProvider_rangeUp_float_x list 21
 Infinity
 0.0
 -0.0
@@ -4408,7 +4985,7 @@ Infinity
 17.0
 ...
 
-ExhaustiveProvider_rangeUp_float_MIN_VALUE list 21
+ExhaustiveProvider_rangeUp_float_xi list 21
 Infinity
 1.4E-45
 2.8E-45
@@ -4431,7 +5008,7 @@ Infinity
 3.2E-44
 ...
 
-ExhaustiveProvider_rangeUp_float_MIN_NORMAL list 21
+ExhaustiveProvider_rangeUp_float_xii list 21
 Infinity
 1.17549435E-38
 2.3509887E-38
@@ -4454,7 +5031,7 @@ Infinity
 2.2334393E-37
 ...
 
-ExhaustiveProvider_rangeUp_float_-MIN_VALUE list 21
+ExhaustiveProvider_rangeUp_float_xiii list 21
 Infinity
 -1.4E-45
 0.0
@@ -4477,7 +5054,7 @@ Infinity
 2.8E-44
 ...
 
-ExhaustiveProvider_rangeUp_float_-MIN_NORMAL list 21
+ExhaustiveProvider_rangeUp_float_xiv list 21
 Infinity
 -1.17549435E-38
 0.0
@@ -4500,11 +5077,11 @@ Infinity
 1.880791E-37
 ...
 
-ExhaustiveProvider_rangeUp_float_MAX_VALUE list 2
+ExhaustiveProvider_rangeUp_float_xv list 2
 Infinity
 3.4028235E38
 
-ExhaustiveProvider_rangeUp_float_-MAX_VALUE list 21
+ExhaustiveProvider_rangeUp_float_xvi list 21
 Infinity
 -3.4028235E38
 -3.4028233E38
@@ -4527,10 +5104,10 @@ Infinity
 -3.402819E38
 ...
 
-ExhaustiveProvider_rangeUp_float_POSITIVE_INFINITY list 1
+ExhaustiveProvider_rangeUp_float_xvii list 1
 Infinity
 
-ExhaustiveProvider_rangeUp_float_NEGATIVE_INFINITY list 21
+ExhaustiveProvider_rangeUp_float_xviii list 21
 Infinity
 -Infinity
 0.0
@@ -4553,7 +5130,7 @@ Infinity
 -12.0
 ...
 
-ExhaustiveProvider_rangeDown_float_1.0f list 21
+ExhaustiveProvider_rangeDown_float_i list 21
 -Infinity
 1.0
 -0.0
@@ -4576,7 +5153,7 @@ ExhaustiveProvider_rangeDown_float_1.0f list 21
 -16.0
 ...
 
-ExhaustiveProvider_rangeDown_float_1.0E20f list 21
+ExhaustiveProvider_rangeDown_float_ii list 21
 -Infinity
 1.0E20
 9.999997E19
@@ -4599,7 +5176,7 @@ ExhaustiveProvider_rangeDown_float_1.0E20f list 21
 9.999937E19
 ...
 
-ExhaustiveProvider_rangeDown_float_-1.0f list 21
+ExhaustiveProvider_rangeDown_float_iii list 21
 -Infinity
 -1.0
 -2.0
@@ -4622,7 +5199,7 @@ ExhaustiveProvider_rangeDown_float_-1.0f list 21
 -19.0
 ...
 
-ExhaustiveProvider_rangeDown_float_-1.0E20f list 21
+ExhaustiveProvider_rangeDown_float_iv list 21
 -Infinity
 -1.0E20
 -1.0000004E20
@@ -4645,7 +5222,7 @@ ExhaustiveProvider_rangeDown_float_-1.0E20f list 21
 -1.00000635E20
 ...
 
-ExhaustiveProvider_rangeDown_float_(float)_Math.PI list 21
+ExhaustiveProvider_rangeDown_float_v list 21
 -Infinity
 3.1415927
 3.1415925
@@ -4668,7 +5245,7 @@ ExhaustiveProvider_rangeDown_float_(float)_Math.PI list 21
 3.1415875
 ...
 
-ExhaustiveProvider_rangeDown_float_(float)_Math.sqrt(2) list 21
+ExhaustiveProvider_rangeDown_float_vi list 21
 -Infinity
 1.4142135
 1.4142134
@@ -4691,7 +5268,7 @@ ExhaustiveProvider_rangeDown_float_(float)_Math.sqrt(2) list 21
 1.4142109
 ...
 
-ExhaustiveProvider_rangeDown_float_(float)_-Math.PI list 21
+ExhaustiveProvider_rangeDown_float_vii list 21
 -Infinity
 -3.1415927
 -3.141593
@@ -4714,7 +5291,7 @@ ExhaustiveProvider_rangeDown_float_(float)_-Math.PI list 21
 -3.141598
 ...
 
-ExhaustiveProvider_rangeDown_float_(float)_-Math.sqrt(2) list 21
+ExhaustiveProvider_rangeDown_float_viii list 21
 -Infinity
 -1.4142135
 -1.4142137
@@ -4737,7 +5314,7 @@ ExhaustiveProvider_rangeDown_float_(float)_-Math.sqrt(2) list 21
 -1.4142162
 ...
 
-ExhaustiveProvider_rangeDown_float_0.0f list 21
+ExhaustiveProvider_rangeDown_float_ix list 21
 -Infinity
 -0.0
 0.0
@@ -4760,7 +5337,7 @@ ExhaustiveProvider_rangeDown_float_0.0f list 21
 -17.0
 ...
 
-ExhaustiveProvider_rangeDown_float_-0.0f list 21
+ExhaustiveProvider_rangeDown_float_x list 21
 -Infinity
 -0.0
 0.0
@@ -4783,7 +5360,7 @@ ExhaustiveProvider_rangeDown_float_-0.0f list 21
 -17.0
 ...
 
-ExhaustiveProvider_rangeDown_float_MIN_VALUE list 21
+ExhaustiveProvider_rangeDown_float_xi list 21
 -Infinity
 1.4E-45
 -0.0
@@ -4806,7 +5383,7 @@ ExhaustiveProvider_rangeDown_float_MIN_VALUE list 21
 -2.8E-44
 ...
 
-ExhaustiveProvider_rangeDown_float_MIN_NORMAL list 21
+ExhaustiveProvider_rangeDown_float_xii list 21
 -Infinity
 1.17549435E-38
 -0.0
@@ -4829,7 +5406,7 @@ ExhaustiveProvider_rangeDown_float_MIN_NORMAL list 21
 -1.880791E-37
 ...
 
-ExhaustiveProvider_rangeDown_float_-MIN_VALUE list 21
+ExhaustiveProvider_rangeDown_float_xiii list 21
 -Infinity
 -1.4E-45
 -2.8E-45
@@ -4852,7 +5429,7 @@ ExhaustiveProvider_rangeDown_float_-MIN_VALUE list 21
 -3.2E-44
 ...
 
-ExhaustiveProvider_rangeDown_float_-MIN_NORMAL list 21
+ExhaustiveProvider_rangeDown_float_xiv list 21
 -Infinity
 -1.17549435E-38
 -2.3509887E-38
@@ -4875,7 +5452,7 @@ ExhaustiveProvider_rangeDown_float_-MIN_NORMAL list 21
 -2.2334393E-37
 ...
 
-ExhaustiveProvider_rangeDown_float_MAX_VALUE list 21
+ExhaustiveProvider_rangeDown_float_xv list 21
 -Infinity
 3.4028235E38
 3.4028233E38
@@ -4898,11 +5475,11 @@ ExhaustiveProvider_rangeDown_float_MAX_VALUE list 21
 3.402819E38
 ...
 
-ExhaustiveProvider_rangeDown_float_-MAX_VALUE list 2
+ExhaustiveProvider_rangeDown_float_xvi list 2
 -Infinity
 -3.4028235E38
 
-ExhaustiveProvider_rangeDown_float_POSITIVE_INFINITY list 21
+ExhaustiveProvider_rangeDown_float_xvii list 21
 -Infinity
 Infinity
 -0.0
@@ -4925,10 +5502,10 @@ Infinity
 12.0
 ...
 
-ExhaustiveProvider_rangeDown_float_NEGATIVE_INFINITY list 1
+ExhaustiveProvider_rangeDown_float_xviii list 1
 -Infinity
 
-ExhaustiveProvider_range_float_float_1.0f_2.0f list 21
+ExhaustiveProvider_range_float_float_i list 21
 1.0
 2.0
 1.5
@@ -4951,7 +5528,7 @@ ExhaustiveProvider_range_float_float_1.0f_2.0f list 21
 1.15625
 ...
 
-ExhaustiveProvider_range_float_float_1.0f_3.0f list 21
+ExhaustiveProvider_range_float_float_ii list 21
 1.0
 3.0
 2.0
@@ -4974,7 +5551,7 @@ ExhaustiveProvider_range_float_float_1.0f_3.0f list 21
 1.3125
 ...
 
-ExhaustiveProvider_range_float_float_1.0f_4.0f list 21
+ExhaustiveProvider_range_float_float_iii list 21
 1.0
 2.0
 3.0
@@ -4997,7 +5574,7 @@ ExhaustiveProvider_range_float_float_1.0f_4.0f list 21
 1.625
 ...
 
-ExhaustiveProvider_range_float_float_1.0f_257.0f list 21
+ExhaustiveProvider_range_float_float_iv list 21
 1.0
 257.0
 129.0
@@ -5020,7 +5597,7 @@ ExhaustiveProvider_range_float_float_1.0f_257.0f list 21
 41.0
 ...
 
-ExhaustiveProvider_range_float_float_-257.0f_-1.0f list 21
+ExhaustiveProvider_range_float_float_v list 21
 -257.0
 -1.0
 -129.0
@@ -5043,7 +5620,7 @@ ExhaustiveProvider_range_float_float_-257.0f_-1.0f list 21
 -217.0
 ...
 
-ExhaustiveProvider_range_float_float_1.0f_1.0E20f list 21
+ExhaustiveProvider_range_float_float_vi list 21
 1.0
 2.0
 3.0
@@ -5066,7 +5643,7 @@ ExhaustiveProvider_range_float_float_1.0f_1.0E20f list 21
 20.0
 ...
 
-ExhaustiveProvider_range_float_float_-1.0E20f_-1.0f list 21
+ExhaustiveProvider_range_float_float_vii list 21
 -1.0
 -2.0
 -3.0
@@ -5089,7 +5666,7 @@ ExhaustiveProvider_range_float_float_-1.0E20f_-1.0f list 21
 -20.0
 ...
 
-ExhaustiveProvider_range_float_float_(float)_Math.sqrt(2)_(float)_Math.PI list 21
+ExhaustiveProvider_range_float_float_viii list 21
 1.4142135
 1.4142137
 1.4142138
@@ -5112,11 +5689,11 @@ ExhaustiveProvider_range_float_float_(float)_Math.sqrt(2)_(float)_Math.PI list 2
 1.4142158
 ...
 
-ExhaustiveProvider_range_float_float_(float)_Math.sqrt(2)_successor((float)_Math.PI) list 2
+ExhaustiveProvider_range_float_float_ix list 2
 3.1415927
 3.141593
 
-ExhaustiveProvider_range_float_float_0.0f_1.0f list 21
+ExhaustiveProvider_range_float_float_x list 21
 0.0
 -0.0
 1.0
@@ -5139,7 +5716,7 @@ ExhaustiveProvider_range_float_float_0.0f_1.0f list 21
 0.09375
 ...
 
-ExhaustiveProvider_range_float_float_-1.0f_1.0f list 21
+ExhaustiveProvider_range_float_float_xi list 21
 -1.0
 1.0
 0.0
@@ -5162,13 +5739,13 @@ ExhaustiveProvider_range_float_float_-1.0f_1.0f list 21
 -0.8125
 ...
 
-ExhaustiveProvider_range_float_float_1.0f_1.0f list 1
+ExhaustiveProvider_range_float_float_xii list 1
 1.0
 
-ExhaustiveProvider_range_float_float_(float)_Math.PI_(float)_Math.PI list 1
+ExhaustiveProvider_range_float_float_xiii list 1
 3.1415927
 
-ExhaustiveProvider_range_float_float_(float)_-Math.PI_(float)_Math.PI list 21
+ExhaustiveProvider_range_float_float_xiv list 21
 -3.1415927
 -3.1415923
 -3.1415918
@@ -5191,7 +5768,7 @@ ExhaustiveProvider_range_float_float_(float)_-Math.PI_(float)_Math.PI list 21
 -3.1415837
 ...
 
-ExhaustiveProvider_range_float_float_1.0f_POSITIVE_INFINITY list 21
+ExhaustiveProvider_range_float_float_xv list 21
 Infinity
 1.0
 2.0
@@ -5214,7 +5791,7 @@ Infinity
 19.0
 ...
 
-ExhaustiveProvider_range_float_float_NEGATIVE_INFINITY_1.0f list 21
+ExhaustiveProvider_range_float_float_xvi list 21
 -Infinity
 1.0
 -0.0
@@ -5237,15 +5814,15 @@ ExhaustiveProvider_range_float_float_NEGATIVE_INFINITY_1.0f list 21
 -16.0
 ...
 
-ExhaustiveProvider_range_float_float_MAX_VALUE_POSITIVE_INFINITY list 2
+ExhaustiveProvider_range_float_float_xvii list 2
 Infinity
 3.4028235E38
 
-ExhaustiveProvider_range_float_float_NEGATIVE_INFINITY_-MAX_VALUE list 2
+ExhaustiveProvider_range_float_float_xviii list 2
 -Infinity
 -3.4028235E38
 
-ExhaustiveProvider_range_float_float_NEGATIVE_INFINITY_POSITIVE_INFINITY list 21
+ExhaustiveProvider_range_float_float_xix list 21
 -Infinity
 Infinity
 -0.0
@@ -5268,35 +5845,35 @@ Infinity
 12.0
 ...
 
-ExhaustiveProvider_range_float_float_0.0f_0.0f list 2
+ExhaustiveProvider_range_float_float_xx list 2
 0.0
 -0.0
 
-ExhaustiveProvider_range_float_float_-0.0f_-0.0f list 2
+ExhaustiveProvider_range_float_float_xxi list 2
 0.0
 -0.0
 
-ExhaustiveProvider_range_float_float_-0.0f_0.0f list 2
+ExhaustiveProvider_range_float_float_xxii list 2
 0.0
 -0.0
 
-ExhaustiveProvider_range_float_float_0.0f_-0.0f list 2
+ExhaustiveProvider_range_float_float_xxiii list 2
 0.0
 -0.0
 
-ExhaustiveProvider_range_float_float_POSITIVE_INFINITY_POSITIVE_INFINITY list 1
+ExhaustiveProvider_range_float_float_xxiv list 1
 Infinity
 
-ExhaustiveProvider_range_float_float_NEGATIVE_INFINITY_NEGATIVE_INFINITY list 1
+ExhaustiveProvider_range_float_float_xxv list 1
 -Infinity
 
-ExhaustiveProvider_range_float_float_1.0f_-1.0f list 0
+ExhaustiveProvider_range_float_float_xxvi list 0
 
-ExhaustiveProvider_range_float_float_POSITIVE_INFINITY_NEGATIVE_INFINITY list 0
+ExhaustiveProvider_range_float_float_xxvii list 0
 
-ExhaustiveProvider_range_float_float_POSITIVE_INFINITY_1.0f list 0
+ExhaustiveProvider_range_float_float_xxviii list 0
 
-ExhaustiveProvider_range_float_float_1.0f_NEGATIVE_INFINITY list 0
+ExhaustiveProvider_range_float_float_xxix list 0
 
 ExhaustiveProvider_rangeUp_double_1.0 list 21
 Infinity

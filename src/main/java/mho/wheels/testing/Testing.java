@@ -215,7 +215,7 @@ public strictfp class Testing {
             initializeTestData();
         }
         List<String> list = testingLists.get(b);
-        List<String> actual = toList(map(Object::toString, a));
+        List<String> actual = toList(map(Objects::toString, a));
         if (!Objects.equals(list, actual)) {
             boolean quote = containsTrailingSpaces(actual);
             System.out.println();

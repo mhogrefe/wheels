@@ -45,28 +45,28 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void uniformSample_Iterable_helper_1(@NotNull String xs, @NotNull String output) {
-        aeqit(EP.uniformSample(readIntegerList(xs)), output);
+        aeqitLog(EP.uniformSample(readIntegerList(xs)), output);
     }
 
     private static void uniformSample_Iterable_helper_2(@NotNull String xs, @NotNull String output) {
-        aeqit(EP.uniformSample(readIntegerListWithNulls(xs)), output);
+        aeqitLog(EP.uniformSample(readIntegerListWithNulls(xs)), output);
     }
 
     @Test
     public void testUniformSample_Iterable() {
-        uniformSample_Iterable_helper_1("[3, 1, 4, 1]", "[3, 1, 4, 1]");
-        uniformSample_Iterable_helper_1("[]", "[]");
-        uniformSample_Iterable_helper_2("[3, 1, null, 1]", "[3, 1, null, 1]");
+        uniformSample_Iterable_helper_1("[3, 1, 4, 1]", "ExhaustiveProvider_uniformSample_Iterable_i");
+        uniformSample_Iterable_helper_1("[]", "ExhaustiveProvider_uniformSample_Iterable_ii");
+        uniformSample_Iterable_helper_2("[3, 1, null, 1]", "ExhaustiveProvider_uniformSample_Iterable_iii");
     }
 
     private static void uniformSample_String_helper(@NotNull String s, @NotNull String output) {
-        aeqcs(EP.uniformSample(s), output);
+        aeqitLog(EP.uniformSample(s), output);
     }
 
     @Test
     public void testUniformSample_String() {
-        uniformSample_String_helper("hello", "hello");
-        uniformSample_String_helper("", "");
+        uniformSample_String_helper("hello", "ExhaustiveProvider_uniformSample_String_i");
+        uniformSample_String_helper("", "ExhaustiveProvider_uniformSample_String_ii");
     }
 
     @Test
@@ -175,16 +175,16 @@ public strictfp class ExhaustiveProviderTest {
     public void testNonzeroBytes() {
         Iterable<Byte> bs = EP.nonzeroBytes();
         aeq(length(bs), 255);
-        aeqitLimitLog(TINY_LIMIT, reverse(bs), "ExhaustiveProvider_nonzeroBytes_reverse");
-        simpleProviderHelper(bs, "ExhaustiveProvider_nonzeroBytes");
+        aeqitLimitLog(TINY_LIMIT, reverse(bs), "ExhaustiveProvider_nonzeroBytes_i");
+        simpleProviderHelper(bs, "ExhaustiveProvider_nonzeroBytes_ii");
     }
 
     @Test
     public void testNonzeroShorts() {
         Iterable<Short> ss = EP.nonzeroShorts();
         aeq(length(ss), 65535);
-        aeqitLimitLog(TINY_LIMIT, reverse(ss), "ExhaustiveProvider_nonzeroShorts_reverse");
-        simpleProviderHelper(ss, "ExhaustiveProvider_nonzeroShorts");
+        aeqitLimitLog(TINY_LIMIT, reverse(ss), "ExhaustiveProvider_nonzeroShorts_i");
+        simpleProviderHelper(ss, "ExhaustiveProvider_nonzeroShorts_ii");
     }
 
     @Test
@@ -206,16 +206,16 @@ public strictfp class ExhaustiveProviderTest {
     public void testBytes() {
         Iterable<Byte> bs = EP.bytes();
         aeq(length(bs), 256);
-        aeqitLimitLog(TINY_LIMIT, reverse(bs), "ExhaustiveProvider_bytes_reverse");
-        simpleProviderHelper(bs, "ExhaustiveProvider_bytes");
+        aeqitLimitLog(TINY_LIMIT, reverse(bs), "ExhaustiveProvider_bytes_i");
+        simpleProviderHelper(bs, "ExhaustiveProvider_bytes_ii");
     }
 
     @Test
     public void testShorts() {
         Iterable<Short> ss = EP.shorts();
         aeq(length(ss), 65536);
-        aeqitLimitLog(TINY_LIMIT, reverse(ss), "ExhaustiveProvider_shorts_reverse");
-        simpleProviderHelper(ss, "ExhaustiveProvider_shorts");
+        aeqitLimitLog(TINY_LIMIT, reverse(ss), "ExhaustiveProvider_shorts_i");
+        simpleProviderHelper(ss, "ExhaustiveProvider_shorts_ii");
     }
 
     @Test
@@ -268,11 +268,11 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testRangeUp_byte() {
-        rangeUp_byte_helper(0, "ExhaustiveProvider_rangeUp_byte_0");
-        rangeUp_byte_helper(5, "ExhaustiveProvider_rangeUp_byte_5");
-        rangeUp_byte_helper(-5, "ExhaustiveProvider_rangeUp_byte_-5");
-        rangeUp_byte_helper(Byte.MAX_VALUE, "ExhaustiveProvider_rangeUp_byte_MAX_VALUE");
-        rangeUp_byte_helper(Byte.MIN_VALUE, "ExhaustiveProvider_rangeUp_byte_MIN_VALUE");
+        rangeUp_byte_helper(0, "ExhaustiveProvider_rangeUp_byte_i");
+        rangeUp_byte_helper(5, "ExhaustiveProvider_rangeUp_byte_ii");
+        rangeUp_byte_helper(-5, "ExhaustiveProvider_rangeUp_byte_iii");
+        rangeUp_byte_helper(Byte.MAX_VALUE, "ExhaustiveProvider_rangeUp_byte_iv");
+        rangeUp_byte_helper(Byte.MIN_VALUE, "ExhaustiveProvider_rangeUp_byte_v");
     }
 
     private static void rangeUp_short_helper(int a, @NotNull String output) {
@@ -281,11 +281,11 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testRangeUp_short() {
-        rangeUp_short_helper(0, "ExhaustiveProvider_rangeUp_short_0");
-        rangeUp_short_helper(5, "ExhaustiveProvider_rangeUp_short_5");
-        rangeUp_short_helper(-5, "ExhaustiveProvider_rangeUp_short_-5");
-        rangeUp_short_helper(Short.MAX_VALUE, "ExhaustiveProvider_rangeUp_short_MAX_VALUE");
-        rangeUp_short_helper(Short.MIN_VALUE, "ExhaustiveProvider_rangeUp_short_MIN_VALUE");
+        rangeUp_short_helper(0, "ExhaustiveProvider_rangeUp_short_i");
+        rangeUp_short_helper(5, "ExhaustiveProvider_rangeUp_short_ii");
+        rangeUp_short_helper(-5, "ExhaustiveProvider_rangeUp_short_iii");
+        rangeUp_short_helper(Short.MAX_VALUE, "ExhaustiveProvider_rangeUp_short_iv");
+        rangeUp_short_helper(Short.MIN_VALUE, "ExhaustiveProvider_rangeUp_short_v");
     }
 
     private static void rangeUp_int_helper(int a, @NotNull String output) {
@@ -294,11 +294,11 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testRangeUp_int() {
-        rangeUp_int_helper(0, "ExhaustiveProvider_rangeUp_int_0");
-        rangeUp_int_helper(5, "ExhaustiveProvider_rangeUp_int_5");
-        rangeUp_int_helper(-5, "ExhaustiveProvider_rangeUp_int_-5");
-        rangeUp_int_helper(Integer.MAX_VALUE, "ExhaustiveProvider_rangeUp_int_MAX_VALUE");
-        rangeUp_int_helper(Integer.MIN_VALUE, "ExhaustiveProvider_rangeUp_int_MIN_VALUE");
+        rangeUp_int_helper(0, "ExhaustiveProvider_rangeUp_int_i");
+        rangeUp_int_helper(5, "ExhaustiveProvider_rangeUp_int_ii");
+        rangeUp_int_helper(-5, "ExhaustiveProvider_rangeUp_int_iii");
+        rangeUp_int_helper(Integer.MAX_VALUE, "ExhaustiveProvider_rangeUp_int_iv");
+        rangeUp_int_helper(Integer.MIN_VALUE, "ExhaustiveProvider_rangeUp_int_v");
     }
 
     private static void rangeUp_long_helper(long a, @NotNull String output) {
@@ -307,11 +307,11 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testRangeUp_long() {
-        rangeUp_long_helper(0, "ExhaustiveProvider_rangeUp_long_0");
-        rangeUp_long_helper(5, "ExhaustiveProvider_rangeUp_long_5");
-        rangeUp_long_helper(-5, "ExhaustiveProvider_rangeUp_long_-5");
-        rangeUp_long_helper(Long.MAX_VALUE, "ExhaustiveProvider_rangeUp_long_MAX_VALUE");
-        rangeUp_long_helper(Long.MIN_VALUE, "ExhaustiveProvider_rangeUp_long_MIN_VALUE");
+        rangeUp_long_helper(0, "ExhaustiveProvider_rangeUp_long_i");
+        rangeUp_long_helper(5, "ExhaustiveProvider_rangeUp_long_ii");
+        rangeUp_long_helper(-5, "ExhaustiveProvider_rangeUp_long_iii");
+        rangeUp_long_helper(Long.MAX_VALUE, "ExhaustiveProvider_rangeUp_long_iv");
+        rangeUp_long_helper(Long.MIN_VALUE, "ExhaustiveProvider_rangeUp_long_v");
     }
 
     private static void rangeUp_BigInteger_helper(int a, @NotNull String output) {
@@ -320,9 +320,9 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testRangeUp_BigInteger() {
-        rangeUp_BigInteger_helper(0, "ExhaustiveProvider_rangeUp_BigInteger_0");
-        rangeUp_BigInteger_helper(5, "ExhaustiveProvider_rangeUp_BigInteger_5");
-        rangeUp_BigInteger_helper(-5, "ExhaustiveProvider_rangeUp_BigInteger_-5");
+        rangeUp_BigInteger_helper(0, "ExhaustiveProvider_rangeUp_BigInteger_i");
+        rangeUp_BigInteger_helper(5, "ExhaustiveProvider_rangeUp_BigInteger_ii");
+        rangeUp_BigInteger_helper(-5, "ExhaustiveProvider_rangeUp_BigInteger_iii");
     }
 
     private static void rangeUp_char_helper(char a, @NotNull String output) {
@@ -331,10 +331,10 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testRangeUp_char() {
-        rangeUp_char_helper('\0', "ExhaustiveProvider_rangeUp_char_\\u0000");
-        rangeUp_char_helper('a', "ExhaustiveProvider_rangeUp_char_a");
-        rangeUp_char_helper('Ш', "ExhaustiveProvider_rangeUp_char_\\u0428");
-        rangeUp_char_helper(Character.MAX_VALUE, "ExhaustiveProvider_rangeUp_char_MAX_VALUE");
+        rangeUp_char_helper('\0', "ExhaustiveProvider_rangeUp_char_i");
+        rangeUp_char_helper('a', "ExhaustiveProvider_rangeUp_char_ii");
+        rangeUp_char_helper('Ш', "ExhaustiveProvider_rangeUp_char_iii");
+        rangeUp_char_helper(Character.MAX_VALUE, "ExhaustiveProvider_rangeUp_char_iv");
     }
 
     private static void rangeDown_byte_helper(int a, @NotNull String output) {
@@ -343,11 +343,11 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testRangeDown_byte() {
-        rangeDown_byte_helper(0, "ExhaustiveProvider_rangeDown_byte_0");
-        rangeDown_byte_helper(5, "ExhaustiveProvider_rangeDown_byte_5");
-        rangeDown_byte_helper(-5,"ExhaustiveProvider_rangeDown_byte_-5");
-        rangeDown_byte_helper(Byte.MAX_VALUE, "ExhaustiveProvider_rangeDown_byte_MAX_VALUE");
-        rangeDown_byte_helper(Byte.MIN_VALUE, "ExhaustiveProvider_rangeDown_byte_MIN_VALUE");
+        rangeDown_byte_helper(0, "ExhaustiveProvider_rangeDown_byte_i");
+        rangeDown_byte_helper(5, "ExhaustiveProvider_rangeDown_byte_ii");
+        rangeDown_byte_helper(-5,"ExhaustiveProvider_rangeDown_byte_iii");
+        rangeDown_byte_helper(Byte.MAX_VALUE, "ExhaustiveProvider_rangeDown_byte_iv");
+        rangeDown_byte_helper(Byte.MIN_VALUE, "ExhaustiveProvider_rangeDown_byte_v");
     }
 
     private static void rangeDown_short_helper(int a, @NotNull String output) {
@@ -356,11 +356,11 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testRangeDown_short() {
-        rangeDown_short_helper(0, "ExhaustiveProvider_rangeDown_short_0");
-        rangeDown_short_helper(5, "ExhaustiveProvider_rangeDown_short_5");
-        rangeDown_short_helper(-5,"ExhaustiveProvider_rangeDown_short_-5");
-        rangeDown_short_helper(Short.MAX_VALUE, "ExhaustiveProvider_rangeDown_short_MAX_VALUE");
-        rangeDown_short_helper(Short.MIN_VALUE, "ExhaustiveProvider_rangeDown_short_MIN_VALUE");
+        rangeDown_short_helper(0, "ExhaustiveProvider_rangeDown_short_i");
+        rangeDown_short_helper(5, "ExhaustiveProvider_rangeDown_short_ii");
+        rangeDown_short_helper(-5,"ExhaustiveProvider_rangeDown_short_iii");
+        rangeDown_short_helper(Short.MAX_VALUE, "ExhaustiveProvider_rangeDown_short_iv");
+        rangeDown_short_helper(Short.MIN_VALUE, "ExhaustiveProvider_rangeDown_short_v");
     }
 
     private static void rangeDown_int_helper(int a, @NotNull String output) {
@@ -369,11 +369,11 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testRangeDown_int() {
-        rangeDown_int_helper(0, "ExhaustiveProvider_rangeDown_int_0");
-        rangeDown_int_helper(5, "ExhaustiveProvider_rangeDown_int_5");
-        rangeDown_int_helper(-5,"ExhaustiveProvider_rangeDown_int_-5");
-        rangeDown_int_helper(Integer.MAX_VALUE, "ExhaustiveProvider_rangeDown_int_MAX_VALUE");
-        rangeDown_int_helper(Integer.MIN_VALUE, "ExhaustiveProvider_rangeDown_int_MIN_VALUE");
+        rangeDown_int_helper(0, "ExhaustiveProvider_rangeDown_int_i");
+        rangeDown_int_helper(5, "ExhaustiveProvider_rangeDown_int_ii");
+        rangeDown_int_helper(-5,"ExhaustiveProvider_rangeDown_int_iii");
+        rangeDown_int_helper(Integer.MAX_VALUE, "ExhaustiveProvider_rangeDown_int_iv");
+        rangeDown_int_helper(Integer.MIN_VALUE, "ExhaustiveProvider_rangeDown_int_v");
     }
 
     private static void rangeDown_long_helper(long a, @NotNull String output) {
@@ -382,11 +382,11 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testRangeDown_long() {
-        rangeDown_long_helper(0, "ExhaustiveProvider_rangeDown_long_0");
-        rangeDown_long_helper(5, "ExhaustiveProvider_rangeDown_long_5");
-        rangeDown_long_helper(-5,"ExhaustiveProvider_rangeDown_long_-5");
-        rangeDown_long_helper(Long.MAX_VALUE, "ExhaustiveProvider_rangeDown_long_MAX_VALUE");
-        rangeDown_long_helper(Long.MIN_VALUE, "ExhaustiveProvider_rangeDown_long_MIN_VALUE");
+        rangeDown_long_helper(0, "ExhaustiveProvider_rangeDown_long_i");
+        rangeDown_long_helper(5, "ExhaustiveProvider_rangeDown_long_ii");
+        rangeDown_long_helper(-5,"ExhaustiveProvider_rangeDown_long_iii");
+        rangeDown_long_helper(Long.MAX_VALUE, "ExhaustiveProvider_rangeDown_long_iv");
+        rangeDown_long_helper(Long.MIN_VALUE, "ExhaustiveProvider_rangeDown_long_v");
     }
 
     private static void rangeDown_BigInteger_helper(int a, @NotNull String output) {
@@ -395,9 +395,9 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testRangeDown_BigInteger() {
-        rangeDown_BigInteger_helper(0, "ExhaustiveProvider_rangeDown_BigInteger_0");
-        rangeDown_BigInteger_helper(5, "ExhaustiveProvider_rangeDown_BigInteger_5");
-        rangeDown_BigInteger_helper(-5, "ExhaustiveProvider_rangeDown_BigInteger_-5");
+        rangeDown_BigInteger_helper(0, "ExhaustiveProvider_rangeDown_BigInteger_i");
+        rangeDown_BigInteger_helper(5, "ExhaustiveProvider_rangeDown_BigInteger_ii");
+        rangeDown_BigInteger_helper(-5, "ExhaustiveProvider_rangeDown_BigInteger_iii");
     }
 
     private static void rangeDown_char_helper(char a, @NotNull String output) {
@@ -406,122 +406,122 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testRangeDown_char() {
-        rangeDown_char_helper('\0', "ExhaustiveProvider_rangeDown_char_\\u0000");
-        rangeDown_char_helper('a', "ExhaustiveProvider_rangeDown_char_a");
-        rangeDown_char_helper('Ш', "ExhaustiveProvider_rangeDown_char_\\u0428");
-        rangeDown_char_helper(Character.MAX_VALUE, "ExhaustiveProvider_rangeDown_char_MAX_VALUE");
+        rangeDown_char_helper('\0', "ExhaustiveProvider_rangeDown_char_i");
+        rangeDown_char_helper('a', "ExhaustiveProvider_rangeDown_char_ii");
+        rangeDown_char_helper('Ш', "ExhaustiveProvider_rangeDown_char_iii");
+        rangeDown_char_helper(Character.MAX_VALUE, "ExhaustiveProvider_rangeDown_char_iv");
     }
 
     private static void range_byte_byte_helper(int a, int b, @NotNull String output) {
-        aeqit(EP.range((byte) a, (byte) b), output);
+        aeqitLog(EP.range((byte) a, (byte) b), output);
     }
 
     @Test
     public void testRange_byte_byte() {
-        range_byte_byte_helper(10, 20, "[10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]");
-        range_byte_byte_helper(10, 10, "[10]");
-        range_byte_byte_helper(10, 9, "[]");
-        range_byte_byte_helper(-20, -10, "[-10, -11, -12, -13, -14, -15, -16, -17, -18, -19, -20]");
-        range_byte_byte_helper(-20, -20, "[-20]");
-        range_byte_byte_helper(-20, -21, "[]");
-        range_byte_byte_helper(0, 0, "[0]");
-        range_byte_byte_helper(0, 10, "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]");
-        range_byte_byte_helper(-5, 0, "[0, -1, -2, -3, -4, -5]");
-        range_byte_byte_helper(-5, 10, "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, 7, 8, 9, 10]");
-        range_byte_byte_helper(-10, 5, "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, -6, -7, -8, -9, -10]");
-        range_byte_byte_helper(5, -10, "[]");
+        range_byte_byte_helper(10, 20, "ExhaustiveProvider_range_byte_byte_i");
+        range_byte_byte_helper(10, 10, "ExhaustiveProvider_range_byte_byte_ii");
+        range_byte_byte_helper(10, 9, "ExhaustiveProvider_range_byte_byte_iii");
+        range_byte_byte_helper(-20, -10, "ExhaustiveProvider_range_byte_byte_iv");
+        range_byte_byte_helper(-20, -20, "ExhaustiveProvider_range_byte_byte_v");
+        range_byte_byte_helper(-20, -21, "ExhaustiveProvider_range_byte_byte_vi");
+        range_byte_byte_helper(0, 0, "ExhaustiveProvider_range_byte_byte_vii");
+        range_byte_byte_helper(0, 10, "ExhaustiveProvider_range_byte_byte_viii");
+        range_byte_byte_helper(-5, 0, "ExhaustiveProvider_range_byte_byte_ix");
+        range_byte_byte_helper(-5, 10, "ExhaustiveProvider_range_byte_byte_x");
+        range_byte_byte_helper(-10, 5, "ExhaustiveProvider_range_byte_byte_xi");
+        range_byte_byte_helper(5, -10, "ExhaustiveProvider_range_byte_byte_xii");
     }
 
     private static void range_short_short_helper(int a, int b, @NotNull String output) {
-        aeqit(EP.range((short) a, (short) b), output);
+        aeqitLog(EP.range((short) a, (short) b), output);
     }
 
     @Test
     public void testRange_short_short() {
-        range_short_short_helper(10, 20, "[10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]");
-        range_short_short_helper(10, 10, "[10]");
-        range_short_short_helper(10, 9, "[]");
-        range_short_short_helper(-20, -10, "[-10, -11, -12, -13, -14, -15, -16, -17, -18, -19, -20]");
-        range_short_short_helper(-20, -20, "[-20]");
-        range_short_short_helper(-20, -21, "[]");
-        range_short_short_helper(0, 0, "[0]");
-        range_short_short_helper(0, 10, "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]");
-        range_short_short_helper(-5, 0, "[0, -1, -2, -3, -4, -5]");
-        range_short_short_helper(-5, 10, "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, 7, 8, 9, 10]");
-        range_short_short_helper(-10, 5, "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, -6, -7, -8, -9, -10]");
-        range_short_short_helper(5, -10, "[]");
+        range_short_short_helper(10, 20, "ExhaustiveProvider_range_short_short_i");
+        range_short_short_helper(10, 10, "ExhaustiveProvider_range_short_short_ii");
+        range_short_short_helper(10, 9, "ExhaustiveProvider_range_short_short_iii");
+        range_short_short_helper(-20, -10, "ExhaustiveProvider_range_short_short_iv");
+        range_short_short_helper(-20, -20, "ExhaustiveProvider_range_short_short_v");
+        range_short_short_helper(-20, -21, "ExhaustiveProvider_range_short_short_vi");
+        range_short_short_helper(0, 0, "ExhaustiveProvider_range_short_short_vii");
+        range_short_short_helper(0, 10, "ExhaustiveProvider_range_short_short_viii");
+        range_short_short_helper(-5, 0, "ExhaustiveProvider_range_short_short_ix");
+        range_short_short_helper(-5, 10, "ExhaustiveProvider_range_short_short_x");
+        range_short_short_helper(-10, 5, "ExhaustiveProvider_range_short_short_xi");
+        range_short_short_helper(5, -10, "ExhaustiveProvider_range_short_short_xii");
     }
 
     private static void range_int_int_helper(int a, int b, @NotNull String output) {
-        aeqit(EP.range(a, b), output);
+        aeqitLog(EP.range(a, b), output);
     }
 
     @Test
     public void testRange_int_int() {
-        range_int_int_helper(10, 20, "[10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]");
-        range_int_int_helper(10, 10, "[10]");
-        range_int_int_helper(10, 9, "[]");
-        range_int_int_helper(-20, -10, "[-10, -11, -12, -13, -14, -15, -16, -17, -18, -19, -20]");
-        range_int_int_helper(-20, -20, "[-20]");
-        range_int_int_helper(-20, -21, "[]");
-        range_int_int_helper(0, 0, "[0]");
-        range_int_int_helper(0, 10, "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]");
-        range_int_int_helper(-5, 0, "[0, -1, -2, -3, -4, -5]");
-        range_int_int_helper(-5, 10, "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, 7, 8, 9, 10]");
-        range_int_int_helper(-10, 5, "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, -6, -7, -8, -9, -10]");
-        range_int_int_helper(5, -10, "[]");
+        range_int_int_helper(10, 20, "ExhaustiveProvider_range_int_int_i");
+        range_int_int_helper(10, 10, "ExhaustiveProvider_range_int_int_ii");
+        range_int_int_helper(10, 9, "ExhaustiveProvider_range_int_int_iii");
+        range_int_int_helper(-20, -10, "ExhaustiveProvider_range_int_int_iv");
+        range_int_int_helper(-20, -20, "ExhaustiveProvider_range_int_int_v");
+        range_int_int_helper(-20, -21, "ExhaustiveProvider_range_int_int_vi");
+        range_int_int_helper(0, 0, "ExhaustiveProvider_range_int_int_vii");
+        range_int_int_helper(0, 10, "ExhaustiveProvider_range_int_int_viii");
+        range_int_int_helper(-5, 0, "ExhaustiveProvider_range_int_int_ix");
+        range_int_int_helper(-5, 10, "ExhaustiveProvider_range_int_int_x");
+        range_int_int_helper(-10, 5, "ExhaustiveProvider_range_int_int_xi");
+        range_int_int_helper(5, -10, "ExhaustiveProvider_range_int_int_xii");
     }
 
     private static void range_long_long_helper(long a, long b, @NotNull String output) {
-        aeqit(EP.range(a, b), output);
+        aeqitLog(EP.range(a, b), output);
     }
 
     @Test
     public void testRange_long_long() {
-        range_long_long_helper(10L, 20L, "[10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]");
-        range_long_long_helper(10L, 10L, "[10]");
-        range_long_long_helper(10L, 9L, "[]");
-        range_long_long_helper(-20L, -10L, "[-10, -11, -12, -13, -14, -15, -16, -17, -18, -19, -20]");
-        range_long_long_helper(-20L, -20L, "[-20]");
-        range_long_long_helper(-20L, -21L, "[]");
-        range_long_long_helper(0L, 0L, "[0]");
-        range_long_long_helper(0L, 10L, "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]");
-        range_long_long_helper(-5L, 0L, "[0, -1, -2, -3, -4, -5]");
-        range_long_long_helper(-5L, 10L, "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, 7, 8, 9, 10]");
-        range_long_long_helper(-10L, 5L, "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, -6, -7, -8, -9, -10]");
-        range_long_long_helper(5L, -10L, "[]");
+        range_long_long_helper(10L, 20L, "ExhaustiveProvider_range_long_long_i");
+        range_long_long_helper(10L, 10L, "ExhaustiveProvider_range_long_long_ii");
+        range_long_long_helper(10L, 9L, "ExhaustiveProvider_range_long_long_iii");
+        range_long_long_helper(-20L, -10L, "ExhaustiveProvider_range_long_long_iv");
+        range_long_long_helper(-20L, -20L, "ExhaustiveProvider_range_long_long_v");
+        range_long_long_helper(-20L, -21L, "ExhaustiveProvider_range_long_long_vi");
+        range_long_long_helper(0L, 0L, "ExhaustiveProvider_range_long_long_vii");
+        range_long_long_helper(0L, 10L, "ExhaustiveProvider_range_long_long_viii");
+        range_long_long_helper(-5L, 0L, "ExhaustiveProvider_range_long_long_ix");
+        range_long_long_helper(-5L, 10L, "ExhaustiveProvider_range_long_long_x");
+        range_long_long_helper(-10L, 5L, "ExhaustiveProvider_range_long_long_xi");
+        range_long_long_helper(5L, -10L, "ExhaustiveProvider_range_long_long_xii");
     }
 
     private static void range_BigInteger_BigInteger_helper(int a, int b, @NotNull String output) {
-        aeqit(EP.range(BigInteger.valueOf(a), BigInteger.valueOf(b)), output);
+        aeqitLog(EP.range(BigInteger.valueOf(a), BigInteger.valueOf(b)), output);
     }
 
     @Test
     public void testRange_BigInteger_BigInteger() {
-        range_BigInteger_BigInteger_helper(10, 20, "[10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]");
-        range_BigInteger_BigInteger_helper(10, 10, "[10]");
-        range_BigInteger_BigInteger_helper(10, 9, "[]");
-        range_BigInteger_BigInteger_helper(-20, -10, "[-10, -11, -12, -13, -14, -15, -16, -17, -18, -19, -20]");
-        range_BigInteger_BigInteger_helper(-20, -20, "[-20]");
-        range_BigInteger_BigInteger_helper(-20, -21, "[]");
-        range_BigInteger_BigInteger_helper(0, 0, "[0]");
-        range_BigInteger_BigInteger_helper(0, 10, "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]");
-        range_BigInteger_BigInteger_helper(-5, 0, "[0, -1, -2, -3, -4, -5]");
-        range_BigInteger_BigInteger_helper(-5, 10, "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, 7, 8, 9, 10]");
-        range_BigInteger_BigInteger_helper(-10, 5, "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, -6, -7, -8, -9, -10]");
-        range_BigInteger_BigInteger_helper(5, -10, "[]");
+        range_BigInteger_BigInteger_helper(10, 20, "ExhaustiveProvider_range_BigInteger_BigInteger_i");
+        range_BigInteger_BigInteger_helper(10, 10, "ExhaustiveProvider_range_BigInteger_BigInteger_ii");
+        range_BigInteger_BigInteger_helper(10, 9, "ExhaustiveProvider_range_BigInteger_BigInteger_iii");
+        range_BigInteger_BigInteger_helper(-20, -10, "ExhaustiveProvider_range_BigInteger_BigInteger_iv");
+        range_BigInteger_BigInteger_helper(-20, -20, "ExhaustiveProvider_range_BigInteger_BigInteger_v");
+        range_BigInteger_BigInteger_helper(-20, -21, "ExhaustiveProvider_range_BigInteger_BigInteger_vi");
+        range_BigInteger_BigInteger_helper(0, 0, "ExhaustiveProvider_range_BigInteger_BigInteger_vii");
+        range_BigInteger_BigInteger_helper(0, 10, "ExhaustiveProvider_range_BigInteger_BigInteger_viii");
+        range_BigInteger_BigInteger_helper(-5, 0, "ExhaustiveProvider_range_BigInteger_BigInteger_ix");
+        range_BigInteger_BigInteger_helper(-5, 10, "ExhaustiveProvider_range_BigInteger_BigInteger_x");
+        range_BigInteger_BigInteger_helper(-10, 5, "ExhaustiveProvider_range_BigInteger_BigInteger_xi");
+        range_BigInteger_BigInteger_helper(5, -10, "ExhaustiveProvider_range_BigInteger_BigInteger_xii");
     }
 
     private static void range_char_char_helper(char a, char b, @NotNull String output) {
-        aeqcs(EP.range(a, b), output);
+        aeqitLog(EP.range(a, b), output);
     }
 
     @Test
     public void testRange_char_char() {
-        range_char_char_helper('a', 'z', "abcdefghijklmnopqrstuvwxyz");
-        range_char_char_helper('a', 'a', "a");
-        range_char_char_helper('a', 'A', "");
-        range_char_char_helper('!', '9', "!\"#$%&'()*+,-./0123456789");
+        range_char_char_helper('a', 'z', "ExhaustiveProvider_range_char_char_i");
+        range_char_char_helper('a', 'a', "ExhaustiveProvider_range_char_char_ii");
+        range_char_char_helper('a', 'A', "ExhaustiveProvider_range_char_char_iii");
+        range_char_char_helper('!', '9', "ExhaustiveProvider_range_char_char_iv");
     }
 
     @Test
@@ -550,15 +550,15 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testRangeUp_BinaryFraction() {
-        rangeUp_BinaryFraction_helper("0", "ExhaustiveProvider_rangeUp_BinaryFraction_0");
-        rangeUp_BinaryFraction_helper("1", "ExhaustiveProvider_rangeUp_BinaryFraction_1");
-        rangeUp_BinaryFraction_helper("11", "ExhaustiveProvider_rangeUp_BinaryFraction_11");
-        rangeUp_BinaryFraction_helper("5 << 20", "ExhaustiveProvider_rangeUp_BinaryFraction_5_<<_20");
-        rangeUp_BinaryFraction_helper("5 >> 20", "ExhaustiveProvider_rangeUp_BinaryFraction_5_>>_20");
-        rangeUp_BinaryFraction_helper("-1", "ExhaustiveProvider_rangeUp_BinaryFraction_-1");
-        rangeUp_BinaryFraction_helper("-11", "ExhaustiveProvider_rangeUp_BinaryFraction_-11");
-        rangeUp_BinaryFraction_helper("-5 << 20", "ExhaustiveProvider_rangeUp_BinaryFraction_-5_<<_20");
-        rangeUp_BinaryFraction_helper("-5 >> 20", "ExhaustiveProvider_rangeUp_BinaryFraction_-5_>>_20");
+        rangeUp_BinaryFraction_helper("0", "ExhaustiveProvider_rangeUp_BinaryFraction_i");
+        rangeUp_BinaryFraction_helper("1", "ExhaustiveProvider_rangeUp_BinaryFraction_ii");
+        rangeUp_BinaryFraction_helper("11", "ExhaustiveProvider_rangeUp_BinaryFraction_iii");
+        rangeUp_BinaryFraction_helper("5 << 20", "ExhaustiveProvider_rangeUp_BinaryFraction_iv");
+        rangeUp_BinaryFraction_helper("5 >> 20", "ExhaustiveProvider_rangeUp_BinaryFraction_v");
+        rangeUp_BinaryFraction_helper("-1", "ExhaustiveProvider_rangeUp_BinaryFraction_vi");
+        rangeUp_BinaryFraction_helper("-11", "ExhaustiveProvider_rangeUp_BinaryFraction_vii");
+        rangeUp_BinaryFraction_helper("-5 << 20", "ExhaustiveProvider_rangeUp_BinaryFraction_viii");
+        rangeUp_BinaryFraction_helper("-5 >> 20", "ExhaustiveProvider_rangeUp_BinaryFraction_ix");
     }
 
     private static void rangeDown_BinaryFraction_helper(@NotNull String a, @NotNull String output) {
@@ -567,15 +567,15 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testRangeDown_BinaryFraction() {
-        rangeDown_BinaryFraction_helper("0", "ExhaustiveProvider_rangeDown_BinaryFraction_0");
-        rangeDown_BinaryFraction_helper("1", "ExhaustiveProvider_rangeDown_BinaryFraction_1");
-        rangeDown_BinaryFraction_helper("11", "ExhaustiveProvider_rangeDown_BinaryFraction_11");
-        rangeDown_BinaryFraction_helper("5 << 20", "ExhaustiveProvider_rangeDown_BinaryFraction_5_<<_20");
-        rangeDown_BinaryFraction_helper("5 >> 20", "ExhaustiveProvider_rangeDown_BinaryFraction_5_>>_20");
-        rangeDown_BinaryFraction_helper("-1", "ExhaustiveProvider_rangeDown_BinaryFraction_-1");
-        rangeDown_BinaryFraction_helper("-11", "ExhaustiveProvider_rangeDown_BinaryFraction_-11");
-        rangeDown_BinaryFraction_helper("-5 << 20", "ExhaustiveProvider_rangeDown_BinaryFraction_-5_<<_20");
-        rangeDown_BinaryFraction_helper("-5 >> 20", "ExhaustiveProvider_rangeDown_BinaryFraction_-5_>>_20");
+        rangeDown_BinaryFraction_helper("0", "ExhaustiveProvider_rangeDown_BinaryFraction_i");
+        rangeDown_BinaryFraction_helper("1", "ExhaustiveProvider_rangeDown_BinaryFraction_ii");
+        rangeDown_BinaryFraction_helper("11", "ExhaustiveProvider_rangeDown_BinaryFraction_iii");
+        rangeDown_BinaryFraction_helper("5 << 20", "ExhaustiveProvider_rangeDown_BinaryFraction_iv");
+        rangeDown_BinaryFraction_helper("5 >> 20", "ExhaustiveProvider_rangeDown_BinaryFraction_v");
+        rangeDown_BinaryFraction_helper("-1", "ExhaustiveProvider_rangeDown_BinaryFraction_vi");
+        rangeDown_BinaryFraction_helper("-11", "ExhaustiveProvider_rangeDown_BinaryFraction_vii");
+        rangeDown_BinaryFraction_helper("-5 << 20", "ExhaustiveProvider_rangeDown_BinaryFraction_viii");
+        rangeDown_BinaryFraction_helper("-5 >> 20", "ExhaustiveProvider_rangeDown_BinaryFraction_ix");
     }
 
     private static void range_BinaryFraction_BinaryFraction_helper(
@@ -589,29 +589,29 @@ public strictfp class ExhaustiveProviderTest {
     @Test
     public void testRange_BinaryFraction_BinaryFraction() {
         range_BinaryFraction_BinaryFraction_helper("0", "1",
-                "ExhaustiveProvider_range_BinaryFraction_BinaryFraction_0_1");
+                "ExhaustiveProvider_range_BinaryFraction_BinaryFraction_i");
         range_BinaryFraction_BinaryFraction_helper("1", "11",
-                "ExhaustiveProvider_range_BinaryFraction_BinaryFraction_1_11");
+                "ExhaustiveProvider_range_BinaryFraction_BinaryFraction_ii");
         range_BinaryFraction_BinaryFraction_helper("11", "11",
-                "ExhaustiveProvider_range_BinaryFraction_BinaryFraction_11_11");
+                "ExhaustiveProvider_range_BinaryFraction_BinaryFraction_iii");
         range_BinaryFraction_BinaryFraction_helper("11", "1",
-                "ExhaustiveProvider_range_BinaryFraction_BinaryFraction_11_1");
+                "ExhaustiveProvider_range_BinaryFraction_BinaryFraction_iv");
         range_BinaryFraction_BinaryFraction_helper("-11", "-1",
-                "ExhaustiveProvider_range_BinaryFraction_BinaryFraction_-11_-1");
+                "ExhaustiveProvider_range_BinaryFraction_BinaryFraction_v");
         range_BinaryFraction_BinaryFraction_helper("-11", "-11",
-                "ExhaustiveProvider_range_BinaryFraction_BinaryFraction_-11_-11");
+                "ExhaustiveProvider_range_BinaryFraction_BinaryFraction_vi");
         range_BinaryFraction_BinaryFraction_helper("-1", "-11",
-                "ExhaustiveProvider_range_BinaryFraction_BinaryFraction_-1_-11");
+                "ExhaustiveProvider_range_BinaryFraction_BinaryFraction_vii");
         range_BinaryFraction_BinaryFraction_helper("0", "0",
-                "ExhaustiveProvider_range_BinaryFraction_BinaryFraction_0_0");
+                "ExhaustiveProvider_range_BinaryFraction_BinaryFraction_viii");
         range_BinaryFraction_BinaryFraction_helper("0", "11",
-                "ExhaustiveProvider_range_BinaryFraction_BinaryFraction_0_11");
+                "ExhaustiveProvider_range_BinaryFraction_BinaryFraction_ix");
         range_BinaryFraction_BinaryFraction_helper("-1", "11",
-                "ExhaustiveProvider_range_BinaryFraction_BinaryFraction_-1_11");
+                "ExhaustiveProvider_range_BinaryFraction_BinaryFraction_x");
         range_BinaryFraction_BinaryFraction_helper("5 >> 20", "1",
-                "ExhaustiveProvider_range_BinaryFraction_BinaryFraction_5_>>_20_1");
+                "ExhaustiveProvider_range_BinaryFraction_BinaryFraction_xi");
         range_BinaryFraction_BinaryFraction_helper("1", "5 << 20",
-                "ExhaustiveProvider_range_BinaryFraction_BinaryFraction_1_5_<<_20");
+                "ExhaustiveProvider_range_BinaryFraction_BinaryFraction_xii");
     }
 
     @Test
@@ -667,24 +667,24 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testRangeUp_float() {
-        rangeUp_float_helper(1.0f, "ExhaustiveProvider_rangeUp_float_1.0f");
-        rangeUp_float_helper(1.0E20f, "ExhaustiveProvider_rangeUp_float_1.0E20f");
-        rangeUp_float_helper(-1.0f, "ExhaustiveProvider_rangeUp_float_-1.0f");
-        rangeUp_float_helper(-1.0E20f, "ExhaustiveProvider_rangeUp_float_-1.0E20f");
-        rangeUp_float_helper((float) Math.PI, "ExhaustiveProvider_rangeUp_float_(float)_Math.PI");
-        rangeUp_float_helper((float) Math.sqrt(2), "ExhaustiveProvider_rangeUp_float_(float)_Math.sqrt(2)");
-        rangeUp_float_helper((float) -Math.PI, "ExhaustiveProvider_rangeUp_float_(float)_-Math.PI");
-        rangeUp_float_helper((float) -Math.sqrt(2), "ExhaustiveProvider_rangeUp_float_(float)_-Math.sqrt(2)");
-        rangeUp_float_helper(0.0f, "ExhaustiveProvider_rangeUp_float_0.0f");
-        rangeUp_float_helper(-0.0f, "ExhaustiveProvider_rangeUp_float_-0.0f");
-        rangeUp_float_helper(Float.MIN_VALUE, "ExhaustiveProvider_rangeUp_float_MIN_VALUE");
-        rangeUp_float_helper(Float.MIN_NORMAL, "ExhaustiveProvider_rangeUp_float_MIN_NORMAL");
-        rangeUp_float_helper(-Float.MIN_VALUE, "ExhaustiveProvider_rangeUp_float_-MIN_VALUE");
-        rangeUp_float_helper(-Float.MIN_NORMAL, "ExhaustiveProvider_rangeUp_float_-MIN_NORMAL");
-        rangeUp_float_helper(Float.MAX_VALUE, "ExhaustiveProvider_rangeUp_float_MAX_VALUE");
-        rangeUp_float_helper(-Float.MAX_VALUE, "ExhaustiveProvider_rangeUp_float_-MAX_VALUE");
-        rangeUp_float_helper(Float.POSITIVE_INFINITY, "ExhaustiveProvider_rangeUp_float_POSITIVE_INFINITY");
-        rangeUp_float_helper(Float.NEGATIVE_INFINITY, "ExhaustiveProvider_rangeUp_float_NEGATIVE_INFINITY");
+        rangeUp_float_helper(1.0f, "ExhaustiveProvider_rangeUp_float_i");
+        rangeUp_float_helper(1.0E20f, "ExhaustiveProvider_rangeUp_float_ii");
+        rangeUp_float_helper(-1.0f, "ExhaustiveProvider_rangeUp_float_iii");
+        rangeUp_float_helper(-1.0E20f, "ExhaustiveProvider_rangeUp_float_iv");
+        rangeUp_float_helper((float) Math.PI, "ExhaustiveProvider_rangeUp_float_v");
+        rangeUp_float_helper((float) Math.sqrt(2), "ExhaustiveProvider_rangeUp_float_vi");
+        rangeUp_float_helper((float) -Math.PI, "ExhaustiveProvider_rangeUp_float_vii");
+        rangeUp_float_helper((float) -Math.sqrt(2), "ExhaustiveProvider_rangeUp_float_viii");
+        rangeUp_float_helper(0.0f, "ExhaustiveProvider_rangeUp_float_ix");
+        rangeUp_float_helper(-0.0f, "ExhaustiveProvider_rangeUp_float_x");
+        rangeUp_float_helper(Float.MIN_VALUE, "ExhaustiveProvider_rangeUp_float_xi");
+        rangeUp_float_helper(Float.MIN_NORMAL, "ExhaustiveProvider_rangeUp_float_xii");
+        rangeUp_float_helper(-Float.MIN_VALUE, "ExhaustiveProvider_rangeUp_float_xiii");
+        rangeUp_float_helper(-Float.MIN_NORMAL, "ExhaustiveProvider_rangeUp_float_xiv");
+        rangeUp_float_helper(Float.MAX_VALUE, "ExhaustiveProvider_rangeUp_float_xv");
+        rangeUp_float_helper(-Float.MAX_VALUE, "ExhaustiveProvider_rangeUp_float_xvi");
+        rangeUp_float_helper(Float.POSITIVE_INFINITY, "ExhaustiveProvider_rangeUp_float_xvii");
+        rangeUp_float_helper(Float.NEGATIVE_INFINITY, "ExhaustiveProvider_rangeUp_float_xviii");
         rangeUp_float_fail_helper(Float.NaN);
     }
 
@@ -701,24 +701,24 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testRangeDown_float() {
-        rangeDown_float_helper(1.0f, "ExhaustiveProvider_rangeDown_float_1.0f");
-        rangeDown_float_helper(1.0E20f, "ExhaustiveProvider_rangeDown_float_1.0E20f");
-        rangeDown_float_helper(-1.0f, "ExhaustiveProvider_rangeDown_float_-1.0f");
-        rangeDown_float_helper(-1.0E20f, "ExhaustiveProvider_rangeDown_float_-1.0E20f");
-        rangeDown_float_helper((float) Math.PI, "ExhaustiveProvider_rangeDown_float_(float)_Math.PI");
-        rangeDown_float_helper((float) Math.sqrt(2), "ExhaustiveProvider_rangeDown_float_(float)_Math.sqrt(2)");
-        rangeDown_float_helper((float) -Math.PI, "ExhaustiveProvider_rangeDown_float_(float)_-Math.PI");
-        rangeDown_float_helper((float) -Math.sqrt(2), "ExhaustiveProvider_rangeDown_float_(float)_-Math.sqrt(2)");
-        rangeDown_float_helper(0.0f, "ExhaustiveProvider_rangeDown_float_0.0f");
-        rangeDown_float_helper(-0.0f, "ExhaustiveProvider_rangeDown_float_-0.0f");
-        rangeDown_float_helper(Float.MIN_VALUE, "ExhaustiveProvider_rangeDown_float_MIN_VALUE");
-        rangeDown_float_helper(Float.MIN_NORMAL, "ExhaustiveProvider_rangeDown_float_MIN_NORMAL");
-        rangeDown_float_helper(-Float.MIN_VALUE, "ExhaustiveProvider_rangeDown_float_-MIN_VALUE");
-        rangeDown_float_helper(-Float.MIN_NORMAL, "ExhaustiveProvider_rangeDown_float_-MIN_NORMAL");
-        rangeDown_float_helper(Float.MAX_VALUE, "ExhaustiveProvider_rangeDown_float_MAX_VALUE");
-        rangeDown_float_helper(-Float.MAX_VALUE, "ExhaustiveProvider_rangeDown_float_-MAX_VALUE");
-        rangeDown_float_helper(Float.POSITIVE_INFINITY, "ExhaustiveProvider_rangeDown_float_POSITIVE_INFINITY");
-        rangeDown_float_helper(Float.NEGATIVE_INFINITY, "ExhaustiveProvider_rangeDown_float_NEGATIVE_INFINITY");
+        rangeDown_float_helper(1.0f, "ExhaustiveProvider_rangeDown_float_i");
+        rangeDown_float_helper(1.0E20f, "ExhaustiveProvider_rangeDown_float_ii");
+        rangeDown_float_helper(-1.0f, "ExhaustiveProvider_rangeDown_float_iii");
+        rangeDown_float_helper(-1.0E20f, "ExhaustiveProvider_rangeDown_float_iv");
+        rangeDown_float_helper((float) Math.PI, "ExhaustiveProvider_rangeDown_float_v");
+        rangeDown_float_helper((float) Math.sqrt(2), "ExhaustiveProvider_rangeDown_float_vi");
+        rangeDown_float_helper((float) -Math.PI, "ExhaustiveProvider_rangeDown_float_vii");
+        rangeDown_float_helper((float) -Math.sqrt(2), "ExhaustiveProvider_rangeDown_float_viii");
+        rangeDown_float_helper(0.0f, "ExhaustiveProvider_rangeDown_float_ix");
+        rangeDown_float_helper(-0.0f, "ExhaustiveProvider_rangeDown_float_x");
+        rangeDown_float_helper(Float.MIN_VALUE, "ExhaustiveProvider_rangeDown_float_xi");
+        rangeDown_float_helper(Float.MIN_NORMAL, "ExhaustiveProvider_rangeDown_float_xii");
+        rangeDown_float_helper(-Float.MIN_VALUE, "ExhaustiveProvider_rangeDown_float_xiii");
+        rangeDown_float_helper(-Float.MIN_NORMAL, "ExhaustiveProvider_rangeDown_float_xiv");
+        rangeDown_float_helper(Float.MAX_VALUE, "ExhaustiveProvider_rangeDown_float_xv");
+        rangeDown_float_helper(-Float.MAX_VALUE, "ExhaustiveProvider_rangeDown_float_xvi");
+        rangeDown_float_helper(Float.POSITIVE_INFINITY, "ExhaustiveProvider_rangeDown_float_xvii");
+        rangeDown_float_helper(Float.NEGATIVE_INFINITY, "ExhaustiveProvider_rangeDown_float_xviii");
         rangeDown_float_fail_helper(Float.NaN);
     }
 
@@ -735,49 +735,44 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testRange_float_float() {
-        range_float_float_helper(1.0f, 2.0f, "ExhaustiveProvider_range_float_float_1.0f_2.0f");
-        range_float_float_helper(1.0f, 3.0f, "ExhaustiveProvider_range_float_float_1.0f_3.0f");
-        range_float_float_helper(1.0f, 4.0f,"ExhaustiveProvider_range_float_float_1.0f_4.0f");
-        range_float_float_helper(1.0f, 257.0f, "ExhaustiveProvider_range_float_float_1.0f_257.0f");
-        range_float_float_helper(-257.0f, -1.0f, "ExhaustiveProvider_range_float_float_-257.0f_-1.0f");
-        range_float_float_helper(1.0f, 1.0E20f, "ExhaustiveProvider_range_float_float_1.0f_1.0E20f");
-        range_float_float_helper(-1.0E20f, -1.0f, "ExhaustiveProvider_range_float_float_-1.0E20f_-1.0f");
-        range_float_float_helper((float) Math.sqrt(2), (float) Math.PI,
-                "ExhaustiveProvider_range_float_float_(float)_Math.sqrt(2)_(float)_Math.PI");
+        range_float_float_helper(1.0f, 2.0f, "ExhaustiveProvider_range_float_float_i");
+        range_float_float_helper(1.0f, 3.0f, "ExhaustiveProvider_range_float_float_ii");
+        range_float_float_helper(1.0f, 4.0f,"ExhaustiveProvider_range_float_float_iii");
+        range_float_float_helper(1.0f, 257.0f, "ExhaustiveProvider_range_float_float_iv");
+        range_float_float_helper(-257.0f, -1.0f, "ExhaustiveProvider_range_float_float_v");
+        range_float_float_helper(1.0f, 1.0E20f, "ExhaustiveProvider_range_float_float_vi");
+        range_float_float_helper(-1.0E20f, -1.0f, "ExhaustiveProvider_range_float_float_vii");
+        range_float_float_helper((float) Math.sqrt(2), (float) Math.PI, "ExhaustiveProvider_range_float_float_viii");
         range_float_float_helper((float) Math.PI, FloatingPointUtils.successor((float) Math.PI),
-                "ExhaustiveProvider_range_float_float_(float)_Math.sqrt(2)_successor((float)_Math.PI)");
-        range_float_float_helper(0.0f, 1.0f, "ExhaustiveProvider_range_float_float_0.0f_1.0f");
-        range_float_float_helper(-1.0f, 1.0f, "ExhaustiveProvider_range_float_float_-1.0f_1.0f");
-        range_float_float_helper(1.0f, 1.0f, "ExhaustiveProvider_range_float_float_1.0f_1.0f");
-        range_float_float_helper((float) Math.PI, (float) Math.PI,
-                "ExhaustiveProvider_range_float_float_(float)_Math.PI_(float)_Math.PI");
-        range_float_float_helper((float) -Math.PI, (float) Math.PI,
-                "ExhaustiveProvider_range_float_float_(float)_-Math.PI_(float)_Math.PI");
-        range_float_float_helper(1.0f, Float.POSITIVE_INFINITY,
-                "ExhaustiveProvider_range_float_float_1.0f_POSITIVE_INFINITY");
-        range_float_float_helper(Float.NEGATIVE_INFINITY, 1.0f,
-                "ExhaustiveProvider_range_float_float_NEGATIVE_INFINITY_1.0f");
+                "ExhaustiveProvider_range_float_float_ix");
+        range_float_float_helper(0.0f, 1.0f, "ExhaustiveProvider_range_float_float_x");
+        range_float_float_helper(-1.0f, 1.0f, "ExhaustiveProvider_range_float_float_xi");
+        range_float_float_helper(1.0f, 1.0f, "ExhaustiveProvider_range_float_float_xii");
+        range_float_float_helper((float) Math.PI, (float) Math.PI, "ExhaustiveProvider_range_float_float_xiii");
+        range_float_float_helper((float) -Math.PI, (float) Math.PI, "ExhaustiveProvider_range_float_float_xiv");
+        range_float_float_helper(1.0f, Float.POSITIVE_INFINITY, "ExhaustiveProvider_range_float_float_xv");
+        range_float_float_helper(Float.NEGATIVE_INFINITY, 1.0f, "ExhaustiveProvider_range_float_float_xvi");
         range_float_float_helper(Float.MAX_VALUE, Float.POSITIVE_INFINITY,
-                "ExhaustiveProvider_range_float_float_MAX_VALUE_POSITIVE_INFINITY");
+                "ExhaustiveProvider_range_float_float_xvii");
         range_float_float_helper(Float.NEGATIVE_INFINITY, -Float.MAX_VALUE,
-                "ExhaustiveProvider_range_float_float_NEGATIVE_INFINITY_-MAX_VALUE");
+                "ExhaustiveProvider_range_float_float_xviii");
         range_float_float_helper(Float.NEGATIVE_INFINITY, Float.POSITIVE_INFINITY,
-                "ExhaustiveProvider_range_float_float_NEGATIVE_INFINITY_POSITIVE_INFINITY");
-        range_float_float_helper(0.0f, 0.0f, "ExhaustiveProvider_range_float_float_0.0f_0.0f");
-        range_float_float_helper(-0.0f, -0.0f, "ExhaustiveProvider_range_float_float_-0.0f_-0.0f");
-        range_float_float_helper(-0.0f, 0.0f, "ExhaustiveProvider_range_float_float_-0.0f_0.0f");
-        range_float_float_helper(0.0f, -0.0f, "ExhaustiveProvider_range_float_float_0.0f_-0.0f");
+                "ExhaustiveProvider_range_float_float_xix");
+        range_float_float_helper(0.0f, 0.0f, "ExhaustiveProvider_range_float_float_xx");
+        range_float_float_helper(-0.0f, -0.0f, "ExhaustiveProvider_range_float_float_xxi");
+        range_float_float_helper(-0.0f, 0.0f, "ExhaustiveProvider_range_float_float_xxii");
+        range_float_float_helper(0.0f, -0.0f, "ExhaustiveProvider_range_float_float_xxiii");
         range_float_float_helper(Float.POSITIVE_INFINITY, Float.POSITIVE_INFINITY,
-                "ExhaustiveProvider_range_float_float_POSITIVE_INFINITY_POSITIVE_INFINITY");
+                "ExhaustiveProvider_range_float_float_xxiv");
         range_float_float_helper(Float.NEGATIVE_INFINITY, Float.NEGATIVE_INFINITY,
-                "ExhaustiveProvider_range_float_float_NEGATIVE_INFINITY_NEGATIVE_INFINITY");
-        range_float_float_helper(1.0f, -1.0f, "ExhaustiveProvider_range_float_float_1.0f_-1.0f");
+                "ExhaustiveProvider_range_float_float_xxv");
+        range_float_float_helper(1.0f, -1.0f, "ExhaustiveProvider_range_float_float_xxvi");
         range_float_float_helper(Float.POSITIVE_INFINITY, Float.NEGATIVE_INFINITY,
-                "ExhaustiveProvider_range_float_float_POSITIVE_INFINITY_NEGATIVE_INFINITY");
+                "ExhaustiveProvider_range_float_float_xxvii");
         range_float_float_helper(Float.POSITIVE_INFINITY, 1.0f,
-                "ExhaustiveProvider_range_float_float_POSITIVE_INFINITY_1.0f");
+                "ExhaustiveProvider_range_float_float_xxviii");
         range_float_float_helper(1.0f, Float.NEGATIVE_INFINITY,
-                "ExhaustiveProvider_range_float_float_1.0f_NEGATIVE_INFINITY");
+                "ExhaustiveProvider_range_float_float_xxix");
         range_float_float_fail_helper(Float.NaN, 1.0f);
         range_float_float_fail_helper(Float.NaN, Float.POSITIVE_INFINITY);
         range_float_float_fail_helper(Float.NaN, Float.NEGATIVE_INFINITY);
