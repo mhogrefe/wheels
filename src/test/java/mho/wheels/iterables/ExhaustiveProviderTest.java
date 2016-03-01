@@ -795,24 +795,24 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testRangeUp_double() {
-        rangeUp_double_helper(1.0, "ExhaustiveProvider_rangeUp_double_1.0");
-        rangeUp_double_helper(1.0E20, "ExhaustiveProvider_rangeUp_double_1.0E20");
-        rangeUp_double_helper(-1.0, "ExhaustiveProvider_rangeUp_double_-1.0");
-        rangeUp_double_helper(-1.0E20, "ExhaustiveProvider_rangeUp_double_-1.0E20");
-        rangeUp_double_helper(Math.PI, "ExhaustiveProvider_rangeUp_double_Math.PI");
-        rangeUp_double_helper(Math.sqrt(2), "ExhaustiveProvider_rangeUp_double_Math.sqrt(2)");
-        rangeUp_double_helper(-Math.PI, "ExhaustiveProvider_rangeUp_double_-Math.PI");
-        rangeUp_double_helper(-Math.sqrt(2), "ExhaustiveProvider_rangeUp_double_-Math.sqrt(2)");
-        rangeUp_double_helper(0.0, "ExhaustiveProvider_rangeUp_double_0.0");
-        rangeUp_double_helper(-0.0, "ExhaustiveProvider_rangeUp_double_-0.0");
-        rangeUp_double_helper(Double.MIN_VALUE, "ExhaustiveProvider_rangeUp_double_MIN_VALUE");
-        rangeUp_double_helper(Double.MIN_NORMAL, "ExhaustiveProvider_rangeUp_double_MIN_NORMAL");
-        rangeUp_double_helper(-Double.MIN_VALUE, "ExhaustiveProvider_rangeUp_double_-MIN_VALUE");
-        rangeUp_double_helper(-Double.MIN_NORMAL, "ExhaustiveProvider_rangeUp_double_-MIN_NORMAL");
-        rangeUp_double_helper(Double.MAX_VALUE, "ExhaustiveProvider_rangeUp_double_MAX_VALUE");
-        rangeUp_double_helper(-Double.MAX_VALUE, "ExhaustiveProvider_rangeUp_double_-MAX_VALUE");
-        rangeUp_double_helper(Double.POSITIVE_INFINITY, "ExhaustiveProvider_rangeUp_double_POSITIVE_INFINITY");
-        rangeUp_double_helper(Double.NEGATIVE_INFINITY, "ExhaustiveProvider_rangeUp_double_NEGATIVE_INFINITY");
+        rangeUp_double_helper(1.0, "ExhaustiveProvider_rangeUp_double_i");
+        rangeUp_double_helper(1.0E20, "ExhaustiveProvider_rangeUp_double_ii");
+        rangeUp_double_helper(-1.0, "ExhaustiveProvider_rangeUp_double_iii");
+        rangeUp_double_helper(-1.0E20, "ExhaustiveProvider_rangeUp_double_iv");
+        rangeUp_double_helper(Math.PI, "ExhaustiveProvider_rangeUp_double_v");
+        rangeUp_double_helper(Math.sqrt(2), "ExhaustiveProvider_rangeUp_double_vi");
+        rangeUp_double_helper(-Math.PI, "ExhaustiveProvider_rangeUp_double_vii");
+        rangeUp_double_helper(-Math.sqrt(2), "ExhaustiveProvider_rangeUp_double_viii");
+        rangeUp_double_helper(0.0, "ExhaustiveProvider_rangeUp_double_ix");
+        rangeUp_double_helper(-0.0, "ExhaustiveProvider_rangeUp_double_x");
+        rangeUp_double_helper(Double.MIN_VALUE, "ExhaustiveProvider_rangeUp_double_xi");
+        rangeUp_double_helper(Double.MIN_NORMAL, "ExhaustiveProvider_rangeUp_double_xii");
+        rangeUp_double_helper(-Double.MIN_VALUE, "ExhaustiveProvider_rangeUp_double_xiii");
+        rangeUp_double_helper(-Double.MIN_NORMAL, "ExhaustiveProvider_rangeUp_double_xiv");
+        rangeUp_double_helper(Double.MAX_VALUE, "ExhaustiveProvider_rangeUp_double_xv");
+        rangeUp_double_helper(-Double.MAX_VALUE, "ExhaustiveProvider_rangeUp_double_xvi");
+        rangeUp_double_helper(Double.POSITIVE_INFINITY, "ExhaustiveProvider_rangeUp_double_xvii");
+        rangeUp_double_helper(Double.NEGATIVE_INFINITY, "ExhaustiveProvider_rangeUp_double_xviii");
         rangeUp_double_fail_helper(Double.NaN);
     }
 
@@ -829,24 +829,24 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testRangeDown_double() {
-        rangeDown_double_helper(1.0, "ExhaustiveProvider_rangeDown_double_1.0");
-        rangeDown_double_helper(1.0E20, "ExhaustiveProvider_rangeDown_double_1.0E20");
-        rangeDown_double_helper(-1.0, "ExhaustiveProvider_rangeDown_double_-1.0");
-        rangeDown_double_helper(-1.0E20, "ExhaustiveProvider_rangeDown_double_-1.0E20");
-        rangeDown_double_helper(Math.PI, "ExhaustiveProvider_rangeDown_double_Math.PI");
-        rangeDown_double_helper(Math.sqrt(2), "ExhaustiveProvider_rangeDown_double_Math.sqrt(2)");
-        rangeDown_double_helper(-Math.PI, "ExhaustiveProvider_rangeDown_double_-Math.PI");
-        rangeDown_double_helper(-Math.sqrt(2), "ExhaustiveProvider_rangeDown_double_-Math.sqrt(2)");
-        rangeDown_double_helper(0.0, "ExhaustiveProvider_rangeDown_double_0.0");
-        rangeDown_double_helper(-0.0, "ExhaustiveProvider_rangeDown_double_-0.0");
-        rangeDown_double_helper(Double.MIN_VALUE, "ExhaustiveProvider_rangeDown_double_MIN_VALUE");
-        rangeDown_double_helper(Double.MIN_NORMAL, "ExhaustiveProvider_rangeDown_double_MIN_NORMAL");
-        rangeDown_double_helper(-Double.MIN_VALUE, "ExhaustiveProvider_rangeDown_double_-MIN_VALUE");
-        rangeDown_double_helper(-Double.MIN_NORMAL, "ExhaustiveProvider_rangeDown_double_-MIN_NORMAL");
-        rangeDown_double_helper(Double.MAX_VALUE, "ExhaustiveProvider_rangeDown_double_MAX_VALUE");
-        rangeDown_double_helper(-Double.MAX_VALUE, "ExhaustiveProvider_rangeDown_double_-MAX_VALUE");
-        rangeDown_double_helper(Double.POSITIVE_INFINITY, "ExhaustiveProvider_rangeDown_double_POSITIVE_INFINITY");
-        rangeDown_double_helper(Double.NEGATIVE_INFINITY, "ExhaustiveProvider_rangeDown_double_NEGATIVE_INFINITY");
+        rangeDown_double_helper(1.0, "ExhaustiveProvider_rangeDown_double_i");
+        rangeDown_double_helper(1.0E20, "ExhaustiveProvider_rangeDown_double_ii");
+        rangeDown_double_helper(-1.0, "ExhaustiveProvider_rangeDown_double_iii");
+        rangeDown_double_helper(-1.0E20, "ExhaustiveProvider_rangeDown_double_iv");
+        rangeDown_double_helper(Math.PI, "ExhaustiveProvider_rangeDown_double_v");
+        rangeDown_double_helper(Math.sqrt(2), "ExhaustiveProvider_rangeDown_double_vi");
+        rangeDown_double_helper(-Math.PI, "ExhaustiveProvider_rangeDown_double_vii");
+        rangeDown_double_helper(-Math.sqrt(2), "ExhaustiveProvider_rangeDown_double_viii");
+        rangeDown_double_helper(0.0, "ExhaustiveProvider_rangeDown_double_ix");
+        rangeDown_double_helper(-0.0, "ExhaustiveProvider_rangeDown_double_x");
+        rangeDown_double_helper(Double.MIN_VALUE, "ExhaustiveProvider_rangeDown_double_xi");
+        rangeDown_double_helper(Double.MIN_NORMAL, "ExhaustiveProvider_rangeDown_double_xii");
+        rangeDown_double_helper(-Double.MIN_VALUE, "ExhaustiveProvider_rangeDown_double_xiii");
+        rangeDown_double_helper(-Double.MIN_NORMAL, "ExhaustiveProvider_rangeDown_double_xiv");
+        rangeDown_double_helper(Double.MAX_VALUE, "ExhaustiveProvider_rangeDown_double_xv");
+        rangeDown_double_helper(-Double.MAX_VALUE, "ExhaustiveProvider_rangeDown_double_xvi");
+        rangeDown_double_helper(Double.POSITIVE_INFINITY, "ExhaustiveProvider_rangeDown_double_xvii");
+        rangeDown_double_helper(Double.NEGATIVE_INFINITY, "ExhaustiveProvider_rangeDown_double_xviii");
         rangeDown_double_fail_helper(Double.NaN);
     }
 
@@ -863,47 +863,44 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testRange_double_double() {
-        range_double_double_helper(1.0, 2.0, "ExhaustiveProvider_range_double_double_1.0_2.0");
-        range_double_double_helper(1.0, 3.0, "ExhaustiveProvider_range_double_double_1.0_3.0");
-        range_double_double_helper(1.0, 4.0,"ExhaustiveProvider_range_double_double_1.0_4.0");
-        range_double_double_helper(1.0, 257.0, "ExhaustiveProvider_range_double_double_1.0_257.0");
-        range_double_double_helper(-257.0, -1.0, "ExhaustiveProvider_range_double_double_-257.0_-1.0");
-        range_double_double_helper(1.0, 1.0E20, "ExhaustiveProvider_range_double_double_1.0_1.0E20");
-        range_double_double_helper(-1.0E20, -1.0, "ExhaustiveProvider_range_double_double_-1.0E20_-1.0");
-        range_double_double_helper(Math.sqrt(2), Math.PI,
-                "ExhaustiveProvider_range_double_double_Math.sqrt(2)_Math.PI");
+        range_double_double_helper(1.0, 2.0, "ExhaustiveProvider_range_double_double_i");
+        range_double_double_helper(1.0, 3.0, "ExhaustiveProvider_range_double_double_ii");
+        range_double_double_helper(1.0, 4.0,"ExhaustiveProvider_range_double_double_iii");
+        range_double_double_helper(1.0, 257.0, "ExhaustiveProvider_range_double_double_iv");
+        range_double_double_helper(-257.0, -1.0, "ExhaustiveProvider_range_double_double_v");
+        range_double_double_helper(1.0, 1.0E20, "ExhaustiveProvider_range_double_double_vi");
+        range_double_double_helper(-1.0E20, -1.0, "ExhaustiveProvider_range_double_double_vii");
+        range_double_double_helper(Math.sqrt(2), Math.PI, "ExhaustiveProvider_range_double_double_viii");
         range_double_double_helper(Math.PI, FloatingPointUtils.successor(Math.PI),
-                "ExhaustiveProvider_range_double_double_Math.sqrt(2)_successor(Math.PI)");
-        range_double_double_helper(0.0, 1.0, "ExhaustiveProvider_range_double_double_0.0_1.0");
-        range_double_double_helper(-1.0, 1.0, "ExhaustiveProvider_range_double_double_-1.0_1.0");
-        range_double_double_helper(1.0, 1.0, "ExhaustiveProvider_range_double_double_1.0_1.0");
-        range_double_double_helper(Math.PI, Math.PI, "ExhaustiveProvider_range_double_double_Math.PI_Math.PI");
-        range_double_double_helper(-Math.PI, Math.PI, "ExhaustiveProvider_range_double_double_-Math.PI_Math.PI");
-        range_double_double_helper(1.0, Double.POSITIVE_INFINITY,
-                "ExhaustiveProvider_range_double_double_1.0_POSITIVE_INFINITY");
-        range_double_double_helper(Double.NEGATIVE_INFINITY, 1.0,
-                "ExhaustiveProvider_range_double_double_NEGATIVE_INFINITY_1.0f");
+                "ExhaustiveProvider_range_double_double_ix");
+        range_double_double_helper(0.0, 1.0, "ExhaustiveProvider_range_double_double_x");
+        range_double_double_helper(-1.0, 1.0, "ExhaustiveProvider_range_double_double_xi");
+        range_double_double_helper(1.0, 1.0, "ExhaustiveProvider_range_double_double_xii");
+        range_double_double_helper(Math.PI, Math.PI, "ExhaustiveProvider_range_double_double_xiii");
+        range_double_double_helper(-Math.PI, Math.PI, "ExhaustiveProvider_range_double_double_xiv");
+        range_double_double_helper(1.0, Double.POSITIVE_INFINITY, "ExhaustiveProvider_range_double_double_xv");
+        range_double_double_helper(Double.NEGATIVE_INFINITY, 1.0, "ExhaustiveProvider_range_double_double_xvi");
         range_double_double_helper(Double.MAX_VALUE, Double.POSITIVE_INFINITY,
-                "ExhaustiveProvider_range_double_double_MAX_VALUE_POSITIVE_INFINITY");
+                "ExhaustiveProvider_range_double_double_xvii");
         range_double_double_helper(Double.NEGATIVE_INFINITY, -Double.MAX_VALUE,
-                "ExhaustiveProvider_range_double_double_NEGATIVE_INFINITY_-MAX_VALUE");
+                "ExhaustiveProvider_range_double_double_xviii");
         range_double_double_helper(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY,
-                "ExhaustiveProvider_range_double_double_NEGATIVE_INFINITY_POSITIVE_INFINITY");
-        range_double_double_helper(0.0, 0.0, "ExhaustiveProvider_range_double_double_0.0_0.0");
-        range_double_double_helper(-0.0, -0.0, "ExhaustiveProvider_range_double_double_-0.0_-0.0");
-        range_double_double_helper(-0.0, 0.0, "ExhaustiveProvider_range_double_double_-0.0_0.0");
-        range_double_double_helper(0.0, -0.0, "ExhaustiveProvider_range_double_double_0.0_-0.0");
+                "ExhaustiveProvider_range_double_double_xix");
+        range_double_double_helper(0.0, 0.0, "ExhaustiveProvider_range_double_double_xx");
+        range_double_double_helper(-0.0, -0.0, "ExhaustiveProvider_range_double_double_xxi");
+        range_double_double_helper(-0.0, 0.0, "ExhaustiveProvider_range_double_double_xxii");
+        range_double_double_helper(0.0, -0.0, "ExhaustiveProvider_range_double_double_xxiii");
         range_double_double_helper(Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY,
-                "ExhaustiveProvider_range_double_double_POSITIVE_INFINITY_POSITIVE_INFINITY");
+                "ExhaustiveProvider_range_double_double_xxiv");
         range_double_double_helper(Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY,
-                "ExhaustiveProvider_range_double_double_NEGATIVE_INFINITY_NEGATIVE_INFINITY");
-        range_double_double_helper(1.0f, -1.0f, "ExhaustiveProvider_range_double_double_1.0_-1.0");
+                "ExhaustiveProvider_range_double_double_xxv");
+        range_double_double_helper(1.0f, -1.0f, "ExhaustiveProvider_range_double_double_xxvi");
         range_double_double_helper(Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY,
-                "ExhaustiveProvider_range_double_double_POSITIVE_INFINITY_NEGATIVE_INFINITY");
+                "ExhaustiveProvider_range_double_double_xxvii");
         range_double_double_helper(Double.POSITIVE_INFINITY, 1.0f,
-                "ExhaustiveProvider_range_double_double_POSITIVE_INFINITY_1.0");
+                "ExhaustiveProvider_range_double_double_xxviii");
         range_double_double_helper(1.0f, Double.NEGATIVE_INFINITY,
-                "ExhaustiveProvider_range_double_double_1.0_NEGATIVE_INFINITY");
+                "ExhaustiveProvider_range_double_double_xxix");
         range_double_double_fail_helper(Double.NaN, 1.0);
         range_double_double_fail_helper(Double.NaN, Double.POSITIVE_INFINITY);
         range_double_double_fail_helper(Double.NaN, Double.NEGATIVE_INFINITY);
@@ -1354,140 +1351,134 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testPairsLogarithmicOrder_Iterable_Iterable() {
-        aeqit(
+        aeqitLog(
                 EP.pairsLogarithmicOrder(Arrays.asList(1, 2, 3, 4), fromString("abcd")),
-                "[(1, a), (1, b), (2, a), (1, c), (3, a), (2, b), (4, a), (1, d), (3, b), (2, c), (4, b), (3, c)," +
-                " (2, d), (4, c), (3, d), (4, d)]"
+                "ExhaustiveProvider_pairsLogarithmicOrder_Iterable_Iterable_i"
         );
-        aeqit(
+        aeqitLog(
                 EP.pairsLogarithmicOrder(Arrays.asList(1, 2, 2, 4), fromString("abcd")),
-                "[(1, a), (1, b), (2, a), (1, c), (2, a), (2, b), (4, a), (1, d), (2, b), (2, c), (4, b), (2, c)," +
-                " (2, d), (4, c), (2, d), (4, d)]"
+                "ExhaustiveProvider_pairsLogarithmicOrder_Iterable_Iterable_ii"
         );
-        aeqit(
+        aeqitLog(
                 EP.pairsLogarithmicOrder(Arrays.asList(1, 2, null, 4), fromString("abcd")),
-                "[(1, a), (1, b), (2, a), (1, c), (null, a), (2, b), (4, a), (1, d), (null, b), (2, c), (4, b)," +
-                " (null, c), (2, d), (4, c), (null, d), (4, d)]"
+                "ExhaustiveProvider_pairsLogarithmicOrder_Iterable_Iterable_iii"
         );
-        aeqit(EP.pairsLogarithmicOrder(Collections.emptyList(), fromString("abcd")), "[]");
-        aeqit(EP.pairsLogarithmicOrder(Collections.emptyList(), Collections.emptyList()), "[]");
+        aeqitLog(
+                EP.pairsLogarithmicOrder(Collections.emptyList(), fromString("abcd")),
+                "ExhaustiveProvider_pairsLogarithmicOrder_Iterable_Iterable_iv"
+        );
+        aeqitLog(
+                EP.pairsLogarithmicOrder(Collections.emptyList(), Collections.emptyList()),
+                "ExhaustiveProvider_pairsLogarithmicOrder_Iterable_Iterable_v"
+        );
         simpleProviderHelper(
                 EP.pairsLogarithmicOrder(EP.naturalBigIntegers(), fromString("abcd")),
-                "[(0, a), (0, b), (1, a), (0, c), (2, a), (1, b), (3, a), (0, d), (4, a), (2, b), (5, a), (1, c)," +
-                " (6, a), (3, b), (7, a), (8, a), (4, b), (9, a), (2, c), (10, a), ...]"
+                "ExhaustiveProvider_pairsLogarithmicOrder_Iterable_Iterable_vi"
         );
         simpleProviderHelper(
                 EP.pairsLogarithmicOrder(fromString("abcd"), EP.naturalBigIntegers()),
-                "[(a, 0), (a, 1), (b, 0), (a, 2), (c, 0), (b, 1), (d, 0), (a, 3), (c, 1), (b, 2), (d, 1), (a, 4)," +
-                " (c, 2), (b, 3), (d, 2), (a, 5), (c, 3), (b, 4), (d, 3), (a, 6), ...]"
+                "ExhaustiveProvider_pairsLogarithmicOrder_Iterable_Iterable_vii"
         );
         simpleProviderHelper(
                 EP.pairsLogarithmicOrder(EP.positiveBigIntegers(), EP.negativeBigIntegers()),
-                "[(1, -1), (1, -2), (2, -1), (1, -3), (3, -1), (2, -2), (4, -1), (1, -4), (5, -1), (3, -2), (6, -1)," +
-                " (2, -3), (7, -1), (4, -2), (8, -1), (1, -5), (9, -1), (5, -2), (10, -1), (3, -3), ...]"
+                "ExhaustiveProvider_pairsLogarithmicOrder_Iterable_Iterable_viii"
         );
     }
 
     @Test
     public void testPairsLogarithmicOrder_Iterable() {
-        aeqit(
+        aeqitLog(
                 EP.pairsLogarithmicOrder(Arrays.asList(1, 2, 3, 4)),
-                "[(1, 1), (1, 2), (2, 1), (1, 3), (3, 1), (2, 2), (4, 1), (1, 4), (3, 2), (2, 3), (4, 2), (3, 3)," +
-                " (2, 4), (4, 3), (3, 4), (4, 4)]"
+                "ExhaustiveProvider_pairsLogarithmicOrder_Iterable_i"
         );
-        aeqit(
+        aeqitLog(
                 EP.pairsLogarithmicOrder(Arrays.asList(1, 2, 2, 4)),
-                "[(1, 1), (1, 2), (2, 1), (1, 2), (2, 1), (2, 2), (4, 1), (1, 4), (2, 2), (2, 2), (4, 2), (2, 2)," +
-                " (2, 4), (4, 2), (2, 4), (4, 4)]"
+                "ExhaustiveProvider_pairsLogarithmicOrder_Iterable_ii"
         );
-        aeqit(
+        aeqitLog(
                 EP.pairsLogarithmicOrder(Arrays.asList(1, 2, null, 4)),
-                "[(1, 1), (1, 2), (2, 1), (1, null), (null, 1), (2, 2), (4, 1), (1, 4), (null, 2), (2, null)," +
-                " (4, 2), (null, null), (2, 4), (4, null), (null, 4), (4, 4)]"
+                "ExhaustiveProvider_pairsLogarithmicOrder_Iterable_iii"
         );
-        aeqit(EP.pairsLogarithmicOrder(Collections.emptyList()), "[]");
+        aeqitLog(
+                EP.pairsLogarithmicOrder(Collections.emptyList()),
+                "ExhaustiveProvider_pairsLogarithmicOrder_Iterable_iv"
+        );
         simpleProviderHelper(
                 EP.pairsLogarithmicOrder(EP.naturalBigIntegers()),
-                "[(0, 0), (0, 1), (1, 0), (0, 2), (2, 0), (1, 1), (3, 0), (0, 3), (4, 0), (2, 1), (5, 0), (1, 2)," +
-                " (6, 0), (3, 1), (7, 0), (0, 4), (8, 0), (4, 1), (9, 0), (2, 2), ...]"
+                "ExhaustiveProvider_pairsLogarithmicOrder_Iterable_v"
         );
         simpleProviderHelper(
                 EP.pairsLogarithmicOrder(cons(null, EP.naturalBigIntegers())),
-                "[(null, null), (null, 0), (0, null), (null, 1), (1, null), (0, 0), (2, null), (null, 2), (3, null)," +
-                " (1, 0), (4, null), (0, 1), (5, null), (2, 0), (6, null), (null, 3), (7, null), (3, 0), (8, null)," +
-                " (1, 1), ...]"
+                "ExhaustiveProvider_pairsLogarithmicOrder_Iterable_vi"
         );
     }
 
     @Test
     public void testPairsSquareRootOrder_Iterable_Iterable() {
-        aeqit(
+        aeqitLog(
                 EP.pairsSquareRootOrder(Arrays.asList(1, 2, 3, 4), fromString("abcd")),
-                "[(1, a), (1, b), (2, a), (2, b), (3, a), (3, b), (4, a), (4, b), (1, c), (1, d), (2, c), (2, d)," +
-                " (3, c), (3, d), (4, c), (4, d)]"
+                "ExhaustiveProvider_pairsSquareRootOrder_Iterable_Iterable_i"
         );
-        aeqit(
+        aeqitLog(
                 EP.pairsSquareRootOrder(Arrays.asList(1, 2, 2, 4), fromString("abcd")),
-                "[(1, a), (1, b), (2, a), (2, b), (2, a), (2, b), (4, a), (4, b), (1, c), (1, d), (2, c), (2, d)," +
-                " (2, c), (2, d), (4, c), (4, d)]"
+                "ExhaustiveProvider_pairsSquareRootOrder_Iterable_Iterable_ii"
         );
-        aeqit(
+        aeqitLog(
                 EP.pairsSquareRootOrder(Arrays.asList(1, 2, null, 4), fromString("abcd")),
-                "[(1, a), (1, b), (2, a), (2, b), (null, a), (null, b), (4, a), (4, b), (1, c), (1, d), (2, c)," +
-                " (2, d), (null, c), (null, d), (4, c), (4, d)]"
+                "ExhaustiveProvider_pairsSquareRootOrder_Iterable_Iterable_iii"
         );
-        aeqit(EP.pairsSquareRootOrder(Collections.emptyList(), fromString("abcd")), "[]");
-        aeqit(EP.pairsSquareRootOrder(Collections.emptyList(), Collections.emptyList()), "[]");
+        aeqitLog(
+                EP.pairsSquareRootOrder(Collections.emptyList(), fromString("abcd")),
+                "ExhaustiveProvider_pairsSquareRootOrder_Iterable_Iterable_iv"
+        );
+        aeqitLog(
+                EP.pairsSquareRootOrder(Collections.emptyList(), Collections.emptyList()),
+                "ExhaustiveProvider_pairsSquareRootOrder_Iterable_Iterable_v"
+        );
         simpleProviderHelper(
                 EP.pairsSquareRootOrder(EP.naturalBigIntegers(), fromString("abcd")),
-                "[(0, a), (0, b), (1, a), (1, b), (2, a), (2, b), (3, a), (3, b), (0, c), (0, d), (1, c), (1, d)," +
-                " (2, c), (2, d), (3, c), (3, d), (4, a), (4, b), (5, a), (5, b), ...]"
+                "ExhaustiveProvider_pairsSquareRootOrder_Iterable_Iterable_vi"
         );
         simpleProviderHelper(
                 EP.pairsSquareRootOrder(fromString("abcd"), EP.naturalBigIntegers()),
-                "[(a, 0), (a, 1), (b, 0), (b, 1), (c, 0), (c, 1), (d, 0), (d, 1), (a, 2), (a, 3), (b, 2), (b, 3)," +
-                " (c, 2), (c, 3), (d, 2), (d, 3), (a, 4), (a, 5), (b, 4), (b, 5), ...]"
+                "ExhaustiveProvider_pairsSquareRootOrder_Iterable_Iterable_vii"
         );
         simpleProviderHelper(
                 EP.pairsSquareRootOrder(EP.positiveBigIntegers(), EP.negativeBigIntegers()),
-                "[(1, -1), (1, -2), (2, -1), (2, -2), (3, -1), (3, -2), (4, -1), (4, -2), (1, -3), (1, -4), (2, -3)," +
-                " (2, -4), (3, -3), (3, -4), (4, -3), (4, -4), (5, -1), (5, -2), (6, -1), (6, -2), ...]"
+                "ExhaustiveProvider_pairsSquareRootOrder_Iterable_Iterable_viii"
         );
     }
 
     @Test
     public void testPairsSquareRootOrder_Iterable() {
-        aeqit(
+        aeqitLog(
                 EP.pairsSquareRootOrder(Arrays.asList(1, 2, 3, 4)),
-                "[(1, 1), (1, 2), (2, 1), (2, 2), (3, 1), (3, 2), (4, 1), (4, 2), (1, 3), (1, 4), (2, 3), (2, 4)," +
-                " (3, 3), (3, 4), (4, 3), (4, 4)]"
+                "ExhaustiveProvider_pairsSquareRootOrder_Iterable_i"
         );
-        aeqit(
+        aeqitLog(
                 EP.pairsSquareRootOrder(Arrays.asList(1, 2, 2, 4)),
-                "[(1, 1), (1, 2), (2, 1), (2, 2), (2, 1), (2, 2), (4, 1), (4, 2), (1, 2), (1, 4), (2, 2), (2, 4)," +
-                " (2, 2), (2, 4), (4, 2), (4, 4)]"
+                "ExhaustiveProvider_pairsSquareRootOrder_Iterable_ii"
         );
-        aeqit(
+        aeqitLog(
                 EP.pairsSquareRootOrder(Arrays.asList(1, 2, null, 4)),
-                "[(1, 1), (1, 2), (2, 1), (2, 2), (null, 1), (null, 2), (4, 1), (4, 2), (1, null), (1, 4)," +
-                " (2, null), (2, 4), (null, null), (null, 4), (4, null), (4, 4)]"
+                "ExhaustiveProvider_pairsSquareRootOrder_Iterable_iii"
         );
-        aeqit(EP.pairsSquareRootOrder(Collections.emptyList()), "[]");
+        aeqitLog(
+                EP.pairsSquareRootOrder(Collections.emptyList()),
+                "ExhaustiveProvider_pairsSquareRootOrder_Iterable_iv"
+        );
         simpleProviderHelper(
                 EP.pairsSquareRootOrder(EP.naturalBigIntegers()),
-                "[(0, 0), (0, 1), (1, 0), (1, 1), (2, 0), (2, 1), (3, 0), (3, 1), (0, 2), (0, 3), (1, 2), (1, 3)," +
-                " (2, 2), (2, 3), (3, 2), (3, 3), (4, 0), (4, 1), (5, 0), (5, 1), ...]"
+                "ExhaustiveProvider_pairsSquareRootOrder_Iterable_v"
         );
         simpleProviderHelper(
                 EP.pairsSquareRootOrder(cons(null, EP.naturalBigIntegers())),
-                "[(null, null), (null, 0), (0, null), (0, 0), (1, null), (1, 0), (2, null), (2, 0), (null, 1)," +
-                " (null, 2), (0, 1), (0, 2), (1, 1), (1, 2), (2, 1), (2, 2), (3, null), (3, 0), (4, null), (4, 0)," +
-                " ...]"
+                "ExhaustiveProvider_pairsSquareRootOrder_Iterable_vi"
         );
     }
 
     private static void permutationsFiniteHelper(@NotNull String input, @NotNull String output) {
-        aeqit(map(Testing::its, EP.permutationsFinite(readIntegerListWithNulls(input))), output);
+        aeqitLog(map(Testing::its, EP.permutationsFinite(readIntegerListWithNulls(input))), output);
     }
 
     private static void permutationsFiniteHelper(@NotNull List<Integer> input, @NotNull String output) {
@@ -1496,60 +1487,34 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testPermutationsFinite() {
-        permutationsFiniteHelper("[]", "[[]]");
-        permutationsFiniteHelper("[5]", "[[5]]");
-        permutationsFiniteHelper("[1, 2]", "[[1, 2], [2, 1]]");
-        permutationsFiniteHelper("[1, 2, 3]", "[[1, 2, 3], [1, 3, 2], [2, 1, 3], [2, 3, 1], [3, 1, 2], [3, 2, 1]]");
-        permutationsFiniteHelper("[1, 2, 3, 4]",
-                "[[1, 2, 3, 4], [1, 2, 4, 3], [1, 3, 2, 4], [1, 3, 4, 2], [1, 4, 2, 3], [1, 4, 3, 2], [2, 1, 3, 4]," +
-                " [2, 1, 4, 3], [2, 3, 1, 4], [2, 3, 4, 1], [2, 4, 1, 3], [2, 4, 3, 1], [3, 1, 2, 4], [3, 1, 4, 2]," +
-                " [3, 2, 1, 4], [3, 2, 4, 1], [3, 4, 1, 2], [3, 4, 2, 1], [4, 1, 2, 3], [4, 1, 3, 2], [4, 2, 1, 3]," +
-                " [4, 2, 3, 1], [4, 3, 1, 2], [4, 3, 2, 1]]");
-        permutationsFiniteHelper("[1, 2, 2, 4]",
-                "[[1, 2, 2, 4], [1, 2, 4, 2], [1, 4, 2, 2], [2, 1, 2, 4], [2, 1, 4, 2], [2, 2, 1, 4], [2, 2, 4, 1]," +
-                " [2, 4, 1, 2], [2, 4, 2, 1], [4, 1, 2, 2], [4, 2, 1, 2], [4, 2, 2, 1]]");
-        permutationsFiniteHelper("[2, 2, 2, 2]", "[[2, 2, 2, 2]]");
-        permutationsFiniteHelper("[3, 1, 4, 1]",
-                "[[3, 1, 1, 4], [3, 1, 4, 1], [3, 4, 1, 1], [1, 3, 1, 4], [1, 3, 4, 1], [1, 1, 3, 4], [1, 1, 4, 3]," +
-                " [1, 4, 3, 1], [1, 4, 1, 3], [4, 3, 1, 1], [4, 1, 3, 1], [4, 1, 1, 3]]");
-        permutationsFiniteHelper("[3, 1, null, 1]",
-                "[[3, 1, 1, null], [3, 1, null, 1], [3, null, 1, 1], [1, 3, 1, null], [1, 3, null, 1]," +
-                " [1, 1, 3, null], [1, 1, null, 3], [1, null, 3, 1], [1, null, 1, 3], [null, 3, 1, 1]," +
-                " [null, 1, 3, 1], [null, 1, 1, 3]]");
-        permutationsFiniteHelper(toList(IterableUtils.range(1, 10)),
-                "[[1, 2, 3, 4, 5, 6, 7, 8, 9, 10], [1, 2, 3, 4, 5, 6, 7, 8, 10, 9], [1, 2, 3, 4, 5, 6, 7, 9, 8, 10]," +
-                " [1, 2, 3, 4, 5, 6, 7, 9, 10, 8], [1, 2, 3, 4, 5, 6, 7, 10, 8, 9], [1, 2, 3, 4, 5, 6, 7, 10, 9, 8]," +
-                " [1, 2, 3, 4, 5, 6, 8, 7, 9, 10], [1, 2, 3, 4, 5, 6, 8, 7, 10, 9], [1, 2, 3, 4, 5, 6, 8, 9, 7, 10]," +
-                " [1, 2, 3, 4, 5, 6, 8, 9, 10, 7], [1, 2, 3, 4, 5, 6, 8, 10, 7, 9], [1, 2, 3, 4, 5, 6, 8, 10, 9, 7]," +
-                " [1, 2, 3, 4, 5, 6, 9, 7, 8, 10], [1, 2, 3, 4, 5, 6, 9, 7, 10, 8], [1, 2, 3, 4, 5, 6, 9, 8, 7, 10]," +
-                " [1, 2, 3, 4, 5, 6, 9, 8, 10, 7], [1, 2, 3, 4, 5, 6, 9, 10, 7, 8], [1, 2, 3, 4, 5, 6, 9, 10, 8, 7]," +
-                " [1, 2, 3, 4, 5, 6, 10, 7, 8, 9], [1, 2, 3, 4, 5, 6, 10, 7, 9, 8], ...]");
+        permutationsFiniteHelper("[]", "ExhaustiveProvider_permutationsFinite_i");
+        permutationsFiniteHelper("[5]", "ExhaustiveProvider_permutationsFinite_ii");
+        permutationsFiniteHelper("[1, 2]", "ExhaustiveProvider_permutationsFinite_iii");
+        permutationsFiniteHelper("[1, 2, 3]", "ExhaustiveProvider_permutationsFinite_iv");
+        permutationsFiniteHelper("[1, 2, 3, 4]", "ExhaustiveProvider_permutationsFinite_v");
+        permutationsFiniteHelper("[1, 2, 2, 4]", "ExhaustiveProvider_permutationsFinite_vi");
+        permutationsFiniteHelper("[2, 2, 2, 2]", "ExhaustiveProvider_permutationsFinite_vii");
+        permutationsFiniteHelper("[3, 1, 4, 1]", "ExhaustiveProvider_permutationsFinite_viii");
+        permutationsFiniteHelper("[3, 1, null, 1]", "ExhaustiveProvider_permutationsFinite_ix");
+        permutationsFiniteHelper(toList(IterableUtils.range(1, 10)), "ExhaustiveProvider_permutationsFinite_x");
     }
 
     @Test
     public void testStringPermutations() {
-        aeqit(EP.stringPermutations(""), "[]");
-        aeqit(EP.stringPermutations("a"), "[a]");
-        aeqit(EP.stringPermutations("abc"), "[abc, acb, bac, bca, cab, cba]");
-        aeqit(EP.stringPermutations("foo"), "[foo, ofo, oof]");
-        aeqit(EP.stringPermutations("hello"),
-                "[hello, helol, heoll, hlelo, hleol, hlleo, hlloe, hloel, hlole, hoell, holel, holle, ehllo, ehlol," +
-                " eholl, elhlo, elhol, ellho, elloh, elohl, elolh, eohll, eolhl, eollh, lhelo, lheol, lhleo, lhloe," +
-                " lhoel, lhole, lehlo, lehol, lelho, leloh, leohl, leolh, llheo, llhoe, lleho, lleoh, llohe, lloeh," +
-                " lohel, lohle, loehl, loelh, lolhe, loleh, ohell, ohlel, ohlle, oehll, oelhl, oellh, olhel, olhle," +
-                " olehl, olelh, ollhe, olleh]");
-        simpleProviderHelper(EP.stringPermutations("Mississippi"),
-                "[Miiiisssspp, Miiiissspsp, Miiiissspps, Miiiisspssp, Miiiisspsps, Miiiissppss, Miiiispsssp," +
-                " Miiiispssps, Miiiispspss, Miiiisppsss, Miiiipssssp, Miiiipsssps, Miiiipsspss, Miiiipspsss," +
-                " Miiiippssss, Miiisissspp, Miiisisspsp, Miiisisspps, Miiisispssp, Miiisispsps, ...]");
+        aeqitLog(EP.stringPermutations(""), "ExhaustiveProvider_stringPermutations_i");
+        aeqitLog(EP.stringPermutations("a"), "ExhaustiveProvider_stringPermutations_ii");
+        aeqitLog(EP.stringPermutations("abc"), "ExhaustiveProvider_stringPermutations_iii");
+        aeqitLog(EP.stringPermutations("foo"), "ExhaustiveProvider_stringPermutations_iv");
+        aeqitLog(EP.stringPermutations("hello"), "ExhaustiveProvider_stringPermutations_v");
+        simpleProviderHelper(EP.stringPermutations("Mississippi"), "ExhaustiveProvider_stringPermutations_vi");
     }
 
     private static void prefixPermutationsHelper(@NotNull String input, @NotNull String output) {
-        aeqit(map(Testing::its, EP.prefixPermutations(readIntegerList(input))), output);
+        aeqitLog(map(Testing::its, EP.prefixPermutations(readIntegerList(input))), output);
     }
 
     private static void prefixPermutationsHelper(@NotNull Iterable<Integer> input, @NotNull String output) {
-        aeqit(map(Testing::its, EP.prefixPermutations(input)), output);
+        aeqitLog(map(Testing::its, EP.prefixPermutations(input)), output);
     }
 
     private static void prefixPermutationsLimitHelper(@NotNull Iterable<Integer> input, @NotNull String output) {
@@ -1558,135 +1523,47 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testPrefixPermutations() {
-        prefixPermutationsHelper("[]", "[[]]");
-        prefixPermutationsHelper("[5]", "[[5]]");
-        prefixPermutationsHelper("[1, 2]", "[[1, 2], [2, 1]]");
-        prefixPermutationsHelper("[1, 2, 3]", "[[1, 2, 3], [2, 1, 3], [1, 3, 2], [2, 3, 1], [3, 1, 2], [3, 2, 1]]");
-        prefixPermutationsHelper("[1, 2, 3, 4]",
-                "[[1, 2, 3, 4], [2, 1, 3, 4], [1, 3, 2, 4], [2, 3, 1, 4], [3, 1, 2, 4], [3, 2, 1, 4], [1, 2, 4, 3]," +
-                " [1, 3, 4, 2], [1, 4, 2, 3], [1, 4, 3, 2], [2, 1, 4, 3], [2, 3, 4, 1], [2, 4, 1, 3], [2, 4, 3, 1]," +
-                " [3, 1, 4, 2], [3, 2, 4, 1], [3, 4, 1, 2], [3, 4, 2, 1], [4, 1, 2, 3], [4, 1, 3, 2], [4, 2, 1, 3]," +
-                " [4, 2, 3, 1], [4, 3, 1, 2], [4, 3, 2, 1]]");
-        prefixPermutationsHelper("[1, 2, 2, 4]",
-                "[[1, 2, 2, 4], [2, 1, 2, 4], [1, 2, 2, 4], [2, 2, 1, 4], [2, 1, 2, 4], [2, 2, 1, 4], [1, 2, 4, 2]," +
-                " [1, 2, 4, 2], [1, 4, 2, 2], [1, 4, 2, 2], [2, 1, 4, 2], [2, 2, 4, 1], [2, 4, 1, 2], [2, 4, 2, 1]," +
-                " [2, 1, 4, 2], [2, 2, 4, 1], [2, 4, 1, 2], [2, 4, 2, 1], [4, 1, 2, 2], [4, 1, 2, 2], [4, 2, 1, 2]," +
-                " [4, 2, 2, 1], [4, 2, 1, 2], [4, 2, 2, 1]]");
-        prefixPermutationsHelper("[2, 2, 2, 2]",
-                "[[2, 2, 2, 2], [2, 2, 2, 2], [2, 2, 2, 2], [2, 2, 2, 2], [2, 2, 2, 2], [2, 2, 2, 2], [2, 2, 2, 2]," +
-                " [2, 2, 2, 2], [2, 2, 2, 2], [2, 2, 2, 2], [2, 2, 2, 2], [2, 2, 2, 2], [2, 2, 2, 2], [2, 2, 2, 2]," +
-                " [2, 2, 2, 2], [2, 2, 2, 2], [2, 2, 2, 2], [2, 2, 2, 2], [2, 2, 2, 2], [2, 2, 2, 2], [2, 2, 2, 2]," +
-                " [2, 2, 2, 2], [2, 2, 2, 2], [2, 2, 2, 2]]");
-        prefixPermutationsHelper("[3, 1, 4, 1]",
-                "[[3, 1, 4, 1], [1, 3, 4, 1], [3, 4, 1, 1], [1, 4, 3, 1], [4, 3, 1, 1], [4, 1, 3, 1], [3, 1, 1, 4]," +
-                " [3, 4, 1, 1], [3, 1, 1, 4], [3, 1, 4, 1], [1, 3, 1, 4], [1, 4, 1, 3], [1, 1, 3, 4], [1, 1, 4, 3]," +
-                " [4, 3, 1, 1], [4, 1, 1, 3], [4, 1, 3, 1], [4, 1, 1, 3], [1, 3, 1, 4], [1, 3, 4, 1], [1, 1, 3, 4]," +
-                " [1, 1, 4, 3], [1, 4, 3, 1], [1, 4, 1, 3]]");
-        prefixPermutationsHelper(Arrays.asList(3, 1, null, 1),
-                "[[3, 1, null, 1], [1, 3, null, 1], [3, null, 1, 1], [1, null, 3, 1], [null, 3, 1, 1]," +
-                " [null, 1, 3, 1], [3, 1, 1, null], [3, null, 1, 1], [3, 1, 1, null], [3, 1, null, 1]," +
-                " [1, 3, 1, null], [1, null, 1, 3], [1, 1, 3, null], [1, 1, null, 3], [null, 3, 1, 1]," +
-                " [null, 1, 1, 3], [null, 1, 3, 1], [null, 1, 1, 3], [1, 3, 1, null], [1, 3, null, 1]," +
-                " [1, 1, 3, null], [1, 1, null, 3], [1, null, 3, 1], [1, null, 1, 3]]");
-        prefixPermutationsLimitHelper(IterableUtils.range(1, 10),
-                "[[1, 2, 3, 4, 5, 6, 7, 8, 9, 10], [2, 1, 3, 4, 5, 6, 7, 8, 9, 10], [1, 3, 2, 4, 5, 6, 7, 8, 9, 10]," +
-                " [2, 3, 1, 4, 5, 6, 7, 8, 9, 10], [3, 1, 2, 4, 5, 6, 7, 8, 9, 10], [3, 2, 1, 4, 5, 6, 7, 8, 9, 10]," +
-                " [1, 2, 4, 3, 5, 6, 7, 8, 9, 10], [1, 3, 4, 2, 5, 6, 7, 8, 9, 10], [1, 4, 2, 3, 5, 6, 7, 8, 9, 10]," +
-                " [1, 4, 3, 2, 5, 6, 7, 8, 9, 10], [2, 1, 4, 3, 5, 6, 7, 8, 9, 10], [2, 3, 4, 1, 5, 6, 7, 8, 9, 10]," +
-                " [2, 4, 1, 3, 5, 6, 7, 8, 9, 10], [2, 4, 3, 1, 5, 6, 7, 8, 9, 10], [3, 1, 4, 2, 5, 6, 7, 8, 9, 10]," +
-                " [3, 2, 4, 1, 5, 6, 7, 8, 9, 10], [3, 4, 1, 2, 5, 6, 7, 8, 9, 10], [3, 4, 2, 1, 5, 6, 7, 8, 9, 10]," +
-                " [4, 1, 2, 3, 5, 6, 7, 8, 9, 10], [4, 1, 3, 2, 5, 6, 7, 8, 9, 10], ...]");
-        prefixPermutationsLimitHelper(EP.positiveIntegers(),
-                "[[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]," +
-                " [2, 1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]," +
-                " [1, 3, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]," +
-                " [2, 3, 1, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]," +
-                " [3, 1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]," +
-                " [3, 2, 1, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]," +
-                " [1, 2, 4, 3, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]," +
-                " [1, 3, 4, 2, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]," +
-                " [1, 4, 2, 3, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]," +
-                " [1, 4, 3, 2, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]," +
-                " [2, 1, 4, 3, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]," +
-                " [2, 3, 4, 1, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]," +
-                " [2, 4, 1, 3, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]," +
-                " [2, 4, 3, 1, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]," +
-                " [3, 1, 4, 2, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]," +
-                " [3, 2, 4, 1, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]," +
-                " [3, 4, 1, 2, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]," +
-                " [3, 4, 2, 1, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]," +
-                " [4, 1, 2, 3, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]," +
-                " [4, 1, 3, 2, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...], ...]");
-        prefixPermutationsLimitHelper(repeat(1),
-                "[[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...]," +
-                " [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...]," +
-                " [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...]," +
-                " [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...]," +
-                " [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...]," +
-                " [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...]," +
-                " [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...]," +
-                " [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...]," +
-                " [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...]," +
-                " [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...]," +
-                " [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...]," +
-                " [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...]," +
-                " [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...]," +
-                " [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...]," +
-                " [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...]," +
-                " [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...]," +
-                " [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...]," +
-                " [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...]," +
-                " [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...]," +
-                " [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...], ...]");
+        prefixPermutationsHelper("[]", "ExhaustiveProvider_prefixPermutations_i");
+        prefixPermutationsHelper("[5]", "ExhaustiveProvider_prefixPermutations_ii");
+        prefixPermutationsHelper("[1, 2]", "ExhaustiveProvider_prefixPermutations_iii");
+        prefixPermutationsHelper("[1, 2, 3]", "ExhaustiveProvider_prefixPermutations_iv");
+        prefixPermutationsHelper("[1, 2, 3, 4]", "ExhaustiveProvider_prefixPermutations_v");
+        prefixPermutationsHelper("[1, 2, 2, 4]", "ExhaustiveProvider_prefixPermutations_vi");
+        prefixPermutationsHelper("[2, 2, 2, 2]", "ExhaustiveProvider_prefixPermutations_vii");
+        prefixPermutationsHelper("[3, 1, 4, 1]", "ExhaustiveProvider_prefixPermutations_viii");
+        prefixPermutationsHelper(Arrays.asList(3, 1, null, 1), "ExhaustiveProvider_prefixPermutations_ix");
+        prefixPermutationsLimitHelper(IterableUtils.range(1, 10), "ExhaustiveProvider_prefixPermutations_x");
+        prefixPermutationsLimitHelper(EP.positiveIntegers(), "ExhaustiveProvider_prefixPermutations_xi");
+        prefixPermutationsLimitHelper(repeat(1), "ExhaustiveProvider_prefixPermutations_xii");
     }
 
     private static void listsLex_int_List_helper(int size, @NotNull String input, @NotNull String output) {
-        aeqit(EP.listsLex(size, readIntegerListWithNulls(input)), output);
+        aeqitLog(EP.listsLex(size, readIntegerListWithNulls(input)), output);
     }
 
     @Test
     public void testListsLex_int_List() {
-        listsLex_int_List_helper(0, "[]", "[[]]");
-        listsLex_int_List_helper(0, "[5]", "[[]]");
-        listsLex_int_List_helper(1, "[5]", "[[5]]");
-        listsLex_int_List_helper(2, "[5]", "[[5, 5]]");
-        listsLex_int_List_helper(3, "[5]", "[[5, 5, 5]]");
-        listsLex_int_List_helper(0, "[1, 2, 3]", "[[]]");
-        listsLex_int_List_helper(1, "[1, 2, 3]", "[[1], [2], [3]]");
-        listsLex_int_List_helper(2, "[1, 2, 3]",
-                "[[1, 1], [1, 2], [1, 3], [2, 1], [2, 2], [2, 3], [3, 1], [3, 2], [3, 3]]");
-        listsLex_int_List_helper(3, "[1, 2, 3]",
-                "[[1, 1, 1], [1, 1, 2], [1, 1, 3], [1, 2, 1], [1, 2, 2], [1, 2, 3], [1, 3, 1], [1, 3, 2], [1, 3, 3]," +
-                " [2, 1, 1], [2, 1, 2], [2, 1, 3], [2, 2, 1], [2, 2, 2], [2, 2, 3], [2, 3, 1], [2, 3, 2], [2, 3, 3]," +
-                " [3, 1, 1], [3, 1, 2], [3, 1, 3], [3, 2, 1], [3, 2, 2], [3, 2, 3], [3, 3, 1], [3, 3, 2], [3, 3, 3]]");
-        listsLex_int_List_helper(0, "[1, 2, 2, 3]", "[[]]");
-        listsLex_int_List_helper(1, "[1, 2, 2, 3]", "[[1], [2], [2], [3]]");
-        listsLex_int_List_helper(2, "[1, 2, 2, 3]",
-                "[[1, 1], [1, 2], [1, 2], [1, 3], [2, 1], [2, 2], [2, 2], [2, 3], [2, 1], [2, 2], [2, 2], [2, 3]," +
-                " [3, 1], [3, 2], [3, 2], [3, 3]]");
-        listsLex_int_List_helper(3, "[1, 2, 2, 3]",
-                "[[1, 1, 1], [1, 1, 2], [1, 1, 2], [1, 1, 3], [1, 2, 1], [1, 2, 2], [1, 2, 2], [1, 2, 3], [1, 2, 1]," +
-                " [1, 2, 2], [1, 2, 2], [1, 2, 3], [1, 3, 1], [1, 3, 2], [1, 3, 2], [1, 3, 3], [2, 1, 1], [2, 1, 2]," +
-                " [2, 1, 2], [2, 1, 3], [2, 2, 1], [2, 2, 2], [2, 2, 2], [2, 2, 3], [2, 2, 1], [2, 2, 2], [2, 2, 2]," +
-                " [2, 2, 3], [2, 3, 1], [2, 3, 2], [2, 3, 2], [2, 3, 3], [2, 1, 1], [2, 1, 2], [2, 1, 2], [2, 1, 3]," +
-                " [2, 2, 1], [2, 2, 2], [2, 2, 2], [2, 2, 3], [2, 2, 1], [2, 2, 2], [2, 2, 2], [2, 2, 3], [2, 3, 1]," +
-                " [2, 3, 2], [2, 3, 2], [2, 3, 3], [3, 1, 1], [3, 1, 2], [3, 1, 2], [3, 1, 3], [3, 2, 1], [3, 2, 2]," +
-                " [3, 2, 2], [3, 2, 3], [3, 2, 1], [3, 2, 2], [3, 2, 2], [3, 2, 3], [3, 3, 1], [3, 3, 2], [3, 3, 2]," +
-                " [3, 3, 3]]");
-        listsLex_int_List_helper(0, "[1, null, 3]", "[[]]");
-        listsLex_int_List_helper(1, "[1, null, 3]", "[[1], [null], [3]]");
-        listsLex_int_List_helper(2, "[1, null, 3]",
-                "[[1, 1], [1, null], [1, 3], [null, 1], [null, null], [null, 3], [3, 1], [3, null], [3, 3]]");
-        listsLex_int_List_helper(3, "[1, null, 3]",
-                "[[1, 1, 1], [1, 1, null], [1, 1, 3], [1, null, 1], [1, null, null], [1, null, 3], [1, 3, 1]," +
-                " [1, 3, null], [1, 3, 3], [null, 1, 1], [null, 1, null], [null, 1, 3], [null, null, 1]," +
-                " [null, null, null], [null, null, 3], [null, 3, 1], [null, 3, null], [null, 3, 3], [3, 1, 1]," +
-                " [3, 1, null], [3, 1, 3], [3, null, 1], [3, null, null], [3, null, 3], [3, 3, 1], [3, 3, null]," +
-                " [3, 3, 3]]");
-        listsLex_int_List_helper(0, "[]", "[[]]");
-        listsLex_int_List_helper(1, "[]", "[]");
-        listsLex_int_List_helper(2, "[]", "[]");
-        listsLex_int_List_helper(3, "[]", "[]");
+        listsLex_int_List_helper(0, "[]", "ExhaustiveProvider_listsLex_int_List_i");
+        listsLex_int_List_helper(0, "[5]", "ExhaustiveProvider_listsLex_int_List_ii");
+        listsLex_int_List_helper(1, "[5]", "ExhaustiveProvider_listsLex_int_List_iii");
+        listsLex_int_List_helper(2, "[5]", "ExhaustiveProvider_listsLex_int_List_iv");
+        listsLex_int_List_helper(3, "[5]", "ExhaustiveProvider_listsLex_int_List_v");
+        listsLex_int_List_helper(0, "[1, 2, 3]", "ExhaustiveProvider_listsLex_int_List_vi");
+        listsLex_int_List_helper(1, "[1, 2, 3]", "ExhaustiveProvider_listsLex_int_List_vii");
+        listsLex_int_List_helper(2, "[1, 2, 3]", "ExhaustiveProvider_listsLex_int_List_viii");
+        listsLex_int_List_helper(3, "[1, 2, 3]", "ExhaustiveProvider_listsLex_int_List_ix");
+        listsLex_int_List_helper(0, "[1, 2, 2, 3]", "ExhaustiveProvider_listsLex_int_List_x");
+        listsLex_int_List_helper(1, "[1, 2, 2, 3]", "ExhaustiveProvider_listsLex_int_List_xi");
+        listsLex_int_List_helper(2, "[1, 2, 2, 3]", "ExhaustiveProvider_listsLex_int_List_xii");
+        listsLex_int_List_helper(3, "[1, 2, 2, 3]", "ExhaustiveProvider_listsLex_int_List_xiii");
+        listsLex_int_List_helper(0, "[1, null, 3]", "ExhaustiveProvider_listsLex_int_List_xiv");
+        listsLex_int_List_helper(1, "[1, null, 3]", "ExhaustiveProvider_listsLex_int_List_xv");
+        listsLex_int_List_helper(2, "[1, null, 3]", "ExhaustiveProvider_listsLex_int_List_xvi");
+        listsLex_int_List_helper(3, "[1, null, 3]", "ExhaustiveProvider_listsLex_int_List_xvii");
+        listsLex_int_List_helper(0, "[]", "ExhaustiveProvider_listsLex_int_List_xviii");
+        listsLex_int_List_helper(1, "[]", "ExhaustiveProvider_listsLex_int_List_xix");
+        listsLex_int_List_helper(2, "[]", "ExhaustiveProvider_listsLex_int_List_xx");
+        listsLex_int_List_helper(3, "[]", "ExhaustiveProvider_listsLex_int_List_xxi");
         try {
             EP.listsLex(-1, Collections.emptyList());
             fail();
@@ -1702,7 +1579,7 @@ public strictfp class ExhaustiveProviderTest {
             @NotNull Iterable<B> bs,
             @NotNull String output
     ) {
-        aeqit(EP.pairsLex(as, toList(bs)), output);
+        aeqitLog(EP.pairsLex(as, toList(bs)), output);
     }
 
     private static <A, B> void pairsLex_helper_limit(
@@ -1715,16 +1592,12 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testPairsLex() {
-        pairsLex_helper(Arrays.asList(1, 2, 3), fromString("abc"),
-                "[(1, a), (1, b), (1, c), (2, a), (2, b), (2, c), (3, a), (3, b), (3, c)]");
-        pairsLex_helper(Arrays.asList(1, null, 3), fromString("abc"),
-                "[(1, a), (1, b), (1, c), (null, a), (null, b), (null, c), (3, a), (3, b), (3, c)]");
-        pairsLex_helper_limit(EP.naturalBigIntegers(), fromString("abc"),
-                "[(0, a), (0, b), (0, c), (1, a), (1, b), (1, c), (2, a), (2, b), (2, c), (3, a), (3, b), (3, c)," +
-                " (4, a), (4, b), (4, c), (5, a), (5, b), (5, c), (6, a), (6, b), ...]");
-        pairsLex_helper(EP.naturalBigIntegers(), Collections.emptyList(), "[]");
-        pairsLex_helper(Collections.emptyList(), fromString("abc"), "[]");
-        pairsLex_helper(Collections.emptyList(), Collections.emptyList(), "[]");
+        pairsLex_helper(Arrays.asList(1, 2, 3), fromString("abc"), "ExhaustiveProvider_pairsLex_i");
+        pairsLex_helper(Arrays.asList(1, null, 3), fromString("abc"), "ExhaustiveProvider_pairsLex_ii");
+        pairsLex_helper_limit(EP.naturalBigIntegers(), fromString("abc"), "ExhaustiveProvider_pairsLex_iii");
+        pairsLex_helper(EP.naturalBigIntegers(), Collections.emptyList(), "ExhaustiveProvider_pairsLex_iv");
+        pairsLex_helper(Collections.emptyList(), fromString("abc"), "ExhaustiveProvider_pairsLex_v");
+        pairsLex_helper(Collections.emptyList(), Collections.emptyList(), "ExhaustiveProvider_pairsLex_vi");
     }
 
     private static <A, B, C> void triplesLex_helper(
@@ -1733,7 +1606,7 @@ public strictfp class ExhaustiveProviderTest {
             @NotNull Iterable<C> cs,
             @NotNull String output
     ) {
-        aeqit(EP.triplesLex(as, toList(bs), toList(cs)), output);
+        aeqitLog(EP.triplesLex(as, toList(bs), toList(cs)), output);
     }
 
     private static <A, B, C> void triplesLex_helper_limit(
@@ -1747,23 +1620,17 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testTriplesLex() {
-        triplesLex_helper(Arrays.asList(1, 2, 3), fromString("abc"), EP.booleans(),
-                "[(1, a, false), (1, a, true), (1, b, false), (1, b, true), (1, c, false), (1, c, true)," +
-                " (2, a, false), (2, a, true), (2, b, false), (2, b, true), (2, c, false), (2, c, true)," +
-                " (3, a, false), (3, a, true), (3, b, false), (3, b, true), (3, c, false), (3, c, true)]");
+        triplesLex_helper(Arrays.asList(1, 2, 3), fromString("abc"), EP.booleans(), "ExhaustiveProvider_triplesLex_i");
         triplesLex_helper(Arrays.asList(1, null, 3), fromString("abc"), EP.booleans(),
-                "[(1, a, false), (1, a, true), (1, b, false), (1, b, true), (1, c, false), (1, c, true)," +
-                " (null, a, false), (null, a, true), (null, b, false), (null, b, true), (null, c, false)," +
-                " (null, c, true), (3, a, false), (3, a, true), (3, b, false), (3, b, true), (3, c, false)," +
-                " (3, c, true)]");
+                "ExhaustiveProvider_triplesLex_ii");
         triplesLex_helper_limit(EP.naturalBigIntegers(), fromString("abc"), EP.booleans(),
-                "[(0, a, false), (0, a, true), (0, b, false), (0, b, true), (0, c, false), (0, c, true)," +
-                " (1, a, false), (1, a, true), (1, b, false), (1, b, true), (1, c, false), (1, c, true)," +
-                " (2, a, false), (2, a, true), (2, b, false), (2, b, true), (2, c, false), (2, c, true)," +
-                " (3, a, false), (3, a, true), ...]");
-        triplesLex_helper(EP.naturalBigIntegers(), fromString("abc"), Collections.emptyList(), "[]");
-        triplesLex_helper(Collections.emptyList(), fromString("abc"), EP.booleans(), "[]");
-        triplesLex_helper(Collections.emptyList(), Collections.emptyList(), Collections.emptyList(), "[]");
+                "ExhaustiveProvider_triplesLex_iii");
+        triplesLex_helper(EP.naturalBigIntegers(), fromString("abc"), Collections.emptyList(),
+                "ExhaustiveProvider_triplesLex_iv");
+        triplesLex_helper(Collections.emptyList(), fromString("abc"), EP.booleans(),
+                "ExhaustiveProvider_triplesLex_v");
+        triplesLex_helper(Collections.emptyList(), Collections.emptyList(), Collections.emptyList(),
+                "ExhaustiveProvider_triplesLex_vi");
     }
 
     private static <A, B, C, D> void quadruplesLex_helper(
@@ -1773,7 +1640,7 @@ public strictfp class ExhaustiveProviderTest {
             @NotNull Iterable<D> ds,
             @NotNull String output
     ) {
-        aeqit(EP.quadruplesLex(as, toList(bs), toList(cs), toList(ds)), output);
+        aeqitLog(EP.quadruplesLex(as, toList(bs), toList(cs), toList(ds)), output);
     }
 
     private static <A, B, C, D> void quadruplesLex_helper_limit(
@@ -1789,43 +1656,21 @@ public strictfp class ExhaustiveProviderTest {
     @Test
     public void testQuadruplesLex() {
         quadruplesLex_helper(Arrays.asList(1, 2, 3), fromString("abc"), EP.booleans(), EP.orderings(),
-                "[(1, a, false, EQ), (1, a, false, LT), (1, a, false, GT), (1, a, true, EQ), (1, a, true, LT)," +
-                " (1, a, true, GT), (1, b, false, EQ), (1, b, false, LT), (1, b, false, GT), (1, b, true, EQ)," +
-                " (1, b, true, LT), (1, b, true, GT), (1, c, false, EQ), (1, c, false, LT), (1, c, false, GT)," +
-                " (1, c, true, EQ), (1, c, true, LT), (1, c, true, GT), (2, a, false, EQ), (2, a, false, LT)," +
-                " (2, a, false, GT), (2, a, true, EQ), (2, a, true, LT), (2, a, true, GT), (2, b, false, EQ)," +
-                " (2, b, false, LT), (2, b, false, GT), (2, b, true, EQ), (2, b, true, LT), (2, b, true, GT)," +
-                " (2, c, false, EQ), (2, c, false, LT), (2, c, false, GT), (2, c, true, EQ), (2, c, true, LT)," +
-                " (2, c, true, GT), (3, a, false, EQ), (3, a, false, LT), (3, a, false, GT), (3, a, true, EQ)," +
-                " (3, a, true, LT), (3, a, true, GT), (3, b, false, EQ), (3, b, false, LT), (3, b, false, GT)," +
-                " (3, b, true, EQ), (3, b, true, LT), (3, b, true, GT), (3, c, false, EQ), (3, c, false, LT)," +
-                " (3, c, false, GT), (3, c, true, EQ), (3, c, true, LT), (3, c, true, GT)]");
+                "ExhaustiveProvider_quadruplesLex_i");
         quadruplesLex_helper(Arrays.asList(1, null, 3), fromString("abc"), EP.booleans(), EP.orderings(),
-                "[(1, a, false, EQ), (1, a, false, LT), (1, a, false, GT), (1, a, true, EQ), (1, a, true, LT)," +
-                " (1, a, true, GT), (1, b, false, EQ), (1, b, false, LT), (1, b, false, GT), (1, b, true, EQ)," +
-                " (1, b, true, LT), (1, b, true, GT), (1, c, false, EQ), (1, c, false, LT), (1, c, false, GT)," +
-                " (1, c, true, EQ), (1, c, true, LT), (1, c, true, GT), (null, a, false, EQ), (null, a, false, LT)," +
-                " (null, a, false, GT), (null, a, true, EQ), (null, a, true, LT), (null, a, true, GT)," +
-                " (null, b, false, EQ), (null, b, false, LT), (null, b, false, GT), (null, b, true, EQ)," +
-                " (null, b, true, LT), (null, b, true, GT), (null, c, false, EQ), (null, c, false, LT)," +
-                " (null, c, false, GT), (null, c, true, EQ), (null, c, true, LT), (null, c, true, GT)," +
-                " (3, a, false, EQ), (3, a, false, LT), (3, a, false, GT), (3, a, true, EQ), (3, a, true, LT)," +
-                " (3, a, true, GT), (3, b, false, EQ), (3, b, false, LT), (3, b, false, GT), (3, b, true, EQ)," +
-                " (3, b, true, LT), (3, b, true, GT), (3, c, false, EQ), (3, c, false, LT), (3, c, false, GT)," +
-                " (3, c, true, EQ), (3, c, true, LT), (3, c, true, GT)]");
+                "ExhaustiveProvider_quadruplesLex_ii");
         quadruplesLex_helper_limit(EP.naturalBigIntegers(), fromString("abc"), EP.booleans(), EP.orderings(),
-                "[(0, a, false, EQ), (0, a, false, LT), (0, a, false, GT), (0, a, true, EQ), (0, a, true, LT)," +
-                " (0, a, true, GT), (0, b, false, EQ), (0, b, false, LT), (0, b, false, GT), (0, b, true, EQ)," +
-                " (0, b, true, LT), (0, b, true, GT), (0, c, false, EQ), (0, c, false, LT), (0, c, false, GT)," +
-                " (0, c, true, EQ), (0, c, true, LT), (0, c, true, GT), (1, a, false, EQ), (1, a, false, LT), ...]");
-        quadruplesLex_helper(EP.naturalBigIntegers(), fromString("abc"), EP.booleans(), Collections.emptyList(), "[]");
-        quadruplesLex_helper(Collections.emptyList(), fromString("abc"), EP.booleans(), EP.orderings(), "[]");
+                "ExhaustiveProvider_quadruplesLex_iii");
+        quadruplesLex_helper(EP.naturalBigIntegers(), fromString("abc"), EP.booleans(), Collections.emptyList(),
+                "ExhaustiveProvider_quadruplesLex_iv");
+        quadruplesLex_helper(Collections.emptyList(), fromString("abc"), EP.booleans(), EP.orderings(),
+                "ExhaustiveProvider_quadruplesLex_v");
         quadruplesLex_helper(
                 Collections.emptyList(),
                 Collections.emptyList(),
                 Collections.emptyList(),
                 Collections.emptyList(),
-                "[]"
+                "ExhaustiveProvider_quadruplesLex_vi"
         );
     }
 
@@ -1837,7 +1682,7 @@ public strictfp class ExhaustiveProviderTest {
             @NotNull Iterable<E> es,
             @NotNull String output
     ) {
-        aeqit(EP.quintuplesLex(as, toList(bs), toList(cs), toList(ds), toList(es)), output);
+        aeqitLog(EP.quintuplesLex(as, toList(bs), toList(cs), toList(ds), toList(es)), output);
     }
 
     private static <A, B, C, D, E> void quintuplesLex_helper_limit(
@@ -1859,87 +1704,28 @@ public strictfp class ExhaustiveProviderTest {
                 EP.booleans(),
                 EP.orderings(),
                 Arrays.asList("yes", "no"),
-                "[(1, a, false, EQ, yes), (1, a, false, EQ, no), (1, a, false, LT, yes), (1, a, false, LT, no)," +
-                " (1, a, false, GT, yes), (1, a, false, GT, no), (1, a, true, EQ, yes), (1, a, true, EQ, no)," +
-                " (1, a, true, LT, yes), (1, a, true, LT, no), (1, a, true, GT, yes), (1, a, true, GT, no)," +
-                " (1, b, false, EQ, yes), (1, b, false, EQ, no), (1, b, false, LT, yes), (1, b, false, LT, no)," +
-                " (1, b, false, GT, yes), (1, b, false, GT, no), (1, b, true, EQ, yes), (1, b, true, EQ, no)," +
-                " (1, b, true, LT, yes), (1, b, true, LT, no), (1, b, true, GT, yes), (1, b, true, GT, no)," +
-                " (1, c, false, EQ, yes), (1, c, false, EQ, no), (1, c, false, LT, yes), (1, c, false, LT, no)," +
-                " (1, c, false, GT, yes), (1, c, false, GT, no), (1, c, true, EQ, yes), (1, c, true, EQ, no)," +
-                " (1, c, true, LT, yes), (1, c, true, LT, no), (1, c, true, GT, yes), (1, c, true, GT, no)," +
-                " (2, a, false, EQ, yes), (2, a, false, EQ, no), (2, a, false, LT, yes), (2, a, false, LT, no)," +
-                " (2, a, false, GT, yes), (2, a, false, GT, no), (2, a, true, EQ, yes), (2, a, true, EQ, no)," +
-                " (2, a, true, LT, yes), (2, a, true, LT, no), (2, a, true, GT, yes), (2, a, true, GT, no)," +
-                " (2, b, false, EQ, yes), (2, b, false, EQ, no), (2, b, false, LT, yes), (2, b, false, LT, no)," +
-                " (2, b, false, GT, yes), (2, b, false, GT, no), (2, b, true, EQ, yes), (2, b, true, EQ, no)," +
-                " (2, b, true, LT, yes), (2, b, true, LT, no), (2, b, true, GT, yes), (2, b, true, GT, no)," +
-                " (2, c, false, EQ, yes), (2, c, false, EQ, no), (2, c, false, LT, yes), (2, c, false, LT, no)," +
-                " (2, c, false, GT, yes), (2, c, false, GT, no), (2, c, true, EQ, yes), (2, c, true, EQ, no)," +
-                " (2, c, true, LT, yes), (2, c, true, LT, no), (2, c, true, GT, yes), (2, c, true, GT, no)," +
-                " (3, a, false, EQ, yes), (3, a, false, EQ, no), (3, a, false, LT, yes), (3, a, false, LT, no)," +
-                " (3, a, false, GT, yes), (3, a, false, GT, no), (3, a, true, EQ, yes), (3, a, true, EQ, no)," +
-                " (3, a, true, LT, yes), (3, a, true, LT, no), (3, a, true, GT, yes), (3, a, true, GT, no)," +
-                " (3, b, false, EQ, yes), (3, b, false, EQ, no), (3, b, false, LT, yes), (3, b, false, LT, no)," +
-                " (3, b, false, GT, yes), (3, b, false, GT, no), (3, b, true, EQ, yes), (3, b, true, EQ, no)," +
-                " (3, b, true, LT, yes), (3, b, true, LT, no), (3, b, true, GT, yes), (3, b, true, GT, no)," +
-                " (3, c, false, EQ, yes), (3, c, false, EQ, no), (3, c, false, LT, yes), (3, c, false, LT, no)," +
-                " (3, c, false, GT, yes), (3, c, false, GT, no), (3, c, true, EQ, yes), (3, c, true, EQ, no)," +
-                " (3, c, true, LT, yes), (3, c, true, LT, no), (3, c, true, GT, yes), (3, c, true, GT, no)]");
+                "ExhaustiveProvider_quintuplesLex_i");
         quintuplesLex_helper(
                 Arrays.asList(1, null, 3),
                 fromString("abc"),
                 EP.booleans(),
                 EP.orderings(),
                 Arrays.asList("yes", "no"),
-                "[(1, a, false, EQ, yes), (1, a, false, EQ, no), (1, a, false, LT, yes), (1, a, false, LT, no)," +
-                " (1, a, false, GT, yes), (1, a, false, GT, no), (1, a, true, EQ, yes), (1, a, true, EQ, no)," +
-                " (1, a, true, LT, yes), (1, a, true, LT, no), (1, a, true, GT, yes), (1, a, true, GT, no)," +
-                " (1, b, false, EQ, yes), (1, b, false, EQ, no), (1, b, false, LT, yes), (1, b, false, LT, no)," +
-                " (1, b, false, GT, yes), (1, b, false, GT, no), (1, b, true, EQ, yes), (1, b, true, EQ, no)," +
-                " (1, b, true, LT, yes), (1, b, true, LT, no), (1, b, true, GT, yes), (1, b, true, GT, no)," +
-                " (1, c, false, EQ, yes), (1, c, false, EQ, no), (1, c, false, LT, yes), (1, c, false, LT, no)," +
-                " (1, c, false, GT, yes), (1, c, false, GT, no), (1, c, true, EQ, yes), (1, c, true, EQ, no)," +
-                " (1, c, true, LT, yes), (1, c, true, LT, no), (1, c, true, GT, yes), (1, c, true, GT, no)," +
-                " (null, a, false, EQ, yes), (null, a, false, EQ, no), (null, a, false, LT, yes)," +
-                " (null, a, false, LT, no), (null, a, false, GT, yes), (null, a, false, GT, no)," +
-                " (null, a, true, EQ, yes), (null, a, true, EQ, no), (null, a, true, LT, yes)," +
-                " (null, a, true, LT, no), (null, a, true, GT, yes), (null, a, true, GT, no)," +
-                " (null, b, false, EQ, yes), (null, b, false, EQ, no), (null, b, false, LT, yes)," +
-                " (null, b, false, LT, no), (null, b, false, GT, yes), (null, b, false, GT, no)," +
-                " (null, b, true, EQ, yes), (null, b, true, EQ, no), (null, b, true, LT, yes)," +
-                " (null, b, true, LT, no), (null, b, true, GT, yes), (null, b, true, GT, no)," +
-                " (null, c, false, EQ, yes), (null, c, false, EQ, no), (null, c, false, LT, yes)," +
-                " (null, c, false, LT, no), (null, c, false, GT, yes), (null, c, false, GT, no)," +
-                " (null, c, true, EQ, yes), (null, c, true, EQ, no), (null, c, true, LT, yes)," +
-                " (null, c, true, LT, no), (null, c, true, GT, yes), (null, c, true, GT, no)," +
-                " (3, a, false, EQ, yes), (3, a, false, EQ, no), (3, a, false, LT, yes), (3, a, false, LT, no)," +
-                " (3, a, false, GT, yes), (3, a, false, GT, no), (3, a, true, EQ, yes), (3, a, true, EQ, no)," +
-                " (3, a, true, LT, yes), (3, a, true, LT, no), (3, a, true, GT, yes), (3, a, true, GT, no)," +
-                " (3, b, false, EQ, yes), (3, b, false, EQ, no), (3, b, false, LT, yes), (3, b, false, LT, no)," +
-                " (3, b, false, GT, yes), (3, b, false, GT, no), (3, b, true, EQ, yes), (3, b, true, EQ, no)," +
-                " (3, b, true, LT, yes), (3, b, true, LT, no), (3, b, true, GT, yes), (3, b, true, GT, no)," +
-                " (3, c, false, EQ, yes), (3, c, false, EQ, no), (3, c, false, LT, yes), (3, c, false, LT, no)," +
-                " (3, c, false, GT, yes), (3, c, false, GT, no), (3, c, true, EQ, yes), (3, c, true, EQ, no)," +
-                " (3, c, true, LT, yes), (3, c, true, LT, no), (3, c, true, GT, yes), (3, c, true, GT, no)]");
+                "ExhaustiveProvider_quintuplesLex_ii");
         quintuplesLex_helper_limit(
                 EP.naturalBigIntegers(),
                 fromString("abc"),
                 EP.booleans(),
                 EP.orderings(),
                 Arrays.asList("yes", "no"),
-                "[(0, a, false, EQ, yes), (0, a, false, EQ, no), (0, a, false, LT, yes), (0, a, false, LT, no)," +
-                " (0, a, false, GT, yes), (0, a, false, GT, no), (0, a, true, EQ, yes), (0, a, true, EQ, no)," +
-                " (0, a, true, LT, yes), (0, a, true, LT, no), (0, a, true, GT, yes), (0, a, true, GT, no)," +
-                " (0, b, false, EQ, yes), (0, b, false, EQ, no), (0, b, false, LT, yes), (0, b, false, LT, no)," +
-                " (0, b, false, GT, yes), (0, b, false, GT, no), (0, b, true, EQ, yes), (0, b, true, EQ, no), ...]");
+                "ExhaustiveProvider_quintuplesLex_iii");
         quintuplesLex_helper(
                 EP.naturalBigIntegers(),
                 fromString("abc"),
                 EP.booleans(),
                 EP.orderings(),
                 Collections.emptyList(),
-                "[]"
+                "ExhaustiveProvider_quintuplesLex_iv"
         );
         quintuplesLex_helper(
                 Collections.emptyList(),
@@ -1947,7 +1733,7 @@ public strictfp class ExhaustiveProviderTest {
                 EP.booleans(),
                 EP.orderings(),
                 Arrays.asList("yes", "no"),
-                "[]"
+                "ExhaustiveProvider_quintuplesLex_v"
         );
         quintuplesLex_helper(
                 Collections.emptyList(),
@@ -1955,7 +1741,7 @@ public strictfp class ExhaustiveProviderTest {
                 Collections.emptyList(),
                 Collections.emptyList(),
                 Collections.emptyList(),
-                "[]"
+                "ExhaustiveProvider_quintuplesLex_vi"
         );
     }
 
@@ -1968,7 +1754,7 @@ public strictfp class ExhaustiveProviderTest {
             @NotNull Iterable<F> fs,
             @NotNull String output
     ) {
-        aeqit(EP.sextuplesLex(as, toList(bs), toList(cs), toList(ds), toList(es), toList(fs)), output);
+        aeqitLog(EP.sextuplesLex(as, toList(bs), toList(cs), toList(ds), toList(es), toList(fs)), output);
     }
 
     private static <A, B, C, D, E, F> void sextuplesLex_helper_limit(
@@ -1992,78 +1778,7 @@ public strictfp class ExhaustiveProviderTest {
                 EP.orderings(),
                 Arrays.asList("yes", "no"),
                 Arrays.asList(Float.POSITIVE_INFINITY, Float.NaN),
-                "[(1, a, false, EQ, yes, Infinity), (1, a, false, EQ, yes, NaN), (1, a, false, EQ, no, Infinity)," +
-                " (1, a, false, EQ, no, NaN), (1, a, false, LT, yes, Infinity), (1, a, false, LT, yes, NaN)," +
-                " (1, a, false, LT, no, Infinity), (1, a, false, LT, no, NaN), (1, a, false, GT, yes, Infinity)," +
-                " (1, a, false, GT, yes, NaN), (1, a, false, GT, no, Infinity), (1, a, false, GT, no, NaN)," +
-                " (1, a, true, EQ, yes, Infinity), (1, a, true, EQ, yes, NaN), (1, a, true, EQ, no, Infinity)," +
-                " (1, a, true, EQ, no, NaN), (1, a, true, LT, yes, Infinity), (1, a, true, LT, yes, NaN)," +
-                " (1, a, true, LT, no, Infinity), (1, a, true, LT, no, NaN), (1, a, true, GT, yes, Infinity)," +
-                " (1, a, true, GT, yes, NaN), (1, a, true, GT, no, Infinity), (1, a, true, GT, no, NaN)," +
-                " (1, b, false, EQ, yes, Infinity), (1, b, false, EQ, yes, NaN), (1, b, false, EQ, no, Infinity)," +
-                " (1, b, false, EQ, no, NaN), (1, b, false, LT, yes, Infinity), (1, b, false, LT, yes, NaN)," +
-                " (1, b, false, LT, no, Infinity), (1, b, false, LT, no, NaN), (1, b, false, GT, yes, Infinity)," +
-                " (1, b, false, GT, yes, NaN), (1, b, false, GT, no, Infinity), (1, b, false, GT, no, NaN)," +
-                " (1, b, true, EQ, yes, Infinity), (1, b, true, EQ, yes, NaN), (1, b, true, EQ, no, Infinity)," +
-                " (1, b, true, EQ, no, NaN), (1, b, true, LT, yes, Infinity), (1, b, true, LT, yes, NaN)," +
-                " (1, b, true, LT, no, Infinity), (1, b, true, LT, no, NaN), (1, b, true, GT, yes, Infinity)," +
-                " (1, b, true, GT, yes, NaN), (1, b, true, GT, no, Infinity), (1, b, true, GT, no, NaN)," +
-                " (1, c, false, EQ, yes, Infinity), (1, c, false, EQ, yes, NaN), (1, c, false, EQ, no, Infinity)," +
-                " (1, c, false, EQ, no, NaN), (1, c, false, LT, yes, Infinity), (1, c, false, LT, yes, NaN)," +
-                " (1, c, false, LT, no, Infinity), (1, c, false, LT, no, NaN), (1, c, false, GT, yes, Infinity)," +
-                " (1, c, false, GT, yes, NaN), (1, c, false, GT, no, Infinity), (1, c, false, GT, no, NaN)," +
-                " (1, c, true, EQ, yes, Infinity), (1, c, true, EQ, yes, NaN), (1, c, true, EQ, no, Infinity)," +
-                " (1, c, true, EQ, no, NaN), (1, c, true, LT, yes, Infinity), (1, c, true, LT, yes, NaN)," +
-                " (1, c, true, LT, no, Infinity), (1, c, true, LT, no, NaN), (1, c, true, GT, yes, Infinity)," +
-                " (1, c, true, GT, yes, NaN), (1, c, true, GT, no, Infinity), (1, c, true, GT, no, NaN)," +
-                " (2, a, false, EQ, yes, Infinity), (2, a, false, EQ, yes, NaN), (2, a, false, EQ, no, Infinity)," +
-                " (2, a, false, EQ, no, NaN), (2, a, false, LT, yes, Infinity), (2, a, false, LT, yes, NaN)," +
-                " (2, a, false, LT, no, Infinity), (2, a, false, LT, no, NaN), (2, a, false, GT, yes, Infinity)," +
-                " (2, a, false, GT, yes, NaN), (2, a, false, GT, no, Infinity), (2, a, false, GT, no, NaN)," +
-                " (2, a, true, EQ, yes, Infinity), (2, a, true, EQ, yes, NaN), (2, a, true, EQ, no, Infinity)," +
-                " (2, a, true, EQ, no, NaN), (2, a, true, LT, yes, Infinity), (2, a, true, LT, yes, NaN)," +
-                " (2, a, true, LT, no, Infinity), (2, a, true, LT, no, NaN), (2, a, true, GT, yes, Infinity)," +
-                " (2, a, true, GT, yes, NaN), (2, a, true, GT, no, Infinity), (2, a, true, GT, no, NaN)," +
-                " (2, b, false, EQ, yes, Infinity), (2, b, false, EQ, yes, NaN), (2, b, false, EQ, no, Infinity)," +
-                " (2, b, false, EQ, no, NaN), (2, b, false, LT, yes, Infinity), (2, b, false, LT, yes, NaN)," +
-                " (2, b, false, LT, no, Infinity), (2, b, false, LT, no, NaN), (2, b, false, GT, yes, Infinity)," +
-                " (2, b, false, GT, yes, NaN), (2, b, false, GT, no, Infinity), (2, b, false, GT, no, NaN)," +
-                " (2, b, true, EQ, yes, Infinity), (2, b, true, EQ, yes, NaN), (2, b, true, EQ, no, Infinity)," +
-                " (2, b, true, EQ, no, NaN), (2, b, true, LT, yes, Infinity), (2, b, true, LT, yes, NaN)," +
-                " (2, b, true, LT, no, Infinity), (2, b, true, LT, no, NaN), (2, b, true, GT, yes, Infinity)," +
-                " (2, b, true, GT, yes, NaN), (2, b, true, GT, no, Infinity), (2, b, true, GT, no, NaN)," +
-                " (2, c, false, EQ, yes, Infinity), (2, c, false, EQ, yes, NaN), (2, c, false, EQ, no, Infinity)," +
-                " (2, c, false, EQ, no, NaN), (2, c, false, LT, yes, Infinity), (2, c, false, LT, yes, NaN)," +
-                " (2, c, false, LT, no, Infinity), (2, c, false, LT, no, NaN), (2, c, false, GT, yes, Infinity)," +
-                " (2, c, false, GT, yes, NaN), (2, c, false, GT, no, Infinity), (2, c, false, GT, no, NaN)," +
-                " (2, c, true, EQ, yes, Infinity), (2, c, true, EQ, yes, NaN), (2, c, true, EQ, no, Infinity)," +
-                " (2, c, true, EQ, no, NaN), (2, c, true, LT, yes, Infinity), (2, c, true, LT, yes, NaN)," +
-                " (2, c, true, LT, no, Infinity), (2, c, true, LT, no, NaN), (2, c, true, GT, yes, Infinity)," +
-                " (2, c, true, GT, yes, NaN), (2, c, true, GT, no, Infinity), (2, c, true, GT, no, NaN)," +
-                " (3, a, false, EQ, yes, Infinity), (3, a, false, EQ, yes, NaN), (3, a, false, EQ, no, Infinity)," +
-                " (3, a, false, EQ, no, NaN), (3, a, false, LT, yes, Infinity), (3, a, false, LT, yes, NaN)," +
-                " (3, a, false, LT, no, Infinity), (3, a, false, LT, no, NaN), (3, a, false, GT, yes, Infinity)," +
-                " (3, a, false, GT, yes, NaN), (3, a, false, GT, no, Infinity), (3, a, false, GT, no, NaN)," +
-                " (3, a, true, EQ, yes, Infinity), (3, a, true, EQ, yes, NaN), (3, a, true, EQ, no, Infinity)," +
-                " (3, a, true, EQ, no, NaN), (3, a, true, LT, yes, Infinity), (3, a, true, LT, yes, NaN)," +
-                " (3, a, true, LT, no, Infinity), (3, a, true, LT, no, NaN), (3, a, true, GT, yes, Infinity)," +
-                " (3, a, true, GT, yes, NaN), (3, a, true, GT, no, Infinity), (3, a, true, GT, no, NaN)," +
-                " (3, b, false, EQ, yes, Infinity), (3, b, false, EQ, yes, NaN), (3, b, false, EQ, no, Infinity)," +
-                " (3, b, false, EQ, no, NaN), (3, b, false, LT, yes, Infinity), (3, b, false, LT, yes, NaN)," +
-                " (3, b, false, LT, no, Infinity), (3, b, false, LT, no, NaN), (3, b, false, GT, yes, Infinity)," +
-                " (3, b, false, GT, yes, NaN), (3, b, false, GT, no, Infinity), (3, b, false, GT, no, NaN)," +
-                " (3, b, true, EQ, yes, Infinity), (3, b, true, EQ, yes, NaN), (3, b, true, EQ, no, Infinity)," +
-                " (3, b, true, EQ, no, NaN), (3, b, true, LT, yes, Infinity), (3, b, true, LT, yes, NaN)," +
-                " (3, b, true, LT, no, Infinity), (3, b, true, LT, no, NaN), (3, b, true, GT, yes, Infinity)," +
-                " (3, b, true, GT, yes, NaN), (3, b, true, GT, no, Infinity), (3, b, true, GT, no, NaN)," +
-                " (3, c, false, EQ, yes, Infinity), (3, c, false, EQ, yes, NaN), (3, c, false, EQ, no, Infinity)," +
-                " (3, c, false, EQ, no, NaN), (3, c, false, LT, yes, Infinity), (3, c, false, LT, yes, NaN)," +
-                " (3, c, false, LT, no, Infinity), (3, c, false, LT, no, NaN), (3, c, false, GT, yes, Infinity)," +
-                " (3, c, false, GT, yes, NaN), (3, c, false, GT, no, Infinity), (3, c, false, GT, no, NaN)," +
-                " (3, c, true, EQ, yes, Infinity), (3, c, true, EQ, yes, NaN), (3, c, true, EQ, no, Infinity)," +
-                " (3, c, true, EQ, no, NaN), (3, c, true, LT, yes, Infinity), (3, c, true, LT, yes, NaN)," +
-                " (3, c, true, LT, no, Infinity), (3, c, true, LT, no, NaN), (3, c, true, GT, yes, Infinity)," +
-                " (3, c, true, GT, yes, NaN), (3, c, true, GT, no, Infinity), (3, c, true, GT, no, NaN)]");
+                "ExhaustiveProvider_sextuplesLex_i");
         sextuplesLex_helper(
                 Arrays.asList(1, null, 3),
                 fromString("abc"),
@@ -2071,90 +1786,7 @@ public strictfp class ExhaustiveProviderTest {
                 EP.orderings(),
                 Arrays.asList("yes", "no"),
                 Arrays.asList(Float.POSITIVE_INFINITY, Float.NaN),
-                "[(1, a, false, EQ, yes, Infinity), (1, a, false, EQ, yes, NaN), (1, a, false, EQ, no, Infinity)," +
-                " (1, a, false, EQ, no, NaN), (1, a, false, LT, yes, Infinity), (1, a, false, LT, yes, NaN)," +
-                " (1, a, false, LT, no, Infinity), (1, a, false, LT, no, NaN), (1, a, false, GT, yes, Infinity)," +
-                " (1, a, false, GT, yes, NaN), (1, a, false, GT, no, Infinity), (1, a, false, GT, no, NaN)," +
-                " (1, a, true, EQ, yes, Infinity), (1, a, true, EQ, yes, NaN), (1, a, true, EQ, no, Infinity)," +
-                " (1, a, true, EQ, no, NaN), (1, a, true, LT, yes, Infinity), (1, a, true, LT, yes, NaN)," +
-                " (1, a, true, LT, no, Infinity), (1, a, true, LT, no, NaN), (1, a, true, GT, yes, Infinity)," +
-                " (1, a, true, GT, yes, NaN), (1, a, true, GT, no, Infinity), (1, a, true, GT, no, NaN)," +
-                " (1, b, false, EQ, yes, Infinity), (1, b, false, EQ, yes, NaN), (1, b, false, EQ, no, Infinity)," +
-                " (1, b, false, EQ, no, NaN), (1, b, false, LT, yes, Infinity), (1, b, false, LT, yes, NaN)," +
-                " (1, b, false, LT, no, Infinity), (1, b, false, LT, no, NaN), (1, b, false, GT, yes, Infinity)," +
-                " (1, b, false, GT, yes, NaN), (1, b, false, GT, no, Infinity), (1, b, false, GT, no, NaN)," +
-                " (1, b, true, EQ, yes, Infinity), (1, b, true, EQ, yes, NaN), (1, b, true, EQ, no, Infinity)," +
-                " (1, b, true, EQ, no, NaN), (1, b, true, LT, yes, Infinity), (1, b, true, LT, yes, NaN)," +
-                " (1, b, true, LT, no, Infinity), (1, b, true, LT, no, NaN), (1, b, true, GT, yes, Infinity)," +
-                " (1, b, true, GT, yes, NaN), (1, b, true, GT, no, Infinity), (1, b, true, GT, no, NaN)," +
-                " (1, c, false, EQ, yes, Infinity), (1, c, false, EQ, yes, NaN), (1, c, false, EQ, no, Infinity)," +
-                " (1, c, false, EQ, no, NaN), (1, c, false, LT, yes, Infinity), (1, c, false, LT, yes, NaN)," +
-                " (1, c, false, LT, no, Infinity), (1, c, false, LT, no, NaN), (1, c, false, GT, yes, Infinity)," +
-                " (1, c, false, GT, yes, NaN), (1, c, false, GT, no, Infinity), (1, c, false, GT, no, NaN)," +
-                " (1, c, true, EQ, yes, Infinity), (1, c, true, EQ, yes, NaN), (1, c, true, EQ, no, Infinity)," +
-                " (1, c, true, EQ, no, NaN), (1, c, true, LT, yes, Infinity), (1, c, true, LT, yes, NaN)," +
-                " (1, c, true, LT, no, Infinity), (1, c, true, LT, no, NaN), (1, c, true, GT, yes, Infinity)," +
-                " (1, c, true, GT, yes, NaN), (1, c, true, GT, no, Infinity), (1, c, true, GT, no, NaN)," +
-                " (null, a, false, EQ, yes, Infinity), (null, a, false, EQ, yes, NaN)," +
-                " (null, a, false, EQ, no, Infinity), (null, a, false, EQ, no, NaN)," +
-                " (null, a, false, LT, yes, Infinity), (null, a, false, LT, yes, NaN)," +
-                " (null, a, false, LT, no, Infinity), (null, a, false, LT, no, NaN)," +
-                " (null, a, false, GT, yes, Infinity), (null, a, false, GT, yes, NaN)," +
-                " (null, a, false, GT, no, Infinity), (null, a, false, GT, no, NaN)," +
-                " (null, a, true, EQ, yes, Infinity), (null, a, true, EQ, yes, NaN)," +
-                " (null, a, true, EQ, no, Infinity), (null, a, true, EQ, no, NaN)," +
-                " (null, a, true, LT, yes, Infinity), (null, a, true, LT, yes, NaN)," +
-                " (null, a, true, LT, no, Infinity), (null, a, true, LT, no, NaN)," +
-                " (null, a, true, GT, yes, Infinity), (null, a, true, GT, yes, NaN)," +
-                " (null, a, true, GT, no, Infinity), (null, a, true, GT, no, NaN)," +
-                " (null, b, false, EQ, yes, Infinity), (null, b, false, EQ, yes, NaN)," +
-                " (null, b, false, EQ, no, Infinity), (null, b, false, EQ, no, NaN)," +
-                " (null, b, false, LT, yes, Infinity), (null, b, false, LT, yes, NaN)," +
-                " (null, b, false, LT, no, Infinity), (null, b, false, LT, no, NaN)," +
-                " (null, b, false, GT, yes, Infinity), (null, b, false, GT, yes, NaN)," +
-                " (null, b, false, GT, no, Infinity), (null, b, false, GT, no, NaN)," +
-                " (null, b, true, EQ, yes, Infinity), (null, b, true, EQ, yes, NaN)," +
-                " (null, b, true, EQ, no, Infinity), (null, b, true, EQ, no, NaN)," +
-                " (null, b, true, LT, yes, Infinity), (null, b, true, LT, yes, NaN)," +
-                " (null, b, true, LT, no, Infinity), (null, b, true, LT, no, NaN)," +
-                " (null, b, true, GT, yes, Infinity), (null, b, true, GT, yes, NaN)," +
-                " (null, b, true, GT, no, Infinity), (null, b, true, GT, no, NaN)," +
-                " (null, c, false, EQ, yes, Infinity), (null, c, false, EQ, yes, NaN)," +
-                " (null, c, false, EQ, no, Infinity), (null, c, false, EQ, no, NaN)," +
-                " (null, c, false, LT, yes, Infinity), (null, c, false, LT, yes, NaN)," +
-                " (null, c, false, LT, no, Infinity), (null, c, false, LT, no, NaN)," +
-                " (null, c, false, GT, yes, Infinity), (null, c, false, GT, yes, NaN)," +
-                " (null, c, false, GT, no, Infinity), (null, c, false, GT, no, NaN)," +
-                " (null, c, true, EQ, yes, Infinity), (null, c, true, EQ, yes, NaN)," +
-                " (null, c, true, EQ, no, Infinity), (null, c, true, EQ, no, NaN)," +
-                " (null, c, true, LT, yes, Infinity), (null, c, true, LT, yes, NaN)," +
-                " (null, c, true, LT, no, Infinity), (null, c, true, LT, no, NaN)," +
-                " (null, c, true, GT, yes, Infinity), (null, c, true, GT, yes, NaN)," +
-                " (null, c, true, GT, no, Infinity), (null, c, true, GT, no, NaN)," +
-                " (3, a, false, EQ, yes, Infinity), (3, a, false, EQ, yes, NaN), (3, a, false, EQ, no, Infinity)," +
-                " (3, a, false, EQ, no, NaN), (3, a, false, LT, yes, Infinity), (3, a, false, LT, yes, NaN)," +
-                " (3, a, false, LT, no, Infinity), (3, a, false, LT, no, NaN), (3, a, false, GT, yes, Infinity)," +
-                " (3, a, false, GT, yes, NaN), (3, a, false, GT, no, Infinity), (3, a, false, GT, no, NaN)," +
-                " (3, a, true, EQ, yes, Infinity), (3, a, true, EQ, yes, NaN), (3, a, true, EQ, no, Infinity)," +
-                " (3, a, true, EQ, no, NaN), (3, a, true, LT, yes, Infinity), (3, a, true, LT, yes, NaN)," +
-                " (3, a, true, LT, no, Infinity), (3, a, true, LT, no, NaN), (3, a, true, GT, yes, Infinity)," +
-                " (3, a, true, GT, yes, NaN), (3, a, true, GT, no, Infinity), (3, a, true, GT, no, NaN)," +
-                " (3, b, false, EQ, yes, Infinity), (3, b, false, EQ, yes, NaN), (3, b, false, EQ, no, Infinity)," +
-                " (3, b, false, EQ, no, NaN), (3, b, false, LT, yes, Infinity), (3, b, false, LT, yes, NaN)," +
-                " (3, b, false, LT, no, Infinity), (3, b, false, LT, no, NaN), (3, b, false, GT, yes, Infinity)," +
-                " (3, b, false, GT, yes, NaN), (3, b, false, GT, no, Infinity), (3, b, false, GT, no, NaN)," +
-                " (3, b, true, EQ, yes, Infinity), (3, b, true, EQ, yes, NaN), (3, b, true, EQ, no, Infinity)," +
-                " (3, b, true, EQ, no, NaN), (3, b, true, LT, yes, Infinity), (3, b, true, LT, yes, NaN)," +
-                " (3, b, true, LT, no, Infinity), (3, b, true, LT, no, NaN), (3, b, true, GT, yes, Infinity)," +
-                " (3, b, true, GT, yes, NaN), (3, b, true, GT, no, Infinity), (3, b, true, GT, no, NaN)," +
-                " (3, c, false, EQ, yes, Infinity), (3, c, false, EQ, yes, NaN), (3, c, false, EQ, no, Infinity)," +
-                " (3, c, false, EQ, no, NaN), (3, c, false, LT, yes, Infinity), (3, c, false, LT, yes, NaN)," +
-                " (3, c, false, LT, no, Infinity), (3, c, false, LT, no, NaN), (3, c, false, GT, yes, Infinity)," +
-                " (3, c, false, GT, yes, NaN), (3, c, false, GT, no, Infinity), (3, c, false, GT, no, NaN)," +
-                " (3, c, true, EQ, yes, Infinity), (3, c, true, EQ, yes, NaN), (3, c, true, EQ, no, Infinity)," +
-                " (3, c, true, EQ, no, NaN), (3, c, true, LT, yes, Infinity), (3, c, true, LT, yes, NaN)," +
-                " (3, c, true, LT, no, Infinity), (3, c, true, LT, no, NaN), (3, c, true, GT, yes, Infinity)," +
-                " (3, c, true, GT, yes, NaN), (3, c, true, GT, no, Infinity), (3, c, true, GT, no, NaN)]");
+                "ExhaustiveProvider_sextuplesLex_ii");
         sextuplesLex_helper_limit(
                 EP.naturalBigIntegers(),
                 fromString("abc"),
@@ -2162,13 +1794,7 @@ public strictfp class ExhaustiveProviderTest {
                 EP.orderings(),
                 Arrays.asList("yes", "no"),
                 Arrays.asList(Float.POSITIVE_INFINITY, Float.NaN),
-                "[(0, a, false, EQ, yes, Infinity), (0, a, false, EQ, yes, NaN), (0, a, false, EQ, no, Infinity)," +
-                " (0, a, false, EQ, no, NaN), (0, a, false, LT, yes, Infinity), (0, a, false, LT, yes, NaN)," +
-                " (0, a, false, LT, no, Infinity), (0, a, false, LT, no, NaN), (0, a, false, GT, yes, Infinity)," +
-                " (0, a, false, GT, yes, NaN), (0, a, false, GT, no, Infinity), (0, a, false, GT, no, NaN)," +
-                " (0, a, true, EQ, yes, Infinity), (0, a, true, EQ, yes, NaN), (0, a, true, EQ, no, Infinity)," +
-                " (0, a, true, EQ, no, NaN), (0, a, true, LT, yes, Infinity), (0, a, true, LT, yes, NaN)," +
-                " (0, a, true, LT, no, Infinity), (0, a, true, LT, no, NaN), ...]");
+                "ExhaustiveProvider_sextuplesLex_iii");
         sextuplesLex_helper(
                 EP.naturalBigIntegers(),
                 fromString("abc"),
@@ -2176,7 +1802,7 @@ public strictfp class ExhaustiveProviderTest {
                 EP.orderings(),
                 Arrays.asList("yes", "no"),
                 Collections.emptyList(),
-                "[]"
+                "ExhaustiveProvider_sextuplesLex_iv"
         );
         sextuplesLex_helper(
                 Collections.emptyList(),
@@ -2185,7 +1811,7 @@ public strictfp class ExhaustiveProviderTest {
                 EP.orderings(),
                 Arrays.asList("yes", "no"),
                 Arrays.asList(Float.POSITIVE_INFINITY, Float.NaN),
-                "[]"
+                "ExhaustiveProvider_sextuplesLex_v"
         );
         sextuplesLex_helper(
                 Collections.emptyList(),
@@ -2194,7 +1820,7 @@ public strictfp class ExhaustiveProviderTest {
                 Collections.emptyList(),
                 Collections.emptyList(),
                 Collections.emptyList(),
-                "[]"
+                "ExhaustiveProvider_sextuplesLex_vi"
         );
     }
 
@@ -2208,7 +1834,7 @@ public strictfp class ExhaustiveProviderTest {
             @NotNull Iterable<G> gs,
             @NotNull String output
     ) {
-        aeqit(EP.septuplesLex(as, toList(bs), toList(cs), toList(ds), toList(es), toList(fs), toList(gs)), output);
+        aeqitLog(EP.septuplesLex(as, toList(bs), toList(cs), toList(ds), toList(es), toList(fs), toList(gs)), output);
     }
 
     private static <A, B, C, D, E, F, G> void septuplesLex_helper_limit(
@@ -2239,222 +1865,7 @@ public strictfp class ExhaustiveProviderTest {
                 Arrays.asList("yes", "no"),
                 Arrays.asList(Float.POSITIVE_INFINITY, Float.NaN),
                 Arrays.asList(x, y),
-                "[(1, a, false, EQ, yes, Infinity, [1, 0]), (1, a, false, EQ, yes, Infinity, [0, 1])," +
-                " (1, a, false, EQ, yes, NaN, [1, 0]), (1, a, false, EQ, yes, NaN, [0, 1])," +
-                " (1, a, false, EQ, no, Infinity, [1, 0]), (1, a, false, EQ, no, Infinity, [0, 1])," +
-                " (1, a, false, EQ, no, NaN, [1, 0]), (1, a, false, EQ, no, NaN, [0, 1])," +
-                " (1, a, false, LT, yes, Infinity, [1, 0]), (1, a, false, LT, yes, Infinity, [0, 1])," +
-                " (1, a, false, LT, yes, NaN, [1, 0]), (1, a, false, LT, yes, NaN, [0, 1])," +
-                " (1, a, false, LT, no, Infinity, [1, 0]), (1, a, false, LT, no, Infinity, [0, 1])," +
-                " (1, a, false, LT, no, NaN, [1, 0]), (1, a, false, LT, no, NaN, [0, 1])," +
-                " (1, a, false, GT, yes, Infinity, [1, 0]), (1, a, false, GT, yes, Infinity, [0, 1])," +
-                " (1, a, false, GT, yes, NaN, [1, 0]), (1, a, false, GT, yes, NaN, [0, 1])," +
-                " (1, a, false, GT, no, Infinity, [1, 0]), (1, a, false, GT, no, Infinity, [0, 1])," +
-                " (1, a, false, GT, no, NaN, [1, 0]), (1, a, false, GT, no, NaN, [0, 1])," +
-                " (1, a, true, EQ, yes, Infinity, [1, 0]), (1, a, true, EQ, yes, Infinity, [0, 1])," +
-                " (1, a, true, EQ, yes, NaN, [1, 0]), (1, a, true, EQ, yes, NaN, [0, 1])," +
-                " (1, a, true, EQ, no, Infinity, [1, 0]), (1, a, true, EQ, no, Infinity, [0, 1])," +
-                " (1, a, true, EQ, no, NaN, [1, 0]), (1, a, true, EQ, no, NaN, [0, 1])," +
-                " (1, a, true, LT, yes, Infinity, [1, 0]), (1, a, true, LT, yes, Infinity, [0, 1])," +
-                " (1, a, true, LT, yes, NaN, [1, 0]), (1, a, true, LT, yes, NaN, [0, 1])," +
-                " (1, a, true, LT, no, Infinity, [1, 0]), (1, a, true, LT, no, Infinity, [0, 1])," +
-                " (1, a, true, LT, no, NaN, [1, 0]), (1, a, true, LT, no, NaN, [0, 1])," +
-                " (1, a, true, GT, yes, Infinity, [1, 0]), (1, a, true, GT, yes, Infinity, [0, 1])," +
-                " (1, a, true, GT, yes, NaN, [1, 0]), (1, a, true, GT, yes, NaN, [0, 1])," +
-                " (1, a, true, GT, no, Infinity, [1, 0]), (1, a, true, GT, no, Infinity, [0, 1])," +
-                " (1, a, true, GT, no, NaN, [1, 0]), (1, a, true, GT, no, NaN, [0, 1])," +
-                " (1, b, false, EQ, yes, Infinity, [1, 0]), (1, b, false, EQ, yes, Infinity, [0, 1])," +
-                " (1, b, false, EQ, yes, NaN, [1, 0]), (1, b, false, EQ, yes, NaN, [0, 1])," +
-                " (1, b, false, EQ, no, Infinity, [1, 0]), (1, b, false, EQ, no, Infinity, [0, 1])," +
-                " (1, b, false, EQ, no, NaN, [1, 0]), (1, b, false, EQ, no, NaN, [0, 1])," +
-                " (1, b, false, LT, yes, Infinity, [1, 0]), (1, b, false, LT, yes, Infinity, [0, 1])," +
-                " (1, b, false, LT, yes, NaN, [1, 0]), (1, b, false, LT, yes, NaN, [0, 1])," +
-                " (1, b, false, LT, no, Infinity, [1, 0]), (1, b, false, LT, no, Infinity, [0, 1])," +
-                " (1, b, false, LT, no, NaN, [1, 0]), (1, b, false, LT, no, NaN, [0, 1])," +
-                " (1, b, false, GT, yes, Infinity, [1, 0]), (1, b, false, GT, yes, Infinity, [0, 1])," +
-                " (1, b, false, GT, yes, NaN, [1, 0]), (1, b, false, GT, yes, NaN, [0, 1])," +
-                " (1, b, false, GT, no, Infinity, [1, 0]), (1, b, false, GT, no, Infinity, [0, 1])," +
-                " (1, b, false, GT, no, NaN, [1, 0]), (1, b, false, GT, no, NaN, [0, 1])," +
-                " (1, b, true, EQ, yes, Infinity, [1, 0]), (1, b, true, EQ, yes, Infinity, [0, 1])," +
-                " (1, b, true, EQ, yes, NaN, [1, 0]), (1, b, true, EQ, yes, NaN, [0, 1])," +
-                " (1, b, true, EQ, no, Infinity, [1, 0]), (1, b, true, EQ, no, Infinity, [0, 1])," +
-                " (1, b, true, EQ, no, NaN, [1, 0]), (1, b, true, EQ, no, NaN, [0, 1])," +
-                " (1, b, true, LT, yes, Infinity, [1, 0]), (1, b, true, LT, yes, Infinity, [0, 1])," +
-                " (1, b, true, LT, yes, NaN, [1, 0]), (1, b, true, LT, yes, NaN, [0, 1])," +
-                " (1, b, true, LT, no, Infinity, [1, 0]), (1, b, true, LT, no, Infinity, [0, 1])," +
-                " (1, b, true, LT, no, NaN, [1, 0]), (1, b, true, LT, no, NaN, [0, 1])," +
-                " (1, b, true, GT, yes, Infinity, [1, 0]), (1, b, true, GT, yes, Infinity, [0, 1])," +
-                " (1, b, true, GT, yes, NaN, [1, 0]), (1, b, true, GT, yes, NaN, [0, 1])," +
-                " (1, b, true, GT, no, Infinity, [1, 0]), (1, b, true, GT, no, Infinity, [0, 1])," +
-                " (1, b, true, GT, no, NaN, [1, 0]), (1, b, true, GT, no, NaN, [0, 1])," +
-                " (1, c, false, EQ, yes, Infinity, [1, 0]), (1, c, false, EQ, yes, Infinity, [0, 1])," +
-                " (1, c, false, EQ, yes, NaN, [1, 0]), (1, c, false, EQ, yes, NaN, [0, 1])," +
-                " (1, c, false, EQ, no, Infinity, [1, 0]), (1, c, false, EQ, no, Infinity, [0, 1])," +
-                " (1, c, false, EQ, no, NaN, [1, 0]), (1, c, false, EQ, no, NaN, [0, 1])," +
-                " (1, c, false, LT, yes, Infinity, [1, 0]), (1, c, false, LT, yes, Infinity, [0, 1])," +
-                " (1, c, false, LT, yes, NaN, [1, 0]), (1, c, false, LT, yes, NaN, [0, 1])," +
-                " (1, c, false, LT, no, Infinity, [1, 0]), (1, c, false, LT, no, Infinity, [0, 1])," +
-                " (1, c, false, LT, no, NaN, [1, 0]), (1, c, false, LT, no, NaN, [0, 1])," +
-                " (1, c, false, GT, yes, Infinity, [1, 0]), (1, c, false, GT, yes, Infinity, [0, 1])," +
-                " (1, c, false, GT, yes, NaN, [1, 0]), (1, c, false, GT, yes, NaN, [0, 1])," +
-                " (1, c, false, GT, no, Infinity, [1, 0]), (1, c, false, GT, no, Infinity, [0, 1])," +
-                " (1, c, false, GT, no, NaN, [1, 0]), (1, c, false, GT, no, NaN, [0, 1])," +
-                " (1, c, true, EQ, yes, Infinity, [1, 0]), (1, c, true, EQ, yes, Infinity, [0, 1])," +
-                " (1, c, true, EQ, yes, NaN, [1, 0]), (1, c, true, EQ, yes, NaN, [0, 1])," +
-                " (1, c, true, EQ, no, Infinity, [1, 0]), (1, c, true, EQ, no, Infinity, [0, 1])," +
-                " (1, c, true, EQ, no, NaN, [1, 0]), (1, c, true, EQ, no, NaN, [0, 1])," +
-                " (1, c, true, LT, yes, Infinity, [1, 0]), (1, c, true, LT, yes, Infinity, [0, 1])," +
-                " (1, c, true, LT, yes, NaN, [1, 0]), (1, c, true, LT, yes, NaN, [0, 1])," +
-                " (1, c, true, LT, no, Infinity, [1, 0]), (1, c, true, LT, no, Infinity, [0, 1])," +
-                " (1, c, true, LT, no, NaN, [1, 0]), (1, c, true, LT, no, NaN, [0, 1])," +
-                " (1, c, true, GT, yes, Infinity, [1, 0]), (1, c, true, GT, yes, Infinity, [0, 1])," +
-                " (1, c, true, GT, yes, NaN, [1, 0]), (1, c, true, GT, yes, NaN, [0, 1])," +
-                " (1, c, true, GT, no, Infinity, [1, 0]), (1, c, true, GT, no, Infinity, [0, 1])," +
-                " (1, c, true, GT, no, NaN, [1, 0]), (1, c, true, GT, no, NaN, [0, 1])," +
-                " (2, a, false, EQ, yes, Infinity, [1, 0]), (2, a, false, EQ, yes, Infinity, [0, 1])," +
-                " (2, a, false, EQ, yes, NaN, [1, 0]), (2, a, false, EQ, yes, NaN, [0, 1])," +
-                " (2, a, false, EQ, no, Infinity, [1, 0]), (2, a, false, EQ, no, Infinity, [0, 1])," +
-                " (2, a, false, EQ, no, NaN, [1, 0]), (2, a, false, EQ, no, NaN, [0, 1])," +
-                " (2, a, false, LT, yes, Infinity, [1, 0]), (2, a, false, LT, yes, Infinity, [0, 1])," +
-                " (2, a, false, LT, yes, NaN, [1, 0]), (2, a, false, LT, yes, NaN, [0, 1])," +
-                " (2, a, false, LT, no, Infinity, [1, 0]), (2, a, false, LT, no, Infinity, [0, 1])," +
-                " (2, a, false, LT, no, NaN, [1, 0]), (2, a, false, LT, no, NaN, [0, 1])," +
-                " (2, a, false, GT, yes, Infinity, [1, 0]), (2, a, false, GT, yes, Infinity, [0, 1])," +
-                " (2, a, false, GT, yes, NaN, [1, 0]), (2, a, false, GT, yes, NaN, [0, 1])," +
-                " (2, a, false, GT, no, Infinity, [1, 0]), (2, a, false, GT, no, Infinity, [0, 1])," +
-                " (2, a, false, GT, no, NaN, [1, 0]), (2, a, false, GT, no, NaN, [0, 1])," +
-                " (2, a, true, EQ, yes, Infinity, [1, 0]), (2, a, true, EQ, yes, Infinity, [0, 1])," +
-                " (2, a, true, EQ, yes, NaN, [1, 0]), (2, a, true, EQ, yes, NaN, [0, 1])," +
-                " (2, a, true, EQ, no, Infinity, [1, 0]), (2, a, true, EQ, no, Infinity, [0, 1])," +
-                " (2, a, true, EQ, no, NaN, [1, 0]), (2, a, true, EQ, no, NaN, [0, 1])," +
-                " (2, a, true, LT, yes, Infinity, [1, 0]), (2, a, true, LT, yes, Infinity, [0, 1])," +
-                " (2, a, true, LT, yes, NaN, [1, 0]), (2, a, true, LT, yes, NaN, [0, 1])," +
-                " (2, a, true, LT, no, Infinity, [1, 0]), (2, a, true, LT, no, Infinity, [0, 1])," +
-                " (2, a, true, LT, no, NaN, [1, 0]), (2, a, true, LT, no, NaN, [0, 1])," +
-                " (2, a, true, GT, yes, Infinity, [1, 0]), (2, a, true, GT, yes, Infinity, [0, 1])," +
-                " (2, a, true, GT, yes, NaN, [1, 0]), (2, a, true, GT, yes, NaN, [0, 1])," +
-                " (2, a, true, GT, no, Infinity, [1, 0]), (2, a, true, GT, no, Infinity, [0, 1])," +
-                " (2, a, true, GT, no, NaN, [1, 0]), (2, a, true, GT, no, NaN, [0, 1])," +
-                " (2, b, false, EQ, yes, Infinity, [1, 0]), (2, b, false, EQ, yes, Infinity, [0, 1])," +
-                " (2, b, false, EQ, yes, NaN, [1, 0]), (2, b, false, EQ, yes, NaN, [0, 1])," +
-                " (2, b, false, EQ, no, Infinity, [1, 0]), (2, b, false, EQ, no, Infinity, [0, 1])," +
-                " (2, b, false, EQ, no, NaN, [1, 0]), (2, b, false, EQ, no, NaN, [0, 1])," +
-                " (2, b, false, LT, yes, Infinity, [1, 0]), (2, b, false, LT, yes, Infinity, [0, 1])," +
-                " (2, b, false, LT, yes, NaN, [1, 0]), (2, b, false, LT, yes, NaN, [0, 1])," +
-                " (2, b, false, LT, no, Infinity, [1, 0]), (2, b, false, LT, no, Infinity, [0, 1])," +
-                " (2, b, false, LT, no, NaN, [1, 0]), (2, b, false, LT, no, NaN, [0, 1])," +
-                " (2, b, false, GT, yes, Infinity, [1, 0]), (2, b, false, GT, yes, Infinity, [0, 1])," +
-                " (2, b, false, GT, yes, NaN, [1, 0]), (2, b, false, GT, yes, NaN, [0, 1])," +
-                " (2, b, false, GT, no, Infinity, [1, 0]), (2, b, false, GT, no, Infinity, [0, 1])," +
-                " (2, b, false, GT, no, NaN, [1, 0]), (2, b, false, GT, no, NaN, [0, 1])," +
-                " (2, b, true, EQ, yes, Infinity, [1, 0]), (2, b, true, EQ, yes, Infinity, [0, 1])," +
-                " (2, b, true, EQ, yes, NaN, [1, 0]), (2, b, true, EQ, yes, NaN, [0, 1])," +
-                " (2, b, true, EQ, no, Infinity, [1, 0]), (2, b, true, EQ, no, Infinity, [0, 1])," +
-                " (2, b, true, EQ, no, NaN, [1, 0]), (2, b, true, EQ, no, NaN, [0, 1])," +
-                " (2, b, true, LT, yes, Infinity, [1, 0]), (2, b, true, LT, yes, Infinity, [0, 1])," +
-                " (2, b, true, LT, yes, NaN, [1, 0]), (2, b, true, LT, yes, NaN, [0, 1])," +
-                " (2, b, true, LT, no, Infinity, [1, 0]), (2, b, true, LT, no, Infinity, [0, 1])," +
-                " (2, b, true, LT, no, NaN, [1, 0]), (2, b, true, LT, no, NaN, [0, 1])," +
-                " (2, b, true, GT, yes, Infinity, [1, 0]), (2, b, true, GT, yes, Infinity, [0, 1])," +
-                " (2, b, true, GT, yes, NaN, [1, 0]), (2, b, true, GT, yes, NaN, [0, 1])," +
-                " (2, b, true, GT, no, Infinity, [1, 0]), (2, b, true, GT, no, Infinity, [0, 1])," +
-                " (2, b, true, GT, no, NaN, [1, 0]), (2, b, true, GT, no, NaN, [0, 1])," +
-                " (2, c, false, EQ, yes, Infinity, [1, 0]), (2, c, false, EQ, yes, Infinity, [0, 1])," +
-                " (2, c, false, EQ, yes, NaN, [1, 0]), (2, c, false, EQ, yes, NaN, [0, 1])," +
-                " (2, c, false, EQ, no, Infinity, [1, 0]), (2, c, false, EQ, no, Infinity, [0, 1])," +
-                " (2, c, false, EQ, no, NaN, [1, 0]), (2, c, false, EQ, no, NaN, [0, 1])," +
-                " (2, c, false, LT, yes, Infinity, [1, 0]), (2, c, false, LT, yes, Infinity, [0, 1])," +
-                " (2, c, false, LT, yes, NaN, [1, 0]), (2, c, false, LT, yes, NaN, [0, 1])," +
-                " (2, c, false, LT, no, Infinity, [1, 0]), (2, c, false, LT, no, Infinity, [0, 1])," +
-                " (2, c, false, LT, no, NaN, [1, 0]), (2, c, false, LT, no, NaN, [0, 1])," +
-                " (2, c, false, GT, yes, Infinity, [1, 0]), (2, c, false, GT, yes, Infinity, [0, 1])," +
-                " (2, c, false, GT, yes, NaN, [1, 0]), (2, c, false, GT, yes, NaN, [0, 1])," +
-                " (2, c, false, GT, no, Infinity, [1, 0]), (2, c, false, GT, no, Infinity, [0, 1])," +
-                " (2, c, false, GT, no, NaN, [1, 0]), (2, c, false, GT, no, NaN, [0, 1])," +
-                " (2, c, true, EQ, yes, Infinity, [1, 0]), (2, c, true, EQ, yes, Infinity, [0, 1])," +
-                " (2, c, true, EQ, yes, NaN, [1, 0]), (2, c, true, EQ, yes, NaN, [0, 1])," +
-                " (2, c, true, EQ, no, Infinity, [1, 0]), (2, c, true, EQ, no, Infinity, [0, 1])," +
-                " (2, c, true, EQ, no, NaN, [1, 0]), (2, c, true, EQ, no, NaN, [0, 1])," +
-                " (2, c, true, LT, yes, Infinity, [1, 0]), (2, c, true, LT, yes, Infinity, [0, 1])," +
-                " (2, c, true, LT, yes, NaN, [1, 0]), (2, c, true, LT, yes, NaN, [0, 1])," +
-                " (2, c, true, LT, no, Infinity, [1, 0]), (2, c, true, LT, no, Infinity, [0, 1])," +
-                " (2, c, true, LT, no, NaN, [1, 0]), (2, c, true, LT, no, NaN, [0, 1])," +
-                " (2, c, true, GT, yes, Infinity, [1, 0]), (2, c, true, GT, yes, Infinity, [0, 1])," +
-                " (2, c, true, GT, yes, NaN, [1, 0]), (2, c, true, GT, yes, NaN, [0, 1])," +
-                " (2, c, true, GT, no, Infinity, [1, 0]), (2, c, true, GT, no, Infinity, [0, 1])," +
-                " (2, c, true, GT, no, NaN, [1, 0]), (2, c, true, GT, no, NaN, [0, 1])," +
-                " (3, a, false, EQ, yes, Infinity, [1, 0]), (3, a, false, EQ, yes, Infinity, [0, 1])," +
-                " (3, a, false, EQ, yes, NaN, [1, 0]), (3, a, false, EQ, yes, NaN, [0, 1])," +
-                " (3, a, false, EQ, no, Infinity, [1, 0]), (3, a, false, EQ, no, Infinity, [0, 1])," +
-                " (3, a, false, EQ, no, NaN, [1, 0]), (3, a, false, EQ, no, NaN, [0, 1])," +
-                " (3, a, false, LT, yes, Infinity, [1, 0]), (3, a, false, LT, yes, Infinity, [0, 1])," +
-                " (3, a, false, LT, yes, NaN, [1, 0]), (3, a, false, LT, yes, NaN, [0, 1])," +
-                " (3, a, false, LT, no, Infinity, [1, 0]), (3, a, false, LT, no, Infinity, [0, 1])," +
-                " (3, a, false, LT, no, NaN, [1, 0]), (3, a, false, LT, no, NaN, [0, 1])," +
-                " (3, a, false, GT, yes, Infinity, [1, 0]), (3, a, false, GT, yes, Infinity, [0, 1])," +
-                " (3, a, false, GT, yes, NaN, [1, 0]), (3, a, false, GT, yes, NaN, [0, 1])," +
-                " (3, a, false, GT, no, Infinity, [1, 0]), (3, a, false, GT, no, Infinity, [0, 1])," +
-                " (3, a, false, GT, no, NaN, [1, 0]), (3, a, false, GT, no, NaN, [0, 1])," +
-                " (3, a, true, EQ, yes, Infinity, [1, 0]), (3, a, true, EQ, yes, Infinity, [0, 1])," +
-                " (3, a, true, EQ, yes, NaN, [1, 0]), (3, a, true, EQ, yes, NaN, [0, 1])," +
-                " (3, a, true, EQ, no, Infinity, [1, 0]), (3, a, true, EQ, no, Infinity, [0, 1])," +
-                " (3, a, true, EQ, no, NaN, [1, 0]), (3, a, true, EQ, no, NaN, [0, 1])," +
-                " (3, a, true, LT, yes, Infinity, [1, 0]), (3, a, true, LT, yes, Infinity, [0, 1])," +
-                " (3, a, true, LT, yes, NaN, [1, 0]), (3, a, true, LT, yes, NaN, [0, 1])," +
-                " (3, a, true, LT, no, Infinity, [1, 0]), (3, a, true, LT, no, Infinity, [0, 1])," +
-                " (3, a, true, LT, no, NaN, [1, 0]), (3, a, true, LT, no, NaN, [0, 1])," +
-                " (3, a, true, GT, yes, Infinity, [1, 0]), (3, a, true, GT, yes, Infinity, [0, 1])," +
-                " (3, a, true, GT, yes, NaN, [1, 0]), (3, a, true, GT, yes, NaN, [0, 1])," +
-                " (3, a, true, GT, no, Infinity, [1, 0]), (3, a, true, GT, no, Infinity, [0, 1])," +
-                " (3, a, true, GT, no, NaN, [1, 0]), (3, a, true, GT, no, NaN, [0, 1])," +
-                " (3, b, false, EQ, yes, Infinity, [1, 0]), (3, b, false, EQ, yes, Infinity, [0, 1])," +
-                " (3, b, false, EQ, yes, NaN, [1, 0]), (3, b, false, EQ, yes, NaN, [0, 1])," +
-                " (3, b, false, EQ, no, Infinity, [1, 0]), (3, b, false, EQ, no, Infinity, [0, 1])," +
-                " (3, b, false, EQ, no, NaN, [1, 0]), (3, b, false, EQ, no, NaN, [0, 1])," +
-                " (3, b, false, LT, yes, Infinity, [1, 0]), (3, b, false, LT, yes, Infinity, [0, 1])," +
-                " (3, b, false, LT, yes, NaN, [1, 0]), (3, b, false, LT, yes, NaN, [0, 1])," +
-                " (3, b, false, LT, no, Infinity, [1, 0]), (3, b, false, LT, no, Infinity, [0, 1])," +
-                " (3, b, false, LT, no, NaN, [1, 0]), (3, b, false, LT, no, NaN, [0, 1])," +
-                " (3, b, false, GT, yes, Infinity, [1, 0]), (3, b, false, GT, yes, Infinity, [0, 1])," +
-                " (3, b, false, GT, yes, NaN, [1, 0]), (3, b, false, GT, yes, NaN, [0, 1])," +
-                " (3, b, false, GT, no, Infinity, [1, 0]), (3, b, false, GT, no, Infinity, [0, 1])," +
-                " (3, b, false, GT, no, NaN, [1, 0]), (3, b, false, GT, no, NaN, [0, 1])," +
-                " (3, b, true, EQ, yes, Infinity, [1, 0]), (3, b, true, EQ, yes, Infinity, [0, 1])," +
-                " (3, b, true, EQ, yes, NaN, [1, 0]), (3, b, true, EQ, yes, NaN, [0, 1])," +
-                " (3, b, true, EQ, no, Infinity, [1, 0]), (3, b, true, EQ, no, Infinity, [0, 1])," +
-                " (3, b, true, EQ, no, NaN, [1, 0]), (3, b, true, EQ, no, NaN, [0, 1])," +
-                " (3, b, true, LT, yes, Infinity, [1, 0]), (3, b, true, LT, yes, Infinity, [0, 1])," +
-                " (3, b, true, LT, yes, NaN, [1, 0]), (3, b, true, LT, yes, NaN, [0, 1])," +
-                " (3, b, true, LT, no, Infinity, [1, 0]), (3, b, true, LT, no, Infinity, [0, 1])," +
-                " (3, b, true, LT, no, NaN, [1, 0]), (3, b, true, LT, no, NaN, [0, 1])," +
-                " (3, b, true, GT, yes, Infinity, [1, 0]), (3, b, true, GT, yes, Infinity, [0, 1])," +
-                " (3, b, true, GT, yes, NaN, [1, 0]), (3, b, true, GT, yes, NaN, [0, 1])," +
-                " (3, b, true, GT, no, Infinity, [1, 0]), (3, b, true, GT, no, Infinity, [0, 1])," +
-                " (3, b, true, GT, no, NaN, [1, 0]), (3, b, true, GT, no, NaN, [0, 1])," +
-                " (3, c, false, EQ, yes, Infinity, [1, 0]), (3, c, false, EQ, yes, Infinity, [0, 1])," +
-                " (3, c, false, EQ, yes, NaN, [1, 0]), (3, c, false, EQ, yes, NaN, [0, 1])," +
-                " (3, c, false, EQ, no, Infinity, [1, 0]), (3, c, false, EQ, no, Infinity, [0, 1])," +
-                " (3, c, false, EQ, no, NaN, [1, 0]), (3, c, false, EQ, no, NaN, [0, 1])," +
-                " (3, c, false, LT, yes, Infinity, [1, 0]), (3, c, false, LT, yes, Infinity, [0, 1])," +
-                " (3, c, false, LT, yes, NaN, [1, 0]), (3, c, false, LT, yes, NaN, [0, 1])," +
-                " (3, c, false, LT, no, Infinity, [1, 0]), (3, c, false, LT, no, Infinity, [0, 1])," +
-                " (3, c, false, LT, no, NaN, [1, 0]), (3, c, false, LT, no, NaN, [0, 1])," +
-                " (3, c, false, GT, yes, Infinity, [1, 0]), (3, c, false, GT, yes, Infinity, [0, 1])," +
-                " (3, c, false, GT, yes, NaN, [1, 0]), (3, c, false, GT, yes, NaN, [0, 1])," +
-                " (3, c, false, GT, no, Infinity, [1, 0]), (3, c, false, GT, no, Infinity, [0, 1])," +
-                " (3, c, false, GT, no, NaN, [1, 0]), (3, c, false, GT, no, NaN, [0, 1])," +
-                " (3, c, true, EQ, yes, Infinity, [1, 0]), (3, c, true, EQ, yes, Infinity, [0, 1])," +
-                " (3, c, true, EQ, yes, NaN, [1, 0]), (3, c, true, EQ, yes, NaN, [0, 1])," +
-                " (3, c, true, EQ, no, Infinity, [1, 0]), (3, c, true, EQ, no, Infinity, [0, 1])," +
-                " (3, c, true, EQ, no, NaN, [1, 0]), (3, c, true, EQ, no, NaN, [0, 1])," +
-                " (3, c, true, LT, yes, Infinity, [1, 0]), (3, c, true, LT, yes, Infinity, [0, 1])," +
-                " (3, c, true, LT, yes, NaN, [1, 0]), (3, c, true, LT, yes, NaN, [0, 1])," +
-                " (3, c, true, LT, no, Infinity, [1, 0]), (3, c, true, LT, no, Infinity, [0, 1])," +
-                " (3, c, true, LT, no, NaN, [1, 0]), (3, c, true, LT, no, NaN, [0, 1])," +
-                " (3, c, true, GT, yes, Infinity, [1, 0]), (3, c, true, GT, yes, Infinity, [0, 1])," +
-                " (3, c, true, GT, yes, NaN, [1, 0]), (3, c, true, GT, yes, NaN, [0, 1])," +
-                " (3, c, true, GT, no, Infinity, [1, 0]), (3, c, true, GT, no, Infinity, [0, 1])," +
-                " (3, c, true, GT, no, NaN, [1, 0]), (3, c, true, GT, no, NaN, [0, 1])]");
+                "ExhaustiveProvider_septuplesLex_i");
         septuplesLex_helper(
                 Arrays.asList(1, null, 3),
                 fromString("abc"),
@@ -2463,222 +1874,7 @@ public strictfp class ExhaustiveProviderTest {
                 Arrays.asList("yes", "no"),
                 Arrays.asList(Float.POSITIVE_INFINITY, Float.NaN),
                 Arrays.asList(x, y),
-                "[(1, a, false, EQ, yes, Infinity, [1, 0]), (1, a, false, EQ, yes, Infinity, [0, 1])," +
-                " (1, a, false, EQ, yes, NaN, [1, 0]), (1, a, false, EQ, yes, NaN, [0, 1])," +
-                " (1, a, false, EQ, no, Infinity, [1, 0]), (1, a, false, EQ, no, Infinity, [0, 1])," +
-                " (1, a, false, EQ, no, NaN, [1, 0]), (1, a, false, EQ, no, NaN, [0, 1])," +
-                " (1, a, false, LT, yes, Infinity, [1, 0]), (1, a, false, LT, yes, Infinity, [0, 1])," +
-                " (1, a, false, LT, yes, NaN, [1, 0]), (1, a, false, LT, yes, NaN, [0, 1])," +
-                " (1, a, false, LT, no, Infinity, [1, 0]), (1, a, false, LT, no, Infinity, [0, 1])," +
-                " (1, a, false, LT, no, NaN, [1, 0]), (1, a, false, LT, no, NaN, [0, 1])," +
-                " (1, a, false, GT, yes, Infinity, [1, 0]), (1, a, false, GT, yes, Infinity, [0, 1])," +
-                " (1, a, false, GT, yes, NaN, [1, 0]), (1, a, false, GT, yes, NaN, [0, 1])," +
-                " (1, a, false, GT, no, Infinity, [1, 0]), (1, a, false, GT, no, Infinity, [0, 1])," +
-                " (1, a, false, GT, no, NaN, [1, 0]), (1, a, false, GT, no, NaN, [0, 1])," +
-                " (1, a, true, EQ, yes, Infinity, [1, 0]), (1, a, true, EQ, yes, Infinity, [0, 1])," +
-                " (1, a, true, EQ, yes, NaN, [1, 0]), (1, a, true, EQ, yes, NaN, [0, 1])," +
-                " (1, a, true, EQ, no, Infinity, [1, 0]), (1, a, true, EQ, no, Infinity, [0, 1])," +
-                " (1, a, true, EQ, no, NaN, [1, 0]), (1, a, true, EQ, no, NaN, [0, 1])," +
-                " (1, a, true, LT, yes, Infinity, [1, 0]), (1, a, true, LT, yes, Infinity, [0, 1])," +
-                " (1, a, true, LT, yes, NaN, [1, 0]), (1, a, true, LT, yes, NaN, [0, 1])," +
-                " (1, a, true, LT, no, Infinity, [1, 0]), (1, a, true, LT, no, Infinity, [0, 1])," +
-                " (1, a, true, LT, no, NaN, [1, 0]), (1, a, true, LT, no, NaN, [0, 1])," +
-                " (1, a, true, GT, yes, Infinity, [1, 0]), (1, a, true, GT, yes, Infinity, [0, 1])," +
-                " (1, a, true, GT, yes, NaN, [1, 0]), (1, a, true, GT, yes, NaN, [0, 1])," +
-                " (1, a, true, GT, no, Infinity, [1, 0]), (1, a, true, GT, no, Infinity, [0, 1])," +
-                " (1, a, true, GT, no, NaN, [1, 0]), (1, a, true, GT, no, NaN, [0, 1])," +
-                " (1, b, false, EQ, yes, Infinity, [1, 0]), (1, b, false, EQ, yes, Infinity, [0, 1])," +
-                " (1, b, false, EQ, yes, NaN, [1, 0]), (1, b, false, EQ, yes, NaN, [0, 1])," +
-                " (1, b, false, EQ, no, Infinity, [1, 0]), (1, b, false, EQ, no, Infinity, [0, 1])," +
-                " (1, b, false, EQ, no, NaN, [1, 0]), (1, b, false, EQ, no, NaN, [0, 1])," +
-                " (1, b, false, LT, yes, Infinity, [1, 0]), (1, b, false, LT, yes, Infinity, [0, 1])," +
-                " (1, b, false, LT, yes, NaN, [1, 0]), (1, b, false, LT, yes, NaN, [0, 1])," +
-                " (1, b, false, LT, no, Infinity, [1, 0]), (1, b, false, LT, no, Infinity, [0, 1])," +
-                " (1, b, false, LT, no, NaN, [1, 0]), (1, b, false, LT, no, NaN, [0, 1])," +
-                " (1, b, false, GT, yes, Infinity, [1, 0]), (1, b, false, GT, yes, Infinity, [0, 1])," +
-                " (1, b, false, GT, yes, NaN, [1, 0]), (1, b, false, GT, yes, NaN, [0, 1])," +
-                " (1, b, false, GT, no, Infinity, [1, 0]), (1, b, false, GT, no, Infinity, [0, 1])," +
-                " (1, b, false, GT, no, NaN, [1, 0]), (1, b, false, GT, no, NaN, [0, 1])," +
-                " (1, b, true, EQ, yes, Infinity, [1, 0]), (1, b, true, EQ, yes, Infinity, [0, 1])," +
-                " (1, b, true, EQ, yes, NaN, [1, 0]), (1, b, true, EQ, yes, NaN, [0, 1])," +
-                " (1, b, true, EQ, no, Infinity, [1, 0]), (1, b, true, EQ, no, Infinity, [0, 1])," +
-                " (1, b, true, EQ, no, NaN, [1, 0]), (1, b, true, EQ, no, NaN, [0, 1])," +
-                " (1, b, true, LT, yes, Infinity, [1, 0]), (1, b, true, LT, yes, Infinity, [0, 1])," +
-                " (1, b, true, LT, yes, NaN, [1, 0]), (1, b, true, LT, yes, NaN, [0, 1])," +
-                " (1, b, true, LT, no, Infinity, [1, 0]), (1, b, true, LT, no, Infinity, [0, 1])," +
-                " (1, b, true, LT, no, NaN, [1, 0]), (1, b, true, LT, no, NaN, [0, 1])," +
-                " (1, b, true, GT, yes, Infinity, [1, 0]), (1, b, true, GT, yes, Infinity, [0, 1])," +
-                " (1, b, true, GT, yes, NaN, [1, 0]), (1, b, true, GT, yes, NaN, [0, 1])," +
-                " (1, b, true, GT, no, Infinity, [1, 0]), (1, b, true, GT, no, Infinity, [0, 1])," +
-                " (1, b, true, GT, no, NaN, [1, 0]), (1, b, true, GT, no, NaN, [0, 1])," +
-                " (1, c, false, EQ, yes, Infinity, [1, 0]), (1, c, false, EQ, yes, Infinity, [0, 1])," +
-                " (1, c, false, EQ, yes, NaN, [1, 0]), (1, c, false, EQ, yes, NaN, [0, 1])," +
-                " (1, c, false, EQ, no, Infinity, [1, 0]), (1, c, false, EQ, no, Infinity, [0, 1])," +
-                " (1, c, false, EQ, no, NaN, [1, 0]), (1, c, false, EQ, no, NaN, [0, 1])," +
-                " (1, c, false, LT, yes, Infinity, [1, 0]), (1, c, false, LT, yes, Infinity, [0, 1])," +
-                " (1, c, false, LT, yes, NaN, [1, 0]), (1, c, false, LT, yes, NaN, [0, 1])," +
-                " (1, c, false, LT, no, Infinity, [1, 0]), (1, c, false, LT, no, Infinity, [0, 1])," +
-                " (1, c, false, LT, no, NaN, [1, 0]), (1, c, false, LT, no, NaN, [0, 1])," +
-                " (1, c, false, GT, yes, Infinity, [1, 0]), (1, c, false, GT, yes, Infinity, [0, 1])," +
-                " (1, c, false, GT, yes, NaN, [1, 0]), (1, c, false, GT, yes, NaN, [0, 1])," +
-                " (1, c, false, GT, no, Infinity, [1, 0]), (1, c, false, GT, no, Infinity, [0, 1])," +
-                " (1, c, false, GT, no, NaN, [1, 0]), (1, c, false, GT, no, NaN, [0, 1])," +
-                " (1, c, true, EQ, yes, Infinity, [1, 0]), (1, c, true, EQ, yes, Infinity, [0, 1])," +
-                " (1, c, true, EQ, yes, NaN, [1, 0]), (1, c, true, EQ, yes, NaN, [0, 1])," +
-                " (1, c, true, EQ, no, Infinity, [1, 0]), (1, c, true, EQ, no, Infinity, [0, 1])," +
-                " (1, c, true, EQ, no, NaN, [1, 0]), (1, c, true, EQ, no, NaN, [0, 1])," +
-                " (1, c, true, LT, yes, Infinity, [1, 0]), (1, c, true, LT, yes, Infinity, [0, 1])," +
-                " (1, c, true, LT, yes, NaN, [1, 0]), (1, c, true, LT, yes, NaN, [0, 1])," +
-                " (1, c, true, LT, no, Infinity, [1, 0]), (1, c, true, LT, no, Infinity, [0, 1])," +
-                " (1, c, true, LT, no, NaN, [1, 0]), (1, c, true, LT, no, NaN, [0, 1])," +
-                " (1, c, true, GT, yes, Infinity, [1, 0]), (1, c, true, GT, yes, Infinity, [0, 1])," +
-                " (1, c, true, GT, yes, NaN, [1, 0]), (1, c, true, GT, yes, NaN, [0, 1])," +
-                " (1, c, true, GT, no, Infinity, [1, 0]), (1, c, true, GT, no, Infinity, [0, 1])," +
-                " (1, c, true, GT, no, NaN, [1, 0]), (1, c, true, GT, no, NaN, [0, 1])," +
-                " (null, a, false, EQ, yes, Infinity, [1, 0]), (null, a, false, EQ, yes, Infinity, [0, 1])," +
-                " (null, a, false, EQ, yes, NaN, [1, 0]), (null, a, false, EQ, yes, NaN, [0, 1])," +
-                " (null, a, false, EQ, no, Infinity, [1, 0]), (null, a, false, EQ, no, Infinity, [0, 1])," +
-                " (null, a, false, EQ, no, NaN, [1, 0]), (null, a, false, EQ, no, NaN, [0, 1])," +
-                " (null, a, false, LT, yes, Infinity, [1, 0]), (null, a, false, LT, yes, Infinity, [0, 1])," +
-                " (null, a, false, LT, yes, NaN, [1, 0]), (null, a, false, LT, yes, NaN, [0, 1])," +
-                " (null, a, false, LT, no, Infinity, [1, 0]), (null, a, false, LT, no, Infinity, [0, 1])," +
-                " (null, a, false, LT, no, NaN, [1, 0]), (null, a, false, LT, no, NaN, [0, 1])," +
-                " (null, a, false, GT, yes, Infinity, [1, 0]), (null, a, false, GT, yes, Infinity, [0, 1])," +
-                " (null, a, false, GT, yes, NaN, [1, 0]), (null, a, false, GT, yes, NaN, [0, 1])," +
-                " (null, a, false, GT, no, Infinity, [1, 0]), (null, a, false, GT, no, Infinity, [0, 1])," +
-                " (null, a, false, GT, no, NaN, [1, 0]), (null, a, false, GT, no, NaN, [0, 1])," +
-                " (null, a, true, EQ, yes, Infinity, [1, 0]), (null, a, true, EQ, yes, Infinity, [0, 1])," +
-                " (null, a, true, EQ, yes, NaN, [1, 0]), (null, a, true, EQ, yes, NaN, [0, 1])," +
-                " (null, a, true, EQ, no, Infinity, [1, 0]), (null, a, true, EQ, no, Infinity, [0, 1])," +
-                " (null, a, true, EQ, no, NaN, [1, 0]), (null, a, true, EQ, no, NaN, [0, 1])," +
-                " (null, a, true, LT, yes, Infinity, [1, 0]), (null, a, true, LT, yes, Infinity, [0, 1])," +
-                " (null, a, true, LT, yes, NaN, [1, 0]), (null, a, true, LT, yes, NaN, [0, 1])," +
-                " (null, a, true, LT, no, Infinity, [1, 0]), (null, a, true, LT, no, Infinity, [0, 1])," +
-                " (null, a, true, LT, no, NaN, [1, 0]), (null, a, true, LT, no, NaN, [0, 1])," +
-                " (null, a, true, GT, yes, Infinity, [1, 0]), (null, a, true, GT, yes, Infinity, [0, 1])," +
-                " (null, a, true, GT, yes, NaN, [1, 0]), (null, a, true, GT, yes, NaN, [0, 1])," +
-                " (null, a, true, GT, no, Infinity, [1, 0]), (null, a, true, GT, no, Infinity, [0, 1])," +
-                " (null, a, true, GT, no, NaN, [1, 0]), (null, a, true, GT, no, NaN, [0, 1])," +
-                " (null, b, false, EQ, yes, Infinity, [1, 0]), (null, b, false, EQ, yes, Infinity, [0, 1])," +
-                " (null, b, false, EQ, yes, NaN, [1, 0]), (null, b, false, EQ, yes, NaN, [0, 1])," +
-                " (null, b, false, EQ, no, Infinity, [1, 0]), (null, b, false, EQ, no, Infinity, [0, 1])," +
-                " (null, b, false, EQ, no, NaN, [1, 0]), (null, b, false, EQ, no, NaN, [0, 1])," +
-                " (null, b, false, LT, yes, Infinity, [1, 0]), (null, b, false, LT, yes, Infinity, [0, 1])," +
-                " (null, b, false, LT, yes, NaN, [1, 0]), (null, b, false, LT, yes, NaN, [0, 1])," +
-                " (null, b, false, LT, no, Infinity, [1, 0]), (null, b, false, LT, no, Infinity, [0, 1])," +
-                " (null, b, false, LT, no, NaN, [1, 0]), (null, b, false, LT, no, NaN, [0, 1])," +
-                " (null, b, false, GT, yes, Infinity, [1, 0]), (null, b, false, GT, yes, Infinity, [0, 1])," +
-                " (null, b, false, GT, yes, NaN, [1, 0]), (null, b, false, GT, yes, NaN, [0, 1])," +
-                " (null, b, false, GT, no, Infinity, [1, 0]), (null, b, false, GT, no, Infinity, [0, 1])," +
-                " (null, b, false, GT, no, NaN, [1, 0]), (null, b, false, GT, no, NaN, [0, 1])," +
-                " (null, b, true, EQ, yes, Infinity, [1, 0]), (null, b, true, EQ, yes, Infinity, [0, 1])," +
-                " (null, b, true, EQ, yes, NaN, [1, 0]), (null, b, true, EQ, yes, NaN, [0, 1])," +
-                " (null, b, true, EQ, no, Infinity, [1, 0]), (null, b, true, EQ, no, Infinity, [0, 1])," +
-                " (null, b, true, EQ, no, NaN, [1, 0]), (null, b, true, EQ, no, NaN, [0, 1])," +
-                " (null, b, true, LT, yes, Infinity, [1, 0]), (null, b, true, LT, yes, Infinity, [0, 1])," +
-                " (null, b, true, LT, yes, NaN, [1, 0]), (null, b, true, LT, yes, NaN, [0, 1])," +
-                " (null, b, true, LT, no, Infinity, [1, 0]), (null, b, true, LT, no, Infinity, [0, 1])," +
-                " (null, b, true, LT, no, NaN, [1, 0]), (null, b, true, LT, no, NaN, [0, 1])," +
-                " (null, b, true, GT, yes, Infinity, [1, 0]), (null, b, true, GT, yes, Infinity, [0, 1])," +
-                " (null, b, true, GT, yes, NaN, [1, 0]), (null, b, true, GT, yes, NaN, [0, 1])," +
-                " (null, b, true, GT, no, Infinity, [1, 0]), (null, b, true, GT, no, Infinity, [0, 1])," +
-                " (null, b, true, GT, no, NaN, [1, 0]), (null, b, true, GT, no, NaN, [0, 1])," +
-                " (null, c, false, EQ, yes, Infinity, [1, 0]), (null, c, false, EQ, yes, Infinity, [0, 1])," +
-                " (null, c, false, EQ, yes, NaN, [1, 0]), (null, c, false, EQ, yes, NaN, [0, 1])," +
-                " (null, c, false, EQ, no, Infinity, [1, 0]), (null, c, false, EQ, no, Infinity, [0, 1])," +
-                " (null, c, false, EQ, no, NaN, [1, 0]), (null, c, false, EQ, no, NaN, [0, 1])," +
-                " (null, c, false, LT, yes, Infinity, [1, 0]), (null, c, false, LT, yes, Infinity, [0, 1])," +
-                " (null, c, false, LT, yes, NaN, [1, 0]), (null, c, false, LT, yes, NaN, [0, 1])," +
-                " (null, c, false, LT, no, Infinity, [1, 0]), (null, c, false, LT, no, Infinity, [0, 1])," +
-                " (null, c, false, LT, no, NaN, [1, 0]), (null, c, false, LT, no, NaN, [0, 1])," +
-                " (null, c, false, GT, yes, Infinity, [1, 0]), (null, c, false, GT, yes, Infinity, [0, 1])," +
-                " (null, c, false, GT, yes, NaN, [1, 0]), (null, c, false, GT, yes, NaN, [0, 1])," +
-                " (null, c, false, GT, no, Infinity, [1, 0]), (null, c, false, GT, no, Infinity, [0, 1])," +
-                " (null, c, false, GT, no, NaN, [1, 0]), (null, c, false, GT, no, NaN, [0, 1])," +
-                " (null, c, true, EQ, yes, Infinity, [1, 0]), (null, c, true, EQ, yes, Infinity, [0, 1])," +
-                " (null, c, true, EQ, yes, NaN, [1, 0]), (null, c, true, EQ, yes, NaN, [0, 1])," +
-                " (null, c, true, EQ, no, Infinity, [1, 0]), (null, c, true, EQ, no, Infinity, [0, 1])," +
-                " (null, c, true, EQ, no, NaN, [1, 0]), (null, c, true, EQ, no, NaN, [0, 1])," +
-                " (null, c, true, LT, yes, Infinity, [1, 0]), (null, c, true, LT, yes, Infinity, [0, 1])," +
-                " (null, c, true, LT, yes, NaN, [1, 0]), (null, c, true, LT, yes, NaN, [0, 1])," +
-                " (null, c, true, LT, no, Infinity, [1, 0]), (null, c, true, LT, no, Infinity, [0, 1])," +
-                " (null, c, true, LT, no, NaN, [1, 0]), (null, c, true, LT, no, NaN, [0, 1])," +
-                " (null, c, true, GT, yes, Infinity, [1, 0]), (null, c, true, GT, yes, Infinity, [0, 1])," +
-                " (null, c, true, GT, yes, NaN, [1, 0]), (null, c, true, GT, yes, NaN, [0, 1])," +
-                " (null, c, true, GT, no, Infinity, [1, 0]), (null, c, true, GT, no, Infinity, [0, 1])," +
-                " (null, c, true, GT, no, NaN, [1, 0]), (null, c, true, GT, no, NaN, [0, 1])," +
-                " (3, a, false, EQ, yes, Infinity, [1, 0]), (3, a, false, EQ, yes, Infinity, [0, 1])," +
-                " (3, a, false, EQ, yes, NaN, [1, 0]), (3, a, false, EQ, yes, NaN, [0, 1])," +
-                " (3, a, false, EQ, no, Infinity, [1, 0]), (3, a, false, EQ, no, Infinity, [0, 1])," +
-                " (3, a, false, EQ, no, NaN, [1, 0]), (3, a, false, EQ, no, NaN, [0, 1])," +
-                " (3, a, false, LT, yes, Infinity, [1, 0]), (3, a, false, LT, yes, Infinity, [0, 1])," +
-                " (3, a, false, LT, yes, NaN, [1, 0]), (3, a, false, LT, yes, NaN, [0, 1])," +
-                " (3, a, false, LT, no, Infinity, [1, 0]), (3, a, false, LT, no, Infinity, [0, 1])," +
-                " (3, a, false, LT, no, NaN, [1, 0]), (3, a, false, LT, no, NaN, [0, 1])," +
-                " (3, a, false, GT, yes, Infinity, [1, 0]), (3, a, false, GT, yes, Infinity, [0, 1])," +
-                " (3, a, false, GT, yes, NaN, [1, 0]), (3, a, false, GT, yes, NaN, [0, 1])," +
-                " (3, a, false, GT, no, Infinity, [1, 0]), (3, a, false, GT, no, Infinity, [0, 1])," +
-                " (3, a, false, GT, no, NaN, [1, 0]), (3, a, false, GT, no, NaN, [0, 1])," +
-                " (3, a, true, EQ, yes, Infinity, [1, 0]), (3, a, true, EQ, yes, Infinity, [0, 1])," +
-                " (3, a, true, EQ, yes, NaN, [1, 0]), (3, a, true, EQ, yes, NaN, [0, 1])," +
-                " (3, a, true, EQ, no, Infinity, [1, 0]), (3, a, true, EQ, no, Infinity, [0, 1])," +
-                " (3, a, true, EQ, no, NaN, [1, 0]), (3, a, true, EQ, no, NaN, [0, 1])," +
-                " (3, a, true, LT, yes, Infinity, [1, 0]), (3, a, true, LT, yes, Infinity, [0, 1])," +
-                " (3, a, true, LT, yes, NaN, [1, 0]), (3, a, true, LT, yes, NaN, [0, 1])," +
-                " (3, a, true, LT, no, Infinity, [1, 0]), (3, a, true, LT, no, Infinity, [0, 1])," +
-                " (3, a, true, LT, no, NaN, [1, 0]), (3, a, true, LT, no, NaN, [0, 1])," +
-                " (3, a, true, GT, yes, Infinity, [1, 0]), (3, a, true, GT, yes, Infinity, [0, 1])," +
-                " (3, a, true, GT, yes, NaN, [1, 0]), (3, a, true, GT, yes, NaN, [0, 1])," +
-                " (3, a, true, GT, no, Infinity, [1, 0]), (3, a, true, GT, no, Infinity, [0, 1])," +
-                " (3, a, true, GT, no, NaN, [1, 0]), (3, a, true, GT, no, NaN, [0, 1])," +
-                " (3, b, false, EQ, yes, Infinity, [1, 0]), (3, b, false, EQ, yes, Infinity, [0, 1])," +
-                " (3, b, false, EQ, yes, NaN, [1, 0]), (3, b, false, EQ, yes, NaN, [0, 1])," +
-                " (3, b, false, EQ, no, Infinity, [1, 0]), (3, b, false, EQ, no, Infinity, [0, 1])," +
-                " (3, b, false, EQ, no, NaN, [1, 0]), (3, b, false, EQ, no, NaN, [0, 1])," +
-                " (3, b, false, LT, yes, Infinity, [1, 0]), (3, b, false, LT, yes, Infinity, [0, 1])," +
-                " (3, b, false, LT, yes, NaN, [1, 0]), (3, b, false, LT, yes, NaN, [0, 1])," +
-                " (3, b, false, LT, no, Infinity, [1, 0]), (3, b, false, LT, no, Infinity, [0, 1])," +
-                " (3, b, false, LT, no, NaN, [1, 0]), (3, b, false, LT, no, NaN, [0, 1])," +
-                " (3, b, false, GT, yes, Infinity, [1, 0]), (3, b, false, GT, yes, Infinity, [0, 1])," +
-                " (3, b, false, GT, yes, NaN, [1, 0]), (3, b, false, GT, yes, NaN, [0, 1])," +
-                " (3, b, false, GT, no, Infinity, [1, 0]), (3, b, false, GT, no, Infinity, [0, 1])," +
-                " (3, b, false, GT, no, NaN, [1, 0]), (3, b, false, GT, no, NaN, [0, 1])," +
-                " (3, b, true, EQ, yes, Infinity, [1, 0]), (3, b, true, EQ, yes, Infinity, [0, 1])," +
-                " (3, b, true, EQ, yes, NaN, [1, 0]), (3, b, true, EQ, yes, NaN, [0, 1])," +
-                " (3, b, true, EQ, no, Infinity, [1, 0]), (3, b, true, EQ, no, Infinity, [0, 1])," +
-                " (3, b, true, EQ, no, NaN, [1, 0]), (3, b, true, EQ, no, NaN, [0, 1])," +
-                " (3, b, true, LT, yes, Infinity, [1, 0]), (3, b, true, LT, yes, Infinity, [0, 1])," +
-                " (3, b, true, LT, yes, NaN, [1, 0]), (3, b, true, LT, yes, NaN, [0, 1])," +
-                " (3, b, true, LT, no, Infinity, [1, 0]), (3, b, true, LT, no, Infinity, [0, 1])," +
-                " (3, b, true, LT, no, NaN, [1, 0]), (3, b, true, LT, no, NaN, [0, 1])," +
-                " (3, b, true, GT, yes, Infinity, [1, 0]), (3, b, true, GT, yes, Infinity, [0, 1])," +
-                " (3, b, true, GT, yes, NaN, [1, 0]), (3, b, true, GT, yes, NaN, [0, 1])," +
-                " (3, b, true, GT, no, Infinity, [1, 0]), (3, b, true, GT, no, Infinity, [0, 1])," +
-                " (3, b, true, GT, no, NaN, [1, 0]), (3, b, true, GT, no, NaN, [0, 1])," +
-                " (3, c, false, EQ, yes, Infinity, [1, 0]), (3, c, false, EQ, yes, Infinity, [0, 1])," +
-                " (3, c, false, EQ, yes, NaN, [1, 0]), (3, c, false, EQ, yes, NaN, [0, 1])," +
-                " (3, c, false, EQ, no, Infinity, [1, 0]), (3, c, false, EQ, no, Infinity, [0, 1])," +
-                " (3, c, false, EQ, no, NaN, [1, 0]), (3, c, false, EQ, no, NaN, [0, 1])," +
-                " (3, c, false, LT, yes, Infinity, [1, 0]), (3, c, false, LT, yes, Infinity, [0, 1])," +
-                " (3, c, false, LT, yes, NaN, [1, 0]), (3, c, false, LT, yes, NaN, [0, 1])," +
-                " (3, c, false, LT, no, Infinity, [1, 0]), (3, c, false, LT, no, Infinity, [0, 1])," +
-                " (3, c, false, LT, no, NaN, [1, 0]), (3, c, false, LT, no, NaN, [0, 1])," +
-                " (3, c, false, GT, yes, Infinity, [1, 0]), (3, c, false, GT, yes, Infinity, [0, 1])," +
-                " (3, c, false, GT, yes, NaN, [1, 0]), (3, c, false, GT, yes, NaN, [0, 1])," +
-                " (3, c, false, GT, no, Infinity, [1, 0]), (3, c, false, GT, no, Infinity, [0, 1])," +
-                " (3, c, false, GT, no, NaN, [1, 0]), (3, c, false, GT, no, NaN, [0, 1])," +
-                " (3, c, true, EQ, yes, Infinity, [1, 0]), (3, c, true, EQ, yes, Infinity, [0, 1])," +
-                " (3, c, true, EQ, yes, NaN, [1, 0]), (3, c, true, EQ, yes, NaN, [0, 1])," +
-                " (3, c, true, EQ, no, Infinity, [1, 0]), (3, c, true, EQ, no, Infinity, [0, 1])," +
-                " (3, c, true, EQ, no, NaN, [1, 0]), (3, c, true, EQ, no, NaN, [0, 1])," +
-                " (3, c, true, LT, yes, Infinity, [1, 0]), (3, c, true, LT, yes, Infinity, [0, 1])," +
-                " (3, c, true, LT, yes, NaN, [1, 0]), (3, c, true, LT, yes, NaN, [0, 1])," +
-                " (3, c, true, LT, no, Infinity, [1, 0]), (3, c, true, LT, no, Infinity, [0, 1])," +
-                " (3, c, true, LT, no, NaN, [1, 0]), (3, c, true, LT, no, NaN, [0, 1])," +
-                " (3, c, true, GT, yes, Infinity, [1, 0]), (3, c, true, GT, yes, Infinity, [0, 1])," +
-                " (3, c, true, GT, yes, NaN, [1, 0]), (3, c, true, GT, yes, NaN, [0, 1])," +
-                " (3, c, true, GT, no, Infinity, [1, 0]), (3, c, true, GT, no, Infinity, [0, 1])," +
-                " (3, c, true, GT, no, NaN, [1, 0]), (3, c, true, GT, no, NaN, [0, 1])]");
+                "ExhaustiveProvider_septuplesLex_ii");
         septuplesLex_helper_limit(
                 EP.naturalBigIntegers(),
                 fromString("abc"),
@@ -2687,16 +1883,7 @@ public strictfp class ExhaustiveProviderTest {
                 Arrays.asList("yes", "no"),
                 Arrays.asList(Float.POSITIVE_INFINITY, Float.NaN),
                 Arrays.asList(x, y),
-                "[(0, a, false, EQ, yes, Infinity, [1, 0]), (0, a, false, EQ, yes, Infinity, [0, 1])," +
-                " (0, a, false, EQ, yes, NaN, [1, 0]), (0, a, false, EQ, yes, NaN, [0, 1])," +
-                " (0, a, false, EQ, no, Infinity, [1, 0]), (0, a, false, EQ, no, Infinity, [0, 1])," +
-                " (0, a, false, EQ, no, NaN, [1, 0]), (0, a, false, EQ, no, NaN, [0, 1])," +
-                " (0, a, false, LT, yes, Infinity, [1, 0]), (0, a, false, LT, yes, Infinity, [0, 1])," +
-                " (0, a, false, LT, yes, NaN, [1, 0]), (0, a, false, LT, yes, NaN, [0, 1])," +
-                " (0, a, false, LT, no, Infinity, [1, 0]), (0, a, false, LT, no, Infinity, [0, 1])," +
-                " (0, a, false, LT, no, NaN, [1, 0]), (0, a, false, LT, no, NaN, [0, 1])," +
-                " (0, a, false, GT, yes, Infinity, [1, 0]), (0, a, false, GT, yes, Infinity, [0, 1])," +
-                " (0, a, false, GT, yes, NaN, [1, 0]), (0, a, false, GT, yes, NaN, [0, 1]), ...]");
+                "ExhaustiveProvider_septuplesLex_iii");
         septuplesLex_helper(
                 EP.naturalBigIntegers(),
                 fromString("abc"),
@@ -2705,7 +1892,7 @@ public strictfp class ExhaustiveProviderTest {
                 Arrays.asList("yes", "no"),
                 Arrays.asList(Float.POSITIVE_INFINITY, Float.NaN),
                 Collections.emptyList(),
-                "[]"
+                "ExhaustiveProvider_septuplesLex_iv"
         );
         septuplesLex_helper(
                 Collections.emptyList(),
@@ -2715,7 +1902,7 @@ public strictfp class ExhaustiveProviderTest {
                 Arrays.asList("yes", "no"),
                 Arrays.asList(Float.POSITIVE_INFINITY, Float.NaN),
                 Arrays.asList(x, y),
-                "[]"
+                "ExhaustiveProvider_septuplesLex_v"
         );
         septuplesLex_helper(
                 Collections.emptyList(),
@@ -2725,12 +1912,12 @@ public strictfp class ExhaustiveProviderTest {
                 Collections.emptyList(),
                 Collections.emptyList(),
                 Collections.emptyList(),
-                "[]"
+                "ExhaustiveProvider_septuplesLex_vi"
         );
     }
 
     private static void stringsLex_int_String_helper(int size, @NotNull String input, @NotNull String output) {
-        aeqit(EP.stringsLex(size, input), output);
+        aeqitLog(EP.stringsLex(size, input), output);
     }
 
     private static void stringsLex_int_String_helper_limit(int size, @NotNull String input, @NotNull String output) {
@@ -2739,42 +1926,30 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testStringsLex_int_String() {
-        stringsLex_int_String_helper(0, "", "[]");
-        aeq(length(EP.stringsLex(0, "")), 1);
-        stringsLex_int_String_helper(1, "", "[]");
-        aeq(length(EP.stringsLex(1, "")), 0);
-        stringsLex_int_String_helper(2, "", "[]");
-        aeq(length(EP.stringsLex(2, "")), 0);
-        stringsLex_int_String_helper(3, "", "[]");
-        aeq(length(EP.stringsLex(3, "")), 0);
-        stringsLex_int_String_helper(0, "a", "[]");
-        stringsLex_int_String_helper(1, "a", "[a]");
-        stringsLex_int_String_helper(2, "a", "[aa]");
-        stringsLex_int_String_helper(3, "a", "[aaa]");
-        stringsLex_int_String_helper(0, "abc", "[]");
-        aeq(length(EP.stringsLex(0, "abc")), 1);
-        stringsLex_int_String_helper(1, "abc", "[a, b, c]");
-        stringsLex_int_String_helper(2, "abc", "[aa, ab, ac, ba, bb, bc, ca, cb, cc]");
-        stringsLex_int_String_helper(3, "abc",
-                "[aaa, aab, aac, aba, abb, abc, aca, acb, acc, baa, bab, bac, bba, bbb, bbc, bca, bcb, bcc, caa," +
-                " cab, cac, cba, cbb, cbc, cca, ccb, ccc]");
-        stringsLex_int_String_helper(0, "abbc", "[]");
-        aeq(length(EP.stringsLex(0, "abbc")), 1);
-        stringsLex_int_String_helper(1, "abbc", "[a, b, b, c]");
-        stringsLex_int_String_helper(2, "abbc", "[aa, ab, ab, ac, ba, bb, bb, bc, ba, bb, bb, bc, ca, cb, cb, cc]");
-        stringsLex_int_String_helper(3, "abbc",
-                "[aaa, aab, aab, aac, aba, abb, abb, abc, aba, abb, abb, abc, aca, acb, acb, acc, baa, bab, bab," +
-                " bac, bba, bbb, bbb, bbc, bba, bbb, bbb, bbc, bca, bcb, bcb, bcc, baa, bab, bab, bac, bba, bbb," +
-                " bbb, bbc, bba, bbb, bbb, bbc, bca, bcb, bcb, bcc, caa, cab, cab, cac, cba, cbb, cbb, cbc, cba," +
-                " cbb, cbb, cbc, cca, ccb, ccb, ccc]");
-        stringsLex_int_String_helper_limit(0, "Mississippi", "[]");
-        aeq(length(EP.stringsLex(0, "Mississippi")), 1);
-        stringsLex_int_String_helper_limit(1, "Mississippi", "[M, i, s, s, i, s, s, i, p, p, i]");
-        stringsLex_int_String_helper_limit(2, "Mississippi",
-                "[MM, Mi, Ms, Ms, Mi, Ms, Ms, Mi, Mp, Mp, Mi, iM, ii, is, is, ii, is, is, ii, ip, ...]");
-        stringsLex_int_String_helper_limit(3, "Mississippi",
-                "[MMM, MMi, MMs, MMs, MMi, MMs, MMs, MMi, MMp, MMp, MMi, MiM, Mii, Mis, Mis, Mii, Mis, Mis, Mii," +
-                " Mip, ...]");
+        stringsLex_int_String_helper(0, "", "ExhaustiveProvider_stringsLex_int_String_i");
+        stringsLex_int_String_helper(1, "", "ExhaustiveProvider_stringsLex_int_String_ii");
+        stringsLex_int_String_helper(2, "", "ExhaustiveProvider_stringsLex_int_String_iii");
+        stringsLex_int_String_helper(3, "", "ExhaustiveProvider_stringsLex_int_String_iv");
+
+        stringsLex_int_String_helper(0, "a", "ExhaustiveProvider_stringsLex_int_String_v");
+        stringsLex_int_String_helper(1, "a", "ExhaustiveProvider_stringsLex_int_String_vi");
+        stringsLex_int_String_helper(2, "a", "ExhaustiveProvider_stringsLex_int_String_vii");
+        stringsLex_int_String_helper(3, "a", "ExhaustiveProvider_stringsLex_int_String_viii");
+
+        stringsLex_int_String_helper(0, "abc", "ExhaustiveProvider_stringsLex_int_String_ix");
+        stringsLex_int_String_helper(1, "abc", "ExhaustiveProvider_stringsLex_int_String_x");
+        stringsLex_int_String_helper(2, "abc", "ExhaustiveProvider_stringsLex_int_String_xi");
+        stringsLex_int_String_helper(3, "abc", "ExhaustiveProvider_stringsLex_int_String_xii");
+
+        stringsLex_int_String_helper(0, "abbc", "ExhaustiveProvider_stringsLex_int_String_xiii");
+        stringsLex_int_String_helper(1, "abbc", "ExhaustiveProvider_stringsLex_int_String_xiv");
+        stringsLex_int_String_helper(2, "abbc", "ExhaustiveProvider_stringsLex_int_String_xv");
+        stringsLex_int_String_helper(3, "abbc", "ExhaustiveProvider_stringsLex_int_String_xvi");
+
+        stringsLex_int_String_helper_limit(0, "Mississippi", "ExhaustiveProvider_stringsLex_int_String_xvii");
+        stringsLex_int_String_helper_limit(1, "Mississippi", "ExhaustiveProvider_stringsLex_int_String_xviii");
+        stringsLex_int_String_helper_limit(2, "Mississippi", "ExhaustiveProvider_stringsLex_int_String_xix");
+        stringsLex_int_String_helper_limit(3, "Mississippi", "ExhaustiveProvider_stringsLex_int_String_xx");
         try {
             EP.stringsLex(-1, "");
             fail();
@@ -2791,23 +1966,10 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testListsShortlex() {
-        listsShortlex_helper("[]", "[[]]");
-        listsShortlex_helper("[5]",
-                "[[], [5], [5, 5], [5, 5, 5], [5, 5, 5, 5], [5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5], ...]");
-        listsShortlex_helper("[1, 2, 3]",
-                "[[], [1], [2], [3], [1, 1], [1, 2], [1, 3], [2, 1], [2, 2], [2, 3], [3, 1], [3, 2], [3, 3]," +
-                " [1, 1, 1], [1, 1, 2], [1, 1, 3], [1, 2, 1], [1, 2, 2], [1, 2, 3], [1, 3, 1], ...]");
-        listsShortlex_helper("[1, 2, 2, 3]",
-                "[[], [1], [2], [2], [3], [1, 1], [1, 2], [1, 2], [1, 3], [2, 1], [2, 2], [2, 2], [2, 3], [2, 1]," +
-                " [2, 2], [2, 2], [2, 3], [3, 1], [3, 2], [3, 2], ...]");
+        listsShortlex_helper("[]", "ExhaustiveProvider_listsShortlex_i");
+        listsShortlex_helper("[5]", "ExhaustiveProvider_listsShortlex_ii");
+        listsShortlex_helper("[1, 2, 3]", "ExhaustiveProvider_listsShortlex_iii");
+        listsShortlex_helper("[1, 2, 2, 3]", "ExhaustiveProvider_listsShortlex_iv");
     }
 
     private static void stringsShortlex_helper(@NotNull String input, @NotNull String output) {
@@ -2816,18 +1978,11 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testStringsShortlex() {
-        stringsShortlex_helper("", "[]");
-        aeq(length(EP.stringsShortlex("")), 1);
-        stringsShortlex_helper("a",
-                "[, a, aa, aaa, aaaa, aaaaa, aaaaaa, aaaaaaa, aaaaaaaa, aaaaaaaaa, aaaaaaaaaa, aaaaaaaaaaa," +
-                " aaaaaaaaaaaa, aaaaaaaaaaaaa, aaaaaaaaaaaaaa, aaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaa," +
-                " aaaaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaaaa, ...]");
-        stringsShortlex_helper("abc",
-                "[, a, b, c, aa, ab, ac, ba, bb, bc, ca, cb, cc, aaa, aab, aac, aba, abb, abc, aca, ...]");
-        stringsShortlex_helper("abbc",
-                "[, a, b, b, c, aa, ab, ab, ac, ba, bb, bb, bc, ba, bb, bb, bc, ca, cb, cb, ...]");
-        stringsShortlex_helper("Mississippi",
-                "[, M, i, s, s, i, s, s, i, p, p, i, MM, Mi, Ms, Ms, Mi, Ms, Ms, Mi, ...]");
+        stringsShortlex_helper("", "ExhaustiveProvider_stringsShortlex_i");
+        stringsShortlex_helper("a", "ExhaustiveProvider_stringsShortlex_ii");
+        stringsShortlex_helper("abc", "ExhaustiveProvider_stringsShortlex_iii");
+        stringsShortlex_helper("abbc", "ExhaustiveProvider_stringsShortlex_iv");
+        stringsShortlex_helper("Mississippi", "ExhaustiveProvider_stringsShortlex_v");
     }
 
     private static void listsShortlexAtLeast_helper(int minSize, @NotNull String input, @NotNull String output) {
@@ -2836,88 +1991,25 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testListsShortlexAtLeast() {
-        listsShortlexAtLeast_helper(0, "[]", "[[]]");
-        listsShortlexAtLeast_helper(1, "[]", "[]");
-        listsShortlexAtLeast_helper(2, "[]", "[]");
-        listsShortlexAtLeast_helper(3, "[]", "[]");
+        listsShortlexAtLeast_helper(0, "[]", "ExhaustiveProvider_listsShortlexAtLeast_i");
+        listsShortlexAtLeast_helper(1, "[]", "ExhaustiveProvider_listsShortlexAtLeast_ii");
+        listsShortlexAtLeast_helper(2, "[]", "ExhaustiveProvider_listsShortlexAtLeast_iii");
+        listsShortlexAtLeast_helper(3, "[]", "ExhaustiveProvider_listsShortlexAtLeast_iv");
 
-        listsShortlexAtLeast_helper(0, "[5]",
-                "[[], [5], [5, 5], [5, 5, 5], [5, 5, 5, 5], [5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5], ...]");
-        listsShortlexAtLeast_helper(1, "[5]",
-                "[[5], [5, 5], [5, 5, 5], [5, 5, 5, 5], [5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5], ...]");
-        listsShortlexAtLeast_helper(2, "[5]",
-                "[[5, 5], [5, 5, 5], [5, 5, 5, 5], [5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5], ...]");
-        listsShortlexAtLeast_helper(3, "[5]",
-                "[[5, 5, 5], [5, 5, 5, 5], [5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5], ...]");
+        listsShortlexAtLeast_helper(0, "[5]", "ExhaustiveProvider_listsShortlexAtLeast_v");
+        listsShortlexAtLeast_helper(1, "[5]", "ExhaustiveProvider_listsShortlexAtLeast_vi");
+        listsShortlexAtLeast_helper(2, "[5]", "ExhaustiveProvider_listsShortlexAtLeast_vii");
+        listsShortlexAtLeast_helper(3, "[5]", "ExhaustiveProvider_listsShortlexAtLeast_viii");
 
-        listsShortlexAtLeast_helper(0, "[1, 2, 3]",
-                "[[], [1], [2], [3], [1, 1], [1, 2], [1, 3], [2, 1], [2, 2], [2, 3], [3, 1], [3, 2], [3, 3]," +
-                " [1, 1, 1], [1, 1, 2], [1, 1, 3], [1, 2, 1], [1, 2, 2], [1, 2, 3], [1, 3, 1], ...]");
-        listsShortlexAtLeast_helper(1, "[1, 2, 3]",
-                "[[1], [2], [3], [1, 1], [1, 2], [1, 3], [2, 1], [2, 2], [2, 3], [3, 1], [3, 2], [3, 3], [1, 1, 1]," +
-                " [1, 1, 2], [1, 1, 3], [1, 2, 1], [1, 2, 2], [1, 2, 3], [1, 3, 1], [1, 3, 2], ...]");
-        listsShortlexAtLeast_helper(2, "[1, 2, 3]",
-                "[[1, 1], [1, 2], [1, 3], [2, 1], [2, 2], [2, 3], [3, 1], [3, 2], [3, 3], [1, 1, 1], [1, 1, 2]," +
-                " [1, 1, 3], [1, 2, 1], [1, 2, 2], [1, 2, 3], [1, 3, 1], [1, 3, 2], [1, 3, 3], [2, 1, 1], [2, 1, 2]," +
-                " ...]");
-        listsShortlexAtLeast_helper(3, "[1, 2, 3]",
-                "[[1, 1, 1], [1, 1, 2], [1, 1, 3], [1, 2, 1], [1, 2, 2], [1, 2, 3], [1, 3, 1], [1, 3, 2], [1, 3, 3]," +
-                " [2, 1, 1], [2, 1, 2], [2, 1, 3], [2, 2, 1], [2, 2, 2], [2, 2, 3], [2, 3, 1], [2, 3, 2], [2, 3, 3]," +
-                " [3, 1, 1], [3, 1, 2], ...]");
+        listsShortlexAtLeast_helper(0, "[1, 2, 3]", "ExhaustiveProvider_listsShortlexAtLeast_ix");
+        listsShortlexAtLeast_helper(1, "[1, 2, 3]", "ExhaustiveProvider_listsShortlexAtLeast_x");
+        listsShortlexAtLeast_helper(2, "[1, 2, 3]", "ExhaustiveProvider_listsShortlexAtLeast_xi");
+        listsShortlexAtLeast_helper(3, "[1, 2, 3]", "ExhaustiveProvider_listsShortlexAtLeast_xii");
 
-        listsShortlexAtLeast_helper(0, "[1, null, 3]",
-                "[[], [1], [null], [3], [1, 1], [1, null], [1, 3], [null, 1], [null, null], [null, 3], [3, 1]," +
-                " [3, null], [3, 3], [1, 1, 1], [1, 1, null], [1, 1, 3], [1, null, 1], [1, null, null]," +
-                " [1, null, 3], [1, 3, 1], ...]");
-        listsShortlexAtLeast_helper(1, "[1, null, 3]",
-                "[[1], [null], [3], [1, 1], [1, null], [1, 3], [null, 1], [null, null], [null, 3], [3, 1]," +
-                " [3, null], [3, 3], [1, 1, 1], [1, 1, null], [1, 1, 3], [1, null, 1], [1, null, null]," +
-                " [1, null, 3], [1, 3, 1], [1, 3, null], ...]");
-        listsShortlexAtLeast_helper(2, "[1, null, 3]",
-                "[[1, 1], [1, null], [1, 3], [null, 1], [null, null], [null, 3], [3, 1], [3, null], [3, 3]," +
-                " [1, 1, 1], [1, 1, null], [1, 1, 3], [1, null, 1], [1, null, null], [1, null, 3], [1, 3, 1]," +
-                " [1, 3, null], [1, 3, 3], [null, 1, 1], [null, 1, null], ...]");
-        listsShortlexAtLeast_helper(3, "[1, null, 3]",
-                "[[1, 1, 1], [1, 1, null], [1, 1, 3], [1, null, 1], [1, null, null], [1, null, 3], [1, 3, 1]," +
-                " [1, 3, null], [1, 3, 3], [null, 1, 1], [null, 1, null], [null, 1, 3], [null, null, 1]," +
-                " [null, null, null], [null, null, 3], [null, 3, 1], [null, 3, null], [null, 3, 3], [3, 1, 1]," +
-                " [3, 1, null], ...]");
-
+        listsShortlexAtLeast_helper(0, "[1, null, 3]", "ExhaustiveProvider_listsShortlexAtLeast_xiii");
+        listsShortlexAtLeast_helper(1, "[1, null, 3]", "ExhaustiveProvider_listsShortlexAtLeast_xiv");
+        listsShortlexAtLeast_helper(2, "[1, null, 3]", "ExhaustiveProvider_listsShortlexAtLeast_xv");
+        listsShortlexAtLeast_helper(3, "[1, null, 3]", "ExhaustiveProvider_listsShortlexAtLeast_xvi");
         try {
             EP.listsShortlexAtLeast(-1, Collections.emptyList());
             fail();
@@ -2934,58 +2026,30 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testStringsShortlexAtLeast() {
-        stringsShortlexAtLeast_helper(0, "", "[]");
-        aeq(length(EP.stringsShortlexAtLeast(0, "")), 1);
-        stringsShortlexAtLeast_helper(1, "", "[]");
-        aeq(length(EP.stringsShortlexAtLeast(1, "")), 0);
-        stringsShortlexAtLeast_helper(2, "", "[]");
-        aeq(length(EP.stringsShortlexAtLeast(2, "")), 0);
-        stringsShortlexAtLeast_helper(3, "", "[]");
-        aeq(length(EP.stringsShortlexAtLeast(3, "")), 0);
-        stringsShortlexAtLeast_helper(0, "a",
-                "[, a, aa, aaa, aaaa, aaaaa, aaaaaa, aaaaaaa, aaaaaaaa, aaaaaaaaa, aaaaaaaaaa, aaaaaaaaaaa," +
-                " aaaaaaaaaaaa, aaaaaaaaaaaaa, aaaaaaaaaaaaaa, aaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaa," +
-                " aaaaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaaaa, ...]");
-        stringsShortlexAtLeast_helper(1, "a",
-                "[a, aa, aaa, aaaa, aaaaa, aaaaaa, aaaaaaa, aaaaaaaa, aaaaaaaaa, aaaaaaaaaa, aaaaaaaaaaa," +
-                " aaaaaaaaaaaa, aaaaaaaaaaaaa, aaaaaaaaaaaaaa, aaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaa," +
-                " aaaaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaaaaa, ...]");
-        stringsShortlexAtLeast_helper(2, "a",
-                "[aa, aaa, aaaa, aaaaa, aaaaaa, aaaaaaa, aaaaaaaa, aaaaaaaaa, aaaaaaaaaa, aaaaaaaaaaa, aaaaaaaaaaaa," +
-                " aaaaaaaaaaaaa, aaaaaaaaaaaaaa, aaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaa," +
-                " aaaaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaaaaaa, ...]");
-        stringsShortlexAtLeast_helper(3, "a",
-                "[aaa, aaaa, aaaaa, aaaaaa, aaaaaaa, aaaaaaaa, aaaaaaaaa, aaaaaaaaaa, aaaaaaaaaaa, aaaaaaaaaaaa," +
-                " aaaaaaaaaaaaa, aaaaaaaaaaaaaa, aaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaa," +
-                " aaaaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaaaaaa," +
-                " aaaaaaaaaaaaaaaaaaaaaa, ...]");
-        stringsShortlexAtLeast_helper(0, "abc",
-                "[, a, b, c, aa, ab, ac, ba, bb, bc, ca, cb, cc, aaa, aab, aac, aba, abb, abc, aca, ...]");
-        stringsShortlexAtLeast_helper(1, "abc",
-                "[a, b, c, aa, ab, ac, ba, bb, bc, ca, cb, cc, aaa, aab, aac, aba, abb, abc, aca, acb, ...]");
-        stringsShortlexAtLeast_helper(2, "abc",
-                "[aa, ab, ac, ba, bb, bc, ca, cb, cc, aaa, aab, aac, aba, abb, abc, aca, acb, acc, baa, bab, ...]");
-        stringsShortlexAtLeast_helper(3, "abc",
-                "[aaa, aab, aac, aba, abb, abc, aca, acb, acc, baa, bab, bac, bba, bbb, bbc, bca, bcb, bcc, caa," +
-                " cab, ...]");
-        stringsShortlexAtLeast_helper(0, "abbc",
-                "[, a, b, b, c, aa, ab, ab, ac, ba, bb, bb, bc, ba, bb, bb, bc, ca, cb, cb, ...]");
-        stringsShortlexAtLeast_helper(1, "abbc",
-                "[a, b, b, c, aa, ab, ab, ac, ba, bb, bb, bc, ba, bb, bb, bc, ca, cb, cb, cc, ...]");
-        stringsShortlexAtLeast_helper(2, "abbc",
-                "[aa, ab, ab, ac, ba, bb, bb, bc, ba, bb, bb, bc, ca, cb, cb, cc, aaa, aab, aab, aac, ...]");
-        stringsShortlexAtLeast_helper(3, "abbc",
-                "[aaa, aab, aab, aac, aba, abb, abb, abc, aba, abb, abb, abc, aca, acb, acb, acc, baa, bab, bab," +
-                " bac, ...]");
-        stringsShortlexAtLeast_helper(0, "Mississippi",
-                "[, M, i, s, s, i, s, s, i, p, p, i, MM, Mi, Ms, Ms, Mi, Ms, Ms, Mi, ...]");
-        stringsShortlexAtLeast_helper(1, "Mississippi",
-                "[M, i, s, s, i, s, s, i, p, p, i, MM, Mi, Ms, Ms, Mi, Ms, Ms, Mi, Mp, ...]");
-        stringsShortlexAtLeast_helper(2, "Mississippi",
-                "[MM, Mi, Ms, Ms, Mi, Ms, Ms, Mi, Mp, Mp, Mi, iM, ii, is, is, ii, is, is, ii, ip, ...]");
-        stringsShortlexAtLeast_helper(3, "Mississippi",
-                "[MMM, MMi, MMs, MMs, MMi, MMs, MMs, MMi, MMp, MMp, MMi, MiM, Mii, Mis, Mis, Mii, Mis, Mis, Mii," +
-                " Mip, ...]");
+        stringsShortlexAtLeast_helper(0, "", "ExhaustiveProvider_stringsShortlexAtLeast_i");
+        stringsShortlexAtLeast_helper(1, "", "ExhaustiveProvider_stringsShortlexAtLeast_ii");
+        stringsShortlexAtLeast_helper(2, "", "ExhaustiveProvider_stringsShortlexAtLeast_iii");
+        stringsShortlexAtLeast_helper(3, "", "ExhaustiveProvider_stringsShortlexAtLeast_iv");
+
+        stringsShortlexAtLeast_helper(0, "a", "ExhaustiveProvider_stringsShortlexAtLeast_v");
+        stringsShortlexAtLeast_helper(1, "a", "ExhaustiveProvider_stringsShortlexAtLeast_vi");
+        stringsShortlexAtLeast_helper(2, "a", "ExhaustiveProvider_stringsShortlexAtLeast_vii");
+        stringsShortlexAtLeast_helper(3, "a", "ExhaustiveProvider_stringsShortlexAtLeast_viii");
+
+        stringsShortlexAtLeast_helper(0, "abc", "ExhaustiveProvider_stringsShortlexAtLeast_ix");
+        stringsShortlexAtLeast_helper(1, "abc", "ExhaustiveProvider_stringsShortlexAtLeast_x");
+        stringsShortlexAtLeast_helper(2, "abc", "ExhaustiveProvider_stringsShortlexAtLeast_xi");
+        stringsShortlexAtLeast_helper(3, "abc", "ExhaustiveProvider_stringsShortlexAtLeast_xii");
+
+        stringsShortlexAtLeast_helper(0, "abbc", "ExhaustiveProvider_stringsShortlexAtLeast_xiii");
+        stringsShortlexAtLeast_helper(1, "abbc", "ExhaustiveProvider_stringsShortlexAtLeast_xiv");
+        stringsShortlexAtLeast_helper(2, "abbc", "ExhaustiveProvider_stringsShortlexAtLeast_xv");
+        stringsShortlexAtLeast_helper(3, "abbc", "ExhaustiveProvider_stringsShortlexAtLeast_xvi");
+
+        stringsShortlexAtLeast_helper(0, "Mississippi", "ExhaustiveProvider_stringsShortlexAtLeast_xvii");
+        stringsShortlexAtLeast_helper(1, "Mississippi", "ExhaustiveProvider_stringsShortlexAtLeast_xviii");
+        stringsShortlexAtLeast_helper(2, "Mississippi", "ExhaustiveProvider_stringsShortlexAtLeast_xix");
+        stringsShortlexAtLeast_helper(3, "Mississippi", "ExhaustiveProvider_stringsShortlexAtLeast_xx");
         try {
             EP.stringsShortlexAtLeast(-1, "");
             fail();
@@ -2997,7 +2061,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void lists_int_Iterable_helper(int size, @NotNull String input, @NotNull String output) {
-        aeqit(EP.lists(size, readIntegerListWithNulls(input)), output);
+        aeqitLog(EP.lists(size, readIntegerListWithNulls(input)), output);
     }
 
     private static void lists_int_Iterable_helper(int size, @NotNull Iterable<Integer> input, @NotNull String output) {
@@ -3006,74 +2070,40 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testLists_int_Iterable() {
-        lists_int_Iterable_helper(0, "[]", "[[]]");
-        lists_int_Iterable_helper(1, "[]", "[]");
-        lists_int_Iterable_helper(2, "[]", "[]");
-        lists_int_Iterable_helper(3, "[]", "[]");
+        lists_int_Iterable_helper(0, "[]", "ExhaustiveProvider_lists_int_Iterable_i");
+        lists_int_Iterable_helper(1, "[]", "ExhaustiveProvider_lists_int_Iterable_ii");
+        lists_int_Iterable_helper(2, "[]", "ExhaustiveProvider_lists_int_Iterable_iii");
+        lists_int_Iterable_helper(3, "[]", "ExhaustiveProvider_lists_int_Iterable_iv");
 
-        lists_int_Iterable_helper(0, "[5]", "[[]]");
-        lists_int_Iterable_helper(1, "[5]", "[[5]]");
-        lists_int_Iterable_helper(2, "[5]", "[[5, 5]]");
-        lists_int_Iterable_helper(3, "[5]", "[[5, 5, 5]]");
+        lists_int_Iterable_helper(0, "[5]", "ExhaustiveProvider_lists_int_Iterable_v");
+        lists_int_Iterable_helper(1, "[5]", "ExhaustiveProvider_lists_int_Iterable_vi");
+        lists_int_Iterable_helper(2, "[5]", "ExhaustiveProvider_lists_int_Iterable_vii");
+        lists_int_Iterable_helper(3, "[5]", "ExhaustiveProvider_lists_int_Iterable_viii");
 
-        lists_int_Iterable_helper(0, "[1, 2, 3]", "[[]]");
-        lists_int_Iterable_helper(1, "[1, 2, 3]", "[[1], [2], [3]]");
-        lists_int_Iterable_helper(2, "[1, 2, 3]",
-                "[[1, 1], [1, 2], [2, 1], [2, 2], [1, 3], [2, 3], [3, 1], [3, 2], [3, 3]]");
-        lists_int_Iterable_helper(3, "[1, 2, 3]",
-                "[[1, 1, 1], [1, 1, 2], [1, 2, 1], [1, 2, 2], [2, 1, 1], [2, 1, 2], [2, 2, 1], [2, 2, 2], [1, 1, 3]," +
-                " [1, 2, 3], [2, 1, 3], [2, 2, 3], [1, 3, 1], [1, 3, 2], [2, 3, 1], [2, 3, 2], [1, 3, 3], [2, 3, 3]," +
-                " [3, 1, 1], [3, 1, 2], [3, 2, 1], [3, 2, 2], [3, 1, 3], [3, 2, 3], [3, 3, 1], [3, 3, 2], [3, 3, 3]]");
+        lists_int_Iterable_helper(0, "[1, 2, 3]", "ExhaustiveProvider_lists_int_Iterable_ix");
+        lists_int_Iterable_helper(1, "[1, 2, 3]", "ExhaustiveProvider_lists_int_Iterable_x");
+        lists_int_Iterable_helper(2, "[1, 2, 3]", "ExhaustiveProvider_lists_int_Iterable_xi");
+        lists_int_Iterable_helper(3, "[1, 2, 3]", "ExhaustiveProvider_lists_int_Iterable_xii");
 
-        lists_int_Iterable_helper(0, "[1, 2, 2, 3]", "[[]]");
-        lists_int_Iterable_helper(1, "[1, 2, 2, 3]", "[[1], [2], [2], [3]]");
-        lists_int_Iterable_helper(2, "[1, 2, 2, 3]",
-                "[[1, 1], [1, 2], [2, 1], [2, 2], [1, 2], [1, 3], [2, 2], [2, 3], [2, 1], [2, 2], [3, 1], [3, 2]," +
-                " [2, 2], [2, 3], [3, 2], [3, 3]]");
-        lists_int_Iterable_helper(3, "[1, 2, 2, 3]",
-                "[[1, 1, 1], [1, 1, 2], [1, 2, 1], [1, 2, 2], [2, 1, 1], [2, 1, 2], [2, 2, 1], [2, 2, 2], [1, 1, 2]," +
-                " [1, 1, 3], [1, 2, 2], [1, 2, 3], [2, 1, 2], [2, 1, 3], [2, 2, 2], [2, 2, 3], [1, 2, 1], [1, 2, 2]," +
-                " [1, 3, 1], [1, 3, 2], [2, 2, 1], [2, 2, 2], [2, 3, 1], [2, 3, 2], [1, 2, 2], [1, 2, 3], [1, 3, 2]," +
-                " [1, 3, 3], [2, 2, 2], [2, 2, 3], [2, 3, 2], [2, 3, 3], [2, 1, 1], [2, 1, 2], [2, 2, 1], [2, 2, 2]," +
-                " [3, 1, 1], [3, 1, 2], [3, 2, 1], [3, 2, 2], [2, 1, 2], [2, 1, 3], [2, 2, 2], [2, 2, 3], [3, 1, 2]," +
-                " [3, 1, 3], [3, 2, 2], [3, 2, 3], [2, 2, 1], [2, 2, 2], [2, 3, 1], [2, 3, 2], [3, 2, 1], [3, 2, 2]," +
-                " [3, 3, 1], [3, 3, 2], [2, 2, 2], [2, 2, 3], [2, 3, 2], [2, 3, 3], [3, 2, 2], [3, 2, 3], [3, 3, 2]," +
-                " [3, 3, 3]]");
+        lists_int_Iterable_helper(0, "[1, 2, 2, 3]", "ExhaustiveProvider_lists_int_Iterable_xiii");
+        lists_int_Iterable_helper(1, "[1, 2, 2, 3]", "ExhaustiveProvider_lists_int_Iterable_xiv");
+        lists_int_Iterable_helper(2, "[1, 2, 2, 3]", "ExhaustiveProvider_lists_int_Iterable_xv");
+        lists_int_Iterable_helper(3, "[1, 2, 2, 3]", "ExhaustiveProvider_lists_int_Iterable_xvi");
 
-        lists_int_Iterable_helper(0, "[1, null, 3]", "[[]]");
-        lists_int_Iterable_helper(1, "[1, null, 3]", "[[1], [null], [3]]");
-        lists_int_Iterable_helper(2, "[1, null, 3]",
-                "[[1, 1], [1, null], [null, 1], [null, null], [1, 3], [null, 3], [3, 1], [3, null], [3, 3]]");
-        lists_int_Iterable_helper(3, "[1, null, 3]",
-                "[[1, 1, 1], [1, 1, null], [1, null, 1], [1, null, null], [null, 1, 1], [null, 1, null]," +
-                " [null, null, 1], [null, null, null], [1, 1, 3], [1, null, 3], [null, 1, 3], [null, null, 3]," +
-                " [1, 3, 1], [1, 3, null], [null, 3, 1], [null, 3, null], [1, 3, 3], [null, 3, 3], [3, 1, 1]," +
-                " [3, 1, null], [3, null, 1], [3, null, null], [3, 1, 3], [3, null, 3], [3, 3, 1], [3, 3, null]," +
-                " [3, 3, 3]]");
+        lists_int_Iterable_helper(0, "[1, null, 3]", "ExhaustiveProvider_lists_int_Iterable_xvii");
+        lists_int_Iterable_helper(1, "[1, null, 3]", "ExhaustiveProvider_lists_int_Iterable_xviii");
+        lists_int_Iterable_helper(2, "[1, null, 3]", "ExhaustiveProvider_lists_int_Iterable_xix");
+        lists_int_Iterable_helper(3, "[1, null, 3]", "ExhaustiveProvider_lists_int_Iterable_xx");
 
-        lists_int_Iterable_helper(0, EP.positiveIntegers(), "[[]]");
-        lists_int_Iterable_helper(1, EP.positiveIntegers(),
-                "[[1], [2], [3], [4], [5], [6], [7], [8], [9], [10], [11], [12], [13], [14], [15], [16], [17], [18]," +
-                " [19], [20], ...]");
-        lists_int_Iterable_helper(2, EP.positiveIntegers(),
-                "[[1, 1], [1, 2], [2, 1], [2, 2], [1, 3], [1, 4], [2, 3], [2, 4], [3, 1], [3, 2], [4, 1], [4, 2]," +
-                " [3, 3], [3, 4], [4, 3], [4, 4], [1, 5], [1, 6], [2, 5], [2, 6], ...]");
-        lists_int_Iterable_helper(3, EP.positiveIntegers(),
-                "[[1, 1, 1], [1, 1, 2], [1, 2, 1], [1, 2, 2], [2, 1, 1], [2, 1, 2], [2, 2, 1], [2, 2, 2], [1, 1, 3]," +
-                " [1, 1, 4], [1, 2, 3], [1, 2, 4], [2, 1, 3], [2, 1, 4], [2, 2, 3], [2, 2, 4], [1, 3, 1], [1, 3, 2]," +
-                " [1, 4, 1], [1, 4, 2], ...]");
+        lists_int_Iterable_helper(0, EP.positiveIntegers(), "ExhaustiveProvider_lists_int_Iterable_xxi");
+        lists_int_Iterable_helper(1, EP.positiveIntegers(), "ExhaustiveProvider_lists_int_Iterable_xxii");
+        lists_int_Iterable_helper(2, EP.positiveIntegers(), "ExhaustiveProvider_lists_int_Iterable_xxiii");
+        lists_int_Iterable_helper(3, EP.positiveIntegers(), "ExhaustiveProvider_lists_int_Iterable_xxiv");
 
-        lists_int_Iterable_helper(0, repeat(1), "[[]]");
-        lists_int_Iterable_helper(1, repeat(1),
-                "[[1], [1], [1], [1], [1], [1], [1], [1], [1], [1], [1], [1], [1], [1], [1], [1], [1], [1], [1]," +
-                " [1], ...]");
-        lists_int_Iterable_helper(2, repeat(1),
-                "[[1, 1], [1, 1], [1, 1], [1, 1], [1, 1], [1, 1], [1, 1], [1, 1], [1, 1], [1, 1], [1, 1], [1, 1]," +
-                " [1, 1], [1, 1], [1, 1], [1, 1], [1, 1], [1, 1], [1, 1], [1, 1], ...]");
-        lists_int_Iterable_helper(3, repeat(1),
-                "[[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]," +
-                " [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]," +
-                " [1, 1, 1], [1, 1, 1], ...]");
+        lists_int_Iterable_helper(0, repeat(1), "ExhaustiveProvider_lists_int_Iterable_xxv");
+        lists_int_Iterable_helper(1, repeat(1), "ExhaustiveProvider_lists_int_Iterable_xxvi");
+        lists_int_Iterable_helper(2, repeat(1), "ExhaustiveProvider_lists_int_Iterable_xxvii");
+        lists_int_Iterable_helper(3, repeat(1), "ExhaustiveProvider_lists_int_Iterable_xxviii");
 
         try {
             EP.lists(-1, Collections.emptyList());
@@ -3091,29 +2121,26 @@ public strictfp class ExhaustiveProviderTest {
             @NotNull String output
     ) {
         Iterable<Pair<A, B>> ps = EP.pairs(as, bs);
-        aeqit(ps, output);
+        aeqitLog(ps, output);
         testNoRemove(ps);
     }
 
     @Test
     public void testPairs_Iterable_Iterable() {
         pairs_Iterable_Iterable_helper(Arrays.asList(1, 2, 3, 4), fromString("abcd"),
-                "[(1, a), (1, b), (2, a), (2, b), (1, c), (1, d), (2, c), (2, d), (3, a), (3, b), (4, a), (4, b)," +
-                " (3, c), (3, d), (4, c), (4, d)]");
+                "ExhaustiveProvider_pairs_Iterable_Iterable_i");
         pairs_Iterable_Iterable_helper(Arrays.asList(1, 2, null, 4), fromString("abcd"),
-                "[(1, a), (1, b), (2, a), (2, b), (1, c), (1, d), (2, c), (2, d), (null, a), (null, b), (4, a)," +
-                " (4, b), (null, c), (null, d), (4, c), (4, d)]");
-        pairs_Iterable_Iterable_helper(Collections.emptyList(), fromString("abcd"), "[]");
-        pairs_Iterable_Iterable_helper(Collections.emptyList(), Collections.emptyList(), "[]");
+                "ExhaustiveProvider_pairs_Iterable_Iterable_ii");
+        pairs_Iterable_Iterable_helper(Collections.emptyList(), fromString("abcd"),
+                "ExhaustiveProvider_pairs_Iterable_Iterable_iii");
+        pairs_Iterable_Iterable_helper(Collections.emptyList(), Collections.emptyList(),
+                "ExhaustiveProvider_pairs_Iterable_Iterable_iv");
         simpleProviderHelper(EP.pairs(EP.naturalBigIntegers(), fromString("abcd")),
-                "[(0, a), (0, b), (1, a), (1, b), (0, c), (0, d), (1, c), (1, d), (2, a), (2, b), (3, a), (3, b)," +
-                " (2, c), (2, d), (3, c), (3, d), (4, a), (4, b), (5, a), (5, b), ...]");
+                "ExhaustiveProvider_pairs_Iterable_Iterable_v");
         simpleProviderHelper(EP.pairs(fromString("abcd"), EP.naturalBigIntegers()),
-                "[(a, 0), (a, 1), (b, 0), (b, 1), (a, 2), (a, 3), (b, 2), (b, 3), (c, 0), (c, 1), (d, 0), (d, 1)," +
-                " (c, 2), (c, 3), (d, 2), (d, 3), (a, 4), (a, 5), (b, 4), (b, 5), ...]");
+                "ExhaustiveProvider_pairs_Iterable_Iterable_vi");
         simpleProviderHelper(EP.pairs(EP.positiveBigIntegers(), EP.negativeBigIntegers()),
-                "[(1, -1), (1, -2), (2, -1), (2, -2), (1, -3), (1, -4), (2, -3), (2, -4), (3, -1), (3, -2), (4, -1)," +
-                " (4, -2), (3, -3), (3, -4), (4, -3), (4, -4), (1, -5), (1, -6), (2, -5), (2, -6), ...]");
+                "ExhaustiveProvider_pairs_Iterable_Iterable_vii");
     }
 
     private static void pairs_Iterable_helper(@NotNull String input, @NotNull String output) {
@@ -3126,23 +2153,13 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testPairs_Iterable() {
-        pairs_Iterable_helper("[]", "[]");
-        pairs_Iterable_helper("[5]", "[(5, 5)]");
-        pairs_Iterable_helper("[1, 2, 3, 4]",
-                "[(1, 1), (1, 2), (2, 1), (2, 2), (1, 3), (1, 4), (2, 3), (2, 4), (3, 1), (3, 2), (4, 1), (4, 2)," +
-                " (3, 3), (3, 4), (4, 3), (4, 4)]");
-        pairs_Iterable_helper("[1, 2, 2, 4]",
-                "[(1, 1), (1, 2), (2, 1), (2, 2), (1, 2), (1, 4), (2, 2), (2, 4), (2, 1), (2, 2), (4, 1), (4, 2)," +
-                " (2, 2), (2, 4), (4, 2), (4, 4)]");
-        pairs_Iterable_helper("[1, 2, null, 4]",
-                "[(1, 1), (1, 2), (2, 1), (2, 2), (1, null), (1, 4), (2, null), (2, 4), (null, 1), (null, 2)," +
-                " (4, 1), (4, 2), (null, null), (null, 4), (4, null), (4, 4)]");
-        pairs_Iterable_helper(EP.naturalIntegers(),
-                "[(0, 0), (0, 1), (1, 0), (1, 1), (0, 2), (0, 3), (1, 2), (1, 3), (2, 0), (2, 1), (3, 0), (3, 1)," +
-                " (2, 2), (2, 3), (3, 2), (3, 3), (0, 4), (0, 5), (1, 4), (1, 5), ...]");
-        pairs_Iterable_helper(repeat(1),
-                "[(1, 1), (1, 1), (1, 1), (1, 1), (1, 1), (1, 1), (1, 1), (1, 1), (1, 1), (1, 1), (1, 1), (1, 1)," +
-                " (1, 1), (1, 1), (1, 1), (1, 1), (1, 1), (1, 1), (1, 1), (1, 1), ...]");
+        pairs_Iterable_helper("[]", "ExhaustiveProvider_pairs_Iterable_i");
+        pairs_Iterable_helper("[5]", "ExhaustiveProvider_pairs_Iterable_ii");
+        pairs_Iterable_helper("[1, 2, 3, 4]", "ExhaustiveProvider_pairs_Iterable_iii");
+        pairs_Iterable_helper("[1, 2, 2, 4]", "ExhaustiveProvider_pairs_Iterable_iv");
+        pairs_Iterable_helper("[1, 2, null, 4]", "ExhaustiveProvider_pairs_Iterable_v");
+        pairs_Iterable_helper(EP.naturalIntegers(), "ExhaustiveProvider_pairs_Iterable_vi");
+        pairs_Iterable_helper(repeat(1), "ExhaustiveProvider_pairs_Iterable_vii");
     }
 
     private static <A, B, C> void triples_Iterable_Iterable_Iterable_helper(
@@ -3152,44 +2169,29 @@ public strictfp class ExhaustiveProviderTest {
             @NotNull String output
     ) {
         Iterable<Triple<A, B, C>> ts = EP.triples(as, bs, cs);
-        aeqit(ts, output);
+        aeqitLog(ts, output);
         testNoRemove(ts);
     }
 
     @Test
     public void testTriples_Iterable_Iterable_Iterable() {
         triples_Iterable_Iterable_Iterable_helper(Arrays.asList(1, 2, 3), fromString("abc"), EP.booleans(),
-                "[(1, a, false), (1, a, true), (1, b, false), (1, b, true), (2, a, false), (2, a, true)," +
-                " (2, b, false), (2, b, true), (1, c, false), (1, c, true), (2, c, false), (2, c, true)," +
-                " (3, a, false), (3, a, true), (3, b, false), (3, b, true), (3, c, false), (3, c, true)]");
+                "ExhaustiveProvider_triples_Iterable_Iterable_Iterable_i");
         triples_Iterable_Iterable_Iterable_helper(Arrays.asList(1, 2, null, 4), fromString("abcd"), EP.booleans(),
-                "[(1, a, false), (1, a, true), (1, b, false), (1, b, true), (2, a, false), (2, a, true)," +
-                " (2, b, false), (2, b, true), (1, c, false), (1, c, true), (1, d, false), (1, d, true)," +
-                " (2, c, false), (2, c, true), (2, d, false), (2, d, true), (null, a, false), (null, a, true)," +
-                " (null, b, false), (null, b, true), (4, a, false), (4, a, true), (4, b, false), (4, b, true)," +
-                " (null, c, false), (null, c, true), (null, d, false), (null, d, true), (4, c, false)," +
-                " (4, c, true), (4, d, false), (4, d, true)]");
+                "ExhaustiveProvider_triples_Iterable_Iterable_Iterable_ii");
         triples_Iterable_Iterable_Iterable_helper(Collections.emptyList(), fromString("abcd"), EP.booleans(), "[]");
         triples_Iterable_Iterable_Iterable_helper(
                 Collections.emptyList(),
                 Collections.emptyList(),
                 Collections.emptyList(),
-                "[]"
+                "ExhaustiveProvider_triples_Iterable_Iterable_Iterable_iii"
         );
         simpleProviderHelper(EP.triples(EP.naturalBigIntegers(), fromString("abcd"), EP.booleans()),
-                "[(0, a, false), (0, a, true), (0, b, false), (0, b, true), (1, a, false), (1, a, true)," +
-                " (1, b, false), (1, b, true), (0, c, false), (0, c, true), (0, d, false), (0, d, true)," +
-                " (1, c, false), (1, c, true), (1, d, false), (1, d, true), (2, a, false), (2, a, true)," +
-                " (2, b, false), (2, b, true), ...]");
+                "ExhaustiveProvider_triples_Iterable_Iterable_Iterable_iv");
         simpleProviderHelper(EP.triples(fromString("abcd"), EP.booleans(), EP.naturalBigIntegers()),
-                "[(a, false, 0), (a, false, 1), (a, true, 0), (a, true, 1), (b, false, 0), (b, false, 1)," +
-                " (b, true, 0), (b, true, 1), (a, false, 2), (a, false, 3), (a, true, 2), (a, true, 3)," +
-                " (b, false, 2), (b, false, 3), (b, true, 2), (b, true, 3), (c, false, 0), (c, false, 1)," +
-                " (c, true, 0), (c, true, 1), ...]");
+                "ExhaustiveProvider_triples_Iterable_Iterable_Iterable_v");
         simpleProviderHelper(EP.triples(EP.positiveBigIntegers(), EP.negativeBigIntegers(), EP.characters()),
-                "[(1, -1, a), (1, -1, b), (1, -2, a), (1, -2, b), (2, -1, a), (2, -1, b), (2, -2, a), (2, -2, b)," +
-                " (1, -1, c), (1, -1, d), (1, -2, c), (1, -2, d), (2, -1, c), (2, -1, d), (2, -2, c), (2, -2, d)," +
-                " (1, -3, a), (1, -3, b), (1, -4, a), (1, -4, b), ...]");
+                "ExhaustiveProvider_triples_Iterable_Iterable_Iterable_vi");
     }
 
     private static void triples_Iterable_helper(@NotNull String input, @NotNull String output) {
@@ -3202,28 +2204,13 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testTriples_Iterable() {
-        triples_Iterable_helper("[]", "[]");
-        triples_Iterable_helper("[5]", "[(5, 5, 5)]");
-        triples_Iterable_helper("[1, 2, 3, 4]",
-                "[(1, 1, 1), (1, 1, 2), (1, 2, 1), (1, 2, 2), (2, 1, 1), (2, 1, 2), (2, 2, 1), (2, 2, 2), (1, 1, 3)," +
-                " (1, 1, 4), (1, 2, 3), (1, 2, 4), (2, 1, 3), (2, 1, 4), (2, 2, 3), (2, 2, 4), (1, 3, 1), (1, 3, 2)," +
-                " (1, 4, 1), (1, 4, 2), ...]");
-        triples_Iterable_helper("[1, 2, 2, 4]",
-                "[(1, 1, 1), (1, 1, 2), (1, 2, 1), (1, 2, 2), (2, 1, 1), (2, 1, 2), (2, 2, 1), (2, 2, 2), (1, 1, 2)," +
-                " (1, 1, 4), (1, 2, 2), (1, 2, 4), (2, 1, 2), (2, 1, 4), (2, 2, 2), (2, 2, 4), (1, 2, 1), (1, 2, 2)," +
-                " (1, 4, 1), (1, 4, 2), ...]");
-        triples_Iterable_helper("[1, 2, null, 4]",
-                "[(1, 1, 1), (1, 1, 2), (1, 2, 1), (1, 2, 2), (2, 1, 1), (2, 1, 2), (2, 2, 1), (2, 2, 2)," +
-                " (1, 1, null), (1, 1, 4), (1, 2, null), (1, 2, 4), (2, 1, null), (2, 1, 4), (2, 2, null)," +
-                " (2, 2, 4), (1, null, 1), (1, null, 2), (1, 4, 1), (1, 4, 2), ...]");
-        triples_Iterable_helper(EP.naturalIntegers(),
-                "[(0, 0, 0), (0, 0, 1), (0, 1, 0), (0, 1, 1), (1, 0, 0), (1, 0, 1), (1, 1, 0), (1, 1, 1), (0, 0, 2)," +
-                " (0, 0, 3), (0, 1, 2), (0, 1, 3), (1, 0, 2), (1, 0, 3), (1, 1, 2), (1, 1, 3), (0, 2, 0), (0, 2, 1)," +
-                " (0, 3, 0), (0, 3, 1), ...]");
-        triples_Iterable_helper(repeat(1),
-                "[(1, 1, 1), (1, 1, 1), (1, 1, 1), (1, 1, 1), (1, 1, 1), (1, 1, 1), (1, 1, 1), (1, 1, 1), (1, 1, 1)," +
-                " (1, 1, 1), (1, 1, 1), (1, 1, 1), (1, 1, 1), (1, 1, 1), (1, 1, 1), (1, 1, 1), (1, 1, 1), (1, 1, 1)," +
-                " (1, 1, 1), (1, 1, 1), ...]");
+        triples_Iterable_helper("[]", "ExhaustiveProvider_triples_Iterable_i");
+        triples_Iterable_helper("[5]", "ExhaustiveProvider_triples_Iterable_ii");
+        triples_Iterable_helper("[1, 2, 3, 4]", "ExhaustiveProvider_triples_Iterable_iii");
+        triples_Iterable_helper("[1, 2, 2, 4]", "ExhaustiveProvider_triples_Iterable_iv");
+        triples_Iterable_helper("[1, 2, null, 4]", "ExhaustiveProvider_triples_Iterable_v");
+        triples_Iterable_helper(EP.naturalIntegers(), "ExhaustiveProvider_triples_Iterable_vi");
+        triples_Iterable_helper(repeat(1), "ExhaustiveProvider_triples_Iterable_vii");
     }
 
     private static <A, B, C, D> void quadruples_Iterable_Iterable_Iterable_Iterable_helper(
@@ -3234,7 +2221,7 @@ public strictfp class ExhaustiveProviderTest {
             @NotNull String output
     ) {
         Iterable<Quadruple<A, B, C, D>> qs = EP.quadruples(as, bs, cs, ds);
-        aeqit(qs, output);
+        aeqitLog(qs, output);
         testNoRemove(qs);
     }
 
@@ -3245,75 +2232,36 @@ public strictfp class ExhaustiveProviderTest {
                 fromString("abc"),
                 EP.booleans(),
                 EP.orderings(),
-                "[(1, a, false, EQ), (1, a, false, LT), (1, a, true, EQ), (1, a, true, LT), (1, b, false, EQ)," +
-                " (1, b, false, LT), (1, b, true, EQ), (1, b, true, LT), (2, a, false, EQ), (2, a, false, LT)," +
-                " (2, a, true, EQ), (2, a, true, LT), (2, b, false, EQ), (2, b, false, LT), (2, b, true, EQ)," +
-                " (2, b, true, LT), (1, a, false, GT), (1, a, true, GT), (1, b, false, GT), (1, b, true, GT)," +
-                " (2, a, false, GT), (2, a, true, GT), (2, b, false, GT), (2, b, true, GT), (1, c, false, EQ)," +
-                " (1, c, false, LT), (1, c, true, EQ), (1, c, true, LT), (2, c, false, EQ), (2, c, false, LT)," +
-                " (2, c, true, EQ), (2, c, true, LT), (1, c, false, GT), (1, c, true, GT), (2, c, false, GT)," +
-                " (2, c, true, GT), (3, a, false, EQ), (3, a, false, LT), (3, a, true, EQ), (3, a, true, LT)," +
-                " (3, b, false, EQ), (3, b, false, LT), (3, b, true, EQ), (3, b, true, LT), (3, a, false, GT)," +
-                " (3, a, true, GT), (3, b, false, GT), (3, b, true, GT), (3, c, false, EQ), (3, c, false, LT)," +
-                " (3, c, true, EQ), (3, c, true, LT), (3, c, false, GT), (3, c, true, GT)]"
+                "ExhaustiveProvider_quadruples_Iterable_Iterable_Iterable_Iterable_i"
         );
         quadruples_Iterable_Iterable_Iterable_Iterable_helper(
                 Arrays.asList(1, 2, null, 4),
                 fromString("abcd"),
                 EP.booleans(),
                 EP.orderings(),
-                "[(1, a, false, EQ), (1, a, false, LT), (1, a, true, EQ), (1, a, true, LT), (1, b, false, EQ)," +
-                " (1, b, false, LT), (1, b, true, EQ), (1, b, true, LT), (2, a, false, EQ), (2, a, false, LT)," +
-                " (2, a, true, EQ), (2, a, true, LT), (2, b, false, EQ), (2, b, false, LT), (2, b, true, EQ)," +
-                " (2, b, true, LT), (1, a, false, GT), (1, a, true, GT), (1, b, false, GT), (1, b, true, GT)," +
-                " (2, a, false, GT), (2, a, true, GT), (2, b, false, GT), (2, b, true, GT), (1, c, false, EQ)," +
-                " (1, c, false, LT), (1, c, true, EQ), (1, c, true, LT), (1, d, false, EQ), (1, d, false, LT)," +
-                " (1, d, true, EQ), (1, d, true, LT), (2, c, false, EQ), (2, c, false, LT), (2, c, true, EQ)," +
-                " (2, c, true, LT), (2, d, false, EQ), (2, d, false, LT), (2, d, true, EQ), (2, d, true, LT)," +
-                " (1, c, false, GT), (1, c, true, GT), (1, d, false, GT), (1, d, true, GT), (2, c, false, GT)," +
-                " (2, c, true, GT), (2, d, false, GT), (2, d, true, GT), (null, a, false, EQ), (null, a, false, LT)," +
-                " (null, a, true, EQ), (null, a, true, LT), (null, b, false, EQ), (null, b, false, LT)," +
-                " (null, b, true, EQ), (null, b, true, LT), (4, a, false, EQ), (4, a, false, LT), (4, a, true, EQ)," +
-                " (4, a, true, LT), (4, b, false, EQ), (4, b, false, LT), (4, b, true, EQ), (4, b, true, LT)," +
-                " (null, a, false, GT), (null, a, true, GT), (null, b, false, GT), (null, b, true, GT)," +
-                " (4, a, false, GT), (4, a, true, GT), (4, b, false, GT), (4, b, true, GT), (null, c, false, EQ)," +
-                " (null, c, false, LT), (null, c, true, EQ), (null, c, true, LT), (null, d, false, EQ)," +
-                " (null, d, false, LT), (null, d, true, EQ), (null, d, true, LT), (4, c, false, EQ)," +
-                " (4, c, false, LT), (4, c, true, EQ), (4, c, true, LT), (4, d, false, EQ), (4, d, false, LT)," +
-                " (4, d, true, EQ), (4, d, true, LT), (null, c, false, GT), (null, c, true, GT)," +
-                " (null, d, false, GT), (null, d, true, GT), (4, c, false, GT), (4, c, true, GT), (4, d, false, GT)," +
-                " (4, d, true, GT)]"
+                "ExhaustiveProvider_quadruples_Iterable_Iterable_Iterable_Iterable_ii"
         );
         quadruples_Iterable_Iterable_Iterable_Iterable_helper(
                 Collections.emptyList(),
                 fromString("abcd"),
                 EP.booleans(),
                 EP.orderings(),
-                "[]"
+                "ExhaustiveProvider_quadruples_Iterable_Iterable_Iterable_Iterable_iii"
         );
         quadruples_Iterable_Iterable_Iterable_Iterable_helper(
                 Collections.emptyList(),
                 Collections.emptyList(),
                 Collections.emptyList(),
                 Collections.emptyList(),
-                "[]"
+                "ExhaustiveProvider_quadruples_Iterable_Iterable_Iterable_Iterable_iv"
         );
         simpleProviderHelper(EP.quadruples(EP.naturalBigIntegers(), fromString("abcd"), EP.booleans(), EP.orderings()),
-                "[(0, a, false, EQ), (0, a, false, LT), (0, a, true, EQ), (0, a, true, LT), (0, b, false, EQ)," +
-                " (0, b, false, LT), (0, b, true, EQ), (0, b, true, LT), (1, a, false, EQ), (1, a, false, LT)," +
-                " (1, a, true, EQ), (1, a, true, LT), (1, b, false, EQ), (1, b, false, LT), (1, b, true, EQ)," +
-                " (1, b, true, LT), (0, a, false, GT), (0, a, true, GT), (0, b, false, GT), (0, b, true, GT), ...]");
+                "ExhaustiveProvider_quadruples_Iterable_Iterable_Iterable_Iterable_v");
         simpleProviderHelper(EP.quadruples(fromString("abcd"), EP.booleans(), EP.naturalBigIntegers(), EP.orderings()),
-                "[(a, false, 0, EQ), (a, false, 0, LT), (a, false, 1, EQ), (a, false, 1, LT), (a, true, 0, EQ)," +
-                " (a, true, 0, LT), (a, true, 1, EQ), (a, true, 1, LT), (b, false, 0, EQ), (b, false, 0, LT)," +
-                " (b, false, 1, EQ), (b, false, 1, LT), (b, true, 0, EQ), (b, true, 0, LT), (b, true, 1, EQ)," +
-                " (b, true, 1, LT), (a, false, 0, GT), (a, false, 1, GT), (a, true, 0, GT), (a, true, 1, GT), ...]");
+                "ExhaustiveProvider_quadruples_Iterable_Iterable_Iterable_Iterable_vi");
         simpleProviderHelper(
                 EP.quadruples(EP.positiveBigIntegers(), EP.negativeBigIntegers(), EP.characters(), EP.strings()),
-                "[(1, -1, a, ), (1, -1, a, a), (1, -1, b, ), (1, -1, b, a), (1, -2, a, ), (1, -2, a, a)," +
-                " (1, -2, b, ), (1, -2, b, a), (2, -1, a, ), (2, -1, a, a), (2, -1, b, ), (2, -1, b, a)," +
-                " (2, -2, a, ), (2, -2, a, a), (2, -2, b, ), (2, -2, b, a), (1, -1, a, aa), (1, -1, a, b)," +
-                " (1, -1, b, aa), (1, -1, b, b), ...]");
+                "ExhaustiveProvider_quadruples_Iterable_Iterable_Iterable_Iterable_vii");
     }
 
     private static void quadruples_Iterable_helper(@NotNull String input, @NotNull String output) {
@@ -3326,28 +2274,13 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testQuadruples_Iterable() {
-        quadruples_Iterable_helper("[]", "[]");
-        quadruples_Iterable_helper("[5]", "[(5, 5, 5, 5)]");
-        quadruples_Iterable_helper("[1, 2, 3, 4]",
-                "[(1, 1, 1, 1), (1, 1, 1, 2), (1, 1, 2, 1), (1, 1, 2, 2), (1, 2, 1, 1), (1, 2, 1, 2), (1, 2, 2, 1)," +
-                " (1, 2, 2, 2), (2, 1, 1, 1), (2, 1, 1, 2), (2, 1, 2, 1), (2, 1, 2, 2), (2, 2, 1, 1), (2, 2, 1, 2)," +
-                " (2, 2, 2, 1), (2, 2, 2, 2), (1, 1, 1, 3), (1, 1, 1, 4), (1, 1, 2, 3), (1, 1, 2, 4), ...]");
-        quadruples_Iterable_helper("[1, 2, 2, 4]",
-                "[(1, 1, 1, 1), (1, 1, 1, 2), (1, 1, 2, 1), (1, 1, 2, 2), (1, 2, 1, 1), (1, 2, 1, 2), (1, 2, 2, 1)," +
-                " (1, 2, 2, 2), (2, 1, 1, 1), (2, 1, 1, 2), (2, 1, 2, 1), (2, 1, 2, 2), (2, 2, 1, 1), (2, 2, 1, 2)," +
-                " (2, 2, 2, 1), (2, 2, 2, 2), (1, 1, 1, 2), (1, 1, 1, 4), (1, 1, 2, 2), (1, 1, 2, 4), ...]");
-        quadruples_Iterable_helper("[1, 2, null, 4]",
-                "[(1, 1, 1, 1), (1, 1, 1, 2), (1, 1, 2, 1), (1, 1, 2, 2), (1, 2, 1, 1), (1, 2, 1, 2), (1, 2, 2, 1)," +
-                " (1, 2, 2, 2), (2, 1, 1, 1), (2, 1, 1, 2), (2, 1, 2, 1), (2, 1, 2, 2), (2, 2, 1, 1), (2, 2, 1, 2)," +
-                " (2, 2, 2, 1), (2, 2, 2, 2), (1, 1, 1, null), (1, 1, 1, 4), (1, 1, 2, null), (1, 1, 2, 4), ...]");
-        quadruples_Iterable_helper(EP.naturalIntegers(),
-                "[(0, 0, 0, 0), (0, 0, 0, 1), (0, 0, 1, 0), (0, 0, 1, 1), (0, 1, 0, 0), (0, 1, 0, 1), (0, 1, 1, 0)," +
-                " (0, 1, 1, 1), (1, 0, 0, 0), (1, 0, 0, 1), (1, 0, 1, 0), (1, 0, 1, 1), (1, 1, 0, 0), (1, 1, 0, 1)," +
-                " (1, 1, 1, 0), (1, 1, 1, 1), (0, 0, 0, 2), (0, 0, 0, 3), (0, 0, 1, 2), (0, 0, 1, 3), ...]");
-        quadruples_Iterable_helper(repeat(1),
-                "[(1, 1, 1, 1), (1, 1, 1, 1), (1, 1, 1, 1), (1, 1, 1, 1), (1, 1, 1, 1), (1, 1, 1, 1), (1, 1, 1, 1)," +
-                " (1, 1, 1, 1), (1, 1, 1, 1), (1, 1, 1, 1), (1, 1, 1, 1), (1, 1, 1, 1), (1, 1, 1, 1), (1, 1, 1, 1)," +
-                " (1, 1, 1, 1), (1, 1, 1, 1), (1, 1, 1, 1), (1, 1, 1, 1), (1, 1, 1, 1), (1, 1, 1, 1), ...]");
+        quadruples_Iterable_helper("[]", "ExhaustiveProvider_quadruples_Iterable_i");
+        quadruples_Iterable_helper("[5]", "ExhaustiveProvider_quadruples_Iterable_ii");
+        quadruples_Iterable_helper("[1, 2, 3, 4]", "ExhaustiveProvider_quadruples_Iterable_iii");
+        quadruples_Iterable_helper("[1, 2, 2, 4]", "ExhaustiveProvider_quadruples_Iterable_iv");
+        quadruples_Iterable_helper("[1, 2, null, 4]", "ExhaustiveProvider_quadruples_Iterable_v");
+        quadruples_Iterable_helper(EP.naturalIntegers(), "ExhaustiveProvider_quadruples_Iterable_vi");
+        quadruples_Iterable_helper(repeat(1), "ExhaustiveProvider_quadruples_Iterable_vii");
     }
 
     private static <A, B, C, D, E> void quintuples_Iterable_Iterable_Iterable_Iterable_Iterable_helper(
@@ -3359,7 +2292,7 @@ public strictfp class ExhaustiveProviderTest {
             @NotNull String output
     ) {
         Iterable<Quintuple<A, B, C, D, E>> qs = EP.quintuples(as, bs, cs, ds, es);
-        aeqit(qs, output);
+        aeqitLog(qs, output);
         testNoRemove(qs);
     }
 
@@ -3371,33 +2304,7 @@ public strictfp class ExhaustiveProviderTest {
                 EP.booleans(),
                 EP.orderings(),
                 Arrays.asList("yes", "no"),
-                "[(1, a, false, EQ, yes), (1, a, false, EQ, no), (1, a, false, LT, yes), (1, a, false, LT, no)," +
-                " (1, a, true, EQ, yes), (1, a, true, EQ, no), (1, a, true, LT, yes), (1, a, true, LT, no)," +
-                " (1, b, false, EQ, yes), (1, b, false, EQ, no), (1, b, false, LT, yes), (1, b, false, LT, no)," +
-                " (1, b, true, EQ, yes), (1, b, true, EQ, no), (1, b, true, LT, yes), (1, b, true, LT, no)," +
-                " (2, a, false, EQ, yes), (2, a, false, EQ, no), (2, a, false, LT, yes), (2, a, false, LT, no)," +
-                " (2, a, true, EQ, yes), (2, a, true, EQ, no), (2, a, true, LT, yes), (2, a, true, LT, no)," +
-                " (2, b, false, EQ, yes), (2, b, false, EQ, no), (2, b, false, LT, yes), (2, b, false, LT, no)," +
-                " (2, b, true, EQ, yes), (2, b, true, EQ, no), (2, b, true, LT, yes), (2, b, true, LT, no)," +
-                " (1, a, false, GT, yes), (1, a, false, GT, no), (1, a, true, GT, yes), (1, a, true, GT, no)," +
-                " (1, b, false, GT, yes), (1, b, false, GT, no), (1, b, true, GT, yes), (1, b, true, GT, no)," +
-                " (2, a, false, GT, yes), (2, a, false, GT, no), (2, a, true, GT, yes), (2, a, true, GT, no)," +
-                " (2, b, false, GT, yes), (2, b, false, GT, no), (2, b, true, GT, yes), (2, b, true, GT, no)," +
-                " (1, c, false, EQ, yes), (1, c, false, EQ, no), (1, c, false, LT, yes), (1, c, false, LT, no)," +
-                " (1, c, true, EQ, yes), (1, c, true, EQ, no), (1, c, true, LT, yes), (1, c, true, LT, no)," +
-                " (2, c, false, EQ, yes), (2, c, false, EQ, no), (2, c, false, LT, yes), (2, c, false, LT, no)," +
-                " (2, c, true, EQ, yes), (2, c, true, EQ, no), (2, c, true, LT, yes), (2, c, true, LT, no)," +
-                " (1, c, false, GT, yes), (1, c, false, GT, no), (1, c, true, GT, yes), (1, c, true, GT, no)," +
-                " (2, c, false, GT, yes), (2, c, false, GT, no), (2, c, true, GT, yes), (2, c, true, GT, no)," +
-                " (3, a, false, EQ, yes), (3, a, false, EQ, no), (3, a, false, LT, yes), (3, a, false, LT, no)," +
-                " (3, a, true, EQ, yes), (3, a, true, EQ, no), (3, a, true, LT, yes), (3, a, true, LT, no)," +
-                " (3, b, false, EQ, yes), (3, b, false, EQ, no), (3, b, false, LT, yes), (3, b, false, LT, no)," +
-                " (3, b, true, EQ, yes), (3, b, true, EQ, no), (3, b, true, LT, yes), (3, b, true, LT, no)," +
-                " (3, a, false, GT, yes), (3, a, false, GT, no), (3, a, true, GT, yes), (3, a, true, GT, no)," +
-                " (3, b, false, GT, yes), (3, b, false, GT, no), (3, b, true, GT, yes), (3, b, true, GT, no)," +
-                " (3, c, false, EQ, yes), (3, c, false, EQ, no), (3, c, false, LT, yes), (3, c, false, LT, no)," +
-                " (3, c, true, EQ, yes), (3, c, true, EQ, no), (3, c, true, LT, yes), (3, c, true, LT, no)," +
-                " (3, c, false, GT, yes), (3, c, false, GT, no), (3, c, true, GT, yes), (3, c, true, GT, no)]"
+                "ExhaustiveProvider_quintuples_Iterable_Iterable_Iterable_Iterable_Iterable_i"
         );
         quintuples_Iterable_Iterable_Iterable_Iterable_Iterable_helper(
                 Arrays.asList(1, 2, null, 4),
@@ -3405,58 +2312,7 @@ public strictfp class ExhaustiveProviderTest {
                 EP.booleans(),
                 EP.orderings(),
                 Arrays.asList("yes", "no"),
-                "[(1, a, false, EQ, yes), (1, a, false, EQ, no), (1, a, false, LT, yes), (1, a, false, LT, no)," +
-                " (1, a, true, EQ, yes), (1, a, true, EQ, no), (1, a, true, LT, yes), (1, a, true, LT, no)," +
-                " (1, b, false, EQ, yes), (1, b, false, EQ, no), (1, b, false, LT, yes), (1, b, false, LT, no)," +
-                " (1, b, true, EQ, yes), (1, b, true, EQ, no), (1, b, true, LT, yes), (1, b, true, LT, no)," +
-                " (2, a, false, EQ, yes), (2, a, false, EQ, no), (2, a, false, LT, yes), (2, a, false, LT, no)," +
-                " (2, a, true, EQ, yes), (2, a, true, EQ, no), (2, a, true, LT, yes), (2, a, true, LT, no)," +
-                " (2, b, false, EQ, yes), (2, b, false, EQ, no), (2, b, false, LT, yes), (2, b, false, LT, no)," +
-                " (2, b, true, EQ, yes), (2, b, true, EQ, no), (2, b, true, LT, yes), (2, b, true, LT, no)," +
-                " (1, a, false, GT, yes), (1, a, false, GT, no), (1, a, true, GT, yes), (1, a, true, GT, no)," +
-                " (1, b, false, GT, yes), (1, b, false, GT, no), (1, b, true, GT, yes), (1, b, true, GT, no)," +
-                " (2, a, false, GT, yes), (2, a, false, GT, no), (2, a, true, GT, yes), (2, a, true, GT, no)," +
-                " (2, b, false, GT, yes), (2, b, false, GT, no), (2, b, true, GT, yes), (2, b, true, GT, no)," +
-                " (1, c, false, EQ, yes), (1, c, false, EQ, no), (1, c, false, LT, yes), (1, c, false, LT, no)," +
-                " (1, c, true, EQ, yes), (1, c, true, EQ, no), (1, c, true, LT, yes), (1, c, true, LT, no)," +
-                " (1, d, false, EQ, yes), (1, d, false, EQ, no), (1, d, false, LT, yes), (1, d, false, LT, no)," +
-                " (1, d, true, EQ, yes), (1, d, true, EQ, no), (1, d, true, LT, yes), (1, d, true, LT, no)," +
-                " (2, c, false, EQ, yes), (2, c, false, EQ, no), (2, c, false, LT, yes), (2, c, false, LT, no)," +
-                " (2, c, true, EQ, yes), (2, c, true, EQ, no), (2, c, true, LT, yes), (2, c, true, LT, no)," +
-                " (2, d, false, EQ, yes), (2, d, false, EQ, no), (2, d, false, LT, yes), (2, d, false, LT, no)," +
-                " (2, d, true, EQ, yes), (2, d, true, EQ, no), (2, d, true, LT, yes), (2, d, true, LT, no)," +
-                " (1, c, false, GT, yes), (1, c, false, GT, no), (1, c, true, GT, yes), (1, c, true, GT, no)," +
-                " (1, d, false, GT, yes), (1, d, false, GT, no), (1, d, true, GT, yes), (1, d, true, GT, no)," +
-                " (2, c, false, GT, yes), (2, c, false, GT, no), (2, c, true, GT, yes), (2, c, true, GT, no)," +
-                " (2, d, false, GT, yes), (2, d, false, GT, no), (2, d, true, GT, yes), (2, d, true, GT, no)," +
-                " (null, a, false, EQ, yes), (null, a, false, EQ, no), (null, a, false, LT, yes)," +
-                " (null, a, false, LT, no), (null, a, true, EQ, yes), (null, a, true, EQ, no)," +
-                " (null, a, true, LT, yes), (null, a, true, LT, no), (null, b, false, EQ, yes)," +
-                " (null, b, false, EQ, no), (null, b, false, LT, yes), (null, b, false, LT, no)," +
-                " (null, b, true, EQ, yes), (null, b, true, EQ, no), (null, b, true, LT, yes)," +
-                " (null, b, true, LT, no), (4, a, false, EQ, yes), (4, a, false, EQ, no), (4, a, false, LT, yes)," +
-                " (4, a, false, LT, no), (4, a, true, EQ, yes), (4, a, true, EQ, no), (4, a, true, LT, yes)," +
-                " (4, a, true, LT, no), (4, b, false, EQ, yes), (4, b, false, EQ, no), (4, b, false, LT, yes)," +
-                " (4, b, false, LT, no), (4, b, true, EQ, yes), (4, b, true, EQ, no), (4, b, true, LT, yes)," +
-                " (4, b, true, LT, no), (null, a, false, GT, yes), (null, a, false, GT, no)," +
-                " (null, a, true, GT, yes), (null, a, true, GT, no), (null, b, false, GT, yes)," +
-                " (null, b, false, GT, no), (null, b, true, GT, yes), (null, b, true, GT, no)," +
-                " (4, a, false, GT, yes), (4, a, false, GT, no), (4, a, true, GT, yes), (4, a, true, GT, no)," +
-                " (4, b, false, GT, yes), (4, b, false, GT, no), (4, b, true, GT, yes), (4, b, true, GT, no)," +
-                " (null, c, false, EQ, yes), (null, c, false, EQ, no), (null, c, false, LT, yes)," +
-                " (null, c, false, LT, no), (null, c, true, EQ, yes), (null, c, true, EQ, no)," +
-                " (null, c, true, LT, yes), (null, c, true, LT, no), (null, d, false, EQ, yes)," +
-                " (null, d, false, EQ, no), (null, d, false, LT, yes), (null, d, false, LT, no)," +
-                " (null, d, true, EQ, yes), (null, d, true, EQ, no), (null, d, true, LT, yes)," +
-                " (null, d, true, LT, no), (4, c, false, EQ, yes), (4, c, false, EQ, no), (4, c, false, LT, yes)," +
-                " (4, c, false, LT, no), (4, c, true, EQ, yes), (4, c, true, EQ, no), (4, c, true, LT, yes)," +
-                " (4, c, true, LT, no), (4, d, false, EQ, yes), (4, d, false, EQ, no), (4, d, false, LT, yes)," +
-                " (4, d, false, LT, no), (4, d, true, EQ, yes), (4, d, true, EQ, no), (4, d, true, LT, yes)," +
-                " (4, d, true, LT, no), (null, c, false, GT, yes), (null, c, false, GT, no)," +
-                " (null, c, true, GT, yes), (null, c, true, GT, no), (null, d, false, GT, yes)," +
-                " (null, d, false, GT, no), (null, d, true, GT, yes), (null, d, true, GT, no)," +
-                " (4, c, false, GT, yes), (4, c, false, GT, no), (4, c, true, GT, yes), (4, c, true, GT, no)," +
-                " (4, d, false, GT, yes), (4, d, false, GT, no), (4, d, true, GT, yes), (4, d, true, GT, no)]"
+                "ExhaustiveProvider_quintuples_Iterable_Iterable_Iterable_Iterable_Iterable_ii"
         );
         quintuples_Iterable_Iterable_Iterable_Iterable_Iterable_helper(
                 Collections.emptyList(),
@@ -3464,7 +2320,7 @@ public strictfp class ExhaustiveProviderTest {
                 EP.booleans(),
                 EP.orderings(),
                 Arrays.asList("yes", "no"),
-                "[]"
+                "ExhaustiveProvider_quintuples_Iterable_Iterable_Iterable_Iterable_Iterable_iii"
         );
         quintuples_Iterable_Iterable_Iterable_Iterable_Iterable_helper(
                 Collections.emptyList(),
@@ -3472,7 +2328,7 @@ public strictfp class ExhaustiveProviderTest {
                 Collections.emptyList(),
                 Collections.emptyList(),
                 Collections.emptyList(),
-                "[]"
+                "ExhaustiveProvider_quintuples_Iterable_Iterable_Iterable_Iterable_Iterable_iv"
         );
         simpleProviderHelper(
                 EP.quintuples(
@@ -3482,11 +2338,7 @@ public strictfp class ExhaustiveProviderTest {
                         EP.orderings(),
                         Arrays.asList("yes", "no")
                 ),
-                "[(0, a, false, EQ, yes), (0, a, false, EQ, no), (0, a, false, LT, yes), (0, a, false, LT, no)," +
-                " (0, a, true, EQ, yes), (0, a, true, EQ, no), (0, a, true, LT, yes), (0, a, true, LT, no)," +
-                " (0, b, false, EQ, yes), (0, b, false, EQ, no), (0, b, false, LT, yes), (0, b, false, LT, no)," +
-                " (0, b, true, EQ, yes), (0, b, true, EQ, no), (0, b, true, LT, yes), (0, b, true, LT, no)," +
-                " (1, a, false, EQ, yes), (1, a, false, EQ, no), (1, a, false, LT, yes), (1, a, false, LT, no), ...]"
+                "ExhaustiveProvider_quintuples_Iterable_Iterable_Iterable_Iterable_Iterable_v"
         );
         simpleProviderHelper(
                 EP.quintuples(
@@ -3496,11 +2348,7 @@ public strictfp class ExhaustiveProviderTest {
                         EP.orderings(),
                         Arrays.asList("yes", "no")
                 ),
-                "[(a, false, 0, EQ, yes), (a, false, 0, EQ, no), (a, false, 0, LT, yes), (a, false, 0, LT, no)," +
-                " (a, false, 1, EQ, yes), (a, false, 1, EQ, no), (a, false, 1, LT, yes), (a, false, 1, LT, no)," +
-                " (a, true, 0, EQ, yes), (a, true, 0, EQ, no), (a, true, 0, LT, yes), (a, true, 0, LT, no)," +
-                " (a, true, 1, EQ, yes), (a, true, 1, EQ, no), (a, true, 1, LT, yes), (a, true, 1, LT, no)," +
-                " (b, false, 0, EQ, yes), (b, false, 0, EQ, no), (b, false, 0, LT, yes), (b, false, 0, LT, no), ...]"
+                "ExhaustiveProvider_quintuples_Iterable_Iterable_Iterable_Iterable_Iterable_vi"
         );
         simpleProviderHelper(
                 EP.quintuples(
@@ -3510,11 +2358,7 @@ public strictfp class ExhaustiveProviderTest {
                         EP.strings(),
                         EP.floats()
                 ),
-                "[(1, -1, a, , NaN), (1, -1, a, , Infinity), (1, -1, a, a, NaN), (1, -1, a, a, Infinity)," +
-                " (1, -1, b, , NaN), (1, -1, b, , Infinity), (1, -1, b, a, NaN), (1, -1, b, a, Infinity)," +
-                " (1, -2, a, , NaN), (1, -2, a, , Infinity), (1, -2, a, a, NaN), (1, -2, a, a, Infinity)," +
-                " (1, -2, b, , NaN), (1, -2, b, , Infinity), (1, -2, b, a, NaN), (1, -2, b, a, Infinity)," +
-                " (2, -1, a, , NaN), (2, -1, a, , Infinity), (2, -1, a, a, NaN), (2, -1, a, a, Infinity), ...]"
+                "ExhaustiveProvider_quintuples_Iterable_Iterable_Iterable_Iterable_Iterable_vii"
         );
     }
 
@@ -3528,33 +2372,13 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testQuintuples_Iterable() {
-        quintuples_Iterable_helper("[]", "[]");
-        quintuples_Iterable_helper("[5]", "[(5, 5, 5, 5, 5)]");
-        quintuples_Iterable_helper("[1, 2, 3, 4]",
-                "[(1, 1, 1, 1, 1), (1, 1, 1, 1, 2), (1, 1, 1, 2, 1), (1, 1, 1, 2, 2), (1, 1, 2, 1, 1)," +
-                " (1, 1, 2, 1, 2), (1, 1, 2, 2, 1), (1, 1, 2, 2, 2), (1, 2, 1, 1, 1), (1, 2, 1, 1, 2)," +
-                " (1, 2, 1, 2, 1), (1, 2, 1, 2, 2), (1, 2, 2, 1, 1), (1, 2, 2, 1, 2), (1, 2, 2, 2, 1)," +
-                " (1, 2, 2, 2, 2), (2, 1, 1, 1, 1), (2, 1, 1, 1, 2), (2, 1, 1, 2, 1), (2, 1, 1, 2, 2), ...]");
-        quintuples_Iterable_helper("[1, 2, 2, 4]",
-                "[(1, 1, 1, 1, 1), (1, 1, 1, 1, 2), (1, 1, 1, 2, 1), (1, 1, 1, 2, 2), (1, 1, 2, 1, 1)," +
-                " (1, 1, 2, 1, 2), (1, 1, 2, 2, 1), (1, 1, 2, 2, 2), (1, 2, 1, 1, 1), (1, 2, 1, 1, 2)," +
-                " (1, 2, 1, 2, 1), (1, 2, 1, 2, 2), (1, 2, 2, 1, 1), (1, 2, 2, 1, 2), (1, 2, 2, 2, 1)," +
-                " (1, 2, 2, 2, 2), (2, 1, 1, 1, 1), (2, 1, 1, 1, 2), (2, 1, 1, 2, 1), (2, 1, 1, 2, 2), ...]");
-        quintuples_Iterable_helper("[1, 2, null, 4]",
-                "[(1, 1, 1, 1, 1), (1, 1, 1, 1, 2), (1, 1, 1, 2, 1), (1, 1, 1, 2, 2), (1, 1, 2, 1, 1)," +
-                " (1, 1, 2, 1, 2), (1, 1, 2, 2, 1), (1, 1, 2, 2, 2), (1, 2, 1, 1, 1), (1, 2, 1, 1, 2)," +
-                " (1, 2, 1, 2, 1), (1, 2, 1, 2, 2), (1, 2, 2, 1, 1), (1, 2, 2, 1, 2), (1, 2, 2, 2, 1)," +
-                " (1, 2, 2, 2, 2), (2, 1, 1, 1, 1), (2, 1, 1, 1, 2), (2, 1, 1, 2, 1), (2, 1, 1, 2, 2), ...]");
-        quintuples_Iterable_helper(EP.naturalIntegers(),
-                "[(0, 0, 0, 0, 0), (0, 0, 0, 0, 1), (0, 0, 0, 1, 0), (0, 0, 0, 1, 1), (0, 0, 1, 0, 0)," +
-                " (0, 0, 1, 0, 1), (0, 0, 1, 1, 0), (0, 0, 1, 1, 1), (0, 1, 0, 0, 0), (0, 1, 0, 0, 1)," +
-                " (0, 1, 0, 1, 0), (0, 1, 0, 1, 1), (0, 1, 1, 0, 0), (0, 1, 1, 0, 1), (0, 1, 1, 1, 0)," +
-                " (0, 1, 1, 1, 1), (1, 0, 0, 0, 0), (1, 0, 0, 0, 1), (1, 0, 0, 1, 0), (1, 0, 0, 1, 1), ...]");
-        quintuples_Iterable_helper(repeat(1),
-                "[(1, 1, 1, 1, 1), (1, 1, 1, 1, 1), (1, 1, 1, 1, 1), (1, 1, 1, 1, 1), (1, 1, 1, 1, 1)," +
-                " (1, 1, 1, 1, 1), (1, 1, 1, 1, 1), (1, 1, 1, 1, 1), (1, 1, 1, 1, 1), (1, 1, 1, 1, 1)," +
-                " (1, 1, 1, 1, 1), (1, 1, 1, 1, 1), (1, 1, 1, 1, 1), (1, 1, 1, 1, 1), (1, 1, 1, 1, 1)," +
-                " (1, 1, 1, 1, 1), (1, 1, 1, 1, 1), (1, 1, 1, 1, 1), (1, 1, 1, 1, 1), (1, 1, 1, 1, 1), ...]");
+        quintuples_Iterable_helper("[]", "ExhaustiveProvider_quintuples_Iterable_i");
+        quintuples_Iterable_helper("[5]", "ExhaustiveProvider_quintuples_Iterable_ii");
+        quintuples_Iterable_helper("[1, 2, 3, 4]", "ExhaustiveProvider_quintuples_Iterable_iii");
+        quintuples_Iterable_helper("[1, 2, 2, 4]", "ExhaustiveProvider_quintuples_Iterable_iv");
+        quintuples_Iterable_helper("[1, 2, null, 4]", "ExhaustiveProvider_quintuples_Iterable_v");
+        quintuples_Iterable_helper(EP.naturalIntegers(), "ExhaustiveProvider_quintuples_Iterable_vi");
+        quintuples_Iterable_helper(repeat(1), "ExhaustiveProvider_quintuples_Iterable_vii");
     }
 
     private static <A, B, C, D, E, F> void sextuples_Iterable_Iterable_Iterable_Iterable_Iterable_Iterable_helper(
@@ -3567,7 +2391,7 @@ public strictfp class ExhaustiveProviderTest {
             @NotNull String output
     ) {
         Iterable<Sextuple<A, B, C, D, E, F>> ss = EP.sextuples(as, bs, cs, ds, es, fs);
-        aeqit(ss, output);
+        aeqitLog(ss, output);
         testNoRemove(ss);
     }
 
@@ -3580,78 +2404,7 @@ public strictfp class ExhaustiveProviderTest {
                 EP.orderings(),
                 Arrays.asList("yes", "no"),
                 Arrays.asList(Float.POSITIVE_INFINITY, Float.NaN),
-                "[(1, a, false, EQ, yes, Infinity), (1, a, false, EQ, yes, NaN), (1, a, false, EQ, no, Infinity)," +
-                " (1, a, false, EQ, no, NaN), (1, a, false, LT, yes, Infinity), (1, a, false, LT, yes, NaN)," +
-                " (1, a, false, LT, no, Infinity), (1, a, false, LT, no, NaN), (1, a, true, EQ, yes, Infinity)," +
-                " (1, a, true, EQ, yes, NaN), (1, a, true, EQ, no, Infinity), (1, a, true, EQ, no, NaN)," +
-                " (1, a, true, LT, yes, Infinity), (1, a, true, LT, yes, NaN), (1, a, true, LT, no, Infinity)," +
-                " (1, a, true, LT, no, NaN), (1, b, false, EQ, yes, Infinity), (1, b, false, EQ, yes, NaN)," +
-                " (1, b, false, EQ, no, Infinity), (1, b, false, EQ, no, NaN), (1, b, false, LT, yes, Infinity)," +
-                " (1, b, false, LT, yes, NaN), (1, b, false, LT, no, Infinity), (1, b, false, LT, no, NaN)," +
-                " (1, b, true, EQ, yes, Infinity), (1, b, true, EQ, yes, NaN), (1, b, true, EQ, no, Infinity)," +
-                " (1, b, true, EQ, no, NaN), (1, b, true, LT, yes, Infinity), (1, b, true, LT, yes, NaN)," +
-                " (1, b, true, LT, no, Infinity), (1, b, true, LT, no, NaN), (2, a, false, EQ, yes, Infinity)," +
-                " (2, a, false, EQ, yes, NaN), (2, a, false, EQ, no, Infinity), (2, a, false, EQ, no, NaN)," +
-                " (2, a, false, LT, yes, Infinity), (2, a, false, LT, yes, NaN), (2, a, false, LT, no, Infinity)," +
-                " (2, a, false, LT, no, NaN), (2, a, true, EQ, yes, Infinity), (2, a, true, EQ, yes, NaN)," +
-                " (2, a, true, EQ, no, Infinity), (2, a, true, EQ, no, NaN), (2, a, true, LT, yes, Infinity)," +
-                " (2, a, true, LT, yes, NaN), (2, a, true, LT, no, Infinity), (2, a, true, LT, no, NaN)," +
-                " (2, b, false, EQ, yes, Infinity), (2, b, false, EQ, yes, NaN), (2, b, false, EQ, no, Infinity)," +
-                " (2, b, false, EQ, no, NaN), (2, b, false, LT, yes, Infinity), (2, b, false, LT, yes, NaN)," +
-                " (2, b, false, LT, no, Infinity), (2, b, false, LT, no, NaN), (2, b, true, EQ, yes, Infinity)," +
-                " (2, b, true, EQ, yes, NaN), (2, b, true, EQ, no, Infinity), (2, b, true, EQ, no, NaN)," +
-                " (2, b, true, LT, yes, Infinity), (2, b, true, LT, yes, NaN), (2, b, true, LT, no, Infinity)," +
-                " (2, b, true, LT, no, NaN), (1, a, false, GT, yes, Infinity), (1, a, false, GT, yes, NaN)," +
-                " (1, a, false, GT, no, Infinity), (1, a, false, GT, no, NaN), (1, a, true, GT, yes, Infinity)," +
-                " (1, a, true, GT, yes, NaN), (1, a, true, GT, no, Infinity), (1, a, true, GT, no, NaN)," +
-                " (1, b, false, GT, yes, Infinity), (1, b, false, GT, yes, NaN), (1, b, false, GT, no, Infinity)," +
-                " (1, b, false, GT, no, NaN), (1, b, true, GT, yes, Infinity), (1, b, true, GT, yes, NaN)," +
-                " (1, b, true, GT, no, Infinity), (1, b, true, GT, no, NaN), (2, a, false, GT, yes, Infinity)," +
-                " (2, a, false, GT, yes, NaN), (2, a, false, GT, no, Infinity), (2, a, false, GT, no, NaN)," +
-                " (2, a, true, GT, yes, Infinity), (2, a, true, GT, yes, NaN), (2, a, true, GT, no, Infinity)," +
-                " (2, a, true, GT, no, NaN), (2, b, false, GT, yes, Infinity), (2, b, false, GT, yes, NaN)," +
-                " (2, b, false, GT, no, Infinity), (2, b, false, GT, no, NaN), (2, b, true, GT, yes, Infinity)," +
-                " (2, b, true, GT, yes, NaN), (2, b, true, GT, no, Infinity), (2, b, true, GT, no, NaN)," +
-                " (1, c, false, EQ, yes, Infinity), (1, c, false, EQ, yes, NaN), (1, c, false, EQ, no, Infinity)," +
-                " (1, c, false, EQ, no, NaN), (1, c, false, LT, yes, Infinity), (1, c, false, LT, yes, NaN)," +
-                " (1, c, false, LT, no, Infinity), (1, c, false, LT, no, NaN), (1, c, true, EQ, yes, Infinity)," +
-                " (1, c, true, EQ, yes, NaN), (1, c, true, EQ, no, Infinity), (1, c, true, EQ, no, NaN)," +
-                " (1, c, true, LT, yes, Infinity), (1, c, true, LT, yes, NaN), (1, c, true, LT, no, Infinity)," +
-                " (1, c, true, LT, no, NaN), (2, c, false, EQ, yes, Infinity), (2, c, false, EQ, yes, NaN)," +
-                " (2, c, false, EQ, no, Infinity), (2, c, false, EQ, no, NaN), (2, c, false, LT, yes, Infinity)," +
-                " (2, c, false, LT, yes, NaN), (2, c, false, LT, no, Infinity), (2, c, false, LT, no, NaN)," +
-                " (2, c, true, EQ, yes, Infinity), (2, c, true, EQ, yes, NaN), (2, c, true, EQ, no, Infinity)," +
-                " (2, c, true, EQ, no, NaN), (2, c, true, LT, yes, Infinity), (2, c, true, LT, yes, NaN)," +
-                " (2, c, true, LT, no, Infinity), (2, c, true, LT, no, NaN), (1, c, false, GT, yes, Infinity)," +
-                " (1, c, false, GT, yes, NaN), (1, c, false, GT, no, Infinity), (1, c, false, GT, no, NaN)," +
-                " (1, c, true, GT, yes, Infinity), (1, c, true, GT, yes, NaN), (1, c, true, GT, no, Infinity)," +
-                " (1, c, true, GT, no, NaN), (2, c, false, GT, yes, Infinity), (2, c, false, GT, yes, NaN)," +
-                " (2, c, false, GT, no, Infinity), (2, c, false, GT, no, NaN), (2, c, true, GT, yes, Infinity)," +
-                " (2, c, true, GT, yes, NaN), (2, c, true, GT, no, Infinity), (2, c, true, GT, no, NaN)," +
-                " (3, a, false, EQ, yes, Infinity), (3, a, false, EQ, yes, NaN), (3, a, false, EQ, no, Infinity)," +
-                " (3, a, false, EQ, no, NaN), (3, a, false, LT, yes, Infinity), (3, a, false, LT, yes, NaN)," +
-                " (3, a, false, LT, no, Infinity), (3, a, false, LT, no, NaN), (3, a, true, EQ, yes, Infinity)," +
-                " (3, a, true, EQ, yes, NaN), (3, a, true, EQ, no, Infinity), (3, a, true, EQ, no, NaN)," +
-                " (3, a, true, LT, yes, Infinity), (3, a, true, LT, yes, NaN), (3, a, true, LT, no, Infinity)," +
-                " (3, a, true, LT, no, NaN), (3, b, false, EQ, yes, Infinity), (3, b, false, EQ, yes, NaN)," +
-                " (3, b, false, EQ, no, Infinity), (3, b, false, EQ, no, NaN), (3, b, false, LT, yes, Infinity)," +
-                " (3, b, false, LT, yes, NaN), (3, b, false, LT, no, Infinity), (3, b, false, LT, no, NaN)," +
-                " (3, b, true, EQ, yes, Infinity), (3, b, true, EQ, yes, NaN), (3, b, true, EQ, no, Infinity)," +
-                " (3, b, true, EQ, no, NaN), (3, b, true, LT, yes, Infinity), (3, b, true, LT, yes, NaN)," +
-                " (3, b, true, LT, no, Infinity), (3, b, true, LT, no, NaN), (3, a, false, GT, yes, Infinity)," +
-                " (3, a, false, GT, yes, NaN), (3, a, false, GT, no, Infinity), (3, a, false, GT, no, NaN)," +
-                " (3, a, true, GT, yes, Infinity), (3, a, true, GT, yes, NaN), (3, a, true, GT, no, Infinity)," +
-                " (3, a, true, GT, no, NaN), (3, b, false, GT, yes, Infinity), (3, b, false, GT, yes, NaN)," +
-                " (3, b, false, GT, no, Infinity), (3, b, false, GT, no, NaN), (3, b, true, GT, yes, Infinity)," +
-                " (3, b, true, GT, yes, NaN), (3, b, true, GT, no, Infinity), (3, b, true, GT, no, NaN)," +
-                " (3, c, false, EQ, yes, Infinity), (3, c, false, EQ, yes, NaN), (3, c, false, EQ, no, Infinity)," +
-                " (3, c, false, EQ, no, NaN), (3, c, false, LT, yes, Infinity), (3, c, false, LT, yes, NaN)," +
-                " (3, c, false, LT, no, Infinity), (3, c, false, LT, no, NaN), (3, c, true, EQ, yes, Infinity)," +
-                " (3, c, true, EQ, yes, NaN), (3, c, true, EQ, no, Infinity), (3, c, true, EQ, no, NaN)," +
-                " (3, c, true, LT, yes, Infinity), (3, c, true, LT, yes, NaN), (3, c, true, LT, no, Infinity)," +
-                " (3, c, true, LT, no, NaN), (3, c, false, GT, yes, Infinity), (3, c, false, GT, yes, NaN)," +
-                " (3, c, false, GT, no, Infinity), (3, c, false, GT, no, NaN), (3, c, true, GT, yes, Infinity)," +
-                " (3, c, true, GT, yes, NaN), (3, c, true, GT, no, Infinity), (3, c, true, GT, no, NaN)]"
+                "ExhaustiveProvider_sextuples_Iterable_Iterable_Iterable_Iterable_Iterable_Iterable_i"
         );
         sextuples_Iterable_Iterable_Iterable_Iterable_Iterable_Iterable_helper(
                 Arrays.asList(1, 2, null, 4),
@@ -3660,148 +2413,7 @@ public strictfp class ExhaustiveProviderTest {
                 EP.orderings(),
                 Arrays.asList("yes", "no"),
                 Arrays.asList(Float.POSITIVE_INFINITY, Float.NaN),
-                "[(1, a, false, EQ, yes, Infinity), (1, a, false, EQ, yes, NaN), (1, a, false, EQ, no, Infinity)," +
-                " (1, a, false, EQ, no, NaN), (1, a, false, LT, yes, Infinity), (1, a, false, LT, yes, NaN)," +
-                " (1, a, false, LT, no, Infinity), (1, a, false, LT, no, NaN), (1, a, true, EQ, yes, Infinity)," +
-                " (1, a, true, EQ, yes, NaN), (1, a, true, EQ, no, Infinity), (1, a, true, EQ, no, NaN)," +
-                " (1, a, true, LT, yes, Infinity), (1, a, true, LT, yes, NaN), (1, a, true, LT, no, Infinity)," +
-                " (1, a, true, LT, no, NaN), (1, b, false, EQ, yes, Infinity), (1, b, false, EQ, yes, NaN)," +
-                " (1, b, false, EQ, no, Infinity), (1, b, false, EQ, no, NaN), (1, b, false, LT, yes, Infinity)," +
-                " (1, b, false, LT, yes, NaN), (1, b, false, LT, no, Infinity), (1, b, false, LT, no, NaN)," +
-                " (1, b, true, EQ, yes, Infinity), (1, b, true, EQ, yes, NaN), (1, b, true, EQ, no, Infinity)," +
-                " (1, b, true, EQ, no, NaN), (1, b, true, LT, yes, Infinity), (1, b, true, LT, yes, NaN)," +
-                " (1, b, true, LT, no, Infinity), (1, b, true, LT, no, NaN), (2, a, false, EQ, yes, Infinity)," +
-                " (2, a, false, EQ, yes, NaN), (2, a, false, EQ, no, Infinity), (2, a, false, EQ, no, NaN)," +
-                " (2, a, false, LT, yes, Infinity), (2, a, false, LT, yes, NaN), (2, a, false, LT, no, Infinity)," +
-                " (2, a, false, LT, no, NaN), (2, a, true, EQ, yes, Infinity), (2, a, true, EQ, yes, NaN)," +
-                " (2, a, true, EQ, no, Infinity), (2, a, true, EQ, no, NaN), (2, a, true, LT, yes, Infinity)," +
-                " (2, a, true, LT, yes, NaN), (2, a, true, LT, no, Infinity), (2, a, true, LT, no, NaN)," +
-                " (2, b, false, EQ, yes, Infinity), (2, b, false, EQ, yes, NaN), (2, b, false, EQ, no, Infinity)," +
-                " (2, b, false, EQ, no, NaN), (2, b, false, LT, yes, Infinity), (2, b, false, LT, yes, NaN)," +
-                " (2, b, false, LT, no, Infinity), (2, b, false, LT, no, NaN), (2, b, true, EQ, yes, Infinity)," +
-                " (2, b, true, EQ, yes, NaN), (2, b, true, EQ, no, Infinity), (2, b, true, EQ, no, NaN)," +
-                " (2, b, true, LT, yes, Infinity), (2, b, true, LT, yes, NaN), (2, b, true, LT, no, Infinity)," +
-                " (2, b, true, LT, no, NaN), (1, a, false, GT, yes, Infinity), (1, a, false, GT, yes, NaN)," +
-                " (1, a, false, GT, no, Infinity), (1, a, false, GT, no, NaN), (1, a, true, GT, yes, Infinity)," +
-                " (1, a, true, GT, yes, NaN), (1, a, true, GT, no, Infinity), (1, a, true, GT, no, NaN)," +
-                " (1, b, false, GT, yes, Infinity), (1, b, false, GT, yes, NaN), (1, b, false, GT, no, Infinity)," +
-                " (1, b, false, GT, no, NaN), (1, b, true, GT, yes, Infinity), (1, b, true, GT, yes, NaN)," +
-                " (1, b, true, GT, no, Infinity), (1, b, true, GT, no, NaN), (2, a, false, GT, yes, Infinity)," +
-                " (2, a, false, GT, yes, NaN), (2, a, false, GT, no, Infinity), (2, a, false, GT, no, NaN)," +
-                " (2, a, true, GT, yes, Infinity), (2, a, true, GT, yes, NaN), (2, a, true, GT, no, Infinity)," +
-                " (2, a, true, GT, no, NaN), (2, b, false, GT, yes, Infinity), (2, b, false, GT, yes, NaN)," +
-                " (2, b, false, GT, no, Infinity), (2, b, false, GT, no, NaN), (2, b, true, GT, yes, Infinity)," +
-                " (2, b, true, GT, yes, NaN), (2, b, true, GT, no, Infinity), (2, b, true, GT, no, NaN)," +
-                " (1, c, false, EQ, yes, Infinity), (1, c, false, EQ, yes, NaN), (1, c, false, EQ, no, Infinity)," +
-                " (1, c, false, EQ, no, NaN), (1, c, false, LT, yes, Infinity), (1, c, false, LT, yes, NaN)," +
-                " (1, c, false, LT, no, Infinity), (1, c, false, LT, no, NaN), (1, c, true, EQ, yes, Infinity)," +
-                " (1, c, true, EQ, yes, NaN), (1, c, true, EQ, no, Infinity), (1, c, true, EQ, no, NaN)," +
-                " (1, c, true, LT, yes, Infinity), (1, c, true, LT, yes, NaN), (1, c, true, LT, no, Infinity)," +
-                " (1, c, true, LT, no, NaN), (1, d, false, EQ, yes, Infinity), (1, d, false, EQ, yes, NaN)," +
-                " (1, d, false, EQ, no, Infinity), (1, d, false, EQ, no, NaN), (1, d, false, LT, yes, Infinity)," +
-                " (1, d, false, LT, yes, NaN), (1, d, false, LT, no, Infinity), (1, d, false, LT, no, NaN)," +
-                " (1, d, true, EQ, yes, Infinity), (1, d, true, EQ, yes, NaN), (1, d, true, EQ, no, Infinity)," +
-                " (1, d, true, EQ, no, NaN), (1, d, true, LT, yes, Infinity), (1, d, true, LT, yes, NaN)," +
-                " (1, d, true, LT, no, Infinity), (1, d, true, LT, no, NaN), (2, c, false, EQ, yes, Infinity)," +
-                " (2, c, false, EQ, yes, NaN), (2, c, false, EQ, no, Infinity), (2, c, false, EQ, no, NaN)," +
-                " (2, c, false, LT, yes, Infinity), (2, c, false, LT, yes, NaN), (2, c, false, LT, no, Infinity)," +
-                " (2, c, false, LT, no, NaN), (2, c, true, EQ, yes, Infinity), (2, c, true, EQ, yes, NaN)," +
-                " (2, c, true, EQ, no, Infinity), (2, c, true, EQ, no, NaN), (2, c, true, LT, yes, Infinity)," +
-                " (2, c, true, LT, yes, NaN), (2, c, true, LT, no, Infinity), (2, c, true, LT, no, NaN)," +
-                " (2, d, false, EQ, yes, Infinity), (2, d, false, EQ, yes, NaN), (2, d, false, EQ, no, Infinity)," +
-                " (2, d, false, EQ, no, NaN), (2, d, false, LT, yes, Infinity), (2, d, false, LT, yes, NaN)," +
-                " (2, d, false, LT, no, Infinity), (2, d, false, LT, no, NaN), (2, d, true, EQ, yes, Infinity)," +
-                " (2, d, true, EQ, yes, NaN), (2, d, true, EQ, no, Infinity), (2, d, true, EQ, no, NaN)," +
-                " (2, d, true, LT, yes, Infinity), (2, d, true, LT, yes, NaN), (2, d, true, LT, no, Infinity)," +
-                " (2, d, true, LT, no, NaN), (1, c, false, GT, yes, Infinity), (1, c, false, GT, yes, NaN)," +
-                " (1, c, false, GT, no, Infinity), (1, c, false, GT, no, NaN), (1, c, true, GT, yes, Infinity)," +
-                " (1, c, true, GT, yes, NaN), (1, c, true, GT, no, Infinity), (1, c, true, GT, no, NaN)," +
-                " (1, d, false, GT, yes, Infinity), (1, d, false, GT, yes, NaN), (1, d, false, GT, no, Infinity)," +
-                " (1, d, false, GT, no, NaN), (1, d, true, GT, yes, Infinity), (1, d, true, GT, yes, NaN)," +
-                " (1, d, true, GT, no, Infinity), (1, d, true, GT, no, NaN), (2, c, false, GT, yes, Infinity)," +
-                " (2, c, false, GT, yes, NaN), (2, c, false, GT, no, Infinity), (2, c, false, GT, no, NaN)," +
-                " (2, c, true, GT, yes, Infinity), (2, c, true, GT, yes, NaN), (2, c, true, GT, no, Infinity)," +
-                " (2, c, true, GT, no, NaN), (2, d, false, GT, yes, Infinity), (2, d, false, GT, yes, NaN)," +
-                " (2, d, false, GT, no, Infinity), (2, d, false, GT, no, NaN), (2, d, true, GT, yes, Infinity)," +
-                " (2, d, true, GT, yes, NaN), (2, d, true, GT, no, Infinity), (2, d, true, GT, no, NaN)," +
-                " (null, a, false, EQ, yes, Infinity), (null, a, false, EQ, yes, NaN)," +
-                " (null, a, false, EQ, no, Infinity), (null, a, false, EQ, no, NaN)," +
-                " (null, a, false, LT, yes, Infinity), (null, a, false, LT, yes, NaN)," +
-                " (null, a, false, LT, no, Infinity), (null, a, false, LT, no, NaN)," +
-                " (null, a, true, EQ, yes, Infinity), (null, a, true, EQ, yes, NaN)," +
-                " (null, a, true, EQ, no, Infinity), (null, a, true, EQ, no, NaN)," +
-                " (null, a, true, LT, yes, Infinity), (null, a, true, LT, yes, NaN)," +
-                " (null, a, true, LT, no, Infinity), (null, a, true, LT, no, NaN)," +
-                " (null, b, false, EQ, yes, Infinity), (null, b, false, EQ, yes, NaN)," +
-                " (null, b, false, EQ, no, Infinity), (null, b, false, EQ, no, NaN)," +
-                " (null, b, false, LT, yes, Infinity), (null, b, false, LT, yes, NaN)," +
-                " (null, b, false, LT, no, Infinity), (null, b, false, LT, no, NaN)," +
-                " (null, b, true, EQ, yes, Infinity), (null, b, true, EQ, yes, NaN)," +
-                " (null, b, true, EQ, no, Infinity), (null, b, true, EQ, no, NaN)," +
-                " (null, b, true, LT, yes, Infinity), (null, b, true, LT, yes, NaN)," +
-                " (null, b, true, LT, no, Infinity), (null, b, true, LT, no, NaN), (4, a, false, EQ, yes, Infinity)," +
-                " (4, a, false, EQ, yes, NaN), (4, a, false, EQ, no, Infinity), (4, a, false, EQ, no, NaN)," +
-                " (4, a, false, LT, yes, Infinity), (4, a, false, LT, yes, NaN), (4, a, false, LT, no, Infinity)," +
-                " (4, a, false, LT, no, NaN), (4, a, true, EQ, yes, Infinity), (4, a, true, EQ, yes, NaN)," +
-                " (4, a, true, EQ, no, Infinity), (4, a, true, EQ, no, NaN), (4, a, true, LT, yes, Infinity)," +
-                " (4, a, true, LT, yes, NaN), (4, a, true, LT, no, Infinity), (4, a, true, LT, no, NaN)," +
-                " (4, b, false, EQ, yes, Infinity), (4, b, false, EQ, yes, NaN), (4, b, false, EQ, no, Infinity)," +
-                " (4, b, false, EQ, no, NaN), (4, b, false, LT, yes, Infinity), (4, b, false, LT, yes, NaN)," +
-                " (4, b, false, LT, no, Infinity), (4, b, false, LT, no, NaN), (4, b, true, EQ, yes, Infinity)," +
-                " (4, b, true, EQ, yes, NaN), (4, b, true, EQ, no, Infinity), (4, b, true, EQ, no, NaN)," +
-                " (4, b, true, LT, yes, Infinity), (4, b, true, LT, yes, NaN), (4, b, true, LT, no, Infinity)," +
-                " (4, b, true, LT, no, NaN), (null, a, false, GT, yes, Infinity), (null, a, false, GT, yes, NaN)," +
-                " (null, a, false, GT, no, Infinity), (null, a, false, GT, no, NaN)," +
-                " (null, a, true, GT, yes, Infinity), (null, a, true, GT, yes, NaN)," +
-                " (null, a, true, GT, no, Infinity), (null, a, true, GT, no, NaN)," +
-                " (null, b, false, GT, yes, Infinity), (null, b, false, GT, yes, NaN)," +
-                " (null, b, false, GT, no, Infinity), (null, b, false, GT, no, NaN)," +
-                " (null, b, true, GT, yes, Infinity), (null, b, true, GT, yes, NaN)," +
-                " (null, b, true, GT, no, Infinity), (null, b, true, GT, no, NaN), (4, a, false, GT, yes, Infinity)," +
-                " (4, a, false, GT, yes, NaN), (4, a, false, GT, no, Infinity), (4, a, false, GT, no, NaN)," +
-                " (4, a, true, GT, yes, Infinity), (4, a, true, GT, yes, NaN), (4, a, true, GT, no, Infinity)," +
-                " (4, a, true, GT, no, NaN), (4, b, false, GT, yes, Infinity), (4, b, false, GT, yes, NaN)," +
-                " (4, b, false, GT, no, Infinity), (4, b, false, GT, no, NaN), (4, b, true, GT, yes, Infinity)," +
-                " (4, b, true, GT, yes, NaN), (4, b, true, GT, no, Infinity), (4, b, true, GT, no, NaN)," +
-                " (null, c, false, EQ, yes, Infinity), (null, c, false, EQ, yes, NaN)," +
-                " (null, c, false, EQ, no, Infinity), (null, c, false, EQ, no, NaN)," +
-                " (null, c, false, LT, yes, Infinity), (null, c, false, LT, yes, NaN)," +
-                " (null, c, false, LT, no, Infinity), (null, c, false, LT, no, NaN)," +
-                " (null, c, true, EQ, yes, Infinity), (null, c, true, EQ, yes, NaN)," +
-                " (null, c, true, EQ, no, Infinity), (null, c, true, EQ, no, NaN)," +
-                " (null, c, true, LT, yes, Infinity), (null, c, true, LT, yes, NaN)," +
-                " (null, c, true, LT, no, Infinity), (null, c, true, LT, no, NaN)," +
-                " (null, d, false, EQ, yes, Infinity), (null, d, false, EQ, yes, NaN)," +
-                " (null, d, false, EQ, no, Infinity), (null, d, false, EQ, no, NaN)," +
-                " (null, d, false, LT, yes, Infinity), (null, d, false, LT, yes, NaN)," +
-                " (null, d, false, LT, no, Infinity), (null, d, false, LT, no, NaN)," +
-                " (null, d, true, EQ, yes, Infinity), (null, d, true, EQ, yes, NaN)," +
-                " (null, d, true, EQ, no, Infinity), (null, d, true, EQ, no, NaN)," +
-                " (null, d, true, LT, yes, Infinity), (null, d, true, LT, yes, NaN)," +
-                " (null, d, true, LT, no, Infinity), (null, d, true, LT, no, NaN), (4, c, false, EQ, yes, Infinity)," +
-                " (4, c, false, EQ, yes, NaN), (4, c, false, EQ, no, Infinity), (4, c, false, EQ, no, NaN)," +
-                " (4, c, false, LT, yes, Infinity), (4, c, false, LT, yes, NaN), (4, c, false, LT, no, Infinity)," +
-                " (4, c, false, LT, no, NaN), (4, c, true, EQ, yes, Infinity), (4, c, true, EQ, yes, NaN)," +
-                " (4, c, true, EQ, no, Infinity), (4, c, true, EQ, no, NaN), (4, c, true, LT, yes, Infinity)," +
-                " (4, c, true, LT, yes, NaN), (4, c, true, LT, no, Infinity), (4, c, true, LT, no, NaN)," +
-                " (4, d, false, EQ, yes, Infinity), (4, d, false, EQ, yes, NaN), (4, d, false, EQ, no, Infinity)," +
-                " (4, d, false, EQ, no, NaN), (4, d, false, LT, yes, Infinity), (4, d, false, LT, yes, NaN)," +
-                " (4, d, false, LT, no, Infinity), (4, d, false, LT, no, NaN), (4, d, true, EQ, yes, Infinity)," +
-                " (4, d, true, EQ, yes, NaN), (4, d, true, EQ, no, Infinity), (4, d, true, EQ, no, NaN)," +
-                " (4, d, true, LT, yes, Infinity), (4, d, true, LT, yes, NaN), (4, d, true, LT, no, Infinity)," +
-                " (4, d, true, LT, no, NaN), (null, c, false, GT, yes, Infinity), (null, c, false, GT, yes, NaN)," +
-                " (null, c, false, GT, no, Infinity), (null, c, false, GT, no, NaN)," +
-                " (null, c, true, GT, yes, Infinity), (null, c, true, GT, yes, NaN)," +
-                " (null, c, true, GT, no, Infinity), (null, c, true, GT, no, NaN)," +
-                " (null, d, false, GT, yes, Infinity), (null, d, false, GT, yes, NaN)," +
-                " (null, d, false, GT, no, Infinity), (null, d, false, GT, no, NaN)," +
-                " (null, d, true, GT, yes, Infinity), (null, d, true, GT, yes, NaN)," +
-                " (null, d, true, GT, no, Infinity), (null, d, true, GT, no, NaN), (4, c, false, GT, yes, Infinity)," +
-                " (4, c, false, GT, yes, NaN), (4, c, false, GT, no, Infinity), (4, c, false, GT, no, NaN)," +
-                " (4, c, true, GT, yes, Infinity), (4, c, true, GT, yes, NaN), (4, c, true, GT, no, Infinity)," +
-                " (4, c, true, GT, no, NaN), (4, d, false, GT, yes, Infinity), (4, d, false, GT, yes, NaN)," +
-                " (4, d, false, GT, no, Infinity), (4, d, false, GT, no, NaN), (4, d, true, GT, yes, Infinity)," +
-                " (4, d, true, GT, yes, NaN), (4, d, true, GT, no, Infinity), (4, d, true, GT, no, NaN)]"
+                "ExhaustiveProvider_sextuples_Iterable_Iterable_Iterable_Iterable_Iterable_Iterable_ii"
         );
         sextuples_Iterable_Iterable_Iterable_Iterable_Iterable_Iterable_helper(
                 Collections.emptyList(),
@@ -3810,7 +2422,7 @@ public strictfp class ExhaustiveProviderTest {
                 EP.orderings(),
                 Arrays.asList("yes", "no"),
                 Arrays.asList(Float.POSITIVE_INFINITY, Float.NaN),
-                "[]"
+                "ExhaustiveProvider_sextuples_Iterable_Iterable_Iterable_Iterable_Iterable_Iterable_iii"
         );
         sextuples_Iterable_Iterable_Iterable_Iterable_Iterable_Iterable_helper(
                 Collections.emptyList(),
@@ -3819,7 +2431,7 @@ public strictfp class ExhaustiveProviderTest {
                 Collections.emptyList(),
                 Collections.emptyList(),
                 Collections.emptyList(),
-                "[]"
+                "ExhaustiveProvider_sextuples_Iterable_Iterable_Iterable_Iterable_Iterable_Iterable_iv"
         );
         simpleProviderHelper(
                 EP.sextuples(
@@ -3830,13 +2442,7 @@ public strictfp class ExhaustiveProviderTest {
                         Arrays.asList("yes", "no"),
                         Arrays.asList(Float.POSITIVE_INFINITY, Float.NaN)
                 ),
-                "[(0, a, false, EQ, yes, Infinity), (0, a, false, EQ, yes, NaN), (0, a, false, EQ, no, Infinity)," +
-                " (0, a, false, EQ, no, NaN), (0, a, false, LT, yes, Infinity), (0, a, false, LT, yes, NaN)," +
-                " (0, a, false, LT, no, Infinity), (0, a, false, LT, no, NaN), (0, a, true, EQ, yes, Infinity)," +
-                " (0, a, true, EQ, yes, NaN), (0, a, true, EQ, no, Infinity), (0, a, true, EQ, no, NaN)," +
-                " (0, a, true, LT, yes, Infinity), (0, a, true, LT, yes, NaN), (0, a, true, LT, no, Infinity)," +
-                " (0, a, true, LT, no, NaN), (0, b, false, EQ, yes, Infinity), (0, b, false, EQ, yes, NaN)," +
-                " (0, b, false, EQ, no, Infinity), (0, b, false, EQ, no, NaN), ...]"
+                "ExhaustiveProvider_sextuples_Iterable_Iterable_Iterable_Iterable_Iterable_Iterable_v"
         );
         simpleProviderHelper(
                 EP.sextuples(
@@ -3847,13 +2453,7 @@ public strictfp class ExhaustiveProviderTest {
                         Arrays.asList("yes", "no"),
                         Arrays.asList(Float.POSITIVE_INFINITY, Float.NaN)
                 ),
-                "[(a, false, 0, EQ, yes, Infinity), (a, false, 0, EQ, yes, NaN), (a, false, 0, EQ, no, Infinity)," +
-                " (a, false, 0, EQ, no, NaN), (a, false, 0, LT, yes, Infinity), (a, false, 0, LT, yes, NaN)," +
-                " (a, false, 0, LT, no, Infinity), (a, false, 0, LT, no, NaN), (a, false, 1, EQ, yes, Infinity)," +
-                " (a, false, 1, EQ, yes, NaN), (a, false, 1, EQ, no, Infinity), (a, false, 1, EQ, no, NaN)," +
-                " (a, false, 1, LT, yes, Infinity), (a, false, 1, LT, yes, NaN), (a, false, 1, LT, no, Infinity)," +
-                " (a, false, 1, LT, no, NaN), (a, true, 0, EQ, yes, Infinity), (a, true, 0, EQ, yes, NaN)," +
-                " (a, true, 0, EQ, no, Infinity), (a, true, 0, EQ, no, NaN), ...]"
+                "ExhaustiveProvider_sextuples_Iterable_Iterable_Iterable_Iterable_Iterable_Iterable_vi"
         );
         simpleProviderHelper(
                 EP.sextuples(
@@ -3864,13 +2464,7 @@ public strictfp class ExhaustiveProviderTest {
                         EP.floats(),
                         EP.lists(EP.integers())
                 ),
-                "[(1, -1, a, , NaN, []), (1, -1, a, , NaN, [0]), (1, -1, a, , Infinity, [])," +
-                " (1, -1, a, , Infinity, [0]), (1, -1, a, a, NaN, []), (1, -1, a, a, NaN, [0])," +
-                " (1, -1, a, a, Infinity, []), (1, -1, a, a, Infinity, [0]), (1, -1, b, , NaN, [])," +
-                " (1, -1, b, , NaN, [0]), (1, -1, b, , Infinity, []), (1, -1, b, , Infinity, [0])," +
-                " (1, -1, b, a, NaN, []), (1, -1, b, a, NaN, [0]), (1, -1, b, a, Infinity, [])," +
-                " (1, -1, b, a, Infinity, [0]), (1, -2, a, , NaN, []), (1, -2, a, , NaN, [0])," +
-                " (1, -2, a, , Infinity, []), (1, -2, a, , Infinity, [0]), ...]"
+                "ExhaustiveProvider_sextuples_Iterable_Iterable_Iterable_Iterable_Iterable_Iterable_vii"
         );
     }
 
@@ -3884,38 +2478,13 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testSextuples_Iterable() {
-        sextuples_Iterable_helper("[]", "[]");
-        sextuples_Iterable_helper("[5]", "[(5, 5, 5, 5, 5, 5)]");
-        sextuples_Iterable_helper("[1, 2, 3, 4]",
-                "[(1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 2), (1, 1, 1, 1, 2, 1), (1, 1, 1, 1, 2, 2)," +
-                " (1, 1, 1, 2, 1, 1), (1, 1, 1, 2, 1, 2), (1, 1, 1, 2, 2, 1), (1, 1, 1, 2, 2, 2)," +
-                " (1, 1, 2, 1, 1, 1), (1, 1, 2, 1, 1, 2), (1, 1, 2, 1, 2, 1), (1, 1, 2, 1, 2, 2)," +
-                " (1, 1, 2, 2, 1, 1), (1, 1, 2, 2, 1, 2), (1, 1, 2, 2, 2, 1), (1, 1, 2, 2, 2, 2)," +
-                " (1, 2, 1, 1, 1, 1), (1, 2, 1, 1, 1, 2), (1, 2, 1, 1, 2, 1), (1, 2, 1, 1, 2, 2), ...]");
-        sextuples_Iterable_helper("[1, 2, 2, 4]",
-                "[(1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 2), (1, 1, 1, 1, 2, 1), (1, 1, 1, 1, 2, 2)," +
-                " (1, 1, 1, 2, 1, 1), (1, 1, 1, 2, 1, 2), (1, 1, 1, 2, 2, 1), (1, 1, 1, 2, 2, 2)," +
-                " (1, 1, 2, 1, 1, 1), (1, 1, 2, 1, 1, 2), (1, 1, 2, 1, 2, 1), (1, 1, 2, 1, 2, 2)," +
-                " (1, 1, 2, 2, 1, 1), (1, 1, 2, 2, 1, 2), (1, 1, 2, 2, 2, 1), (1, 1, 2, 2, 2, 2)," +
-                " (1, 2, 1, 1, 1, 1), (1, 2, 1, 1, 1, 2), (1, 2, 1, 1, 2, 1), (1, 2, 1, 1, 2, 2), ...]");
-        sextuples_Iterable_helper("[1, 2, null, 4]",
-                "[(1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 2), (1, 1, 1, 1, 2, 1), (1, 1, 1, 1, 2, 2)," +
-                " (1, 1, 1, 2, 1, 1), (1, 1, 1, 2, 1, 2), (1, 1, 1, 2, 2, 1), (1, 1, 1, 2, 2, 2)," +
-                " (1, 1, 2, 1, 1, 1), (1, 1, 2, 1, 1, 2), (1, 1, 2, 1, 2, 1), (1, 1, 2, 1, 2, 2)," +
-                " (1, 1, 2, 2, 1, 1), (1, 1, 2, 2, 1, 2), (1, 1, 2, 2, 2, 1), (1, 1, 2, 2, 2, 2)," +
-                " (1, 2, 1, 1, 1, 1), (1, 2, 1, 1, 1, 2), (1, 2, 1, 1, 2, 1), (1, 2, 1, 1, 2, 2), ...]");
-        sextuples_Iterable_helper(EP.naturalIntegers(),
-                "[(0, 0, 0, 0, 0, 0), (0, 0, 0, 0, 0, 1), (0, 0, 0, 0, 1, 0), (0, 0, 0, 0, 1, 1)," +
-                " (0, 0, 0, 1, 0, 0), (0, 0, 0, 1, 0, 1), (0, 0, 0, 1, 1, 0), (0, 0, 0, 1, 1, 1)," +
-                " (0, 0, 1, 0, 0, 0), (0, 0, 1, 0, 0, 1), (0, 0, 1, 0, 1, 0), (0, 0, 1, 0, 1, 1)," +
-                " (0, 0, 1, 1, 0, 0), (0, 0, 1, 1, 0, 1), (0, 0, 1, 1, 1, 0), (0, 0, 1, 1, 1, 1)," +
-                " (0, 1, 0, 0, 0, 0), (0, 1, 0, 0, 0, 1), (0, 1, 0, 0, 1, 0), (0, 1, 0, 0, 1, 1), ...]");
-        sextuples_Iterable_helper(repeat(1),
-                "[(1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1)," +
-                " (1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1)," +
-                " (1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1)," +
-                " (1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1)," +
-                " (1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1), ...]");
+        sextuples_Iterable_helper("[]", "ExhaustiveProvider_sextuples_Iterable_i");
+        sextuples_Iterable_helper("[5]", "ExhaustiveProvider_sextuples_Iterable_ii");
+        sextuples_Iterable_helper("[1, 2, 3, 4]", "ExhaustiveProvider_sextuples_Iterable_iii");
+        sextuples_Iterable_helper("[1, 2, 2, 4]", "ExhaustiveProvider_sextuples_Iterable_iv");
+        sextuples_Iterable_helper("[1, 2, null, 4]", "ExhaustiveProvider_sextuples_Iterable_v");
+        sextuples_Iterable_helper(EP.naturalIntegers(), "ExhaustiveProvider_sextuples_Iterable_vi");
+        sextuples_Iterable_helper(repeat(1), "ExhaustiveProvider_sextuples_Iterable_vii");
     }
 
     private static <A, B, C, D, E, F, G> void
@@ -3930,7 +2499,7 @@ public strictfp class ExhaustiveProviderTest {
             @NotNull String output
     ) {
         Iterable<Septuple<A, B, C, D, E, F, G>> ss = EP.septuples(as, bs, cs, ds, es, fs, gs);
-        aeqit(ss, output);
+        aeqitLog(ss, output);
         testNoRemove(ss);
     }
 
@@ -3946,222 +2515,7 @@ public strictfp class ExhaustiveProviderTest {
                 Arrays.asList("yes", "no"),
                 Arrays.asList(Float.POSITIVE_INFINITY, Float.NaN),
                 Arrays.asList(x, y),
-                "[(1, a, false, EQ, yes, Infinity, [1, 0]), (1, a, false, EQ, yes, Infinity, [0, 1])," +
-                " (1, a, false, EQ, yes, NaN, [1, 0]), (1, a, false, EQ, yes, NaN, [0, 1])," +
-                " (1, a, false, EQ, no, Infinity, [1, 0]), (1, a, false, EQ, no, Infinity, [0, 1])," +
-                " (1, a, false, EQ, no, NaN, [1, 0]), (1, a, false, EQ, no, NaN, [0, 1])," +
-                " (1, a, false, LT, yes, Infinity, [1, 0]), (1, a, false, LT, yes, Infinity, [0, 1])," +
-                " (1, a, false, LT, yes, NaN, [1, 0]), (1, a, false, LT, yes, NaN, [0, 1])," +
-                " (1, a, false, LT, no, Infinity, [1, 0]), (1, a, false, LT, no, Infinity, [0, 1])," +
-                " (1, a, false, LT, no, NaN, [1, 0]), (1, a, false, LT, no, NaN, [0, 1])," +
-                " (1, a, true, EQ, yes, Infinity, [1, 0]), (1, a, true, EQ, yes, Infinity, [0, 1])," +
-                " (1, a, true, EQ, yes, NaN, [1, 0]), (1, a, true, EQ, yes, NaN, [0, 1])," +
-                " (1, a, true, EQ, no, Infinity, [1, 0]), (1, a, true, EQ, no, Infinity, [0, 1])," +
-                " (1, a, true, EQ, no, NaN, [1, 0]), (1, a, true, EQ, no, NaN, [0, 1])," +
-                " (1, a, true, LT, yes, Infinity, [1, 0]), (1, a, true, LT, yes, Infinity, [0, 1])," +
-                " (1, a, true, LT, yes, NaN, [1, 0]), (1, a, true, LT, yes, NaN, [0, 1])," +
-                " (1, a, true, LT, no, Infinity, [1, 0]), (1, a, true, LT, no, Infinity, [0, 1])," +
-                " (1, a, true, LT, no, NaN, [1, 0]), (1, a, true, LT, no, NaN, [0, 1])," +
-                " (1, b, false, EQ, yes, Infinity, [1, 0]), (1, b, false, EQ, yes, Infinity, [0, 1])," +
-                " (1, b, false, EQ, yes, NaN, [1, 0]), (1, b, false, EQ, yes, NaN, [0, 1])," +
-                " (1, b, false, EQ, no, Infinity, [1, 0]), (1, b, false, EQ, no, Infinity, [0, 1])," +
-                " (1, b, false, EQ, no, NaN, [1, 0]), (1, b, false, EQ, no, NaN, [0, 1])," +
-                " (1, b, false, LT, yes, Infinity, [1, 0]), (1, b, false, LT, yes, Infinity, [0, 1])," +
-                " (1, b, false, LT, yes, NaN, [1, 0]), (1, b, false, LT, yes, NaN, [0, 1])," +
-                " (1, b, false, LT, no, Infinity, [1, 0]), (1, b, false, LT, no, Infinity, [0, 1])," +
-                " (1, b, false, LT, no, NaN, [1, 0]), (1, b, false, LT, no, NaN, [0, 1])," +
-                " (1, b, true, EQ, yes, Infinity, [1, 0]), (1, b, true, EQ, yes, Infinity, [0, 1])," +
-                " (1, b, true, EQ, yes, NaN, [1, 0]), (1, b, true, EQ, yes, NaN, [0, 1])," +
-                " (1, b, true, EQ, no, Infinity, [1, 0]), (1, b, true, EQ, no, Infinity, [0, 1])," +
-                " (1, b, true, EQ, no, NaN, [1, 0]), (1, b, true, EQ, no, NaN, [0, 1])," +
-                " (1, b, true, LT, yes, Infinity, [1, 0]), (1, b, true, LT, yes, Infinity, [0, 1])," +
-                " (1, b, true, LT, yes, NaN, [1, 0]), (1, b, true, LT, yes, NaN, [0, 1])," +
-                " (1, b, true, LT, no, Infinity, [1, 0]), (1, b, true, LT, no, Infinity, [0, 1])," +
-                " (1, b, true, LT, no, NaN, [1, 0]), (1, b, true, LT, no, NaN, [0, 1])," +
-                " (2, a, false, EQ, yes, Infinity, [1, 0]), (2, a, false, EQ, yes, Infinity, [0, 1])," +
-                " (2, a, false, EQ, yes, NaN, [1, 0]), (2, a, false, EQ, yes, NaN, [0, 1])," +
-                " (2, a, false, EQ, no, Infinity, [1, 0]), (2, a, false, EQ, no, Infinity, [0, 1])," +
-                " (2, a, false, EQ, no, NaN, [1, 0]), (2, a, false, EQ, no, NaN, [0, 1])," +
-                " (2, a, false, LT, yes, Infinity, [1, 0]), (2, a, false, LT, yes, Infinity, [0, 1])," +
-                " (2, a, false, LT, yes, NaN, [1, 0]), (2, a, false, LT, yes, NaN, [0, 1])," +
-                " (2, a, false, LT, no, Infinity, [1, 0]), (2, a, false, LT, no, Infinity, [0, 1])," +
-                " (2, a, false, LT, no, NaN, [1, 0]), (2, a, false, LT, no, NaN, [0, 1])," +
-                " (2, a, true, EQ, yes, Infinity, [1, 0]), (2, a, true, EQ, yes, Infinity, [0, 1])," +
-                " (2, a, true, EQ, yes, NaN, [1, 0]), (2, a, true, EQ, yes, NaN, [0, 1])," +
-                " (2, a, true, EQ, no, Infinity, [1, 0]), (2, a, true, EQ, no, Infinity, [0, 1])," +
-                " (2, a, true, EQ, no, NaN, [1, 0]), (2, a, true, EQ, no, NaN, [0, 1])," +
-                " (2, a, true, LT, yes, Infinity, [1, 0]), (2, a, true, LT, yes, Infinity, [0, 1])," +
-                " (2, a, true, LT, yes, NaN, [1, 0]), (2, a, true, LT, yes, NaN, [0, 1])," +
-                " (2, a, true, LT, no, Infinity, [1, 0]), (2, a, true, LT, no, Infinity, [0, 1])," +
-                " (2, a, true, LT, no, NaN, [1, 0]), (2, a, true, LT, no, NaN, [0, 1])," +
-                " (2, b, false, EQ, yes, Infinity, [1, 0]), (2, b, false, EQ, yes, Infinity, [0, 1])," +
-                " (2, b, false, EQ, yes, NaN, [1, 0]), (2, b, false, EQ, yes, NaN, [0, 1])," +
-                " (2, b, false, EQ, no, Infinity, [1, 0]), (2, b, false, EQ, no, Infinity, [0, 1])," +
-                " (2, b, false, EQ, no, NaN, [1, 0]), (2, b, false, EQ, no, NaN, [0, 1])," +
-                " (2, b, false, LT, yes, Infinity, [1, 0]), (2, b, false, LT, yes, Infinity, [0, 1])," +
-                " (2, b, false, LT, yes, NaN, [1, 0]), (2, b, false, LT, yes, NaN, [0, 1])," +
-                " (2, b, false, LT, no, Infinity, [1, 0]), (2, b, false, LT, no, Infinity, [0, 1])," +
-                " (2, b, false, LT, no, NaN, [1, 0]), (2, b, false, LT, no, NaN, [0, 1])," +
-                " (2, b, true, EQ, yes, Infinity, [1, 0]), (2, b, true, EQ, yes, Infinity, [0, 1])," +
-                " (2, b, true, EQ, yes, NaN, [1, 0]), (2, b, true, EQ, yes, NaN, [0, 1])," +
-                " (2, b, true, EQ, no, Infinity, [1, 0]), (2, b, true, EQ, no, Infinity, [0, 1])," +
-                " (2, b, true, EQ, no, NaN, [1, 0]), (2, b, true, EQ, no, NaN, [0, 1])," +
-                " (2, b, true, LT, yes, Infinity, [1, 0]), (2, b, true, LT, yes, Infinity, [0, 1])," +
-                " (2, b, true, LT, yes, NaN, [1, 0]), (2, b, true, LT, yes, NaN, [0, 1])," +
-                " (2, b, true, LT, no, Infinity, [1, 0]), (2, b, true, LT, no, Infinity, [0, 1])," +
-                " (2, b, true, LT, no, NaN, [1, 0]), (2, b, true, LT, no, NaN, [0, 1])," +
-                " (1, a, false, GT, yes, Infinity, [1, 0]), (1, a, false, GT, yes, Infinity, [0, 1])," +
-                " (1, a, false, GT, yes, NaN, [1, 0]), (1, a, false, GT, yes, NaN, [0, 1])," +
-                " (1, a, false, GT, no, Infinity, [1, 0]), (1, a, false, GT, no, Infinity, [0, 1])," +
-                " (1, a, false, GT, no, NaN, [1, 0]), (1, a, false, GT, no, NaN, [0, 1])," +
-                " (1, a, true, GT, yes, Infinity, [1, 0]), (1, a, true, GT, yes, Infinity, [0, 1])," +
-                " (1, a, true, GT, yes, NaN, [1, 0]), (1, a, true, GT, yes, NaN, [0, 1])," +
-                " (1, a, true, GT, no, Infinity, [1, 0]), (1, a, true, GT, no, Infinity, [0, 1])," +
-                " (1, a, true, GT, no, NaN, [1, 0]), (1, a, true, GT, no, NaN, [0, 1])," +
-                " (1, b, false, GT, yes, Infinity, [1, 0]), (1, b, false, GT, yes, Infinity, [0, 1])," +
-                " (1, b, false, GT, yes, NaN, [1, 0]), (1, b, false, GT, yes, NaN, [0, 1])," +
-                " (1, b, false, GT, no, Infinity, [1, 0]), (1, b, false, GT, no, Infinity, [0, 1])," +
-                " (1, b, false, GT, no, NaN, [1, 0]), (1, b, false, GT, no, NaN, [0, 1])," +
-                " (1, b, true, GT, yes, Infinity, [1, 0]), (1, b, true, GT, yes, Infinity, [0, 1])," +
-                " (1, b, true, GT, yes, NaN, [1, 0]), (1, b, true, GT, yes, NaN, [0, 1])," +
-                " (1, b, true, GT, no, Infinity, [1, 0]), (1, b, true, GT, no, Infinity, [0, 1])," +
-                " (1, b, true, GT, no, NaN, [1, 0]), (1, b, true, GT, no, NaN, [0, 1])," +
-                " (2, a, false, GT, yes, Infinity, [1, 0]), (2, a, false, GT, yes, Infinity, [0, 1])," +
-                " (2, a, false, GT, yes, NaN, [1, 0]), (2, a, false, GT, yes, NaN, [0, 1])," +
-                " (2, a, false, GT, no, Infinity, [1, 0]), (2, a, false, GT, no, Infinity, [0, 1])," +
-                " (2, a, false, GT, no, NaN, [1, 0]), (2, a, false, GT, no, NaN, [0, 1])," +
-                " (2, a, true, GT, yes, Infinity, [1, 0]), (2, a, true, GT, yes, Infinity, [0, 1])," +
-                " (2, a, true, GT, yes, NaN, [1, 0]), (2, a, true, GT, yes, NaN, [0, 1])," +
-                " (2, a, true, GT, no, Infinity, [1, 0]), (2, a, true, GT, no, Infinity, [0, 1])," +
-                " (2, a, true, GT, no, NaN, [1, 0]), (2, a, true, GT, no, NaN, [0, 1])," +
-                " (2, b, false, GT, yes, Infinity, [1, 0]), (2, b, false, GT, yes, Infinity, [0, 1])," +
-                " (2, b, false, GT, yes, NaN, [1, 0]), (2, b, false, GT, yes, NaN, [0, 1])," +
-                " (2, b, false, GT, no, Infinity, [1, 0]), (2, b, false, GT, no, Infinity, [0, 1])," +
-                " (2, b, false, GT, no, NaN, [1, 0]), (2, b, false, GT, no, NaN, [0, 1])," +
-                " (2, b, true, GT, yes, Infinity, [1, 0]), (2, b, true, GT, yes, Infinity, [0, 1])," +
-                " (2, b, true, GT, yes, NaN, [1, 0]), (2, b, true, GT, yes, NaN, [0, 1])," +
-                " (2, b, true, GT, no, Infinity, [1, 0]), (2, b, true, GT, no, Infinity, [0, 1])," +
-                " (2, b, true, GT, no, NaN, [1, 0]), (2, b, true, GT, no, NaN, [0, 1])," +
-                " (1, c, false, EQ, yes, Infinity, [1, 0]), (1, c, false, EQ, yes, Infinity, [0, 1])," +
-                " (1, c, false, EQ, yes, NaN, [1, 0]), (1, c, false, EQ, yes, NaN, [0, 1])," +
-                " (1, c, false, EQ, no, Infinity, [1, 0]), (1, c, false, EQ, no, Infinity, [0, 1])," +
-                " (1, c, false, EQ, no, NaN, [1, 0]), (1, c, false, EQ, no, NaN, [0, 1])," +
-                " (1, c, false, LT, yes, Infinity, [1, 0]), (1, c, false, LT, yes, Infinity, [0, 1])," +
-                " (1, c, false, LT, yes, NaN, [1, 0]), (1, c, false, LT, yes, NaN, [0, 1])," +
-                " (1, c, false, LT, no, Infinity, [1, 0]), (1, c, false, LT, no, Infinity, [0, 1])," +
-                " (1, c, false, LT, no, NaN, [1, 0]), (1, c, false, LT, no, NaN, [0, 1])," +
-                " (1, c, true, EQ, yes, Infinity, [1, 0]), (1, c, true, EQ, yes, Infinity, [0, 1])," +
-                " (1, c, true, EQ, yes, NaN, [1, 0]), (1, c, true, EQ, yes, NaN, [0, 1])," +
-                " (1, c, true, EQ, no, Infinity, [1, 0]), (1, c, true, EQ, no, Infinity, [0, 1])," +
-                " (1, c, true, EQ, no, NaN, [1, 0]), (1, c, true, EQ, no, NaN, [0, 1])," +
-                " (1, c, true, LT, yes, Infinity, [1, 0]), (1, c, true, LT, yes, Infinity, [0, 1])," +
-                " (1, c, true, LT, yes, NaN, [1, 0]), (1, c, true, LT, yes, NaN, [0, 1])," +
-                " (1, c, true, LT, no, Infinity, [1, 0]), (1, c, true, LT, no, Infinity, [0, 1])," +
-                " (1, c, true, LT, no, NaN, [1, 0]), (1, c, true, LT, no, NaN, [0, 1])," +
-                " (2, c, false, EQ, yes, Infinity, [1, 0]), (2, c, false, EQ, yes, Infinity, [0, 1])," +
-                " (2, c, false, EQ, yes, NaN, [1, 0]), (2, c, false, EQ, yes, NaN, [0, 1])," +
-                " (2, c, false, EQ, no, Infinity, [1, 0]), (2, c, false, EQ, no, Infinity, [0, 1])," +
-                " (2, c, false, EQ, no, NaN, [1, 0]), (2, c, false, EQ, no, NaN, [0, 1])," +
-                " (2, c, false, LT, yes, Infinity, [1, 0]), (2, c, false, LT, yes, Infinity, [0, 1])," +
-                " (2, c, false, LT, yes, NaN, [1, 0]), (2, c, false, LT, yes, NaN, [0, 1])," +
-                " (2, c, false, LT, no, Infinity, [1, 0]), (2, c, false, LT, no, Infinity, [0, 1])," +
-                " (2, c, false, LT, no, NaN, [1, 0]), (2, c, false, LT, no, NaN, [0, 1])," +
-                " (2, c, true, EQ, yes, Infinity, [1, 0]), (2, c, true, EQ, yes, Infinity, [0, 1])," +
-                " (2, c, true, EQ, yes, NaN, [1, 0]), (2, c, true, EQ, yes, NaN, [0, 1])," +
-                " (2, c, true, EQ, no, Infinity, [1, 0]), (2, c, true, EQ, no, Infinity, [0, 1])," +
-                " (2, c, true, EQ, no, NaN, [1, 0]), (2, c, true, EQ, no, NaN, [0, 1])," +
-                " (2, c, true, LT, yes, Infinity, [1, 0]), (2, c, true, LT, yes, Infinity, [0, 1])," +
-                " (2, c, true, LT, yes, NaN, [1, 0]), (2, c, true, LT, yes, NaN, [0, 1])," +
-                " (2, c, true, LT, no, Infinity, [1, 0]), (2, c, true, LT, no, Infinity, [0, 1])," +
-                " (2, c, true, LT, no, NaN, [1, 0]), (2, c, true, LT, no, NaN, [0, 1])," +
-                " (1, c, false, GT, yes, Infinity, [1, 0]), (1, c, false, GT, yes, Infinity, [0, 1])," +
-                " (1, c, false, GT, yes, NaN, [1, 0]), (1, c, false, GT, yes, NaN, [0, 1])," +
-                " (1, c, false, GT, no, Infinity, [1, 0]), (1, c, false, GT, no, Infinity, [0, 1])," +
-                " (1, c, false, GT, no, NaN, [1, 0]), (1, c, false, GT, no, NaN, [0, 1])," +
-                " (1, c, true, GT, yes, Infinity, [1, 0]), (1, c, true, GT, yes, Infinity, [0, 1])," +
-                " (1, c, true, GT, yes, NaN, [1, 0]), (1, c, true, GT, yes, NaN, [0, 1])," +
-                " (1, c, true, GT, no, Infinity, [1, 0]), (1, c, true, GT, no, Infinity, [0, 1])," +
-                " (1, c, true, GT, no, NaN, [1, 0]), (1, c, true, GT, no, NaN, [0, 1])," +
-                " (2, c, false, GT, yes, Infinity, [1, 0]), (2, c, false, GT, yes, Infinity, [0, 1])," +
-                " (2, c, false, GT, yes, NaN, [1, 0]), (2, c, false, GT, yes, NaN, [0, 1])," +
-                " (2, c, false, GT, no, Infinity, [1, 0]), (2, c, false, GT, no, Infinity, [0, 1])," +
-                " (2, c, false, GT, no, NaN, [1, 0]), (2, c, false, GT, no, NaN, [0, 1])," +
-                " (2, c, true, GT, yes, Infinity, [1, 0]), (2, c, true, GT, yes, Infinity, [0, 1])," +
-                " (2, c, true, GT, yes, NaN, [1, 0]), (2, c, true, GT, yes, NaN, [0, 1])," +
-                " (2, c, true, GT, no, Infinity, [1, 0]), (2, c, true, GT, no, Infinity, [0, 1])," +
-                " (2, c, true, GT, no, NaN, [1, 0]), (2, c, true, GT, no, NaN, [0, 1])," +
-                " (3, a, false, EQ, yes, Infinity, [1, 0]), (3, a, false, EQ, yes, Infinity, [0, 1])," +
-                " (3, a, false, EQ, yes, NaN, [1, 0]), (3, a, false, EQ, yes, NaN, [0, 1])," +
-                " (3, a, false, EQ, no, Infinity, [1, 0]), (3, a, false, EQ, no, Infinity, [0, 1])," +
-                " (3, a, false, EQ, no, NaN, [1, 0]), (3, a, false, EQ, no, NaN, [0, 1])," +
-                " (3, a, false, LT, yes, Infinity, [1, 0]), (3, a, false, LT, yes, Infinity, [0, 1])," +
-                " (3, a, false, LT, yes, NaN, [1, 0]), (3, a, false, LT, yes, NaN, [0, 1])," +
-                " (3, a, false, LT, no, Infinity, [1, 0]), (3, a, false, LT, no, Infinity, [0, 1])," +
-                " (3, a, false, LT, no, NaN, [1, 0]), (3, a, false, LT, no, NaN, [0, 1])," +
-                " (3, a, true, EQ, yes, Infinity, [1, 0]), (3, a, true, EQ, yes, Infinity, [0, 1])," +
-                " (3, a, true, EQ, yes, NaN, [1, 0]), (3, a, true, EQ, yes, NaN, [0, 1])," +
-                " (3, a, true, EQ, no, Infinity, [1, 0]), (3, a, true, EQ, no, Infinity, [0, 1])," +
-                " (3, a, true, EQ, no, NaN, [1, 0]), (3, a, true, EQ, no, NaN, [0, 1])," +
-                " (3, a, true, LT, yes, Infinity, [1, 0]), (3, a, true, LT, yes, Infinity, [0, 1])," +
-                " (3, a, true, LT, yes, NaN, [1, 0]), (3, a, true, LT, yes, NaN, [0, 1])," +
-                " (3, a, true, LT, no, Infinity, [1, 0]), (3, a, true, LT, no, Infinity, [0, 1])," +
-                " (3, a, true, LT, no, NaN, [1, 0]), (3, a, true, LT, no, NaN, [0, 1])," +
-                " (3, b, false, EQ, yes, Infinity, [1, 0]), (3, b, false, EQ, yes, Infinity, [0, 1])," +
-                " (3, b, false, EQ, yes, NaN, [1, 0]), (3, b, false, EQ, yes, NaN, [0, 1])," +
-                " (3, b, false, EQ, no, Infinity, [1, 0]), (3, b, false, EQ, no, Infinity, [0, 1])," +
-                " (3, b, false, EQ, no, NaN, [1, 0]), (3, b, false, EQ, no, NaN, [0, 1])," +
-                " (3, b, false, LT, yes, Infinity, [1, 0]), (3, b, false, LT, yes, Infinity, [0, 1])," +
-                " (3, b, false, LT, yes, NaN, [1, 0]), (3, b, false, LT, yes, NaN, [0, 1])," +
-                " (3, b, false, LT, no, Infinity, [1, 0]), (3, b, false, LT, no, Infinity, [0, 1])," +
-                " (3, b, false, LT, no, NaN, [1, 0]), (3, b, false, LT, no, NaN, [0, 1])," +
-                " (3, b, true, EQ, yes, Infinity, [1, 0]), (3, b, true, EQ, yes, Infinity, [0, 1])," +
-                " (3, b, true, EQ, yes, NaN, [1, 0]), (3, b, true, EQ, yes, NaN, [0, 1])," +
-                " (3, b, true, EQ, no, Infinity, [1, 0]), (3, b, true, EQ, no, Infinity, [0, 1])," +
-                " (3, b, true, EQ, no, NaN, [1, 0]), (3, b, true, EQ, no, NaN, [0, 1])," +
-                " (3, b, true, LT, yes, Infinity, [1, 0]), (3, b, true, LT, yes, Infinity, [0, 1])," +
-                " (3, b, true, LT, yes, NaN, [1, 0]), (3, b, true, LT, yes, NaN, [0, 1])," +
-                " (3, b, true, LT, no, Infinity, [1, 0]), (3, b, true, LT, no, Infinity, [0, 1])," +
-                " (3, b, true, LT, no, NaN, [1, 0]), (3, b, true, LT, no, NaN, [0, 1])," +
-                " (3, a, false, GT, yes, Infinity, [1, 0]), (3, a, false, GT, yes, Infinity, [0, 1])," +
-                " (3, a, false, GT, yes, NaN, [1, 0]), (3, a, false, GT, yes, NaN, [0, 1])," +
-                " (3, a, false, GT, no, Infinity, [1, 0]), (3, a, false, GT, no, Infinity, [0, 1])," +
-                " (3, a, false, GT, no, NaN, [1, 0]), (3, a, false, GT, no, NaN, [0, 1])," +
-                " (3, a, true, GT, yes, Infinity, [1, 0]), (3, a, true, GT, yes, Infinity, [0, 1])," +
-                " (3, a, true, GT, yes, NaN, [1, 0]), (3, a, true, GT, yes, NaN, [0, 1])," +
-                " (3, a, true, GT, no, Infinity, [1, 0]), (3, a, true, GT, no, Infinity, [0, 1])," +
-                " (3, a, true, GT, no, NaN, [1, 0]), (3, a, true, GT, no, NaN, [0, 1])," +
-                " (3, b, false, GT, yes, Infinity, [1, 0]), (3, b, false, GT, yes, Infinity, [0, 1])," +
-                " (3, b, false, GT, yes, NaN, [1, 0]), (3, b, false, GT, yes, NaN, [0, 1])," +
-                " (3, b, false, GT, no, Infinity, [1, 0]), (3, b, false, GT, no, Infinity, [0, 1])," +
-                " (3, b, false, GT, no, NaN, [1, 0]), (3, b, false, GT, no, NaN, [0, 1])," +
-                " (3, b, true, GT, yes, Infinity, [1, 0]), (3, b, true, GT, yes, Infinity, [0, 1])," +
-                " (3, b, true, GT, yes, NaN, [1, 0]), (3, b, true, GT, yes, NaN, [0, 1])," +
-                " (3, b, true, GT, no, Infinity, [1, 0]), (3, b, true, GT, no, Infinity, [0, 1])," +
-                " (3, b, true, GT, no, NaN, [1, 0]), (3, b, true, GT, no, NaN, [0, 1])," +
-                " (3, c, false, EQ, yes, Infinity, [1, 0]), (3, c, false, EQ, yes, Infinity, [0, 1])," +
-                " (3, c, false, EQ, yes, NaN, [1, 0]), (3, c, false, EQ, yes, NaN, [0, 1])," +
-                " (3, c, false, EQ, no, Infinity, [1, 0]), (3, c, false, EQ, no, Infinity, [0, 1])," +
-                " (3, c, false, EQ, no, NaN, [1, 0]), (3, c, false, EQ, no, NaN, [0, 1])," +
-                " (3, c, false, LT, yes, Infinity, [1, 0]), (3, c, false, LT, yes, Infinity, [0, 1])," +
-                " (3, c, false, LT, yes, NaN, [1, 0]), (3, c, false, LT, yes, NaN, [0, 1])," +
-                " (3, c, false, LT, no, Infinity, [1, 0]), (3, c, false, LT, no, Infinity, [0, 1])," +
-                " (3, c, false, LT, no, NaN, [1, 0]), (3, c, false, LT, no, NaN, [0, 1])," +
-                " (3, c, true, EQ, yes, Infinity, [1, 0]), (3, c, true, EQ, yes, Infinity, [0, 1])," +
-                " (3, c, true, EQ, yes, NaN, [1, 0]), (3, c, true, EQ, yes, NaN, [0, 1])," +
-                " (3, c, true, EQ, no, Infinity, [1, 0]), (3, c, true, EQ, no, Infinity, [0, 1])," +
-                " (3, c, true, EQ, no, NaN, [1, 0]), (3, c, true, EQ, no, NaN, [0, 1])," +
-                " (3, c, true, LT, yes, Infinity, [1, 0]), (3, c, true, LT, yes, Infinity, [0, 1])," +
-                " (3, c, true, LT, yes, NaN, [1, 0]), (3, c, true, LT, yes, NaN, [0, 1])," +
-                " (3, c, true, LT, no, Infinity, [1, 0]), (3, c, true, LT, no, Infinity, [0, 1])," +
-                " (3, c, true, LT, no, NaN, [1, 0]), (3, c, true, LT, no, NaN, [0, 1])," +
-                " (3, c, false, GT, yes, Infinity, [1, 0]), (3, c, false, GT, yes, Infinity, [0, 1])," +
-                " (3, c, false, GT, yes, NaN, [1, 0]), (3, c, false, GT, yes, NaN, [0, 1])," +
-                " (3, c, false, GT, no, Infinity, [1, 0]), (3, c, false, GT, no, Infinity, [0, 1])," +
-                " (3, c, false, GT, no, NaN, [1, 0]), (3, c, false, GT, no, NaN, [0, 1])," +
-                " (3, c, true, GT, yes, Infinity, [1, 0]), (3, c, true, GT, yes, Infinity, [0, 1])," +
-                " (3, c, true, GT, yes, NaN, [1, 0]), (3, c, true, GT, yes, NaN, [0, 1])," +
-                " (3, c, true, GT, no, Infinity, [1, 0]), (3, c, true, GT, no, Infinity, [0, 1])," +
-                " (3, c, true, GT, no, NaN, [1, 0]), (3, c, true, GT, no, NaN, [0, 1])]"
+                "ExhaustiveProvider_septuples_Iterable_Iterable_Iterable_Iterable_Iterable_Iterable_Iterable_i"
         );
         septuples_Iterable_Iterable_Iterable_Iterable_Iterable_Iterable_Iterable_helper(
                 Arrays.asList(1, 2, null, 4),
@@ -4171,390 +2525,7 @@ public strictfp class ExhaustiveProviderTest {
                 Arrays.asList("yes", "no"),
                 Arrays.asList(Float.POSITIVE_INFINITY, Float.NaN),
                 Arrays.asList(x, y),
-                "[(1, a, false, EQ, yes, Infinity, [1, 0]), (1, a, false, EQ, yes, Infinity, [0, 1])," +
-                " (1, a, false, EQ, yes, NaN, [1, 0]), (1, a, false, EQ, yes, NaN, [0, 1])," +
-                " (1, a, false, EQ, no, Infinity, [1, 0]), (1, a, false, EQ, no, Infinity, [0, 1])," +
-                " (1, a, false, EQ, no, NaN, [1, 0]), (1, a, false, EQ, no, NaN, [0, 1])," +
-                " (1, a, false, LT, yes, Infinity, [1, 0]), (1, a, false, LT, yes, Infinity, [0, 1])," +
-                " (1, a, false, LT, yes, NaN, [1, 0]), (1, a, false, LT, yes, NaN, [0, 1])," +
-                " (1, a, false, LT, no, Infinity, [1, 0]), (1, a, false, LT, no, Infinity, [0, 1])," +
-                " (1, a, false, LT, no, NaN, [1, 0]), (1, a, false, LT, no, NaN, [0, 1])," +
-                " (1, a, true, EQ, yes, Infinity, [1, 0]), (1, a, true, EQ, yes, Infinity, [0, 1])," +
-                " (1, a, true, EQ, yes, NaN, [1, 0]), (1, a, true, EQ, yes, NaN, [0, 1])," +
-                " (1, a, true, EQ, no, Infinity, [1, 0]), (1, a, true, EQ, no, Infinity, [0, 1])," +
-                " (1, a, true, EQ, no, NaN, [1, 0]), (1, a, true, EQ, no, NaN, [0, 1])," +
-                " (1, a, true, LT, yes, Infinity, [1, 0]), (1, a, true, LT, yes, Infinity, [0, 1])," +
-                " (1, a, true, LT, yes, NaN, [1, 0]), (1, a, true, LT, yes, NaN, [0, 1])," +
-                " (1, a, true, LT, no, Infinity, [1, 0]), (1, a, true, LT, no, Infinity, [0, 1])," +
-                " (1, a, true, LT, no, NaN, [1, 0]), (1, a, true, LT, no, NaN, [0, 1])," +
-                " (1, b, false, EQ, yes, Infinity, [1, 0]), (1, b, false, EQ, yes, Infinity, [0, 1])," +
-                " (1, b, false, EQ, yes, NaN, [1, 0]), (1, b, false, EQ, yes, NaN, [0, 1])," +
-                " (1, b, false, EQ, no, Infinity, [1, 0]), (1, b, false, EQ, no, Infinity, [0, 1])," +
-                " (1, b, false, EQ, no, NaN, [1, 0]), (1, b, false, EQ, no, NaN, [0, 1])," +
-                " (1, b, false, LT, yes, Infinity, [1, 0]), (1, b, false, LT, yes, Infinity, [0, 1])," +
-                " (1, b, false, LT, yes, NaN, [1, 0]), (1, b, false, LT, yes, NaN, [0, 1])," +
-                " (1, b, false, LT, no, Infinity, [1, 0]), (1, b, false, LT, no, Infinity, [0, 1])," +
-                " (1, b, false, LT, no, NaN, [1, 0]), (1, b, false, LT, no, NaN, [0, 1])," +
-                " (1, b, true, EQ, yes, Infinity, [1, 0]), (1, b, true, EQ, yes, Infinity, [0, 1])," +
-                " (1, b, true, EQ, yes, NaN, [1, 0]), (1, b, true, EQ, yes, NaN, [0, 1])," +
-                " (1, b, true, EQ, no, Infinity, [1, 0]), (1, b, true, EQ, no, Infinity, [0, 1])," +
-                " (1, b, true, EQ, no, NaN, [1, 0]), (1, b, true, EQ, no, NaN, [0, 1])," +
-                " (1, b, true, LT, yes, Infinity, [1, 0]), (1, b, true, LT, yes, Infinity, [0, 1])," +
-                " (1, b, true, LT, yes, NaN, [1, 0]), (1, b, true, LT, yes, NaN, [0, 1])," +
-                " (1, b, true, LT, no, Infinity, [1, 0]), (1, b, true, LT, no, Infinity, [0, 1])," +
-                " (1, b, true, LT, no, NaN, [1, 0]), (1, b, true, LT, no, NaN, [0, 1])," +
-                " (2, a, false, EQ, yes, Infinity, [1, 0]), (2, a, false, EQ, yes, Infinity, [0, 1])," +
-                " (2, a, false, EQ, yes, NaN, [1, 0]), (2, a, false, EQ, yes, NaN, [0, 1])," +
-                " (2, a, false, EQ, no, Infinity, [1, 0]), (2, a, false, EQ, no, Infinity, [0, 1])," +
-                " (2, a, false, EQ, no, NaN, [1, 0]), (2, a, false, EQ, no, NaN, [0, 1])," +
-                " (2, a, false, LT, yes, Infinity, [1, 0]), (2, a, false, LT, yes, Infinity, [0, 1])," +
-                " (2, a, false, LT, yes, NaN, [1, 0]), (2, a, false, LT, yes, NaN, [0, 1])," +
-                " (2, a, false, LT, no, Infinity, [1, 0]), (2, a, false, LT, no, Infinity, [0, 1])," +
-                " (2, a, false, LT, no, NaN, [1, 0]), (2, a, false, LT, no, NaN, [0, 1])," +
-                " (2, a, true, EQ, yes, Infinity, [1, 0]), (2, a, true, EQ, yes, Infinity, [0, 1])," +
-                " (2, a, true, EQ, yes, NaN, [1, 0]), (2, a, true, EQ, yes, NaN, [0, 1])," +
-                " (2, a, true, EQ, no, Infinity, [1, 0]), (2, a, true, EQ, no, Infinity, [0, 1])," +
-                " (2, a, true, EQ, no, NaN, [1, 0]), (2, a, true, EQ, no, NaN, [0, 1])," +
-                " (2, a, true, LT, yes, Infinity, [1, 0]), (2, a, true, LT, yes, Infinity, [0, 1])," +
-                " (2, a, true, LT, yes, NaN, [1, 0]), (2, a, true, LT, yes, NaN, [0, 1])," +
-                " (2, a, true, LT, no, Infinity, [1, 0]), (2, a, true, LT, no, Infinity, [0, 1])," +
-                " (2, a, true, LT, no, NaN, [1, 0]), (2, a, true, LT, no, NaN, [0, 1])," +
-                " (2, b, false, EQ, yes, Infinity, [1, 0]), (2, b, false, EQ, yes, Infinity, [0, 1])," +
-                " (2, b, false, EQ, yes, NaN, [1, 0]), (2, b, false, EQ, yes, NaN, [0, 1])," +
-                " (2, b, false, EQ, no, Infinity, [1, 0]), (2, b, false, EQ, no, Infinity, [0, 1])," +
-                " (2, b, false, EQ, no, NaN, [1, 0]), (2, b, false, EQ, no, NaN, [0, 1])," +
-                " (2, b, false, LT, yes, Infinity, [1, 0]), (2, b, false, LT, yes, Infinity, [0, 1])," +
-                " (2, b, false, LT, yes, NaN, [1, 0]), (2, b, false, LT, yes, NaN, [0, 1])," +
-                " (2, b, false, LT, no, Infinity, [1, 0]), (2, b, false, LT, no, Infinity, [0, 1])," +
-                " (2, b, false, LT, no, NaN, [1, 0]), (2, b, false, LT, no, NaN, [0, 1])," +
-                " (2, b, true, EQ, yes, Infinity, [1, 0]), (2, b, true, EQ, yes, Infinity, [0, 1])," +
-                " (2, b, true, EQ, yes, NaN, [1, 0]), (2, b, true, EQ, yes, NaN, [0, 1])," +
-                " (2, b, true, EQ, no, Infinity, [1, 0]), (2, b, true, EQ, no, Infinity, [0, 1])," +
-                " (2, b, true, EQ, no, NaN, [1, 0]), (2, b, true, EQ, no, NaN, [0, 1])," +
-                " (2, b, true, LT, yes, Infinity, [1, 0]), (2, b, true, LT, yes, Infinity, [0, 1])," +
-                " (2, b, true, LT, yes, NaN, [1, 0]), (2, b, true, LT, yes, NaN, [0, 1])," +
-                " (2, b, true, LT, no, Infinity, [1, 0]), (2, b, true, LT, no, Infinity, [0, 1])," +
-                " (2, b, true, LT, no, NaN, [1, 0]), (2, b, true, LT, no, NaN, [0, 1])," +
-                " (1, a, false, GT, yes, Infinity, [1, 0]), (1, a, false, GT, yes, Infinity, [0, 1])," +
-                " (1, a, false, GT, yes, NaN, [1, 0]), (1, a, false, GT, yes, NaN, [0, 1])," +
-                " (1, a, false, GT, no, Infinity, [1, 0]), (1, a, false, GT, no, Infinity, [0, 1])," +
-                " (1, a, false, GT, no, NaN, [1, 0]), (1, a, false, GT, no, NaN, [0, 1])," +
-                " (1, a, true, GT, yes, Infinity, [1, 0]), (1, a, true, GT, yes, Infinity, [0, 1])," +
-                " (1, a, true, GT, yes, NaN, [1, 0]), (1, a, true, GT, yes, NaN, [0, 1])," +
-                " (1, a, true, GT, no, Infinity, [1, 0]), (1, a, true, GT, no, Infinity, [0, 1])," +
-                " (1, a, true, GT, no, NaN, [1, 0]), (1, a, true, GT, no, NaN, [0, 1])," +
-                " (1, b, false, GT, yes, Infinity, [1, 0]), (1, b, false, GT, yes, Infinity, [0, 1])," +
-                " (1, b, false, GT, yes, NaN, [1, 0]), (1, b, false, GT, yes, NaN, [0, 1])," +
-                " (1, b, false, GT, no, Infinity, [1, 0]), (1, b, false, GT, no, Infinity, [0, 1])," +
-                " (1, b, false, GT, no, NaN, [1, 0]), (1, b, false, GT, no, NaN, [0, 1])," +
-                " (1, b, true, GT, yes, Infinity, [1, 0]), (1, b, true, GT, yes, Infinity, [0, 1])," +
-                " (1, b, true, GT, yes, NaN, [1, 0]), (1, b, true, GT, yes, NaN, [0, 1])," +
-                " (1, b, true, GT, no, Infinity, [1, 0]), (1, b, true, GT, no, Infinity, [0, 1])," +
-                " (1, b, true, GT, no, NaN, [1, 0]), (1, b, true, GT, no, NaN, [0, 1])," +
-                " (2, a, false, GT, yes, Infinity, [1, 0]), (2, a, false, GT, yes, Infinity, [0, 1])," +
-                " (2, a, false, GT, yes, NaN, [1, 0]), (2, a, false, GT, yes, NaN, [0, 1])," +
-                " (2, a, false, GT, no, Infinity, [1, 0]), (2, a, false, GT, no, Infinity, [0, 1])," +
-                " (2, a, false, GT, no, NaN, [1, 0]), (2, a, false, GT, no, NaN, [0, 1])," +
-                " (2, a, true, GT, yes, Infinity, [1, 0]), (2, a, true, GT, yes, Infinity, [0, 1])," +
-                " (2, a, true, GT, yes, NaN, [1, 0]), (2, a, true, GT, yes, NaN, [0, 1])," +
-                " (2, a, true, GT, no, Infinity, [1, 0]), (2, a, true, GT, no, Infinity, [0, 1])," +
-                " (2, a, true, GT, no, NaN, [1, 0]), (2, a, true, GT, no, NaN, [0, 1])," +
-                " (2, b, false, GT, yes, Infinity, [1, 0]), (2, b, false, GT, yes, Infinity, [0, 1])," +
-                " (2, b, false, GT, yes, NaN, [1, 0]), (2, b, false, GT, yes, NaN, [0, 1])," +
-                " (2, b, false, GT, no, Infinity, [1, 0]), (2, b, false, GT, no, Infinity, [0, 1])," +
-                " (2, b, false, GT, no, NaN, [1, 0]), (2, b, false, GT, no, NaN, [0, 1])," +
-                " (2, b, true, GT, yes, Infinity, [1, 0]), (2, b, true, GT, yes, Infinity, [0, 1])," +
-                " (2, b, true, GT, yes, NaN, [1, 0]), (2, b, true, GT, yes, NaN, [0, 1])," +
-                " (2, b, true, GT, no, Infinity, [1, 0]), (2, b, true, GT, no, Infinity, [0, 1])," +
-                " (2, b, true, GT, no, NaN, [1, 0]), (2, b, true, GT, no, NaN, [0, 1])," +
-                " (1, c, false, EQ, yes, Infinity, [1, 0]), (1, c, false, EQ, yes, Infinity, [0, 1])," +
-                " (1, c, false, EQ, yes, NaN, [1, 0]), (1, c, false, EQ, yes, NaN, [0, 1])," +
-                " (1, c, false, EQ, no, Infinity, [1, 0]), (1, c, false, EQ, no, Infinity, [0, 1])," +
-                " (1, c, false, EQ, no, NaN, [1, 0]), (1, c, false, EQ, no, NaN, [0, 1])," +
-                " (1, c, false, LT, yes, Infinity, [1, 0]), (1, c, false, LT, yes, Infinity, [0, 1])," +
-                " (1, c, false, LT, yes, NaN, [1, 0]), (1, c, false, LT, yes, NaN, [0, 1])," +
-                " (1, c, false, LT, no, Infinity, [1, 0]), (1, c, false, LT, no, Infinity, [0, 1])," +
-                " (1, c, false, LT, no, NaN, [1, 0]), (1, c, false, LT, no, NaN, [0, 1])," +
-                " (1, c, true, EQ, yes, Infinity, [1, 0]), (1, c, true, EQ, yes, Infinity, [0, 1])," +
-                " (1, c, true, EQ, yes, NaN, [1, 0]), (1, c, true, EQ, yes, NaN, [0, 1])," +
-                " (1, c, true, EQ, no, Infinity, [1, 0]), (1, c, true, EQ, no, Infinity, [0, 1])," +
-                " (1, c, true, EQ, no, NaN, [1, 0]), (1, c, true, EQ, no, NaN, [0, 1])," +
-                " (1, c, true, LT, yes, Infinity, [1, 0]), (1, c, true, LT, yes, Infinity, [0, 1])," +
-                " (1, c, true, LT, yes, NaN, [1, 0]), (1, c, true, LT, yes, NaN, [0, 1])," +
-                " (1, c, true, LT, no, Infinity, [1, 0]), (1, c, true, LT, no, Infinity, [0, 1])," +
-                " (1, c, true, LT, no, NaN, [1, 0]), (1, c, true, LT, no, NaN, [0, 1])," +
-                " (1, d, false, EQ, yes, Infinity, [1, 0]), (1, d, false, EQ, yes, Infinity, [0, 1])," +
-                " (1, d, false, EQ, yes, NaN, [1, 0]), (1, d, false, EQ, yes, NaN, [0, 1])," +
-                " (1, d, false, EQ, no, Infinity, [1, 0]), (1, d, false, EQ, no, Infinity, [0, 1])," +
-                " (1, d, false, EQ, no, NaN, [1, 0]), (1, d, false, EQ, no, NaN, [0, 1])," +
-                " (1, d, false, LT, yes, Infinity, [1, 0]), (1, d, false, LT, yes, Infinity, [0, 1])," +
-                " (1, d, false, LT, yes, NaN, [1, 0]), (1, d, false, LT, yes, NaN, [0, 1])," +
-                " (1, d, false, LT, no, Infinity, [1, 0]), (1, d, false, LT, no, Infinity, [0, 1])," +
-                " (1, d, false, LT, no, NaN, [1, 0]), (1, d, false, LT, no, NaN, [0, 1])," +
-                " (1, d, true, EQ, yes, Infinity, [1, 0]), (1, d, true, EQ, yes, Infinity, [0, 1])," +
-                " (1, d, true, EQ, yes, NaN, [1, 0]), (1, d, true, EQ, yes, NaN, [0, 1])," +
-                " (1, d, true, EQ, no, Infinity, [1, 0]), (1, d, true, EQ, no, Infinity, [0, 1])," +
-                " (1, d, true, EQ, no, NaN, [1, 0]), (1, d, true, EQ, no, NaN, [0, 1])," +
-                " (1, d, true, LT, yes, Infinity, [1, 0]), (1, d, true, LT, yes, Infinity, [0, 1])," +
-                " (1, d, true, LT, yes, NaN, [1, 0]), (1, d, true, LT, yes, NaN, [0, 1])," +
-                " (1, d, true, LT, no, Infinity, [1, 0]), (1, d, true, LT, no, Infinity, [0, 1])," +
-                " (1, d, true, LT, no, NaN, [1, 0]), (1, d, true, LT, no, NaN, [0, 1])," +
-                " (2, c, false, EQ, yes, Infinity, [1, 0]), (2, c, false, EQ, yes, Infinity, [0, 1])," +
-                " (2, c, false, EQ, yes, NaN, [1, 0]), (2, c, false, EQ, yes, NaN, [0, 1])," +
-                " (2, c, false, EQ, no, Infinity, [1, 0]), (2, c, false, EQ, no, Infinity, [0, 1])," +
-                " (2, c, false, EQ, no, NaN, [1, 0]), (2, c, false, EQ, no, NaN, [0, 1])," +
-                " (2, c, false, LT, yes, Infinity, [1, 0]), (2, c, false, LT, yes, Infinity, [0, 1])," +
-                " (2, c, false, LT, yes, NaN, [1, 0]), (2, c, false, LT, yes, NaN, [0, 1])," +
-                " (2, c, false, LT, no, Infinity, [1, 0]), (2, c, false, LT, no, Infinity, [0, 1])," +
-                " (2, c, false, LT, no, NaN, [1, 0]), (2, c, false, LT, no, NaN, [0, 1])," +
-                " (2, c, true, EQ, yes, Infinity, [1, 0]), (2, c, true, EQ, yes, Infinity, [0, 1])," +
-                " (2, c, true, EQ, yes, NaN, [1, 0]), (2, c, true, EQ, yes, NaN, [0, 1])," +
-                " (2, c, true, EQ, no, Infinity, [1, 0]), (2, c, true, EQ, no, Infinity, [0, 1])," +
-                " (2, c, true, EQ, no, NaN, [1, 0]), (2, c, true, EQ, no, NaN, [0, 1])," +
-                " (2, c, true, LT, yes, Infinity, [1, 0]), (2, c, true, LT, yes, Infinity, [0, 1])," +
-                " (2, c, true, LT, yes, NaN, [1, 0]), (2, c, true, LT, yes, NaN, [0, 1])," +
-                " (2, c, true, LT, no, Infinity, [1, 0]), (2, c, true, LT, no, Infinity, [0, 1])," +
-                " (2, c, true, LT, no, NaN, [1, 0]), (2, c, true, LT, no, NaN, [0, 1])," +
-                " (2, d, false, EQ, yes, Infinity, [1, 0]), (2, d, false, EQ, yes, Infinity, [0, 1])," +
-                " (2, d, false, EQ, yes, NaN, [1, 0]), (2, d, false, EQ, yes, NaN, [0, 1])," +
-                " (2, d, false, EQ, no, Infinity, [1, 0]), (2, d, false, EQ, no, Infinity, [0, 1])," +
-                " (2, d, false, EQ, no, NaN, [1, 0]), (2, d, false, EQ, no, NaN, [0, 1])," +
-                " (2, d, false, LT, yes, Infinity, [1, 0]), (2, d, false, LT, yes, Infinity, [0, 1])," +
-                " (2, d, false, LT, yes, NaN, [1, 0]), (2, d, false, LT, yes, NaN, [0, 1])," +
-                " (2, d, false, LT, no, Infinity, [1, 0]), (2, d, false, LT, no, Infinity, [0, 1])," +
-                " (2, d, false, LT, no, NaN, [1, 0]), (2, d, false, LT, no, NaN, [0, 1])," +
-                " (2, d, true, EQ, yes, Infinity, [1, 0]), (2, d, true, EQ, yes, Infinity, [0, 1])," +
-                " (2, d, true, EQ, yes, NaN, [1, 0]), (2, d, true, EQ, yes, NaN, [0, 1])," +
-                " (2, d, true, EQ, no, Infinity, [1, 0]), (2, d, true, EQ, no, Infinity, [0, 1])," +
-                " (2, d, true, EQ, no, NaN, [1, 0]), (2, d, true, EQ, no, NaN, [0, 1])," +
-                " (2, d, true, LT, yes, Infinity, [1, 0]), (2, d, true, LT, yes, Infinity, [0, 1])," +
-                " (2, d, true, LT, yes, NaN, [1, 0]), (2, d, true, LT, yes, NaN, [0, 1])," +
-                " (2, d, true, LT, no, Infinity, [1, 0]), (2, d, true, LT, no, Infinity, [0, 1])," +
-                " (2, d, true, LT, no, NaN, [1, 0]), (2, d, true, LT, no, NaN, [0, 1])," +
-                " (1, c, false, GT, yes, Infinity, [1, 0]), (1, c, false, GT, yes, Infinity, [0, 1])," +
-                " (1, c, false, GT, yes, NaN, [1, 0]), (1, c, false, GT, yes, NaN, [0, 1])," +
-                " (1, c, false, GT, no, Infinity, [1, 0]), (1, c, false, GT, no, Infinity, [0, 1])," +
-                " (1, c, false, GT, no, NaN, [1, 0]), (1, c, false, GT, no, NaN, [0, 1])," +
-                " (1, c, true, GT, yes, Infinity, [1, 0]), (1, c, true, GT, yes, Infinity, [0, 1])," +
-                " (1, c, true, GT, yes, NaN, [1, 0]), (1, c, true, GT, yes, NaN, [0, 1])," +
-                " (1, c, true, GT, no, Infinity, [1, 0]), (1, c, true, GT, no, Infinity, [0, 1])," +
-                " (1, c, true, GT, no, NaN, [1, 0]), (1, c, true, GT, no, NaN, [0, 1])," +
-                " (1, d, false, GT, yes, Infinity, [1, 0]), (1, d, false, GT, yes, Infinity, [0, 1])," +
-                " (1, d, false, GT, yes, NaN, [1, 0]), (1, d, false, GT, yes, NaN, [0, 1])," +
-                " (1, d, false, GT, no, Infinity, [1, 0]), (1, d, false, GT, no, Infinity, [0, 1])," +
-                " (1, d, false, GT, no, NaN, [1, 0]), (1, d, false, GT, no, NaN, [0, 1])," +
-                " (1, d, true, GT, yes, Infinity, [1, 0]), (1, d, true, GT, yes, Infinity, [0, 1])," +
-                " (1, d, true, GT, yes, NaN, [1, 0]), (1, d, true, GT, yes, NaN, [0, 1])," +
-                " (1, d, true, GT, no, Infinity, [1, 0]), (1, d, true, GT, no, Infinity, [0, 1])," +
-                " (1, d, true, GT, no, NaN, [1, 0]), (1, d, true, GT, no, NaN, [0, 1])," +
-                " (2, c, false, GT, yes, Infinity, [1, 0]), (2, c, false, GT, yes, Infinity, [0, 1])," +
-                " (2, c, false, GT, yes, NaN, [1, 0]), (2, c, false, GT, yes, NaN, [0, 1])," +
-                " (2, c, false, GT, no, Infinity, [1, 0]), (2, c, false, GT, no, Infinity, [0, 1])," +
-                " (2, c, false, GT, no, NaN, [1, 0]), (2, c, false, GT, no, NaN, [0, 1])," +
-                " (2, c, true, GT, yes, Infinity, [1, 0]), (2, c, true, GT, yes, Infinity, [0, 1])," +
-                " (2, c, true, GT, yes, NaN, [1, 0]), (2, c, true, GT, yes, NaN, [0, 1])," +
-                " (2, c, true, GT, no, Infinity, [1, 0]), (2, c, true, GT, no, Infinity, [0, 1])," +
-                " (2, c, true, GT, no, NaN, [1, 0]), (2, c, true, GT, no, NaN, [0, 1])," +
-                " (2, d, false, GT, yes, Infinity, [1, 0]), (2, d, false, GT, yes, Infinity, [0, 1])," +
-                " (2, d, false, GT, yes, NaN, [1, 0]), (2, d, false, GT, yes, NaN, [0, 1])," +
-                " (2, d, false, GT, no, Infinity, [1, 0]), (2, d, false, GT, no, Infinity, [0, 1])," +
-                " (2, d, false, GT, no, NaN, [1, 0]), (2, d, false, GT, no, NaN, [0, 1])," +
-                " (2, d, true, GT, yes, Infinity, [1, 0]), (2, d, true, GT, yes, Infinity, [0, 1])," +
-                " (2, d, true, GT, yes, NaN, [1, 0]), (2, d, true, GT, yes, NaN, [0, 1])," +
-                " (2, d, true, GT, no, Infinity, [1, 0]), (2, d, true, GT, no, Infinity, [0, 1])," +
-                " (2, d, true, GT, no, NaN, [1, 0]), (2, d, true, GT, no, NaN, [0, 1])," +
-                " (null, a, false, EQ, yes, Infinity, [1, 0]), (null, a, false, EQ, yes, Infinity, [0, 1])," +
-                " (null, a, false, EQ, yes, NaN, [1, 0]), (null, a, false, EQ, yes, NaN, [0, 1])," +
-                " (null, a, false, EQ, no, Infinity, [1, 0]), (null, a, false, EQ, no, Infinity, [0, 1])," +
-                " (null, a, false, EQ, no, NaN, [1, 0]), (null, a, false, EQ, no, NaN, [0, 1])," +
-                " (null, a, false, LT, yes, Infinity, [1, 0]), (null, a, false, LT, yes, Infinity, [0, 1])," +
-                " (null, a, false, LT, yes, NaN, [1, 0]), (null, a, false, LT, yes, NaN, [0, 1])," +
-                " (null, a, false, LT, no, Infinity, [1, 0]), (null, a, false, LT, no, Infinity, [0, 1])," +
-                " (null, a, false, LT, no, NaN, [1, 0]), (null, a, false, LT, no, NaN, [0, 1])," +
-                " (null, a, true, EQ, yes, Infinity, [1, 0]), (null, a, true, EQ, yes, Infinity, [0, 1])," +
-                " (null, a, true, EQ, yes, NaN, [1, 0]), (null, a, true, EQ, yes, NaN, [0, 1])," +
-                " (null, a, true, EQ, no, Infinity, [1, 0]), (null, a, true, EQ, no, Infinity, [0, 1])," +
-                " (null, a, true, EQ, no, NaN, [1, 0]), (null, a, true, EQ, no, NaN, [0, 1])," +
-                " (null, a, true, LT, yes, Infinity, [1, 0]), (null, a, true, LT, yes, Infinity, [0, 1])," +
-                " (null, a, true, LT, yes, NaN, [1, 0]), (null, a, true, LT, yes, NaN, [0, 1])," +
-                " (null, a, true, LT, no, Infinity, [1, 0]), (null, a, true, LT, no, Infinity, [0, 1])," +
-                " (null, a, true, LT, no, NaN, [1, 0]), (null, a, true, LT, no, NaN, [0, 1])," +
-                " (null, b, false, EQ, yes, Infinity, [1, 0]), (null, b, false, EQ, yes, Infinity, [0, 1])," +
-                " (null, b, false, EQ, yes, NaN, [1, 0]), (null, b, false, EQ, yes, NaN, [0, 1])," +
-                " (null, b, false, EQ, no, Infinity, [1, 0]), (null, b, false, EQ, no, Infinity, [0, 1])," +
-                " (null, b, false, EQ, no, NaN, [1, 0]), (null, b, false, EQ, no, NaN, [0, 1])," +
-                " (null, b, false, LT, yes, Infinity, [1, 0]), (null, b, false, LT, yes, Infinity, [0, 1])," +
-                " (null, b, false, LT, yes, NaN, [1, 0]), (null, b, false, LT, yes, NaN, [0, 1])," +
-                " (null, b, false, LT, no, Infinity, [1, 0]), (null, b, false, LT, no, Infinity, [0, 1])," +
-                " (null, b, false, LT, no, NaN, [1, 0]), (null, b, false, LT, no, NaN, [0, 1])," +
-                " (null, b, true, EQ, yes, Infinity, [1, 0]), (null, b, true, EQ, yes, Infinity, [0, 1])," +
-                " (null, b, true, EQ, yes, NaN, [1, 0]), (null, b, true, EQ, yes, NaN, [0, 1])," +
-                " (null, b, true, EQ, no, Infinity, [1, 0]), (null, b, true, EQ, no, Infinity, [0, 1])," +
-                " (null, b, true, EQ, no, NaN, [1, 0]), (null, b, true, EQ, no, NaN, [0, 1])," +
-                " (null, b, true, LT, yes, Infinity, [1, 0]), (null, b, true, LT, yes, Infinity, [0, 1])," +
-                " (null, b, true, LT, yes, NaN, [1, 0]), (null, b, true, LT, yes, NaN, [0, 1])," +
-                " (null, b, true, LT, no, Infinity, [1, 0]), (null, b, true, LT, no, Infinity, [0, 1])," +
-                " (null, b, true, LT, no, NaN, [1, 0]), (null, b, true, LT, no, NaN, [0, 1])," +
-                " (4, a, false, EQ, yes, Infinity, [1, 0]), (4, a, false, EQ, yes, Infinity, [0, 1])," +
-                " (4, a, false, EQ, yes, NaN, [1, 0]), (4, a, false, EQ, yes, NaN, [0, 1])," +
-                " (4, a, false, EQ, no, Infinity, [1, 0]), (4, a, false, EQ, no, Infinity, [0, 1])," +
-                " (4, a, false, EQ, no, NaN, [1, 0]), (4, a, false, EQ, no, NaN, [0, 1])," +
-                " (4, a, false, LT, yes, Infinity, [1, 0]), (4, a, false, LT, yes, Infinity, [0, 1])," +
-                " (4, a, false, LT, yes, NaN, [1, 0]), (4, a, false, LT, yes, NaN, [0, 1])," +
-                " (4, a, false, LT, no, Infinity, [1, 0]), (4, a, false, LT, no, Infinity, [0, 1])," +
-                " (4, a, false, LT, no, NaN, [1, 0]), (4, a, false, LT, no, NaN, [0, 1])," +
-                " (4, a, true, EQ, yes, Infinity, [1, 0]), (4, a, true, EQ, yes, Infinity, [0, 1])," +
-                " (4, a, true, EQ, yes, NaN, [1, 0]), (4, a, true, EQ, yes, NaN, [0, 1])," +
-                " (4, a, true, EQ, no, Infinity, [1, 0]), (4, a, true, EQ, no, Infinity, [0, 1])," +
-                " (4, a, true, EQ, no, NaN, [1, 0]), (4, a, true, EQ, no, NaN, [0, 1])," +
-                " (4, a, true, LT, yes, Infinity, [1, 0]), (4, a, true, LT, yes, Infinity, [0, 1])," +
-                " (4, a, true, LT, yes, NaN, [1, 0]), (4, a, true, LT, yes, NaN, [0, 1])," +
-                " (4, a, true, LT, no, Infinity, [1, 0]), (4, a, true, LT, no, Infinity, [0, 1])," +
-                " (4, a, true, LT, no, NaN, [1, 0]), (4, a, true, LT, no, NaN, [0, 1])," +
-                " (4, b, false, EQ, yes, Infinity, [1, 0]), (4, b, false, EQ, yes, Infinity, [0, 1])," +
-                " (4, b, false, EQ, yes, NaN, [1, 0]), (4, b, false, EQ, yes, NaN, [0, 1])," +
-                " (4, b, false, EQ, no, Infinity, [1, 0]), (4, b, false, EQ, no, Infinity, [0, 1])," +
-                " (4, b, false, EQ, no, NaN, [1, 0]), (4, b, false, EQ, no, NaN, [0, 1])," +
-                " (4, b, false, LT, yes, Infinity, [1, 0]), (4, b, false, LT, yes, Infinity, [0, 1])," +
-                " (4, b, false, LT, yes, NaN, [1, 0]), (4, b, false, LT, yes, NaN, [0, 1])," +
-                " (4, b, false, LT, no, Infinity, [1, 0]), (4, b, false, LT, no, Infinity, [0, 1])," +
-                " (4, b, false, LT, no, NaN, [1, 0]), (4, b, false, LT, no, NaN, [0, 1])," +
-                " (4, b, true, EQ, yes, Infinity, [1, 0]), (4, b, true, EQ, yes, Infinity, [0, 1])," +
-                " (4, b, true, EQ, yes, NaN, [1, 0]), (4, b, true, EQ, yes, NaN, [0, 1])," +
-                " (4, b, true, EQ, no, Infinity, [1, 0]), (4, b, true, EQ, no, Infinity, [0, 1])," +
-                " (4, b, true, EQ, no, NaN, [1, 0]), (4, b, true, EQ, no, NaN, [0, 1])," +
-                " (4, b, true, LT, yes, Infinity, [1, 0]), (4, b, true, LT, yes, Infinity, [0, 1])," +
-                " (4, b, true, LT, yes, NaN, [1, 0]), (4, b, true, LT, yes, NaN, [0, 1])," +
-                " (4, b, true, LT, no, Infinity, [1, 0]), (4, b, true, LT, no, Infinity, [0, 1])," +
-                " (4, b, true, LT, no, NaN, [1, 0]), (4, b, true, LT, no, NaN, [0, 1])," +
-                " (null, a, false, GT, yes, Infinity, [1, 0]), (null, a, false, GT, yes, Infinity, [0, 1])," +
-                " (null, a, false, GT, yes, NaN, [1, 0]), (null, a, false, GT, yes, NaN, [0, 1])," +
-                " (null, a, false, GT, no, Infinity, [1, 0]), (null, a, false, GT, no, Infinity, [0, 1])," +
-                " (null, a, false, GT, no, NaN, [1, 0]), (null, a, false, GT, no, NaN, [0, 1])," +
-                " (null, a, true, GT, yes, Infinity, [1, 0]), (null, a, true, GT, yes, Infinity, [0, 1])," +
-                " (null, a, true, GT, yes, NaN, [1, 0]), (null, a, true, GT, yes, NaN, [0, 1])," +
-                " (null, a, true, GT, no, Infinity, [1, 0]), (null, a, true, GT, no, Infinity, [0, 1])," +
-                " (null, a, true, GT, no, NaN, [1, 0]), (null, a, true, GT, no, NaN, [0, 1])," +
-                " (null, b, false, GT, yes, Infinity, [1, 0]), (null, b, false, GT, yes, Infinity, [0, 1])," +
-                " (null, b, false, GT, yes, NaN, [1, 0]), (null, b, false, GT, yes, NaN, [0, 1])," +
-                " (null, b, false, GT, no, Infinity, [1, 0]), (null, b, false, GT, no, Infinity, [0, 1])," +
-                " (null, b, false, GT, no, NaN, [1, 0]), (null, b, false, GT, no, NaN, [0, 1])," +
-                " (null, b, true, GT, yes, Infinity, [1, 0]), (null, b, true, GT, yes, Infinity, [0, 1])," +
-                " (null, b, true, GT, yes, NaN, [1, 0]), (null, b, true, GT, yes, NaN, [0, 1])," +
-                " (null, b, true, GT, no, Infinity, [1, 0]), (null, b, true, GT, no, Infinity, [0, 1])," +
-                " (null, b, true, GT, no, NaN, [1, 0]), (null, b, true, GT, no, NaN, [0, 1])," +
-                " (4, a, false, GT, yes, Infinity, [1, 0]), (4, a, false, GT, yes, Infinity, [0, 1])," +
-                " (4, a, false, GT, yes, NaN, [1, 0]), (4, a, false, GT, yes, NaN, [0, 1])," +
-                " (4, a, false, GT, no, Infinity, [1, 0]), (4, a, false, GT, no, Infinity, [0, 1])," +
-                " (4, a, false, GT, no, NaN, [1, 0]), (4, a, false, GT, no, NaN, [0, 1])," +
-                " (4, a, true, GT, yes, Infinity, [1, 0]), (4, a, true, GT, yes, Infinity, [0, 1])," +
-                " (4, a, true, GT, yes, NaN, [1, 0]), (4, a, true, GT, yes, NaN, [0, 1])," +
-                " (4, a, true, GT, no, Infinity, [1, 0]), (4, a, true, GT, no, Infinity, [0, 1])," +
-                " (4, a, true, GT, no, NaN, [1, 0]), (4, a, true, GT, no, NaN, [0, 1])," +
-                " (4, b, false, GT, yes, Infinity, [1, 0]), (4, b, false, GT, yes, Infinity, [0, 1])," +
-                " (4, b, false, GT, yes, NaN, [1, 0]), (4, b, false, GT, yes, NaN, [0, 1])," +
-                " (4, b, false, GT, no, Infinity, [1, 0]), (4, b, false, GT, no, Infinity, [0, 1])," +
-                " (4, b, false, GT, no, NaN, [1, 0]), (4, b, false, GT, no, NaN, [0, 1])," +
-                " (4, b, true, GT, yes, Infinity, [1, 0]), (4, b, true, GT, yes, Infinity, [0, 1])," +
-                " (4, b, true, GT, yes, NaN, [1, 0]), (4, b, true, GT, yes, NaN, [0, 1])," +
-                " (4, b, true, GT, no, Infinity, [1, 0]), (4, b, true, GT, no, Infinity, [0, 1])," +
-                " (4, b, true, GT, no, NaN, [1, 0]), (4, b, true, GT, no, NaN, [0, 1])," +
-                " (null, c, false, EQ, yes, Infinity, [1, 0]), (null, c, false, EQ, yes, Infinity, [0, 1])," +
-                " (null, c, false, EQ, yes, NaN, [1, 0]), (null, c, false, EQ, yes, NaN, [0, 1])," +
-                " (null, c, false, EQ, no, Infinity, [1, 0]), (null, c, false, EQ, no, Infinity, [0, 1])," +
-                " (null, c, false, EQ, no, NaN, [1, 0]), (null, c, false, EQ, no, NaN, [0, 1])," +
-                " (null, c, false, LT, yes, Infinity, [1, 0]), (null, c, false, LT, yes, Infinity, [0, 1])," +
-                " (null, c, false, LT, yes, NaN, [1, 0]), (null, c, false, LT, yes, NaN, [0, 1])," +
-                " (null, c, false, LT, no, Infinity, [1, 0]), (null, c, false, LT, no, Infinity, [0, 1])," +
-                " (null, c, false, LT, no, NaN, [1, 0]), (null, c, false, LT, no, NaN, [0, 1])," +
-                " (null, c, true, EQ, yes, Infinity, [1, 0]), (null, c, true, EQ, yes, Infinity, [0, 1])," +
-                " (null, c, true, EQ, yes, NaN, [1, 0]), (null, c, true, EQ, yes, NaN, [0, 1])," +
-                " (null, c, true, EQ, no, Infinity, [1, 0]), (null, c, true, EQ, no, Infinity, [0, 1])," +
-                " (null, c, true, EQ, no, NaN, [1, 0]), (null, c, true, EQ, no, NaN, [0, 1])," +
-                " (null, c, true, LT, yes, Infinity, [1, 0]), (null, c, true, LT, yes, Infinity, [0, 1])," +
-                " (null, c, true, LT, yes, NaN, [1, 0]), (null, c, true, LT, yes, NaN, [0, 1])," +
-                " (null, c, true, LT, no, Infinity, [1, 0]), (null, c, true, LT, no, Infinity, [0, 1])," +
-                " (null, c, true, LT, no, NaN, [1, 0]), (null, c, true, LT, no, NaN, [0, 1])," +
-                " (null, d, false, EQ, yes, Infinity, [1, 0]), (null, d, false, EQ, yes, Infinity, [0, 1])," +
-                " (null, d, false, EQ, yes, NaN, [1, 0]), (null, d, false, EQ, yes, NaN, [0, 1])," +
-                " (null, d, false, EQ, no, Infinity, [1, 0]), (null, d, false, EQ, no, Infinity, [0, 1])," +
-                " (null, d, false, EQ, no, NaN, [1, 0]), (null, d, false, EQ, no, NaN, [0, 1])," +
-                " (null, d, false, LT, yes, Infinity, [1, 0]), (null, d, false, LT, yes, Infinity, [0, 1])," +
-                " (null, d, false, LT, yes, NaN, [1, 0]), (null, d, false, LT, yes, NaN, [0, 1])," +
-                " (null, d, false, LT, no, Infinity, [1, 0]), (null, d, false, LT, no, Infinity, [0, 1])," +
-                " (null, d, false, LT, no, NaN, [1, 0]), (null, d, false, LT, no, NaN, [0, 1])," +
-                " (null, d, true, EQ, yes, Infinity, [1, 0]), (null, d, true, EQ, yes, Infinity, [0, 1])," +
-                " (null, d, true, EQ, yes, NaN, [1, 0]), (null, d, true, EQ, yes, NaN, [0, 1])," +
-                " (null, d, true, EQ, no, Infinity, [1, 0]), (null, d, true, EQ, no, Infinity, [0, 1])," +
-                " (null, d, true, EQ, no, NaN, [1, 0]), (null, d, true, EQ, no, NaN, [0, 1])," +
-                " (null, d, true, LT, yes, Infinity, [1, 0]), (null, d, true, LT, yes, Infinity, [0, 1])," +
-                " (null, d, true, LT, yes, NaN, [1, 0]), (null, d, true, LT, yes, NaN, [0, 1])," +
-                " (null, d, true, LT, no, Infinity, [1, 0]), (null, d, true, LT, no, Infinity, [0, 1])," +
-                " (null, d, true, LT, no, NaN, [1, 0]), (null, d, true, LT, no, NaN, [0, 1])," +
-                " (4, c, false, EQ, yes, Infinity, [1, 0]), (4, c, false, EQ, yes, Infinity, [0, 1])," +
-                " (4, c, false, EQ, yes, NaN, [1, 0]), (4, c, false, EQ, yes, NaN, [0, 1])," +
-                " (4, c, false, EQ, no, Infinity, [1, 0]), (4, c, false, EQ, no, Infinity, [0, 1])," +
-                " (4, c, false, EQ, no, NaN, [1, 0]), (4, c, false, EQ, no, NaN, [0, 1])," +
-                " (4, c, false, LT, yes, Infinity, [1, 0]), (4, c, false, LT, yes, Infinity, [0, 1])," +
-                " (4, c, false, LT, yes, NaN, [1, 0]), (4, c, false, LT, yes, NaN, [0, 1])," +
-                " (4, c, false, LT, no, Infinity, [1, 0]), (4, c, false, LT, no, Infinity, [0, 1])," +
-                " (4, c, false, LT, no, NaN, [1, 0]), (4, c, false, LT, no, NaN, [0, 1])," +
-                " (4, c, true, EQ, yes, Infinity, [1, 0]), (4, c, true, EQ, yes, Infinity, [0, 1])," +
-                " (4, c, true, EQ, yes, NaN, [1, 0]), (4, c, true, EQ, yes, NaN, [0, 1])," +
-                " (4, c, true, EQ, no, Infinity, [1, 0]), (4, c, true, EQ, no, Infinity, [0, 1])," +
-                " (4, c, true, EQ, no, NaN, [1, 0]), (4, c, true, EQ, no, NaN, [0, 1])," +
-                " (4, c, true, LT, yes, Infinity, [1, 0]), (4, c, true, LT, yes, Infinity, [0, 1])," +
-                " (4, c, true, LT, yes, NaN, [1, 0]), (4, c, true, LT, yes, NaN, [0, 1])," +
-                " (4, c, true, LT, no, Infinity, [1, 0]), (4, c, true, LT, no, Infinity, [0, 1])," +
-                " (4, c, true, LT, no, NaN, [1, 0]), (4, c, true, LT, no, NaN, [0, 1])," +
-                " (4, d, false, EQ, yes, Infinity, [1, 0]), (4, d, false, EQ, yes, Infinity, [0, 1])," +
-                " (4, d, false, EQ, yes, NaN, [1, 0]), (4, d, false, EQ, yes, NaN, [0, 1])," +
-                " (4, d, false, EQ, no, Infinity, [1, 0]), (4, d, false, EQ, no, Infinity, [0, 1])," +
-                " (4, d, false, EQ, no, NaN, [1, 0]), (4, d, false, EQ, no, NaN, [0, 1])," +
-                " (4, d, false, LT, yes, Infinity, [1, 0]), (4, d, false, LT, yes, Infinity, [0, 1])," +
-                " (4, d, false, LT, yes, NaN, [1, 0]), (4, d, false, LT, yes, NaN, [0, 1])," +
-                " (4, d, false, LT, no, Infinity, [1, 0]), (4, d, false, LT, no, Infinity, [0, 1])," +
-                " (4, d, false, LT, no, NaN, [1, 0]), (4, d, false, LT, no, NaN, [0, 1])," +
-                " (4, d, true, EQ, yes, Infinity, [1, 0]), (4, d, true, EQ, yes, Infinity, [0, 1])," +
-                " (4, d, true, EQ, yes, NaN, [1, 0]), (4, d, true, EQ, yes, NaN, [0, 1])," +
-                " (4, d, true, EQ, no, Infinity, [1, 0]), (4, d, true, EQ, no, Infinity, [0, 1])," +
-                " (4, d, true, EQ, no, NaN, [1, 0]), (4, d, true, EQ, no, NaN, [0, 1])," +
-                " (4, d, true, LT, yes, Infinity, [1, 0]), (4, d, true, LT, yes, Infinity, [0, 1])," +
-                " (4, d, true, LT, yes, NaN, [1, 0]), (4, d, true, LT, yes, NaN, [0, 1])," +
-                " (4, d, true, LT, no, Infinity, [1, 0]), (4, d, true, LT, no, Infinity, [0, 1])," +
-                " (4, d, true, LT, no, NaN, [1, 0]), (4, d, true, LT, no, NaN, [0, 1])," +
-                " (null, c, false, GT, yes, Infinity, [1, 0]), (null, c, false, GT, yes, Infinity, [0, 1])," +
-                " (null, c, false, GT, yes, NaN, [1, 0]), (null, c, false, GT, yes, NaN, [0, 1])," +
-                " (null, c, false, GT, no, Infinity, [1, 0]), (null, c, false, GT, no, Infinity, [0, 1])," +
-                " (null, c, false, GT, no, NaN, [1, 0]), (null, c, false, GT, no, NaN, [0, 1])," +
-                " (null, c, true, GT, yes, Infinity, [1, 0]), (null, c, true, GT, yes, Infinity, [0, 1])," +
-                " (null, c, true, GT, yes, NaN, [1, 0]), (null, c, true, GT, yes, NaN, [0, 1])," +
-                " (null, c, true, GT, no, Infinity, [1, 0]), (null, c, true, GT, no, Infinity, [0, 1])," +
-                " (null, c, true, GT, no, NaN, [1, 0]), (null, c, true, GT, no, NaN, [0, 1])," +
-                " (null, d, false, GT, yes, Infinity, [1, 0]), (null, d, false, GT, yes, Infinity, [0, 1])," +
-                " (null, d, false, GT, yes, NaN, [1, 0]), (null, d, false, GT, yes, NaN, [0, 1])," +
-                " (null, d, false, GT, no, Infinity, [1, 0]), (null, d, false, GT, no, Infinity, [0, 1])," +
-                " (null, d, false, GT, no, NaN, [1, 0]), (null, d, false, GT, no, NaN, [0, 1])," +
-                " (null, d, true, GT, yes, Infinity, [1, 0]), (null, d, true, GT, yes, Infinity, [0, 1])," +
-                " (null, d, true, GT, yes, NaN, [1, 0]), (null, d, true, GT, yes, NaN, [0, 1])," +
-                " (null, d, true, GT, no, Infinity, [1, 0]), (null, d, true, GT, no, Infinity, [0, 1])," +
-                " (null, d, true, GT, no, NaN, [1, 0]), (null, d, true, GT, no, NaN, [0, 1])," +
-                " (4, c, false, GT, yes, Infinity, [1, 0]), (4, c, false, GT, yes, Infinity, [0, 1])," +
-                " (4, c, false, GT, yes, NaN, [1, 0]), (4, c, false, GT, yes, NaN, [0, 1])," +
-                " (4, c, false, GT, no, Infinity, [1, 0]), (4, c, false, GT, no, Infinity, [0, 1])," +
-                " (4, c, false, GT, no, NaN, [1, 0]), (4, c, false, GT, no, NaN, [0, 1])," +
-                " (4, c, true, GT, yes, Infinity, [1, 0]), (4, c, true, GT, yes, Infinity, [0, 1])," +
-                " (4, c, true, GT, yes, NaN, [1, 0]), (4, c, true, GT, yes, NaN, [0, 1])," +
-                " (4, c, true, GT, no, Infinity, [1, 0]), (4, c, true, GT, no, Infinity, [0, 1])," +
-                " (4, c, true, GT, no, NaN, [1, 0]), (4, c, true, GT, no, NaN, [0, 1])," +
-                " (4, d, false, GT, yes, Infinity, [1, 0]), (4, d, false, GT, yes, Infinity, [0, 1])," +
-                " (4, d, false, GT, yes, NaN, [1, 0]), (4, d, false, GT, yes, NaN, [0, 1])," +
-                " (4, d, false, GT, no, Infinity, [1, 0]), (4, d, false, GT, no, Infinity, [0, 1])," +
-                " (4, d, false, GT, no, NaN, [1, 0]), (4, d, false, GT, no, NaN, [0, 1])," +
-                " (4, d, true, GT, yes, Infinity, [1, 0]), (4, d, true, GT, yes, Infinity, [0, 1])," +
-                " (4, d, true, GT, yes, NaN, [1, 0]), (4, d, true, GT, yes, NaN, [0, 1])," +
-                " (4, d, true, GT, no, Infinity, [1, 0]), (4, d, true, GT, no, Infinity, [0, 1])," +
-                " (4, d, true, GT, no, NaN, [1, 0]), (4, d, true, GT, no, NaN, [0, 1])]"
+                "ExhaustiveProvider_septuples_Iterable_Iterable_Iterable_Iterable_Iterable_Iterable_Iterable_ii"
         );
         septuples_Iterable_Iterable_Iterable_Iterable_Iterable_Iterable_Iterable_helper(
                 Collections.emptyList(),
@@ -4564,7 +2535,7 @@ public strictfp class ExhaustiveProviderTest {
                 Arrays.asList("yes", "no"),
                 Arrays.asList(Float.POSITIVE_INFINITY, Float.NaN),
                 Arrays.asList(x, y),
-                "[]"
+                "ExhaustiveProvider_septuples_Iterable_Iterable_Iterable_Iterable_Iterable_Iterable_Iterable_iii"
         );
         septuples_Iterable_Iterable_Iterable_Iterable_Iterable_Iterable_Iterable_helper(
                 Collections.emptyList(),
@@ -4574,7 +2545,7 @@ public strictfp class ExhaustiveProviderTest {
                 Collections.emptyList(),
                 Collections.emptyList(),
                 Collections.emptyList(),
-                "[]"
+                "ExhaustiveProvider_septuples_Iterable_Iterable_Iterable_Iterable_Iterable_Iterable_Iterable_iv"
         );
         simpleProviderHelper(
                 EP.septuples(
@@ -4586,16 +2557,7 @@ public strictfp class ExhaustiveProviderTest {
                         Arrays.asList(Float.POSITIVE_INFINITY, Float.NaN),
                         Arrays.asList(x, y)
                 ),
-                "[(0, a, false, EQ, yes, Infinity, [1, 0]), (0, a, false, EQ, yes, Infinity, [0, 1])," +
-                " (0, a, false, EQ, yes, NaN, [1, 0]), (0, a, false, EQ, yes, NaN, [0, 1])," +
-                " (0, a, false, EQ, no, Infinity, [1, 0]), (0, a, false, EQ, no, Infinity, [0, 1])," +
-                " (0, a, false, EQ, no, NaN, [1, 0]), (0, a, false, EQ, no, NaN, [0, 1])," +
-                " (0, a, false, LT, yes, Infinity, [1, 0]), (0, a, false, LT, yes, Infinity, [0, 1])," +
-                " (0, a, false, LT, yes, NaN, [1, 0]), (0, a, false, LT, yes, NaN, [0, 1])," +
-                " (0, a, false, LT, no, Infinity, [1, 0]), (0, a, false, LT, no, Infinity, [0, 1])," +
-                " (0, a, false, LT, no, NaN, [1, 0]), (0, a, false, LT, no, NaN, [0, 1])," +
-                " (0, a, true, EQ, yes, Infinity, [1, 0]), (0, a, true, EQ, yes, Infinity, [0, 1])," +
-                " (0, a, true, EQ, yes, NaN, [1, 0]), (0, a, true, EQ, yes, NaN, [0, 1]), ...]"
+                "ExhaustiveProvider_septuples_Iterable_Iterable_Iterable_Iterable_Iterable_Iterable_Iterable_v"
         );
         simpleProviderHelper(
                 EP.septuples(
@@ -4607,16 +2569,7 @@ public strictfp class ExhaustiveProviderTest {
                         Arrays.asList(Float.POSITIVE_INFINITY, Float.NaN),
                         Arrays.asList(x, y)
                 ),
-                "[(a, false, 0, EQ, yes, Infinity, [1, 0]), (a, false, 0, EQ, yes, Infinity, [0, 1])," +
-                " (a, false, 0, EQ, yes, NaN, [1, 0]), (a, false, 0, EQ, yes, NaN, [0, 1])," +
-                " (a, false, 0, EQ, no, Infinity, [1, 0]), (a, false, 0, EQ, no, Infinity, [0, 1])," +
-                " (a, false, 0, EQ, no, NaN, [1, 0]), (a, false, 0, EQ, no, NaN, [0, 1])," +
-                " (a, false, 0, LT, yes, Infinity, [1, 0]), (a, false, 0, LT, yes, Infinity, [0, 1])," +
-                " (a, false, 0, LT, yes, NaN, [1, 0]), (a, false, 0, LT, yes, NaN, [0, 1])," +
-                " (a, false, 0, LT, no, Infinity, [1, 0]), (a, false, 0, LT, no, Infinity, [0, 1])," +
-                " (a, false, 0, LT, no, NaN, [1, 0]), (a, false, 0, LT, no, NaN, [0, 1])," +
-                " (a, false, 1, EQ, yes, Infinity, [1, 0]), (a, false, 1, EQ, yes, Infinity, [0, 1])," +
-                " (a, false, 1, EQ, yes, NaN, [1, 0]), (a, false, 1, EQ, yes, NaN, [0, 1]), ...]"
+                "ExhaustiveProvider_septuples_Iterable_Iterable_Iterable_Iterable_Iterable_Iterable_Iterable_vi"
         );
         simpleProviderHelper(
                 EP.septuples(
@@ -4628,13 +2581,7 @@ public strictfp class ExhaustiveProviderTest {
                         EP.lists(EP.integers()),
                         EP.bigDecimals()
                 ),
-                "[(1, -1, a, , NaN, [], 0), (1, -1, a, , NaN, [], 0.0), (1, -1, a, , NaN, [0], 0)," +
-                " (1, -1, a, , NaN, [0], 0.0), (1, -1, a, , Infinity, [], 0), (1, -1, a, , Infinity, [], 0.0)," +
-                " (1, -1, a, , Infinity, [0], 0), (1, -1, a, , Infinity, [0], 0.0), (1, -1, a, a, NaN, [], 0)," +
-                " (1, -1, a, a, NaN, [], 0.0), (1, -1, a, a, NaN, [0], 0), (1, -1, a, a, NaN, [0], 0.0)," +
-                " (1, -1, a, a, Infinity, [], 0), (1, -1, a, a, Infinity, [], 0.0), (1, -1, a, a, Infinity, [0], 0)," +
-                " (1, -1, a, a, Infinity, [0], 0.0), (1, -1, b, , NaN, [], 0), (1, -1, b, , NaN, [], 0.0)," +
-                " (1, -1, b, , NaN, [0], 0), (1, -1, b, , NaN, [0], 0.0), ...]"
+                "ExhaustiveProvider_septuples_Iterable_Iterable_Iterable_Iterable_Iterable_Iterable_Iterable_vii"
         );
     }
 
@@ -4648,42 +2595,17 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testSeptuples_Iterable() {
-        septuples_Iterable_helper("[]", "[]");
-        septuples_Iterable_helper("[5]", "[(5, 5, 5, 5, 5, 5, 5)]");
-        septuples_Iterable_helper("[1, 2, 3, 4]",
-                "[(1, 1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1, 2), (1, 1, 1, 1, 1, 2, 1), (1, 1, 1, 1, 1, 2, 2)," +
-                " (1, 1, 1, 1, 2, 1, 1), (1, 1, 1, 1, 2, 1, 2), (1, 1, 1, 1, 2, 2, 1), (1, 1, 1, 1, 2, 2, 2)," +
-                " (1, 1, 1, 2, 1, 1, 1), (1, 1, 1, 2, 1, 1, 2), (1, 1, 1, 2, 1, 2, 1), (1, 1, 1, 2, 1, 2, 2)," +
-                " (1, 1, 1, 2, 2, 1, 1), (1, 1, 1, 2, 2, 1, 2), (1, 1, 1, 2, 2, 2, 1), (1, 1, 1, 2, 2, 2, 2)," +
-                " (1, 1, 2, 1, 1, 1, 1), (1, 1, 2, 1, 1, 1, 2), (1, 1, 2, 1, 1, 2, 1), (1, 1, 2, 1, 1, 2, 2), ...]");
-        septuples_Iterable_helper("[1, 2, 2, 4]",
-                "[(1, 1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1, 2), (1, 1, 1, 1, 1, 2, 1), (1, 1, 1, 1, 1, 2, 2)," +
-                " (1, 1, 1, 1, 2, 1, 1), (1, 1, 1, 1, 2, 1, 2), (1, 1, 1, 1, 2, 2, 1), (1, 1, 1, 1, 2, 2, 2)," +
-                " (1, 1, 1, 2, 1, 1, 1), (1, 1, 1, 2, 1, 1, 2), (1, 1, 1, 2, 1, 2, 1), (1, 1, 1, 2, 1, 2, 2)," +
-                " (1, 1, 1, 2, 2, 1, 1), (1, 1, 1, 2, 2, 1, 2), (1, 1, 1, 2, 2, 2, 1), (1, 1, 1, 2, 2, 2, 2)," +
-                " (1, 1, 2, 1, 1, 1, 1), (1, 1, 2, 1, 1, 1, 2), (1, 1, 2, 1, 1, 2, 1), (1, 1, 2, 1, 1, 2, 2), ...]");
-        septuples_Iterable_helper("[1, 2, null, 4]",
-                "[(1, 1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1, 2), (1, 1, 1, 1, 1, 2, 1), (1, 1, 1, 1, 1, 2, 2)," +
-                " (1, 1, 1, 1, 2, 1, 1), (1, 1, 1, 1, 2, 1, 2), (1, 1, 1, 1, 2, 2, 1), (1, 1, 1, 1, 2, 2, 2)," +
-                " (1, 1, 1, 2, 1, 1, 1), (1, 1, 1, 2, 1, 1, 2), (1, 1, 1, 2, 1, 2, 1), (1, 1, 1, 2, 1, 2, 2)," +
-                " (1, 1, 1, 2, 2, 1, 1), (1, 1, 1, 2, 2, 1, 2), (1, 1, 1, 2, 2, 2, 1), (1, 1, 1, 2, 2, 2, 2)," +
-                " (1, 1, 2, 1, 1, 1, 1), (1, 1, 2, 1, 1, 1, 2), (1, 1, 2, 1, 1, 2, 1), (1, 1, 2, 1, 1, 2, 2), ...]");
-        septuples_Iterable_helper(EP.naturalIntegers(),
-                "[(0, 0, 0, 0, 0, 0, 0), (0, 0, 0, 0, 0, 0, 1), (0, 0, 0, 0, 0, 1, 0), (0, 0, 0, 0, 0, 1, 1)," +
-                " (0, 0, 0, 0, 1, 0, 0), (0, 0, 0, 0, 1, 0, 1), (0, 0, 0, 0, 1, 1, 0), (0, 0, 0, 0, 1, 1, 1)," +
-                " (0, 0, 0, 1, 0, 0, 0), (0, 0, 0, 1, 0, 0, 1), (0, 0, 0, 1, 0, 1, 0), (0, 0, 0, 1, 0, 1, 1)," +
-                " (0, 0, 0, 1, 1, 0, 0), (0, 0, 0, 1, 1, 0, 1), (0, 0, 0, 1, 1, 1, 0), (0, 0, 0, 1, 1, 1, 1)," +
-                " (0, 0, 1, 0, 0, 0, 0), (0, 0, 1, 0, 0, 0, 1), (0, 0, 1, 0, 0, 1, 0), (0, 0, 1, 0, 0, 1, 1), ...]");
-        septuples_Iterable_helper(repeat(1),
-                "[(1, 1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1, 1)," +
-                " (1, 1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1, 1)," +
-                " (1, 1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1, 1)," +
-                " (1, 1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1, 1)," +
-                " (1, 1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1, 1), ...]");
+        septuples_Iterable_helper("[]", "ExhaustiveProvider_septuples_Iterable_i");
+        septuples_Iterable_helper("[5]", "ExhaustiveProvider_septuples_Iterable_ii");
+        septuples_Iterable_helper("[1, 2, 3, 4]", "ExhaustiveProvider_septuples_Iterable_iii");
+        septuples_Iterable_helper("[1, 2, 2, 4]", "ExhaustiveProvider_septuples_Iterable_iv");
+        septuples_Iterable_helper("[1, 2, null, 4]", "ExhaustiveProvider_septuples_Iterable_v");
+        septuples_Iterable_helper(EP.naturalIntegers(), "ExhaustiveProvider_septuples_Iterable_vi");
+        septuples_Iterable_helper(repeat(1), "ExhaustiveProvider_septuples_Iterable_vii");
     }
 
     private static void strings_int_String_helper(int size, @NotNull String input, @NotNull String output) {
-        aeqit(EP.strings(size, input), output);
+        aeqitLog(EP.strings(size, input), output);
     }
 
     private static void strings_int_String_helper_limit(int size, @NotNull String input, @NotNull String output) {
@@ -4692,42 +2614,31 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testStrings_int_String() {
-        strings_int_String_helper(0, "", "[]");
-        aeq(length(EP.strings(0, "")), 1);
-        strings_int_String_helper(1, "", "[]");
-        aeq(length(EP.strings(1, "")), 0);
-        strings_int_String_helper(2, "", "[]");
-        aeq(length(EP.strings(2, "")), 0);
-        strings_int_String_helper(3, "", "[]");
-        aeq(length(EP.strings(3, "")), 0);
-        strings_int_String_helper(0, "abc", "[]");
-        aeq(length(EP.strings(0, "abc")), 1);
-        strings_int_String_helper(0, "a", "[]");
-        strings_int_String_helper(1, "a", "[a]");
-        strings_int_String_helper(2, "a", "[aa]");
-        strings_int_String_helper(3, "a", "[aaa]");
-        strings_int_String_helper(1, "abc", "[a, b, c]");
-        strings_int_String_helper(2, "abc", "[aa, ab, ba, bb, ac, bc, ca, cb, cc]");
-        strings_int_String_helper(3, "abc",
-                "[aaa, aab, aba, abb, baa, bab, bba, bbb, aac, abc, bac, bbc, aca, acb, bca, bcb, acc, bcc, caa," +
-                " cab, cba, cbb, cac, cbc, cca, ccb, ccc]");
-        strings_int_String_helper(0, "abbc", "[]");
-        aeq(length(EP.strings(0, "abbc")), 1);
-        strings_int_String_helper(1, "abbc", "[a, b, b, c]");
-        strings_int_String_helper(2, "abbc", "[aa, ab, ba, bb, ab, ac, bb, bc, ba, bb, ca, cb, bb, bc, cb, cc]");
-        strings_int_String_helper(3, "abbc",
-                "[aaa, aab, aba, abb, baa, bab, bba, bbb, aab, aac, abb, abc, bab, bac, bbb, bbc, aba, abb, aca," +
-                " acb, bba, bbb, bca, bcb, abb, abc, acb, acc, bbb, bbc, bcb, bcc, baa, bab, bba, bbb, caa, cab," +
-                " cba, cbb, bab, bac, bbb, bbc, cab, cac, cbb, cbc, bba, bbb, bca, bcb, cba, cbb, cca, ccb, bbb," +
-                " bbc, bcb, bcc, cbb, cbc, ccb, ccc]");
-        strings_int_String_helper(0, "Mississippi", "[]");
-        aeq(length(EP.strings(0, "Mississippi")), 1);
-        strings_int_String_helper_limit(1, "Mississippi", "[M, i, s, s, i, s, s, i, p, p, i]");
-        strings_int_String_helper_limit(2, "Mississippi",
-                "[MM, Mi, iM, ii, Ms, Ms, is, is, sM, si, sM, si, ss, ss, ss, ss, Mi, Ms, ii, is, ...]");
-        strings_int_String_helper_limit(3, "Mississippi",
-                "[MMM, MMi, MiM, Mii, iMM, iMi, iiM, iii, MMs, MMs, Mis, Mis, iMs, iMs, iis, iis, MsM, Msi, MsM," +
-                " Msi, ...]");
+        strings_int_String_helper(0, "", "ExhaustiveProvider_strings_int_String_i");
+        strings_int_String_helper(1, "", "ExhaustiveProvider_strings_int_String_ii");
+        strings_int_String_helper(2, "", "ExhaustiveProvider_strings_int_String_iii");
+        strings_int_String_helper(3, "", "ExhaustiveProvider_strings_int_String_iv");
+
+        strings_int_String_helper(0, "a", "ExhaustiveProvider_strings_int_String_v");
+        strings_int_String_helper(1, "a", "ExhaustiveProvider_strings_int_String_vi");
+        strings_int_String_helper(2, "a", "ExhaustiveProvider_strings_int_String_vii");
+        strings_int_String_helper(3, "a", "ExhaustiveProvider_strings_int_String_viii");
+
+        strings_int_String_helper(0, "abc", "ExhaustiveProvider_strings_int_String_ix");
+        strings_int_String_helper(1, "abc", "ExhaustiveProvider_strings_int_String_x");
+        strings_int_String_helper(2, "abc", "ExhaustiveProvider_strings_int_String_xi");
+        strings_int_String_helper(3, "abc", "ExhaustiveProvider_strings_int_String_xii");
+
+        strings_int_String_helper(0, "abbc", "ExhaustiveProvider_strings_int_String_xiii");
+        strings_int_String_helper(1, "abbc", "ExhaustiveProvider_strings_int_String_xiv");
+        strings_int_String_helper(2, "abbc", "ExhaustiveProvider_strings_int_String_xv");
+        strings_int_String_helper(3, "abbc", "ExhaustiveProvider_strings_int_String_xvi");
+
+        strings_int_String_helper(0, "Mississippi", "ExhaustiveProvider_strings_int_String_xvii");
+        strings_int_String_helper_limit(1, "Mississippi", "ExhaustiveProvider_strings_int_String_xviii");
+        strings_int_String_helper_limit(2, "Mississippi", "ExhaustiveProvider_strings_int_String_xix");
+        strings_int_String_helper_limit(3, "Mississippi", "ExhaustiveProvider_strings_int_String_xx");
+
         try {
             EP.strings(-1, "");
             fail();
@@ -4744,14 +2655,10 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testStrings_int() {
-        strings_int_helper(0, "[]");
-        aeq(length(EP.strings(0)), 1);
-        strings_int_helper(1, "[a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, ...]");
-        strings_int_helper(2,
-                "[aa, ab, ba, bb, ac, ad, bc, bd, ca, cb, da, db, cc, cd, dc, dd, ae, af, be, bf, ...]");
-        strings_int_helper(3,
-                "[aaa, aab, aba, abb, baa, bab, bba, bbb, aac, aad, abc, abd, bac, bad, bbc, bbd, aca, acb, ada," +
-                " adb, ...]");
+        strings_int_helper(0, "ExhaustiveProvider_strings_int_i");
+        strings_int_helper(1, "ExhaustiveProvider_strings_int_ii");
+        strings_int_helper(2, "ExhaustiveProvider_strings_int_iii");
+        strings_int_helper(3, "ExhaustiveProvider_strings_int_iv");
         try {
             EP.strings(-1);
             fail();
@@ -4760,52 +2667,26 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testLists_Iterable() {
-        aeqit(EP.lists(Collections.emptyList()), "[[]]");
-        simpleProviderHelper(EP.lists(Collections.singletonList(5)),
-                "[[], [5], [5, 5], [5, 5, 5], [5, 5, 5, 5], [5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5], ...]");
-        simpleProviderHelper(EP.lists(Arrays.asList(1, 2, 3)),
-                "[[], [1], [1, 1], [2], [1, 1, 1], [3], [1, 2], [1, 1, 1, 1], [2, 1], [1, 1, 2], [2, 2]," +
-                " [1, 1, 1, 1, 1], [1, 3], [1, 2, 1], [2, 3], [1, 1, 1, 2], [3, 1], [1, 2, 2], [3, 2]," +
-                " [1, 1, 1, 1, 1, 1], ...]");
-        simpleProviderHelper(EP.lists(Arrays.asList(1, 2, 2, 3)),
-                "[[], [1], [1, 1], [2], [1, 1, 1], [2], [1, 2], [3], [1, 1, 1, 1], [2, 1], [1, 1, 2], [2, 2]," +
-                " [1, 1, 1, 1, 1], [1, 2], [1, 2, 1], [1, 3], [1, 1, 1, 2], [2, 2], [1, 2, 2], [2, 3], ...]");
-        simpleProviderHelper(EP.lists(EP.naturalIntegers()),
-                "[[], [0], [0, 0], [1], [0, 0, 0], [2], [0, 1], [3], [0, 0, 0, 0], [4], [1, 0], [5], [0, 0, 1], [6]," +
-                " [1, 1], [7], [0, 0, 0, 0, 0], [8], [0, 2], [9], ...]");
-        simpleProviderHelper(EP.lists(repeat(1)),
-                "[[], [1], [1, 1], [1], [1, 1, 1], [1], [1, 1], [1], [1, 1, 1, 1], [1], [1, 1], [1], [1, 1, 1], [1]," +
-                " [1, 1], [1], [1, 1, 1, 1, 1], [1], [1, 1], [1], ...]");
+        aeqitLog(EP.lists(Collections.emptyList()), "ExhaustiveProvider_lists_Iterable_i");
+        simpleProviderHelper(EP.lists(Collections.singletonList(5)), "ExhaustiveProvider_lists_Iterable_ii");
+        simpleProviderHelper(EP.lists(Arrays.asList(1, 2, 3)), "ExhaustiveProvider_lists_Iterable_iii");
+        simpleProviderHelper(EP.lists(Arrays.asList(1, 2, 2, 3)), "ExhaustiveProvider_lists_Iterable_iv");
+        simpleProviderHelper(EP.lists(EP.naturalIntegers()), "ExhaustiveProvider_lists_Iterable_v");
+        simpleProviderHelper(EP.lists(repeat(1)), "ExhaustiveProvider_lists_Iterable_vi");
     }
 
     @Test
     public void testStrings_String() {
-        aeqit(EP.strings(""), "[]");
-        aeq(length(EP.strings("")), 1);
-        simpleProviderHelper(EP.strings("a"),
-                "[, a, aa, aaa, aaaa, aaaaa, aaaaaa, aaaaaaa, aaaaaaaa, aaaaaaaaa, aaaaaaaaaa, aaaaaaaaaaa," +
-                " aaaaaaaaaaaa, aaaaaaaaaaaaa, aaaaaaaaaaaaaa, aaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaa," +
-                " aaaaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaaaa, ...]");
-        simpleProviderHelper(EP.strings("abc"),
-                "[, a, aa, b, aaa, c, ab, aaaa, ba, aab, bb, aaaaa, ac, aba, bc, aaab, ca, abb, cb, aaaaaa, ...]");
-        simpleProviderHelper(EP.strings("abbc"),
-                "[, a, aa, b, aaa, b, ab, c, aaaa, ba, aab, bb, aaaaa, ab, aba, ac, aaab, bb, abb, bc, ...]");
-        simpleProviderHelper(EP.strings("Mississippi"),
-                "[, M, MM, i, MMM, s, Mi, s, MMMM, i, iM, s, MMi, s, ii, i, MMMMM, p, Ms, p, ...]");
+        aeqitLog(EP.strings(""), "ExhaustiveProvider_strings_String_i");
+        simpleProviderHelper(EP.strings("a"), "ExhaustiveProvider_strings_String_ii");
+        simpleProviderHelper(EP.strings("abc"), "ExhaustiveProvider_strings_String_iii");
+        simpleProviderHelper(EP.strings("abbc"), "ExhaustiveProvider_strings_String_iv");
+        simpleProviderHelper(EP.strings("Mississippi"), "ExhaustiveProvider_strings_String_v");
     }
 
     @Test
     public void testStrings() {
-        simpleProviderHelper(EP.strings(),
-                "[, a, aa, b, aaa, c, ab, d, aaaa, e, ba, f, aab, g, bb, h, aaaaa, i, ac, j, ...]");
+        simpleProviderHelper(EP.strings(), "ExhaustiveProvider_strings");
     }
 
     private static void listsAtLeast_helper(int minSize, @NotNull Iterable<Integer> input, @NotNull String output) {
@@ -4818,135 +2699,40 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testListsAtLeast() {
-        listsAtLeast_helper(0, "[]", "[[]]");
-        listsAtLeast_helper(1, "[]", "[]");
-        listsAtLeast_helper(2, "[]", "[]");
-        listsAtLeast_helper(3, "[]", "[]");
+        listsAtLeast_helper(0, "[]", "ExhaustiveProvider_listsAtLeast_i");
+        listsAtLeast_helper(1, "[]", "ExhaustiveProvider_listsAtLeast_ii");
+        listsAtLeast_helper(2, "[]", "ExhaustiveProvider_listsAtLeast_iii");
+        listsAtLeast_helper(3, "[]", "ExhaustiveProvider_listsAtLeast_iv");
 
-        listsAtLeast_helper(0, "[5]",
-                "[[], [5], [5, 5], [5, 5, 5], [5, 5, 5, 5], [5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5], ...]");
-        listsAtLeast_helper(1, "[5]",
-                "[[5], [5, 5], [5, 5, 5], [5, 5, 5, 5], [5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5], ...]");
-        listsAtLeast_helper(2, "[5]",
-                "[[5, 5], [5, 5, 5], [5, 5, 5, 5], [5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5], ...]");
-        listsAtLeast_helper(3, "[5]",
-                "[[5, 5, 5], [5, 5, 5, 5], [5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5], ...]");
+        listsAtLeast_helper(0, "[5]", "ExhaustiveProvider_listsAtLeast_v");
+        listsAtLeast_helper(1, "[5]", "ExhaustiveProvider_listsAtLeast_vi");
+        listsAtLeast_helper(2, "[5]", "ExhaustiveProvider_listsAtLeast_vii");
+        listsAtLeast_helper(3, "[5]", "ExhaustiveProvider_listsAtLeast_viii");
 
-        listsAtLeast_helper(0, "[1, 2, 3]",
-                "[[], [1], [1, 1], [2], [1, 1, 1], [3], [1, 2], [1, 1, 1, 1], [2, 1], [1, 1, 2], [2, 2]," +
-                " [1, 1, 1, 1, 1], [1, 3], [1, 2, 1], [2, 3], [1, 1, 1, 2], [3, 1], [1, 2, 2], [3, 2]," +
-                " [1, 1, 1, 1, 1, 1], ...]");
-        listsAtLeast_helper(1, "[1, 2, 3]",
-                "[[1], [1, 1], [2], [1, 1, 1], [3], [1, 2], [1, 1, 1, 1], [2, 1], [1, 1, 2], [2, 2]," +
-                " [1, 1, 1, 1, 1], [1, 3], [1, 2, 1], [2, 3], [1, 1, 1, 2], [3, 1], [1, 2, 2], [3, 2]," +
-                " [1, 1, 1, 1, 1, 1], [3, 3], ...]");
-        listsAtLeast_helper(2, "[1, 2, 3]",
-                "[[1, 1], [1, 1, 1], [1, 2], [1, 1, 1, 1], [2, 1], [1, 1, 2], [2, 2], [1, 1, 1, 1, 1], [1, 3]," +
-                " [1, 2, 1], [2, 3], [1, 1, 1, 2], [3, 1], [1, 2, 2], [3, 2], [1, 1, 1, 1, 1, 1], [3, 3], [2, 1, 1]," +
-                " [1, 1, 2, 1], [2, 1, 2], ...]");
-        listsAtLeast_helper(3, "[1, 2, 3]",
-                "[[1, 1, 1], [1, 1, 1, 1], [1, 1, 2], [1, 1, 1, 1, 1], [1, 2, 1], [1, 1, 1, 2], [1, 2, 2]," +
-                " [1, 1, 1, 1, 1, 1], [2, 1, 1], [1, 1, 2, 1], [2, 1, 2], [1, 1, 1, 1, 2], [2, 2, 1], [1, 1, 2, 2]," +
-                " [2, 2, 2], [1, 1, 1, 1, 1, 1, 1], [1, 1, 3], [1, 2, 1, 1], [1, 2, 3], [1, 1, 1, 2, 1], ...]");
+        listsAtLeast_helper(0, "[1, 2, 3]", "ExhaustiveProvider_listsAtLeast_ix");
+        listsAtLeast_helper(1, "[1, 2, 3]", "ExhaustiveProvider_listsAtLeast_x");
+        listsAtLeast_helper(2, "[1, 2, 3]", "ExhaustiveProvider_listsAtLeast_xi");
+        listsAtLeast_helper(3, "[1, 2, 3]", "ExhaustiveProvider_listsAtLeast_xii");
 
-        listsAtLeast_helper(0, "[1, null, 3]",
-                "[[], [1], [1, 1], [null], [1, 1, 1], [3], [1, null], [1, 1, 1, 1], [null, 1], [1, 1, null]," +
-                " [null, null], [1, 1, 1, 1, 1], [1, 3], [1, null, 1], [null, 3], [1, 1, 1, null], [3, 1]," +
-                " [1, null, null], [3, null], [1, 1, 1, 1, 1, 1], ...]");
-        listsAtLeast_helper(1, "[1, null, 3]",
-                "[[1], [1, 1], [null], [1, 1, 1], [3], [1, null], [1, 1, 1, 1], [null, 1], [1, 1, null]," +
-                " [null, null], [1, 1, 1, 1, 1], [1, 3], [1, null, 1], [null, 3], [1, 1, 1, null], [3, 1]," +
-                " [1, null, null], [3, null], [1, 1, 1, 1, 1, 1], [3, 3], ...]");
-        listsAtLeast_helper(2, "[1, null, 3]",
-                "[[1, 1], [1, 1, 1], [1, null], [1, 1, 1, 1], [null, 1], [1, 1, null], [null, null]," +
-                " [1, 1, 1, 1, 1], [1, 3], [1, null, 1], [null, 3], [1, 1, 1, null], [3, 1], [1, null, null]," +
-                " [3, null], [1, 1, 1, 1, 1, 1], [3, 3], [null, 1, 1], [1, 1, null, 1], [null, 1, null], ...]");
-        listsAtLeast_helper(3, "[1, null, 3]",
-                "[[1, 1, 1], [1, 1, 1, 1], [1, 1, null], [1, 1, 1, 1, 1], [1, null, 1], [1, 1, 1, null]," +
-                " [1, null, null], [1, 1, 1, 1, 1, 1], [null, 1, 1], [1, 1, null, 1], [null, 1, null]," +
-                " [1, 1, 1, 1, null], [null, null, 1], [1, 1, null, null], [null, null, null]," +
-                " [1, 1, 1, 1, 1, 1, 1], [1, 1, 3], [1, null, 1, 1], [1, null, 3], [1, 1, 1, null, 1], ...]");
+        listsAtLeast_helper(0, "[1, null, 3]", "ExhaustiveProvider_listsAtLeast_xiii");
+        listsAtLeast_helper(1, "[1, null, 3]", "ExhaustiveProvider_listsAtLeast_xiv");
+        listsAtLeast_helper(2, "[1, null, 3]", "ExhaustiveProvider_listsAtLeast_xv");
+        listsAtLeast_helper(3, "[1, null, 3]", "ExhaustiveProvider_listsAtLeast_xvi");
 
-        listsAtLeast_helper(0, "[1, 2, 2, 3]",
-                "[[], [1], [1, 1], [2], [1, 1, 1], [2], [1, 2], [3], [1, 1, 1, 1], [2, 1], [1, 1, 2], [2, 2]," +
-                " [1, 1, 1, 1, 1], [1, 2], [1, 2, 1], [1, 3], [1, 1, 1, 2], [2, 2], [1, 2, 2], [2, 3], ...]");
-        listsAtLeast_helper(1, "[1, 2, 2, 3]",
-                "[[1], [1, 1], [2], [1, 1, 1], [2], [1, 2], [3], [1, 1, 1, 1], [2, 1], [1, 1, 2], [2, 2]," +
-                " [1, 1, 1, 1, 1], [1, 2], [1, 2, 1], [1, 3], [1, 1, 1, 2], [2, 2], [1, 2, 2], [2, 3]," +
-                " [1, 1, 1, 1, 1, 1], ...]");
-        listsAtLeast_helper(2, "[1, 2, 2, 3]",
-                "[[1, 1], [1, 1, 1], [1, 2], [1, 1, 1, 1], [2, 1], [1, 1, 2], [2, 2], [1, 1, 1, 1, 1], [1, 2]," +
-                " [1, 2, 1], [1, 3], [1, 1, 1, 2], [2, 2], [1, 2, 2], [2, 3], [1, 1, 1, 1, 1, 1], [2, 1], [2, 1, 1]," +
-                " [2, 2], [1, 1, 2, 1], ...]");
-        listsAtLeast_helper(3, "[1, 2, 2, 3]",
-                "[[1, 1, 1], [1, 1, 1, 1], [1, 1, 2], [1, 1, 1, 1, 1], [1, 2, 1], [1, 1, 1, 2], [1, 2, 2]," +
-                " [1, 1, 1, 1, 1, 1], [2, 1, 1], [1, 1, 2, 1], [2, 1, 2], [1, 1, 1, 1, 2], [2, 2, 1], [1, 1, 2, 2]," +
-                " [2, 2, 2], [1, 1, 1, 1, 1, 1, 1], [1, 1, 2], [1, 2, 1, 1], [1, 1, 3], [1, 1, 1, 2, 1], ...]");
+        listsAtLeast_helper(0, "[1, 2, 2, 3]", "ExhaustiveProvider_listsAtLeast_xvii");
+        listsAtLeast_helper(1, "[1, 2, 2, 3]", "ExhaustiveProvider_listsAtLeast_xviii");
+        listsAtLeast_helper(2, "[1, 2, 2, 3]", "ExhaustiveProvider_listsAtLeast_xix");
+        listsAtLeast_helper(3, "[1, 2, 2, 3]", "ExhaustiveProvider_listsAtLeast_xx");
 
-        listsAtLeast_helper(0, EP.naturalIntegers(),
-                "[[], [0], [0, 0], [1], [0, 0, 0], [2], [0, 1], [3], [0, 0, 0, 0], [4], [1, 0], [5], [0, 0, 1], [6]," +
-                " [1, 1], [7], [0, 0, 0, 0, 0], [8], [0, 2], [9], ...]");
-        listsAtLeast_helper(1, EP.naturalIntegers(),
-                "[[0], [0, 0], [1], [0, 0, 0], [2], [0, 1], [3], [0, 0, 0, 0], [4], [1, 0], [5], [0, 0, 1], [6]," +
-                " [1, 1], [7], [0, 0, 0, 0, 0], [8], [0, 2], [9], [0, 1, 0], ...]");
-        listsAtLeast_helper(2, EP.naturalIntegers(),
-                "[[0, 0], [0, 0, 0], [0, 1], [0, 0, 0, 0], [1, 0], [0, 0, 1], [1, 1], [0, 0, 0, 0, 0], [0, 2]," +
-                " [0, 1, 0], [0, 3], [0, 0, 0, 1], [1, 2], [0, 1, 1], [1, 3], [0, 0, 0, 0, 0, 0], [2, 0], [1, 0, 0]," +
-                " [2, 1], [0, 0, 1, 0], ...]");
-        listsAtLeast_helper(3, EP.naturalIntegers(),
-                "[[0, 0, 0], [0, 0, 0, 0], [0, 0, 1], [0, 0, 0, 0, 0], [0, 1, 0], [0, 0, 0, 1], [0, 1, 1]," +
-                " [0, 0, 0, 0, 0, 0], [1, 0, 0], [0, 0, 1, 0], [1, 0, 1], [0, 0, 0, 0, 1], [1, 1, 0], [0, 0, 1, 1]," +
-                " [1, 1, 1], [0, 0, 0, 0, 0, 0, 0], [0, 0, 2], [0, 1, 0, 0], [0, 0, 3], [0, 0, 0, 1, 0], ...]");
+        listsAtLeast_helper(0, EP.naturalIntegers(), "ExhaustiveProvider_listsAtLeast_xxi");
+        listsAtLeast_helper(1, EP.naturalIntegers(), "ExhaustiveProvider_listsAtLeast_xxii");
+        listsAtLeast_helper(2, EP.naturalIntegers(), "ExhaustiveProvider_listsAtLeast_xxiii");
+        listsAtLeast_helper(3, EP.naturalIntegers(), "ExhaustiveProvider_listsAtLeast_xxiv");
 
-        listsAtLeast_helper(0, repeat(1),
-                "[[], [1], [1, 1], [1], [1, 1, 1], [1], [1, 1], [1], [1, 1, 1, 1], [1], [1, 1], [1], [1, 1, 1], [1]," +
-                " [1, 1], [1], [1, 1, 1, 1, 1], [1], [1, 1], [1], ...]");
-        listsAtLeast_helper(1, repeat(1),
-                "[[1], [1, 1], [1], [1, 1, 1], [1], [1, 1], [1], [1, 1, 1, 1], [1], [1, 1], [1], [1, 1, 1], [1]," +
-                " [1, 1], [1], [1, 1, 1, 1, 1], [1], [1, 1], [1], [1, 1, 1], ...]");
-        listsAtLeast_helper(2, repeat(1),
-                "[[1, 1], [1, 1, 1], [1, 1], [1, 1, 1, 1], [1, 1], [1, 1, 1], [1, 1], [1, 1, 1, 1, 1], [1, 1]," +
-                " [1, 1, 1], [1, 1], [1, 1, 1, 1], [1, 1], [1, 1, 1], [1, 1], [1, 1, 1, 1, 1, 1], [1, 1], [1, 1, 1]," +
-                " [1, 1], [1, 1, 1, 1], ...]");
-        listsAtLeast_helper(3, repeat(1),
-                "[[1, 1, 1], [1, 1, 1, 1], [1, 1, 1], [1, 1, 1, 1, 1], [1, 1, 1], [1, 1, 1, 1], [1, 1, 1]," +
-                " [1, 1, 1, 1, 1, 1], [1, 1, 1], [1, 1, 1, 1], [1, 1, 1], [1, 1, 1, 1, 1], [1, 1, 1], [1, 1, 1, 1]," +
-                " [1, 1, 1], [1, 1, 1, 1, 1, 1, 1], [1, 1, 1], [1, 1, 1, 1], [1, 1, 1], [1, 1, 1, 1, 1], ...]");
+        listsAtLeast_helper(0, repeat(1), "ExhaustiveProvider_listsAtLeast_xxv");
+        listsAtLeast_helper(1, repeat(1), "ExhaustiveProvider_listsAtLeast_xxvi");
+        listsAtLeast_helper(2, repeat(1), "ExhaustiveProvider_listsAtLeast_xxvii");
+        listsAtLeast_helper(3, repeat(1), "ExhaustiveProvider_listsAtLeast_xxviii");
 
         try {
             EP.listsAtLeast(-1, Collections.emptyList());
@@ -4964,61 +2750,30 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testStringsAtLeast_String() {
-        stringsAtLeast_String_helper(0, "", "[]");
-        aeq(length(EP.stringsShortlexAtLeast(0, "")), 1);
-        stringsAtLeast_String_helper(1, "", "[]");
-        aeq(length(EP.stringsShortlexAtLeast(1, "")), 0);
-        stringsAtLeast_String_helper(2, "", "[]");
-        aeq(length(EP.stringsShortlexAtLeast(2, "")), 0);
-        stringsAtLeast_String_helper(3, "", "[]");
-        aeq(length(EP.stringsShortlexAtLeast(3, "")), 0);
-        stringsAtLeast_String_helper(0, "a",
-                "[, a, aa, aaa, aaaa, aaaaa, aaaaaa, aaaaaaa, aaaaaaaa, aaaaaaaaa, aaaaaaaaaa, aaaaaaaaaaa," +
-                " aaaaaaaaaaaa, aaaaaaaaaaaaa, aaaaaaaaaaaaaa, aaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaa," +
-                " aaaaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaaaa, ...]");
-        stringsAtLeast_String_helper(1, "a",
-                "[a, aa, aaa, aaaa, aaaaa, aaaaaa, aaaaaaa, aaaaaaaa, aaaaaaaaa, aaaaaaaaaa, aaaaaaaaaaa," +
-                " aaaaaaaaaaaa, aaaaaaaaaaaaa, aaaaaaaaaaaaaa, aaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaa," +
-                " aaaaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaaaaa, ...]");
-        stringsAtLeast_String_helper(2, "a",
-                "[aa, aaa, aaaa, aaaaa, aaaaaa, aaaaaaa, aaaaaaaa, aaaaaaaaa, aaaaaaaaaa, aaaaaaaaaaa, aaaaaaaaaaaa," +
-                " aaaaaaaaaaaaa, aaaaaaaaaaaaaa, aaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaa," +
-                " aaaaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaaaaaa, ...]");
-        stringsAtLeast_String_helper(3, "a",
-                "[aaa, aaaa, aaaaa, aaaaaa, aaaaaaa, aaaaaaaa, aaaaaaaaa, aaaaaaaaaa, aaaaaaaaaaa, aaaaaaaaaaaa," +
-                " aaaaaaaaaaaaa, aaaaaaaaaaaaaa, aaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaa," +
-                " aaaaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaaaaaa," +
-                " aaaaaaaaaaaaaaaaaaaaaa, ...]");
-        stringsAtLeast_String_helper(0, "abc",
-                "[, a, aa, b, aaa, c, ab, aaaa, ba, aab, bb, aaaaa, ac, aba, bc, aaab, ca, abb, cb, aaaaaa, ...]");
-        stringsAtLeast_String_helper(1, "abc",
-                "[a, aa, b, aaa, c, ab, aaaa, ba, aab, bb, aaaaa, ac, aba, bc, aaab, ca, abb, cb, aaaaaa, cc, ...]");
-        stringsAtLeast_String_helper(2, "abc",
-                "[aa, aaa, ab, aaaa, ba, aab, bb, aaaaa, ac, aba, bc, aaab, ca, abb, cb, aaaaaa, cc, baa, aaba, bab," +
-                " ...]");
-        stringsAtLeast_String_helper(3, "abc",
-                "[aaa, aaaa, aab, aaaaa, aba, aaab, abb, aaaaaa, baa, aaba, bab, aaaab, bba, aabb, bbb, aaaaaaa," +
-                " aac, abaa, abc, aaaba, ...]");
-        stringsAtLeast_String_helper(0, "abbc",
-                "[, a, aa, b, aaa, b, ab, c, aaaa, ba, aab, bb, aaaaa, ab, aba, ac, aaab, bb, abb, bc, ...]");
-        stringsAtLeast_String_helper(1, "abbc",
-                "[a, aa, b, aaa, b, ab, c, aaaa, ba, aab, bb, aaaaa, ab, aba, ac, aaab, bb, abb, bc, aaaaaa, ...]");
-        stringsAtLeast_String_helper(2, "abbc",
-                "[aa, aaa, ab, aaaa, ba, aab, bb, aaaaa, ab, aba, ac, aaab, bb, abb, bc, aaaaaa, ba, baa, bb, aaba," +
-                " ...]");
-        stringsAtLeast_String_helper(3, "abbc",
-                "[aaa, aaaa, aab, aaaaa, aba, aaab, abb, aaaaaa, baa, aaba, bab, aaaab, bba, aabb, bbb, aaaaaaa," +
-                " aab, abaa, aac, aaaba, ...]");
-        stringsAtLeast_String_helper(0, "Mississippi",
-                "[, M, MM, i, MMM, s, Mi, s, MMMM, i, iM, s, MMi, s, ii, i, MMMMM, p, Ms, p, ...]");
-        stringsAtLeast_String_helper(1, "Mississippi",
-                "[M, MM, i, MMM, s, Mi, s, MMMM, i, iM, s, MMi, s, ii, i, MMMMM, p, Ms, p, MiM, ...]");
-        stringsAtLeast_String_helper(2, "Mississippi",
-                "[MM, MMM, Mi, MMMM, iM, MMi, ii, MMMMM, Ms, MiM, Ms, MMMi, is, Mii, is, MMMMMM, sM, iMM, si, MMiM," +
-                " ...]");
-        stringsAtLeast_String_helper(3, "Mississippi",
-                "[MMM, MMMM, MMi, MMMMM, MiM, MMMi, Mii, MMMMMM, iMM, MMiM, iMi, MMMMi, iiM, MMii, iii, MMMMMMM," +
-                " MMs, MiMM, MMs, MMMiM, ...]");
+        stringsAtLeast_String_helper(0, "", "ExhaustiveProvider_stringsAtLeast_String_i");
+        stringsAtLeast_String_helper(1, "", "ExhaustiveProvider_stringsAtLeast_String_ii");
+        stringsAtLeast_String_helper(2, "", "ExhaustiveProvider_stringsAtLeast_String_iii");
+        stringsAtLeast_String_helper(3, "", "ExhaustiveProvider_stringsAtLeast_String_iv");
+
+        stringsAtLeast_String_helper(0, "a", "ExhaustiveProvider_stringsAtLeast_String_v");
+        stringsAtLeast_String_helper(1, "a", "ExhaustiveProvider_stringsAtLeast_String_vi");
+        stringsAtLeast_String_helper(2, "a", "ExhaustiveProvider_stringsAtLeast_String_vii");
+        stringsAtLeast_String_helper(3, "a", "ExhaustiveProvider_stringsAtLeast_String_viii");
+
+        stringsAtLeast_String_helper(0, "abc", "ExhaustiveProvider_stringsAtLeast_String_ix");
+        stringsAtLeast_String_helper(1, "abc", "ExhaustiveProvider_stringsAtLeast_String_x");
+        stringsAtLeast_String_helper(2, "abc", "ExhaustiveProvider_stringsAtLeast_String_xi");
+        stringsAtLeast_String_helper(3, "abc", "ExhaustiveProvider_stringsAtLeast_String_xii");
+
+        stringsAtLeast_String_helper(0, "abbc", "ExhaustiveProvider_stringsAtLeast_String_xiii");
+        stringsAtLeast_String_helper(1, "abbc", "ExhaustiveProvider_stringsAtLeast_String_xiv");
+        stringsAtLeast_String_helper(2, "abbc", "ExhaustiveProvider_stringsAtLeast_String_xv");
+        stringsAtLeast_String_helper(3, "abbc", "ExhaustiveProvider_stringsAtLeast_String_xvi");
+
+        stringsAtLeast_String_helper(0, "Mississippi", "ExhaustiveProvider_stringsAtLeast_String_xvii");
+        stringsAtLeast_String_helper(1, "Mississippi", "ExhaustiveProvider_stringsAtLeast_String_xviii");
+        stringsAtLeast_String_helper(2, "Mississippi", "ExhaustiveProvider_stringsAtLeast_String_xix");
+        stringsAtLeast_String_helper(3, "Mississippi", "ExhaustiveProvider_stringsAtLeast_String_xx");
         try {
             EP.stringsAtLeast(-1, "");
             fail();
@@ -5035,15 +2790,10 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testStringsAtLeast() {
-        stringsAtLeast_helper(0, "[, a, aa, b, aaa, c, ab, d, aaaa, e, ba, f, aab, g, bb, h, aaaaa, i, ac, j, ...]");
-        stringsAtLeast_helper(1,
-                "[a, aa, b, aaa, c, ab, d, aaaa, e, ba, f, aab, g, bb, h, aaaaa, i, ac, j, aba, ...]");
-        stringsAtLeast_helper(2,
-                "[aa, aaa, ab, aaaa, ba, aab, bb, aaaaa, ac, aba, ad, aaab, bc, abb, bd, aaaaaa, ca, baa, cb, aaba," +
-                " ...]");
-        stringsAtLeast_helper(3,
-                "[aaa, aaaa, aab, aaaaa, aba, aaab, abb, aaaaaa, baa, aaba, bab, aaaab, bba, aabb, bbb, aaaaaaa," +
-                " aac, abaa, aad, aaaba, ...]");
+        stringsAtLeast_helper(0, "ExhaustiveProvider_stringsAtLeast_i");
+        stringsAtLeast_helper(1, "ExhaustiveProvider_stringsAtLeast_ii");
+        stringsAtLeast_helper(2, "ExhaustiveProvider_stringsAtLeast_iii");
+        stringsAtLeast_helper(3, "ExhaustiveProvider_stringsAtLeast_iv");
         try {
             EP.stringsAtLeast(-1);
             fail();
