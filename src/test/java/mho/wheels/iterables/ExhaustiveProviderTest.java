@@ -3095,57 +3095,28 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void distinctListsShortlex_helper(@NotNull String input, @NotNull String output) {
-        aeqit(EP.distinctListsShortlex(readIntegerListWithNulls(input)), output);
+        aeqitLog(EP.distinctListsShortlex(readIntegerListWithNulls(input)), output);
     }
 
     @Test
     public void testDistinctListsShortlex() {
-        distinctListsShortlex_helper("[]", "[[]]");
-        distinctListsShortlex_helper("[5]", "[[], [5]]");
-        distinctListsShortlex_helper("[1, 2, 3]",
-                "[[], [1], [2], [3], [1, 2], [1, 3], [2, 1], [2, 3], [3, 1], [3, 2], [1, 2, 3], [1, 3, 2]," +
-                " [2, 1, 3], [2, 3, 1], [3, 1, 2], [3, 2, 1]]");
-        distinctListsShortlex_helper("[1, null, 3]",
-                "[[], [1], [null], [3], [1, null], [1, 3], [null, 1], [null, 3], [3, 1], [3, null], [1, null, 3]," +
-                " [1, 3, null], [null, 1, 3], [null, 3, 1], [3, 1, null], [3, null, 1]]");
-        distinctListsShortlex_helper("[1, 2, 3, 4]",
-                "[[], [1], [2], [3], [4], [1, 2], [1, 3], [1, 4], [2, 1], [2, 3], [2, 4], [3, 1], [3, 2], [3, 4]," +
-                " [4, 1], [4, 2], [4, 3], [1, 2, 3], [1, 2, 4], [1, 3, 2], [1, 3, 4], [1, 4, 2], [1, 4, 3]," +
-                " [2, 1, 3], [2, 1, 4], [2, 3, 1], [2, 3, 4], [2, 4, 1], [2, 4, 3], [3, 1, 2], [3, 1, 4], [3, 2, 1]," +
-                " [3, 2, 4], [3, 4, 1], [3, 4, 2], [4, 1, 2], [4, 1, 3], [4, 2, 1], [4, 2, 3], [4, 3, 1], [4, 3, 2]," +
-                " [1, 2, 3, 4], [1, 2, 4, 3], [1, 3, 2, 4], [1, 3, 4, 2], [1, 4, 2, 3], [1, 4, 3, 2], [2, 1, 3, 4]," +
-                " [2, 1, 4, 3], [2, 3, 1, 4], [2, 3, 4, 1], [2, 4, 1, 3], [2, 4, 3, 1], [3, 1, 2, 4], [3, 1, 4, 2]," +
-                " [3, 2, 1, 4], [3, 2, 4, 1], [3, 4, 1, 2], [3, 4, 2, 1], [4, 1, 2, 3], [4, 1, 3, 2], [4, 2, 1, 3]," +
-                " [4, 2, 3, 1], [4, 3, 1, 2], [4, 3, 2, 1]]");
-        distinctListsShortlex_helper("[1, 2, 2, 3]",
-                "[[], [1], [2], [2], [3], [1, 2], [1, 2], [1, 3], [2, 1], [2, 2], [2, 3], [2, 1], [2, 2], [2, 3]," +
-                " [3, 1], [3, 2], [3, 2], [1, 2, 2], [1, 2, 3], [1, 2, 2], [1, 2, 3], [1, 3, 2], [1, 3, 2]," +
-                " [2, 1, 2], [2, 1, 3], [2, 2, 1], [2, 2, 3], [2, 3, 1], [2, 3, 2], [2, 1, 2], [2, 1, 3], [2, 2, 1]," +
-                " [2, 2, 3], [2, 3, 1], [2, 3, 2], [3, 1, 2], [3, 1, 2], [3, 2, 1], [3, 2, 2], [3, 2, 1], [3, 2, 2]," +
-                " [1, 2, 2, 3], [1, 2, 3, 2], [1, 2, 2, 3], [1, 2, 3, 2], [1, 3, 2, 2], [1, 3, 2, 2], [2, 1, 2, 3]," +
-                " [2, 1, 3, 2], [2, 2, 1, 3], [2, 2, 3, 1], [2, 3, 1, 2], [2, 3, 2, 1], [2, 1, 2, 3], [2, 1, 3, 2]," +
-                " [2, 2, 1, 3], [2, 2, 3, 1], [2, 3, 1, 2], [2, 3, 2, 1], [3, 1, 2, 2], [3, 1, 2, 2], [3, 2, 1, 2]," +
-                " [3, 2, 2, 1], [3, 2, 1, 2], [3, 2, 2, 1]]");
+        distinctListsShortlex_helper("[]", "ExhaustiveProvider_distinctListsShortlex_i");
+        distinctListsShortlex_helper("[5]", "ExhaustiveProvider_distinctListsShortlex_ii");
+        distinctListsShortlex_helper("[1, 2, 3]", "ExhaustiveProvider_distinctListsShortlex_iii");
+        distinctListsShortlex_helper("[1, null, 3]", "ExhaustiveProvider_distinctListsShortlex_iv");
+        distinctListsShortlex_helper("[1, 2, 3, 4]", "ExhaustiveProvider_distinctListsShortlex_v");
+        distinctListsShortlex_helper("[1, 2, 2, 3]", "ExhaustiveProvider_distinctListsShortlex_vi");
     }
 
     @Test
     public void testDistinctStringsShortlex() {
-        aeqit(EP.distinctStringsShortlex(""), "[]");
-        aeq(length(EP.distinctStringsShortlex("")), 1);
-        aeqit(EP.distinctStringsShortlex("a"), "[, a]");
-        aeqit(EP.distinctStringsShortlex("abc"), "[, a, b, c, ab, ac, ba, bc, ca, cb, abc, acb, bac, bca, cab, cba]");
-        aeqit(EP.distinctStringsShortlex("abcd"),
-                "[, a, b, c, d, ab, ac, ad, ba, bc, bd, ca, cb, cd, da, db, dc, abc, abd, acb, acd, adb, adc, bac," +
-                " bad, bca, bcd, bda, bdc, cab, cad, cba, cbd, cda, cdb, dab, dac, dba, dbc, dca, dcb, abcd, abdc," +
-                " acbd, acdb, adbc, adcb, bacd, badc, bcad, bcda, bdac, bdca, cabd, cadb, cbad, cbda, cdab, cdba," +
-                " dabc, dacb, dbac, dbca, dcab, dcba]");
-        aeqit(EP.distinctStringsShortlex("abbc"),
-                "[, a, b, b, c, ab, ab, ac, ba, bb, bc, ba, bb, bc, ca, cb, cb, abb, abc, abb, abc, acb, acb, bab," +
-                " bac, bba, bbc, bca, bcb, bab, bac, bba, bbc, bca, bcb, cab, cab, cba, cbb, cba, cbb, abbc, abcb," +
-                " abbc, abcb, acbb, acbb, babc, bacb, bbac, bbca, bcab, bcba, babc, bacb, bbac, bbca, bcab, bcba," +
-                " cabb, cabb, cbab, cbba, cbab, cbba]");
+        aeqitLog(EP.distinctStringsShortlex(""), "ExhaustiveProvider_distinctStringsShortlex_i");
+        aeqitLog(EP.distinctStringsShortlex("a"), "ExhaustiveProvider_distinctStringsShortlex_ii");
+        aeqitLog(EP.distinctStringsShortlex("abc"), "ExhaustiveProvider_distinctStringsShortlex_iii");
+        aeqitLog(EP.distinctStringsShortlex("abcd"), "ExhaustiveProvider_distinctStringsShortlex_iv");
+        aeqitLog(EP.distinctStringsShortlex("abbc"), "ExhaustiveProvider_distinctStringsShortlex_v");
         simpleProviderHelper(EP.distinctStringsShortlex("Mississippi"),
-                "[, M, i, s, s, i, s, s, i, p, p, i, Mi, Ms, Ms, Mi, Ms, Ms, Mi, Mp, ...]");
+                "ExhaustiveProvider_distinctStringsShortlex_vi");
     }
 
     private static void distinctListsShortlexAtLeast_helper(
@@ -3153,128 +3124,48 @@ public strictfp class ExhaustiveProviderTest {
             @NotNull String input,
             @NotNull String output
     ) {
-        aeqit(EP.distinctListsShortlexAtLeast(minSize, readIntegerListWithNulls(input)), output);
+        aeqitLog(EP.distinctListsShortlexAtLeast(minSize, readIntegerListWithNulls(input)), output);
     }
 
     @Test
     public void testDistinctListsShortlexAtLeast() {
-        distinctListsShortlexAtLeast_helper(0, "[]", "[[]]");
-        distinctListsShortlexAtLeast_helper(1, "[]", "[]");
-        distinctListsShortlexAtLeast_helper(2, "[]", "[]");
-        distinctListsShortlexAtLeast_helper(3, "[]", "[]");
+        distinctListsShortlexAtLeast_helper(0, "[]", "ExhaustiveProvider_distinctListsShortlexAtLeast_i");
+        distinctListsShortlexAtLeast_helper(1, "[]", "ExhaustiveProvider_distinctListsShortlexAtLeast_ii");
+        distinctListsShortlexAtLeast_helper(2, "[]", "ExhaustiveProvider_distinctListsShortlexAtLeast_iii");
+        distinctListsShortlexAtLeast_helper(3, "[]", "ExhaustiveProvider_distinctListsShortlexAtLeast_iv");
 
-        distinctListsShortlexAtLeast_helper(0, "[5]", "[[], [5]]");
-        distinctListsShortlexAtLeast_helper(1, "[5]", "[[5]]");
-        distinctListsShortlexAtLeast_helper(2, "[5]", "[]");
-        distinctListsShortlexAtLeast_helper(3, "[5]", "[]");
+        distinctListsShortlexAtLeast_helper(0, "[5]", "ExhaustiveProvider_distinctListsShortlexAtLeast_v");
+        distinctListsShortlexAtLeast_helper(1, "[5]", "ExhaustiveProvider_distinctListsShortlexAtLeast_vi");
+        distinctListsShortlexAtLeast_helper(2, "[5]", "ExhaustiveProvider_distinctListsShortlexAtLeast_vii");
+        distinctListsShortlexAtLeast_helper(3, "[5]", "ExhaustiveProvider_distinctListsShortlexAtLeast_viii");
 
-        distinctListsShortlexAtLeast_helper(0, "[1, 2, 3]",
-                "[[], [1], [2], [3], [1, 2], [1, 3], [2, 1], [2, 3], [3, 1], [3, 2], [1, 2, 3], [1, 3, 2]," +
-                " [2, 1, 3], [2, 3, 1], [3, 1, 2], [3, 2, 1]]");
-        distinctListsShortlexAtLeast_helper(1, "[1, 2, 3]",
-                "[[1], [2], [3], [1, 2], [1, 3], [2, 1], [2, 3], [3, 1], [3, 2], [1, 2, 3], [1, 3, 2], [2, 1, 3]," +
-                " [2, 3, 1], [3, 1, 2], [3, 2, 1]]");
-        distinctListsShortlexAtLeast_helper(2, "[1, 2, 3]",
-                "[[1, 2], [1, 3], [2, 1], [2, 3], [3, 1], [3, 2], [1, 2, 3], [1, 3, 2], [2, 1, 3], [2, 3, 1]," +
-                " [3, 1, 2], [3, 2, 1]]");
-        distinctListsShortlexAtLeast_helper(3, "[1, 2, 3]",
-                "[[1, 2, 3], [1, 3, 2], [2, 1, 3], [2, 3, 1], [3, 1, 2], [3, 2, 1]]");
+        distinctListsShortlexAtLeast_helper(0, "[1, 2, 3]", "ExhaustiveProvider_distinctListsShortlexAtLeast_ix");
+        distinctListsShortlexAtLeast_helper(1, "[1, 2, 3]", "ExhaustiveProvider_distinctListsShortlexAtLeast_x");
+        distinctListsShortlexAtLeast_helper(2, "[1, 2, 3]", "ExhaustiveProvider_distinctListsShortlexAtLeast_xi");
+        distinctListsShortlexAtLeast_helper(3, "[1, 2, 3]", "ExhaustiveProvider_distinctListsShortlexAtLeast_xii");
 
-        distinctListsShortlexAtLeast_helper(0, "[1, null, 3]",
-                "[[], [1], [null], [3], [1, null], [1, 3], [null, 1], [null, 3], [3, 1], [3, null], [1, null, 3]," +
-                " [1, 3, null], [null, 1, 3], [null, 3, 1], [3, 1, null], [3, null, 1]]");
-        distinctListsShortlexAtLeast_helper(1, "[1, null, 3]",
-                "[[1], [null], [3], [1, null], [1, 3], [null, 1], [null, 3], [3, 1], [3, null], [1, null, 3]," +
-                " [1, 3, null], [null, 1, 3], [null, 3, 1], [3, 1, null], [3, null, 1]]");
-        distinctListsShortlexAtLeast_helper(2, "[1, null, 3]",
-                "[[1, null], [1, 3], [null, 1], [null, 3], [3, 1], [3, null], [1, null, 3], [1, 3, null]," +
-                " [null, 1, 3], [null, 3, 1], [3, 1, null], [3, null, 1]]");
-        distinctListsShortlexAtLeast_helper(3, "[1, null, 3]",
-                "[[1, null, 3], [1, 3, null], [null, 1, 3], [null, 3, 1], [3, 1, null], [3, null, 1]]");
+        distinctListsShortlexAtLeast_helper(0, "[1, null, 3]", "ExhaustiveProvider_distinctListsShortlexAtLeast_xiii");
+        distinctListsShortlexAtLeast_helper(1, "[1, null, 3]", "ExhaustiveProvider_distinctListsShortlexAtLeast_xiv");
+        distinctListsShortlexAtLeast_helper(2, "[1, null, 3]", "ExhaustiveProvider_distinctListsShortlexAtLeast_xv");
+        distinctListsShortlexAtLeast_helper(3, "[1, null, 3]", "ExhaustiveProvider_distinctListsShortlexAtLeast_xvi");
 
-        distinctListsShortlexAtLeast_helper(0, "[1, 2, 3]",
-                "[[], [1], [2], [3], [1, 2], [1, 3], [2, 1], [2, 3], [3, 1], [3, 2], [1, 2, 3], [1, 3, 2]," +
-                " [2, 1, 3], [2, 3, 1], [3, 1, 2], [3, 2, 1]]");
-        distinctListsShortlexAtLeast_helper(1, "[1, 2, 3]",
-                "[[1], [2], [3], [1, 2], [1, 3], [2, 1], [2, 3], [3, 1], [3, 2], [1, 2, 3], [1, 3, 2], [2, 1, 3]," +
-                " [2, 3, 1], [3, 1, 2], [3, 2, 1]]");
-        distinctListsShortlexAtLeast_helper(2, "[1, 2, 3]",
-                "[[1, 2], [1, 3], [2, 1], [2, 3], [3, 1], [3, 2], [1, 2, 3], [1, 3, 2], [2, 1, 3], [2, 3, 1]," +
-                " [3, 1, 2], [3, 2, 1]]");
-        distinctListsShortlexAtLeast_helper(3, "[1, 2, 3]",
-                "[[1, 2, 3], [1, 3, 2], [2, 1, 3], [2, 3, 1], [3, 1, 2], [3, 2, 1]]");
+        distinctListsShortlexAtLeast_helper(0, "[1, 2, 3]", "ExhaustiveProvider_distinctListsShortlexAtLeast_xvii");
+        distinctListsShortlexAtLeast_helper(1, "[1, 2, 3]", "ExhaustiveProvider_distinctListsShortlexAtLeast_xviii");
+        distinctListsShortlexAtLeast_helper(2, "[1, 2, 3]", "ExhaustiveProvider_distinctListsShortlexAtLeast_xix");
+        distinctListsShortlexAtLeast_helper(3, "[1, 2, 3]", "ExhaustiveProvider_distinctListsShortlexAtLeast_xx");
 
-        distinctListsShortlexAtLeast_helper(0, "[1, 2, 3, 4]",
-                "[[], [1], [2], [3], [4], [1, 2], [1, 3], [1, 4], [2, 1], [2, 3], [2, 4], [3, 1], [3, 2], [3, 4]," +
-                " [4, 1], [4, 2], [4, 3], [1, 2, 3], [1, 2, 4], [1, 3, 2], [1, 3, 4], [1, 4, 2], [1, 4, 3]," +
-                " [2, 1, 3], [2, 1, 4], [2, 3, 1], [2, 3, 4], [2, 4, 1], [2, 4, 3], [3, 1, 2], [3, 1, 4], [3, 2, 1]," +
-                " [3, 2, 4], [3, 4, 1], [3, 4, 2], [4, 1, 2], [4, 1, 3], [4, 2, 1], [4, 2, 3], [4, 3, 1], [4, 3, 2]," +
-                " [1, 2, 3, 4], [1, 2, 4, 3], [1, 3, 2, 4], [1, 3, 4, 2], [1, 4, 2, 3], [1, 4, 3, 2], [2, 1, 3, 4]," +
-                " [2, 1, 4, 3], [2, 3, 1, 4], [2, 3, 4, 1], [2, 4, 1, 3], [2, 4, 3, 1], [3, 1, 2, 4], [3, 1, 4, 2]," +
-                " [3, 2, 1, 4], [3, 2, 4, 1], [3, 4, 1, 2], [3, 4, 2, 1], [4, 1, 2, 3], [4, 1, 3, 2], [4, 2, 1, 3]," +
-                " [4, 2, 3, 1], [4, 3, 1, 2], [4, 3, 2, 1]]");
-        distinctListsShortlexAtLeast_helper(1, "[1, 2, 3, 4]",
-                "[[1], [2], [3], [4], [1, 2], [1, 3], [1, 4], [2, 1], [2, 3], [2, 4], [3, 1], [3, 2], [3, 4]," +
-                " [4, 1], [4, 2], [4, 3], [1, 2, 3], [1, 2, 4], [1, 3, 2], [1, 3, 4], [1, 4, 2], [1, 4, 3]," +
-                " [2, 1, 3], [2, 1, 4], [2, 3, 1], [2, 3, 4], [2, 4, 1], [2, 4, 3], [3, 1, 2], [3, 1, 4], [3, 2, 1]," +
-                " [3, 2, 4], [3, 4, 1], [3, 4, 2], [4, 1, 2], [4, 1, 3], [4, 2, 1], [4, 2, 3], [4, 3, 1], [4, 3, 2]," +
-                " [1, 2, 3, 4], [1, 2, 4, 3], [1, 3, 2, 4], [1, 3, 4, 2], [1, 4, 2, 3], [1, 4, 3, 2], [2, 1, 3, 4]," +
-                " [2, 1, 4, 3], [2, 3, 1, 4], [2, 3, 4, 1], [2, 4, 1, 3], [2, 4, 3, 1], [3, 1, 2, 4], [3, 1, 4, 2]," +
-                " [3, 2, 1, 4], [3, 2, 4, 1], [3, 4, 1, 2], [3, 4, 2, 1], [4, 1, 2, 3], [4, 1, 3, 2], [4, 2, 1, 3]," +
-                " [4, 2, 3, 1], [4, 3, 1, 2], [4, 3, 2, 1]]");
+        distinctListsShortlexAtLeast_helper(0, "[1, 2, 3, 4]", "ExhaustiveProvider_distinctListsShortlexAtLeast_xxi");
+        distinctListsShortlexAtLeast_helper(1, "[1, 2, 3, 4]", "ExhaustiveProvider_distinctListsShortlexAtLeast_xxii");
         distinctListsShortlexAtLeast_helper(2, "[1, 2, 3, 4]",
-                "[[1, 2], [1, 3], [1, 4], [2, 1], [2, 3], [2, 4], [3, 1], [3, 2], [3, 4], [4, 1], [4, 2], [4, 3]," +
-                " [1, 2, 3], [1, 2, 4], [1, 3, 2], [1, 3, 4], [1, 4, 2], [1, 4, 3], [2, 1, 3], [2, 1, 4], [2, 3, 1]," +
-                " [2, 3, 4], [2, 4, 1], [2, 4, 3], [3, 1, 2], [3, 1, 4], [3, 2, 1], [3, 2, 4], [3, 4, 1], [3, 4, 2]," +
-                " [4, 1, 2], [4, 1, 3], [4, 2, 1], [4, 2, 3], [4, 3, 1], [4, 3, 2], [1, 2, 3, 4], [1, 2, 4, 3]," +
-                " [1, 3, 2, 4], [1, 3, 4, 2], [1, 4, 2, 3], [1, 4, 3, 2], [2, 1, 3, 4], [2, 1, 4, 3], [2, 3, 1, 4]," +
-                " [2, 3, 4, 1], [2, 4, 1, 3], [2, 4, 3, 1], [3, 1, 2, 4], [3, 1, 4, 2], [3, 2, 1, 4], [3, 2, 4, 1]," +
-                " [3, 4, 1, 2], [3, 4, 2, 1], [4, 1, 2, 3], [4, 1, 3, 2], [4, 2, 1, 3], [4, 2, 3, 1], [4, 3, 1, 2]," +
-                " [4, 3, 2, 1]]");
-        distinctListsShortlexAtLeast_helper(3, "[1, 2, 3, 4]",
-                "[[1, 2, 3], [1, 2, 4], [1, 3, 2], [1, 3, 4], [1, 4, 2], [1, 4, 3], [2, 1, 3], [2, 1, 4], [2, 3, 1]," +
-                " [2, 3, 4], [2, 4, 1], [2, 4, 3], [3, 1, 2], [3, 1, 4], [3, 2, 1], [3, 2, 4], [3, 4, 1], [3, 4, 2]," +
-                " [4, 1, 2], [4, 1, 3], [4, 2, 1], [4, 2, 3], [4, 3, 1], [4, 3, 2], [1, 2, 3, 4], [1, 2, 4, 3]," +
-                " [1, 3, 2, 4], [1, 3, 4, 2], [1, 4, 2, 3], [1, 4, 3, 2], [2, 1, 3, 4], [2, 1, 4, 3], [2, 3, 1, 4]," +
-                " [2, 3, 4, 1], [2, 4, 1, 3], [2, 4, 3, 1], [3, 1, 2, 4], [3, 1, 4, 2], [3, 2, 1, 4], [3, 2, 4, 1]," +
-                " [3, 4, 1, 2], [3, 4, 2, 1], [4, 1, 2, 3], [4, 1, 3, 2], [4, 2, 1, 3], [4, 2, 3, 1], [4, 3, 1, 2]," +
-                " [4, 3, 2, 1]]");
+                "ExhaustiveProvider_distinctListsShortlexAtLeast_xxiii");
+        distinctListsShortlexAtLeast_helper(3, "[1, 2, 3, 4]", "ExhaustiveProvider_distinctListsShortlexAtLeast_xxiv");
 
-        distinctListsShortlexAtLeast_helper(0, "[1, 2, 2, 3]",
-                "[[], [1], [2], [2], [3], [1, 2], [1, 2], [1, 3], [2, 1], [2, 2], [2, 3], [2, 1], [2, 2], [2, 3]," +
-                " [3, 1], [3, 2], [3, 2], [1, 2, 2], [1, 2, 3], [1, 2, 2], [1, 2, 3], [1, 3, 2], [1, 3, 2]," +
-                " [2, 1, 2], [2, 1, 3], [2, 2, 1], [2, 2, 3], [2, 3, 1], [2, 3, 2], [2, 1, 2], [2, 1, 3], [2, 2, 1]," +
-                " [2, 2, 3], [2, 3, 1], [2, 3, 2], [3, 1, 2], [3, 1, 2], [3, 2, 1], [3, 2, 2], [3, 2, 1], [3, 2, 2]," +
-                " [1, 2, 2, 3], [1, 2, 3, 2], [1, 2, 2, 3], [1, 2, 3, 2], [1, 3, 2, 2], [1, 3, 2, 2], [2, 1, 2, 3]," +
-                " [2, 1, 3, 2], [2, 2, 1, 3], [2, 2, 3, 1], [2, 3, 1, 2], [2, 3, 2, 1], [2, 1, 2, 3], [2, 1, 3, 2]," +
-                " [2, 2, 1, 3], [2, 2, 3, 1], [2, 3, 1, 2], [2, 3, 2, 1], [3, 1, 2, 2], [3, 1, 2, 2], [3, 2, 1, 2]," +
-                " [3, 2, 2, 1], [3, 2, 1, 2], [3, 2, 2, 1]]");
-        distinctListsShortlexAtLeast_helper(1, "[1, 2, 2, 3]",
-                "[[1], [2], [2], [3], [1, 2], [1, 2], [1, 3], [2, 1], [2, 2], [2, 3], [2, 1], [2, 2], [2, 3]," +
-                " [3, 1], [3, 2], [3, 2], [1, 2, 2], [1, 2, 3], [1, 2, 2], [1, 2, 3], [1, 3, 2], [1, 3, 2]," +
-                " [2, 1, 2], [2, 1, 3], [2, 2, 1], [2, 2, 3], [2, 3, 1], [2, 3, 2], [2, 1, 2], [2, 1, 3], [2, 2, 1]," +
-                " [2, 2, 3], [2, 3, 1], [2, 3, 2], [3, 1, 2], [3, 1, 2], [3, 2, 1], [3, 2, 2], [3, 2, 1], [3, 2, 2]," +
-                " [1, 2, 2, 3], [1, 2, 3, 2], [1, 2, 2, 3], [1, 2, 3, 2], [1, 3, 2, 2], [1, 3, 2, 2], [2, 1, 2, 3]," +
-                " [2, 1, 3, 2], [2, 2, 1, 3], [2, 2, 3, 1], [2, 3, 1, 2], [2, 3, 2, 1], [2, 1, 2, 3], [2, 1, 3, 2]," +
-                " [2, 2, 1, 3], [2, 2, 3, 1], [2, 3, 1, 2], [2, 3, 2, 1], [3, 1, 2, 2], [3, 1, 2, 2], [3, 2, 1, 2]," +
-                " [3, 2, 2, 1], [3, 2, 1, 2], [3, 2, 2, 1]]");
+        distinctListsShortlexAtLeast_helper(0, "[1, 2, 2, 3]", "ExhaustiveProvider_distinctListsShortlexAtLeast_xxv");
+        distinctListsShortlexAtLeast_helper(1, "[1, 2, 2, 3]", "ExhaustiveProvider_distinctListsShortlexAtLeast_xxvi");
         distinctListsShortlexAtLeast_helper(2, "[1, 2, 2, 3]",
-                "[[1, 2], [1, 2], [1, 3], [2, 1], [2, 2], [2, 3], [2, 1], [2, 2], [2, 3], [3, 1], [3, 2], [3, 2]," +
-                " [1, 2, 2], [1, 2, 3], [1, 2, 2], [1, 2, 3], [1, 3, 2], [1, 3, 2], [2, 1, 2], [2, 1, 3], [2, 2, 1]," +
-                " [2, 2, 3], [2, 3, 1], [2, 3, 2], [2, 1, 2], [2, 1, 3], [2, 2, 1], [2, 2, 3], [2, 3, 1], [2, 3, 2]," +
-                " [3, 1, 2], [3, 1, 2], [3, 2, 1], [3, 2, 2], [3, 2, 1], [3, 2, 2], [1, 2, 2, 3], [1, 2, 3, 2]," +
-                " [1, 2, 2, 3], [1, 2, 3, 2], [1, 3, 2, 2], [1, 3, 2, 2], [2, 1, 2, 3], [2, 1, 3, 2], [2, 2, 1, 3]," +
-                " [2, 2, 3, 1], [2, 3, 1, 2], [2, 3, 2, 1], [2, 1, 2, 3], [2, 1, 3, 2], [2, 2, 1, 3], [2, 2, 3, 1]," +
-                " [2, 3, 1, 2], [2, 3, 2, 1], [3, 1, 2, 2], [3, 1, 2, 2], [3, 2, 1, 2], [3, 2, 2, 1], [3, 2, 1, 2]," +
-                " [3, 2, 2, 1]]");
+                "ExhaustiveProvider_distinctListsShortlexAtLeast_xxvii");
         distinctListsShortlexAtLeast_helper(3, "[1, 2, 2, 3]",
-                "[[1, 2, 2], [1, 2, 3], [1, 2, 2], [1, 2, 3], [1, 3, 2], [1, 3, 2], [2, 1, 2], [2, 1, 3], [2, 2, 1]," +
-                " [2, 2, 3], [2, 3, 1], [2, 3, 2], [2, 1, 2], [2, 1, 3], [2, 2, 1], [2, 2, 3], [2, 3, 1], [2, 3, 2]," +
-                " [3, 1, 2], [3, 1, 2], [3, 2, 1], [3, 2, 2], [3, 2, 1], [3, 2, 2], [1, 2, 2, 3], [1, 2, 3, 2]," +
-                " [1, 2, 2, 3], [1, 2, 3, 2], [1, 3, 2, 2], [1, 3, 2, 2], [2, 1, 2, 3], [2, 1, 3, 2], [2, 2, 1, 3]," +
-                " [2, 2, 3, 1], [2, 3, 1, 2], [2, 3, 2, 1], [2, 1, 2, 3], [2, 1, 3, 2], [2, 2, 1, 3], [2, 2, 3, 1]," +
-                " [2, 3, 1, 2], [2, 3, 2, 1], [3, 1, 2, 2], [3, 1, 2, 2], [3, 2, 1, 2], [3, 2, 2, 1], [3, 2, 1, 2]," +
-                " [3, 2, 2, 1]]");
+                "ExhaustiveProvider_distinctListsShortlexAtLeast_xxviii");
 
         try {
             EP.distinctListsShortlexAtLeast(-1, Collections.emptyList());
@@ -3291,7 +3182,7 @@ public strictfp class ExhaustiveProviderTest {
             @NotNull String input,
             @NotNull String output
     ) {
-        aeqit(EP.distinctStringsShortlexAtLeast(minSize, input), output);
+        aeqitLog(EP.distinctStringsShortlexAtLeast(minSize, input), output);
     }
 
     private static void distinctStringsShortlexAtLeast_helper_limit(
@@ -3304,54 +3195,50 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testDistinctStringsShortlexAtLeast_int_String() {
-        distinctStringsShortlexAtLeast_helper(0, "", "[]");
-        aeq(length(EP.distinctStringsShortlexAtLeast(0, "")), 1);
-        distinctStringsShortlexAtLeast_helper(1, "", "[]");
-        aeq(length(EP.distinctStringsShortlexAtLeast(1, "")), 0);
-        distinctStringsShortlexAtLeast_helper(2, "", "[]");
-        aeq(length(EP.distinctStringsShortlexAtLeast(2, "")), 0);
-        distinctStringsShortlexAtLeast_helper(3, "", "[]");
-        aeq(length(EP.distinctStringsShortlexAtLeast(3, "")), 0);
-        distinctStringsShortlexAtLeast_helper(0, "a", "[, a]");
-        distinctStringsShortlexAtLeast_helper(1, "a", "[a]");
-        distinctStringsShortlexAtLeast_helper(2, "a", "[]");
-        aeq(length(EP.distinctStringsShortlexAtLeast(2, "a")), 0);
-        distinctStringsShortlexAtLeast_helper(3, "a", "[]");
-        aeq(length(EP.distinctStringsShortlexAtLeast(3, "a")), 0);
+        distinctStringsShortlexAtLeast_helper(0, "", "ExhaustiveProvider_distinctStringsShortlexAtLeast_int_String_i");
+        distinctStringsShortlexAtLeast_helper(1, "",
+                "ExhaustiveProvider_distinctStringsShortlexAtLeast_int_String_ii");
+        distinctStringsShortlexAtLeast_helper(2, "",
+                "ExhaustiveProvider_distinctStringsShortlexAtLeast_int_String_iii");
+        distinctStringsShortlexAtLeast_helper(3, "",
+                "ExhaustiveProvider_distinctStringsShortlexAtLeast_int_String_iv");
+
+        distinctStringsShortlexAtLeast_helper(0, "a",
+                "ExhaustiveProvider_distinctStringsShortlexAtLeast_int_String_v");
+        distinctStringsShortlexAtLeast_helper(1, "a",
+                "ExhaustiveProvider_distinctStringsShortlexAtLeast_int_String_vi");
+        distinctStringsShortlexAtLeast_helper(2, "a",
+                "ExhaustiveProvider_distinctStringsShortlexAtLeast_int_String_vii");
+        distinctStringsShortlexAtLeast_helper(3, "a",
+                "ExhaustiveProvider_distinctStringsShortlexAtLeast_int_String_viii");
+
         distinctStringsShortlexAtLeast_helper(0, "abc",
-                "[, a, b, c, ab, ac, ba, bc, ca, cb, abc, acb, bac, bca, cab, cba]");
+                "ExhaustiveProvider_distinctStringsShortlexAtLeast_int_String_ix");
         distinctStringsShortlexAtLeast_helper(1, "abc",
-                "[a, b, c, ab, ac, ba, bc, ca, cb, abc, acb, bac, bca, cab, cba]");
-        distinctStringsShortlexAtLeast_helper(2, "abc", "[ab, ac, ba, bc, ca, cb, abc, acb, bac, bca, cab, cba]");
-        distinctStringsShortlexAtLeast_helper(3, "abc", "[abc, acb, bac, bca, cab, cba]");
+                "ExhaustiveProvider_distinctStringsShortlexAtLeast_int_String_x");
+        distinctStringsShortlexAtLeast_helper(2, "abc",
+                "ExhaustiveProvider_distinctStringsShortlexAtLeast_int_String_xi");
+        distinctStringsShortlexAtLeast_helper(3, "abc",
+                "ExhaustiveProvider_distinctStringsShortlexAtLeast_int_String_xii");
+
         distinctStringsShortlexAtLeast_helper(0, "abbc",
-                "[, a, b, b, c, ab, ab, ac, ba, bb, bc, ba, bb, bc, ca, cb, cb, abb, abc, abb, abc, acb, acb, bab," +
-                " bac, bba, bbc, bca, bcb, bab, bac, bba, bbc, bca, bcb, cab, cab, cba, cbb, cba, cbb, abbc, abcb," +
-                " abbc, abcb, acbb, acbb, babc, bacb, bbac, bbca, bcab, bcba, babc, bacb, bbac, bbca, bcab, bcba," +
-                " cabb, cabb, cbab, cbba, cbab, cbba]");
+                "ExhaustiveProvider_distinctStringsShortlexAtLeast_int_String_xiii");
         distinctStringsShortlexAtLeast_helper(1, "abbc",
-                "[a, b, b, c, ab, ab, ac, ba, bb, bc, ba, bb, bc, ca, cb, cb, abb, abc, abb, abc, acb, acb, bab," +
-                " bac, bba, bbc, bca, bcb, bab, bac, bba, bbc, bca, bcb, cab, cab, cba, cbb, cba, cbb, abbc, abcb," +
-                " abbc, abcb, acbb, acbb, babc, bacb, bbac, bbca, bcab, bcba, babc, bacb, bbac, bbca, bcab, bcba," +
-                " cabb, cabb, cbab, cbba, cbab, cbba]");
+                "ExhaustiveProvider_distinctStringsShortlexAtLeast_int_String_xiv");
         distinctStringsShortlexAtLeast_helper(2, "abbc",
-                "[ab, ab, ac, ba, bb, bc, ba, bb, bc, ca, cb, cb, abb, abc, abb, abc, acb, acb, bab, bac, bba, bbc," +
-                " bca, bcb, bab, bac, bba, bbc, bca, bcb, cab, cab, cba, cbb, cba, cbb, abbc, abcb, abbc, abcb," +
-                " acbb, acbb, babc, bacb, bbac, bbca, bcab, bcba, babc, bacb, bbac, bbca, bcab, bcba, cabb, cabb," +
-                " cbab, cbba, cbab, cbba]");
+                "ExhaustiveProvider_distinctStringsShortlexAtLeast_int_String_xv");
         distinctStringsShortlexAtLeast_helper(3, "abbc",
-                "[abb, abc, abb, abc, acb, acb, bab, bac, bba, bbc, bca, bcb, bab, bac, bba, bbc, bca, bcb, cab," +
-                " cab, cba, cbb, cba, cbb, abbc, abcb, abbc, abcb, acbb, acbb, babc, bacb, bbac, bbca, bcab, bcba," +
-                " babc, bacb, bbac, bbca, bcab, bcba, cabb, cabb, cbab, cbba, cbab, cbba]");
+                "ExhaustiveProvider_distinctStringsShortlexAtLeast_int_String_xvi");
+
         distinctStringsShortlexAtLeast_helper_limit(0, "Mississippi",
-                "[, M, i, s, s, i, s, s, i, p, p, i, Mi, Ms, Ms, Mi, Ms, Ms, Mi, Mp, ...]");
+                "ExhaustiveProvider_distinctStringsShortlexAtLeast_int_String_xvii");
         distinctStringsShortlexAtLeast_helper_limit(1, "Mississippi",
-                "[M, i, s, s, i, s, s, i, p, p, i, Mi, Ms, Ms, Mi, Ms, Ms, Mi, Mp, Mp, ...]");
+                "ExhaustiveProvider_distinctStringsShortlexAtLeast_int_String_xviii");
         distinctStringsShortlexAtLeast_helper_limit(2, "Mississippi",
-                "[Mi, Ms, Ms, Mi, Ms, Ms, Mi, Mp, Mp, Mi, iM, is, is, ii, is, is, ii, ip, ip, ii, ...]");
+                "ExhaustiveProvider_distinctStringsShortlexAtLeast_int_String_xix");
         distinctStringsShortlexAtLeast_helper_limit(3, "Mississippi",
-                "[Mis, Mis, Mii, Mis, Mis, Mii, Mip, Mip, Mii, Msi, Mss, Msi, Mss, Mss, Msi, Msp, Msp, Msi, Msi," +
-                " Mss, ...]");
+                "ExhaustiveProvider_distinctStringsShortlexAtLeast_int_String_xx");
+
         try {
             EP.distinctStringsShortlexAtLeast(-1, "");
             fail();
@@ -3363,7 +3250,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void distinctLists_int_Iterable_helper(int size, @NotNull String input, @NotNull String output) {
-        aeqit(EP.distinctLists(size, readIntegerListWithNulls(input)), output);
+        aeqitLog(EP.distinctLists(size, readIntegerListWithNulls(input)), output);
     }
 
     private static void distinctLists_int_Iterable_helper(
@@ -3382,56 +3269,46 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     @Test
-    public void testDistinctLists_int_List() {
-        distinctLists_int_Iterable_helper(0, "[]", "[[]]");
-        distinctLists_int_Iterable_helper(1, "[]", "[]");
-        distinctLists_int_Iterable_helper(2, "[]", "[]");
-        distinctLists_int_Iterable_helper(3, "[]", "[]");
-        distinctLists_int_Iterable_helper(0, "[5]", "[[]]");
-        distinctLists_int_Iterable_helper(1, "[5]", "[[5]]");
-        distinctLists_int_Iterable_helper(2, "[5]", "[]");
-        distinctLists_int_Iterable_helper(3, "[5]", "[]");
-        distinctLists_int_Iterable_helper(0, "[1, 2, 3]", "[[]]");
-        distinctLists_int_Iterable_helper(1, "[1, 2, 3]", "[[1], [2], [3]]");
-        distinctLists_int_Iterable_helper(2, "[1, 2, 3]", "[[1, 2], [1, 3], [2, 1], [2, 3], [3, 1], [3, 2]]");
-        distinctLists_int_Iterable_helper(3, "[1, 2, 3]",
-                "[[1, 2, 3], [1, 3, 2], [2, 1, 3], [2, 3, 1], [3, 1, 2], [3, 2, 1]]");
-        distinctLists_int_Iterable_helper(0, "[1, 2, 2, 3]", "[[]]");
-        distinctLists_int_Iterable_helper(1, "[1, 2, 2, 3]", "[[1], [2], [2], [3]]");
-        distinctLists_int_Iterable_helper(2, "[1, 2, 2, 3]",
-                "[[1, 2], [1, 2], [2, 1], [2, 2], [1, 3], [2, 3], [2, 1], [2, 2], [3, 1], [3, 2], [2, 3], [3, 2]]");
-        distinctLists_int_Iterable_helper(3, "[1, 2, 2, 3]",
-                "[[1, 2, 2], [1, 2, 3], [1, 2, 2], [1, 2, 3], [2, 1, 2], [2, 1, 3], [2, 2, 1], [2, 2, 3], [1, 3, 2]," +
-                " [1, 3, 2], [2, 3, 1], [2, 3, 2], [2, 1, 2], [2, 1, 3], [2, 2, 1], [2, 2, 3], [3, 1, 2], [3, 1, 2]," +
-                " [3, 2, 1], [3, 2, 2], [2, 3, 1], [2, 3, 2], [3, 2, 1], [3, 2, 2]]");
-        distinctLists_int_Iterable_helper(0, "[1, null, 3]", "[[]]");
-        distinctLists_int_Iterable_helper(1, "[1, null, 3]", "[[1], [null], [3]]");
-        distinctLists_int_Iterable_helper(2, "[1, null, 3]",
-                "[[1, null], [1, 3], [null, 1], [null, 3], [3, 1], [3, null]]");
-        distinctLists_int_Iterable_helper(3, "[1, null, 3]",
-                "[[1, null, 3], [1, 3, null], [null, 1, 3], [null, 3, 1], [3, 1, null], [3, null, 1]]");
-        distinctLists_int_Iterable_helper(0, EP.positiveIntegers(), "[[]]");
+    public void testDistinctLists_int_Iterable() {
+        distinctLists_int_Iterable_helper(0, "[]", "ExhaustiveProvider_distinctLists_int_Iterable_i");
+        distinctLists_int_Iterable_helper(1, "[]", "ExhaustiveProvider_distinctLists_int_Iterable_ii");
+        distinctLists_int_Iterable_helper(2, "[]", "ExhaustiveProvider_distinctLists_int_Iterable_iii");
+        distinctLists_int_Iterable_helper(3, "[]", "ExhaustiveProvider_distinctLists_int_Iterable_iv");
+
+        distinctLists_int_Iterable_helper(0, "[5]", "ExhaustiveProvider_distinctLists_int_Iterable_v");
+        distinctLists_int_Iterable_helper(1, "[5]", "ExhaustiveProvider_distinctLists_int_Iterable_vi");
+        distinctLists_int_Iterable_helper(2, "[5]", "ExhaustiveProvider_distinctLists_int_Iterable_vii");
+        distinctLists_int_Iterable_helper(3, "[5]", "ExhaustiveProvider_distinctLists_int_Iterable_viii");
+
+        distinctLists_int_Iterable_helper(0, "[1, 2, 3]", "ExhaustiveProvider_distinctLists_int_Iterable_ix");
+        distinctLists_int_Iterable_helper(1, "[1, 2, 3]", "ExhaustiveProvider_distinctLists_int_Iterable_x");
+        distinctLists_int_Iterable_helper(2, "[1, 2, 3]", "ExhaustiveProvider_distinctLists_int_Iterable_xi");
+        distinctLists_int_Iterable_helper(3, "[1, 2, 3]", "ExhaustiveProvider_distinctLists_int_Iterable_xii");
+
+        distinctLists_int_Iterable_helper(0, "[1, 2, 2, 3]", "ExhaustiveProvider_distinctLists_int_Iterable_xiii");
+        distinctLists_int_Iterable_helper(1, "[1, 2, 2, 3]", "ExhaustiveProvider_distinctLists_int_Iterable_xiv");
+        distinctLists_int_Iterable_helper(2, "[1, 2, 2, 3]", "ExhaustiveProvider_distinctLists_int_Iterable_xv");
+        distinctLists_int_Iterable_helper(3, "[1, 2, 2, 3]", "ExhaustiveProvider_distinctLists_int_Iterable_xvi");
+
+        distinctLists_int_Iterable_helper(0, "[1, null, 3]", "ExhaustiveProvider_distinctLists_int_Iterable_xvii");
+        distinctLists_int_Iterable_helper(1, "[1, null, 3]", "ExhaustiveProvider_distinctLists_int_Iterable_xviii");
+        distinctLists_int_Iterable_helper(2, "[1, null, 3]", "ExhaustiveProvider_distinctLists_int_Iterable_xix");
+        distinctLists_int_Iterable_helper(3, "[1, null, 3]", "ExhaustiveProvider_distinctLists_int_Iterable_xx");
+
+        distinctLists_int_Iterable_helper(0, EP.positiveIntegers(),
+                "ExhaustiveProvider_distinctLists_int_Iterable_xxi");
         distinctLists_int_Iterable_helper(1, EP.positiveIntegers(),
-                "[[1], [2], [3], [4], [5], [6], [7], [8], [9], [10], [11], [12], [13], [14], [15], [16], [17], [18]," +
-                " [19], [20], ...]");
+                "ExhaustiveProvider_distinctLists_int_Iterable_xxii");
         distinctLists_int_Iterable_helper(2, EP.positiveIntegers(),
-                "[[1, 2], [1, 3], [2, 1], [2, 3], [1, 4], [1, 5], [2, 4], [2, 5], [3, 1], [3, 2], [4, 1], [4, 2]," +
-                " [3, 4], [3, 5], [4, 3], [4, 5], [1, 6], [1, 7], [2, 6], [2, 7], ...]");
+                "ExhaustiveProvider_distinctLists_int_Iterable_xxiii");
         distinctLists_int_Iterable_helper(3, EP.positiveIntegers(),
-                "[[1, 2, 3], [1, 2, 4], [1, 3, 2], [1, 3, 4], [2, 1, 3], [2, 1, 4], [2, 3, 1], [2, 3, 4], [1, 2, 5]," +
-                " [1, 2, 6], [1, 3, 5], [1, 3, 6], [2, 1, 5], [2, 1, 6], [2, 3, 5], [2, 3, 6], [1, 4, 2], [1, 4, 3]," +
-                " [1, 5, 2], [1, 5, 3], ...]");
-        distinctLists_int_Iterable_helper(0, repeat(1), "[[]]");
-        distinctLists_int_Iterable_helper(1, repeat(1),
-                "[[1], [1], [1], [1], [1], [1], [1], [1], [1], [1], [1], [1], [1], [1], [1], [1], [1], [1], [1]," +
-                " [1], ...]");
-        distinctLists_int_Iterable_helper(2, repeat(1),
-                "[[1, 1], [1, 1], [1, 1], [1, 1], [1, 1], [1, 1], [1, 1], [1, 1], [1, 1], [1, 1], [1, 1], [1, 1]," +
-                " [1, 1], [1, 1], [1, 1], [1, 1], [1, 1], [1, 1], [1, 1], [1, 1], ...]");
-        distinctLists_int_Iterable_helper(3, repeat(1),
-                "[[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]," +
-                " [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]," +
-                " [1, 1, 1], [1, 1, 1], ...]");
+                "ExhaustiveProvider_distinctLists_int_Iterable_xxiv");
+
+        distinctLists_int_Iterable_helper(0, repeat(1), "ExhaustiveProvider_distinctLists_int_Iterable_xxv");
+        distinctLists_int_Iterable_helper(1, repeat(1), "ExhaustiveProvider_distinctLists_int_Iterable_xxvi");
+        distinctLists_int_Iterable_helper(2, repeat(1), "ExhaustiveProvider_distinctLists_int_Iterable_xxvii");
+        distinctLists_int_Iterable_helper(3, repeat(1), "ExhaustiveProvider_distinctLists_int_Iterable_xxviii");
+
         distinctLists_int_Iterable_fail_helper(-1, "[]");
         distinctLists_int_Iterable_fail_helper(-1, "[1, 2, 3]");
     }

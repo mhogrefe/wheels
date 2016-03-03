@@ -22049,6 +22049,1720 @@ Mississiipp
 Mississiip
 ...
 
+ExhaustiveProvider_distinctListsShortlex_i list 1
+[]
+
+ExhaustiveProvider_distinctListsShortlex_ii list 2
+[]
+[5]
+
+ExhaustiveProvider_distinctListsShortlex_iii list 16
+[]
+[1]
+[2]
+[3]
+[1, 2]
+[1, 3]
+[2, 1]
+[2, 3]
+[3, 1]
+[3, 2]
+[1, 2, 3]
+[1, 3, 2]
+[2, 1, 3]
+[2, 3, 1]
+[3, 1, 2]
+[3, 2, 1]
+
+ExhaustiveProvider_distinctListsShortlex_iv list 16
+[]
+[1]
+[null]
+[3]
+[1, null]
+[1, 3]
+[null, 1]
+[null, 3]
+[3, 1]
+[3, null]
+[1, null, 3]
+[1, 3, null]
+[null, 1, 3]
+[null, 3, 1]
+[3, 1, null]
+[3, null, 1]
+
+ExhaustiveProvider_distinctListsShortlex_v list 65
+[]
+[1]
+[2]
+[3]
+[4]
+[1, 2]
+[1, 3]
+[1, 4]
+[2, 1]
+[2, 3]
+[2, 4]
+[3, 1]
+[3, 2]
+[3, 4]
+[4, 1]
+[4, 2]
+[4, 3]
+[1, 2, 3]
+[1, 2, 4]
+[1, 3, 2]
+[1, 3, 4]
+[1, 4, 2]
+[1, 4, 3]
+[2, 1, 3]
+[2, 1, 4]
+[2, 3, 1]
+[2, 3, 4]
+[2, 4, 1]
+[2, 4, 3]
+[3, 1, 2]
+[3, 1, 4]
+[3, 2, 1]
+[3, 2, 4]
+[3, 4, 1]
+[3, 4, 2]
+[4, 1, 2]
+[4, 1, 3]
+[4, 2, 1]
+[4, 2, 3]
+[4, 3, 1]
+[4, 3, 2]
+[1, 2, 3, 4]
+[1, 2, 4, 3]
+[1, 3, 2, 4]
+[1, 3, 4, 2]
+[1, 4, 2, 3]
+[1, 4, 3, 2]
+[2, 1, 3, 4]
+[2, 1, 4, 3]
+[2, 3, 1, 4]
+[2, 3, 4, 1]
+[2, 4, 1, 3]
+[2, 4, 3, 1]
+[3, 1, 2, 4]
+[3, 1, 4, 2]
+[3, 2, 1, 4]
+[3, 2, 4, 1]
+[3, 4, 1, 2]
+[3, 4, 2, 1]
+[4, 1, 2, 3]
+[4, 1, 3, 2]
+[4, 2, 1, 3]
+[4, 2, 3, 1]
+[4, 3, 1, 2]
+[4, 3, 2, 1]
+
+ExhaustiveProvider_distinctListsShortlex_vi list 65
+[]
+[1]
+[2]
+[2]
+[3]
+[1, 2]
+[1, 2]
+[1, 3]
+[2, 1]
+[2, 2]
+[2, 3]
+[2, 1]
+[2, 2]
+[2, 3]
+[3, 1]
+[3, 2]
+[3, 2]
+[1, 2, 2]
+[1, 2, 3]
+[1, 2, 2]
+[1, 2, 3]
+[1, 3, 2]
+[1, 3, 2]
+[2, 1, 2]
+[2, 1, 3]
+[2, 2, 1]
+[2, 2, 3]
+[2, 3, 1]
+[2, 3, 2]
+[2, 1, 2]
+[2, 1, 3]
+[2, 2, 1]
+[2, 2, 3]
+[2, 3, 1]
+[2, 3, 2]
+[3, 1, 2]
+[3, 1, 2]
+[3, 2, 1]
+[3, 2, 2]
+[3, 2, 1]
+[3, 2, 2]
+[1, 2, 2, 3]
+[1, 2, 3, 2]
+[1, 2, 2, 3]
+[1, 2, 3, 2]
+[1, 3, 2, 2]
+[1, 3, 2, 2]
+[2, 1, 2, 3]
+[2, 1, 3, 2]
+[2, 2, 1, 3]
+[2, 2, 3, 1]
+[2, 3, 1, 2]
+[2, 3, 2, 1]
+[2, 1, 2, 3]
+[2, 1, 3, 2]
+[2, 2, 1, 3]
+[2, 2, 3, 1]
+[2, 3, 1, 2]
+[2, 3, 2, 1]
+[3, 1, 2, 2]
+[3, 1, 2, 2]
+[3, 2, 1, 2]
+[3, 2, 2, 1]
+[3, 2, 1, 2]
+[3, 2, 2, 1]
+
+ExhaustiveProvider_distinctStringsShortlex_i list 1
+
+
+ExhaustiveProvider_distinctStringsShortlex_ii list 2
+
+a
+
+ExhaustiveProvider_distinctStringsShortlex_iii list 16
+
+a
+b
+c
+ab
+ac
+ba
+bc
+ca
+cb
+abc
+acb
+bac
+bca
+cab
+cba
+
+ExhaustiveProvider_distinctStringsShortlex_iv list 65
+
+a
+b
+c
+d
+ab
+ac
+ad
+ba
+bc
+bd
+ca
+cb
+cd
+da
+db
+dc
+abc
+abd
+acb
+acd
+adb
+adc
+bac
+bad
+bca
+bcd
+bda
+bdc
+cab
+cad
+cba
+cbd
+cda
+cdb
+dab
+dac
+dba
+dbc
+dca
+dcb
+abcd
+abdc
+acbd
+acdb
+adbc
+adcb
+bacd
+badc
+bcad
+bcda
+bdac
+bdca
+cabd
+cadb
+cbad
+cbda
+cdab
+cdba
+dabc
+dacb
+dbac
+dbca
+dcab
+dcba
+
+ExhaustiveProvider_distinctStringsShortlex_v list 65
+
+a
+b
+b
+c
+ab
+ab
+ac
+ba
+bb
+bc
+ba
+bb
+bc
+ca
+cb
+cb
+abb
+abc
+abb
+abc
+acb
+acb
+bab
+bac
+bba
+bbc
+bca
+bcb
+bab
+bac
+bba
+bbc
+bca
+bcb
+cab
+cab
+cba
+cbb
+cba
+cbb
+abbc
+abcb
+abbc
+abcb
+acbb
+acbb
+babc
+bacb
+bbac
+bbca
+bcab
+bcba
+babc
+bacb
+bbac
+bbca
+bcab
+bcba
+cabb
+cabb
+cbab
+cbba
+cbab
+cbba
+
+ExhaustiveProvider_distinctStringsShortlex_vi list 21
+
+M
+i
+s
+s
+i
+s
+s
+i
+p
+p
+i
+Mi
+Ms
+Ms
+Mi
+Ms
+Ms
+Mi
+Mp
+...
+
+ExhaustiveProvider_distinctListsShortlexAtLeast_i list 1
+[]
+
+ExhaustiveProvider_distinctListsShortlexAtLeast_ii list 0
+
+ExhaustiveProvider_distinctListsShortlexAtLeast_iii list 0
+
+ExhaustiveProvider_distinctListsShortlexAtLeast_iv list 0
+
+ExhaustiveProvider_distinctListsShortlexAtLeast_v list 2
+[]
+[5]
+
+ExhaustiveProvider_distinctListsShortlexAtLeast_vi list 1
+[5]
+
+ExhaustiveProvider_distinctListsShortlexAtLeast_vii list 0
+
+ExhaustiveProvider_distinctListsShortlexAtLeast_viii list 0
+
+ExhaustiveProvider_distinctListsShortlexAtLeast_ix list 16
+[]
+[1]
+[2]
+[3]
+[1, 2]
+[1, 3]
+[2, 1]
+[2, 3]
+[3, 1]
+[3, 2]
+[1, 2, 3]
+[1, 3, 2]
+[2, 1, 3]
+[2, 3, 1]
+[3, 1, 2]
+[3, 2, 1]
+
+ExhaustiveProvider_distinctListsShortlexAtLeast_x list 15
+[1]
+[2]
+[3]
+[1, 2]
+[1, 3]
+[2, 1]
+[2, 3]
+[3, 1]
+[3, 2]
+[1, 2, 3]
+[1, 3, 2]
+[2, 1, 3]
+[2, 3, 1]
+[3, 1, 2]
+[3, 2, 1]
+
+ExhaustiveProvider_distinctListsShortlexAtLeast_xi list 12
+[1, 2]
+[1, 3]
+[2, 1]
+[2, 3]
+[3, 1]
+[3, 2]
+[1, 2, 3]
+[1, 3, 2]
+[2, 1, 3]
+[2, 3, 1]
+[3, 1, 2]
+[3, 2, 1]
+
+ExhaustiveProvider_distinctListsShortlexAtLeast_xii list 6
+[1, 2, 3]
+[1, 3, 2]
+[2, 1, 3]
+[2, 3, 1]
+[3, 1, 2]
+[3, 2, 1]
+
+ExhaustiveProvider_distinctListsShortlexAtLeast_xiii list 16
+[]
+[1]
+[null]
+[3]
+[1, null]
+[1, 3]
+[null, 1]
+[null, 3]
+[3, 1]
+[3, null]
+[1, null, 3]
+[1, 3, null]
+[null, 1, 3]
+[null, 3, 1]
+[3, 1, null]
+[3, null, 1]
+
+ExhaustiveProvider_distinctListsShortlexAtLeast_xiv list 15
+[1]
+[null]
+[3]
+[1, null]
+[1, 3]
+[null, 1]
+[null, 3]
+[3, 1]
+[3, null]
+[1, null, 3]
+[1, 3, null]
+[null, 1, 3]
+[null, 3, 1]
+[3, 1, null]
+[3, null, 1]
+
+ExhaustiveProvider_distinctListsShortlexAtLeast_xv list 12
+[1, null]
+[1, 3]
+[null, 1]
+[null, 3]
+[3, 1]
+[3, null]
+[1, null, 3]
+[1, 3, null]
+[null, 1, 3]
+[null, 3, 1]
+[3, 1, null]
+[3, null, 1]
+
+ExhaustiveProvider_distinctListsShortlexAtLeast_xvi list 6
+[1, null, 3]
+[1, 3, null]
+[null, 1, 3]
+[null, 3, 1]
+[3, 1, null]
+[3, null, 1]
+
+ExhaustiveProvider_distinctListsShortlexAtLeast_xvii list 16
+[]
+[1]
+[2]
+[3]
+[1, 2]
+[1, 3]
+[2, 1]
+[2, 3]
+[3, 1]
+[3, 2]
+[1, 2, 3]
+[1, 3, 2]
+[2, 1, 3]
+[2, 3, 1]
+[3, 1, 2]
+[3, 2, 1]
+
+ExhaustiveProvider_distinctListsShortlexAtLeast_xviii list 15
+[1]
+[2]
+[3]
+[1, 2]
+[1, 3]
+[2, 1]
+[2, 3]
+[3, 1]
+[3, 2]
+[1, 2, 3]
+[1, 3, 2]
+[2, 1, 3]
+[2, 3, 1]
+[3, 1, 2]
+[3, 2, 1]
+
+ExhaustiveProvider_distinctListsShortlexAtLeast_xix list 12
+[1, 2]
+[1, 3]
+[2, 1]
+[2, 3]
+[3, 1]
+[3, 2]
+[1, 2, 3]
+[1, 3, 2]
+[2, 1, 3]
+[2, 3, 1]
+[3, 1, 2]
+[3, 2, 1]
+
+ExhaustiveProvider_distinctListsShortlexAtLeast_xx list 6
+[1, 2, 3]
+[1, 3, 2]
+[2, 1, 3]
+[2, 3, 1]
+[3, 1, 2]
+[3, 2, 1]
+
+ExhaustiveProvider_distinctListsShortlexAtLeast_xxi list 65
+[]
+[1]
+[2]
+[3]
+[4]
+[1, 2]
+[1, 3]
+[1, 4]
+[2, 1]
+[2, 3]
+[2, 4]
+[3, 1]
+[3, 2]
+[3, 4]
+[4, 1]
+[4, 2]
+[4, 3]
+[1, 2, 3]
+[1, 2, 4]
+[1, 3, 2]
+[1, 3, 4]
+[1, 4, 2]
+[1, 4, 3]
+[2, 1, 3]
+[2, 1, 4]
+[2, 3, 1]
+[2, 3, 4]
+[2, 4, 1]
+[2, 4, 3]
+[3, 1, 2]
+[3, 1, 4]
+[3, 2, 1]
+[3, 2, 4]
+[3, 4, 1]
+[3, 4, 2]
+[4, 1, 2]
+[4, 1, 3]
+[4, 2, 1]
+[4, 2, 3]
+[4, 3, 1]
+[4, 3, 2]
+[1, 2, 3, 4]
+[1, 2, 4, 3]
+[1, 3, 2, 4]
+[1, 3, 4, 2]
+[1, 4, 2, 3]
+[1, 4, 3, 2]
+[2, 1, 3, 4]
+[2, 1, 4, 3]
+[2, 3, 1, 4]
+[2, 3, 4, 1]
+[2, 4, 1, 3]
+[2, 4, 3, 1]
+[3, 1, 2, 4]
+[3, 1, 4, 2]
+[3, 2, 1, 4]
+[3, 2, 4, 1]
+[3, 4, 1, 2]
+[3, 4, 2, 1]
+[4, 1, 2, 3]
+[4, 1, 3, 2]
+[4, 2, 1, 3]
+[4, 2, 3, 1]
+[4, 3, 1, 2]
+[4, 3, 2, 1]
+
+ExhaustiveProvider_distinctListsShortlexAtLeast_xxii list 64
+[1]
+[2]
+[3]
+[4]
+[1, 2]
+[1, 3]
+[1, 4]
+[2, 1]
+[2, 3]
+[2, 4]
+[3, 1]
+[3, 2]
+[3, 4]
+[4, 1]
+[4, 2]
+[4, 3]
+[1, 2, 3]
+[1, 2, 4]
+[1, 3, 2]
+[1, 3, 4]
+[1, 4, 2]
+[1, 4, 3]
+[2, 1, 3]
+[2, 1, 4]
+[2, 3, 1]
+[2, 3, 4]
+[2, 4, 1]
+[2, 4, 3]
+[3, 1, 2]
+[3, 1, 4]
+[3, 2, 1]
+[3, 2, 4]
+[3, 4, 1]
+[3, 4, 2]
+[4, 1, 2]
+[4, 1, 3]
+[4, 2, 1]
+[4, 2, 3]
+[4, 3, 1]
+[4, 3, 2]
+[1, 2, 3, 4]
+[1, 2, 4, 3]
+[1, 3, 2, 4]
+[1, 3, 4, 2]
+[1, 4, 2, 3]
+[1, 4, 3, 2]
+[2, 1, 3, 4]
+[2, 1, 4, 3]
+[2, 3, 1, 4]
+[2, 3, 4, 1]
+[2, 4, 1, 3]
+[2, 4, 3, 1]
+[3, 1, 2, 4]
+[3, 1, 4, 2]
+[3, 2, 1, 4]
+[3, 2, 4, 1]
+[3, 4, 1, 2]
+[3, 4, 2, 1]
+[4, 1, 2, 3]
+[4, 1, 3, 2]
+[4, 2, 1, 3]
+[4, 2, 3, 1]
+[4, 3, 1, 2]
+[4, 3, 2, 1]
+
+ExhaustiveProvider_distinctListsShortlexAtLeast_xxiii list 60
+[1, 2]
+[1, 3]
+[1, 4]
+[2, 1]
+[2, 3]
+[2, 4]
+[3, 1]
+[3, 2]
+[3, 4]
+[4, 1]
+[4, 2]
+[4, 3]
+[1, 2, 3]
+[1, 2, 4]
+[1, 3, 2]
+[1, 3, 4]
+[1, 4, 2]
+[1, 4, 3]
+[2, 1, 3]
+[2, 1, 4]
+[2, 3, 1]
+[2, 3, 4]
+[2, 4, 1]
+[2, 4, 3]
+[3, 1, 2]
+[3, 1, 4]
+[3, 2, 1]
+[3, 2, 4]
+[3, 4, 1]
+[3, 4, 2]
+[4, 1, 2]
+[4, 1, 3]
+[4, 2, 1]
+[4, 2, 3]
+[4, 3, 1]
+[4, 3, 2]
+[1, 2, 3, 4]
+[1, 2, 4, 3]
+[1, 3, 2, 4]
+[1, 3, 4, 2]
+[1, 4, 2, 3]
+[1, 4, 3, 2]
+[2, 1, 3, 4]
+[2, 1, 4, 3]
+[2, 3, 1, 4]
+[2, 3, 4, 1]
+[2, 4, 1, 3]
+[2, 4, 3, 1]
+[3, 1, 2, 4]
+[3, 1, 4, 2]
+[3, 2, 1, 4]
+[3, 2, 4, 1]
+[3, 4, 1, 2]
+[3, 4, 2, 1]
+[4, 1, 2, 3]
+[4, 1, 3, 2]
+[4, 2, 1, 3]
+[4, 2, 3, 1]
+[4, 3, 1, 2]
+[4, 3, 2, 1]
+
+ExhaustiveProvider_distinctListsShortlexAtLeast_xxiv list 48
+[1, 2, 3]
+[1, 2, 4]
+[1, 3, 2]
+[1, 3, 4]
+[1, 4, 2]
+[1, 4, 3]
+[2, 1, 3]
+[2, 1, 4]
+[2, 3, 1]
+[2, 3, 4]
+[2, 4, 1]
+[2, 4, 3]
+[3, 1, 2]
+[3, 1, 4]
+[3, 2, 1]
+[3, 2, 4]
+[3, 4, 1]
+[3, 4, 2]
+[4, 1, 2]
+[4, 1, 3]
+[4, 2, 1]
+[4, 2, 3]
+[4, 3, 1]
+[4, 3, 2]
+[1, 2, 3, 4]
+[1, 2, 4, 3]
+[1, 3, 2, 4]
+[1, 3, 4, 2]
+[1, 4, 2, 3]
+[1, 4, 3, 2]
+[2, 1, 3, 4]
+[2, 1, 4, 3]
+[2, 3, 1, 4]
+[2, 3, 4, 1]
+[2, 4, 1, 3]
+[2, 4, 3, 1]
+[3, 1, 2, 4]
+[3, 1, 4, 2]
+[3, 2, 1, 4]
+[3, 2, 4, 1]
+[3, 4, 1, 2]
+[3, 4, 2, 1]
+[4, 1, 2, 3]
+[4, 1, 3, 2]
+[4, 2, 1, 3]
+[4, 2, 3, 1]
+[4, 3, 1, 2]
+[4, 3, 2, 1]
+
+ExhaustiveProvider_distinctListsShortlexAtLeast_xxv list 65
+[]
+[1]
+[2]
+[2]
+[3]
+[1, 2]
+[1, 2]
+[1, 3]
+[2, 1]
+[2, 2]
+[2, 3]
+[2, 1]
+[2, 2]
+[2, 3]
+[3, 1]
+[3, 2]
+[3, 2]
+[1, 2, 2]
+[1, 2, 3]
+[1, 2, 2]
+[1, 2, 3]
+[1, 3, 2]
+[1, 3, 2]
+[2, 1, 2]
+[2, 1, 3]
+[2, 2, 1]
+[2, 2, 3]
+[2, 3, 1]
+[2, 3, 2]
+[2, 1, 2]
+[2, 1, 3]
+[2, 2, 1]
+[2, 2, 3]
+[2, 3, 1]
+[2, 3, 2]
+[3, 1, 2]
+[3, 1, 2]
+[3, 2, 1]
+[3, 2, 2]
+[3, 2, 1]
+[3, 2, 2]
+[1, 2, 2, 3]
+[1, 2, 3, 2]
+[1, 2, 2, 3]
+[1, 2, 3, 2]
+[1, 3, 2, 2]
+[1, 3, 2, 2]
+[2, 1, 2, 3]
+[2, 1, 3, 2]
+[2, 2, 1, 3]
+[2, 2, 3, 1]
+[2, 3, 1, 2]
+[2, 3, 2, 1]
+[2, 1, 2, 3]
+[2, 1, 3, 2]
+[2, 2, 1, 3]
+[2, 2, 3, 1]
+[2, 3, 1, 2]
+[2, 3, 2, 1]
+[3, 1, 2, 2]
+[3, 1, 2, 2]
+[3, 2, 1, 2]
+[3, 2, 2, 1]
+[3, 2, 1, 2]
+[3, 2, 2, 1]
+
+ExhaustiveProvider_distinctListsShortlexAtLeast_xxvi list 64
+[1]
+[2]
+[2]
+[3]
+[1, 2]
+[1, 2]
+[1, 3]
+[2, 1]
+[2, 2]
+[2, 3]
+[2, 1]
+[2, 2]
+[2, 3]
+[3, 1]
+[3, 2]
+[3, 2]
+[1, 2, 2]
+[1, 2, 3]
+[1, 2, 2]
+[1, 2, 3]
+[1, 3, 2]
+[1, 3, 2]
+[2, 1, 2]
+[2, 1, 3]
+[2, 2, 1]
+[2, 2, 3]
+[2, 3, 1]
+[2, 3, 2]
+[2, 1, 2]
+[2, 1, 3]
+[2, 2, 1]
+[2, 2, 3]
+[2, 3, 1]
+[2, 3, 2]
+[3, 1, 2]
+[3, 1, 2]
+[3, 2, 1]
+[3, 2, 2]
+[3, 2, 1]
+[3, 2, 2]
+[1, 2, 2, 3]
+[1, 2, 3, 2]
+[1, 2, 2, 3]
+[1, 2, 3, 2]
+[1, 3, 2, 2]
+[1, 3, 2, 2]
+[2, 1, 2, 3]
+[2, 1, 3, 2]
+[2, 2, 1, 3]
+[2, 2, 3, 1]
+[2, 3, 1, 2]
+[2, 3, 2, 1]
+[2, 1, 2, 3]
+[2, 1, 3, 2]
+[2, 2, 1, 3]
+[2, 2, 3, 1]
+[2, 3, 1, 2]
+[2, 3, 2, 1]
+[3, 1, 2, 2]
+[3, 1, 2, 2]
+[3, 2, 1, 2]
+[3, 2, 2, 1]
+[3, 2, 1, 2]
+[3, 2, 2, 1]
+
+ExhaustiveProvider_distinctListsShortlexAtLeast_xxvii list 60
+[1, 2]
+[1, 2]
+[1, 3]
+[2, 1]
+[2, 2]
+[2, 3]
+[2, 1]
+[2, 2]
+[2, 3]
+[3, 1]
+[3, 2]
+[3, 2]
+[1, 2, 2]
+[1, 2, 3]
+[1, 2, 2]
+[1, 2, 3]
+[1, 3, 2]
+[1, 3, 2]
+[2, 1, 2]
+[2, 1, 3]
+[2, 2, 1]
+[2, 2, 3]
+[2, 3, 1]
+[2, 3, 2]
+[2, 1, 2]
+[2, 1, 3]
+[2, 2, 1]
+[2, 2, 3]
+[2, 3, 1]
+[2, 3, 2]
+[3, 1, 2]
+[3, 1, 2]
+[3, 2, 1]
+[3, 2, 2]
+[3, 2, 1]
+[3, 2, 2]
+[1, 2, 2, 3]
+[1, 2, 3, 2]
+[1, 2, 2, 3]
+[1, 2, 3, 2]
+[1, 3, 2, 2]
+[1, 3, 2, 2]
+[2, 1, 2, 3]
+[2, 1, 3, 2]
+[2, 2, 1, 3]
+[2, 2, 3, 1]
+[2, 3, 1, 2]
+[2, 3, 2, 1]
+[2, 1, 2, 3]
+[2, 1, 3, 2]
+[2, 2, 1, 3]
+[2, 2, 3, 1]
+[2, 3, 1, 2]
+[2, 3, 2, 1]
+[3, 1, 2, 2]
+[3, 1, 2, 2]
+[3, 2, 1, 2]
+[3, 2, 2, 1]
+[3, 2, 1, 2]
+[3, 2, 2, 1]
+
+ExhaustiveProvider_distinctListsShortlexAtLeast_xxviii list 48
+[1, 2, 2]
+[1, 2, 3]
+[1, 2, 2]
+[1, 2, 3]
+[1, 3, 2]
+[1, 3, 2]
+[2, 1, 2]
+[2, 1, 3]
+[2, 2, 1]
+[2, 2, 3]
+[2, 3, 1]
+[2, 3, 2]
+[2, 1, 2]
+[2, 1, 3]
+[2, 2, 1]
+[2, 2, 3]
+[2, 3, 1]
+[2, 3, 2]
+[3, 1, 2]
+[3, 1, 2]
+[3, 2, 1]
+[3, 2, 2]
+[3, 2, 1]
+[3, 2, 2]
+[1, 2, 2, 3]
+[1, 2, 3, 2]
+[1, 2, 2, 3]
+[1, 2, 3, 2]
+[1, 3, 2, 2]
+[1, 3, 2, 2]
+[2, 1, 2, 3]
+[2, 1, 3, 2]
+[2, 2, 1, 3]
+[2, 2, 3, 1]
+[2, 3, 1, 2]
+[2, 3, 2, 1]
+[2, 1, 2, 3]
+[2, 1, 3, 2]
+[2, 2, 1, 3]
+[2, 2, 3, 1]
+[2, 3, 1, 2]
+[2, 3, 2, 1]
+[3, 1, 2, 2]
+[3, 1, 2, 2]
+[3, 2, 1, 2]
+[3, 2, 2, 1]
+[3, 2, 1, 2]
+[3, 2, 2, 1]
+
+ExhaustiveProvider_distinctStringsShortlexAtLeast_int_String_i list 1
+
+
+ExhaustiveProvider_distinctStringsShortlexAtLeast_int_String_ii list 0
+
+ExhaustiveProvider_distinctStringsShortlexAtLeast_int_String_iii list 0
+
+ExhaustiveProvider_distinctStringsShortlexAtLeast_int_String_iv list 0
+
+ExhaustiveProvider_distinctStringsShortlexAtLeast_int_String_v list 2
+
+a
+
+ExhaustiveProvider_distinctStringsShortlexAtLeast_int_String_vi list 1
+a
+
+ExhaustiveProvider_distinctStringsShortlexAtLeast_int_String_vii list 0
+
+ExhaustiveProvider_distinctStringsShortlexAtLeast_int_String_viii list 0
+
+ExhaustiveProvider_distinctStringsShortlexAtLeast_int_String_ix list 16
+
+a
+b
+c
+ab
+ac
+ba
+bc
+ca
+cb
+abc
+acb
+bac
+bca
+cab
+cba
+
+ExhaustiveProvider_distinctStringsShortlexAtLeast_int_String_x list 15
+a
+b
+c
+ab
+ac
+ba
+bc
+ca
+cb
+abc
+acb
+bac
+bca
+cab
+cba
+
+ExhaustiveProvider_distinctStringsShortlexAtLeast_int_String_xi list 12
+ab
+ac
+ba
+bc
+ca
+cb
+abc
+acb
+bac
+bca
+cab
+cba
+
+ExhaustiveProvider_distinctStringsShortlexAtLeast_int_String_xii list 6
+abc
+acb
+bac
+bca
+cab
+cba
+
+ExhaustiveProvider_distinctStringsShortlexAtLeast_int_String_xiii list 65
+
+a
+b
+b
+c
+ab
+ab
+ac
+ba
+bb
+bc
+ba
+bb
+bc
+ca
+cb
+cb
+abb
+abc
+abb
+abc
+acb
+acb
+bab
+bac
+bba
+bbc
+bca
+bcb
+bab
+bac
+bba
+bbc
+bca
+bcb
+cab
+cab
+cba
+cbb
+cba
+cbb
+abbc
+abcb
+abbc
+abcb
+acbb
+acbb
+babc
+bacb
+bbac
+bbca
+bcab
+bcba
+babc
+bacb
+bbac
+bbca
+bcab
+bcba
+cabb
+cabb
+cbab
+cbba
+cbab
+cbba
+
+ExhaustiveProvider_distinctStringsShortlexAtLeast_int_String_xiv list 64
+a
+b
+b
+c
+ab
+ab
+ac
+ba
+bb
+bc
+ba
+bb
+bc
+ca
+cb
+cb
+abb
+abc
+abb
+abc
+acb
+acb
+bab
+bac
+bba
+bbc
+bca
+bcb
+bab
+bac
+bba
+bbc
+bca
+bcb
+cab
+cab
+cba
+cbb
+cba
+cbb
+abbc
+abcb
+abbc
+abcb
+acbb
+acbb
+babc
+bacb
+bbac
+bbca
+bcab
+bcba
+babc
+bacb
+bbac
+bbca
+bcab
+bcba
+cabb
+cabb
+cbab
+cbba
+cbab
+cbba
+
+ExhaustiveProvider_distinctStringsShortlexAtLeast_int_String_xv list 60
+ab
+ab
+ac
+ba
+bb
+bc
+ba
+bb
+bc
+ca
+cb
+cb
+abb
+abc
+abb
+abc
+acb
+acb
+bab
+bac
+bba
+bbc
+bca
+bcb
+bab
+bac
+bba
+bbc
+bca
+bcb
+cab
+cab
+cba
+cbb
+cba
+cbb
+abbc
+abcb
+abbc
+abcb
+acbb
+acbb
+babc
+bacb
+bbac
+bbca
+bcab
+bcba
+babc
+bacb
+bbac
+bbca
+bcab
+bcba
+cabb
+cabb
+cbab
+cbba
+cbab
+cbba
+
+ExhaustiveProvider_distinctStringsShortlexAtLeast_int_String_xvi list 48
+abb
+abc
+abb
+abc
+acb
+acb
+bab
+bac
+bba
+bbc
+bca
+bcb
+bab
+bac
+bba
+bbc
+bca
+bcb
+cab
+cab
+cba
+cbb
+cba
+cbb
+abbc
+abcb
+abbc
+abcb
+acbb
+acbb
+babc
+bacb
+bbac
+bbca
+bcab
+bcba
+babc
+bacb
+bbac
+bbca
+bcab
+bcba
+cabb
+cabb
+cbab
+cbba
+cbab
+cbba
+
+ExhaustiveProvider_distinctStringsShortlexAtLeast_int_String_xvii list 21
+
+M
+i
+s
+s
+i
+s
+s
+i
+p
+p
+i
+Mi
+Ms
+Ms
+Mi
+Ms
+Ms
+Mi
+Mp
+...
+
+ExhaustiveProvider_distinctStringsShortlexAtLeast_int_String_xviii list 21
+M
+i
+s
+s
+i
+s
+s
+i
+p
+p
+i
+Mi
+Ms
+Ms
+Mi
+Ms
+Ms
+Mi
+Mp
+Mp
+...
+
+ExhaustiveProvider_distinctStringsShortlexAtLeast_int_String_xix list 21
+Mi
+Ms
+Ms
+Mi
+Ms
+Ms
+Mi
+Mp
+Mp
+Mi
+iM
+is
+is
+ii
+is
+is
+ii
+ip
+ip
+ii
+...
+
+ExhaustiveProvider_distinctStringsShortlexAtLeast_int_String_xx list 21
+Mis
+Mis
+Mii
+Mis
+Mis
+Mii
+Mip
+Mip
+Mii
+Msi
+Mss
+Msi
+Mss
+Mss
+Msi
+Msp
+Msp
+Msi
+Msi
+Mss
+...
+
+ExhaustiveProvider_distinctLists_int_Iterable_i list 1
+[]
+
+ExhaustiveProvider_distinctLists_int_Iterable_ii list 0
+
+ExhaustiveProvider_distinctLists_int_Iterable_iii list 0
+
+ExhaustiveProvider_distinctLists_int_Iterable_iv list 0
+
+ExhaustiveProvider_distinctLists_int_Iterable_v list 1
+[]
+
+ExhaustiveProvider_distinctLists_int_Iterable_vi list 1
+[5]
+
+ExhaustiveProvider_distinctLists_int_Iterable_vii list 0
+
+ExhaustiveProvider_distinctLists_int_Iterable_viii list 0
+
+ExhaustiveProvider_distinctLists_int_Iterable_ix list 1
+[]
+
+ExhaustiveProvider_distinctLists_int_Iterable_x list 3
+[1]
+[2]
+[3]
+
+ExhaustiveProvider_distinctLists_int_Iterable_xi list 6
+[1, 2]
+[1, 3]
+[2, 1]
+[2, 3]
+[3, 1]
+[3, 2]
+
+ExhaustiveProvider_distinctLists_int_Iterable_xii list 6
+[1, 2, 3]
+[1, 3, 2]
+[2, 1, 3]
+[2, 3, 1]
+[3, 1, 2]
+[3, 2, 1]
+
+ExhaustiveProvider_distinctLists_int_Iterable_xiii list 1
+[]
+
+ExhaustiveProvider_distinctLists_int_Iterable_xiv list 4
+[1]
+[2]
+[2]
+[3]
+
+ExhaustiveProvider_distinctLists_int_Iterable_xv list 12
+[1, 2]
+[1, 2]
+[2, 1]
+[2, 2]
+[1, 3]
+[2, 3]
+[2, 1]
+[2, 2]
+[3, 1]
+[3, 2]
+[2, 3]
+[3, 2]
+
+ExhaustiveProvider_distinctLists_int_Iterable_xvi list 24
+[1, 2, 2]
+[1, 2, 3]
+[1, 2, 2]
+[1, 2, 3]
+[2, 1, 2]
+[2, 1, 3]
+[2, 2, 1]
+[2, 2, 3]
+[1, 3, 2]
+[1, 3, 2]
+[2, 3, 1]
+[2, 3, 2]
+[2, 1, 2]
+[2, 1, 3]
+[2, 2, 1]
+[2, 2, 3]
+[3, 1, 2]
+[3, 1, 2]
+[3, 2, 1]
+[3, 2, 2]
+[2, 3, 1]
+[2, 3, 2]
+[3, 2, 1]
+[3, 2, 2]
+
+ExhaustiveProvider_distinctLists_int_Iterable_xvii list 1
+[]
+
+ExhaustiveProvider_distinctLists_int_Iterable_xviii list 3
+[1]
+[null]
+[3]
+
+ExhaustiveProvider_distinctLists_int_Iterable_xix list 6
+[1, null]
+[1, 3]
+[null, 1]
+[null, 3]
+[3, 1]
+[3, null]
+
+ExhaustiveProvider_distinctLists_int_Iterable_xx list 6
+[1, null, 3]
+[1, 3, null]
+[null, 1, 3]
+[null, 3, 1]
+[3, 1, null]
+[3, null, 1]
+
+ExhaustiveProvider_distinctLists_int_Iterable_xxi list 1
+[]
+
+ExhaustiveProvider_distinctLists_int_Iterable_xxii list 21
+[1]
+[2]
+[3]
+[4]
+[5]
+[6]
+[7]
+[8]
+[9]
+[10]
+[11]
+[12]
+[13]
+[14]
+[15]
+[16]
+[17]
+[18]
+[19]
+[20]
+...
+
+ExhaustiveProvider_distinctLists_int_Iterable_xxiii list 21
+[1, 2]
+[1, 3]
+[2, 1]
+[2, 3]
+[1, 4]
+[1, 5]
+[2, 4]
+[2, 5]
+[3, 1]
+[3, 2]
+[4, 1]
+[4, 2]
+[3, 4]
+[3, 5]
+[4, 3]
+[4, 5]
+[1, 6]
+[1, 7]
+[2, 6]
+[2, 7]
+...
+
+ExhaustiveProvider_distinctLists_int_Iterable_xxiv list 21
+[1, 2, 3]
+[1, 2, 4]
+[1, 3, 2]
+[1, 3, 4]
+[2, 1, 3]
+[2, 1, 4]
+[2, 3, 1]
+[2, 3, 4]
+[1, 2, 5]
+[1, 2, 6]
+[1, 3, 5]
+[1, 3, 6]
+[2, 1, 5]
+[2, 1, 6]
+[2, 3, 5]
+[2, 3, 6]
+[1, 4, 2]
+[1, 4, 3]
+[1, 5, 2]
+[1, 5, 3]
+...
+
+ExhaustiveProvider_distinctLists_int_Iterable_xxv list 1
+[]
+
+ExhaustiveProvider_distinctLists_int_Iterable_xxvi list 21
+[1]
+[1]
+[1]
+[1]
+[1]
+[1]
+[1]
+[1]
+[1]
+[1]
+[1]
+[1]
+[1]
+[1]
+[1]
+[1]
+[1]
+[1]
+[1]
+[1]
+...
+
+ExhaustiveProvider_distinctLists_int_Iterable_xxvii list 21
+[1, 1]
+[1, 1]
+[1, 1]
+[1, 1]
+[1, 1]
+[1, 1]
+[1, 1]
+[1, 1]
+[1, 1]
+[1, 1]
+[1, 1]
+[1, 1]
+[1, 1]
+[1, 1]
+[1, 1]
+[1, 1]
+[1, 1]
+[1, 1]
+[1, 1]
+[1, 1]
+...
+
+ExhaustiveProvider_distinctLists_int_Iterable_xxviii list 21
+[1, 1, 1]
+[1, 1, 1]
+[1, 1, 1]
+[1, 1, 1]
+[1, 1, 1]
+[1, 1, 1]
+[1, 1, 1]
+[1, 1, 1]
+[1, 1, 1]
+[1, 1, 1]
+[1, 1, 1]
+[1, 1, 1]
+[1, 1, 1]
+[1, 1, 1]
+[1, 1, 1]
+[1, 1, 1]
+[1, 1, 1]
+[1, 1, 1]
+[1, 1, 1]
+[1, 1, 1]
+...
+
 RandomProvider_integers list 21
 -1084795351
 1143001545
