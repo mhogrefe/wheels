@@ -23763,6 +23763,1880 @@ ExhaustiveProvider_distinctLists_int_Iterable_xxviii list 21
 [1, 1, 1]
 ...
 
+ExhaustiveProvider_distinctPairs_i list 0
+
+ExhaustiveProvider_distinctPairs_ii list 0
+
+ExhaustiveProvider_distinctPairs_iii list 12
+(1, 2)
+(1, 3)
+(2, 1)
+(2, 3)
+(1, 4)
+(2, 4)
+(3, 1)
+(3, 2)
+(4, 1)
+(4, 2)
+(3, 4)
+(4, 3)
+
+ExhaustiveProvider_distinctPairs_iv list 12
+(1, 2)
+(1, 2)
+(2, 1)
+(2, 2)
+(1, 4)
+(2, 4)
+(2, 1)
+(2, 2)
+(4, 1)
+(4, 2)
+(2, 4)
+(4, 2)
+
+ExhaustiveProvider_distinctPairs_v list 12
+(1, 2)
+(1, null)
+(2, 1)
+(2, null)
+(1, 4)
+(2, 4)
+(null, 1)
+(null, 2)
+(4, 1)
+(4, 2)
+(null, 4)
+(4, null)
+
+ExhaustiveProvider_distinctPairs_vi list 21
+(0, 1)
+(0, 2)
+(1, 0)
+(1, 2)
+(0, 3)
+(0, 4)
+(1, 3)
+(1, 4)
+(2, 0)
+(2, 1)
+(3, 0)
+(3, 1)
+(2, 3)
+(2, 4)
+(3, 2)
+(3, 4)
+(0, 5)
+(0, 6)
+(1, 5)
+(1, 6)
+...
+
+ExhaustiveProvider_distinctPairs_vii list 21
+(1, 1)
+(1, 1)
+(1, 1)
+(1, 1)
+(1, 1)
+(1, 1)
+(1, 1)
+(1, 1)
+(1, 1)
+(1, 1)
+(1, 1)
+(1, 1)
+(1, 1)
+(1, 1)
+(1, 1)
+(1, 1)
+(1, 1)
+(1, 1)
+(1, 1)
+(1, 1)
+...
+
+ExhaustiveProvider_distinctTriples_i list 0
+
+ExhaustiveProvider_distinctTriples_ii list 0
+
+ExhaustiveProvider_distinctTriples_iii list 21
+(1, 2, 3)
+(1, 2, 4)
+(1, 3, 2)
+(1, 3, 4)
+(2, 1, 3)
+(2, 1, 4)
+(2, 3, 1)
+(2, 3, 4)
+(1, 4, 2)
+(1, 4, 3)
+(2, 4, 1)
+(2, 4, 3)
+(3, 1, 2)
+(3, 1, 4)
+(3, 2, 1)
+(3, 2, 4)
+(4, 1, 2)
+(4, 1, 3)
+(4, 2, 1)
+(4, 2, 3)
+...
+
+ExhaustiveProvider_distinctTriples_iv list 21
+(1, 2, 2)
+(1, 2, 4)
+(1, 2, 2)
+(1, 2, 4)
+(2, 1, 2)
+(2, 1, 4)
+(2, 2, 1)
+(2, 2, 4)
+(1, 4, 2)
+(1, 4, 2)
+(2, 4, 1)
+(2, 4, 2)
+(2, 1, 2)
+(2, 1, 4)
+(2, 2, 1)
+(2, 2, 4)
+(4, 1, 2)
+(4, 1, 2)
+(4, 2, 1)
+(4, 2, 2)
+...
+
+ExhaustiveProvider_distinctTriples_v list 21
+(1, 2, null)
+(1, 2, 4)
+(1, null, 2)
+(1, null, 4)
+(2, 1, null)
+(2, 1, 4)
+(2, null, 1)
+(2, null, 4)
+(1, 4, 2)
+(1, 4, null)
+(2, 4, 1)
+(2, 4, null)
+(null, 1, 2)
+(null, 1, 4)
+(null, 2, 1)
+(null, 2, 4)
+(4, 1, 2)
+(4, 1, null)
+(4, 2, 1)
+(4, 2, null)
+...
+
+ExhaustiveProvider_distinctTriples_vi list 21
+(0, 1, 2)
+(0, 1, 3)
+(0, 2, 1)
+(0, 2, 3)
+(1, 0, 2)
+(1, 0, 3)
+(1, 2, 0)
+(1, 2, 3)
+(0, 1, 4)
+(0, 1, 5)
+(0, 2, 4)
+(0, 2, 5)
+(1, 0, 4)
+(1, 0, 5)
+(1, 2, 4)
+(1, 2, 5)
+(0, 3, 1)
+(0, 3, 2)
+(0, 4, 1)
+(0, 4, 2)
+...
+
+ExhaustiveProvider_distinctTriples_vii list 21
+(1, 1, 1)
+(1, 1, 1)
+(1, 1, 1)
+(1, 1, 1)
+(1, 1, 1)
+(1, 1, 1)
+(1, 1, 1)
+(1, 1, 1)
+(1, 1, 1)
+(1, 1, 1)
+(1, 1, 1)
+(1, 1, 1)
+(1, 1, 1)
+(1, 1, 1)
+(1, 1, 1)
+(1, 1, 1)
+(1, 1, 1)
+(1, 1, 1)
+(1, 1, 1)
+(1, 1, 1)
+...
+
+ExhaustiveProvider_distinctQuadruples_i list 0
+
+ExhaustiveProvider_distinctQuadruples_ii list 0
+
+ExhaustiveProvider_distinctQuadruples_iii list 21
+(1, 2, 3, 4)
+(1, 2, 4, 3)
+(1, 3, 2, 4)
+(1, 3, 4, 2)
+(2, 1, 3, 4)
+(2, 1, 4, 3)
+(2, 3, 1, 4)
+(2, 3, 4, 1)
+(1, 4, 2, 3)
+(1, 4, 3, 2)
+(2, 4, 1, 3)
+(2, 4, 3, 1)
+(3, 1, 2, 4)
+(3, 1, 4, 2)
+(3, 2, 1, 4)
+(3, 2, 4, 1)
+(4, 1, 2, 3)
+(4, 1, 3, 2)
+(4, 2, 1, 3)
+(4, 2, 3, 1)
+...
+
+ExhaustiveProvider_distinctQuadruples_iv list 21
+(1, 2, 2, 4)
+(1, 2, 4, 2)
+(1, 2, 2, 4)
+(1, 2, 4, 2)
+(2, 1, 2, 4)
+(2, 1, 4, 2)
+(2, 2, 1, 4)
+(2, 2, 4, 1)
+(1, 4, 2, 2)
+(1, 4, 2, 2)
+(2, 4, 1, 2)
+(2, 4, 2, 1)
+(2, 1, 2, 4)
+(2, 1, 4, 2)
+(2, 2, 1, 4)
+(2, 2, 4, 1)
+(4, 1, 2, 2)
+(4, 1, 2, 2)
+(4, 2, 1, 2)
+(4, 2, 2, 1)
+...
+
+ExhaustiveProvider_distinctQuadruples_v list 21
+(1, 2, null, 4)
+(1, 2, 4, null)
+(1, null, 2, 4)
+(1, null, 4, 2)
+(2, 1, null, 4)
+(2, 1, 4, null)
+(2, null, 1, 4)
+(2, null, 4, 1)
+(1, 4, 2, null)
+(1, 4, null, 2)
+(2, 4, 1, null)
+(2, 4, null, 1)
+(null, 1, 2, 4)
+(null, 1, 4, 2)
+(null, 2, 1, 4)
+(null, 2, 4, 1)
+(4, 1, 2, null)
+(4, 1, null, 2)
+(4, 2, 1, null)
+(4, 2, null, 1)
+...
+
+ExhaustiveProvider_distinctQuadruples_vi list 21
+(0, 1, 2, 3)
+(0, 1, 2, 4)
+(0, 1, 3, 2)
+(0, 1, 3, 4)
+(0, 2, 1, 3)
+(0, 2, 1, 4)
+(0, 2, 3, 1)
+(0, 2, 3, 4)
+(1, 0, 2, 3)
+(1, 0, 2, 4)
+(1, 0, 3, 2)
+(1, 0, 3, 4)
+(1, 2, 0, 3)
+(1, 2, 0, 4)
+(1, 2, 3, 0)
+(1, 2, 3, 4)
+(0, 1, 2, 5)
+(0, 1, 2, 6)
+(0, 1, 3, 5)
+(0, 1, 3, 6)
+...
+
+ExhaustiveProvider_distinctQuadruples_vii list 21
+(1, 1, 1, 1)
+(1, 1, 1, 1)
+(1, 1, 1, 1)
+(1, 1, 1, 1)
+(1, 1, 1, 1)
+(1, 1, 1, 1)
+(1, 1, 1, 1)
+(1, 1, 1, 1)
+(1, 1, 1, 1)
+(1, 1, 1, 1)
+(1, 1, 1, 1)
+(1, 1, 1, 1)
+(1, 1, 1, 1)
+(1, 1, 1, 1)
+(1, 1, 1, 1)
+(1, 1, 1, 1)
+(1, 1, 1, 1)
+(1, 1, 1, 1)
+(1, 1, 1, 1)
+(1, 1, 1, 1)
+...
+
+ExhaustiveProvider_distinctQuintuples_i list 0
+
+ExhaustiveProvider_distinctQuintuples_ii list 0
+
+ExhaustiveProvider_distinctQuintuples_iii list 0
+
+ExhaustiveProvider_distinctQuintuples_iv list 21
+(1, 2, 3, 4, 5)
+(1, 2, 3, 4, 6)
+(1, 2, 3, 5, 4)
+(1, 2, 3, 5, 6)
+(1, 2, 4, 3, 5)
+(1, 2, 4, 3, 6)
+(1, 2, 4, 5, 3)
+(1, 2, 4, 5, 6)
+(1, 3, 2, 4, 5)
+(1, 3, 2, 4, 6)
+(1, 3, 2, 5, 4)
+(1, 3, 2, 5, 6)
+(1, 3, 4, 2, 5)
+(1, 3, 4, 2, 6)
+(1, 3, 4, 5, 2)
+(1, 3, 4, 5, 6)
+(2, 1, 3, 4, 5)
+(2, 1, 3, 4, 6)
+(2, 1, 3, 5, 4)
+(2, 1, 3, 5, 6)
+...
+
+ExhaustiveProvider_distinctQuintuples_v list 21
+(1, 2, 2, 4, 5)
+(1, 2, 2, 4, 6)
+(1, 2, 2, 5, 4)
+(1, 2, 2, 5, 6)
+(1, 2, 4, 2, 5)
+(1, 2, 4, 2, 6)
+(1, 2, 4, 5, 2)
+(1, 2, 4, 5, 6)
+(1, 2, 2, 4, 5)
+(1, 2, 2, 4, 6)
+(1, 2, 2, 5, 4)
+(1, 2, 2, 5, 6)
+(1, 2, 4, 2, 5)
+(1, 2, 4, 2, 6)
+(1, 2, 4, 5, 2)
+(1, 2, 4, 5, 6)
+(2, 1, 2, 4, 5)
+(2, 1, 2, 4, 6)
+(2, 1, 2, 5, 4)
+(2, 1, 2, 5, 6)
+...
+
+ExhaustiveProvider_distinctQuintuples_vi list 21
+(1, 2, null, 4, 5)
+(1, 2, null, 4, 6)
+(1, 2, null, 5, 4)
+(1, 2, null, 5, 6)
+(1, 2, 4, null, 5)
+(1, 2, 4, null, 6)
+(1, 2, 4, 5, null)
+(1, 2, 4, 5, 6)
+(1, null, 2, 4, 5)
+(1, null, 2, 4, 6)
+(1, null, 2, 5, 4)
+(1, null, 2, 5, 6)
+(1, null, 4, 2, 5)
+(1, null, 4, 2, 6)
+(1, null, 4, 5, 2)
+(1, null, 4, 5, 6)
+(2, 1, null, 4, 5)
+(2, 1, null, 4, 6)
+(2, 1, null, 5, 4)
+(2, 1, null, 5, 6)
+...
+
+ExhaustiveProvider_distinctQuintuples_vii list 21
+(0, 1, 2, 3, 4)
+(0, 1, 2, 3, 5)
+(0, 1, 2, 4, 3)
+(0, 1, 2, 4, 5)
+(0, 1, 3, 2, 4)
+(0, 1, 3, 2, 5)
+(0, 1, 3, 4, 2)
+(0, 1, 3, 4, 5)
+(0, 2, 1, 3, 4)
+(0, 2, 1, 3, 5)
+(0, 2, 1, 4, 3)
+(0, 2, 1, 4, 5)
+(0, 2, 3, 1, 4)
+(0, 2, 3, 1, 5)
+(0, 2, 3, 4, 1)
+(0, 2, 3, 4, 5)
+(1, 0, 2, 3, 4)
+(1, 0, 2, 3, 5)
+(1, 0, 2, 4, 3)
+(1, 0, 2, 4, 5)
+...
+
+ExhaustiveProvider_distinctQuintuples_viii list 21
+(1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1)
+...
+
+ExhaustiveProvider_distinctSextuples_i list 0
+
+ExhaustiveProvider_distinctSextuples_ii list 0
+
+ExhaustiveProvider_distinctSextuples_iii list 0
+
+ExhaustiveProvider_distinctSextuples_iv list 21
+(1, 2, 3, 4, 5, 6)
+(1, 2, 3, 4, 5, 7)
+(1, 2, 3, 4, 6, 5)
+(1, 2, 3, 4, 6, 7)
+(1, 2, 3, 5, 4, 6)
+(1, 2, 3, 5, 4, 7)
+(1, 2, 3, 5, 6, 4)
+(1, 2, 3, 5, 6, 7)
+(1, 2, 4, 3, 5, 6)
+(1, 2, 4, 3, 5, 7)
+(1, 2, 4, 3, 6, 5)
+(1, 2, 4, 3, 6, 7)
+(1, 2, 4, 5, 3, 6)
+(1, 2, 4, 5, 3, 7)
+(1, 2, 4, 5, 6, 3)
+(1, 2, 4, 5, 6, 7)
+(1, 3, 2, 4, 5, 6)
+(1, 3, 2, 4, 5, 7)
+(1, 3, 2, 4, 6, 5)
+(1, 3, 2, 4, 6, 7)
+...
+
+ExhaustiveProvider_distinctSextuples_v list 21
+(1, 2, 2, 4, 5, 6)
+(1, 2, 2, 4, 5, 7)
+(1, 2, 2, 4, 6, 5)
+(1, 2, 2, 4, 6, 7)
+(1, 2, 2, 5, 4, 6)
+(1, 2, 2, 5, 4, 7)
+(1, 2, 2, 5, 6, 4)
+(1, 2, 2, 5, 6, 7)
+(1, 2, 4, 2, 5, 6)
+(1, 2, 4, 2, 5, 7)
+(1, 2, 4, 2, 6, 5)
+(1, 2, 4, 2, 6, 7)
+(1, 2, 4, 5, 2, 6)
+(1, 2, 4, 5, 2, 7)
+(1, 2, 4, 5, 6, 2)
+(1, 2, 4, 5, 6, 7)
+(1, 2, 2, 4, 5, 6)
+(1, 2, 2, 4, 5, 7)
+(1, 2, 2, 4, 6, 5)
+(1, 2, 2, 4, 6, 7)
+...
+
+ExhaustiveProvider_distinctSextuples_vi list 21
+(1, 2, null, 4, 5, 6)
+(1, 2, null, 4, 5, 7)
+(1, 2, null, 4, 6, 5)
+(1, 2, null, 4, 6, 7)
+(1, 2, null, 5, 4, 6)
+(1, 2, null, 5, 4, 7)
+(1, 2, null, 5, 6, 4)
+(1, 2, null, 5, 6, 7)
+(1, 2, 4, null, 5, 6)
+(1, 2, 4, null, 5, 7)
+(1, 2, 4, null, 6, 5)
+(1, 2, 4, null, 6, 7)
+(1, 2, 4, 5, null, 6)
+(1, 2, 4, 5, null, 7)
+(1, 2, 4, 5, 6, null)
+(1, 2, 4, 5, 6, 7)
+(1, null, 2, 4, 5, 6)
+(1, null, 2, 4, 5, 7)
+(1, null, 2, 4, 6, 5)
+(1, null, 2, 4, 6, 7)
+...
+
+ExhaustiveProvider_distinctSextuples_vii list 21
+(0, 1, 2, 3, 4, 5)
+(0, 1, 2, 3, 4, 6)
+(0, 1, 2, 3, 5, 4)
+(0, 1, 2, 3, 5, 6)
+(0, 1, 2, 4, 3, 5)
+(0, 1, 2, 4, 3, 6)
+(0, 1, 2, 4, 5, 3)
+(0, 1, 2, 4, 5, 6)
+(0, 1, 3, 2, 4, 5)
+(0, 1, 3, 2, 4, 6)
+(0, 1, 3, 2, 5, 4)
+(0, 1, 3, 2, 5, 6)
+(0, 1, 3, 4, 2, 5)
+(0, 1, 3, 4, 2, 6)
+(0, 1, 3, 4, 5, 2)
+(0, 1, 3, 4, 5, 6)
+(0, 2, 1, 3, 4, 5)
+(0, 2, 1, 3, 4, 6)
+(0, 2, 1, 3, 5, 4)
+(0, 2, 1, 3, 5, 6)
+...
+
+ExhaustiveProvider_distinctSextuples_viii list 21
+(1, 1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1, 1)
+...
+
+ExhaustiveProvider_distinctSeptuples_i list 0
+
+ExhaustiveProvider_distinctSeptuples_ii list 0
+
+ExhaustiveProvider_distinctSeptuples_iii list 0
+
+ExhaustiveProvider_distinctSeptuples_iv list 21
+(1, 2, 3, 4, 5, 6, 7)
+(1, 2, 3, 4, 5, 6, 8)
+(1, 2, 3, 4, 5, 7, 6)
+(1, 2, 3, 4, 5, 7, 8)
+(1, 2, 3, 4, 6, 5, 7)
+(1, 2, 3, 4, 6, 5, 8)
+(1, 2, 3, 4, 6, 7, 5)
+(1, 2, 3, 4, 6, 7, 8)
+(1, 2, 3, 5, 4, 6, 7)
+(1, 2, 3, 5, 4, 6, 8)
+(1, 2, 3, 5, 4, 7, 6)
+(1, 2, 3, 5, 4, 7, 8)
+(1, 2, 3, 5, 6, 4, 7)
+(1, 2, 3, 5, 6, 4, 8)
+(1, 2, 3, 5, 6, 7, 4)
+(1, 2, 3, 5, 6, 7, 8)
+(1, 2, 4, 3, 5, 6, 7)
+(1, 2, 4, 3, 5, 6, 8)
+(1, 2, 4, 3, 5, 7, 6)
+(1, 2, 4, 3, 5, 7, 8)
+...
+
+ExhaustiveProvider_distinctSeptuples_v list 21
+(1, 2, 2, 4, 5, 6, 7)
+(1, 2, 2, 4, 5, 6, 8)
+(1, 2, 2, 4, 5, 7, 6)
+(1, 2, 2, 4, 5, 7, 8)
+(1, 2, 2, 4, 6, 5, 7)
+(1, 2, 2, 4, 6, 5, 8)
+(1, 2, 2, 4, 6, 7, 5)
+(1, 2, 2, 4, 6, 7, 8)
+(1, 2, 2, 5, 4, 6, 7)
+(1, 2, 2, 5, 4, 6, 8)
+(1, 2, 2, 5, 4, 7, 6)
+(1, 2, 2, 5, 4, 7, 8)
+(1, 2, 2, 5, 6, 4, 7)
+(1, 2, 2, 5, 6, 4, 8)
+(1, 2, 2, 5, 6, 7, 4)
+(1, 2, 2, 5, 6, 7, 8)
+(1, 2, 4, 2, 5, 6, 7)
+(1, 2, 4, 2, 5, 6, 8)
+(1, 2, 4, 2, 5, 7, 6)
+(1, 2, 4, 2, 5, 7, 8)
+...
+
+ExhaustiveProvider_distinctSeptuples_vi list 21
+(1, 2, null, 4, 5, 6, 7)
+(1, 2, null, 4, 5, 6, 8)
+(1, 2, null, 4, 5, 7, 6)
+(1, 2, null, 4, 5, 7, 8)
+(1, 2, null, 4, 6, 5, 7)
+(1, 2, null, 4, 6, 5, 8)
+(1, 2, null, 4, 6, 7, 5)
+(1, 2, null, 4, 6, 7, 8)
+(1, 2, null, 5, 4, 6, 7)
+(1, 2, null, 5, 4, 6, 8)
+(1, 2, null, 5, 4, 7, 6)
+(1, 2, null, 5, 4, 7, 8)
+(1, 2, null, 5, 6, 4, 7)
+(1, 2, null, 5, 6, 4, 8)
+(1, 2, null, 5, 6, 7, 4)
+(1, 2, null, 5, 6, 7, 8)
+(1, 2, 4, null, 5, 6, 7)
+(1, 2, 4, null, 5, 6, 8)
+(1, 2, 4, null, 5, 7, 6)
+(1, 2, 4, null, 5, 7, 8)
+...
+
+ExhaustiveProvider_distinctSeptuples_vii list 21
+(0, 1, 2, 3, 4, 5, 6)
+(0, 1, 2, 3, 4, 5, 7)
+(0, 1, 2, 3, 4, 6, 5)
+(0, 1, 2, 3, 4, 6, 7)
+(0, 1, 2, 3, 5, 4, 6)
+(0, 1, 2, 3, 5, 4, 7)
+(0, 1, 2, 3, 5, 6, 4)
+(0, 1, 2, 3, 5, 6, 7)
+(0, 1, 2, 4, 3, 5, 6)
+(0, 1, 2, 4, 3, 5, 7)
+(0, 1, 2, 4, 3, 6, 5)
+(0, 1, 2, 4, 3, 6, 7)
+(0, 1, 2, 4, 5, 3, 6)
+(0, 1, 2, 4, 5, 3, 7)
+(0, 1, 2, 4, 5, 6, 3)
+(0, 1, 2, 4, 5, 6, 7)
+(0, 1, 3, 2, 4, 5, 6)
+(0, 1, 3, 2, 4, 5, 7)
+(0, 1, 3, 2, 4, 6, 5)
+(0, 1, 3, 2, 4, 6, 7)
+...
+
+ExhaustiveProvider_distinctSeptuples_viii list 21
+(1, 1, 1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1, 1, 1)
+...
+
+ExhaustiveProvider_distinctStrings_int_String_i list 1
+
+
+ExhaustiveProvider_distinctStrings_int_String_ii list 0
+
+ExhaustiveProvider_distinctStrings_int_String_iii list 0
+
+ExhaustiveProvider_distinctStrings_int_String_iv list 0
+
+ExhaustiveProvider_distinctStrings_int_String_v list 1
+
+
+ExhaustiveProvider_distinctStrings_int_String_vi list 1
+a
+
+ExhaustiveProvider_distinctStrings_int_String_vii list 0
+
+ExhaustiveProvider_distinctStrings_int_String_viii list 0
+
+ExhaustiveProvider_distinctStrings_int_String_ix list 1
+
+
+ExhaustiveProvider_distinctStrings_int_String_x list 3
+a
+b
+c
+
+ExhaustiveProvider_distinctStrings_int_String_xi list 6
+ab
+ac
+ba
+bc
+ca
+cb
+
+ExhaustiveProvider_distinctStrings_int_String_xii list 6
+abc
+acb
+bac
+bca
+cab
+cba
+
+ExhaustiveProvider_distinctStrings_int_String_xiii list 1
+
+
+ExhaustiveProvider_distinctStrings_int_String_xiv list 4
+a
+b
+b
+c
+
+ExhaustiveProvider_distinctStrings_int_String_xv list 12
+ab
+ab
+ba
+bb
+ac
+bc
+ba
+bb
+ca
+cb
+bc
+cb
+
+ExhaustiveProvider_distinctStrings_int_String_xvi list 24
+abb
+abc
+abb
+abc
+bab
+bac
+bba
+bbc
+acb
+acb
+bca
+bcb
+bab
+bac
+bba
+bbc
+cab
+cab
+cba
+cbb
+bca
+bcb
+cba
+cbb
+
+ExhaustiveProvider_distinctStrings_int_String_xvii list 1
+
+
+ExhaustiveProvider_distinctStrings_int_String_xviii list 11
+M
+i
+s
+s
+i
+s
+s
+i
+p
+p
+i
+
+ExhaustiveProvider_distinctStrings_int_String_xix list 21
+Mi
+Ms
+iM
+is
+Ms
+Mi
+is
+ii
+sM
+si
+sM
+si
+ss
+si
+ss
+si
+Ms
+Ms
+is
+is
+...
+
+ExhaustiveProvider_distinctStrings_int_String_xx list 21
+Mis
+Mis
+Msi
+Mss
+iMs
+iMs
+isM
+iss
+Mii
+Mis
+Msi
+Mss
+iMi
+iMs
+isi
+iss
+Msi
+Mss
+Mii
+Mis
+...
+
+ExhaustiveProvider_distinctStrings_int_i list 1
+
+
+ExhaustiveProvider_distinctStrings_int_ii list 21
+a
+b
+c
+d
+e
+f
+g
+h
+i
+j
+k
+l
+m
+n
+o
+p
+q
+r
+s
+t
+...
+
+ExhaustiveProvider_distinctStrings_int_iii list 21
+ab
+ac
+ba
+bc
+ad
+ae
+bd
+be
+ca
+cb
+da
+db
+cd
+ce
+dc
+de
+af
+ag
+bf
+bg
+...
+
+ExhaustiveProvider_distinctStrings_int_iv list 21
+abc
+abd
+acb
+acd
+bac
+bad
+bca
+bcd
+abe
+abf
+ace
+acf
+bae
+baf
+bce
+bcf
+adb
+adc
+aeb
+aec
+...
+
+ExhaustiveProvider_distinctStrings_int_v list 0
+
+ExhaustiveProvider_distinctLists_Iterable_i list 1
+[]
+
+ExhaustiveProvider_distinctLists_Iterable_ii list 2
+[]
+[5]
+
+ExhaustiveProvider_distinctLists_Iterable_iii list 16
+[]
+[1]
+[1, 2]
+[2]
+[1, 2, 3]
+[3]
+[1, 3]
+[2, 1]
+[2, 3]
+[1, 3, 2]
+[3, 1]
+[2, 1, 3]
+[3, 2]
+[2, 3, 1]
+[3, 1, 2]
+[3, 2, 1]
+
+ExhaustiveProvider_distinctLists_Iterable_iv list 21
+[]
+[1]
+[1, 2]
+[2]
+[1, 2, 2]
+[2]
+[1, 2]
+[3]
+[1, 2, 2, 3]
+[2, 1]
+[1, 2, 3]
+[2, 2]
+[1, 3]
+[1, 2, 2]
+[2, 3]
+[1, 2, 3]
+[2, 1]
+[2, 1, 2]
+[2, 2]
+[1, 2, 3, 2]
+...
+
+ExhaustiveProvider_distinctLists_Iterable_v list 21
+[]
+[0]
+[0, 1]
+[1]
+[0, 1, 2]
+[2]
+[0, 2]
+[3]
+[0, 1, 2, 3]
+[4]
+[1, 0]
+[5]
+[0, 1, 3]
+[6]
+[1, 2]
+[7]
+[0, 1, 2, 3, 4]
+[8]
+[0, 3]
+[9]
+...
+
+ExhaustiveProvider_distinctLists_Iterable_vi list 21
+[]
+[1]
+[1, 1]
+[1]
+[1, 1, 1]
+[1]
+[1, 1]
+[1]
+[1, 1, 1, 1]
+[1]
+[1, 1]
+[1]
+[1, 1, 1]
+[1]
+[1, 1]
+[1]
+[1, 1, 1, 1, 1]
+[1]
+[1, 1]
+[1]
+...
+
+ExhaustiveProvider_distinctStrings_String_i list 1
+
+
+ExhaustiveProvider_distinctStrings_String_ii list 2
+
+a
+
+ExhaustiveProvider_distinctStrings_String_iii list 16
+
+a
+ab
+b
+abc
+c
+ac
+ba
+bc
+acb
+ca
+bac
+cb
+bca
+cab
+cba
+
+ExhaustiveProvider_distinctStrings_String_iv list 21
+
+a
+ab
+b
+abb
+b
+ab
+c
+abbc
+ba
+abc
+bb
+ac
+abb
+bc
+abc
+ba
+bab
+bb
+abcb
+...
+
+ExhaustiveProvider_distinctStrings_String_v list 21
+
+M
+Mi
+i
+Mis
+s
+Ms
+s
+Miss
+i
+iM
+s
+Mis
+s
+is
+i
+Missi
+p
+Ms
+p
+...
+
+ExhaustiveProvider_distinctStrings list 21
+
+a
+ab
+b
+abc
+c
+ac
+d
+abcd
+e
+ba
+f
+abd
+g
+bc
+h
+abcde
+i
+ad
+j
+...
+
+ExhaustiveProvider_distinctListsAtLeast_i list 1
+[]
+
+ExhaustiveProvider_distinctListsAtLeast_ii list 0
+
+ExhaustiveProvider_distinctListsAtLeast_iii list 0
+
+ExhaustiveProvider_distinctListsAtLeast_iv list 0
+
+ExhaustiveProvider_distinctListsAtLeast_v list 2
+[]
+[5]
+
+ExhaustiveProvider_distinctListsAtLeast_vi list 1
+[5]
+
+ExhaustiveProvider_distinctListsAtLeast_vii list 0
+
+ExhaustiveProvider_distinctListsAtLeast_viii list 0
+
+ExhaustiveProvider_distinctListsAtLeast_ix list 16
+[]
+[1]
+[1, 2]
+[2]
+[1, 2, 3]
+[3]
+[1, 3]
+[2, 1]
+[2, 3]
+[1, 3, 2]
+[3, 1]
+[2, 1, 3]
+[3, 2]
+[2, 3, 1]
+[3, 1, 2]
+[3, 2, 1]
+
+ExhaustiveProvider_distinctListsAtLeast_x list 15
+[1]
+[1, 2]
+[2]
+[1, 2, 3]
+[3]
+[1, 3]
+[2, 1]
+[2, 3]
+[1, 3, 2]
+[3, 1]
+[2, 1, 3]
+[3, 2]
+[2, 3, 1]
+[3, 1, 2]
+[3, 2, 1]
+
+ExhaustiveProvider_distinctListsAtLeast_xi list 12
+[1, 2]
+[1, 2, 3]
+[1, 3]
+[2, 1]
+[2, 3]
+[1, 3, 2]
+[3, 1]
+[2, 1, 3]
+[3, 2]
+[2, 3, 1]
+[3, 1, 2]
+[3, 2, 1]
+
+ExhaustiveProvider_distinctListsAtLeast_xii list 6
+[1, 2, 3]
+[1, 3, 2]
+[2, 1, 3]
+[2, 3, 1]
+[3, 1, 2]
+[3, 2, 1]
+
+ExhaustiveProvider_distinctListsAtLeast_xiii list 16
+[]
+[1]
+[1, null]
+[null]
+[1, null, 3]
+[3]
+[1, 3]
+[null, 1]
+[null, 3]
+[1, 3, null]
+[3, 1]
+[null, 1, 3]
+[3, null]
+[null, 3, 1]
+[3, 1, null]
+[3, null, 1]
+
+ExhaustiveProvider_distinctListsAtLeast_xiv list 15
+[1]
+[1, null]
+[null]
+[1, null, 3]
+[3]
+[1, 3]
+[null, 1]
+[null, 3]
+[1, 3, null]
+[3, 1]
+[null, 1, 3]
+[3, null]
+[null, 3, 1]
+[3, 1, null]
+[3, null, 1]
+
+ExhaustiveProvider_distinctListsAtLeast_xv list 12
+[1, null]
+[1, null, 3]
+[1, 3]
+[null, 1]
+[null, 3]
+[1, 3, null]
+[3, 1]
+[null, 1, 3]
+[3, null]
+[null, 3, 1]
+[3, 1, null]
+[3, null, 1]
+
+ExhaustiveProvider_distinctListsAtLeast_xvi list 6
+[1, null, 3]
+[1, 3, null]
+[null, 1, 3]
+[null, 3, 1]
+[3, 1, null]
+[3, null, 1]
+
+ExhaustiveProvider_distinctListsAtLeast_xvii list 21
+[]
+[1]
+[1, 2]
+[2]
+[1, 2, 2]
+[2]
+[1, 2]
+[3]
+[1, 2, 2, 3]
+[2, 1]
+[1, 2, 3]
+[2, 2]
+[1, 3]
+[1, 2, 2]
+[2, 3]
+[1, 2, 3]
+[2, 1]
+[2, 1, 2]
+[2, 2]
+[1, 2, 3, 2]
+...
+
+ExhaustiveProvider_distinctListsAtLeast_xviii list 21
+[1]
+[1, 2]
+[2]
+[1, 2, 2]
+[2]
+[1, 2]
+[3]
+[1, 2, 2, 3]
+[2, 1]
+[1, 2, 3]
+[2, 2]
+[1, 3]
+[1, 2, 2]
+[2, 3]
+[1, 2, 3]
+[2, 1]
+[2, 1, 2]
+[2, 2]
+[1, 2, 3, 2]
+[3, 1]
+...
+
+ExhaustiveProvider_distinctListsAtLeast_xix list 21
+[1, 2]
+[1, 2, 2]
+[1, 2]
+[1, 2, 2, 3]
+[2, 1]
+[1, 2, 3]
+[2, 2]
+[1, 3]
+[1, 2, 2]
+[2, 3]
+[1, 2, 3]
+[2, 1]
+[2, 1, 2]
+[2, 2]
+[1, 2, 3, 2]
+[3, 1]
+[2, 1, 3]
+[3, 2]
+[2, 3]
+[2, 2, 1]
+...
+
+ExhaustiveProvider_distinctListsAtLeast_xx list 21
+[1, 2, 2]
+[1, 2, 2, 3]
+[1, 2, 3]
+[1, 2, 2]
+[1, 2, 3]
+[2, 1, 2]
+[1, 2, 3, 2]
+[2, 1, 3]
+[2, 2, 1]
+[2, 2, 3]
+[1, 2, 2, 3]
+[1, 2, 3, 2]
+[1, 3, 2]
+[2, 1, 2, 3]
+[1, 3, 2]
+[2, 3, 1]
+[2, 1, 3, 2]
+[2, 3, 2]
+[2, 2, 1, 3]
+[2, 2, 3, 1]
+...
+
+ExhaustiveProvider_distinctListsAtLeast_xxi list 21
+[]
+[0]
+[0, 1]
+[1]
+[0, 1, 2]
+[2]
+[0, 2]
+[3]
+[0, 1, 2, 3]
+[4]
+[1, 0]
+[5]
+[0, 1, 3]
+[6]
+[1, 2]
+[7]
+[0, 1, 2, 3, 4]
+[8]
+[0, 3]
+[9]
+...
+
+ExhaustiveProvider_distinctListsAtLeast_xxii list 21
+[0]
+[0, 1]
+[1]
+[0, 1, 2]
+[2]
+[0, 2]
+[3]
+[0, 1, 2, 3]
+[4]
+[1, 0]
+[5]
+[0, 1, 3]
+[6]
+[1, 2]
+[7]
+[0, 1, 2, 3, 4]
+[8]
+[0, 3]
+[9]
+[0, 2, 1]
+...
+
+ExhaustiveProvider_distinctListsAtLeast_xxiii list 21
+[0, 1]
+[0, 1, 2]
+[0, 2]
+[0, 1, 2, 3]
+[1, 0]
+[0, 1, 3]
+[1, 2]
+[0, 1, 2, 3, 4]
+[0, 3]
+[0, 2, 1]
+[0, 4]
+[0, 1, 2, 4]
+[1, 3]
+[0, 2, 3]
+[1, 4]
+[0, 1, 2, 3, 4, 5]
+[2, 0]
+[1, 0, 2]
+[2, 1]
+[0, 1, 3, 2]
+...
+
+ExhaustiveProvider_distinctListsAtLeast_xxiv list 21
+[0, 1, 2]
+[0, 1, 2, 3]
+[0, 1, 3]
+[0, 1, 2, 3, 4]
+[0, 2, 1]
+[0, 1, 2, 4]
+[0, 2, 3]
+[0, 1, 2, 3, 4, 5]
+[1, 0, 2]
+[0, 1, 3, 2]
+[1, 0, 3]
+[0, 1, 2, 3, 5]
+[1, 2, 0]
+[0, 1, 3, 4]
+[1, 2, 3]
+[0, 1, 2, 3, 4, 5, 6]
+[0, 1, 4]
+[0, 2, 1, 3]
+[0, 1, 5]
+[0, 1, 2, 4, 3]
+...
+
+ExhaustiveProvider_distinctListsAtLeast_xxv list 21
+[]
+[1]
+[1, 1]
+[1]
+[1, 1, 1]
+[1]
+[1, 1]
+[1]
+[1, 1, 1, 1]
+[1]
+[1, 1]
+[1]
+[1, 1, 1]
+[1]
+[1, 1]
+[1]
+[1, 1, 1, 1, 1]
+[1]
+[1, 1]
+[1]
+...
+
+ExhaustiveProvider_distinctListsAtLeast_xxvi list 21
+[1]
+[1, 1]
+[1]
+[1, 1, 1]
+[1]
+[1, 1]
+[1]
+[1, 1, 1, 1]
+[1]
+[1, 1]
+[1]
+[1, 1, 1]
+[1]
+[1, 1]
+[1]
+[1, 1, 1, 1, 1]
+[1]
+[1, 1]
+[1]
+[1, 1, 1]
+...
+
+ExhaustiveProvider_distinctListsAtLeast_xxvii list 21
+[1, 1]
+[1, 1, 1]
+[1, 1]
+[1, 1, 1, 1]
+[1, 1]
+[1, 1, 1]
+[1, 1]
+[1, 1, 1, 1, 1]
+[1, 1]
+[1, 1, 1]
+[1, 1]
+[1, 1, 1, 1]
+[1, 1]
+[1, 1, 1]
+[1, 1]
+[1, 1, 1, 1, 1, 1]
+[1, 1]
+[1, 1, 1]
+[1, 1]
+[1, 1, 1, 1]
+...
+
+ExhaustiveProvider_distinctListsAtLeast_xxviii list 21
+[1, 1, 1]
+[1, 1, 1, 1]
+[1, 1, 1]
+[1, 1, 1, 1, 1]
+[1, 1, 1]
+[1, 1, 1, 1]
+[1, 1, 1]
+[1, 1, 1, 1, 1, 1]
+[1, 1, 1]
+[1, 1, 1, 1]
+[1, 1, 1]
+[1, 1, 1, 1, 1]
+[1, 1, 1]
+[1, 1, 1, 1]
+[1, 1, 1]
+[1, 1, 1, 1, 1, 1, 1]
+[1, 1, 1]
+[1, 1, 1, 1]
+[1, 1, 1]
+[1, 1, 1, 1, 1]
+...
+
+ExhaustiveProvider_distinctStringsAtLeast_String_i list 1
+
+
+ExhaustiveProvider_distinctStringsAtLeast_String_ii list 0
+
+ExhaustiveProvider_distinctStringsAtLeast_String_iii list 0
+
+ExhaustiveProvider_distinctStringsAtLeast_String_iv list 0
+
+ExhaustiveProvider_distinctStringsAtLeast_String_v list 2
+
+a
+
+ExhaustiveProvider_distinctStringsAtLeast_String_vi list 1
+a
+
+ExhaustiveProvider_distinctStringsAtLeast_String_vii list 0
+
+ExhaustiveProvider_distinctStringsAtLeast_String_viii list 0
+
+ExhaustiveProvider_distinctStringsAtLeast_String_ix list 16
+
+a
+ab
+b
+abc
+c
+ac
+ba
+bc
+acb
+ca
+bac
+cb
+bca
+cab
+cba
+
+ExhaustiveProvider_distinctStringsAtLeast_String_x list 15
+a
+ab
+b
+abc
+c
+ac
+ba
+bc
+acb
+ca
+bac
+cb
+bca
+cab
+cba
+
+ExhaustiveProvider_distinctStringsAtLeast_String_xi list 12
+ab
+abc
+ac
+ba
+bc
+acb
+ca
+bac
+cb
+bca
+cab
+cba
+
+ExhaustiveProvider_distinctStringsAtLeast_String_xii list 6
+abc
+acb
+bac
+bca
+cab
+cba
+
+ExhaustiveProvider_distinctStringsAtLeast_String_xiii list 21
+
+a
+ab
+b
+abb
+b
+ab
+c
+abbc
+ba
+abc
+bb
+ac
+abb
+bc
+abc
+ba
+bab
+bb
+abcb
+...
+
+ExhaustiveProvider_distinctStringsAtLeast_String_xiv list 21
+a
+ab
+b
+abb
+b
+ab
+c
+abbc
+ba
+abc
+bb
+ac
+abb
+bc
+abc
+ba
+bab
+bb
+abcb
+ca
+...
+
+ExhaustiveProvider_distinctStringsAtLeast_String_xv list 21
+ab
+abb
+ab
+abbc
+ba
+abc
+bb
+ac
+abb
+bc
+abc
+ba
+bab
+bb
+abcb
+ca
+bac
+cb
+bc
+bba
+...
+
+ExhaustiveProvider_distinctStringsAtLeast_String_xvi list 21
+abb
+abbc
+abc
+abb
+abc
+bab
+abcb
+bac
+bba
+bbc
+abbc
+abcb
+acb
+babc
+acb
+bca
+bacb
+bcb
+bbac
+bbca
+...
+
+ExhaustiveProvider_distinctStringsAtLeast_String_xvii list 21
+
+M
+Mi
+i
+Mis
+s
+Ms
+s
+Miss
+i
+iM
+s
+Mis
+s
+is
+i
+Missi
+p
+Ms
+p
+...
+
+ExhaustiveProvider_distinctStringsAtLeast_String_xviii list 21
+M
+Mi
+i
+Mis
+s
+Ms
+s
+Miss
+i
+iM
+s
+Mis
+s
+is
+i
+Missi
+p
+Ms
+p
+Msi
+...
+
+ExhaustiveProvider_distinctStringsAtLeast_String_xix list 21
+Mi
+Mis
+Ms
+Miss
+iM
+Mis
+is
+Missi
+Ms
+Msi
+Mi
+Misi
+is
+Mss
+ii
+Missis
+sM
+iMs
+si
+Miss
+...
+
+ExhaustiveProvider_distinctStringsAtLeast_String_xx list 21
+Mis
+Miss
+Mis
+Missi
+Msi
+Misi
+Mss
+Missis
+iMs
+Miss
+iMs
+Misss
+isM
+Misi
+iss
+Mississ
+Mii
+Msis
+Mis
+Misis
+...
+
+ExhaustiveProvider_distinctStringsAtLeast_i list 21
+
+a
+ab
+b
+abc
+c
+ac
+d
+abcd
+e
+ba
+f
+abd
+g
+bc
+h
+abcde
+i
+ad
+j
+...
+
+ExhaustiveProvider_distinctStringsAtLeast_ii list 21
+a
+ab
+b
+abc
+c
+ac
+d
+abcd
+e
+ba
+f
+abd
+g
+bc
+h
+abcde
+i
+ad
+j
+acb
+...
+
+ExhaustiveProvider_distinctStringsAtLeast_iii list 21
+ab
+abc
+ac
+abcd
+ba
+abd
+bc
+abcde
+ad
+acb
+ae
+abce
+bd
+acd
+be
+abcdef
+ca
+bac
+cb
+abdc
+...
+
+ExhaustiveProvider_distinctStringsAtLeast_iv list 21
+abc
+abcd
+abd
+abcde
+acb
+abce
+acd
+abcdef
+bac
+abdc
+bad
+abcdf
+bca
+abde
+bcd
+abcdefg
+abe
+acbd
+abf
+abced
+...
+
+ExhaustiveProvider_distinctStringsAtLeast_v list 0
+
 RandomProvider_integers list 21
 -1084795351
 1143001545
