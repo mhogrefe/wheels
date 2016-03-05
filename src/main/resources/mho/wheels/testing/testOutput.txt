@@ -26902,6 +26902,2200 @@ Mis
 Mis
 ...
 
+ExhaustiveProvider_bags_int_Iterable_i list 1
+[]
+
+ExhaustiveProvider_bags_int_Iterable_ii list 0
+
+ExhaustiveProvider_bags_int_Iterable_iii list 0
+
+ExhaustiveProvider_bags_int_Iterable_iv list 0
+
+ExhaustiveProvider_bags_int_Iterable_v list 1
+[]
+
+ExhaustiveProvider_bags_int_Iterable_vi list 1
+[5]
+
+ExhaustiveProvider_bags_int_Iterable_vii list 1
+[5, 5]
+
+ExhaustiveProvider_bags_int_Iterable_viii list 1
+[5, 5, 5]
+
+ExhaustiveProvider_bags_int_Iterable_ix list 1
+[]
+
+ExhaustiveProvider_bags_int_Iterable_x list 3
+[1]
+[2]
+[3]
+
+ExhaustiveProvider_bags_int_Iterable_xi list 6
+[1, 1]
+[1, 2]
+[2, 2]
+[2, 3]
+[1, 3]
+[3, 3]
+
+ExhaustiveProvider_bags_int_Iterable_xii list 10
+[1, 1, 1]
+[1, 1, 2]
+[1, 2, 2]
+[1, 2, 3]
+[2, 2, 2]
+[2, 2, 3]
+[2, 3, 3]
+[1, 1, 3]
+[1, 3, 3]
+[3, 3, 3]
+
+ExhaustiveProvider_bags_int_Iterable_xiii list 1
+[]
+
+ExhaustiveProvider_bags_int_Iterable_xiv list 4
+[1]
+[2]
+[2]
+[3]
+
+ExhaustiveProvider_bags_int_Iterable_xv list 10
+[1, 1]
+[1, 2]
+[2, 2]
+[2, 2]
+[1, 2]
+[1, 3]
+[2, 3]
+[2, 2]
+[2, 3]
+[3, 3]
+
+ExhaustiveProvider_bags_int_Iterable_xvi list 20
+[1, 1, 1]
+[1, 1, 2]
+[1, 2, 2]
+[1, 2, 2]
+[2, 2, 2]
+[2, 2, 2]
+[2, 2, 2]
+[2, 2, 3]
+[1, 1, 2]
+[1, 1, 3]
+[1, 2, 3]
+[2, 2, 3]
+[1, 2, 2]
+[1, 2, 3]
+[1, 3, 3]
+[2, 3, 3]
+[2, 2, 2]
+[2, 2, 3]
+[2, 3, 3]
+[3, 3, 3]
+
+ExhaustiveProvider_bags_int_Iterable_xvii list 1
+[]
+
+ExhaustiveProvider_bags_int_Iterable_xviii list 21
+[1]
+[2]
+[3]
+[4]
+[5]
+[6]
+[7]
+[8]
+[9]
+[10]
+[11]
+[12]
+[13]
+[14]
+[15]
+[16]
+[17]
+[18]
+[19]
+[20]
+...
+
+ExhaustiveProvider_bags_int_Iterable_xix list 21
+[1, 1]
+[1, 2]
+[2, 2]
+[2, 3]
+[1, 3]
+[1, 4]
+[2, 4]
+[2, 5]
+[3, 3]
+[3, 4]
+[4, 4]
+[4, 5]
+[3, 5]
+[3, 6]
+[4, 6]
+[4, 7]
+[1, 5]
+[1, 6]
+[2, 6]
+[2, 7]
+...
+
+ExhaustiveProvider_bags_int_Iterable_xx list 21
+[1, 1, 1]
+[1, 1, 2]
+[1, 2, 2]
+[1, 2, 3]
+[2, 2, 2]
+[2, 2, 3]
+[2, 3, 3]
+[2, 3, 4]
+[1, 1, 3]
+[1, 1, 4]
+[1, 2, 4]
+[1, 2, 5]
+[2, 2, 4]
+[2, 2, 5]
+[2, 3, 5]
+[2, 3, 6]
+[1, 3, 3]
+[1, 3, 4]
+[1, 4, 4]
+[1, 4, 5]
+...
+
+ExhaustiveProvider_bags_int_Iterable_xxi list 1
+[]
+
+ExhaustiveProvider_bags_int_Iterable_xxii list 21
+[1]
+[1]
+[1]
+[1]
+[1]
+[1]
+[1]
+[1]
+[1]
+[1]
+[1]
+[1]
+[1]
+[1]
+[1]
+[1]
+[1]
+[1]
+[1]
+[1]
+...
+
+ExhaustiveProvider_bags_int_Iterable_xxiii list 21
+[1, 1]
+[1, 1]
+[1, 1]
+[1, 1]
+[1, 1]
+[1, 1]
+[1, 1]
+[1, 1]
+[1, 1]
+[1, 1]
+[1, 1]
+[1, 1]
+[1, 1]
+[1, 1]
+[1, 1]
+[1, 1]
+[1, 1]
+[1, 1]
+[1, 1]
+[1, 1]
+...
+
+ExhaustiveProvider_bags_int_Iterable_xxiv list 21
+[1, 1, 1]
+[1, 1, 1]
+[1, 1, 1]
+[1, 1, 1]
+[1, 1, 1]
+[1, 1, 1]
+[1, 1, 1]
+[1, 1, 1]
+[1, 1, 1]
+[1, 1, 1]
+[1, 1, 1]
+[1, 1, 1]
+[1, 1, 1]
+[1, 1, 1]
+[1, 1, 1]
+[1, 1, 1]
+[1, 1, 1]
+[1, 1, 1]
+[1, 1, 1]
+[1, 1, 1]
+...
+
+ExhaustiveProvider_bagPairs_i list 0
+
+ExhaustiveProvider_bagPairs_ii list 1
+(5, 5)
+
+ExhaustiveProvider_bagPairs_iii list 10
+(1, 1)
+(1, 2)
+(2, 2)
+(2, 3)
+(1, 3)
+(1, 4)
+(2, 4)
+(3, 3)
+(3, 4)
+(4, 4)
+
+ExhaustiveProvider_bagPairs_iv list 10
+(1, 1)
+(1, 2)
+(2, 2)
+(2, 2)
+(1, 2)
+(1, 4)
+(2, 4)
+(2, 2)
+(2, 4)
+(4, 4)
+
+ExhaustiveProvider_bagPairs_v list 21
+(0, 0)
+(0, 1)
+(1, 1)
+(1, 2)
+(0, 2)
+(0, 3)
+(1, 3)
+(1, 4)
+(2, 2)
+(2, 3)
+(3, 3)
+(3, 4)
+(2, 4)
+(2, 5)
+(3, 5)
+(3, 6)
+(0, 4)
+(0, 5)
+(1, 5)
+(1, 6)
+...
+
+ExhaustiveProvider_bagPairs_vi list 21
+(1, 1)
+(1, 1)
+(1, 1)
+(1, 1)
+(1, 1)
+(1, 1)
+(1, 1)
+(1, 1)
+(1, 1)
+(1, 1)
+(1, 1)
+(1, 1)
+(1, 1)
+(1, 1)
+(1, 1)
+(1, 1)
+(1, 1)
+(1, 1)
+(1, 1)
+(1, 1)
+...
+
+ExhaustiveProvider_bagTriples_i list 0
+
+ExhaustiveProvider_bagTriples_ii list 1
+(5, 5, 5)
+
+ExhaustiveProvider_bagTriples_iii list 20
+(1, 1, 1)
+(1, 1, 2)
+(1, 2, 2)
+(1, 2, 3)
+(2, 2, 2)
+(2, 2, 3)
+(2, 3, 3)
+(2, 3, 4)
+(1, 1, 3)
+(1, 1, 4)
+(1, 2, 4)
+(2, 2, 4)
+(1, 3, 3)
+(1, 3, 4)
+(1, 4, 4)
+(2, 4, 4)
+(3, 3, 3)
+(3, 3, 4)
+(3, 4, 4)
+(4, 4, 4)
+
+ExhaustiveProvider_bagTriples_iv list 20
+(1, 1, 1)
+(1, 1, 2)
+(1, 2, 2)
+(1, 2, 2)
+(2, 2, 2)
+(2, 2, 2)
+(2, 2, 2)
+(2, 2, 4)
+(1, 1, 2)
+(1, 1, 4)
+(1, 2, 4)
+(2, 2, 4)
+(1, 2, 2)
+(1, 2, 4)
+(1, 4, 4)
+(2, 4, 4)
+(2, 2, 2)
+(2, 2, 4)
+(2, 4, 4)
+(4, 4, 4)
+
+ExhaustiveProvider_bagTriples_v list 21
+(0, 0, 0)
+(0, 0, 1)
+(0, 1, 1)
+(0, 1, 2)
+(1, 1, 1)
+(1, 1, 2)
+(1, 2, 2)
+(1, 2, 3)
+(0, 0, 2)
+(0, 0, 3)
+(0, 1, 3)
+(0, 1, 4)
+(1, 1, 3)
+(1, 1, 4)
+(1, 2, 4)
+(1, 2, 5)
+(0, 2, 2)
+(0, 2, 3)
+(0, 3, 3)
+(0, 3, 4)
+...
+
+ExhaustiveProvider_bagTriples_vi list 21
+(1, 1, 1)
+(1, 1, 1)
+(1, 1, 1)
+(1, 1, 1)
+(1, 1, 1)
+(1, 1, 1)
+(1, 1, 1)
+(1, 1, 1)
+(1, 1, 1)
+(1, 1, 1)
+(1, 1, 1)
+(1, 1, 1)
+(1, 1, 1)
+(1, 1, 1)
+(1, 1, 1)
+(1, 1, 1)
+(1, 1, 1)
+(1, 1, 1)
+(1, 1, 1)
+(1, 1, 1)
+...
+
+ExhaustiveProvider_bagQuadruples_i list 0
+
+ExhaustiveProvider_bagQuadruples_ii list 1
+(5, 5, 5, 5)
+
+ExhaustiveProvider_bagQuadruples_iii list 21
+(1, 1, 1, 1)
+(1, 1, 1, 2)
+(1, 1, 2, 2)
+(1, 1, 2, 3)
+(1, 2, 2, 2)
+(1, 2, 2, 3)
+(1, 2, 3, 3)
+(1, 2, 3, 4)
+(2, 2, 2, 2)
+(2, 2, 2, 3)
+(2, 2, 3, 3)
+(2, 2, 3, 4)
+(2, 3, 3, 3)
+(2, 3, 3, 4)
+(2, 3, 4, 4)
+(1, 1, 1, 3)
+(1, 1, 1, 4)
+(1, 1, 2, 4)
+(1, 2, 2, 4)
+(2, 2, 2, 4)
+...
+
+ExhaustiveProvider_bagQuadruples_iv list 21
+(1, 1, 1, 1)
+(1, 1, 1, 2)
+(1, 1, 2, 2)
+(1, 1, 2, 2)
+(1, 2, 2, 2)
+(1, 2, 2, 2)
+(1, 2, 2, 2)
+(1, 2, 2, 4)
+(2, 2, 2, 2)
+(2, 2, 2, 2)
+(2, 2, 2, 2)
+(2, 2, 2, 4)
+(2, 2, 2, 2)
+(2, 2, 2, 4)
+(2, 2, 4, 4)
+(1, 1, 1, 2)
+(1, 1, 1, 4)
+(1, 1, 2, 4)
+(1, 2, 2, 4)
+(2, 2, 2, 4)
+...
+
+ExhaustiveProvider_bagQuadruples_v list 21
+(0, 0, 0, 0)
+(0, 0, 0, 1)
+(0, 0, 1, 1)
+(0, 0, 1, 2)
+(0, 1, 1, 1)
+(0, 1, 1, 2)
+(0, 1, 2, 2)
+(0, 1, 2, 3)
+(1, 1, 1, 1)
+(1, 1, 1, 2)
+(1, 1, 2, 2)
+(1, 1, 2, 3)
+(1, 2, 2, 2)
+(1, 2, 2, 3)
+(1, 2, 3, 3)
+(1, 2, 3, 4)
+(0, 0, 0, 2)
+(0, 0, 0, 3)
+(0, 0, 1, 3)
+(0, 0, 1, 4)
+...
+
+ExhaustiveProvider_bagQuadruples_vi list 21
+(1, 1, 1, 1)
+(1, 1, 1, 1)
+(1, 1, 1, 1)
+(1, 1, 1, 1)
+(1, 1, 1, 1)
+(1, 1, 1, 1)
+(1, 1, 1, 1)
+(1, 1, 1, 1)
+(1, 1, 1, 1)
+(1, 1, 1, 1)
+(1, 1, 1, 1)
+(1, 1, 1, 1)
+(1, 1, 1, 1)
+(1, 1, 1, 1)
+(1, 1, 1, 1)
+(1, 1, 1, 1)
+(1, 1, 1, 1)
+(1, 1, 1, 1)
+(1, 1, 1, 1)
+(1, 1, 1, 1)
+...
+
+ExhaustiveProvider_bagQuintuples_i list 0
+
+ExhaustiveProvider_bagQuintuples_ii list 1
+(5, 5, 5, 5, 5)
+
+ExhaustiveProvider_bagQuintuples_iii list 21
+(1, 1, 1, 1, 1)
+(1, 1, 1, 1, 2)
+(1, 1, 1, 2, 2)
+(1, 1, 1, 2, 3)
+(1, 1, 2, 2, 2)
+(1, 1, 2, 2, 3)
+(1, 1, 2, 3, 3)
+(1, 1, 2, 3, 4)
+(1, 2, 2, 2, 2)
+(1, 2, 2, 2, 3)
+(1, 2, 2, 3, 3)
+(1, 2, 2, 3, 4)
+(1, 2, 3, 3, 3)
+(1, 2, 3, 3, 4)
+(1, 2, 3, 4, 4)
+(2, 2, 2, 2, 2)
+(2, 2, 2, 2, 3)
+(2, 2, 2, 3, 3)
+(2, 2, 2, 3, 4)
+(2, 2, 3, 3, 3)
+...
+
+ExhaustiveProvider_bagQuintuples_iv list 21
+(1, 1, 1, 1, 1)
+(1, 1, 1, 1, 2)
+(1, 1, 1, 2, 2)
+(1, 1, 1, 2, 2)
+(1, 1, 2, 2, 2)
+(1, 1, 2, 2, 2)
+(1, 1, 2, 2, 2)
+(1, 1, 2, 2, 4)
+(1, 2, 2, 2, 2)
+(1, 2, 2, 2, 2)
+(1, 2, 2, 2, 2)
+(1, 2, 2, 2, 4)
+(1, 2, 2, 2, 2)
+(1, 2, 2, 2, 4)
+(1, 2, 2, 4, 4)
+(2, 2, 2, 2, 2)
+(2, 2, 2, 2, 2)
+(2, 2, 2, 2, 2)
+(2, 2, 2, 2, 4)
+(2, 2, 2, 2, 2)
+...
+
+ExhaustiveProvider_bagQuintuples_v list 21
+(0, 0, 0, 0, 0)
+(0, 0, 0, 0, 1)
+(0, 0, 0, 1, 1)
+(0, 0, 0, 1, 2)
+(0, 0, 1, 1, 1)
+(0, 0, 1, 1, 2)
+(0, 0, 1, 2, 2)
+(0, 0, 1, 2, 3)
+(0, 1, 1, 1, 1)
+(0, 1, 1, 1, 2)
+(0, 1, 1, 2, 2)
+(0, 1, 1, 2, 3)
+(0, 1, 2, 2, 2)
+(0, 1, 2, 2, 3)
+(0, 1, 2, 3, 3)
+(0, 1, 2, 3, 4)
+(1, 1, 1, 1, 1)
+(1, 1, 1, 1, 2)
+(1, 1, 1, 2, 2)
+(1, 1, 1, 2, 3)
+...
+
+ExhaustiveProvider_bagQuintuples_vi list 21
+(1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1)
+...
+
+ExhaustiveProvider_bagSextuples_i list 0
+
+ExhaustiveProvider_bagSextuples_ii list 1
+(5, 5, 5, 5, 5, 5)
+
+ExhaustiveProvider_bagSextuples_iii list 21
+(1, 1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1, 2)
+(1, 1, 1, 1, 2, 2)
+(1, 1, 1, 1, 2, 3)
+(1, 1, 1, 2, 2, 2)
+(1, 1, 1, 2, 2, 3)
+(1, 1, 1, 2, 3, 3)
+(1, 1, 1, 2, 3, 4)
+(1, 1, 2, 2, 2, 2)
+(1, 1, 2, 2, 2, 3)
+(1, 1, 2, 2, 3, 3)
+(1, 1, 2, 2, 3, 4)
+(1, 1, 2, 3, 3, 3)
+(1, 1, 2, 3, 3, 4)
+(1, 1, 2, 3, 4, 4)
+(1, 2, 2, 2, 2, 2)
+(1, 2, 2, 2, 2, 3)
+(1, 2, 2, 2, 3, 3)
+(1, 2, 2, 2, 3, 4)
+(1, 2, 2, 3, 3, 3)
+...
+
+ExhaustiveProvider_bagSextuples_iv list 21
+(1, 1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1, 2)
+(1, 1, 1, 1, 2, 2)
+(1, 1, 1, 1, 2, 2)
+(1, 1, 1, 2, 2, 2)
+(1, 1, 1, 2, 2, 2)
+(1, 1, 1, 2, 2, 2)
+(1, 1, 1, 2, 2, 4)
+(1, 1, 2, 2, 2, 2)
+(1, 1, 2, 2, 2, 2)
+(1, 1, 2, 2, 2, 2)
+(1, 1, 2, 2, 2, 4)
+(1, 1, 2, 2, 2, 2)
+(1, 1, 2, 2, 2, 4)
+(1, 1, 2, 2, 4, 4)
+(1, 2, 2, 2, 2, 2)
+(1, 2, 2, 2, 2, 2)
+(1, 2, 2, 2, 2, 2)
+(1, 2, 2, 2, 2, 4)
+(1, 2, 2, 2, 2, 2)
+...
+
+ExhaustiveProvider_bagSextuples_v list 21
+(0, 0, 0, 0, 0, 0)
+(0, 0, 0, 0, 0, 1)
+(0, 0, 0, 0, 1, 1)
+(0, 0, 0, 0, 1, 2)
+(0, 0, 0, 1, 1, 1)
+(0, 0, 0, 1, 1, 2)
+(0, 0, 0, 1, 2, 2)
+(0, 0, 0, 1, 2, 3)
+(0, 0, 1, 1, 1, 1)
+(0, 0, 1, 1, 1, 2)
+(0, 0, 1, 1, 2, 2)
+(0, 0, 1, 1, 2, 3)
+(0, 0, 1, 2, 2, 2)
+(0, 0, 1, 2, 2, 3)
+(0, 0, 1, 2, 3, 3)
+(0, 0, 1, 2, 3, 4)
+(0, 1, 1, 1, 1, 1)
+(0, 1, 1, 1, 1, 2)
+(0, 1, 1, 1, 2, 2)
+(0, 1, 1, 1, 2, 3)
+...
+
+ExhaustiveProvider_bagSextuples_vi list 21
+(1, 1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1, 1)
+...
+
+ExhaustiveProvider_bagSeptuples_i list 0
+
+ExhaustiveProvider_bagSeptuples_ii list 1
+(5, 5, 5, 5, 5, 5, 5)
+
+ExhaustiveProvider_bagSeptuples_iii list 21
+(1, 1, 1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1, 1, 2)
+(1, 1, 1, 1, 1, 2, 2)
+(1, 1, 1, 1, 1, 2, 3)
+(1, 1, 1, 1, 2, 2, 2)
+(1, 1, 1, 1, 2, 2, 3)
+(1, 1, 1, 1, 2, 3, 3)
+(1, 1, 1, 1, 2, 3, 4)
+(1, 1, 1, 2, 2, 2, 2)
+(1, 1, 1, 2, 2, 2, 3)
+(1, 1, 1, 2, 2, 3, 3)
+(1, 1, 1, 2, 2, 3, 4)
+(1, 1, 1, 2, 3, 3, 3)
+(1, 1, 1, 2, 3, 3, 4)
+(1, 1, 1, 2, 3, 4, 4)
+(1, 1, 2, 2, 2, 2, 2)
+(1, 1, 2, 2, 2, 2, 3)
+(1, 1, 2, 2, 2, 3, 3)
+(1, 1, 2, 2, 2, 3, 4)
+(1, 1, 2, 2, 3, 3, 3)
+...
+
+ExhaustiveProvider_bagSeptuples_iv list 21
+(1, 1, 1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1, 1, 2)
+(1, 1, 1, 1, 1, 2, 2)
+(1, 1, 1, 1, 1, 2, 2)
+(1, 1, 1, 1, 2, 2, 2)
+(1, 1, 1, 1, 2, 2, 2)
+(1, 1, 1, 1, 2, 2, 2)
+(1, 1, 1, 1, 2, 2, 4)
+(1, 1, 1, 2, 2, 2, 2)
+(1, 1, 1, 2, 2, 2, 2)
+(1, 1, 1, 2, 2, 2, 2)
+(1, 1, 1, 2, 2, 2, 4)
+(1, 1, 1, 2, 2, 2, 2)
+(1, 1, 1, 2, 2, 2, 4)
+(1, 1, 1, 2, 2, 4, 4)
+(1, 1, 2, 2, 2, 2, 2)
+(1, 1, 2, 2, 2, 2, 2)
+(1, 1, 2, 2, 2, 2, 2)
+(1, 1, 2, 2, 2, 2, 4)
+(1, 1, 2, 2, 2, 2, 2)
+...
+
+ExhaustiveProvider_bagSeptuples_v list 21
+(0, 0, 0, 0, 0, 0, 0)
+(0, 0, 0, 0, 0, 0, 1)
+(0, 0, 0, 0, 0, 1, 1)
+(0, 0, 0, 0, 0, 1, 2)
+(0, 0, 0, 0, 1, 1, 1)
+(0, 0, 0, 0, 1, 1, 2)
+(0, 0, 0, 0, 1, 2, 2)
+(0, 0, 0, 0, 1, 2, 3)
+(0, 0, 0, 1, 1, 1, 1)
+(0, 0, 0, 1, 1, 1, 2)
+(0, 0, 0, 1, 1, 2, 2)
+(0, 0, 0, 1, 1, 2, 3)
+(0, 0, 0, 1, 2, 2, 2)
+(0, 0, 0, 1, 2, 2, 3)
+(0, 0, 0, 1, 2, 3, 3)
+(0, 0, 0, 1, 2, 3, 4)
+(0, 0, 1, 1, 1, 1, 1)
+(0, 0, 1, 1, 1, 1, 2)
+(0, 0, 1, 1, 1, 2, 2)
+(0, 0, 1, 1, 1, 2, 3)
+...
+
+ExhaustiveProvider_bagSeptuples_vi list 21
+(1, 1, 1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1, 1, 1)
+(1, 1, 1, 1, 1, 1, 1)
+...
+
+ExhaustiveProvider_stringBags_int_String_i list 1
+
+
+ExhaustiveProvider_stringBags_int_String_ii list 0
+
+ExhaustiveProvider_stringBags_int_String_iii list 0
+
+ExhaustiveProvider_stringBags_int_String_iv list 0
+
+ExhaustiveProvider_stringBags_int_String_v list 1
+
+
+ExhaustiveProvider_stringBags_int_String_vi list 1
+a
+
+ExhaustiveProvider_stringBags_int_String_vii list 1
+aa
+
+ExhaustiveProvider_stringBags_int_String_viii list 1
+aaa
+
+ExhaustiveProvider_stringBags_int_String_ix list 1
+
+
+ExhaustiveProvider_stringBags_int_String_x list 3
+a
+b
+c
+
+ExhaustiveProvider_stringBags_int_String_xi list 6
+aa
+ab
+bb
+bc
+ac
+cc
+
+ExhaustiveProvider_stringBags_int_String_xii list 10
+aaa
+aab
+abb
+abc
+bbb
+bbc
+bcc
+aac
+acc
+ccc
+
+ExhaustiveProvider_stringBags_int_String_xiii list 1
+
+
+ExhaustiveProvider_stringBags_int_String_xiv list 4
+a
+b
+b
+c
+
+ExhaustiveProvider_stringBags_int_String_xv list 10
+aa
+ab
+bb
+bb
+ab
+ac
+bc
+bb
+bc
+cc
+
+ExhaustiveProvider_stringBags_int_String_xvi list 20
+aaa
+aab
+abb
+abb
+bbb
+bbb
+bbb
+bbc
+aab
+aac
+abc
+bbc
+abb
+abc
+acc
+bcc
+bbb
+bbc
+bcc
+ccc
+
+ExhaustiveProvider_stringBags_int_String_xvii list 1
+
+
+ExhaustiveProvider_stringBags_int_String_xviii list 11
+M
+i
+s
+s
+i
+s
+s
+i
+p
+p
+i
+
+ExhaustiveProvider_stringBags_int_String_xix list 21
+MM
+Mi
+ii
+is
+Ms
+Ms
+is
+ii
+ss
+ss
+ss
+is
+is
+ss
+ss
+ss
+Mi
+Ms
+is
+is
+...
+
+ExhaustiveProvider_stringBags_int_String_xx list 21
+MMM
+MMi
+Mii
+Mis
+iii
+iis
+iss
+iss
+MMs
+MMs
+Mis
+Mii
+iis
+iii
+iis
+iss
+Mss
+Mss
+Mss
+Mis
+...
+
+ExhaustiveProvider_stringBags_int_i list 1
+
+
+ExhaustiveProvider_stringBags_int_ii list 21
+a
+b
+c
+d
+e
+f
+g
+h
+i
+j
+k
+l
+m
+n
+o
+p
+q
+r
+s
+t
+...
+
+ExhaustiveProvider_stringBags_int_iii list 21
+aa
+ab
+bb
+bc
+ac
+ad
+bd
+be
+cc
+cd
+dd
+de
+ce
+cf
+df
+dg
+ae
+af
+bf
+bg
+...
+
+ExhaustiveProvider_stringBags_int_iv list 21
+aaa
+aab
+abb
+abc
+bbb
+bbc
+bcc
+bcd
+aac
+aad
+abd
+abe
+bbd
+bbe
+bce
+bcf
+acc
+acd
+add
+ade
+...
+
+ExhaustiveProvider_bags_Iterable_i list 1
+[]
+
+ExhaustiveProvider_bags_Iterable_ii list 21
+[]
+[5]
+[5, 5]
+[5, 5, 5]
+[5, 5, 5, 5]
+[5, 5, 5, 5, 5]
+[5, 5, 5, 5, 5, 5]
+[5, 5, 5, 5, 5, 5, 5]
+[5, 5, 5, 5, 5, 5, 5, 5]
+[5, 5, 5, 5, 5, 5, 5, 5, 5]
+[5, 5, 5, 5, 5, 5, 5, 5, 5, 5]
+[5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]
+[5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]
+[5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]
+[5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]
+[5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]
+[5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]
+[5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]
+[5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]
+[5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]
+...
+
+ExhaustiveProvider_bags_Iterable_iii list 21
+[]
+[1]
+[1, 1]
+[2]
+[1, 1, 1]
+[3]
+[1, 2]
+[1, 1, 1, 1]
+[2, 2]
+[1, 1, 2]
+[2, 3]
+[1, 1, 1, 1, 1]
+[1, 3]
+[1, 2, 2]
+[1, 1, 1, 2]
+[1, 2, 3]
+[1, 1, 1, 1, 1, 1]
+[3, 3]
+[2, 2, 2]
+[1, 1, 2, 2]
+...
+
+ExhaustiveProvider_bags_Iterable_iv list 21
+[]
+[1]
+[1, 1]
+[2]
+[1, 1, 1]
+[2]
+[1, 2]
+[3]
+[1, 1, 1, 1]
+[2, 2]
+[1, 1, 2]
+[2, 2]
+[1, 1, 1, 1, 1]
+[1, 2]
+[1, 2, 2]
+[1, 3]
+[1, 1, 1, 2]
+[2, 3]
+[1, 2, 2]
+[1, 1, 1, 1, 1, 1]
+...
+
+ExhaustiveProvider_bags_Iterable_v list 21
+[]
+[0]
+[0, 0]
+[1]
+[0, 0, 0]
+[2]
+[0, 1]
+[3]
+[0, 0, 0, 0]
+[4]
+[1, 1]
+[5]
+[0, 0, 1]
+[6]
+[1, 2]
+[7]
+[0, 0, 0, 0, 0]
+[8]
+[0, 2]
+[9]
+...
+
+ExhaustiveProvider_bags_Iterable_vi list 21
+[]
+[1]
+[1, 1]
+[1]
+[1, 1, 1]
+[1]
+[1, 1]
+[1]
+[1, 1, 1, 1]
+[1]
+[1, 1]
+[1]
+[1, 1, 1]
+[1]
+[1, 1]
+[1]
+[1, 1, 1, 1, 1]
+[1]
+[1, 1]
+[1]
+...
+
+ExhaustiveProvider_stringBags_String_i list 1
+
+
+ExhaustiveProvider_stringBags_String_ii list 21
+
+a
+aa
+aaa
+aaaa
+aaaaa
+aaaaaa
+aaaaaaa
+aaaaaaaa
+aaaaaaaaa
+aaaaaaaaaa
+aaaaaaaaaaa
+aaaaaaaaaaaa
+aaaaaaaaaaaaa
+aaaaaaaaaaaaaa
+aaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaa
+...
+
+ExhaustiveProvider_stringBags_String_iii list 21
+
+a
+aa
+b
+aaa
+c
+ab
+aaaa
+bb
+aab
+bc
+aaaaa
+ac
+abb
+aaab
+abc
+aaaaaa
+cc
+bbb
+aabb
+...
+
+ExhaustiveProvider_stringBags_String_iv list 21
+
+a
+aa
+b
+aaa
+b
+ab
+c
+aaaa
+bb
+aab
+bb
+aaaaa
+ab
+abb
+ac
+aaab
+bc
+abb
+aaaaaa
+...
+
+ExhaustiveProvider_stringBags_String_v list 21
+
+M
+MM
+i
+MMM
+s
+Mi
+s
+MMMM
+i
+ii
+s
+MMi
+s
+is
+i
+MMMMM
+p
+Ms
+p
+...
+
+ExhaustiveProvider_stringBags list 21
+
+a
+aa
+b
+aaa
+c
+ab
+d
+aaaa
+e
+bb
+f
+aab
+g
+bc
+h
+aaaaa
+i
+ac
+j
+...
+
+ExhaustiveProvider_bagsAtLeast_i list 1
+[]
+
+ExhaustiveProvider_bagsAtLeast_ii list 0
+
+ExhaustiveProvider_bagsAtLeast_iii list 0
+
+ExhaustiveProvider_bagsAtLeast_iv list 0
+
+ExhaustiveProvider_bagsAtLeast_v list 21
+[]
+[5]
+[5, 5]
+[5, 5, 5]
+[5, 5, 5, 5]
+[5, 5, 5, 5, 5]
+[5, 5, 5, 5, 5, 5]
+[5, 5, 5, 5, 5, 5, 5]
+[5, 5, 5, 5, 5, 5, 5, 5]
+[5, 5, 5, 5, 5, 5, 5, 5, 5]
+[5, 5, 5, 5, 5, 5, 5, 5, 5, 5]
+[5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]
+[5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]
+[5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]
+[5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]
+[5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]
+[5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]
+[5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]
+[5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]
+[5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]
+...
+
+ExhaustiveProvider_bagsAtLeast_vi list 21
+[5]
+[5, 5]
+[5, 5, 5]
+[5, 5, 5, 5]
+[5, 5, 5, 5, 5]
+[5, 5, 5, 5, 5, 5]
+[5, 5, 5, 5, 5, 5, 5]
+[5, 5, 5, 5, 5, 5, 5, 5]
+[5, 5, 5, 5, 5, 5, 5, 5, 5]
+[5, 5, 5, 5, 5, 5, 5, 5, 5, 5]
+[5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]
+[5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]
+[5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]
+[5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]
+[5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]
+[5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]
+[5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]
+[5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]
+[5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]
+[5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]
+...
+
+ExhaustiveProvider_bagsAtLeast_vii list 21
+[5, 5]
+[5, 5, 5]
+[5, 5, 5, 5]
+[5, 5, 5, 5, 5]
+[5, 5, 5, 5, 5, 5]
+[5, 5, 5, 5, 5, 5, 5]
+[5, 5, 5, 5, 5, 5, 5, 5]
+[5, 5, 5, 5, 5, 5, 5, 5, 5]
+[5, 5, 5, 5, 5, 5, 5, 5, 5, 5]
+[5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]
+[5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]
+[5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]
+[5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]
+[5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]
+[5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]
+[5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]
+[5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]
+[5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]
+[5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]
+[5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]
+...
+
+ExhaustiveProvider_bagsAtLeast_viii list 21
+[5, 5, 5]
+[5, 5, 5, 5]
+[5, 5, 5, 5, 5]
+[5, 5, 5, 5, 5, 5]
+[5, 5, 5, 5, 5, 5, 5]
+[5, 5, 5, 5, 5, 5, 5, 5]
+[5, 5, 5, 5, 5, 5, 5, 5, 5]
+[5, 5, 5, 5, 5, 5, 5, 5, 5, 5]
+[5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]
+[5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]
+[5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]
+[5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]
+[5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]
+[5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]
+[5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]
+[5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]
+[5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]
+[5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]
+[5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]
+[5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]
+...
+
+ExhaustiveProvider_bagsAtLeast_ix list 21
+[]
+[1]
+[1, 1]
+[2]
+[1, 1, 1]
+[3]
+[1, 2]
+[1, 1, 1, 1]
+[2, 2]
+[1, 1, 2]
+[2, 3]
+[1, 1, 1, 1, 1]
+[1, 3]
+[1, 2, 2]
+[1, 1, 1, 2]
+[1, 2, 3]
+[1, 1, 1, 1, 1, 1]
+[3, 3]
+[2, 2, 2]
+[1, 1, 2, 2]
+...
+
+ExhaustiveProvider_bagsAtLeast_x list 21
+[1]
+[1, 1]
+[2]
+[1, 1, 1]
+[3]
+[1, 2]
+[1, 1, 1, 1]
+[2, 2]
+[1, 1, 2]
+[2, 3]
+[1, 1, 1, 1, 1]
+[1, 3]
+[1, 2, 2]
+[1, 1, 1, 2]
+[1, 2, 3]
+[1, 1, 1, 1, 1, 1]
+[3, 3]
+[2, 2, 2]
+[1, 1, 2, 2]
+[2, 2, 3]
+...
+
+ExhaustiveProvider_bagsAtLeast_xi list 21
+[1, 1]
+[1, 1, 1]
+[1, 2]
+[1, 1, 1, 1]
+[2, 2]
+[1, 1, 2]
+[2, 3]
+[1, 1, 1, 1, 1]
+[1, 3]
+[1, 2, 2]
+[1, 1, 1, 2]
+[1, 2, 3]
+[1, 1, 1, 1, 1, 1]
+[3, 3]
+[2, 2, 2]
+[1, 1, 2, 2]
+[2, 2, 3]
+[1, 1, 1, 1, 2]
+[2, 3, 3]
+[1, 1, 2, 3]
+...
+
+ExhaustiveProvider_bagsAtLeast_xii list 21
+[1, 1, 1]
+[1, 1, 1, 1]
+[1, 1, 2]
+[1, 1, 1, 1, 1]
+[1, 2, 2]
+[1, 1, 1, 2]
+[1, 2, 3]
+[1, 1, 1, 1, 1, 1]
+[2, 2, 2]
+[1, 1, 2, 2]
+[2, 2, 3]
+[1, 1, 1, 1, 2]
+[2, 3, 3]
+[1, 1, 2, 3]
+[1, 1, 1, 1, 1, 1, 1]
+[1, 1, 3]
+[1, 2, 2, 2]
+[1, 1, 1, 2, 2]
+[1, 2, 2, 3]
+[1, 1, 1, 1, 1, 2]
+...
+
+ExhaustiveProvider_bagsAtLeast_xiii list 21
+[]
+[1]
+[1, 1]
+[2]
+[1, 1, 1]
+[2]
+[1, 2]
+[3]
+[1, 1, 1, 1]
+[2, 2]
+[1, 1, 2]
+[2, 2]
+[1, 1, 1, 1, 1]
+[1, 2]
+[1, 2, 2]
+[1, 3]
+[1, 1, 1, 2]
+[2, 3]
+[1, 2, 2]
+[1, 1, 1, 1, 1, 1]
+...
+
+ExhaustiveProvider_bagsAtLeast_xiv list 21
+[1]
+[1, 1]
+[2]
+[1, 1, 1]
+[2]
+[1, 2]
+[3]
+[1, 1, 1, 1]
+[2, 2]
+[1, 1, 2]
+[2, 2]
+[1, 1, 1, 1, 1]
+[1, 2]
+[1, 2, 2]
+[1, 3]
+[1, 1, 1, 2]
+[2, 3]
+[1, 2, 2]
+[1, 1, 1, 1, 1, 1]
+[2, 2]
+...
+
+ExhaustiveProvider_bagsAtLeast_xv list 21
+[1, 1]
+[1, 1, 1]
+[1, 2]
+[1, 1, 1, 1]
+[2, 2]
+[1, 1, 2]
+[2, 2]
+[1, 1, 1, 1, 1]
+[1, 2]
+[1, 2, 2]
+[1, 3]
+[1, 1, 1, 2]
+[2, 3]
+[1, 2, 2]
+[1, 1, 1, 1, 1, 1]
+[2, 2]
+[2, 2, 2]
+[2, 3]
+[1, 1, 2, 2]
+[3, 3]
+...
+
+ExhaustiveProvider_bagsAtLeast_xvi list 21
+[1, 1, 1]
+[1, 1, 1, 1]
+[1, 1, 2]
+[1, 1, 1, 1, 1]
+[1, 2, 2]
+[1, 1, 1, 2]
+[1, 2, 2]
+[1, 1, 1, 1, 1, 1]
+[2, 2, 2]
+[1, 1, 2, 2]
+[2, 2, 2]
+[1, 1, 1, 1, 2]
+[2, 2, 2]
+[1, 1, 2, 2]
+[2, 2, 3]
+[1, 1, 1, 1, 1, 1, 1]
+[1, 1, 2]
+[1, 2, 2, 2]
+[1, 1, 3]
+[1, 1, 1, 2, 2]
+...
+
+ExhaustiveProvider_bagsAtLeast_xvii list 21
+[]
+[0]
+[0, 0]
+[1]
+[0, 0, 0]
+[2]
+[0, 1]
+[3]
+[0, 0, 0, 0]
+[4]
+[1, 1]
+[5]
+[0, 0, 1]
+[6]
+[1, 2]
+[7]
+[0, 0, 0, 0, 0]
+[8]
+[0, 2]
+[9]
+...
+
+ExhaustiveProvider_bagsAtLeast_xviii list 21
+[0]
+[0, 0]
+[1]
+[0, 0, 0]
+[2]
+[0, 1]
+[3]
+[0, 0, 0, 0]
+[4]
+[1, 1]
+[5]
+[0, 0, 1]
+[6]
+[1, 2]
+[7]
+[0, 0, 0, 0, 0]
+[8]
+[0, 2]
+[9]
+[0, 1, 1]
+...
+
+ExhaustiveProvider_bagsAtLeast_xix list 21
+[0, 0]
+[0, 0, 0]
+[0, 1]
+[0, 0, 0, 0]
+[1, 1]
+[0, 0, 1]
+[1, 2]
+[0, 0, 0, 0, 0]
+[0, 2]
+[0, 1, 1]
+[0, 3]
+[0, 0, 0, 1]
+[1, 3]
+[0, 1, 2]
+[1, 4]
+[0, 0, 0, 0, 0, 0]
+[2, 2]
+[1, 1, 1]
+[2, 3]
+[0, 0, 1, 1]
+...
+
+ExhaustiveProvider_bagsAtLeast_xx list 21
+[0, 0, 0]
+[0, 0, 0, 0]
+[0, 0, 1]
+[0, 0, 0, 0, 0]
+[0, 1, 1]
+[0, 0, 0, 1]
+[0, 1, 2]
+[0, 0, 0, 0, 0, 0]
+[1, 1, 1]
+[0, 0, 1, 1]
+[1, 1, 2]
+[0, 0, 0, 0, 1]
+[1, 2, 2]
+[0, 0, 1, 2]
+[1, 2, 3]
+[0, 0, 0, 0, 0, 0, 0]
+[0, 0, 2]
+[0, 1, 1, 1]
+[0, 0, 3]
+[0, 0, 0, 1, 1]
+...
+
+ExhaustiveProvider_bagsAtLeast_xxi list 21
+[]
+[1]
+[1, 1]
+[1]
+[1, 1, 1]
+[1]
+[1, 1]
+[1]
+[1, 1, 1, 1]
+[1]
+[1, 1]
+[1]
+[1, 1, 1]
+[1]
+[1, 1]
+[1]
+[1, 1, 1, 1, 1]
+[1]
+[1, 1]
+[1]
+...
+
+ExhaustiveProvider_bagsAtLeast_xxii list 21
+[1]
+[1, 1]
+[1]
+[1, 1, 1]
+[1]
+[1, 1]
+[1]
+[1, 1, 1, 1]
+[1]
+[1, 1]
+[1]
+[1, 1, 1]
+[1]
+[1, 1]
+[1]
+[1, 1, 1, 1, 1]
+[1]
+[1, 1]
+[1]
+[1, 1, 1]
+...
+
+ExhaustiveProvider_bagsAtLeast_xxiii list 21
+[1, 1]
+[1, 1, 1]
+[1, 1]
+[1, 1, 1, 1]
+[1, 1]
+[1, 1, 1]
+[1, 1]
+[1, 1, 1, 1, 1]
+[1, 1]
+[1, 1, 1]
+[1, 1]
+[1, 1, 1, 1]
+[1, 1]
+[1, 1, 1]
+[1, 1]
+[1, 1, 1, 1, 1, 1]
+[1, 1]
+[1, 1, 1]
+[1, 1]
+[1, 1, 1, 1]
+...
+
+ExhaustiveProvider_bagsAtLeast_xxiv list 21
+[1, 1, 1]
+[1, 1, 1, 1]
+[1, 1, 1]
+[1, 1, 1, 1, 1]
+[1, 1, 1]
+[1, 1, 1, 1]
+[1, 1, 1]
+[1, 1, 1, 1, 1, 1]
+[1, 1, 1]
+[1, 1, 1, 1]
+[1, 1, 1]
+[1, 1, 1, 1, 1]
+[1, 1, 1]
+[1, 1, 1, 1]
+[1, 1, 1]
+[1, 1, 1, 1, 1, 1, 1]
+[1, 1, 1]
+[1, 1, 1, 1]
+[1, 1, 1]
+[1, 1, 1, 1, 1]
+...
+
+ExhaustiveProvider_stringBagsAtLeast_String_i list 1
+
+
+ExhaustiveProvider_stringBagsAtLeast_String_ii list 0
+
+ExhaustiveProvider_stringBagsAtLeast_String_iii list 0
+
+ExhaustiveProvider_stringBagsAtLeast_String_iv list 0
+
+ExhaustiveProvider_stringBagsAtLeast_String_v list 21
+
+a
+aa
+aaa
+aaaa
+aaaaa
+aaaaaa
+aaaaaaa
+aaaaaaaa
+aaaaaaaaa
+aaaaaaaaaa
+aaaaaaaaaaa
+aaaaaaaaaaaa
+aaaaaaaaaaaaa
+aaaaaaaaaaaaaa
+aaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaa
+...
+
+ExhaustiveProvider_stringBagsAtLeast_String_vi list 21
+a
+aa
+aaa
+aaaa
+aaaaa
+aaaaaa
+aaaaaaa
+aaaaaaaa
+aaaaaaaaa
+aaaaaaaaaa
+aaaaaaaaaaa
+aaaaaaaaaaaa
+aaaaaaaaaaaaa
+aaaaaaaaaaaaaa
+aaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaa
+...
+
+ExhaustiveProvider_stringBagsAtLeast_String_vii list 21
+aa
+aaa
+aaaa
+aaaaa
+aaaaaa
+aaaaaaa
+aaaaaaaa
+aaaaaaaaa
+aaaaaaaaaa
+aaaaaaaaaaa
+aaaaaaaaaaaa
+aaaaaaaaaaaaa
+aaaaaaaaaaaaaa
+aaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaa
+...
+
+ExhaustiveProvider_stringBagsAtLeast_String_viii list 21
+aaa
+aaaa
+aaaaa
+aaaaaa
+aaaaaaa
+aaaaaaaa
+aaaaaaaaa
+aaaaaaaaaa
+aaaaaaaaaaa
+aaaaaaaaaaaa
+aaaaaaaaaaaaa
+aaaaaaaaaaaaaa
+aaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaa
+...
+
+ExhaustiveProvider_stringBagsAtLeast_String_ix list 21
+
+a
+aa
+b
+aaa
+c
+ab
+aaaa
+bb
+aab
+bc
+aaaaa
+ac
+abb
+aaab
+abc
+aaaaaa
+cc
+bbb
+aabb
+...
+
+ExhaustiveProvider_stringBagsAtLeast_String_x list 21
+a
+aa
+b
+aaa
+c
+ab
+aaaa
+bb
+aab
+bc
+aaaaa
+ac
+abb
+aaab
+abc
+aaaaaa
+cc
+bbb
+aabb
+bbc
+...
+
+ExhaustiveProvider_stringBagsAtLeast_String_xi list 21
+aa
+aaa
+ab
+aaaa
+bb
+aab
+bc
+aaaaa
+ac
+abb
+aaab
+abc
+aaaaaa
+cc
+bbb
+aabb
+bbc
+aaaab
+bcc
+aabc
+...
+
+ExhaustiveProvider_stringBagsAtLeast_String_xii list 21
+aaa
+aaaa
+aab
+aaaaa
+abb
+aaab
+abc
+aaaaaa
+bbb
+aabb
+bbc
+aaaab
+bcc
+aabc
+aaaaaaa
+aac
+abbb
+aaabb
+abbc
+aaaaab
+...
+
+ExhaustiveProvider_stringBagsAtLeast_String_xiii list 21
+
+a
+aa
+b
+aaa
+b
+ab
+c
+aaaa
+bb
+aab
+bb
+aaaaa
+ab
+abb
+ac
+aaab
+bc
+abb
+aaaaaa
+...
+
+ExhaustiveProvider_stringBagsAtLeast_String_xiv list 21
+a
+aa
+b
+aaa
+b
+ab
+c
+aaaa
+bb
+aab
+bb
+aaaaa
+ab
+abb
+ac
+aaab
+bc
+abb
+aaaaaa
+bb
+...
+
+ExhaustiveProvider_stringBagsAtLeast_String_xv list 21
+aa
+aaa
+ab
+aaaa
+bb
+aab
+bb
+aaaaa
+ab
+abb
+ac
+aaab
+bc
+abb
+aaaaaa
+bb
+bbb
+bc
+aabb
+cc
+...
+
+ExhaustiveProvider_stringBagsAtLeast_String_xvi list 21
+aaa
+aaaa
+aab
+aaaaa
+abb
+aaab
+abb
+aaaaaa
+bbb
+aabb
+bbb
+aaaab
+bbb
+aabb
+bbc
+aaaaaaa
+aab
+abbb
+aac
+aaabb
+...
+
+ExhaustiveProvider_stringBagsAtLeast_String_xvii list 21
+
+M
+MM
+i
+MMM
+s
+Mi
+s
+MMMM
+i
+ii
+s
+MMi
+s
+is
+i
+MMMMM
+p
+Ms
+p
+...
+
+ExhaustiveProvider_stringBagsAtLeast_String_xviii list 21
+M
+MM
+i
+MMM
+s
+Mi
+s
+MMMM
+i
+ii
+s
+MMi
+s
+is
+i
+MMMMM
+p
+Ms
+p
+Mii
+...
+
+ExhaustiveProvider_stringBagsAtLeast_String_xix list 21
+MM
+MMM
+Mi
+MMMM
+ii
+MMi
+is
+MMMMM
+Ms
+Mii
+Ms
+MMMi
+is
+Mis
+ii
+MMMMMM
+ss
+iii
+ss
+MMii
+...
+
+ExhaustiveProvider_stringBagsAtLeast_String_xx list 21
+MMM
+MMMM
+MMi
+MMMMM
+Mii
+MMMi
+Mis
+MMMMMM
+iii
+MMii
+iis
+MMMMi
+iss
+MMis
+iss
+MMMMMMM
+MMs
+Miii
+MMs
+MMMii
+...
+
+ExhaustiveProvider_stringBagsAtLeast_i list 21
+
+a
+aa
+b
+aaa
+c
+ab
+d
+aaaa
+e
+bb
+f
+aab
+g
+bc
+h
+aaaaa
+i
+ac
+j
+...
+
+ExhaustiveProvider_stringBagsAtLeast_ii list 21
+a
+aa
+b
+aaa
+c
+ab
+d
+aaaa
+e
+bb
+f
+aab
+g
+bc
+h
+aaaaa
+i
+ac
+j
+abb
+...
+
+ExhaustiveProvider_stringBagsAtLeast_iii list 21
+aa
+aaa
+ab
+aaaa
+bb
+aab
+bc
+aaaaa
+ac
+abb
+ad
+aaab
+bd
+abc
+be
+aaaaaa
+cc
+bbb
+cd
+aabb
+...
+
+ExhaustiveProvider_stringBagsAtLeast_iv list 21
+aaa
+aaaa
+aab
+aaaaa
+abb
+aaab
+abc
+aaaaaa
+bbb
+aabb
+bbc
+aaaab
+bcc
+aabc
+bcd
+aaaaaaa
+aac
+abbb
+aad
+aaabb
+...
+
 RandomProvider_integers list 21
 -1084795351
 1143001545
