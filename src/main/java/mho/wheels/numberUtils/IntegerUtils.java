@@ -1157,8 +1157,7 @@ public class IntegerUtils {
      * @param n a {@code BigInteger}
      * @return a pair of {@code BigInteger}s generated bijectively from {@code n}
      */
-    public static @NotNull
-    Pair<BigInteger, BigInteger> logarithmicDemux(@NotNull BigInteger n) {
+    public static @NotNull Pair<BigInteger, BigInteger> logarithmicDemux(@NotNull BigInteger n) {
         if (n.signum() == -1) {
             throw new ArithmeticException("n cannot be negative. Invalid n: " + n);
         }

@@ -1,6 +1,7 @@
 package mho.wheels.numberUtils;
 
 import mho.wheels.io.Readers;
+import mho.wheels.structures.Pair;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
 
@@ -1395,40 +1396,54 @@ public class IntegerUtilsTest {
         fromStringBase_BigInteger_String_fail_helper("100", "(2)()");
     }
 
+    private static void logarithmicMux_helper(@NotNull String x, @NotNull String y, @NotNull String output) {
+        aeq(logarithmicMux(Readers.readBigInteger(x).get(), Readers.readBigInteger(y).get()), output);
+    }
+
+    private static void logarithmicMux_fail_helper(@NotNull String x, @NotNull String y) {
+        try {
+            logarithmicMux(Readers.readBigInteger(x).get(), Readers.readBigInteger(y).get());
+            fail();
+        } catch (ArithmeticException ignored) {}
+    }
+
     @Test
     public void testLogarithmicMux() {
-        aeq(logarithmicMux(BigInteger.valueOf(0), BigInteger.valueOf(0)), 0);
-        aeq(logarithmicMux(BigInteger.valueOf(0), BigInteger.valueOf(1)), 1);
-        aeq(logarithmicMux(BigInteger.valueOf(1), BigInteger.valueOf(0)), 2);
-        aeq(logarithmicMux(BigInteger.valueOf(5), BigInteger.valueOf(10)), 11263);
-        aeq(logarithmicMux(BigInteger.valueOf(10), BigInteger.valueOf(5)), 671);
-        aeq(logarithmicMux(BigInteger.valueOf(500000), BigInteger.ZERO), 1000000);
+        logarithmicMux_helper("0", "0", "0");
+        logarithmicMux_helper("0", "1", "1");
+        logarithmicMux_helper("1", "0", "2");
+        logarithmicMux_helper("5", "10", "11263");
+        logarithmicMux_helper("10", "5", "671");
+        logarithmicMux_helper("500000", "0", "1000000");
+
+        logarithmicMux_fail_helper("-5", "5");
+        logarithmicMux_fail_helper("5", "-5");
+        logarithmicMux_fail_helper("-5", "-5");
+    }
+
+    private static void logarithmicDemux_helper(@NotNull String n, @NotNull String x, @NotNull String y) {
+        Pair<BigInteger, BigInteger> p = logarithmicDemux(Readers.readBigInteger(n).get());
+        aeq(p.a, x);
+        aeq(p.b, y);
+    }
+
+    private static void logarithmicDemux_fail_helper(@NotNull String n) {
         try {
-            logarithmicMux(BigInteger.valueOf(-5), BigInteger.valueOf(5));
-            fail();
-        } catch (ArithmeticException ignored) {}
-        try {
-            logarithmicMux(BigInteger.valueOf(5), BigInteger.valueOf(-5));
-            fail();
-        } catch (ArithmeticException ignored) {}
-        try {
-            logarithmicMux(BigInteger.valueOf(-5), BigInteger.valueOf(-5));
+            logarithmicDemux(Readers.readBigInteger(n).get());
             fail();
         } catch (ArithmeticException ignored) {}
     }
 
     @Test
     public void testLogarithmicDemux() {
-        aeq(logarithmicDemux(BigInteger.ZERO), "(0, 0)");
-        aeq(logarithmicDemux(BigInteger.ONE), "(0, 1)");
-        aeq(logarithmicDemux(TWO), "(1, 0)");
-        aeq(logarithmicDemux(BigInteger.valueOf(11263)), "(5, 10)");
-        aeq(logarithmicDemux(BigInteger.valueOf(671)), "(10, 5)");
-        aeq(logarithmicDemux(BigInteger.valueOf(1000000)), "(500000, 0)");
-        try {
-            logarithmicDemux(BigInteger.valueOf(-5));
-            fail();
-        } catch (ArithmeticException ignored) {}
+        logarithmicDemux_helper("0", "0", "0");
+        logarithmicDemux_helper("1", "0", "1");
+        logarithmicDemux_helper("2", "1", "0");
+        logarithmicDemux_helper("11263", "5", "10");
+        logarithmicDemux_helper("671", "10", "5");
+        logarithmicDemux_helper("1000000", "500000", "0");
+
+        logarithmicDemux_fail_helper("-5");
     }
 
     @Test

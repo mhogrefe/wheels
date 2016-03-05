@@ -319,16 +319,11 @@ public class IntegerUtilsDemos extends Demos {
     }
 
     private void demoLogarithmicMux() {
-        Iterable<Pair<BigInteger, BigInteger>> ps;
-        if (P instanceof ExhaustiveProvider) {
-            ps = P.pairs(P.naturalBigIntegers());
-        } else {
-            //noinspection Convert2MethodRef
-            ps = P.pairs(
-                    P.naturalBigIntegers(),
-                    map(i -> BigInteger.valueOf(i), P.withScale(20).naturalIntegersGeometric())
-            );
-        }
+        //noinspection Convert2MethodRef
+        Iterable<Pair<BigInteger, BigInteger>> ps = P.pairs(
+                P.naturalBigIntegers(),
+                map(i -> BigInteger.valueOf(i), P.naturalIntegersGeometric())
+        );
         for (Pair<BigInteger, BigInteger> p : take(LIMIT, ps)) {
             System.out.println("logarithmicMux(" + p.a + ", " + p.b + ") = " + logarithmicMux(p.a, p.b));
         }

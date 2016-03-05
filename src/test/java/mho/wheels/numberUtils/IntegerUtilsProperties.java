@@ -1974,19 +1974,12 @@ public class IntegerUtilsProperties extends TestProperties {
     }
 
     private void propertiesLogarithmicMux() {
-        initialize("");
-        System.out.println("\t\ttesting logarithmicMux(BigInteger, BigInteger) properties...");
-
-        Iterable<Pair<BigInteger, BigInteger>> ps;
-        if (P instanceof ExhaustiveProvider) {
-            ps = P.pairs(P.naturalBigIntegers());
-        } else {
-            //noinspection Convert2MethodRef
-            ps = P.pairs(
-                    P.naturalBigIntegers(),
-                    map(i -> BigInteger.valueOf(i), P.withScale(20).naturalIntegersGeometric())
-            );
-        }
+        initialize("logarithmicMux(BigInteger, BigInteger)");
+        //noinspection Convert2MethodRef
+        Iterable<Pair<BigInteger, BigInteger>> ps = P.pairs(
+                P.naturalBigIntegers(),
+                map(i -> BigInteger.valueOf(i), P.naturalIntegersGeometric())
+        );
         for (Pair<BigInteger, BigInteger> p : take(LIMIT, ps)) {
             BigInteger i = logarithmicMux(p.a, p.b);
             assertNotEquals(p, i.signum(), -1);
@@ -2009,9 +2002,7 @@ public class IntegerUtilsProperties extends TestProperties {
     }
 
     private void propertiesLogarithmicDemux() {
-        initialize("");
-        System.out.println("\t\ttesting logarithmicDemux(BigInteger) properties...");
-
+        initialize("logarithmicDemux(BigInteger)");
         for (BigInteger i : take(LIMIT, P.naturalBigIntegers())) {
             Pair<BigInteger, BigInteger> p = logarithmicDemux(i);
             assertNotEquals(p, p.a.signum(), -1);
