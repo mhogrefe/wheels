@@ -3652,7 +3652,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void bagsLex_int_List_helper(int size, @NotNull String input, @NotNull String output) {
-        aeqit(EP.bagsLex(size, readIntegerListWithNulls(input)), output);
+        aeqitLog(EP.bagsLex(size, readIntegerListWithNulls(input)), output);
     }
 
     private static void bagsLex_int_List_fail_helper(int size, @NotNull String input) {
@@ -3664,28 +3664,26 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testBagsLex_int_List() {
-        bagsLex_int_List_helper(0, "[]", "[[]]");
-        bagsLex_int_List_helper(1, "[]", "[]");
-        bagsLex_int_List_helper(2, "[]", "[]");
-        bagsLex_int_List_helper(3, "[]", "[]");
-        bagsLex_int_List_helper(0, "[5]", "[[]]");
-        bagsLex_int_List_helper(1, "[5]", "[[5]]");
-        bagsLex_int_List_helper(2, "[5]", "[[5, 5]]");
-        bagsLex_int_List_helper(3, "[5]", "[[5, 5, 5]]");
-        bagsLex_int_List_helper(0, "[1, 2, 3]", "[[]]");
-        bagsLex_int_List_helper(1, "[1, 2, 3]", "[[1], [2], [3]]");
-        bagsLex_int_List_helper(2, "[1, 2, 3]", "[[1, 1], [1, 2], [1, 3], [2, 2], [2, 3], [3, 3]]");
-        bagsLex_int_List_helper(3, "[1, 2, 3]",
-                "[[1, 1, 1], [1, 1, 2], [1, 1, 3], [1, 2, 2], [1, 2, 3], [1, 3, 3], [2, 2, 2], [2, 2, 3], [2, 3, 3]," +
-                " [3, 3, 3]]");
-        bagsLex_int_List_helper(0, "[1, 2, 2, 3]", "[[]]");
-        bagsLex_int_List_helper(1, "[1, 2, 2, 3]", "[[1], [2], [2], [3]]");
-        bagsLex_int_List_helper(2, "[1, 2, 2, 3]",
-                "[[1, 1], [1, 2], [1, 2], [1, 3], [2, 2], [2, 2], [2, 3], [2, 2], [2, 3], [3, 3]]");
-        bagsLex_int_List_helper(3, "[1, 2, 2, 3]",
-                "[[1, 1, 1], [1, 1, 2], [1, 1, 2], [1, 1, 3], [1, 2, 2], [1, 2, 2], [1, 2, 3], [1, 2, 2], [1, 2, 3]," +
-                " [1, 3, 3], [2, 2, 2], [2, 2, 2], [2, 2, 3], [2, 2, 2], [2, 2, 3], [2, 3, 3], [2, 2, 2], [2, 2, 3]," +
-                " [2, 3, 3], [3, 3, 3]]");
+        bagsLex_int_List_helper(0, "[]", "ExhaustiveProvider_bagsLex_int_List_i");
+        bagsLex_int_List_helper(1, "[]", "ExhaustiveProvider_bagsLex_int_List_ii");
+        bagsLex_int_List_helper(2, "[]", "ExhaustiveProvider_bagsLex_int_List_iii");
+        bagsLex_int_List_helper(3, "[]", "ExhaustiveProvider_bagsLex_int_List_iv");
+
+        bagsLex_int_List_helper(0, "[5]", "ExhaustiveProvider_bagsLex_int_List_v");
+        bagsLex_int_List_helper(1, "[5]", "ExhaustiveProvider_bagsLex_int_List_vi");
+        bagsLex_int_List_helper(2, "[5]", "ExhaustiveProvider_bagsLex_int_List_vii");
+        bagsLex_int_List_helper(3, "[5]", "ExhaustiveProvider_bagsLex_int_List_viii");
+
+        bagsLex_int_List_helper(0, "[1, 2, 3]", "ExhaustiveProvider_bagsLex_int_List_ix");
+        bagsLex_int_List_helper(1, "[1, 2, 3]", "ExhaustiveProvider_bagsLex_int_List_x");
+        bagsLex_int_List_helper(2, "[1, 2, 3]", "ExhaustiveProvider_bagsLex_int_List_xi");
+        bagsLex_int_List_helper(3, "[1, 2, 3]", "ExhaustiveProvider_bagsLex_int_List_xii");
+
+        bagsLex_int_List_helper(0, "[1, 2, 2, 3]", "ExhaustiveProvider_bagsLex_int_List_xiii");
+        bagsLex_int_List_helper(1, "[1, 2, 2, 3]", "ExhaustiveProvider_bagsLex_int_List_xiv");
+        bagsLex_int_List_helper(2, "[1, 2, 2, 3]", "ExhaustiveProvider_bagsLex_int_List_xv");
+        bagsLex_int_List_helper(3, "[1, 2, 2, 3]", "ExhaustiveProvider_bagsLex_int_List_xvi");
+
         bagsLex_int_List_fail_helper(-1, "[]");
         bagsLex_int_List_fail_helper(-1, "[1, 2, 3]");
         bagsLex_int_List_fail_helper(1, "[1, null, 3]");
@@ -3707,12 +3705,11 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testBagPairsLex() {
-        bagPairsLex_helper("[]", "[]");
-        bagPairsLex_helper("[5]", "[(5, 5)]");
-        bagPairsLex_helper("[1, 2, 3, 4]",
-                "[(1, 1), (1, 2), (1, 3), (1, 4), (2, 2), (2, 3), (2, 4), (3, 3), (3, 4), (4, 4)]");
-        bagPairsLex_helper("[1, 2, 2, 4]",
-                "[(1, 1), (1, 2), (1, 2), (1, 4), (2, 2), (2, 2), (2, 4), (2, 2), (2, 4), (4, 4)]");
+        bagPairsLex_helper("[]", "ExhaustiveProvider_bagPairsLex_i");
+        bagPairsLex_helper("[5]", "ExhaustiveProvider_bagPairsLex_ii");
+        bagPairsLex_helper("[1, 2, 3, 4]", "ExhaustiveProvider_bagPairsLex_iii");
+        bagPairsLex_helper("[1, 2, 2, 4]", "ExhaustiveProvider_bagPairsLex_iv");
+
         bagPairsLex_fail_helper("[1, 2, null, 4]");
         bagPairsLex_fail_helper("[null]");
     }
@@ -3730,16 +3727,11 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testBagTriplesLex() {
-        bagTriplesLex_helper("[]", "[]");
-        bagTriplesLex_helper("[5]", "[(5, 5, 5)]");
-        bagTriplesLex_helper("[1, 2, 3, 4]",
-                "[(1, 1, 1), (1, 1, 2), (1, 1, 3), (1, 1, 4), (1, 2, 2), (1, 2, 3), (1, 2, 4), (1, 3, 3), (1, 3, 4)," +
-                " (1, 4, 4), (2, 2, 2), (2, 2, 3), (2, 2, 4), (2, 3, 3), (2, 3, 4), (2, 4, 4), (3, 3, 3), (3, 3, 4)," +
-                " (3, 4, 4), (4, 4, 4)]");
-        bagTriplesLex_helper("[1, 2, 2, 4]",
-                "[(1, 1, 1), (1, 1, 2), (1, 1, 2), (1, 1, 4), (1, 2, 2), (1, 2, 2), (1, 2, 4), (1, 2, 2), (1, 2, 4)," +
-                " (1, 4, 4), (2, 2, 2), (2, 2, 2), (2, 2, 4), (2, 2, 2), (2, 2, 4), (2, 4, 4), (2, 2, 2), (2, 2, 4)," +
-                " (2, 4, 4), (4, 4, 4)]");
+        bagTriplesLex_helper("[]", "ExhaustiveProvider_bagTriplesLex_i");
+        bagTriplesLex_helper("[5]", "ExhaustiveProvider_bagTriplesLex_ii");
+        bagTriplesLex_helper("[1, 2, 3, 4]", "ExhaustiveProvider_bagTriplesLex_iii");
+        bagTriplesLex_helper("[1, 2, 2, 4]", "ExhaustiveProvider_bagTriplesLex_iv");
+
         bagTriplesLex_fail_helper("[1, 2, null, 4]");
         bagTriplesLex_fail_helper("[null]");
     }
@@ -3757,16 +3749,11 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testBagQuadruplesLex() {
-        bagQuadruplesLex_helper("[]", "[]");
-        bagQuadruplesLex_helper("[5]", "[(5, 5, 5, 5)]");
-        bagQuadruplesLex_helper("[1, 2, 3, 4]",
-                "[(1, 1, 1, 1), (1, 1, 1, 2), (1, 1, 1, 3), (1, 1, 1, 4), (1, 1, 2, 2), (1, 1, 2, 3), (1, 1, 2, 4)," +
-                " (1, 1, 3, 3), (1, 1, 3, 4), (1, 1, 4, 4), (1, 2, 2, 2), (1, 2, 2, 3), (1, 2, 2, 4), (1, 2, 3, 3)," +
-                " (1, 2, 3, 4), (1, 2, 4, 4), (1, 3, 3, 3), (1, 3, 3, 4), (1, 3, 4, 4), (1, 4, 4, 4), ...]");
-        bagQuadruplesLex_helper("[1, 2, 2, 4]",
-                "[(1, 1, 1, 1), (1, 1, 1, 2), (1, 1, 1, 2), (1, 1, 1, 4), (1, 1, 2, 2), (1, 1, 2, 2), (1, 1, 2, 4)," +
-                " (1, 1, 2, 2), (1, 1, 2, 4), (1, 1, 4, 4), (1, 2, 2, 2), (1, 2, 2, 2), (1, 2, 2, 4), (1, 2, 2, 2)," +
-                " (1, 2, 2, 4), (1, 2, 4, 4), (1, 2, 2, 2), (1, 2, 2, 4), (1, 2, 4, 4), (1, 4, 4, 4), ...]");
+        bagQuadruplesLex_helper("[]", "ExhaustiveProvider_bagQuadruplesLex_i");
+        bagQuadruplesLex_helper("[5]", "ExhaustiveProvider_bagQuadruplesLex_ii");
+        bagQuadruplesLex_helper("[1, 2, 3, 4]", "ExhaustiveProvider_bagQuadruplesLex_iii");
+        bagQuadruplesLex_helper("[1, 2, 2, 4]", "ExhaustiveProvider_bagQuadruplesLex_iv");
+
         bagQuadruplesLex_fail_helper("[1, 2, null, 4]");
         bagQuadruplesLex_fail_helper("[null]");
     }
@@ -3784,18 +3771,11 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testBagQuintuplesLex() {
-        bagQuintuplesLex_helper("[]", "[]");
-        bagQuintuplesLex_helper("[5]", "[(5, 5, 5, 5, 5)]");
-        bagQuintuplesLex_helper("[1, 2, 3, 4]",
-                "[(1, 1, 1, 1, 1), (1, 1, 1, 1, 2), (1, 1, 1, 1, 3), (1, 1, 1, 1, 4), (1, 1, 1, 2, 2)," +
-                " (1, 1, 1, 2, 3), (1, 1, 1, 2, 4), (1, 1, 1, 3, 3), (1, 1, 1, 3, 4), (1, 1, 1, 4, 4)," +
-                " (1, 1, 2, 2, 2), (1, 1, 2, 2, 3), (1, 1, 2, 2, 4), (1, 1, 2, 3, 3), (1, 1, 2, 3, 4)," +
-                " (1, 1, 2, 4, 4), (1, 1, 3, 3, 3), (1, 1, 3, 3, 4), (1, 1, 3, 4, 4), (1, 1, 4, 4, 4), ...]");
-        bagQuintuplesLex_helper("[1, 2, 2, 4]",
-                "[(1, 1, 1, 1, 1), (1, 1, 1, 1, 2), (1, 1, 1, 1, 2), (1, 1, 1, 1, 4), (1, 1, 1, 2, 2)," +
-                " (1, 1, 1, 2, 2), (1, 1, 1, 2, 4), (1, 1, 1, 2, 2), (1, 1, 1, 2, 4), (1, 1, 1, 4, 4)," +
-                " (1, 1, 2, 2, 2), (1, 1, 2, 2, 2), (1, 1, 2, 2, 4), (1, 1, 2, 2, 2), (1, 1, 2, 2, 4)," +
-                " (1, 1, 2, 4, 4), (1, 1, 2, 2, 2), (1, 1, 2, 2, 4), (1, 1, 2, 4, 4), (1, 1, 4, 4, 4), ...]");
+        bagQuintuplesLex_helper("[]", "ExhaustiveProvider_bagQuintuplesLex_i");
+        bagQuintuplesLex_helper("[5]", "ExhaustiveProvider_bagQuintuplesLex_ii");
+        bagQuintuplesLex_helper("[1, 2, 3, 4]", "ExhaustiveProvider_bagQuintuplesLex_iii");
+        bagQuintuplesLex_helper("[1, 2, 2, 4]", "ExhaustiveProvider_bagQuintuplesLex_iv");
+
         bagQuintuplesLex_fail_helper("[1, 2, null, 4]");
         bagQuintuplesLex_fail_helper("[null]");
     }
@@ -3813,20 +3793,11 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testBagSextuplesLex() {
-        bagSextuplesLex_helper("[]", "[]");
-        bagSextuplesLex_helper("[5]", "[(5, 5, 5, 5, 5, 5)]");
-        bagSextuplesLex_helper("[1, 2, 3, 4]",
-                "[(1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 2), (1, 1, 1, 1, 1, 3), (1, 1, 1, 1, 1, 4)," +
-                " (1, 1, 1, 1, 2, 2), (1, 1, 1, 1, 2, 3), (1, 1, 1, 1, 2, 4), (1, 1, 1, 1, 3, 3)," +
-                " (1, 1, 1, 1, 3, 4), (1, 1, 1, 1, 4, 4), (1, 1, 1, 2, 2, 2), (1, 1, 1, 2, 2, 3)," +
-                " (1, 1, 1, 2, 2, 4), (1, 1, 1, 2, 3, 3), (1, 1, 1, 2, 3, 4), (1, 1, 1, 2, 4, 4)," +
-                " (1, 1, 1, 3, 3, 3), (1, 1, 1, 3, 3, 4), (1, 1, 1, 3, 4, 4), (1, 1, 1, 4, 4, 4), ...]");
-        bagSextuplesLex_helper("[1, 2, 2, 4]",
-                "[(1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 2), (1, 1, 1, 1, 1, 2), (1, 1, 1, 1, 1, 4)," +
-                " (1, 1, 1, 1, 2, 2), (1, 1, 1, 1, 2, 2), (1, 1, 1, 1, 2, 4), (1, 1, 1, 1, 2, 2)," +
-                " (1, 1, 1, 1, 2, 4), (1, 1, 1, 1, 4, 4), (1, 1, 1, 2, 2, 2), (1, 1, 1, 2, 2, 2)," +
-                " (1, 1, 1, 2, 2, 4), (1, 1, 1, 2, 2, 2), (1, 1, 1, 2, 2, 4), (1, 1, 1, 2, 4, 4)," +
-                " (1, 1, 1, 2, 2, 2), (1, 1, 1, 2, 2, 4), (1, 1, 1, 2, 4, 4), (1, 1, 1, 4, 4, 4), ...]");
+        bagSextuplesLex_helper("[]", "ExhaustiveProvider_bagSextuplesLex_i");
+        bagSextuplesLex_helper("[5]", "ExhaustiveProvider_bagSextuplesLex_ii");
+        bagSextuplesLex_helper("[1, 2, 3, 4]", "ExhaustiveProvider_bagSextuplesLex_iii");
+        bagSextuplesLex_helper("[1, 2, 2, 4]", "ExhaustiveProvider_bagSextuplesLex_iv");
+
         bagSextuplesLex_fail_helper("[1, 2, null, 4]");
         bagSextuplesLex_fail_helper("[null]");
     }
@@ -3844,26 +3815,17 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testBagSeptuplesLex() {
-        bagSeptuplesLex_helper("[]", "[]");
-        bagSeptuplesLex_helper("[5]", "[(5, 5, 5, 5, 5, 5, 5)]");
-        bagSeptuplesLex_helper("[1, 2, 3, 4]",
-                "[(1, 1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1, 2), (1, 1, 1, 1, 1, 1, 3), (1, 1, 1, 1, 1, 1, 4)," +
-                " (1, 1, 1, 1, 1, 2, 2), (1, 1, 1, 1, 1, 2, 3), (1, 1, 1, 1, 1, 2, 4), (1, 1, 1, 1, 1, 3, 3)," +
-                " (1, 1, 1, 1, 1, 3, 4), (1, 1, 1, 1, 1, 4, 4), (1, 1, 1, 1, 2, 2, 2), (1, 1, 1, 1, 2, 2, 3)," +
-                " (1, 1, 1, 1, 2, 2, 4), (1, 1, 1, 1, 2, 3, 3), (1, 1, 1, 1, 2, 3, 4), (1, 1, 1, 1, 2, 4, 4)," +
-                " (1, 1, 1, 1, 3, 3, 3), (1, 1, 1, 1, 3, 3, 4), (1, 1, 1, 1, 3, 4, 4), (1, 1, 1, 1, 4, 4, 4), ...]");
-        bagSeptuplesLex_helper("[1, 2, 2, 4]",
-                "[(1, 1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1, 2), (1, 1, 1, 1, 1, 1, 2), (1, 1, 1, 1, 1, 1, 4)," +
-                " (1, 1, 1, 1, 1, 2, 2), (1, 1, 1, 1, 1, 2, 2), (1, 1, 1, 1, 1, 2, 4), (1, 1, 1, 1, 1, 2, 2)," +
-                " (1, 1, 1, 1, 1, 2, 4), (1, 1, 1, 1, 1, 4, 4), (1, 1, 1, 1, 2, 2, 2), (1, 1, 1, 1, 2, 2, 2)," +
-                " (1, 1, 1, 1, 2, 2, 4), (1, 1, 1, 1, 2, 2, 2), (1, 1, 1, 1, 2, 2, 4), (1, 1, 1, 1, 2, 4, 4)," +
-                " (1, 1, 1, 1, 2, 2, 2), (1, 1, 1, 1, 2, 2, 4), (1, 1, 1, 1, 2, 4, 4), (1, 1, 1, 1, 4, 4, 4), ...]");
+        bagSeptuplesLex_helper("[]", "ExhaustiveProvider_bagSeptuplesLex_i");
+        bagSeptuplesLex_helper("[5]", "ExhaustiveProvider_bagSeptuplesLex_ii");
+        bagSeptuplesLex_helper("[1, 2, 3, 4]", "ExhaustiveProvider_bagSeptuplesLex_iii");
+        bagSeptuplesLex_helper("[1, 2, 2, 4]", "ExhaustiveProvider_bagSeptuplesLex_iv");
+
         bagSeptuplesLex_fail_helper("[1, 2, null, 4]");
         bagSeptuplesLex_fail_helper("[null]");
     }
 
     private static void stringBagsLex_helper(int size, @NotNull String input, @NotNull String output) {
-        aeqit(EP.stringBagsLex(size, input), output);
+        aeqitLog(EP.stringBagsLex(size, input), output);
     }
 
     private static void stringBagsLex_helper_limit(
@@ -3876,39 +3838,31 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testStringBagsLex() {
-        stringBagsLex_helper(0, "", "[]");
-        aeq(length(EP.stringBagsLex(0, "")), 1);
-        stringBagsLex_helper(1, "", "[]");
-        aeq(length(EP.stringBagsLex(1, "")), 0);
-        stringBagsLex_helper(2, "", "[]");
-        aeq(length(EP.stringBagsLex(2, "")), 0);
-        stringBagsLex_helper(3, "", "[]");
-        aeq(length(EP.stringBagsLex(3, "")), 0);
-        stringBagsLex_helper(0, "a", "[]");
-        aeq(length(EP.stringBagsLex(0, "a")), 1);
-        stringBagsLex_helper(1, "a", "[a]");
-        stringBagsLex_helper(2, "a", "[aa]");
-        stringBagsLex_helper(3, "a", "[aaa]");
-        stringBagsLex_helper(0, "abc", "[]");
-        aeq(length(EP.stringBagsLex(0, "abc")), 1);
-        stringBagsLex_helper(1, "abc", "[a, b, c]");
-        stringBagsLex_helper(2, "abc", "[aa, ab, ac, bb, bc, cc]");
-        stringBagsLex_helper(3, "abc", "[aaa, aab, aac, abb, abc, acc, bbb, bbc, bcc, ccc]");
-        stringBagsLex_helper(0, "abbc", "[]");
-        aeq(length(EP.stringBagsLex(0, "abbc")), 1);
-        stringBagsLex_helper(1, "abbc", "[a, b, b, c]");
-        stringBagsLex_helper(2, "abbc", "[aa, ab, ab, ac, bb, bb, bc, bb, bc, cc]");
-        stringBagsLex_helper(3, "abbc",
-                "[aaa, aab, aab, aac, abb, abb, abc, abb, abc, acc, bbb, bbb, bbc, bbb, bbc, bcc, bbb, bbc, bcc," +
-                " ccc]");
-        stringBagsLex_helper_limit(0, "Mississippi", "[]");
-        aeq(length(EP.stringBagsLex(0, "Mississippi")), 1);
-        stringBagsLex_helper_limit(1, "Mississippi", "[M, i, i, i, i, p, p, s, s, s, s]");
-        stringBagsLex_helper_limit(2, "Mississippi",
-                "[MM, Mi, Mi, Mi, Mi, Mp, Mp, Ms, Ms, Ms, Ms, ii, ii, ii, ii, ip, ip, is, is, is, ...]");
-        stringBagsLex_helper_limit(3, "Mississippi",
-                "[MMM, MMi, MMi, MMi, MMi, MMp, MMp, MMs, MMs, MMs, MMs, Mii, Mii, Mii, Mii, Mip, Mip, Mis, Mis," +
-                " Mis, ...]");
+        stringBagsLex_helper(0, "", "ExhaustiveProvider_stringBagsLex_i");
+        stringBagsLex_helper(1, "", "ExhaustiveProvider_stringBagsLex_ii");
+        stringBagsLex_helper(2, "", "ExhaustiveProvider_stringBagsLex_iii");
+        stringBagsLex_helper(3, "", "ExhaustiveProvider_stringBagsLex_iv");
+
+        stringBagsLex_helper(0, "a", "ExhaustiveProvider_stringBagsLex_v");
+        stringBagsLex_helper(1, "a", "ExhaustiveProvider_stringBagsLex_vi");
+        stringBagsLex_helper(2, "a", "ExhaustiveProvider_stringBagsLex_vii");
+        stringBagsLex_helper(3, "a", "ExhaustiveProvider_stringBagsLex_viii");
+
+        stringBagsLex_helper(0, "abc", "ExhaustiveProvider_stringBagsLex_ix");
+        stringBagsLex_helper(1, "abc", "ExhaustiveProvider_stringBagsLex_x");
+        stringBagsLex_helper(2, "abc", "ExhaustiveProvider_stringBagsLex_xi");
+        stringBagsLex_helper(3, "abc", "ExhaustiveProvider_stringBagsLex_xii");
+
+        stringBagsLex_helper(0, "abbc", "ExhaustiveProvider_stringBagsLex_xiii");
+        stringBagsLex_helper(1, "abbc", "ExhaustiveProvider_stringBagsLex_xiv");
+        stringBagsLex_helper(2, "abbc", "ExhaustiveProvider_stringBagsLex_xv");
+        stringBagsLex_helper(3, "abbc", "ExhaustiveProvider_stringBagsLex_xvi");
+
+        stringBagsLex_helper_limit(0, "Mississippi", "ExhaustiveProvider_stringBagsLex_xvii");
+        stringBagsLex_helper_limit(1, "Mississippi", "ExhaustiveProvider_stringBagsLex_xviii");
+        stringBagsLex_helper_limit(2, "Mississippi", "ExhaustiveProvider_stringBagsLex_xix");
+        stringBagsLex_helper_limit(3, "Mississippi", "ExhaustiveProvider_stringBagsLex_xx");
+
         try {
             EP.stringBagsLex(-1, "");
             fail();
@@ -3932,23 +3886,11 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testBagsShortlex() {
-        bagsShortlex_helper("[]", "[[]]");
-        bagsShortlex_helper("[5]",
-                "[[], [5], [5, 5], [5, 5, 5], [5, 5, 5, 5], [5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5], ...]");
-        bagsShortlex_helper("[1, 2, 3]",
-                "[[], [1], [2], [3], [1, 1], [1, 2], [1, 3], [2, 2], [2, 3], [3, 3], [1, 1, 1], [1, 1, 2]," +
-                " [1, 1, 3], [1, 2, 2], [1, 2, 3], [1, 3, 3], [2, 2, 2], [2, 2, 3], [2, 3, 3], [3, 3, 3], ...]");
-        bagsShortlex_helper("[1, 2, 2, 3]",
-                "[[], [1], [2], [2], [3], [1, 1], [1, 2], [1, 2], [1, 3], [2, 2], [2, 2], [2, 3], [2, 2], [2, 3]," +
-                " [3, 3], [1, 1, 1], [1, 1, 2], [1, 1, 2], [1, 1, 3], [1, 2, 2], ...]");
+        bagsShortlex_helper("[]", "ExhaustiveProvider_bagsShortlex_i");
+        bagsShortlex_helper("[5]", "ExhaustiveProvider_bagsShortlex_ii");
+        bagsShortlex_helper("[1, 2, 3]", "ExhaustiveProvider_bagsShortlex_iii");
+        bagsShortlex_helper("[1, 2, 2, 3]", "ExhaustiveProvider_bagsShortlex_iv");
+
         bagsShortlex_fail_helper("[1, null, 3]");
         bagsShortlex_fail_helper("[null]");
     }
@@ -3959,18 +3901,11 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testStringBagsShortlex() {
-        stringBagsShortlex_helper("", "[]");
-        aeq(length(EP.stringBagsShortlex("")), 1);
-        stringBagsShortlex_helper("a",
-                "[, a, aa, aaa, aaaa, aaaaa, aaaaaa, aaaaaaa, aaaaaaaa, aaaaaaaaa, aaaaaaaaaa, aaaaaaaaaaa," +
-                " aaaaaaaaaaaa, aaaaaaaaaaaaa, aaaaaaaaaaaaaa, aaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaa," +
-                " aaaaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaaaa, ...]");
-        stringBagsShortlex_helper("abc",
-                "[, a, b, c, aa, ab, ac, bb, bc, cc, aaa, aab, aac, abb, abc, acc, bbb, bbc, bcc, ccc, ...]");
-        stringBagsShortlex_helper("abbc",
-                "[, a, b, b, c, aa, ab, ab, ac, bb, bb, bc, bb, bc, cc, aaa, aab, aab, aac, abb, ...]");
-        stringBagsShortlex_helper("Mississippi",
-                "[, M, i, i, i, i, p, p, s, s, s, s, MM, Mi, Mi, Mi, Mi, Mp, Mp, Ms, ...]");
+        stringBagsShortlex_helper("", "ExhaustiveProvider_stringBagsShortlex_i");
+        stringBagsShortlex_helper("a", "ExhaustiveProvider_stringBagsShortlex_ii");
+        stringBagsShortlex_helper("abc", "ExhaustiveProvider_stringBagsShortlex_iii");
+        stringBagsShortlex_helper("abbc", "ExhaustiveProvider_stringBagsShortlex_iv");
+        stringBagsShortlex_helper("Mississippi", "ExhaustiveProvider_stringBagsShortlex_v");
     }
 
     private static void bagsShortlexAtLeast_helper(int minSize, @NotNull String input, @NotNull String output) {
@@ -3979,69 +3914,20 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testBagsShortlexAtLeast() {
-        bagsShortlexAtLeast_helper(0, "[]", "[[]]");
-        bagsShortlexAtLeast_helper(1, "[]", "[]");
-        bagsShortlexAtLeast_helper(2, "[]", "[]");
-        bagsShortlexAtLeast_helper(3, "[]", "[]");
+        bagsShortlexAtLeast_helper(0, "[]", "ExhaustiveProvider_bagsShortlexAtLeast_i");
+        bagsShortlexAtLeast_helper(1, "[]", "ExhaustiveProvider_bagsShortlexAtLeast_ii");
+        bagsShortlexAtLeast_helper(2, "[]", "ExhaustiveProvider_bagsShortlexAtLeast_iii");
+        bagsShortlexAtLeast_helper(3, "[]", "ExhaustiveProvider_bagsShortlexAtLeast_iv");
 
-        bagsShortlexAtLeast_helper(0, "[5]",
-                "[[], [5], [5, 5], [5, 5, 5], [5, 5, 5, 5], [5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5], ...]");
-        bagsShortlexAtLeast_helper(1, "[5]",
-                "[[5], [5, 5], [5, 5, 5], [5, 5, 5, 5], [5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5], ...]");
-        bagsShortlexAtLeast_helper(2, "[5]",
-                "[[5, 5], [5, 5, 5], [5, 5, 5, 5], [5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5], ...]");
-        bagsShortlexAtLeast_helper(3, "[5]",
-                "[[5, 5, 5], [5, 5, 5, 5], [5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5], ...]");
+        bagsShortlexAtLeast_helper(0, "[5]", "ExhaustiveProvider_bagsShortlexAtLeast_v");
+        bagsShortlexAtLeast_helper(1, "[5]", "ExhaustiveProvider_bagsShortlexAtLeast_vi");
+        bagsShortlexAtLeast_helper(2, "[5]", "ExhaustiveProvider_bagsShortlexAtLeast_vii");
+        bagsShortlexAtLeast_helper(3, "[5]", "ExhaustiveProvider_bagsShortlexAtLeast_viii");
 
-        bagsShortlexAtLeast_helper(0, "[1, 2, 3]",
-                "[[], [1], [2], [3], [1, 1], [1, 2], [1, 3], [2, 2], [2, 3], [3, 3], [1, 1, 1], [1, 1, 2]," +
-                " [1, 1, 3], [1, 2, 2], [1, 2, 3], [1, 3, 3], [2, 2, 2], [2, 2, 3], [2, 3, 3], [3, 3, 3], ...]");
-        bagsShortlexAtLeast_helper(1, "[1, 2, 3]",
-                "[[1], [2], [3], [1, 1], [1, 2], [1, 3], [2, 2], [2, 3], [3, 3], [1, 1, 1], [1, 1, 2], [1, 1, 3]," +
-                " [1, 2, 2], [1, 2, 3], [1, 3, 3], [2, 2, 2], [2, 2, 3], [2, 3, 3], [3, 3, 3], [1, 1, 1, 1], ...]");
-        bagsShortlexAtLeast_helper(2, "[1, 2, 3]",
-                "[[1, 1], [1, 2], [1, 3], [2, 2], [2, 3], [3, 3], [1, 1, 1], [1, 1, 2], [1, 1, 3], [1, 2, 2]," +
-                " [1, 2, 3], [1, 3, 3], [2, 2, 2], [2, 2, 3], [2, 3, 3], [3, 3, 3], [1, 1, 1, 1], [1, 1, 1, 2]," +
-                " [1, 1, 1, 3], [1, 1, 2, 2], ...]");
-        bagsShortlexAtLeast_helper(3, "[1, 2, 3]",
-                "[[1, 1, 1], [1, 1, 2], [1, 1, 3], [1, 2, 2], [1, 2, 3], [1, 3, 3], [2, 2, 2], [2, 2, 3], [2, 3, 3]," +
-                " [3, 3, 3], [1, 1, 1, 1], [1, 1, 1, 2], [1, 1, 1, 3], [1, 1, 2, 2], [1, 1, 2, 3], [1, 1, 3, 3]," +
-                " [1, 2, 2, 2], [1, 2, 2, 3], [1, 2, 3, 3], [1, 3, 3, 3], ...]");
+        bagsShortlexAtLeast_helper(0, "[1, 2, 3]", "ExhaustiveProvider_bagsShortlexAtLeast_ix");
+        bagsShortlexAtLeast_helper(1, "[1, 2, 3]", "ExhaustiveProvider_bagsShortlexAtLeast_x");
+        bagsShortlexAtLeast_helper(2, "[1, 2, 3]", "ExhaustiveProvider_bagsShortlexAtLeast_xi");
+        bagsShortlexAtLeast_helper(3, "[1, 2, 3]", "ExhaustiveProvider_bagsShortlexAtLeast_xii");
 
         try {
             EP.bagsShortlexAtLeast(-1, Collections.<Integer>emptyList());
@@ -4067,59 +3953,31 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testStringBagsShortlexAtLeast() {
-        stringBagsShortlexAtLeast_helper(0, "", "[]");
-        aeq(length(EP.stringBagsShortlexAtLeast(0, "")), 1);
-        stringBagsShortlexAtLeast_helper(1, "", "[]");
-        aeq(length(EP.stringBagsShortlexAtLeast(1, "")), 0);
-        stringBagsShortlexAtLeast_helper(2, "", "[]");
-        aeq(length(EP.stringBagsShortlexAtLeast(2, "")), 0);
-        stringBagsShortlexAtLeast_helper(3, "", "[]");
-        aeq(length(EP.stringBagsShortlexAtLeast(3, "")), 0);
-        stringBagsShortlexAtLeast_helper(0, "a",
-                "[, a, aa, aaa, aaaa, aaaaa, aaaaaa, aaaaaaa, aaaaaaaa, aaaaaaaaa, aaaaaaaaaa, aaaaaaaaaaa," +
-                " aaaaaaaaaaaa, aaaaaaaaaaaaa, aaaaaaaaaaaaaa, aaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaa," +
-                " aaaaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaaaa, ...]");
-        stringBagsShortlexAtLeast_helper(1, "a",
-                "[a, aa, aaa, aaaa, aaaaa, aaaaaa, aaaaaaa, aaaaaaaa, aaaaaaaaa, aaaaaaaaaa, aaaaaaaaaaa," +
-                " aaaaaaaaaaaa, aaaaaaaaaaaaa, aaaaaaaaaaaaaa, aaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaa," +
-                " aaaaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaaaaa, ...]");
-        stringBagsShortlexAtLeast_helper(2, "a",
-                "[aa, aaa, aaaa, aaaaa, aaaaaa, aaaaaaa, aaaaaaaa, aaaaaaaaa, aaaaaaaaaa, aaaaaaaaaaa, aaaaaaaaaaaa," +
-                " aaaaaaaaaaaaa, aaaaaaaaaaaaaa, aaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaa," +
-                " aaaaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaaaaaa, ...]");
-        stringBagsShortlexAtLeast_helper(3, "a",
-                "[aaa, aaaa, aaaaa, aaaaaa, aaaaaaa, aaaaaaaa, aaaaaaaaa, aaaaaaaaaa, aaaaaaaaaaa, aaaaaaaaaaaa," +
-                " aaaaaaaaaaaaa, aaaaaaaaaaaaaa, aaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaa," +
-                " aaaaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaaaaaa," +
-                " aaaaaaaaaaaaaaaaaaaaaa, ...]");
-        stringBagsShortlexAtLeast_helper(0, "abc",
-                "[, a, b, c, aa, ab, ac, bb, bc, cc, aaa, aab, aac, abb, abc, acc, bbb, bbc, bcc, ccc, ...]");
-        stringBagsShortlexAtLeast_helper(1, "abc",
-                "[a, b, c, aa, ab, ac, bb, bc, cc, aaa, aab, aac, abb, abc, acc, bbb, bbc, bcc, ccc, aaaa, ...]");
-        stringBagsShortlexAtLeast_helper(2, "abc",
-                "[aa, ab, ac, bb, bc, cc, aaa, aab, aac, abb, abc, acc, bbb, bbc, bcc, ccc, aaaa, aaab, aaac, aabb," +
-                " ...]");
-        stringBagsShortlexAtLeast_helper(3, "abc",
-                "[aaa, aab, aac, abb, abc, acc, bbb, bbc, bcc, ccc, aaaa, aaab, aaac, aabb, aabc, aacc, abbb, abbc," +
-                " abcc, accc, ...]");
-        stringBagsShortlexAtLeast_helper(0, "abbc",
-                "[, a, b, b, c, aa, ab, ab, ac, bb, bb, bc, bb, bc, cc, aaa, aab, aab, aac, abb, ...]");
-        stringBagsShortlexAtLeast_helper(1, "abbc",
-                "[a, b, b, c, aa, ab, ab, ac, bb, bb, bc, bb, bc, cc, aaa, aab, aab, aac, abb, abb, ...]");
-        stringBagsShortlexAtLeast_helper(2, "abbc",
-                "[aa, ab, ab, ac, bb, bb, bc, bb, bc, cc, aaa, aab, aab, aac, abb, abb, abc, abb, abc, acc, ...]");
-        stringBagsShortlexAtLeast_helper(3, "abbc",
-                "[aaa, aab, aab, aac, abb, abb, abc, abb, abc, acc, bbb, bbb, bbc, bbb, bbc, bcc, bbb, bbc, bcc," +
-                " ccc, ...]");
-        stringBagsShortlexAtLeast_helper(0, "Mississippi",
-                "[, M, i, i, i, i, p, p, s, s, s, s, MM, Mi, Mi, Mi, Mi, Mp, Mp, Ms, ...]");
-        stringBagsShortlexAtLeast_helper(1, "Mississippi",
-                "[M, i, i, i, i, p, p, s, s, s, s, MM, Mi, Mi, Mi, Mi, Mp, Mp, Ms, Ms, ...]");
-        stringBagsShortlexAtLeast_helper(2, "Mississippi",
-                "[MM, Mi, Mi, Mi, Mi, Mp, Mp, Ms, Ms, Ms, Ms, ii, ii, ii, ii, ip, ip, is, is, is, ...]");
-        stringBagsShortlexAtLeast_helper(3, "Mississippi",
-                "[MMM, MMi, MMi, MMi, MMi, MMp, MMp, MMs, MMs, MMs, MMs, Mii, Mii, Mii, Mii, Mip, Mip, Mis, Mis," +
-                " Mis, ...]");
+        stringBagsShortlexAtLeast_helper(0, "", "ExhaustiveProvider_stringBagsShortlexAtLeast_i");
+        stringBagsShortlexAtLeast_helper(1, "", "ExhaustiveProvider_stringBagsShortlexAtLeast_ii");
+        stringBagsShortlexAtLeast_helper(2, "", "ExhaustiveProvider_stringBagsShortlexAtLeast_iii");
+        stringBagsShortlexAtLeast_helper(3, "", "ExhaustiveProvider_stringBagsShortlexAtLeast_iv");
+
+        stringBagsShortlexAtLeast_helper(0, "a", "ExhaustiveProvider_stringBagsShortlexAtLeast_v");
+        stringBagsShortlexAtLeast_helper(1, "a", "ExhaustiveProvider_stringBagsShortlexAtLeast_vi");
+        stringBagsShortlexAtLeast_helper(2, "a", "ExhaustiveProvider_stringBagsShortlexAtLeast_vii");
+        stringBagsShortlexAtLeast_helper(3, "a", "ExhaustiveProvider_stringBagsShortlexAtLeast_viii");
+
+        stringBagsShortlexAtLeast_helper(0, "abc", "ExhaustiveProvider_stringBagsShortlexAtLeast_ix");
+        stringBagsShortlexAtLeast_helper(1, "abc", "ExhaustiveProvider_stringBagsShortlexAtLeast_x");
+        stringBagsShortlexAtLeast_helper(2, "abc", "ExhaustiveProvider_stringBagsShortlexAtLeast_xi");
+        stringBagsShortlexAtLeast_helper(3, "abc", "ExhaustiveProvider_stringBagsShortlexAtLeast_xii");
+
+        stringBagsShortlexAtLeast_helper(0, "abbc", "ExhaustiveProvider_stringBagsShortlexAtLeast_xiii");
+        stringBagsShortlexAtLeast_helper(1, "abbc", "ExhaustiveProvider_stringBagsShortlexAtLeast_xiv");
+        stringBagsShortlexAtLeast_helper(2, "abbc", "ExhaustiveProvider_stringBagsShortlexAtLeast_xv");
+        stringBagsShortlexAtLeast_helper(3, "abbc", "ExhaustiveProvider_stringBagsShortlexAtLeast_xvi");
+
+        stringBagsShortlexAtLeast_helper(0, "Mississippi", "ExhaustiveProvider_stringBagsShortlexAtLeast_xvii");
+        stringBagsShortlexAtLeast_helper(1, "Mississippi", "ExhaustiveProvider_stringBagsShortlexAtLeast_xviii");
+        stringBagsShortlexAtLeast_helper(2, "Mississippi", "ExhaustiveProvider_stringBagsShortlexAtLeast_xix");
+        stringBagsShortlexAtLeast_helper(3, "Mississippi", "ExhaustiveProvider_stringBagsShortlexAtLeast_xx");
+
         try {
             EP.stringBagsShortlexAtLeast(-1, "");
             fail();
