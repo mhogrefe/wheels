@@ -4412,7 +4412,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void subsetsLex_int_List_helper(int size, @NotNull String input, @NotNull String output) {
-        aeqit(EP.subsetsLex(size, readIntegerList(input)), output);
+        aeqitLog(EP.subsetsLex(size, readIntegerList(input)), output);
     }
 
     private static void subsetsLex_int_List_fail_helper(int size, @NotNull String input) {
@@ -4424,22 +4424,26 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testSubsetsLex_int_List() {
-        subsetsLex_int_List_helper(0, "[]", "[[]]");
-        subsetsLex_int_List_helper(1, "[]", "[]");
-        subsetsLex_int_List_helper(2, "[]", "[]");
-        subsetsLex_int_List_helper(3, "[]", "[]");
-        subsetsLex_int_List_helper(0, "[5]", "[[]]");
-        subsetsLex_int_List_helper(1, "[5]", "[[5]]");
-        subsetsLex_int_List_helper(2, "[5]", "[]");
-        subsetsLex_int_List_helper(3, "[5]", "[]");
-        subsetsLex_int_List_helper(0, "[1, 2, 3]", "[[]]");
-        subsetsLex_int_List_helper(1, "[1, 2, 3]", "[[1], [2], [3]]");
-        subsetsLex_int_List_helper(2, "[1, 2, 3]", "[[1, 2], [1, 3], [2, 3]]");
-        subsetsLex_int_List_helper(3, "[1, 2, 3]", "[[1, 2, 3]]");
-        subsetsLex_int_List_helper(0, "[1, 2, 2, 3]", "[[]]");
-        subsetsLex_int_List_helper(1, "[1, 2, 2, 3]", "[[1], [2], [2], [3]]");
-        subsetsLex_int_List_helper(2, "[1, 2, 2, 3]", "[[1, 2], [1, 2], [1, 3], [2, 2], [2, 3], [2, 3]]");
-        subsetsLex_int_List_helper(3, "[1, 2, 2, 3]", "[[1, 2, 2], [1, 2, 3], [1, 2, 3], [2, 2, 3]]");
+        subsetsLex_int_List_helper(0, "[]", "ExhaustiveProvider_subsetsLex_int_List_i");
+        subsetsLex_int_List_helper(1, "[]", "ExhaustiveProvider_subsetsLex_int_List_ii");
+        subsetsLex_int_List_helper(2, "[]", "ExhaustiveProvider_subsetsLex_int_List_iii");
+        subsetsLex_int_List_helper(3, "[]", "ExhaustiveProvider_subsetsLex_int_List_iv");
+
+        subsetsLex_int_List_helper(0, "[5]", "ExhaustiveProvider_subsetsLex_int_List_v");
+        subsetsLex_int_List_helper(1, "[5]", "ExhaustiveProvider_subsetsLex_int_List_vi");
+        subsetsLex_int_List_helper(2, "[5]", "ExhaustiveProvider_subsetsLex_int_List_vii");
+        subsetsLex_int_List_helper(3, "[5]", "ExhaustiveProvider_subsetsLex_int_List_viii");
+
+        subsetsLex_int_List_helper(0, "[1, 2, 3]", "ExhaustiveProvider_subsetsLex_int_List_ix");
+        subsetsLex_int_List_helper(1, "[1, 2, 3]", "ExhaustiveProvider_subsetsLex_int_List_x");
+        subsetsLex_int_List_helper(2, "[1, 2, 3]", "ExhaustiveProvider_subsetsLex_int_List_xi");
+        subsetsLex_int_List_helper(3, "[1, 2, 3]", "ExhaustiveProvider_subsetsLex_int_List_xii");
+
+        subsetsLex_int_List_helper(0, "[1, 2, 2, 3]", "ExhaustiveProvider_subsetsLex_int_List_xiii");
+        subsetsLex_int_List_helper(1, "[1, 2, 2, 3]", "ExhaustiveProvider_subsetsLex_int_List_xiv");
+        subsetsLex_int_List_helper(2, "[1, 2, 2, 3]", "ExhaustiveProvider_subsetsLex_int_List_xv");
+        subsetsLex_int_List_helper(3, "[1, 2, 2, 3]", "ExhaustiveProvider_subsetsLex_int_List_xvi");
+
         subsetsLex_int_List_fail_helper(-1, "[]");
         subsetsLex_int_List_fail_helper(-1, "[1, 2, 3]");
         subsetsLex_int_List_fail_helper(1, "[1, null, 3]");
@@ -4461,10 +4465,11 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testSubsetPairsLex() {
-        subsetPairsLex_helper("[]", "[]");
-        subsetPairsLex_helper("[5]", "[]");
-        subsetPairsLex_helper("[1, 2, 3, 4]", "[(1, 2), (1, 3), (1, 4), (2, 3), (2, 4), (3, 4)]");
-        subsetPairsLex_helper("[1, 2, 2, 4]", "[(1, 2), (1, 2), (1, 4), (2, 2), (2, 4), (2, 4)]");
+        subsetPairsLex_helper("[]", "ExhaustiveProvider_subsetPairsLex_i");
+        subsetPairsLex_helper("[5]", "ExhaustiveProvider_subsetPairsLex_ii");
+        subsetPairsLex_helper("[1, 2, 3, 4]", "ExhaustiveProvider_subsetPairsLex_iii");
+        subsetPairsLex_helper("[1, 2, 2, 4]", "ExhaustiveProvider_subsetPairsLex_iv");
+
         subsetPairsLex_fail_helper("[1, 2, null, 4]");
         subsetPairsLex_fail_helper("[null]");
     }
@@ -4482,10 +4487,11 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testSubsetTriplesLex() {
-        subsetTriplesLex_helper("[]", "[]");
-        subsetTriplesLex_helper("[5]", "[]");
-        subsetTriplesLex_helper("[1, 2, 3, 4]", "[(1, 2, 3), (1, 2, 4), (1, 3, 4), (2, 3, 4)]");
-        subsetTriplesLex_helper("[1, 2, 2, 4]", "[(1, 2, 2), (1, 2, 4), (1, 2, 4), (2, 2, 4)]");
+        subsetTriplesLex_helper("[]", "ExhaustiveProvider_subsetTriplesLex_i");
+        subsetTriplesLex_helper("[5]", "ExhaustiveProvider_subsetTriplesLex_ii");
+        subsetTriplesLex_helper("[1, 2, 3, 4]", "ExhaustiveProvider_subsetTriplesLex_iii");
+        subsetTriplesLex_helper("[1, 2, 2, 4]", "ExhaustiveProvider_subsetTriplesLex_iv");
+
         subsetTriplesLex_fail_helper("[1, 2, null, 4]");
         subsetTriplesLex_fail_helper("[null]");
     }
@@ -4503,10 +4509,11 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testSubsetQuadruplesLex() {
-        subsetQuadruplesLex_helper("[]", "[]");
-        subsetQuadruplesLex_helper("[5]", "[]");
-        subsetQuadruplesLex_helper("[1, 2, 3, 4]", "[(1, 2, 3, 4)]");
-        subsetQuadruplesLex_helper("[1, 2, 2, 4]", "[(1, 2, 2, 4)]");
+        subsetQuadruplesLex_helper("[]", "ExhaustiveProvider_subsetQuadruplesLex_i");
+        subsetQuadruplesLex_helper("[5]", "ExhaustiveProvider_subsetQuadruplesLex_ii");
+        subsetQuadruplesLex_helper("[1, 2, 3, 4]", "ExhaustiveProvider_subsetQuadruplesLex_iii");
+        subsetQuadruplesLex_helper("[1, 2, 2, 4]", "ExhaustiveProvider_subsetQuadruplesLex_iv");
+
         subsetQuadruplesLex_fail_helper("[1, 2, null, 4]");
         subsetQuadruplesLex_fail_helper("[null]");
     }
@@ -4524,20 +4531,13 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testSubsetQuintuplesLex() {
-        subsetQuintuplesLex_helper("[]", "[]");
-        subsetQuintuplesLex_helper("[5]", "[]");
-        subsetQuintuplesLex_helper("[1, 2, 3, 4]", "[]");
-        subsetQuintuplesLex_helper("[1, 2, 2, 4]", "[]");
-        subsetQuintuplesLex_helper("[1, 2, 3, 4, 5, 6, 7, 8]",
-                "[(1, 2, 3, 4, 5), (1, 2, 3, 4, 6), (1, 2, 3, 4, 7), (1, 2, 3, 4, 8), (1, 2, 3, 5, 6)," +
-                " (1, 2, 3, 5, 7), (1, 2, 3, 5, 8), (1, 2, 3, 6, 7), (1, 2, 3, 6, 8), (1, 2, 3, 7, 8)," +
-                " (1, 2, 4, 5, 6), (1, 2, 4, 5, 7), (1, 2, 4, 5, 8), (1, 2, 4, 6, 7), (1, 2, 4, 6, 8)," +
-                " (1, 2, 4, 7, 8), (1, 2, 5, 6, 7), (1, 2, 5, 6, 8), (1, 2, 5, 7, 8), (1, 2, 6, 7, 8), ...]");
-        subsetQuintuplesLex_helper("[1, 2, 2, 4, 5, 6, 7, 8]",
-                "[(1, 2, 2, 4, 5), (1, 2, 2, 4, 6), (1, 2, 2, 4, 7), (1, 2, 2, 4, 8), (1, 2, 2, 5, 6)," +
-                " (1, 2, 2, 5, 7), (1, 2, 2, 5, 8), (1, 2, 2, 6, 7), (1, 2, 2, 6, 8), (1, 2, 2, 7, 8)," +
-                " (1, 2, 4, 5, 6), (1, 2, 4, 5, 7), (1, 2, 4, 5, 8), (1, 2, 4, 6, 7), (1, 2, 4, 6, 8)," +
-                " (1, 2, 4, 7, 8), (1, 2, 5, 6, 7), (1, 2, 5, 6, 8), (1, 2, 5, 7, 8), (1, 2, 6, 7, 8), ...]");
+        subsetQuintuplesLex_helper("[]", "ExhaustiveProvider_subsetQuintuplesLex_i");
+        subsetQuintuplesLex_helper("[5]", "ExhaustiveProvider_subsetQuintuplesLex_ii");
+        subsetQuintuplesLex_helper("[1, 2, 3, 4]", "ExhaustiveProvider_subsetQuintuplesLex_iii");
+        subsetQuintuplesLex_helper("[1, 2, 2, 4]", "ExhaustiveProvider_subsetQuintuplesLex_iv");
+        subsetQuintuplesLex_helper("[1, 2, 3, 4, 5, 6, 7, 8]", "ExhaustiveProvider_subsetQuintuplesLex_v");
+        subsetQuintuplesLex_helper("[1, 2, 2, 4, 5, 6, 7, 8]", "ExhaustiveProvider_subsetQuintuplesLex_vi");
+
         subsetQuintuplesLex_fail_helper("[1, 2, null, 4]");
         subsetQuintuplesLex_fail_helper("[null]");
     }
@@ -4555,22 +4555,13 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testSubsetSextuplesLex() {
-        subsetSextuplesLex_helper("[]", "[]");
-        subsetSextuplesLex_helper("[5]", "[]");
-        subsetSextuplesLex_helper("[1, 2, 3, 4]", "[]");
-        subsetSextuplesLex_helper("[1, 2, 2, 4]", "[]");
-        subsetSextuplesLex_helper("[1, 2, 3, 4, 5, 6, 7, 8]",
-                "[(1, 2, 3, 4, 5, 6), (1, 2, 3, 4, 5, 7), (1, 2, 3, 4, 5, 8), (1, 2, 3, 4, 6, 7)," +
-                " (1, 2, 3, 4, 6, 8), (1, 2, 3, 4, 7, 8), (1, 2, 3, 5, 6, 7), (1, 2, 3, 5, 6, 8)," +
-                " (1, 2, 3, 5, 7, 8), (1, 2, 3, 6, 7, 8), (1, 2, 4, 5, 6, 7), (1, 2, 4, 5, 6, 8)," +
-                " (1, 2, 4, 5, 7, 8), (1, 2, 4, 6, 7, 8), (1, 2, 5, 6, 7, 8), (1, 3, 4, 5, 6, 7)," +
-                " (1, 3, 4, 5, 6, 8), (1, 3, 4, 5, 7, 8), (1, 3, 4, 6, 7, 8), (1, 3, 5, 6, 7, 8), ...]");
-        subsetSextuplesLex_helper("[1, 2, 2, 4, 5, 6, 7, 8]",
-                "[(1, 2, 2, 4, 5, 6), (1, 2, 2, 4, 5, 7), (1, 2, 2, 4, 5, 8), (1, 2, 2, 4, 6, 7)," +
-                " (1, 2, 2, 4, 6, 8), (1, 2, 2, 4, 7, 8), (1, 2, 2, 5, 6, 7), (1, 2, 2, 5, 6, 8)," +
-                " (1, 2, 2, 5, 7, 8), (1, 2, 2, 6, 7, 8), (1, 2, 4, 5, 6, 7), (1, 2, 4, 5, 6, 8)," +
-                " (1, 2, 4, 5, 7, 8), (1, 2, 4, 6, 7, 8), (1, 2, 5, 6, 7, 8), (1, 2, 4, 5, 6, 7)," +
-                " (1, 2, 4, 5, 6, 8), (1, 2, 4, 5, 7, 8), (1, 2, 4, 6, 7, 8), (1, 2, 5, 6, 7, 8), ...]");
+        subsetSextuplesLex_helper("[]", "ExhaustiveProvider_subsetSextuplesLex_i");
+        subsetSextuplesLex_helper("[5]", "ExhaustiveProvider_subsetSextuplesLex_ii");
+        subsetSextuplesLex_helper("[1, 2, 3, 4]", "ExhaustiveProvider_subsetSextuplesLex_iii");
+        subsetSextuplesLex_helper("[1, 2, 2, 4]", "ExhaustiveProvider_subsetSextuplesLex_iv");
+        subsetSextuplesLex_helper("[1, 2, 3, 4, 5, 6, 7, 8]", "ExhaustiveProvider_subsetSextuplesLex_v");
+        subsetSextuplesLex_helper("[1, 2, 2, 4, 5, 6, 7, 8]", "ExhaustiveProvider_subsetSextuplesLex_vi");
+
         subsetSextuplesLex_fail_helper("[1, 2, null, 4]");
         subsetSextuplesLex_fail_helper("[null]");
     }
@@ -4588,22 +4579,19 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testSubsetSeptuplesLex() {
-        subsetSeptuplesLex_helper("[]", "[]");
-        subsetSeptuplesLex_helper("[5]", "[]");
-        subsetSeptuplesLex_helper("[1, 2, 3, 4]", "[]");
-        subsetSeptuplesLex_helper("[1, 2, 2, 4]", "[]");
-        subsetSeptuplesLex_helper("[1, 2, 3, 4, 5, 6, 7, 8]",
-                "[(1, 2, 3, 4, 5, 6, 7), (1, 2, 3, 4, 5, 6, 8), (1, 2, 3, 4, 5, 7, 8), (1, 2, 3, 4, 6, 7, 8)," +
-                " (1, 2, 3, 5, 6, 7, 8), (1, 2, 4, 5, 6, 7, 8), (1, 3, 4, 5, 6, 7, 8), (2, 3, 4, 5, 6, 7, 8)]");
-        subsetSeptuplesLex_helper("[1, 2, 2, 4, 5, 6, 7, 8]",
-                "[(1, 2, 2, 4, 5, 6, 7), (1, 2, 2, 4, 5, 6, 8), (1, 2, 2, 4, 5, 7, 8), (1, 2, 2, 4, 6, 7, 8)," +
-                " (1, 2, 2, 5, 6, 7, 8), (1, 2, 4, 5, 6, 7, 8), (1, 2, 4, 5, 6, 7, 8), (2, 2, 4, 5, 6, 7, 8)]");
+        subsetSeptuplesLex_helper("[]", "ExhaustiveProvider_subsetSeptuplesLex_i");
+        subsetSeptuplesLex_helper("[5]", "ExhaustiveProvider_subsetSeptuplesLex_ii");
+        subsetSeptuplesLex_helper("[1, 2, 3, 4]", "ExhaustiveProvider_subsetSeptuplesLex_iii");
+        subsetSeptuplesLex_helper("[1, 2, 2, 4]", "ExhaustiveProvider_subsetSeptuplesLex_iv");
+        subsetSeptuplesLex_helper("[1, 2, 3, 4, 5, 6, 7, 8]", "ExhaustiveProvider_subsetSeptuplesLex_v");
+        subsetSeptuplesLex_helper("[1, 2, 2, 4, 5, 6, 7, 8]", "ExhaustiveProvider_subsetSeptuplesLex_vi");
+
         subsetSeptuplesLex_fail_helper("[1, 2, null, 4]");
         subsetSeptuplesLex_fail_helper("[null]");
     }
 
     private static void stringSubsetsLex_helper(int size, @NotNull String input, @NotNull String output) {
-        aeqit(EP.stringSubsetsLex(size, input), output);
+        aeqitLog(EP.stringSubsetsLex(size, input), output);
     }
 
     private static void stringSubsetsLex_helper_limit(
@@ -4616,39 +4604,31 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testStringSubsetsLex_int_String() {
-        stringSubsetsLex_helper(0, "", "[]");
-        aeq(length(EP.stringSubsetsLex(0, "")), 1);
-        stringSubsetsLex_helper(1, "", "[]");
-        aeq(length(EP.stringSubsetsLex(1, "")), 0);
-        stringSubsetsLex_helper(2, "", "[]");
-        aeq(length(EP.stringSubsetsLex(2, "")), 0);
-        stringSubsetsLex_helper(3, "", "[]");
-        aeq(length(EP.stringSubsetsLex(3, "")), 0);
-        stringSubsetsLex_helper(0, "a", "[]");
-        aeq(length(EP.stringSubsetsLex(0, "a")), 1);
-        stringSubsetsLex_helper(1, "a", "[a]");
-        stringSubsetsLex_helper(2, "a", "[]");
-        aeq(length(EP.stringSubsetsLex(2, "a")), 0);
-        stringSubsetsLex_helper(3, "a", "[]");
-        aeq(length(EP.stringSubsetsLex(3, "a")), 0);
-        stringSubsetsLex_helper(0, "abc", "[]");
-        aeq(length(EP.stringSubsetsLex(0, "abc")), 1);
-        stringSubsetsLex_helper(1, "abc", "[a, b, c]");
-        stringSubsetsLex_helper(2, "abc", "[ab, ac, bc]");
-        stringSubsetsLex_helper(3, "abc", "[abc]");
-        stringSubsetsLex_helper(0, "abbc", "[]");
-        aeq(length(EP.stringSubsetsLex(0, "abbc")), 1);
-        stringSubsetsLex_helper(1, "abbc", "[a, b, b, c]");
-        stringSubsetsLex_helper(2, "abbc", "[ab, ab, ac, bb, bc, bc]");
-        stringSubsetsLex_helper(3, "abbc", "[abb, abc, abc, bbc]");
-        stringSubsetsLex_helper_limit(0, "Mississippi", "[]");
-        aeq(length(EP.stringSubsetsLex(0, "Mississippi")), 1);
-        stringSubsetsLex_helper_limit(1, "Mississippi", "[M, i, i, i, i, p, p, s, s, s, s]");
-        stringSubsetsLex_helper_limit(2, "Mississippi",
-                "[Mi, Mi, Mi, Mi, Mp, Mp, Ms, Ms, Ms, Ms, ii, ii, ii, ip, ip, is, is, is, is, ii, ...]");
-        stringSubsetsLex_helper_limit(3, "Mississippi",
-                "[Mii, Mii, Mii, Mip, Mip, Mis, Mis, Mis, Mis, Mii, Mii, Mip, Mip, Mis, Mis, Mis, Mis, Mii, Mip," +
-                " Mip, ...]");
+        stringSubsetsLex_helper(0, "", "ExhaustiveProvider_stringSubsetsLex_i");
+        stringSubsetsLex_helper(1, "", "ExhaustiveProvider_stringSubsetsLex_ii");
+        stringSubsetsLex_helper(2, "", "ExhaustiveProvider_stringSubsetsLex_iii");
+        stringSubsetsLex_helper(3, "", "ExhaustiveProvider_stringSubsetsLex_iv");
+
+        stringSubsetsLex_helper(0, "a", "ExhaustiveProvider_stringSubsetsLex_v");
+        stringSubsetsLex_helper(1, "a", "ExhaustiveProvider_stringSubsetsLex_vi");
+        stringSubsetsLex_helper(2, "a", "ExhaustiveProvider_stringSubsetsLex_vii");
+        stringSubsetsLex_helper(3, "a", "ExhaustiveProvider_stringSubsetsLex_viii");
+
+        stringSubsetsLex_helper(0, "abc", "ExhaustiveProvider_stringSubsetsLex_ix");
+        stringSubsetsLex_helper(1, "abc", "ExhaustiveProvider_stringSubsetsLex_x");
+        stringSubsetsLex_helper(2, "abc", "ExhaustiveProvider_stringSubsetsLex_xi");
+        stringSubsetsLex_helper(3, "abc", "ExhaustiveProvider_stringSubsetsLex_xii");
+
+        stringSubsetsLex_helper(0, "abbc", "ExhaustiveProvider_stringSubsetsLex_xiii");
+        stringSubsetsLex_helper(1, "abbc", "ExhaustiveProvider_stringSubsetsLex_xiv");
+        stringSubsetsLex_helper(2, "abbc", "ExhaustiveProvider_stringSubsetsLex_xv");
+        stringSubsetsLex_helper(3, "abbc", "ExhaustiveProvider_stringSubsetsLex_xvi");
+
+        stringSubsetsLex_helper_limit(0, "Mississippi", "ExhaustiveProvider_stringSubsetsLex_xvii");
+        stringSubsetsLex_helper_limit(1, "Mississippi", "ExhaustiveProvider_stringSubsetsLex_xviii");
+        stringSubsetsLex_helper_limit(2, "Mississippi", "ExhaustiveProvider_stringSubsetsLex_xix");
+        stringSubsetsLex_helper_limit(3, "Mississippi", "ExhaustiveProvider_stringSubsetsLex_xx");
+
         try {
             EP.stringSubsetsLex(-1, "");
             fail();
@@ -4660,7 +4640,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void subsetsLex_List_helper(@NotNull String input, @NotNull String output) {
-        aeqit(EP.subsetsLex(readIntegerList(input)), output);
+        aeqitLog(EP.subsetsLex(readIntegerList(input)), output);
     }
 
     private static void subsetsLex_fail_helper(@NotNull String input) {
@@ -4672,34 +4652,28 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testSubsetsLex_List() {
-        subsetsLex_List_helper("[]", "[[]]");
-        subsetsLex_List_helper("[5]", "[[], [5]]");
-        subsetsLex_List_helper("[1, 2, 3]", "[[], [1], [1, 2], [1, 2, 3], [1, 3], [2], [2, 3], [3]]");
-        subsetsLex_List_helper("[1, 2, 3, 4]",
-                "[[], [1], [1, 2], [1, 2, 3], [1, 2, 3, 4], [1, 2, 4], [1, 3], [1, 3, 4], [1, 4], [2], [2, 3]," +
-                " [2, 3, 4], [2, 4], [3], [3, 4], [4]]");
-        subsetsLex_List_helper("[1, 2, 2, 3]",
-                "[[], [1], [1, 2], [1, 2, 2], [1, 2, 2, 3], [1, 2, 3], [1, 2], [1, 2, 3], [1, 3], [2], [2, 2]," +
-                " [2, 2, 3], [2, 3], [2], [2, 3], [3]]");
+        subsetsLex_List_helper("[]", "ExhaustiveProvider_subsetsLex_List_i");
+        subsetsLex_List_helper("[5]", "ExhaustiveProvider_subsetsLex_List_ii");
+        subsetsLex_List_helper("[1, 2, 3]", "ExhaustiveProvider_subsetsLex_List_iii");
+        subsetsLex_List_helper("[1, 2, 3, 4]", "ExhaustiveProvider_subsetsLex_List_iv");
+        subsetsLex_List_helper("[1, 2, 2, 3]", "ExhaustiveProvider_subsetsLex_List_v");
+
         subsetsLex_fail_helper("[null]");
         subsetsLex_fail_helper("[1, null, 3]");
     }
 
     @Test
     public void testStringSubsetsLex_String() {
-        aeqit(EP.stringSubsetsLex(""), "[]");
-        aeq(length(EP.stringSubsetsLex("")), 1);
-        aeqit(EP.stringSubsetsLex("a"), "[, a]");
-        aeqit(EP.stringSubsetsLex("abc"), "[, a, ab, abc, ac, b, bc, c]");
-        aeqit(EP.stringSubsetsLex("abcd"), "[, a, ab, abc, abcd, abd, ac, acd, ad, b, bc, bcd, bd, c, cd, d]");
-        aeqit(EP.stringSubsetsLex("abbc"), "[, a, ab, abb, abbc, abc, ab, abc, ac, b, bb, bbc, bc, b, bc, c]");
-        simpleProviderHelper(EP.stringSubsetsLex("Mississippi"),
-                "[, M, Mi, Mii, Miii, Miiii, Miiiip, Miiiipp, Miiiipps, Miiiippss, Miiiippsss, Miiiippssss," +
-                " Miiiippsss, Miiiippss, Miiiippsss, Miiiippss, Miiiipps, Miiiippss, Miiiippsss, Miiiippss, ...]");
+        aeqitLog(EP.stringSubsetsLex(""), "ExhaustiveProvider_stringSubsetsLex_String_i");
+        aeqitLog(EP.stringSubsetsLex("a"), "ExhaustiveProvider_stringSubsetsLex_String_ii");
+        aeqitLog(EP.stringSubsetsLex("abc"), "ExhaustiveProvider_stringSubsetsLex_String_iii");
+        aeqitLog(EP.stringSubsetsLex("abcd"), "ExhaustiveProvider_stringSubsetsLex_String_iv");
+        aeqitLog(EP.stringSubsetsLex("abbc"), "ExhaustiveProvider_stringSubsetsLex_String_v");
+        simpleProviderHelper(EP.stringSubsetsLex("Mississippi"), "ExhaustiveProvider_stringSubsetsLex_String_vi");
     }
 
     private static void subsetsLexAtLeast_helper(int minSize, @NotNull String input, @NotNull String output) {
-        aeqit(EP.subsetsLexAtLeast(minSize, readIntegerList(input)), output);
+        aeqitLog(EP.subsetsLexAtLeast(minSize, readIntegerList(input)), output);
     }
 
     private static void subsetsLexAtLeast_fail_helper(int minSize, @NotNull String input) {
@@ -4711,42 +4685,30 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testSubsetsLexAtLeast() {
-        subsetsLexAtLeast_helper(0, "[]", "[[]]");
-        subsetsLexAtLeast_helper(1, "[]", "[]");
-        subsetsLexAtLeast_helper(2, "[]", "[]");
-        subsetsLexAtLeast_helper(3, "[]", "[]");
+        subsetsLexAtLeast_helper(0, "[]", "ExhaustiveProvider_subsetsLexAtLeast_i");
+        subsetsLexAtLeast_helper(1, "[]", "ExhaustiveProvider_subsetsLexAtLeast_ii");
+        subsetsLexAtLeast_helper(2, "[]", "ExhaustiveProvider_subsetsLexAtLeast_iii");
+        subsetsLexAtLeast_helper(3, "[]", "ExhaustiveProvider_subsetsLexAtLeast_iv");
 
-        subsetsLexAtLeast_helper(0, "[5]", "[[], [5]]");
-        subsetsLexAtLeast_helper(1, "[5]", "[[5]]");
-        subsetsLexAtLeast_helper(2, "[5]", "[]");
-        subsetsLexAtLeast_helper(3, "[5]", "[]");
+        subsetsLexAtLeast_helper(0, "[5]", "ExhaustiveProvider_subsetsLexAtLeast_v");
+        subsetsLexAtLeast_helper(1, "[5]", "ExhaustiveProvider_subsetsLexAtLeast_vi");
+        subsetsLexAtLeast_helper(2, "[5]", "ExhaustiveProvider_subsetsLexAtLeast_vii");
+        subsetsLexAtLeast_helper(3, "[5]", "ExhaustiveProvider_subsetsLexAtLeast_viii");
 
-        subsetsLexAtLeast_helper(0, "[1, 2, 3]", "[[], [1], [1, 2], [1, 2, 3], [1, 3], [2], [2, 3], [3]]");
-        subsetsLexAtLeast_helper(1, "[1, 2, 3]", "[[1], [1, 2], [1, 2, 3], [1, 3], [2], [2, 3], [3]]");
-        subsetsLexAtLeast_helper(2, "[1, 2, 3]", "[[1, 2], [1, 2, 3], [1, 3], [2, 3]]");
-        subsetsLexAtLeast_helper(3, "[1, 2, 3]", "[[1, 2, 3]]");
+        subsetsLexAtLeast_helper(0, "[1, 2, 3]", "ExhaustiveProvider_subsetsLexAtLeast_ix");
+        subsetsLexAtLeast_helper(1, "[1, 2, 3]", "ExhaustiveProvider_subsetsLexAtLeast_x");
+        subsetsLexAtLeast_helper(2, "[1, 2, 3]", "ExhaustiveProvider_subsetsLexAtLeast_xi");
+        subsetsLexAtLeast_helper(3, "[1, 2, 3]", "ExhaustiveProvider_subsetsLexAtLeast_xii");
 
-        subsetsLexAtLeast_helper(0, "[1, 2, 3, 4]",
-                "[[], [1], [1, 2], [1, 2, 3], [1, 2, 3, 4], [1, 2, 4], [1, 3], [1, 3, 4], [1, 4], [2], [2, 3]," +
-                " [2, 3, 4], [2, 4], [3], [3, 4], [4]]");
-        subsetsLexAtLeast_helper(1, "[1, 2, 3, 4]",
-                "[[1], [1, 2], [1, 2, 3], [1, 2, 3, 4], [1, 2, 4], [1, 3], [1, 3, 4], [1, 4], [2], [2, 3]," +
-                " [2, 3, 4], [2, 4], [3], [3, 4], [4]]");
-        subsetsLexAtLeast_helper(2, "[1, 2, 3, 4]",
-                "[[1, 2], [1, 2, 3], [1, 2, 3, 4], [1, 2, 4], [1, 3], [1, 3, 4], [1, 4], [2, 3], [2, 3, 4], [2, 4]," +
-                " [3, 4]]");
-        subsetsLexAtLeast_helper(3, "[1, 2, 3, 4]", "[[1, 2, 3], [1, 2, 3, 4], [1, 2, 4], [1, 3, 4], [2, 3, 4]]");
+        subsetsLexAtLeast_helper(0, "[1, 2, 3, 4]", "ExhaustiveProvider_subsetsLexAtLeast_xiii");
+        subsetsLexAtLeast_helper(1, "[1, 2, 3, 4]", "ExhaustiveProvider_subsetsLexAtLeast_xiv");
+        subsetsLexAtLeast_helper(2, "[1, 2, 3, 4]", "ExhaustiveProvider_subsetsLexAtLeast_xv");
+        subsetsLexAtLeast_helper(3, "[1, 2, 3, 4]", "ExhaustiveProvider_subsetsLexAtLeast_xvi");
 
-        subsetsLexAtLeast_helper(0, "[1, 2, 2, 3]",
-                "[[], [1], [1, 2], [1, 2, 2], [1, 2, 2, 3], [1, 2, 3], [1, 2], [1, 2, 3], [1, 3], [2], [2, 2]," +
-                " [2, 2, 3], [2, 3], [2], [2, 3], [3]]");
-        subsetsLexAtLeast_helper(1, "[1, 2, 2, 3]",
-                "[[1], [1, 2], [1, 2, 2], [1, 2, 2, 3], [1, 2, 3], [1, 2], [1, 2, 3], [1, 3], [2], [2, 2]," +
-                " [2, 2, 3], [2, 3], [2], [2, 3], [3]]");
-        subsetsLexAtLeast_helper(2, "[1, 2, 2, 3]",
-                "[[1, 2], [1, 2, 2], [1, 2, 2, 3], [1, 2, 3], [1, 2], [1, 2, 3], [1, 3], [2, 2], [2, 2, 3], [2, 3]," +
-                " [2, 3]]");
-        subsetsLexAtLeast_helper(3, "[1, 2, 2, 3]", "[[1, 2, 2], [1, 2, 2, 3], [1, 2, 3], [1, 2, 3], [2, 2, 3]]");
+        subsetsLexAtLeast_helper(0, "[1, 2, 2, 3]", "ExhaustiveProvider_subsetsLexAtLeast_xvii");
+        subsetsLexAtLeast_helper(1, "[1, 2, 2, 3]", "ExhaustiveProvider_subsetsLexAtLeast_xviii");
+        subsetsLexAtLeast_helper(2, "[1, 2, 2, 3]", "ExhaustiveProvider_subsetsLexAtLeast_xix");
+        subsetsLexAtLeast_helper(3, "[1, 2, 2, 3]", "ExhaustiveProvider_subsetsLexAtLeast_xx");
 
         subsetsLexAtLeast_fail_helper(-1, "[]");
         subsetsLexAtLeast_fail_helper(-1, "[1, 2, 3]");
@@ -4755,7 +4717,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void stringSubsetsLexAtLeast_helper(int minSize, @NotNull String input, @NotNull String output) {
-        aeqit(EP.stringSubsetsLexAtLeast(minSize, input), output);
+        aeqitLog(EP.stringSubsetsLexAtLeast(minSize, input), output);
     }
 
     private static void stringSubsetsLexAtLeast_helper_limit(
@@ -4767,44 +4729,32 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     @Test
-    public void testStringSubsetsLexAtLeast_int_String() {
-        stringSubsetsLexAtLeast_helper(0, "", "[]");
-        aeq(length(EP.stringSubsetsLexAtLeast(0, "")), 1);
-        stringSubsetsLexAtLeast_helper(1, "", "[]");
-        aeq(length(EP.stringSubsetsLexAtLeast(1, "")), 0);
-        stringSubsetsLexAtLeast_helper(2, "", "[]");
-        aeq(length(EP.stringSubsetsLexAtLeast(2, "")), 0);
-        stringSubsetsLexAtLeast_helper(3, "", "[]");
-        aeq(length(EP.stringSubsetsLexAtLeast(3, "")), 0);
-        stringSubsetsLexAtLeast_helper(0, "a", "[, a]");
-        stringSubsetsLexAtLeast_helper(1, "a", "[a]");
-        stringSubsetsLexAtLeast_helper(2, "a", "[]");
-        aeq(length(EP.stringSubsetsLexAtLeast(2, "a")), 0);
-        stringSubsetsLexAtLeast_helper(3, "a", "[]");
-        aeq(length(EP.stringSubsetsLexAtLeast(3, "a")), 0);
-        stringSubsetsLexAtLeast_helper(0, "abc", "[, a, ab, abc, ac, b, bc, c]");
-        stringSubsetsLexAtLeast_helper(1, "abc", "[a, ab, abc, ac, b, bc, c]");
-        stringSubsetsLexAtLeast_helper(2, "abc", "[ab, abc, ac, bc]");
-        stringSubsetsLexAtLeast_helper(3, "abc", "[abc]");
-        stringSubsetsLexAtLeast_helper(0, "abbc", "[, a, ab, abb, abbc, abc, ab, abc, ac, b, bb, bbc, bc, b, bc, c]");
-        stringSubsetsLexAtLeast_helper(1, "abbc", "[a, ab, abb, abbc, abc, ab, abc, ac, b, bb, bbc, bc, b, bc, c]");
-        stringSubsetsLexAtLeast_helper(2, "abbc", "[ab, abb, abbc, abc, ab, abc, ac, bb, bbc, bc, bc]");
-        stringSubsetsLexAtLeast_helper(3, "abbc", "[abb, abbc, abc, abc, bbc]");
-        stringSubsetsLexAtLeast_helper_limit(0, "Mississippi",
-                "[, M, Mi, Mii, Miii, Miiii, Miiiip, Miiiipp, Miiiipps, Miiiippss, Miiiippsss, Miiiippssss," +
-                " Miiiippsss, Miiiippss, Miiiippsss, Miiiippss, Miiiipps, Miiiippss, Miiiippsss, Miiiippss, ...]");
-        stringSubsetsLexAtLeast_helper_limit(1, "Mississippi",
-                "[M, Mi, Mii, Miii, Miiii, Miiiip, Miiiipp, Miiiipps, Miiiippss, Miiiippsss, Miiiippssss," +
-                " Miiiippsss, Miiiippss, Miiiippsss, Miiiippss, Miiiipps, Miiiippss, Miiiippsss, Miiiippss," +
-                " Miiiipps, ...]");
-        stringSubsetsLexAtLeast_helper_limit(2, "Mississippi",
-                "[Mi, Mii, Miii, Miiii, Miiiip, Miiiipp, Miiiipps, Miiiippss, Miiiippsss, Miiiippssss, Miiiippsss," +
-                " Miiiippss, Miiiippsss, Miiiippss, Miiiipps, Miiiippss, Miiiippsss, Miiiippss, Miiiipps, Miiiippss," +
-                " ...]");
-        stringSubsetsLexAtLeast_helper_limit(3, "Mississippi",
-                "[Mii, Miii, Miiii, Miiiip, Miiiipp, Miiiipps, Miiiippss, Miiiippsss, Miiiippssss, Miiiippsss," +
-                " Miiiippss, Miiiippsss, Miiiippss, Miiiipps, Miiiippss, Miiiippsss, Miiiippss, Miiiipps, Miiiippss," +
-                " Miiiipps, ...]");
+    public void testStringSubsetsLexAtLeast() {
+        stringSubsetsLexAtLeast_helper(0, "", "ExhaustiveProvider_stringSubsetsLexAtLeast_i");
+        stringSubsetsLexAtLeast_helper(1, "", "ExhaustiveProvider_stringSubsetsLexAtLeast_ii");
+        stringSubsetsLexAtLeast_helper(2, "", "ExhaustiveProvider_stringSubsetsLexAtLeast_iii");
+        stringSubsetsLexAtLeast_helper(3, "", "ExhaustiveProvider_stringSubsetsLexAtLeast_iv");
+
+        stringSubsetsLexAtLeast_helper(0, "a", "ExhaustiveProvider_stringSubsetsLexAtLeast_v");
+        stringSubsetsLexAtLeast_helper(1, "a", "ExhaustiveProvider_stringSubsetsLexAtLeast_vi");
+        stringSubsetsLexAtLeast_helper(2, "a", "ExhaustiveProvider_stringSubsetsLexAtLeast_vii");
+        stringSubsetsLexAtLeast_helper(3, "a", "ExhaustiveProvider_stringSubsetsLexAtLeast_viii");
+
+        stringSubsetsLexAtLeast_helper(0, "abc", "ExhaustiveProvider_stringSubsetsLexAtLeast_ix");
+        stringSubsetsLexAtLeast_helper(1, "abc", "ExhaustiveProvider_stringSubsetsLexAtLeast_x");
+        stringSubsetsLexAtLeast_helper(2, "abc", "ExhaustiveProvider_stringSubsetsLexAtLeast_xi");
+        stringSubsetsLexAtLeast_helper(3, "abc", "ExhaustiveProvider_stringSubsetsLexAtLeast_xii");
+
+        stringSubsetsLexAtLeast_helper(0, "abbc", "ExhaustiveProvider_stringSubsetsLexAtLeast_xiii");
+        stringSubsetsLexAtLeast_helper(1, "abbc", "ExhaustiveProvider_stringSubsetsLexAtLeast_xiv");
+        stringSubsetsLexAtLeast_helper(2, "abbc", "ExhaustiveProvider_stringSubsetsLexAtLeast_xv");
+        stringSubsetsLexAtLeast_helper(3, "abbc", "ExhaustiveProvider_stringSubsetsLexAtLeast_xvi");
+
+        stringSubsetsLexAtLeast_helper_limit(0, "Mississippi", "ExhaustiveProvider_stringSubsetsLexAtLeast_xvii");
+        stringSubsetsLexAtLeast_helper_limit(1, "Mississippi", "ExhaustiveProvider_stringSubsetsLexAtLeast_xviii");
+        stringSubsetsLexAtLeast_helper_limit(2, "Mississippi", "ExhaustiveProvider_stringSubsetsLexAtLeast_xix");
+        stringSubsetsLexAtLeast_helper_limit(3, "Mississippi", "ExhaustiveProvider_stringSubsetsLexAtLeast_xx");
+
         try {
             EP.stringSubsetsLexAtLeast(-1, "");
             fail();
@@ -4828,12 +4778,11 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testSubsetsShortlex() {
-        subsetsShortlex_helper("[]", "[[]]");
-        subsetsShortlex_helper("[5]", "[[], [5]]");
-        subsetsShortlex_helper("[1, 2, 3]", "[[], [1], [2], [3], [1, 2], [1, 3], [2, 3], [1, 2, 3]]");
-        subsetsShortlex_helper("[1, 2, 2, 3]",
-                "[[], [1], [2], [2], [3], [1, 2], [1, 2], [1, 3], [2, 2], [2, 3], [2, 3], [1, 2, 2], [1, 2, 3]," +
-                " [1, 2, 3], [2, 2, 3], [1, 2, 2, 3]]");
+        subsetsShortlex_helper("[]", "ExhaustiveProvider_subsetsShortlex_i");
+        subsetsShortlex_helper("[5]", "ExhaustiveProvider_subsetsShortlex_ii");
+        subsetsShortlex_helper("[1, 2, 3]", "ExhaustiveProvider_subsetsShortlex_iii");
+        subsetsShortlex_helper("[1, 2, 2, 3]", "ExhaustiveProvider_subsetsShortlex_iv");
+
         subsetsShortlex_fail_helper("[1, null, 3]");
         subsetsShortlex_fail_helper("[null]");
     }
@@ -4844,13 +4793,11 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testStringSubsetsShortlex() {
-        stringSubsetsShortlex_helper("", "[]");
-        aeq(length(EP.stringSubsetsShortlex("")), 1);
-        stringSubsetsShortlex_helper("a", "[, a]");
-        stringSubsetsShortlex_helper("abc", "[, a, b, c, ab, ac, bc, abc]");
-        stringSubsetsShortlex_helper("abbc","[, a, b, b, c, ab, ab, ac, bb, bc, bc, abb, abc, abc, bbc, abbc]");
-        stringSubsetsShortlex_helper("Mississippi",
-                "[, M, i, i, i, i, p, p, s, s, s, s, Mi, Mi, Mi, Mi, Mp, Mp, Ms, Ms, ...]");
+        stringSubsetsShortlex_helper("", "ExhaustiveProvider_stringSubsetsShortlex_i");
+        stringSubsetsShortlex_helper("a", "ExhaustiveProvider_stringSubsetsShortlex_ii");
+        stringSubsetsShortlex_helper("abc", "ExhaustiveProvider_stringSubsetsShortlex_iii");
+        stringSubsetsShortlex_helper("abbc", "ExhaustiveProvider_stringSubsetsShortlex_iv");
+        stringSubsetsShortlex_helper("Mississippi", "ExhaustiveProvider_stringSubsetsShortlex_v");
     }
 
     private static void subsetsShortlexAtLeast_helper(int minSize, @NotNull String input, @NotNull String output) {
@@ -4859,20 +4806,20 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testSubsetsShortlexAtLeast() {
-        subsetsShortlexAtLeast_helper(0, "[]", "[[]]");
-        subsetsShortlexAtLeast_helper(1, "[]", "[]");
-        subsetsShortlexAtLeast_helper(2, "[]", "[]");
-        subsetsShortlexAtLeast_helper(3, "[]", "[]");
+        subsetsShortlexAtLeast_helper(0, "[]", "ExhaustiveProvider_subsetsShortlexAtLeast_i");
+        subsetsShortlexAtLeast_helper(1, "[]", "ExhaustiveProvider_subsetsShortlexAtLeast_ii");
+        subsetsShortlexAtLeast_helper(2, "[]", "ExhaustiveProvider_subsetsShortlexAtLeast_iii");
+        subsetsShortlexAtLeast_helper(3, "[]", "ExhaustiveProvider_subsetsShortlexAtLeast_iv");
 
-        subsetsShortlexAtLeast_helper(0, "[5]", "[[], [5]]");
-        subsetsShortlexAtLeast_helper(1, "[5]", "[[5]]");
-        subsetsShortlexAtLeast_helper(2, "[5]", "[]");
-        subsetsShortlexAtLeast_helper(3, "[5]", "[]");
+        subsetsShortlexAtLeast_helper(0, "[5]", "ExhaustiveProvider_subsetsShortlexAtLeast_v");
+        subsetsShortlexAtLeast_helper(1, "[5]", "ExhaustiveProvider_subsetsShortlexAtLeast_vi");
+        subsetsShortlexAtLeast_helper(2, "[5]", "ExhaustiveProvider_subsetsShortlexAtLeast_vii");
+        subsetsShortlexAtLeast_helper(3, "[5]", "ExhaustiveProvider_subsetsShortlexAtLeast_viii");
 
-        subsetsShortlexAtLeast_helper(0, "[1, 2, 3]", "[[], [1], [2], [3], [1, 2], [1, 3], [2, 3], [1, 2, 3]]");
-        subsetsShortlexAtLeast_helper(1, "[1, 2, 3]", "[[1], [2], [3], [1, 2], [1, 3], [2, 3], [1, 2, 3]]");
-        subsetsShortlexAtLeast_helper(2, "[1, 2, 3]", "[[1, 2], [1, 3], [2, 3], [1, 2, 3]]");
-        subsetsShortlexAtLeast_helper(3, "[1, 2, 3]", "[[1, 2, 3]]");
+        subsetsShortlexAtLeast_helper(0, "[1, 2, 3]", "ExhaustiveProvider_subsetsShortlexAtLeast_ix");
+        subsetsShortlexAtLeast_helper(1, "[1, 2, 3]", "ExhaustiveProvider_subsetsShortlexAtLeast_x");
+        subsetsShortlexAtLeast_helper(2, "[1, 2, 3]", "ExhaustiveProvider_subsetsShortlexAtLeast_xi");
+        subsetsShortlexAtLeast_helper(3, "[1, 2, 3]", "ExhaustiveProvider_subsetsShortlexAtLeast_xii");
 
         try {
             EP.subsetsShortlexAtLeast(-1, Collections.<Integer>emptyList());
@@ -4902,37 +4849,31 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testStringSubsetsShortlexAtLeast() {
-        stringSubsetsShortlexAtLeast_helper(0, "", "[]");
-        aeq(length(EP.stringSubsetsShortlexAtLeast(0, "")), 1);
-        stringSubsetsShortlexAtLeast_helper(1, "", "[]");
-        aeq(length(EP.stringSubsetsShortlexAtLeast(1, "")), 0);
-        stringSubsetsShortlexAtLeast_helper(2, "", "[]");
-        aeq(length(EP.stringSubsetsShortlexAtLeast(2, "")), 0);
-        stringSubsetsShortlexAtLeast_helper(3, "", "[]");
-        aeq(length(EP.stringSubsetsShortlexAtLeast(3, "")), 0);
-        stringSubsetsShortlexAtLeast_helper(0, "a", "[, a]");
-        stringSubsetsShortlexAtLeast_helper(1, "a", "[a]");
-        stringSubsetsShortlexAtLeast_helper(2, "a", "[]");
-        stringSubsetsShortlexAtLeast_helper(3, "a", "[]");
-        stringSubsetsShortlexAtLeast_helper(0, "abc", "[, a, b, c, ab, ac, bc, abc]");
-        stringSubsetsShortlexAtLeast_helper(1, "abc", "[a, b, c, ab, ac, bc, abc]");
-        stringSubsetsShortlexAtLeast_helper(2, "abc", "[ab, ac, bc, abc]");
-        stringSubsetsShortlexAtLeast_helper(3, "abc", "[abc]");
-        stringSubsetsShortlexAtLeast_helper(0, "abbc",
-                "[, a, b, b, c, ab, ab, ac, bb, bc, bc, abb, abc, abc, bbc, abbc]");
-        stringSubsetsShortlexAtLeast_helper(1, "abbc",
-                "[a, b, b, c, ab, ab, ac, bb, bc, bc, abb, abc, abc, bbc, abbc]");
-        stringSubsetsShortlexAtLeast_helper(2, "abbc", "[ab, ab, ac, bb, bc, bc, abb, abc, abc, bbc, abbc]");
-        stringSubsetsShortlexAtLeast_helper(3, "abbc", "[abb, abc, abc, bbc, abbc]");
-        stringSubsetsShortlexAtLeast_helper(0, "Mississippi",
-                "[, M, i, i, i, i, p, p, s, s, s, s, Mi, Mi, Mi, Mi, Mp, Mp, Ms, Ms, ...]");
-        stringSubsetsShortlexAtLeast_helper(1, "Mississippi",
-                "[M, i, i, i, i, p, p, s, s, s, s, Mi, Mi, Mi, Mi, Mp, Mp, Ms, Ms, Ms, ...]");
-        stringSubsetsShortlexAtLeast_helper(2, "Mississippi",
-                "[Mi, Mi, Mi, Mi, Mp, Mp, Ms, Ms, Ms, Ms, ii, ii, ii, ip, ip, is, is, is, is, ii, ...]");
-        stringSubsetsShortlexAtLeast_helper(3, "Mississippi",
-                "[Mii, Mii, Mii, Mip, Mip, Mis, Mis, Mis, Mis, Mii, Mii, Mip, Mip, Mis, Mis, Mis, Mis, Mii, Mip," +
-                " Mip, ...]");
+        stringSubsetsShortlexAtLeast_helper(0, "", "ExhaustiveProvider_stringSubsetsShortlexAtLeast_i");
+        stringSubsetsShortlexAtLeast_helper(1, "", "ExhaustiveProvider_stringSubsetsShortlexAtLeast_ii");
+        stringSubsetsShortlexAtLeast_helper(2, "", "ExhaustiveProvider_stringSubsetsShortlexAtLeast_iii");
+        stringSubsetsShortlexAtLeast_helper(3, "", "ExhaustiveProvider_stringSubsetsShortlexAtLeast_iv");
+
+        stringSubsetsShortlexAtLeast_helper(0, "a", "ExhaustiveProvider_stringSubsetsShortlexAtLeast_v");
+        stringSubsetsShortlexAtLeast_helper(1, "a", "ExhaustiveProvider_stringSubsetsShortlexAtLeast_vi");
+        stringSubsetsShortlexAtLeast_helper(2, "a", "ExhaustiveProvider_stringSubsetsShortlexAtLeast_vii");
+        stringSubsetsShortlexAtLeast_helper(3, "a", "ExhaustiveProvider_stringSubsetsShortlexAtLeast_viii");
+
+        stringSubsetsShortlexAtLeast_helper(0, "abc", "ExhaustiveProvider_stringSubsetsShortlexAtLeast_ix");
+        stringSubsetsShortlexAtLeast_helper(1, "abc", "ExhaustiveProvider_stringSubsetsShortlexAtLeast_x");
+        stringSubsetsShortlexAtLeast_helper(2, "abc", "ExhaustiveProvider_stringSubsetsShortlexAtLeast_xi");
+        stringSubsetsShortlexAtLeast_helper(3, "abc", "ExhaustiveProvider_stringSubsetsShortlexAtLeast_xii");
+
+        stringSubsetsShortlexAtLeast_helper(0, "abbc", "ExhaustiveProvider_stringSubsetsShortlexAtLeast_xiii");
+        stringSubsetsShortlexAtLeast_helper(1, "abbc", "ExhaustiveProvider_stringSubsetsShortlexAtLeast_xiv");
+        stringSubsetsShortlexAtLeast_helper(2, "abbc", "ExhaustiveProvider_stringSubsetsShortlexAtLeast_xv");
+        stringSubsetsShortlexAtLeast_helper(3, "abbc", "ExhaustiveProvider_stringSubsetsShortlexAtLeast_xvi");
+
+        stringSubsetsShortlexAtLeast_helper(0, "Mississippi", "ExhaustiveProvider_stringSubsetsShortlexAtLeast_xvii");
+        stringSubsetsShortlexAtLeast_helper(1, "Mississippi", "ExhaustiveProvider_stringSubsetsShortlexAtLeast_xviii");
+        stringSubsetsShortlexAtLeast_helper(2, "Mississippi", "ExhaustiveProvider_stringSubsetsShortlexAtLeast_xix");
+        stringSubsetsShortlexAtLeast_helper(3, "Mississippi", "ExhaustiveProvider_stringSubsetsShortlexAtLeast_xx");
+
         try {
             EP.stringSubsetsShortlexAtLeast(-1, "");
             fail();

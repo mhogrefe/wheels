@@ -29096,6 +29096,1184 @@ aad
 aaabb
 ...
 
+ExhaustiveProvider_subsetsLex_int_List_i list 1
+[]
+
+ExhaustiveProvider_subsetsLex_int_List_ii list 0
+
+ExhaustiveProvider_subsetsLex_int_List_iii list 0
+
+ExhaustiveProvider_subsetsLex_int_List_iv list 0
+
+ExhaustiveProvider_subsetsLex_int_List_v list 1
+[]
+
+ExhaustiveProvider_subsetsLex_int_List_vi list 1
+[5]
+
+ExhaustiveProvider_subsetsLex_int_List_vii list 0
+
+ExhaustiveProvider_subsetsLex_int_List_viii list 0
+
+ExhaustiveProvider_subsetsLex_int_List_ix list 1
+[]
+
+ExhaustiveProvider_subsetsLex_int_List_x list 3
+[1]
+[2]
+[3]
+
+ExhaustiveProvider_subsetsLex_int_List_xi list 3
+[1, 2]
+[1, 3]
+[2, 3]
+
+ExhaustiveProvider_subsetsLex_int_List_xii list 1
+[1, 2, 3]
+
+ExhaustiveProvider_subsetsLex_int_List_xiii list 1
+[]
+
+ExhaustiveProvider_subsetsLex_int_List_xiv list 4
+[1]
+[2]
+[2]
+[3]
+
+ExhaustiveProvider_subsetsLex_int_List_xv list 6
+[1, 2]
+[1, 2]
+[1, 3]
+[2, 2]
+[2, 3]
+[2, 3]
+
+ExhaustiveProvider_subsetsLex_int_List_xvi list 4
+[1, 2, 2]
+[1, 2, 3]
+[1, 2, 3]
+[2, 2, 3]
+
+ExhaustiveProvider_subsetPairsLex_i list 0
+
+ExhaustiveProvider_subsetPairsLex_ii list 0
+
+ExhaustiveProvider_subsetPairsLex_iii list 6
+(1, 2)
+(1, 3)
+(1, 4)
+(2, 3)
+(2, 4)
+(3, 4)
+
+ExhaustiveProvider_subsetPairsLex_iv list 6
+(1, 2)
+(1, 2)
+(1, 4)
+(2, 2)
+(2, 4)
+(2, 4)
+
+ExhaustiveProvider_subsetTriplesLex_i list 0
+
+ExhaustiveProvider_subsetTriplesLex_ii list 0
+
+ExhaustiveProvider_subsetTriplesLex_iii list 4
+(1, 2, 3)
+(1, 2, 4)
+(1, 3, 4)
+(2, 3, 4)
+
+ExhaustiveProvider_subsetTriplesLex_iv list 4
+(1, 2, 2)
+(1, 2, 4)
+(1, 2, 4)
+(2, 2, 4)
+
+ExhaustiveProvider_subsetQuadruplesLex_i list 0
+
+ExhaustiveProvider_subsetQuadruplesLex_ii list 0
+
+ExhaustiveProvider_subsetQuadruplesLex_iii list 1
+(1, 2, 3, 4)
+
+ExhaustiveProvider_subsetQuadruplesLex_iv list 1
+(1, 2, 2, 4)
+
+ExhaustiveProvider_subsetQuintuplesLex_i list 0
+
+ExhaustiveProvider_subsetQuintuplesLex_ii list 0
+
+ExhaustiveProvider_subsetQuintuplesLex_iii list 0
+
+ExhaustiveProvider_subsetQuintuplesLex_iv list 0
+
+ExhaustiveProvider_subsetQuintuplesLex_v list 21
+(1, 2, 3, 4, 5)
+(1, 2, 3, 4, 6)
+(1, 2, 3, 4, 7)
+(1, 2, 3, 4, 8)
+(1, 2, 3, 5, 6)
+(1, 2, 3, 5, 7)
+(1, 2, 3, 5, 8)
+(1, 2, 3, 6, 7)
+(1, 2, 3, 6, 8)
+(1, 2, 3, 7, 8)
+(1, 2, 4, 5, 6)
+(1, 2, 4, 5, 7)
+(1, 2, 4, 5, 8)
+(1, 2, 4, 6, 7)
+(1, 2, 4, 6, 8)
+(1, 2, 4, 7, 8)
+(1, 2, 5, 6, 7)
+(1, 2, 5, 6, 8)
+(1, 2, 5, 7, 8)
+(1, 2, 6, 7, 8)
+...
+
+ExhaustiveProvider_subsetQuintuplesLex_vi list 21
+(1, 2, 2, 4, 5)
+(1, 2, 2, 4, 6)
+(1, 2, 2, 4, 7)
+(1, 2, 2, 4, 8)
+(1, 2, 2, 5, 6)
+(1, 2, 2, 5, 7)
+(1, 2, 2, 5, 8)
+(1, 2, 2, 6, 7)
+(1, 2, 2, 6, 8)
+(1, 2, 2, 7, 8)
+(1, 2, 4, 5, 6)
+(1, 2, 4, 5, 7)
+(1, 2, 4, 5, 8)
+(1, 2, 4, 6, 7)
+(1, 2, 4, 6, 8)
+(1, 2, 4, 7, 8)
+(1, 2, 5, 6, 7)
+(1, 2, 5, 6, 8)
+(1, 2, 5, 7, 8)
+(1, 2, 6, 7, 8)
+...
+
+ExhaustiveProvider_subsetSextuplesLex_i list 0
+
+ExhaustiveProvider_subsetSextuplesLex_ii list 0
+
+ExhaustiveProvider_subsetSextuplesLex_iii list 0
+
+ExhaustiveProvider_subsetSextuplesLex_iv list 0
+
+ExhaustiveProvider_subsetSextuplesLex_v list 21
+(1, 2, 3, 4, 5, 6)
+(1, 2, 3, 4, 5, 7)
+(1, 2, 3, 4, 5, 8)
+(1, 2, 3, 4, 6, 7)
+(1, 2, 3, 4, 6, 8)
+(1, 2, 3, 4, 7, 8)
+(1, 2, 3, 5, 6, 7)
+(1, 2, 3, 5, 6, 8)
+(1, 2, 3, 5, 7, 8)
+(1, 2, 3, 6, 7, 8)
+(1, 2, 4, 5, 6, 7)
+(1, 2, 4, 5, 6, 8)
+(1, 2, 4, 5, 7, 8)
+(1, 2, 4, 6, 7, 8)
+(1, 2, 5, 6, 7, 8)
+(1, 3, 4, 5, 6, 7)
+(1, 3, 4, 5, 6, 8)
+(1, 3, 4, 5, 7, 8)
+(1, 3, 4, 6, 7, 8)
+(1, 3, 5, 6, 7, 8)
+...
+
+ExhaustiveProvider_subsetSextuplesLex_vi list 21
+(1, 2, 2, 4, 5, 6)
+(1, 2, 2, 4, 5, 7)
+(1, 2, 2, 4, 5, 8)
+(1, 2, 2, 4, 6, 7)
+(1, 2, 2, 4, 6, 8)
+(1, 2, 2, 4, 7, 8)
+(1, 2, 2, 5, 6, 7)
+(1, 2, 2, 5, 6, 8)
+(1, 2, 2, 5, 7, 8)
+(1, 2, 2, 6, 7, 8)
+(1, 2, 4, 5, 6, 7)
+(1, 2, 4, 5, 6, 8)
+(1, 2, 4, 5, 7, 8)
+(1, 2, 4, 6, 7, 8)
+(1, 2, 5, 6, 7, 8)
+(1, 2, 4, 5, 6, 7)
+(1, 2, 4, 5, 6, 8)
+(1, 2, 4, 5, 7, 8)
+(1, 2, 4, 6, 7, 8)
+(1, 2, 5, 6, 7, 8)
+...
+
+ExhaustiveProvider_subsetSeptuplesLex_i list 0
+
+ExhaustiveProvider_subsetSeptuplesLex_ii list 0
+
+ExhaustiveProvider_subsetSeptuplesLex_iii list 0
+
+ExhaustiveProvider_subsetSeptuplesLex_iv list 0
+
+ExhaustiveProvider_subsetSeptuplesLex_v list 8
+(1, 2, 3, 4, 5, 6, 7)
+(1, 2, 3, 4, 5, 6, 8)
+(1, 2, 3, 4, 5, 7, 8)
+(1, 2, 3, 4, 6, 7, 8)
+(1, 2, 3, 5, 6, 7, 8)
+(1, 2, 4, 5, 6, 7, 8)
+(1, 3, 4, 5, 6, 7, 8)
+(2, 3, 4, 5, 6, 7, 8)
+
+ExhaustiveProvider_subsetSeptuplesLex_vi list 8
+(1, 2, 2, 4, 5, 6, 7)
+(1, 2, 2, 4, 5, 6, 8)
+(1, 2, 2, 4, 5, 7, 8)
+(1, 2, 2, 4, 6, 7, 8)
+(1, 2, 2, 5, 6, 7, 8)
+(1, 2, 4, 5, 6, 7, 8)
+(1, 2, 4, 5, 6, 7, 8)
+(2, 2, 4, 5, 6, 7, 8)
+
+ExhaustiveProvider_stringSubsetsLex_i list 1
+
+
+ExhaustiveProvider_stringSubsetsLex_ii list 0
+
+ExhaustiveProvider_stringSubsetsLex_iii list 0
+
+ExhaustiveProvider_stringSubsetsLex_iv list 0
+
+ExhaustiveProvider_stringSubsetsLex_v list 1
+
+
+ExhaustiveProvider_stringSubsetsLex_vi list 1
+a
+
+ExhaustiveProvider_stringSubsetsLex_vii list 0
+
+ExhaustiveProvider_stringSubsetsLex_viii list 0
+
+ExhaustiveProvider_stringSubsetsLex_ix list 1
+
+
+ExhaustiveProvider_stringSubsetsLex_x list 3
+a
+b
+c
+
+ExhaustiveProvider_stringSubsetsLex_xi list 3
+ab
+ac
+bc
+
+ExhaustiveProvider_stringSubsetsLex_xii list 1
+abc
+
+ExhaustiveProvider_stringSubsetsLex_xiii list 1
+
+
+ExhaustiveProvider_stringSubsetsLex_xiv list 4
+a
+b
+b
+c
+
+ExhaustiveProvider_stringSubsetsLex_xv list 6
+ab
+ab
+ac
+bb
+bc
+bc
+
+ExhaustiveProvider_stringSubsetsLex_xvi list 4
+abb
+abc
+abc
+bbc
+
+ExhaustiveProvider_stringSubsetsLex_xvii list 1
+
+
+ExhaustiveProvider_stringSubsetsLex_xviii list 11
+M
+i
+i
+i
+i
+p
+p
+s
+s
+s
+s
+
+ExhaustiveProvider_stringSubsetsLex_xix list 21
+Mi
+Mi
+Mi
+Mi
+Mp
+Mp
+Ms
+Ms
+Ms
+Ms
+ii
+ii
+ii
+ip
+ip
+is
+is
+is
+is
+ii
+...
+
+ExhaustiveProvider_stringSubsetsLex_xx list 21
+Mii
+Mii
+Mii
+Mip
+Mip
+Mis
+Mis
+Mis
+Mis
+Mii
+Mii
+Mip
+Mip
+Mis
+Mis
+Mis
+Mis
+Mii
+Mip
+Mip
+...
+
+ExhaustiveProvider_subsetsLex_List_i list 1
+[]
+
+ExhaustiveProvider_subsetsLex_List_ii list 2
+[]
+[5]
+
+ExhaustiveProvider_subsetsLex_List_iii list 8
+[]
+[1]
+[1, 2]
+[1, 2, 3]
+[1, 3]
+[2]
+[2, 3]
+[3]
+
+ExhaustiveProvider_subsetsLex_List_iv list 16
+[]
+[1]
+[1, 2]
+[1, 2, 3]
+[1, 2, 3, 4]
+[1, 2, 4]
+[1, 3]
+[1, 3, 4]
+[1, 4]
+[2]
+[2, 3]
+[2, 3, 4]
+[2, 4]
+[3]
+[3, 4]
+[4]
+
+ExhaustiveProvider_subsetsLex_List_v list 16
+[]
+[1]
+[1, 2]
+[1, 2, 2]
+[1, 2, 2, 3]
+[1, 2, 3]
+[1, 2]
+[1, 2, 3]
+[1, 3]
+[2]
+[2, 2]
+[2, 2, 3]
+[2, 3]
+[2]
+[2, 3]
+[3]
+
+ExhaustiveProvider_stringSubsetsLex_String_i list 1
+
+
+ExhaustiveProvider_stringSubsetsLex_String_ii list 2
+
+a
+
+ExhaustiveProvider_stringSubsetsLex_String_iii list 8
+
+a
+ab
+abc
+ac
+b
+bc
+c
+
+ExhaustiveProvider_stringSubsetsLex_String_iv list 16
+
+a
+ab
+abc
+abcd
+abd
+ac
+acd
+ad
+b
+bc
+bcd
+bd
+c
+cd
+d
+
+ExhaustiveProvider_stringSubsetsLex_String_v list 16
+
+a
+ab
+abb
+abbc
+abc
+ab
+abc
+ac
+b
+bb
+bbc
+bc
+b
+bc
+c
+
+ExhaustiveProvider_stringSubsetsLex_String_vi list 21
+
+M
+Mi
+Mii
+Miii
+Miiii
+Miiiip
+Miiiipp
+Miiiipps
+Miiiippss
+Miiiippsss
+Miiiippssss
+Miiiippsss
+Miiiippss
+Miiiippsss
+Miiiippss
+Miiiipps
+Miiiippss
+Miiiippsss
+Miiiippss
+...
+
+ExhaustiveProvider_subsetsLexAtLeast_i list 1
+[]
+
+ExhaustiveProvider_subsetsLexAtLeast_ii list 0
+
+ExhaustiveProvider_subsetsLexAtLeast_iii list 0
+
+ExhaustiveProvider_subsetsLexAtLeast_iv list 0
+
+ExhaustiveProvider_subsetsLexAtLeast_v list 2
+[]
+[5]
+
+ExhaustiveProvider_subsetsLexAtLeast_vi list 1
+[5]
+
+ExhaustiveProvider_subsetsLexAtLeast_vii list 0
+
+ExhaustiveProvider_subsetsLexAtLeast_viii list 0
+
+ExhaustiveProvider_subsetsLexAtLeast_ix list 8
+[]
+[1]
+[1, 2]
+[1, 2, 3]
+[1, 3]
+[2]
+[2, 3]
+[3]
+
+ExhaustiveProvider_subsetsLexAtLeast_x list 7
+[1]
+[1, 2]
+[1, 2, 3]
+[1, 3]
+[2]
+[2, 3]
+[3]
+
+ExhaustiveProvider_subsetsLexAtLeast_xi list 4
+[1, 2]
+[1, 2, 3]
+[1, 3]
+[2, 3]
+
+ExhaustiveProvider_subsetsLexAtLeast_xii list 1
+[1, 2, 3]
+
+ExhaustiveProvider_subsetsLexAtLeast_xiii list 16
+[]
+[1]
+[1, 2]
+[1, 2, 3]
+[1, 2, 3, 4]
+[1, 2, 4]
+[1, 3]
+[1, 3, 4]
+[1, 4]
+[2]
+[2, 3]
+[2, 3, 4]
+[2, 4]
+[3]
+[3, 4]
+[4]
+
+ExhaustiveProvider_subsetsLexAtLeast_xiv list 15
+[1]
+[1, 2]
+[1, 2, 3]
+[1, 2, 3, 4]
+[1, 2, 4]
+[1, 3]
+[1, 3, 4]
+[1, 4]
+[2]
+[2, 3]
+[2, 3, 4]
+[2, 4]
+[3]
+[3, 4]
+[4]
+
+ExhaustiveProvider_subsetsLexAtLeast_xv list 11
+[1, 2]
+[1, 2, 3]
+[1, 2, 3, 4]
+[1, 2, 4]
+[1, 3]
+[1, 3, 4]
+[1, 4]
+[2, 3]
+[2, 3, 4]
+[2, 4]
+[3, 4]
+
+ExhaustiveProvider_subsetsLexAtLeast_xvi list 5
+[1, 2, 3]
+[1, 2, 3, 4]
+[1, 2, 4]
+[1, 3, 4]
+[2, 3, 4]
+
+ExhaustiveProvider_subsetsLexAtLeast_xvii list 16
+[]
+[1]
+[1, 2]
+[1, 2, 2]
+[1, 2, 2, 3]
+[1, 2, 3]
+[1, 2]
+[1, 2, 3]
+[1, 3]
+[2]
+[2, 2]
+[2, 2, 3]
+[2, 3]
+[2]
+[2, 3]
+[3]
+
+ExhaustiveProvider_subsetsLexAtLeast_xviii list 15
+[1]
+[1, 2]
+[1, 2, 2]
+[1, 2, 2, 3]
+[1, 2, 3]
+[1, 2]
+[1, 2, 3]
+[1, 3]
+[2]
+[2, 2]
+[2, 2, 3]
+[2, 3]
+[2]
+[2, 3]
+[3]
+
+ExhaustiveProvider_subsetsLexAtLeast_xix list 11
+[1, 2]
+[1, 2, 2]
+[1, 2, 2, 3]
+[1, 2, 3]
+[1, 2]
+[1, 2, 3]
+[1, 3]
+[2, 2]
+[2, 2, 3]
+[2, 3]
+[2, 3]
+
+ExhaustiveProvider_subsetsLexAtLeast_xx list 5
+[1, 2, 2]
+[1, 2, 2, 3]
+[1, 2, 3]
+[1, 2, 3]
+[2, 2, 3]
+
+ExhaustiveProvider_stringSubsetsLexAtLeast_i list 1
+
+
+ExhaustiveProvider_stringSubsetsLexAtLeast_ii list 0
+
+ExhaustiveProvider_stringSubsetsLexAtLeast_iii list 0
+
+ExhaustiveProvider_stringSubsetsLexAtLeast_iv list 0
+
+ExhaustiveProvider_stringSubsetsLexAtLeast_v list 2
+
+a
+
+ExhaustiveProvider_stringSubsetsLexAtLeast_vi list 1
+a
+
+ExhaustiveProvider_stringSubsetsLexAtLeast_vii list 0
+
+ExhaustiveProvider_stringSubsetsLexAtLeast_viii list 0
+
+ExhaustiveProvider_stringSubsetsLexAtLeast_ix list 8
+
+a
+ab
+abc
+ac
+b
+bc
+c
+
+ExhaustiveProvider_stringSubsetsLexAtLeast_x list 7
+a
+ab
+abc
+ac
+b
+bc
+c
+
+ExhaustiveProvider_stringSubsetsLexAtLeast_xi list 4
+ab
+abc
+ac
+bc
+
+ExhaustiveProvider_stringSubsetsLexAtLeast_xii list 1
+abc
+
+ExhaustiveProvider_stringSubsetsLexAtLeast_xiii list 16
+
+a
+ab
+abb
+abbc
+abc
+ab
+abc
+ac
+b
+bb
+bbc
+bc
+b
+bc
+c
+
+ExhaustiveProvider_stringSubsetsLexAtLeast_xiv list 15
+a
+ab
+abb
+abbc
+abc
+ab
+abc
+ac
+b
+bb
+bbc
+bc
+b
+bc
+c
+
+ExhaustiveProvider_stringSubsetsLexAtLeast_xv list 11
+ab
+abb
+abbc
+abc
+ab
+abc
+ac
+bb
+bbc
+bc
+bc
+
+ExhaustiveProvider_stringSubsetsLexAtLeast_xvi list 5
+abb
+abbc
+abc
+abc
+bbc
+
+ExhaustiveProvider_stringSubsetsLexAtLeast_xvii list 21
+
+M
+Mi
+Mii
+Miii
+Miiii
+Miiiip
+Miiiipp
+Miiiipps
+Miiiippss
+Miiiippsss
+Miiiippssss
+Miiiippsss
+Miiiippss
+Miiiippsss
+Miiiippss
+Miiiipps
+Miiiippss
+Miiiippsss
+Miiiippss
+...
+
+ExhaustiveProvider_stringSubsetsLexAtLeast_xviii list 21
+M
+Mi
+Mii
+Miii
+Miiii
+Miiiip
+Miiiipp
+Miiiipps
+Miiiippss
+Miiiippsss
+Miiiippssss
+Miiiippsss
+Miiiippss
+Miiiippsss
+Miiiippss
+Miiiipps
+Miiiippss
+Miiiippsss
+Miiiippss
+Miiiipps
+...
+
+ExhaustiveProvider_stringSubsetsLexAtLeast_xix list 21
+Mi
+Mii
+Miii
+Miiii
+Miiiip
+Miiiipp
+Miiiipps
+Miiiippss
+Miiiippsss
+Miiiippssss
+Miiiippsss
+Miiiippss
+Miiiippsss
+Miiiippss
+Miiiipps
+Miiiippss
+Miiiippsss
+Miiiippss
+Miiiipps
+Miiiippss
+...
+
+ExhaustiveProvider_stringSubsetsLexAtLeast_xx list 21
+Mii
+Miii
+Miiii
+Miiiip
+Miiiipp
+Miiiipps
+Miiiippss
+Miiiippsss
+Miiiippssss
+Miiiippsss
+Miiiippss
+Miiiippsss
+Miiiippss
+Miiiipps
+Miiiippss
+Miiiippsss
+Miiiippss
+Miiiipps
+Miiiippss
+Miiiipps
+...
+
+ExhaustiveProvider_subsetsShortlex_i list 1
+[]
+
+ExhaustiveProvider_subsetsShortlex_ii list 2
+[]
+[5]
+
+ExhaustiveProvider_subsetsShortlex_iii list 8
+[]
+[1]
+[2]
+[3]
+[1, 2]
+[1, 3]
+[2, 3]
+[1, 2, 3]
+
+ExhaustiveProvider_subsetsShortlex_iv list 16
+[]
+[1]
+[2]
+[2]
+[3]
+[1, 2]
+[1, 2]
+[1, 3]
+[2, 2]
+[2, 3]
+[2, 3]
+[1, 2, 2]
+[1, 2, 3]
+[1, 2, 3]
+[2, 2, 3]
+[1, 2, 2, 3]
+
+ExhaustiveProvider_stringSubsetsShortlex_i list 1
+
+
+ExhaustiveProvider_stringSubsetsShortlex_ii list 2
+
+a
+
+ExhaustiveProvider_stringSubsetsShortlex_iii list 8
+
+a
+b
+c
+ab
+ac
+bc
+abc
+
+ExhaustiveProvider_stringSubsetsShortlex_iv list 16
+
+a
+b
+b
+c
+ab
+ab
+ac
+bb
+bc
+bc
+abb
+abc
+abc
+bbc
+abbc
+
+ExhaustiveProvider_stringSubsetsShortlex_v list 21
+
+M
+i
+i
+i
+i
+p
+p
+s
+s
+s
+s
+Mi
+Mi
+Mi
+Mi
+Mp
+Mp
+Ms
+Ms
+...
+
+ExhaustiveProvider_subsetsShortlexAtLeast_i list 1
+[]
+
+ExhaustiveProvider_subsetsShortlexAtLeast_ii list 0
+
+ExhaustiveProvider_subsetsShortlexAtLeast_iii list 0
+
+ExhaustiveProvider_subsetsShortlexAtLeast_iv list 0
+
+ExhaustiveProvider_subsetsShortlexAtLeast_v list 2
+[]
+[5]
+
+ExhaustiveProvider_subsetsShortlexAtLeast_vi list 1
+[5]
+
+ExhaustiveProvider_subsetsShortlexAtLeast_vii list 0
+
+ExhaustiveProvider_subsetsShortlexAtLeast_viii list 0
+
+ExhaustiveProvider_subsetsShortlexAtLeast_ix list 8
+[]
+[1]
+[2]
+[3]
+[1, 2]
+[1, 3]
+[2, 3]
+[1, 2, 3]
+
+ExhaustiveProvider_subsetsShortlexAtLeast_x list 7
+[1]
+[2]
+[3]
+[1, 2]
+[1, 3]
+[2, 3]
+[1, 2, 3]
+
+ExhaustiveProvider_subsetsShortlexAtLeast_xi list 4
+[1, 2]
+[1, 3]
+[2, 3]
+[1, 2, 3]
+
+ExhaustiveProvider_subsetsShortlexAtLeast_xii list 1
+[1, 2, 3]
+
+ExhaustiveProvider_stringSubsetsShortlexAtLeast_i list 1
+
+
+ExhaustiveProvider_stringSubsetsShortlexAtLeast_ii list 0
+
+ExhaustiveProvider_stringSubsetsShortlexAtLeast_iii list 0
+
+ExhaustiveProvider_stringSubsetsShortlexAtLeast_iv list 0
+
+ExhaustiveProvider_stringSubsetsShortlexAtLeast_v list 2
+
+a
+
+ExhaustiveProvider_stringSubsetsShortlexAtLeast_vi list 1
+a
+
+ExhaustiveProvider_stringSubsetsShortlexAtLeast_vii list 0
+
+ExhaustiveProvider_stringSubsetsShortlexAtLeast_viii list 0
+
+ExhaustiveProvider_stringSubsetsShortlexAtLeast_ix list 8
+
+a
+b
+c
+ab
+ac
+bc
+abc
+
+ExhaustiveProvider_stringSubsetsShortlexAtLeast_x list 7
+a
+b
+c
+ab
+ac
+bc
+abc
+
+ExhaustiveProvider_stringSubsetsShortlexAtLeast_xi list 4
+ab
+ac
+bc
+abc
+
+ExhaustiveProvider_stringSubsetsShortlexAtLeast_xii list 1
+abc
+
+ExhaustiveProvider_stringSubsetsShortlexAtLeast_xiii list 16
+
+a
+b
+b
+c
+ab
+ab
+ac
+bb
+bc
+bc
+abb
+abc
+abc
+bbc
+abbc
+
+ExhaustiveProvider_stringSubsetsShortlexAtLeast_xiv list 15
+a
+b
+b
+c
+ab
+ab
+ac
+bb
+bc
+bc
+abb
+abc
+abc
+bbc
+abbc
+
+ExhaustiveProvider_stringSubsetsShortlexAtLeast_xv list 11
+ab
+ab
+ac
+bb
+bc
+bc
+abb
+abc
+abc
+bbc
+abbc
+
+ExhaustiveProvider_stringSubsetsShortlexAtLeast_xvi list 5
+abb
+abc
+abc
+bbc
+abbc
+
+ExhaustiveProvider_stringSubsetsShortlexAtLeast_xvii list 21
+
+M
+i
+i
+i
+i
+p
+p
+s
+s
+s
+s
+Mi
+Mi
+Mi
+Mi
+Mp
+Mp
+Ms
+Ms
+...
+
+ExhaustiveProvider_stringSubsetsShortlexAtLeast_xviii list 21
+M
+i
+i
+i
+i
+p
+p
+s
+s
+s
+s
+Mi
+Mi
+Mi
+Mi
+Mp
+Mp
+Ms
+Ms
+Ms
+...
+
+ExhaustiveProvider_stringSubsetsShortlexAtLeast_xix list 21
+Mi
+Mi
+Mi
+Mi
+Mp
+Mp
+Ms
+Ms
+Ms
+Ms
+ii
+ii
+ii
+ip
+ip
+is
+is
+is
+is
+ii
+...
+
+ExhaustiveProvider_stringSubsetsShortlexAtLeast_xx list 21
+Mii
+Mii
+Mii
+Mip
+Mip
+Mis
+Mis
+Mis
+Mis
+Mii
+Mii
+Mip
+Mip
+Mis
+Mis
+Mis
+Mis
+Mii
+Mip
+Mip
+...
+
 RandomProvider_integers list 21
 -1084795351
 1143001545
