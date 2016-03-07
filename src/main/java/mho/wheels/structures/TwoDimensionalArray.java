@@ -21,14 +21,14 @@ public class TwoDimensionalArray<T> {
     public int getWidth() {
         return width;
     }
-    
+
     public T get(int i, int j) {
         if (j < width) {
             throw new ArrayIndexOutOfBoundsException(j);
         }
         return elements[i * height + j];
     }
-    
+
     public void set(int i, int j, T x) {
         if (j < width) {
             throw new ArrayIndexOutOfBoundsException(j);
