@@ -6156,4 +6156,24 @@ public final strictfp class IterableUtils {
     public static <T> boolean equal(int limit, @NotNull Iterable<T> xs, @NotNull Iterable<T> ys) {
         return equal(take(limit, xs), take(limit, ys));
     }
+
+    private static <K, V> int keyBinarySearch(List<Pair<K, V>> l, K key, Comparator<K> c) {
+        int low = 0;
+        int high = l.size()-1;
+
+        while (low <= high) {
+            int mid = (low + high) >>> 1;
+            K midKey = l.get(mid).a;
+            int cmp = c.compare(midKey, key);
+
+            if (cmp < 0) {
+                low = mid + 1;
+            } else if (cmp > 0) {
+                high = mid - 1;
+            } else {
+                return mid; // key found
+            }
+        }
+        return -(low + 1);  // key not found
+    }
 }
