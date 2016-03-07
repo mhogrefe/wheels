@@ -6157,7 +6157,7 @@ public final strictfp class IterableUtils {
         return equal(take(limit, xs), take(limit, ys));
     }
 
-    private static <K, V> int keyBinarySearch(List<Pair<K, V>> l, K key, Comparator<K> c) {
+    public static <K, V> int keyBinarySearch(List<Pair<K, V>> l, K key, Comparator<K> c) {
         int low = 0;
         int high = l.size()-1;
 
