@@ -6157,14 +6157,14 @@ public final strictfp class IterableUtils {
         return equal(take(limit, xs), take(limit, ys));
     }
 
-    public static <K, V> int keyBinarySearch(List<Pair<K, V>> l, K key, Comparator<K> c) {
+    public static <K extends Comparable<K>, V> int keyBinarySearch(List<Pair<K, V>> l, K key) {
         int low = 0;
-        int high = l.size()-1;
+        int high = l.size() - 1;
 
         while (low <= high) {
             int mid = (low + high) >>> 1;
             K midKey = l.get(mid).a;
-            int cmp = c.compare(midKey, key);
+            int cmp = midKey.compareTo(key);
 
             if (cmp < 0) {
                 low = mid + 1;
