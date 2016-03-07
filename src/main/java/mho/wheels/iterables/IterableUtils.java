@@ -4478,6 +4478,26 @@ public final strictfp class IterableUtils {
         return NullableOptional.empty();
     }
 
+    public static <A extends Comparable<A>, B> NullableOptional<B> lookupSorted(List<Pair<A, B>> xs, A key) {
+        int low = 0;
+        int high = xs.size() - 1;
+
+        while (low <= high) {
+            int mid = (low + high) >>> 1;
+            A midKey = xs.get(mid).a;
+            int cmp = midKey.compareTo(key);
+
+            if (cmp < 0) {
+                low = mid + 1;
+            } else if (cmp > 0) {
+                high = mid - 1;
+            } else {
+                return NullableOptional.of(xs.get(mid).b);
+            }
+        }
+        return NullableOptional.empty();
+    }
+
     public static @NotNull <T> Optional<T> find(@NotNull Predicate<T> p, @NotNull Iterable<T> xs) {
         for (T x : xs) {
             if (p.test(x)) return Optional.of(x);
@@ -6155,25 +6175,5 @@ public final strictfp class IterableUtils {
 
     public static <T> boolean equal(int limit, @NotNull Iterable<T> xs, @NotNull Iterable<T> ys) {
         return equal(take(limit, xs), take(limit, ys));
-    }
-
-    public static <K extends Comparable<K>, V> int keyBinarySearch(List<Pair<K, V>> l, K key) {
-        int low = 0;
-        int high = l.size() - 1;
-
-        while (low <= high) {
-            int mid = (low + high) >>> 1;
-            K midKey = l.get(mid).a;
-            int cmp = midKey.compareTo(key);
-
-            if (cmp < 0) {
-                low = mid + 1;
-            } else if (cmp > 0) {
-                high = mid - 1;
-            } else {
-                return mid; // key found
-            }
-        }
-        return -(low + 1);  // key not found
     }
 }
