@@ -4885,7 +4885,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void subsets_int_Iterable_helper(int size, @NotNull String input, @NotNull String output) {
-        aeqit(EP.subsets(size, readIntegerList(input)), output);
+        aeqitLog(EP.subsets(size, readIntegerList(input)), output);
     }
 
     private static void subsets_int_Iterable_helper(
@@ -4904,45 +4904,37 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     @Test
-    public void testSubsets_int_List() {
-        subsets_int_Iterable_helper(0, "[]", "[[]]");
-        subsets_int_Iterable_helper(1, "[]", "[]");
-        subsets_int_Iterable_helper(2, "[]", "[]");
-        subsets_int_Iterable_helper(3, "[]", "[]");
-        subsets_int_Iterable_helper(0, "[5]", "[[]]");
-        subsets_int_Iterable_helper(1, "[5]", "[[5]]");
-        subsets_int_Iterable_helper(2, "[5]", "[]");
-        subsets_int_Iterable_helper(3, "[5]", "[]");
-        subsets_int_Iterable_helper(0, "[1, 2, 3]", "[[]]");
-        subsets_int_Iterable_helper(1, "[1, 2, 3]", "[[1], [2], [3]]");
-        subsets_int_Iterable_helper(2, "[1, 2, 3]", "[[1, 2], [1, 3], [2, 3]]");
-        subsets_int_Iterable_helper(3, "[1, 2, 3]", "[[1, 2, 3]]");
-        subsets_int_Iterable_helper(0, "[1, 2, 2, 3]", "[[]]");
-        subsets_int_Iterable_helper(1, "[1, 2, 2, 3]", "[[1], [2], [2], [3]]");
-        subsets_int_Iterable_helper(2, "[1, 2, 2, 3]", "[[1, 2], [1, 2], [2, 2], [2, 3], [1, 3], [2, 3]]");
-        subsets_int_Iterable_helper(3, "[1, 2, 2, 3]", "[[1, 2, 2], [1, 2, 3], [1, 2, 3], [2, 2, 3]]");
-        subsets_int_Iterable_helper(0, EP.positiveIntegers(), "[[]]");
-        subsets_int_Iterable_helper(1, EP.positiveIntegers(),
-                "[[1], [2], [3], [4], [5], [6], [7], [8], [9], [10], [11], [12], [13], [14], [15], [16], [17], [18]," +
-                " [19], [20], ...]");
-        subsets_int_Iterable_helper(2, EP.positiveIntegers(),
-                "[[1, 2], [1, 3], [2, 3], [2, 4], [1, 4], [1, 5], [2, 5], [2, 6], [3, 4], [3, 5], [4, 5], [4, 6]," +
-                " [3, 6], [3, 7], [4, 7], [4, 8], [1, 6], [1, 7], [2, 7], [2, 8], ...]");
-        subsets_int_Iterable_helper(3, EP.positiveIntegers(),
-                "[[1, 2, 3], [1, 2, 4], [1, 3, 4], [1, 3, 5], [2, 3, 4], [2, 3, 5], [2, 4, 5], [2, 4, 6], [1, 2, 5]," +
-                " [1, 2, 6], [1, 3, 6], [1, 3, 7], [2, 3, 6], [2, 3, 7], [2, 4, 7], [2, 4, 8], [1, 4, 5], [1, 4, 6]," +
-                " [1, 5, 6], [1, 5, 7], ...]");
-        subsets_int_Iterable_helper(0, repeat(1), "[[]]");
-        subsets_int_Iterable_helper(1, repeat(1),
-                "[[1], [1], [1], [1], [1], [1], [1], [1], [1], [1], [1], [1], [1], [1], [1], [1], [1], [1], [1]," +
-                " [1], ...]");
-        subsets_int_Iterable_helper(2, repeat(1),
-                "[[1, 1], [1, 1], [1, 1], [1, 1], [1, 1], [1, 1], [1, 1], [1, 1], [1, 1], [1, 1], [1, 1], [1, 1]," +
-                " [1, 1], [1, 1], [1, 1], [1, 1], [1, 1], [1, 1], [1, 1], [1, 1], ...]");
-        subsets_int_Iterable_helper(3, repeat(1),
-                "[[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]," +
-                " [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]," +
-                " [1, 1, 1], [1, 1, 1], ...]");
+    public void testSubsets_int_Iterable() {
+        subsets_int_Iterable_helper(0, "[]", "ExhaustiveProvider_subsets_int_Iterable_i");
+        subsets_int_Iterable_helper(1, "[]", "ExhaustiveProvider_subsets_int_Iterable_ii");
+        subsets_int_Iterable_helper(2, "[]", "ExhaustiveProvider_subsets_int_Iterable_iii");
+        subsets_int_Iterable_helper(3, "[]", "ExhaustiveProvider_subsets_int_Iterable_iv");
+
+        subsets_int_Iterable_helper(0, "[5]", "ExhaustiveProvider_subsets_int_Iterable_v");
+        subsets_int_Iterable_helper(1, "[5]", "ExhaustiveProvider_subsets_int_Iterable_vi");
+        subsets_int_Iterable_helper(2, "[5]", "ExhaustiveProvider_subsets_int_Iterable_vii");
+        subsets_int_Iterable_helper(3, "[5]", "ExhaustiveProvider_subsets_int_Iterable_viii");
+
+        subsets_int_Iterable_helper(0, "[1, 2, 3]", "ExhaustiveProvider_subsets_int_Iterable_ix");
+        subsets_int_Iterable_helper(1, "[1, 2, 3]", "ExhaustiveProvider_subsets_int_Iterable_x");
+        subsets_int_Iterable_helper(2, "[1, 2, 3]", "ExhaustiveProvider_subsets_int_Iterable_xi");
+        subsets_int_Iterable_helper(3, "[1, 2, 3]", "ExhaustiveProvider_subsets_int_Iterable_xii");
+
+        subsets_int_Iterable_helper(0, "[1, 2, 2, 3]", "ExhaustiveProvider_subsets_int_Iterable_xiii");
+        subsets_int_Iterable_helper(1, "[1, 2, 2, 3]", "ExhaustiveProvider_subsets_int_Iterable_xiv");
+        subsets_int_Iterable_helper(2, "[1, 2, 2, 3]", "ExhaustiveProvider_subsets_int_Iterable_xv");
+        subsets_int_Iterable_helper(3, "[1, 2, 2, 3]", "ExhaustiveProvider_subsets_int_Iterable_xvi");
+
+        subsets_int_Iterable_helper(0, EP.positiveIntegers(), "ExhaustiveProvider_subsets_int_Iterable_xvii");
+        subsets_int_Iterable_helper(1, EP.positiveIntegers(), "ExhaustiveProvider_subsets_int_Iterable_xviii");
+        subsets_int_Iterable_helper(2, EP.positiveIntegers(), "ExhaustiveProvider_subsets_int_Iterable_xix");
+        subsets_int_Iterable_helper(3, EP.positiveIntegers(), "ExhaustiveProvider_subsets_int_Iterable_xx");
+
+        subsets_int_Iterable_helper(0, repeat(1), "ExhaustiveProvider_subsets_int_Iterable_xxi");
+        subsets_int_Iterable_helper(1, repeat(1), "ExhaustiveProvider_subsets_int_Iterable_xxii");
+        subsets_int_Iterable_helper(2, repeat(1), "ExhaustiveProvider_subsets_int_Iterable_xxiii");
+        subsets_int_Iterable_helper(3, repeat(1), "ExhaustiveProvider_subsets_int_Iterable_xxiv");
+
         subsets_int_Iterable_fail_helper(-1, "[]");
         subsets_int_Iterable_fail_helper(-1, "[1, 2, 3]");
         subsets_int_Iterable_fail_helper(1, "[1, null, 3]");
@@ -4966,16 +4958,12 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testSubsetPairs() {
-        subsetPairs_helper("[]", "[]");
-        subsetPairs_helper("[5]", "[]");
-        subsetPairs_helper("[1, 2, 3, 4]", "[(1, 2), (1, 3), (2, 3), (2, 4), (1, 4), (3, 4)]");
-        subsetPairs_helper("[1, 2, 2, 4]", "[(1, 2), (1, 2), (2, 2), (2, 4), (1, 4), (2, 4)]");
-        subsetPairs_helper(EP.naturalIntegers(),
-                "[(0, 1), (0, 2), (1, 2), (1, 3), (0, 3), (0, 4), (1, 4), (1, 5), (2, 3), (2, 4), (3, 4), (3, 5)," +
-                " (2, 5), (2, 6), (3, 6), (3, 7), (0, 5), (0, 6), (1, 6), (1, 7), ...]");
-        subsetPairs_helper(repeat(1),
-                "[(1, 1), (1, 1), (1, 1), (1, 1), (1, 1), (1, 1), (1, 1), (1, 1), (1, 1), (1, 1), (1, 1), (1, 1)," +
-                " (1, 1), (1, 1), (1, 1), (1, 1), (1, 1), (1, 1), (1, 1), (1, 1), ...]");
+        subsetPairs_helper("[]", "ExhaustiveProvider_subsetPairs_i");
+        subsetPairs_helper("[5]", "ExhaustiveProvider_subsetPairs_ii");
+        subsetPairs_helper("[1, 2, 3, 4]", "ExhaustiveProvider_subsetPairs_iii");
+        subsetPairs_helper("[1, 2, 2, 4]", "ExhaustiveProvider_subsetPairs_iv");
+        subsetPairs_helper(EP.naturalIntegers(), "ExhaustiveProvider_subsetPairs_v");
+        subsetPairs_helper(repeat(1), "ExhaustiveProvider_subsetPairs_vi");
         subsetPairs_fail_helper("[1, null, 3]");
     }
 
@@ -4996,18 +4984,12 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testSubsetTriples() {
-        subsetTriples_helper("[]", "[]");
-        subsetTriples_helper("[5]", "[]");
-        subsetTriples_helper("[1, 2, 3, 4]", "[(1, 2, 3), (1, 2, 4), (1, 3, 4), (2, 3, 4)]");
-        subsetTriples_helper("[1, 2, 2, 4]", "[(1, 2, 2), (1, 2, 4), (1, 2, 4), (2, 2, 4)]");
-        subsetTriples_helper(EP.naturalIntegers(),
-                "[(0, 1, 2), (0, 1, 3), (0, 2, 3), (0, 2, 4), (1, 2, 3), (1, 2, 4), (1, 3, 4), (1, 3, 5), (0, 1, 4)," +
-                " (0, 1, 5), (0, 2, 5), (0, 2, 6), (1, 2, 5), (1, 2, 6), (1, 3, 6), (1, 3, 7), (0, 3, 4), (0, 3, 5)," +
-                " (0, 4, 5), (0, 4, 6), ...]");
-        subsetTriples_helper(repeat(1),
-                "[(1, 1, 1), (1, 1, 1), (1, 1, 1), (1, 1, 1), (1, 1, 1), (1, 1, 1), (1, 1, 1), (1, 1, 1), (1, 1, 1)," +
-                " (1, 1, 1), (1, 1, 1), (1, 1, 1), (1, 1, 1), (1, 1, 1), (1, 1, 1), (1, 1, 1), (1, 1, 1), (1, 1, 1)," +
-                " (1, 1, 1), (1, 1, 1), ...]");
+        subsetTriples_helper("[]", "ExhaustiveProvider_subsetTriples_i");
+        subsetTriples_helper("[5]", "ExhaustiveProvider_subsetTriples_ii");
+        subsetTriples_helper("[1, 2, 3, 4]", "ExhaustiveProvider_subsetTriples_iii");
+        subsetTriples_helper("[1, 2, 2, 4]", "ExhaustiveProvider_subsetTriples_iv");
+        subsetTriples_helper(EP.naturalIntegers(), "ExhaustiveProvider_subsetTriples_v");
+        subsetTriples_helper(repeat(1), "ExhaustiveProvider_subsetTriples_vi");
         subsetTriples_fail_helper("[1, null, 3]");
     }
 
@@ -5028,18 +5010,12 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testSubsetQuadruples() {
-        subsetQuadruples_helper("[]", "[]");
-        subsetQuadruples_helper("[5]", "[]");
-        subsetQuadruples_helper("[1, 2, 3, 4]", "[(1, 2, 3, 4)]");
-        subsetQuadruples_helper("[1, 2, 2, 4]", "[(1, 2, 2, 4)]");
-        subsetQuadruples_helper(EP.naturalIntegers(),
-                "[(0, 1, 2, 3), (0, 1, 2, 4), (0, 1, 3, 4), (0, 1, 3, 5), (0, 2, 3, 4), (0, 2, 3, 5), (0, 2, 4, 5)," +
-                " (0, 2, 4, 6), (1, 2, 3, 4), (1, 2, 3, 5), (1, 2, 4, 5), (1, 2, 4, 6), (1, 3, 4, 5), (1, 3, 4, 6)," +
-                " (1, 3, 5, 6), (1, 3, 5, 7), (0, 1, 2, 5), (0, 1, 2, 6), (0, 1, 3, 6), (0, 1, 3, 7), ...]");
-        subsetQuadruples_helper(repeat(1),
-                "[(1, 1, 1, 1), (1, 1, 1, 1), (1, 1, 1, 1), (1, 1, 1, 1), (1, 1, 1, 1), (1, 1, 1, 1), (1, 1, 1, 1)," +
-                " (1, 1, 1, 1), (1, 1, 1, 1), (1, 1, 1, 1), (1, 1, 1, 1), (1, 1, 1, 1), (1, 1, 1, 1), (1, 1, 1, 1)," +
-                " (1, 1, 1, 1), (1, 1, 1, 1), (1, 1, 1, 1), (1, 1, 1, 1), (1, 1, 1, 1), (1, 1, 1, 1), ...]");
+        subsetQuadruples_helper("[]", "ExhaustiveProvider_subsetQuadruples_i");
+        subsetQuadruples_helper("[5]", "ExhaustiveProvider_subsetQuadruples_ii");
+        subsetQuadruples_helper("[1, 2, 3, 4]", "ExhaustiveProvider_subsetQuadruples_iii");
+        subsetQuadruples_helper("[1, 2, 2, 4]", "ExhaustiveProvider_subsetQuadruples_iv");
+        subsetQuadruples_helper(EP.naturalIntegers(), "ExhaustiveProvider_subsetQuadruples_v");
+        subsetQuadruples_helper(repeat(1), "ExhaustiveProvider_subsetQuadruples_vi");
         subsetQuadruples_fail_helper("[1, null, 3, 4, 5, 6, 7, 8]");
     }
 
@@ -5060,29 +5036,13 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testSubsetQuintuples() {
-        subsetQuintuples_helper("[]", "[]");
-        subsetQuintuples_helper("[5]", "[]");
-        subsetQuintuples_helper("[1, 2, 3, 4]", "[]");
-        subsetQuintuples_helper("[1, 2, 3, 4, 5, 6, 7, 8]",
-                "[(1, 2, 3, 4, 5), (1, 2, 3, 4, 6), (1, 2, 3, 5, 6), (1, 2, 3, 5, 7), (1, 2, 4, 5, 6)," +
-                " (1, 2, 4, 5, 7), (1, 2, 4, 6, 7), (1, 2, 4, 6, 8), (1, 3, 4, 5, 6), (1, 3, 4, 5, 7)," +
-                " (1, 3, 4, 6, 7), (1, 3, 4, 6, 8), (1, 3, 5, 6, 7), (1, 3, 5, 6, 8), (1, 3, 5, 7, 8)," +
-                " (2, 3, 4, 5, 6), (2, 3, 4, 5, 7), (2, 3, 4, 6, 7), (2, 3, 4, 6, 8), (2, 3, 5, 6, 7), ...]");
-        subsetQuintuples_helper("[1, 2, 2, 4, 5, 6, 7, 8]",
-                "[(1, 2, 2, 4, 5), (1, 2, 2, 4, 6), (1, 2, 2, 5, 6), (1, 2, 2, 5, 7), (1, 2, 4, 5, 6)," +
-                " (1, 2, 4, 5, 7), (1, 2, 4, 6, 7), (1, 2, 4, 6, 8), (1, 2, 4, 5, 6), (1, 2, 4, 5, 7)," +
-                " (1, 2, 4, 6, 7), (1, 2, 4, 6, 8), (1, 2, 5, 6, 7), (1, 2, 5, 6, 8), (1, 2, 5, 7, 8)," +
-                " (2, 2, 4, 5, 6), (2, 2, 4, 5, 7), (2, 2, 4, 6, 7), (2, 2, 4, 6, 8), (2, 2, 5, 6, 7), ...]");
-        subsetQuintuples_helper(EP.naturalIntegers(),
-                "[(0, 1, 2, 3, 4), (0, 1, 2, 3, 5), (0, 1, 2, 4, 5), (0, 1, 2, 4, 6), (0, 1, 3, 4, 5)," +
-                " (0, 1, 3, 4, 6), (0, 1, 3, 5, 6), (0, 1, 3, 5, 7), (0, 2, 3, 4, 5), (0, 2, 3, 4, 6)," +
-                " (0, 2, 3, 5, 6), (0, 2, 3, 5, 7), (0, 2, 4, 5, 6), (0, 2, 4, 5, 7), (0, 2, 4, 6, 7)," +
-                " (0, 2, 4, 6, 8), (1, 2, 3, 4, 5), (1, 2, 3, 4, 6), (1, 2, 3, 5, 6), (1, 2, 3, 5, 7), ...]");
-        subsetQuintuples_helper(repeat(1),
-                "[(1, 1, 1, 1, 1), (1, 1, 1, 1, 1), (1, 1, 1, 1, 1), (1, 1, 1, 1, 1), (1, 1, 1, 1, 1)," +
-                " (1, 1, 1, 1, 1), (1, 1, 1, 1, 1), (1, 1, 1, 1, 1), (1, 1, 1, 1, 1), (1, 1, 1, 1, 1)," +
-                " (1, 1, 1, 1, 1), (1, 1, 1, 1, 1), (1, 1, 1, 1, 1), (1, 1, 1, 1, 1), (1, 1, 1, 1, 1)," +
-                " (1, 1, 1, 1, 1), (1, 1, 1, 1, 1), (1, 1, 1, 1, 1), (1, 1, 1, 1, 1), (1, 1, 1, 1, 1), ...]");
+        subsetQuintuples_helper("[]", "ExhaustiveProvider_subsetQuintuples_i");
+        subsetQuintuples_helper("[5]", "ExhaustiveProvider_subsetQuintuples_ii");
+        subsetQuintuples_helper("[1, 2, 3, 4]", "ExhaustiveProvider_subsetQuintuples_iii");
+        subsetQuintuples_helper("[1, 2, 3, 4, 5, 6, 7, 8]", "ExhaustiveProvider_subsetQuintuples_iv");
+        subsetQuintuples_helper("[1, 2, 2, 4, 5, 6, 7, 8]", "ExhaustiveProvider_subsetQuintuples_v");
+        subsetQuintuples_helper(EP.naturalIntegers(), "ExhaustiveProvider_subsetQuintuples_vi");
+        subsetQuintuples_helper(repeat(1), "ExhaustiveProvider_subsetQuintuples_vii");
         subsetQuintuples_fail_helper("[1, null, 3, 4, 5, 6, 7, 8]");
     }
 
@@ -5103,33 +5063,13 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testSubsetSextuples() {
-        subsetSextuples_helper("[]", "[]");
-        subsetSextuples_helper("[5]", "[]");
-        subsetSextuples_helper("[1, 2, 3, 4]", "[]");
-        subsetSextuples_helper("[1, 2, 3, 4, 5, 6, 7, 8]",
-                "[(1, 2, 3, 4, 5, 6), (1, 2, 3, 4, 5, 7), (1, 2, 3, 4, 6, 7), (1, 2, 3, 4, 6, 8)," +
-                " (1, 2, 3, 5, 6, 7), (1, 2, 3, 5, 6, 8), (1, 2, 3, 5, 7, 8), (1, 2, 4, 5, 6, 7)," +
-                " (1, 2, 4, 5, 6, 8), (1, 2, 4, 5, 7, 8), (1, 2, 4, 6, 7, 8), (1, 3, 4, 5, 6, 7)," +
-                " (1, 3, 4, 5, 6, 8), (1, 3, 4, 5, 7, 8), (1, 3, 4, 6, 7, 8), (1, 3, 5, 6, 7, 8)," +
-                " (2, 3, 4, 5, 6, 7), (2, 3, 4, 5, 6, 8), (2, 3, 4, 5, 7, 8), (2, 3, 4, 6, 7, 8), ...]");
-        subsetSextuples_helper("[1, 2, 2, 4, 5, 6, 7, 8]",
-                "[(1, 2, 2, 4, 5, 6), (1, 2, 2, 4, 5, 7), (1, 2, 2, 4, 6, 7), (1, 2, 2, 4, 6, 8)," +
-                " (1, 2, 2, 5, 6, 7), (1, 2, 2, 5, 6, 8), (1, 2, 2, 5, 7, 8), (1, 2, 4, 5, 6, 7)," +
-                " (1, 2, 4, 5, 6, 8), (1, 2, 4, 5, 7, 8), (1, 2, 4, 6, 7, 8), (1, 2, 4, 5, 6, 7)," +
-                " (1, 2, 4, 5, 6, 8), (1, 2, 4, 5, 7, 8), (1, 2, 4, 6, 7, 8), (1, 2, 5, 6, 7, 8)," +
-                " (2, 2, 4, 5, 6, 7), (2, 2, 4, 5, 6, 8), (2, 2, 4, 5, 7, 8), (2, 2, 4, 6, 7, 8), ...]");
-        subsetSextuples_helper(EP.naturalIntegers(),
-                "[(0, 1, 2, 3, 4, 5), (0, 1, 2, 3, 4, 6), (0, 1, 2, 3, 5, 6), (0, 1, 2, 3, 5, 7)," +
-                " (0, 1, 2, 4, 5, 6), (0, 1, 2, 4, 5, 7), (0, 1, 2, 4, 6, 7), (0, 1, 2, 4, 6, 8)," +
-                " (0, 1, 3, 4, 5, 6), (0, 1, 3, 4, 5, 7), (0, 1, 3, 4, 6, 7), (0, 1, 3, 4, 6, 8)," +
-                " (0, 1, 3, 5, 6, 7), (0, 1, 3, 5, 6, 8), (0, 1, 3, 5, 7, 8), (0, 1, 3, 5, 7, 9)," +
-                " (0, 2, 3, 4, 5, 6), (0, 2, 3, 4, 5, 7), (0, 2, 3, 4, 6, 7), (0, 2, 3, 4, 6, 8), ...]");
-        subsetSextuples_helper(repeat(1),
-                "[(1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1)," +
-                " (1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1)," +
-                " (1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1)," +
-                " (1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1)," +
-                " (1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1), ...]");
+        subsetSextuples_helper("[]", "ExhaustiveProvider_subsetSextuples_i");
+        subsetSextuples_helper("[5]", "ExhaustiveProvider_subsetSextuples_ii");
+        subsetSextuples_helper("[1, 2, 3, 4]", "ExhaustiveProvider_subsetSextuples_iii");
+        subsetSextuples_helper("[1, 2, 3, 4, 5, 6, 7, 8]", "ExhaustiveProvider_subsetSextuples_iv");
+        subsetSextuples_helper("[1, 2, 2, 4, 5, 6, 7, 8]", "ExhaustiveProvider_subsetSextuples_v");
+        subsetSextuples_helper(EP.naturalIntegers(), "ExhaustiveProvider_subsetSextuples_vi");
+        subsetSextuples_helper(repeat(1), "ExhaustiveProvider_subsetSextuples_vii");
         subsetSextuples_fail_helper("[1, null, 3, 4, 5, 6, 7, 8]");
     }
 
@@ -5150,32 +5090,18 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testSubsetSeptuples() {
-        subsetSeptuples_helper("[]", "[]");
-        subsetSeptuples_helper("[5]", "[]");
-        subsetSeptuples_helper("[1, 2, 3, 4]", "[]");
-        subsetSeptuples_helper("[1, 2, 3, 4, 5, 6, 7, 8]",
-                "[(1, 2, 3, 4, 5, 6, 7), (1, 2, 3, 4, 5, 6, 8), (1, 2, 3, 4, 5, 7, 8), (1, 2, 3, 4, 6, 7, 8)," +
-                " (1, 2, 3, 5, 6, 7, 8), (1, 2, 4, 5, 6, 7, 8), (1, 3, 4, 5, 6, 7, 8), (2, 3, 4, 5, 6, 7, 8)]");
-        subsetSeptuples_helper("[1, 2, 2, 4, 5, 6, 7, 8]",
-                "[(1, 2, 2, 4, 5, 6, 7), (1, 2, 2, 4, 5, 6, 8), (1, 2, 2, 4, 5, 7, 8), (1, 2, 2, 4, 6, 7, 8)," +
-                " (1, 2, 2, 5, 6, 7, 8), (1, 2, 4, 5, 6, 7, 8), (1, 2, 4, 5, 6, 7, 8), (2, 2, 4, 5, 6, 7, 8)]");
-        subsetSeptuples_helper(EP.naturalIntegers(),
-                "[(0, 1, 2, 3, 4, 5, 6), (0, 1, 2, 3, 4, 5, 7), (0, 1, 2, 3, 4, 6, 7), (0, 1, 2, 3, 4, 6, 8)," +
-                " (0, 1, 2, 3, 5, 6, 7), (0, 1, 2, 3, 5, 6, 8), (0, 1, 2, 3, 5, 7, 8), (0, 1, 2, 3, 5, 7, 9)," +
-                " (0, 1, 2, 4, 5, 6, 7), (0, 1, 2, 4, 5, 6, 8), (0, 1, 2, 4, 5, 7, 8), (0, 1, 2, 4, 5, 7, 9)," +
-                " (0, 1, 2, 4, 6, 7, 8), (0, 1, 2, 4, 6, 7, 9), (0, 1, 2, 4, 6, 8, 9), (0, 1, 2, 4, 6, 8, 10)," +
-                " (0, 1, 3, 4, 5, 6, 7), (0, 1, 3, 4, 5, 6, 8), (0, 1, 3, 4, 5, 7, 8), (0, 1, 3, 4, 5, 7, 9), ...]");
-        subsetSeptuples_helper(repeat(1),
-                "[(1, 1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1, 1)," +
-                " (1, 1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1, 1)," +
-                " (1, 1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1, 1)," +
-                " (1, 1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1, 1)," +
-                " (1, 1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1, 1), ...]");
+        subsetSeptuples_helper("[]", "ExhaustiveProvider_subsetSeptuples_i");
+        subsetSeptuples_helper("[5]", "ExhaustiveProvider_subsetSeptuples_ii");
+        subsetSeptuples_helper("[1, 2, 3, 4]", "ExhaustiveProvider_subsetSeptuples_iii");
+        subsetSeptuples_helper("[1, 2, 3, 4, 5, 6, 7, 8]", "ExhaustiveProvider_subsetSeptuples_iv");
+        subsetSeptuples_helper("[1, 2, 2, 4, 5, 6, 7, 8]", "ExhaustiveProvider_subsetSeptuples_v");
+        subsetSeptuples_helper(EP.naturalIntegers(), "ExhaustiveProvider_subsetSeptuples_vi");
+        subsetSeptuples_helper(repeat(1), "ExhaustiveProvider_subsetSeptuples_vii");
         subsetSeptuples_fail_helper("[1, null, 3, 4, 5, 6, 7, 8]");
     }
 
     private static void stringSubsets_int_String_helper(int size, @NotNull String input, @NotNull String output) {
-        aeqit(EP.stringSubsets(size, input), output);
+        aeqitLog(EP.stringSubsets(size, input), output);
     }
 
     private static void stringSubsets_int_String_helper_limit(
@@ -5188,38 +5114,31 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testStringSubsets_int_String() {
-        stringSubsets_int_String_helper(0, "", "[]");
-        aeq(length(EP.stringSubsets(0, "")), 1);
-        stringSubsets_int_String_helper(1, "", "[]");
-        aeq(length(EP.stringSubsets(1, "")), 0);
-        stringSubsets_int_String_helper(2, "", "[]");
-        aeq(length(EP.stringSubsets(2, "")), 0);
-        stringSubsets_int_String_helper(3, "", "[]");
-        aeq(length(EP.stringSubsets(3, "")), 0);
-        stringSubsets_int_String_helper(0, "a", "[]");
-        stringSubsets_int_String_helper(1, "a", "[a]");
-        stringSubsets_int_String_helper(2, "a", "[]");
-        aeq(length(EP.stringSubsets(2, "a")), 0);
-        stringSubsets_int_String_helper(3, "a", "[]");
-        aeq(length(EP.stringSubsets(3, "a")), 0);
-        stringSubsets_int_String_helper(0, "abc", "[]");
-        aeq(length(EP.stringSubsets(0, "abc")), 1);
-        stringSubsets_int_String_helper(1, "abc", "[a, b, c]");
-        stringSubsets_int_String_helper(2, "abc", "[ab, ac, bc]");
-        stringSubsets_int_String_helper(3, "abc", "[abc]");
-        stringSubsets_int_String_helper(0, "abbc", "[]");
-        aeq(length(EP.stringSubsets(0, "abbc")), 1);
-        stringSubsets_int_String_helper(1, "abbc", "[a, b, b, c]");
-        stringSubsets_int_String_helper(2, "abbc", "[ab, ab, bb, bc, ac, bc]");
-        stringSubsets_int_String_helper(3, "abbc", "[abb, abc, abc, bbc]");
-        stringSubsets_int_String_helper_limit(0, "Mississippi", "[]");
-        aeq(length(EP.stringSubsets(0, "Mississippi")), 1);
-        stringSubsets_int_String_helper_limit(1, "Mississippi", "[M, i, s, s, i, s, s, i, p, p, i]");
-        stringSubsets_int_String_helper_limit(2, "Mississippi",
-                "[Mi, Ms, is, is, Ms, Mi, ii, is, ss, is, is, ss, ss, ss, ss, is, Ms, Ms, is, ii, ...]");
-        stringSubsets_int_String_helper_limit(3, "Mississippi",
-                "[Mis, Mis, Mss, Mis, iss, iis, iis, iss, Mii, Mis, Mss, Mss, iss, iss, iss, iis, Mis, Mss, Mis," +
-                " Mis, ...]");
+        stringSubsets_int_String_helper(0, "", "ExhaustiveProvider_stringSubsets_int_String_i");
+        stringSubsets_int_String_helper(1, "", "ExhaustiveProvider_stringSubsets_int_String_ii");
+        stringSubsets_int_String_helper(2, "", "ExhaustiveProvider_stringSubsets_int_String_iii");
+        stringSubsets_int_String_helper(3, "", "ExhaustiveProvider_stringSubsets_int_String_iv");
+
+        stringSubsets_int_String_helper(0, "a", "ExhaustiveProvider_stringSubsets_int_String_v");
+        stringSubsets_int_String_helper(1, "a", "ExhaustiveProvider_stringSubsets_int_String_vi");
+        stringSubsets_int_String_helper(2, "a", "ExhaustiveProvider_stringSubsets_int_String_vii");
+        stringSubsets_int_String_helper(3, "a", "ExhaustiveProvider_stringSubsets_int_String_viii");
+
+        stringSubsets_int_String_helper(0, "abc", "ExhaustiveProvider_stringSubsets_int_String_ix");
+        stringSubsets_int_String_helper(1, "abc", "ExhaustiveProvider_stringSubsets_int_String_x");
+        stringSubsets_int_String_helper(2, "abc", "ExhaustiveProvider_stringSubsets_int_String_xi");
+        stringSubsets_int_String_helper(3, "abc", "ExhaustiveProvider_stringSubsets_int_String_xii");
+
+        stringSubsets_int_String_helper(0, "abbc", "ExhaustiveProvider_stringSubsets_int_String_xiii");
+        stringSubsets_int_String_helper(1, "abbc", "ExhaustiveProvider_stringSubsets_int_String_xiv");
+        stringSubsets_int_String_helper(2, "abbc", "ExhaustiveProvider_stringSubsets_int_String_xv");
+        stringSubsets_int_String_helper(3, "abbc", "ExhaustiveProvider_stringSubsets_int_String_xvi");
+
+        stringSubsets_int_String_helper_limit(0, "Mississippi", "ExhaustiveProvider_stringSubsets_int_String_xvii");
+        stringSubsets_int_String_helper_limit(1, "Mississippi", "ExhaustiveProvider_stringSubsets_int_String_xviii");
+        stringSubsets_int_String_helper_limit(2, "Mississippi", "ExhaustiveProvider_stringSubsets_int_String_xix");
+        stringSubsets_int_String_helper_limit(3, "Mississippi", "ExhaustiveProvider_stringSubsets_int_String_xx");
+
         try {
             EP.stringSubsets(-1, "");
             fail();
@@ -5236,14 +5155,11 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testStringSubsets_int() {
-        stringSubsets_int_helper(0, "[]");
-        aeq(length(EP.stringSubsets(0)), 1);
-        stringSubsets_int_helper(1, "[a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, ...]");
-        stringSubsets_int_helper(2,
-                "[ab, ac, bc, bd, ad, ae, be, bf, cd, ce, de, df, cf, cg, dg, dh, af, ag, bg, bh, ...]");
-        stringSubsets_int_helper(3,
-                "[abc, abd, acd, ace, bcd, bce, bde, bdf, abe, abf, acf, acg, bcf, bcg, bdg, bdh, ade, adf, aef," +
-                " aeg, ...]");
+        stringSubsets_int_helper(0, "ExhaustiveProvider_stringSubsets_int_i");
+        stringSubsets_int_helper(1, "ExhaustiveProvider_stringSubsets_int_ii");
+        stringSubsets_int_helper(2, "ExhaustiveProvider_stringSubsets_int_iii");
+        stringSubsets_int_helper(3, "ExhaustiveProvider_stringSubsets_int_iv");
+
         try {
             EP.stringSubsets(-1);
             fail();
@@ -5266,38 +5182,28 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testSubsets_Iterable() {
-        subsets_Iterable_helper("[]", "[[]]");
-        subsets_Iterable_helper("[5]", "[[], [5]]");
-        subsets_Iterable_helper("[1, 2, 3]", "[[], [1], [1, 2], [2], [1, 2, 3], [3], [1, 3], [2, 3]]");
-        subsets_Iterable_helper("[1, 2, 2, 3]",
-                "[[], [1], [1, 2], [2], [1, 2, 2], [2], [1, 2], [3], [1, 2, 2, 3], [2, 2], [1, 2, 3], [2, 3]," +
-                " [1, 3], [1, 2, 3], [2, 3], [2, 2, 3]]");
-        subsets_Iterable_helper(EP.naturalIntegers(),
-                "[[], [0], [0, 1], [1], [0, 1, 2], [2], [0, 2], [3], [0, 1, 2, 3], [4], [1, 2], [5], [0, 1, 3], [6]," +
-                " [1, 3], [7], [0, 1, 2, 3, 4], [8], [0, 3], [9], ...]");
-        subsets_Iterable_helper(repeat(1),
-                "[[], [1], [1, 1], [1], [1, 1, 1], [1], [1, 1], [1], [1, 1, 1, 1], [1], [1, 1], [1], [1, 1, 1], [1]," +
-                " [1, 1], [1], [1, 1, 1, 1, 1], [1], [1, 1], [1], ...]");
+        subsets_Iterable_helper("[]", "ExhaustiveProvider_subsetsIterable_i");
+        subsets_Iterable_helper("[5]", "ExhaustiveProvider_subsetsIterable_ii");
+        subsets_Iterable_helper("[1, 2, 3]", "ExhaustiveProvider_subsetsIterable_iii");
+        subsets_Iterable_helper("[1, 2, 2, 3]", "ExhaustiveProvider_subsetsIterable_iv");
+        subsets_Iterable_helper(EP.naturalIntegers(), "ExhaustiveProvider_subsetsIterable_v");
+        subsets_Iterable_helper(repeat(1), "ExhaustiveProvider_subsetsIterable_vi");
         subsets_Iterable_fail_helper("[null]");
         subsets_Iterable_fail_helper("[1, null, 3]");
     }
 
     @Test
     public void testStringSubsets_String() {
-        aeqit(EP.stringSubsets(""), "[]");
-        aeq(length(EP.stringSubsets("")), 1);
-        simpleProviderHelper(EP.stringSubsets("a"), "[, a]");
-        simpleProviderHelper(EP.stringSubsets("abc"), "[, a, ab, b, abc, c, ac, bc]");
-        simpleProviderHelper(EP.stringSubsets("abbc"),
-                "[, a, ab, b, abb, b, ab, c, abbc, bb, abc, bc, ac, abc, bc, bbc]");
-        simpleProviderHelper(EP.stringSubsets("Mississippi"),
-                "[, M, Mi, i, Mis, s, Ms, s, Miss, i, is, s, Mis, s, is, i, Miiss, p, Ms, p, ...]");
+        aeqitLog(EP.stringSubsets(""), "ExhaustiveProvider_stringSubsets_String_i");
+        simpleProviderHelper(EP.stringSubsets("a"), "ExhaustiveProvider_stringSubsets_String_ii");
+        simpleProviderHelper(EP.stringSubsets("abc"), "ExhaustiveProvider_stringSubsets_String_iii");
+        simpleProviderHelper(EP.stringSubsets("abbc"), "ExhaustiveProvider_stringSubsets_String_iv");
+        simpleProviderHelper(EP.stringSubsets("Mississippi"), "ExhaustiveProvider_stringSubsets_String_v");
     }
 
     @Test
     public void testStringSubsets() {
-        simpleProviderHelper(EP.stringSubsets(),
-                "[, a, ab, b, abc, c, ac, d, abcd, e, bc, f, abd, g, bd, h, abcde, i, ad, j, ...]");
+        simpleProviderHelper(EP.stringSubsets(), "ExhaustiveProvider_stringSubsets");
     }
 
     private static void subsetsAtLeast_helper(int minSize, @NotNull Iterable<Integer> input, @NotNull String output) {
@@ -5317,61 +5223,35 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testSubsetsAtLeast() {
-        subsetsAtLeast_helper(0, "[]", "[[]]");
-        subsetsAtLeast_helper(1, "[]", "[]");
-        subsetsAtLeast_helper(2, "[]", "[]");
-        subsetsAtLeast_helper(3, "[]", "[]");
+        subsetsAtLeast_helper(0, "[]", "ExhaustiveProvider_subsetsAtLeast_i");
+        subsetsAtLeast_helper(1, "[]", "ExhaustiveProvider_subsetsAtLeast_ii");
+        subsetsAtLeast_helper(2, "[]", "ExhaustiveProvider_subsetsAtLeast_iii");
+        subsetsAtLeast_helper(3, "[]", "ExhaustiveProvider_subsetsAtLeast_iv");
 
-        subsetsAtLeast_helper(0, "[5]", "[[], [5]]");
-        subsetsAtLeast_helper(1, "[5]", "[[5]]");
-        subsetsAtLeast_helper(2, "[5]", "[]");
-        subsetsAtLeast_helper(3, "[5]", "[]");
+        subsetsAtLeast_helper(0, "[5]", "ExhaustiveProvider_subsetsAtLeast_v");
+        subsetsAtLeast_helper(1, "[5]", "ExhaustiveProvider_subsetsAtLeast_vi");
+        subsetsAtLeast_helper(2, "[5]", "ExhaustiveProvider_subsetsAtLeast_vii");
+        subsetsAtLeast_helper(3, "[5]", "ExhaustiveProvider_subsetsAtLeast_viii");
 
-        subsetsAtLeast_helper(0, "[1, 2, 3]", "[[], [1], [1, 2], [2], [1, 2, 3], [3], [1, 3], [2, 3]]");
-        subsetsAtLeast_helper(1, "[1, 2, 3]", "[[1], [1, 2], [2], [1, 2, 3], [3], [1, 3], [2, 3]]");
-        subsetsAtLeast_helper(2, "[1, 2, 3]", "[[1, 2], [1, 2, 3], [1, 3], [2, 3]]");
-        subsetsAtLeast_helper(3, "[1, 2, 3]", "[[1, 2, 3]]");
+        subsetsAtLeast_helper(0, "[1, 2, 3]", "ExhaustiveProvider_subsetsAtLeast_ix");
+        subsetsAtLeast_helper(1, "[1, 2, 3]", "ExhaustiveProvider_subsetsAtLeast_x");
+        subsetsAtLeast_helper(2, "[1, 2, 3]", "ExhaustiveProvider_subsetsAtLeast_xi");
+        subsetsAtLeast_helper(3, "[1, 2, 3]", "ExhaustiveProvider_subsetsAtLeast_xii");
 
-        subsetsAtLeast_helper(0, "[1, 2, 2, 3]",
-                "[[], [1], [1, 2], [2], [1, 2, 2], [2], [1, 2], [3], [1, 2, 2, 3], [2, 2], [1, 2, 3], [2, 3]," +
-                " [1, 3], [1, 2, 3], [2, 3], [2, 2, 3]]");
-        subsetsAtLeast_helper(1, "[1, 2, 2, 3]",
-                "[[1], [1, 2], [2], [1, 2, 2], [2], [1, 2], [3], [1, 2, 2, 3], [2, 2], [1, 2, 3], [2, 3], [1, 3]," +
-                " [1, 2, 3], [2, 3], [2, 2, 3]]");
-        subsetsAtLeast_helper(2, "[1, 2, 2, 3]",
-                "[[1, 2], [1, 2, 2], [1, 2], [1, 2, 2, 3], [2, 2], [1, 2, 3], [2, 3], [1, 3], [1, 2, 3], [2, 3]," +
-                " [2, 2, 3]]");
-        subsetsAtLeast_helper(3, "[1, 2, 2, 3]", "[[1, 2, 2], [1, 2, 2, 3], [1, 2, 3], [1, 2, 3], [2, 2, 3]]");
+        subsetsAtLeast_helper(0, "[1, 2, 2, 3]", "ExhaustiveProvider_subsetsAtLeast_xiii");
+        subsetsAtLeast_helper(1, "[1, 2, 2, 3]", "ExhaustiveProvider_subsetsAtLeast_xiv");
+        subsetsAtLeast_helper(2, "[1, 2, 2, 3]", "ExhaustiveProvider_subsetsAtLeast_xv");
+        subsetsAtLeast_helper(3, "[1, 2, 2, 3]", "ExhaustiveProvider_subsetsAtLeast_xvi");
 
-        subsetsAtLeast_helper(0, EP.naturalIntegers(),
-                "[[], [0], [0, 1], [1], [0, 1, 2], [2], [0, 2], [3], [0, 1, 2, 3], [4], [1, 2], [5], [0, 1, 3], [6]," +
-                " [1, 3], [7], [0, 1, 2, 3, 4], [8], [0, 3], [9], ...]");
-        subsetsAtLeast_helper(1, EP.naturalIntegers(),
-                "[[0], [0, 1], [1], [0, 1, 2], [2], [0, 2], [3], [0, 1, 2, 3], [4], [1, 2], [5], [0, 1, 3], [6]," +
-                " [1, 3], [7], [0, 1, 2, 3, 4], [8], [0, 3], [9], [0, 2, 3], ...]");
-        subsetsAtLeast_helper(2, EP.naturalIntegers(),
-                "[[0, 1], [0, 1, 2], [0, 2], [0, 1, 2, 3], [1, 2], [0, 1, 3], [1, 3], [0, 1, 2, 3, 4], [0, 3]," +
-                " [0, 2, 3], [0, 4], [0, 1, 2, 4], [1, 4], [0, 2, 4], [1, 5], [0, 1, 2, 3, 4, 5], [2, 3], [1, 2, 3]," +
-                " [2, 4], [0, 1, 3, 4], ...]");
-        subsetsAtLeast_helper(3, EP.naturalIntegers(),
-                "[[0, 1, 2], [0, 1, 2, 3], [0, 1, 3], [0, 1, 2, 3, 4], [0, 2, 3], [0, 1, 2, 4], [0, 2, 4]," +
-                " [0, 1, 2, 3, 4, 5], [1, 2, 3], [0, 1, 3, 4], [1, 2, 4], [0, 1, 2, 3, 5], [1, 3, 4], [0, 1, 3, 5]," +
-                " [1, 3, 5], [0, 1, 2, 3, 4, 5, 6], [0, 1, 4], [0, 2, 3, 4], [0, 1, 5], [0, 1, 2, 4, 5], ...]");
+        subsetsAtLeast_helper(0, EP.naturalIntegers(), "ExhaustiveProvider_subsetsAtLeast_xvii");
+        subsetsAtLeast_helper(1, EP.naturalIntegers(), "ExhaustiveProvider_subsetsAtLeast_xviii");
+        subsetsAtLeast_helper(2, EP.naturalIntegers(), "ExhaustiveProvider_subsetsAtLeast_xix");
+        subsetsAtLeast_helper(3, EP.naturalIntegers(), "ExhaustiveProvider_subsetsAtLeast_xx");
 
-        subsetsAtLeast_helper(0, repeat(1),
-                "[[], [1], [1, 1], [1], [1, 1, 1], [1], [1, 1], [1], [1, 1, 1, 1], [1], [1, 1], [1], [1, 1, 1], [1]," +
-                " [1, 1], [1], [1, 1, 1, 1, 1], [1], [1, 1], [1], ...]");
-        subsetsAtLeast_helper(1, repeat(1),
-                "[[1], [1, 1], [1], [1, 1, 1], [1], [1, 1], [1], [1, 1, 1, 1], [1], [1, 1], [1], [1, 1, 1], [1]," +
-                " [1, 1], [1], [1, 1, 1, 1, 1], [1], [1, 1], [1], [1, 1, 1], ...]");
-        subsetsAtLeast_helper(2, repeat(1),
-                "[[1, 1], [1, 1, 1], [1, 1], [1, 1, 1, 1], [1, 1], [1, 1, 1], [1, 1], [1, 1, 1, 1, 1], [1, 1]," +
-                " [1, 1, 1], [1, 1], [1, 1, 1, 1], [1, 1], [1, 1, 1], [1, 1], [1, 1, 1, 1, 1, 1], [1, 1], [1, 1, 1]," +
-                " [1, 1], [1, 1, 1, 1], ...]");
-        subsetsAtLeast_helper(3, repeat(1),
-                "[[1, 1, 1], [1, 1, 1, 1], [1, 1, 1], [1, 1, 1, 1, 1], [1, 1, 1], [1, 1, 1, 1], [1, 1, 1]," +
-                " [1, 1, 1, 1, 1, 1], [1, 1, 1], [1, 1, 1, 1], [1, 1, 1], [1, 1, 1, 1, 1], [1, 1, 1], [1, 1, 1, 1]," +
-                " [1, 1, 1], [1, 1, 1, 1, 1, 1, 1], [1, 1, 1], [1, 1, 1, 1], [1, 1, 1], [1, 1, 1, 1, 1], ...]");
+        subsetsAtLeast_helper(0, repeat(1), "ExhaustiveProvider_subsetsAtLeast_xxi");
+        subsetsAtLeast_helper(1, repeat(1), "ExhaustiveProvider_subsetsAtLeast_xxii");
+        subsetsAtLeast_helper(2, repeat(1), "ExhaustiveProvider_subsetsAtLeast_xxiii");
+        subsetsAtLeast_helper(3, repeat(1), "ExhaustiveProvider_subsetsAtLeast_xxiv");
 
         subsetsAtLeast_fail_helper(-1, "[]");
         subsetsAtLeast_fail_helper(-1, "[1, 2, 3]");
@@ -5389,38 +5269,31 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testStringSubsetsAtLeast_String() {
-        stringSubsetsAtLeast_String_helper(0, "", "[]");
-        aeq(length(EP.stringSubsetsAtLeast(0, "")), 1);
-        stringSubsetsAtLeast_String_helper(1, "", "[]");
-        aeq(length(EP.stringSubsetsAtLeast(1, "")), 0);
-        stringSubsetsAtLeast_String_helper(2, "", "[]");
-        aeq(length(EP.stringSubsetsAtLeast(2, "")), 0);
-        stringSubsetsAtLeast_String_helper(3, "", "[]");
-        aeq(length(EP.stringSubsetsAtLeast(3, "")), 0);
-        stringSubsetsAtLeast_String_helper(0, "a", "[, a]");
-        stringSubsetsAtLeast_String_helper(1, "a", "[a]");
-        stringSubsetsAtLeast_String_helper(2, "a", "[]");
-        stringSubsetsAtLeast_String_helper(3, "a", "[]");
-        stringSubsetsAtLeast_String_helper(0, "abc", "[, a, ab, b, abc, c, ac, bc]");
-        stringSubsetsAtLeast_String_helper(1, "abc", "[a, ab, b, abc, c, ac, bc]");
-        stringSubsetsAtLeast_String_helper(2, "abc", "[ab, abc, ac, bc]");
-        stringSubsetsAtLeast_String_helper(3, "abc", "[abc]");
-        stringSubsetsAtLeast_String_helper(0, "abbc",
-                "[, a, ab, b, abb, b, ab, c, abbc, bb, abc, bc, ac, abc, bc, bbc]");
-        stringSubsetsAtLeast_String_helper(1, "abbc",
-                "[a, ab, b, abb, b, ab, c, abbc, bb, abc, bc, ac, abc, bc, bbc]");
-        stringSubsetsAtLeast_String_helper(2, "abbc", "[ab, abb, ab, abbc, bb, abc, bc, ac, abc, bc, bbc]");
-        stringSubsetsAtLeast_String_helper(3, "abbc", "[abb, abbc, abc, abc, bbc]");
-        stringSubsetsAtLeast_String_helper(0, "Mississippi",
-                "[, M, Mi, i, Mis, s, Ms, s, Miss, i, is, s, Mis, s, is, i, Miiss, p, Ms, p, ...]");
-        stringSubsetsAtLeast_String_helper(1, "Mississippi",
-                "[M, Mi, i, Mis, s, Ms, s, Miss, i, is, s, Mis, s, is, i, Miiss, p, Ms, p, Mss, ...]");
-        stringSubsetsAtLeast_String_helper(2, "Mississippi",
-                "[Mi, Mis, Ms, Miss, is, Mis, is, Miiss, Ms, Mss, Mi, Miis, ii, Mis, is, Miisss, ss, iss, is, Miis," +
-                " ...]");
-        stringSubsetsAtLeast_String_helper(3, "Mississippi",
-                "[Mis, Miss, Mis, Miiss, Mss, Miis, Mis, Miisss, iss, Miis, iis, Misss, iis, Miss, iss, Miissss," +
-                " Mii, Miss, Mis, Miiss, ...]");
+        stringSubsetsAtLeast_String_helper(0, "", "ExhaustiveProvider_stringSubsetsAtLeast_String_i");
+        stringSubsetsAtLeast_String_helper(1, "", "ExhaustiveProvider_stringSubsetsAtLeast_String_ii");
+        stringSubsetsAtLeast_String_helper(2, "", "ExhaustiveProvider_stringSubsetsAtLeast_String_iii");
+        stringSubsetsAtLeast_String_helper(3, "", "ExhaustiveProvider_stringSubsetsAtLeast_String_iv");
+
+        stringSubsetsAtLeast_String_helper(0, "a", "ExhaustiveProvider_stringSubsetsAtLeast_String_v");
+        stringSubsetsAtLeast_String_helper(1, "a", "ExhaustiveProvider_stringSubsetsAtLeast_String_vi");
+        stringSubsetsAtLeast_String_helper(2, "a", "ExhaustiveProvider_stringSubsetsAtLeast_String_vii");
+        stringSubsetsAtLeast_String_helper(3, "a", "ExhaustiveProvider_stringSubsetsAtLeast_String_viii");
+
+        stringSubsetsAtLeast_String_helper(0, "abc", "ExhaustiveProvider_stringSubsetsAtLeast_String_ix");
+        stringSubsetsAtLeast_String_helper(1, "abc", "ExhaustiveProvider_stringSubsetsAtLeast_String_x");
+        stringSubsetsAtLeast_String_helper(2, "abc", "ExhaustiveProvider_stringSubsetsAtLeast_String_xi");
+        stringSubsetsAtLeast_String_helper(3, "abc", "ExhaustiveProvider_stringSubsetsAtLeast_String_xii");
+
+        stringSubsetsAtLeast_String_helper(0, "abbc", "ExhaustiveProvider_stringSubsetsAtLeast_String_xiii");
+        stringSubsetsAtLeast_String_helper(1, "abbc", "ExhaustiveProvider_stringSubsetsAtLeast_String_xiv");
+        stringSubsetsAtLeast_String_helper(2, "abbc", "ExhaustiveProvider_stringSubsetsAtLeast_String_xv");
+        stringSubsetsAtLeast_String_helper(3, "abbc", "ExhaustiveProvider_stringSubsetsAtLeast_String_xvi");
+
+        stringSubsetsAtLeast_String_helper(0, "Mississippi", "ExhaustiveProvider_stringSubsetsAtLeast_String_xvii");
+        stringSubsetsAtLeast_String_helper(1, "Mississippi", "ExhaustiveProvider_stringSubsetsAtLeast_String_xviii");
+        stringSubsetsAtLeast_String_helper(2, "Mississippi", "ExhaustiveProvider_stringSubsetsAtLeast_String_xix");
+        stringSubsetsAtLeast_String_helper(3, "Mississippi", "ExhaustiveProvider_stringSubsetsAtLeast_String_xx");
+
         try {
             EP.stringSubsetsAtLeast(-1, "");
             fail();
@@ -5437,16 +5310,11 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testStringSubsetsAtLeast() {
-        stringSubsetsAtLeast_helper(0,
-                "[, a, ab, b, abc, c, ac, d, abcd, e, bc, f, abd, g, bd, h, abcde, i, ad, j, ...]");
-        stringSubsetsAtLeast_helper(1,
-                "[a, ab, b, abc, c, ac, d, abcd, e, bc, f, abd, g, bd, h, abcde, i, ad, j, acd, ...]");
-        stringSubsetsAtLeast_helper(2,
-                "[ab, abc, ac, abcd, bc, abd, bd, abcde, ad, acd, ae, abce, be, ace, bf, abcdef, cd, bcd, ce, abde," +
-                " ...]");
-        stringSubsetsAtLeast_helper(3,
-                "[abc, abcd, abd, abcde, acd, abce, ace, abcdef, bcd, abde, bce, abcdf, bde, abdf, bdf, abcdefg," +
-                " abe, acde, abf, abcef, ...]");
+        stringSubsetsAtLeast_helper(0, "ExhaustiveProvider_stringSubsetsAtLeast_i");
+        stringSubsetsAtLeast_helper(1, "ExhaustiveProvider_stringSubsetsAtLeast_ii");
+        stringSubsetsAtLeast_helper(2, "ExhaustiveProvider_stringSubsetsAtLeast_iii");
+        stringSubsetsAtLeast_helper(3, "ExhaustiveProvider_stringSubsetsAtLeast_iv");
+
         try {
             EP.stringSubsetsAtLeast(-1);
             fail();
@@ -5459,31 +5327,30 @@ public strictfp class ExhaustiveProviderTest {
             @NotNull String output
     ) {
         Iterable<Either<A, B>> es = EP.eithersSuccessive(as, bs);
-        aeqit(es, output);
+        aeqitLog(es, output);
         testNoRemove(es);
     }
 
     @Test
     public void testEithersSuccessive() {
         eithersSuccessive_helper(Arrays.asList(1, 2, 3, 4), fromString("abcd"),
-                "[<1, >, <2, >, <3, >, <4, >, <, a>, <, b>, <, c>, <, d>]");
+                "ExhaustiveProvider_eithersSuccessive_i");
         eithersSuccessive_helper(Arrays.asList(1, 2, null, 4), fromString("abcd"),
-                "[<1, >, <2, >, <null, >, <4, >, <, a>, <, b>, <, c>, <, d>]");
+                "ExhaustiveProvider_eithersSuccessive_ii");
         eithersSuccessive_helper(Arrays.asList(1, 2), fromString("abcd"),
-                "[<1, >, <2, >, <, a>, <, b>, <, c>, <, d>]");
+                "ExhaustiveProvider_eithersSuccessive_iii");
         eithersSuccessive_helper(Arrays.asList(1, 2, 3, 4), fromString("ab"),
-                "[<1, >, <2, >, <3, >, <4, >, <, a>, <, b>]");
-        eithersSuccessive_helper(Collections.emptyList(), fromString("abcd"), "[<, a>, <, b>, <, c>, <, d>]");
-        eithersSuccessive_helper(Collections.emptyList(), Collections.emptyList(), "[]");
+                "ExhaustiveProvider_eithersSuccessive_iv");
+        eithersSuccessive_helper(Collections.emptyList(), fromString("abcd"),
+                "ExhaustiveProvider_eithersSuccessive_v");
+        eithersSuccessive_helper(Collections.emptyList(), Collections.emptyList(),
+                "ExhaustiveProvider_eithersSuccessive_vi");
         simpleProviderHelper(EP.eithersSuccessive(EP.naturalBigIntegers(), fromString("abcd")),
-                "[<0, >, <1, >, <2, >, <3, >, <4, >, <5, >, <6, >, <7, >, <8, >, <9, >, <10, >, <11, >, <12, >," +
-                " <13, >, <14, >, <15, >, <16, >, <17, >, <18, >, <19, >, ...]");
+                "ExhaustiveProvider_eithersSuccessive_vii");
         simpleProviderHelper(EP.eithersSuccessive(fromString("abcd"), EP.naturalBigIntegers()),
-                "[<a, >, <b, >, <c, >, <d, >, <, 0>, <, 1>, <, 2>, <, 3>, <, 4>, <, 5>, <, 6>, <, 7>, <, 8>, <, 9>," +
-                " <, 10>, <, 11>, <, 12>, <, 13>, <, 14>, <, 15>, ...]");
+                "ExhaustiveProvider_eithersSuccessive_viii");
         simpleProviderHelper(EP.eithersSuccessive(EP.positiveBigIntegers(), EP.negativeBigIntegers()),
-                "[<1, >, <2, >, <3, >, <4, >, <5, >, <6, >, <7, >, <8, >, <9, >, <10, >, <11, >, <12, >, <13, >," +
-                " <14, >, <15, >, <16, >, <17, >, <18, >, <19, >, <20, >, ...]");
+                "ExhaustiveProvider_eithersSuccessive_ix");
     }
 
     private static <A, B> void eithersSquareRootOrder_helper(
@@ -5492,31 +5359,30 @@ public strictfp class ExhaustiveProviderTest {
             @NotNull String output
     ) {
         Iterable<Either<A, B>> es = EP.eithersSquareRootOrder(as, bs);
-        aeqit(es, output);
+        aeqitLog(es, output);
         testNoRemove(es);
     }
 
     @Test
     public void testEithersSquareRootOrder() {
         eithersSquareRootOrder_helper(Arrays.asList(1, 2, 3, 4), fromString("abcd"),
-                "[<, a>, <, b>, <1, >, <2, >, <, c>, <3, >, <4, >, <, d>]");
+                "ExhaustiveProvider_eithersSquareRootOrder_i");
         eithersSquareRootOrder_helper(Arrays.asList(1, 2, null, 4), fromString("abcd"),
-                "[<, a>, <, b>, <1, >, <2, >, <, c>, <null, >, <4, >, <, d>]");
+                "ExhaustiveProvider_eithersSquareRootOrder_ii");
         eithersSquareRootOrder_helper(Arrays.asList(1, 2), fromString("abcd"),
-                "[<, a>, <, b>, <1, >, <2, >, <, c>, <, d>]");
+                "ExhaustiveProvider_eithersSquareRootOrder_iii");
         eithersSquareRootOrder_helper(Arrays.asList(1, 2, 3, 4), fromString("ab"),
-                "[<, a>, <, b>, <1, >, <2, >, <3, >, <4, >]");
-        eithersSquareRootOrder_helper(Collections.emptyList(), fromString("abcd"), "[<, a>, <, b>, <, c>, <, d>]");
-        eithersSquareRootOrder_helper(Collections.emptyList(), Collections.emptyList(), "[]");
+                "ExhaustiveProvider_eithersSquareRootOrder_iv");
+        eithersSquareRootOrder_helper(Collections.emptyList(), fromString("abcd"),
+                "ExhaustiveProvider_eithersSquareRootOrder_v");
+        eithersSquareRootOrder_helper(Collections.emptyList(), Collections.emptyList(),
+                "ExhaustiveProvider_eithersSquareRootOrder_vi");
         simpleProviderHelper(EP.eithersSquareRootOrder(EP.naturalBigIntegers(), fromString("abcd")),
-                "[<, a>, <, b>, <0, >, <1, >, <, c>, <2, >, <3, >, <4, >, <5, >, <, d>, <6, >, <7, >, <8, >, <9, >," +
-                " <10, >, <11, >, <12, >, <13, >, <14, >, <15, >, ...]");
+                "ExhaustiveProvider_eithersSquareRootOrder_vii");
         simpleProviderHelper(EP.eithersSquareRootOrder(fromString("abcd"), EP.naturalBigIntegers()),
-                "[<, 0>, <, 1>, <a, >, <b, >, <, 2>, <c, >, <d, >, <, 3>, <, 4>, <, 5>, <, 6>, <, 7>, <, 8>, <, 9>," +
-                " <, 10>, <, 11>, <, 12>, <, 13>, <, 14>, <, 15>, ...]");
+                "ExhaustiveProvider_eithersSquareRootOrder_viii");
         simpleProviderHelper(EP.eithersSquareRootOrder(EP.positiveBigIntegers(), EP.negativeBigIntegers()),
-                "[<, -1>, <, -2>, <1, >, <2, >, <, -3>, <3, >, <4, >, <5, >, <6, >, <, -4>, <7, >, <8, >, <9, >," +
-                " <10, >, <11, >, <12, >, <, -5>, <13, >, <14, >, <15, >, ...]");
+                "ExhaustiveProvider_eithersSquareRootOrder_ix");
     }
 
     private static <A, B> void eithersLogarithmicOrder_helper(
@@ -5525,31 +5391,30 @@ public strictfp class ExhaustiveProviderTest {
             @NotNull String output
     ) {
         Iterable<Either<A, B>> es = EP.eithersLogarithmicOrder(as, bs);
-        aeqit(es, output);
+        aeqitLog(es, output);
         testNoRemove(es);
     }
 
     @Test
     public void testEithersLogarithmicOrder() {
         eithersLogarithmicOrder_helper(Arrays.asList(1, 2, 3, 4), fromString("abcd"),
-                "[<1, >, <, a>, <, b>, <2, >, <, c>, <3, >, <4, >, <, d>]");
+                "ExhaustiveProvider_eithersLogarithmicOrder_i");
         eithersLogarithmicOrder_helper(Arrays.asList(1, 2, null, 4), fromString("abcd"),
-                "[<1, >, <, a>, <, b>, <2, >, <, c>, <null, >, <4, >, <, d>]");
+                "ExhaustiveProvider_eithersLogarithmicOrder_ii");
         eithersLogarithmicOrder_helper(Arrays.asList(1, 2), fromString("abcd"),
-                "[<1, >, <, a>, <, b>, <2, >, <, c>, <, d>]");
+                "ExhaustiveProvider_eithersLogarithmicOrder_iii");
         eithersLogarithmicOrder_helper(Arrays.asList(1, 2, 3, 4), fromString("ab"),
-                "[<1, >, <, a>, <, b>, <2, >, <3, >, <4, >]");
-        eithersLogarithmicOrder_helper(Collections.emptyList(), fromString("abcd"), "[<, a>, <, b>, <, c>, <, d>]");
-        eithersLogarithmicOrder_helper(Collections.emptyList(), Collections.emptyList(), "[]");
+                "ExhaustiveProvider_eithersLogarithmicOrder_iv");
+        eithersLogarithmicOrder_helper(Collections.emptyList(), fromString("abcd"),
+                "ExhaustiveProvider_eithersLogarithmicOrder_v");
+        eithersLogarithmicOrder_helper(Collections.emptyList(), Collections.emptyList(),
+                "ExhaustiveProvider_eithersLogarithmicOrder_vi");
         simpleProviderHelper(EP.eithersLogarithmicOrder(EP.naturalBigIntegers(), fromString("abcd")),
-                "[<0, >, <, a>, <, b>, <1, >, <, c>, <2, >, <3, >, <4, >, <, d>, <5, >, <6, >, <7, >, <8, >, <9, >," +
-                " <10, >, <11, >, <12, >, <13, >, <14, >, <15, >, ...]");
+                "ExhaustiveProvider_eithersLogarithmicOrder_vii");
         simpleProviderHelper(EP.eithersLogarithmicOrder(fromString("abcd"), EP.naturalBigIntegers()),
-                "[<a, >, <, 0>, <, 1>, <b, >, <, 2>, <c, >, <d, >, <, 3>, <, 4>, <, 5>, <, 6>, <, 7>, <, 8>, <, 9>," +
-                " <, 10>, <, 11>, <, 12>, <, 13>, <, 14>, <, 15>, ...]");
+                "ExhaustiveProvider_eithersLogarithmicOrder_viii");
         simpleProviderHelper(EP.eithersLogarithmicOrder(EP.positiveBigIntegers(), EP.negativeBigIntegers()),
-                "[<1, >, <, -1>, <, -2>, <2, >, <, -3>, <3, >, <4, >, <5, >, <, -4>, <6, >, <7, >, <8, >, <9, >," +
-                " <10, >, <11, >, <12, >, <, -5>, <13, >, <14, >, <15, >, ...]");
+                "ExhaustiveProvider_eithersLogarithmicOrder_ix");
     }
 
     private static <A, B> void eithers_helper(
@@ -5558,99 +5423,97 @@ public strictfp class ExhaustiveProviderTest {
             @NotNull String output
     ) {
         Iterable<Either<A, B>> es = EP.eithers(as, bs);
-        aeqit(es, output);
+        aeqitLog(es, output);
         testNoRemove(es);
     }
 
     @Test
     public void testEithers() {
-        eithers_helper(Arrays.asList(1, 2, 3, 4), fromString("abcd"),
-                "[<1, >, <, a>, <2, >, <, b>, <3, >, <, c>, <4, >, <, d>]");
-        eithers_helper(Arrays.asList(1, 2, null, 4), fromString("abcd"),
-                "[<1, >, <, a>, <2, >, <, b>, <null, >, <, c>, <4, >, <, d>]");
-        eithers_helper(Arrays.asList(1, 2), fromString("abcd"), "[<1, >, <, a>, <2, >, <, b>, <, c>, <, d>]");
-        eithers_helper(Arrays.asList(1, 2, 3, 4), fromString("ab"), "[<1, >, <, a>, <2, >, <, b>, <3, >, <4, >]");
-        eithers_helper(Collections.emptyList(), fromString("abcd"), "[<, a>, <, b>, <, c>, <, d>]");
-        eithers_helper(Collections.emptyList(), Collections.emptyList(), "[]");
+        eithers_helper(Arrays.asList(1, 2, 3, 4), fromString("abcd"), "ExhaustiveProvider_eithers_i");
+        eithers_helper(Arrays.asList(1, 2, null, 4), fromString("abcd"), "ExhaustiveProvider_eithers_ii");
+        eithers_helper(Arrays.asList(1, 2), fromString("abcd"), "ExhaustiveProvider_eithers_iii");
+        eithers_helper(Arrays.asList(1, 2, 3, 4), fromString("ab"), "ExhaustiveProvider_eithers_iv");
+        eithers_helper(Collections.emptyList(), fromString("abcd"), "ExhaustiveProvider_eithers_v");
+        eithers_helper(Collections.emptyList(), Collections.emptyList(), "ExhaustiveProvider_eithers_vi");
         simpleProviderHelper(EP.eithers(EP.naturalBigIntegers(), fromString("abcd")),
-                "[<0, >, <, a>, <1, >, <, b>, <2, >, <, c>, <3, >, <, d>, <4, >, <5, >, <6, >, <7, >, <8, >, <9, >," +
-                " <10, >, <11, >, <12, >, <13, >, <14, >, <15, >, ...]");
+                "ExhaustiveProvider_eithers_vii");
         simpleProviderHelper(EP.eithers(fromString("abcd"), EP.naturalBigIntegers()),
-                "[<a, >, <, 0>, <b, >, <, 1>, <c, >, <, 2>, <d, >, <, 3>, <, 4>, <, 5>, <, 6>, <, 7>, <, 8>, <, 9>," +
-                " <, 10>, <, 11>, <, 12>, <, 13>, <, 14>, <, 15>, ...]");
+                "ExhaustiveProvider_eithers_viii");
         simpleProviderHelper(EP.eithers(EP.positiveBigIntegers(), EP.negativeBigIntegers()),
-                "[<1, >, <, -1>, <2, >, <, -2>, <3, >, <, -3>, <4, >, <, -4>, <5, >, <, -5>, <6, >, <, -6>, <7, >," +
-                " <, -7>, <8, >, <, -8>, <9, >, <, -9>, <10, >, <, -10>, ...]");
+                "ExhaustiveProvider_eithers_ix");
     }
 
     private static void chooseSquareRootOrder_helper(@NotNull String as, @NotNull String bs, @NotNull String output) {
         Iterable<Integer> es = EP.chooseSquareRootOrder(readIntegerListWithNulls(as), readIntegerListWithNulls(bs));
-        aeqit(es, output);
+        aeqitLog(es, output);
         testNoRemove(es);
     }
 
     @Test
     public void testChooseSquareRootOrder() {
-        chooseSquareRootOrder_helper("[1, 2, 3, 4]", "[-1, -2, -3, -4]", "[-1, -2, 1, 2, -3, 3, 4, -4]");
-        chooseSquareRootOrder_helper("[1, 2, null, 4]", "[-1, -2, -3, -4]", "[-1, -2, 1, 2, -3, null, 4, -4]");
-        chooseSquareRootOrder_helper("[1, 2]", "[-1, -2, -3, -4]", "[-1, -2, 1, 2, -3, -4]");
-        chooseSquareRootOrder_helper("[1, 2, 3, 4]", "[-1, -2]", "[-1, -2, 1, 2, 3, 4]");
-        chooseSquareRootOrder_helper("[]", "[1, 2, 3, 4]", "[1, 2, 3, 4]");
-        chooseSquareRootOrder_helper("[]", "[]", "[]");
+        chooseSquareRootOrder_helper("[1, 2, 3, 4]", "[-1, -2, -3, -4]", "ExhaustiveProvider_chooseSquareRootOrder_i");
+        chooseSquareRootOrder_helper("[1, 2, null, 4]", "[-1, -2, -3, -4]",
+                "ExhaustiveProvider_chooseSquareRootOrder_ii");
+        chooseSquareRootOrder_helper("[1, 2]", "[-1, -2, -3, -4]", "ExhaustiveProvider_chooseSquareRootOrder_iii");
+        chooseSquareRootOrder_helper("[1, 2, 3, 4]", "[-1, -2]", "ExhaustiveProvider_chooseSquareRootOrder_iv");
+        chooseSquareRootOrder_helper("[]", "[1, 2, 3, 4]", "ExhaustiveProvider_chooseSquareRootOrder_v");
+        chooseSquareRootOrder_helper("[]", "[]", "ExhaustiveProvider_chooseSquareRootOrder_vi");
         simpleProviderHelper(EP.chooseSquareRootOrder(EP.naturalIntegers(), Arrays.asList(-1, -2, -3, -4)),
-                "[-1, -2, 0, 1, -3, 2, 3, 4, 5, -4, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, ...]");
+                "ExhaustiveProvider_chooseSquareRootOrder_vii");
         simpleProviderHelper(EP.chooseSquareRootOrder(Arrays.asList(-1, -2, -3, -4), EP.naturalIntegers()),
-                "[0, 1, -1, -2, 2, -3, -4, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, ...]");
+                "ExhaustiveProvider_chooseSquareRootOrder_viii");
         simpleProviderHelper(EP.chooseSquareRootOrder(EP.positiveIntegers(), EP.negativeIntegers()),
-                "[-1, -2, 1, 2, -3, 3, 4, 5, 6, -4, 7, 8, 9, 10, 11, 12, -5, 13, 14, 15, ...]");
+                "ExhaustiveProvider_chooseSquareRootOrder_ix");
     }
 
     private static void chooseLogarithmicOrder_helper(@NotNull String as, @NotNull String bs, @NotNull String output) {
         Iterable<Integer> es = EP.chooseLogarithmicOrder(readIntegerListWithNulls(as), readIntegerListWithNulls(bs));
-        aeqit(es, output);
+        aeqitLog(es, output);
         testNoRemove(es);
     }
 
     @Test
     public void testChooseLogarithmicOrder() {
-        chooseLogarithmicOrder_helper("[1, 2, 3, 4]", "[-1, -2, -3, -4]", "[1, -1, -2, 2, -3, 3, 4, -4]");
-        chooseLogarithmicOrder_helper("[1, 2, null, 4]", "[-1, -2, -3, -4]", "[1, -1, -2, 2, -3, null, 4, -4]");
-        chooseLogarithmicOrder_helper("[1, 2]", "[-1, -2, -3, -4]", "[1, -1, -2, 2, -3, -4]");
-        chooseLogarithmicOrder_helper("[1, 2, 3, 4]", "[-1, -2]", "[1, -1, -2, 2, 3, 4]");
-        chooseLogarithmicOrder_helper("[]", "[1, 2, 3, 4]", "[1, 2, 3, 4]");
-        chooseLogarithmicOrder_helper("[]", "[]", "[]");
+        chooseLogarithmicOrder_helper("[1, 2, 3, 4]", "[-1, -2, -3, -4]",
+                "ExhaustiveProvider_chooseLogarithmicOrder_i");
+        chooseLogarithmicOrder_helper("[1, 2, null, 4]", "[-1, -2, -3, -4]",
+                "ExhaustiveProvider_chooseLogarithmicOrder_ii");
+        chooseLogarithmicOrder_helper("[1, 2]", "[-1, -2, -3, -4]", "ExhaustiveProvider_chooseLogarithmicOrder_iii");
+        chooseLogarithmicOrder_helper("[1, 2, 3, 4]", "[-1, -2]", "ExhaustiveProvider_chooseLogarithmicOrder_iv");
+        chooseLogarithmicOrder_helper("[]", "[1, 2, 3, 4]", "ExhaustiveProvider_chooseLogarithmicOrder_v");
+        chooseLogarithmicOrder_helper("[]", "[]", "ExhaustiveProvider_chooseLogarithmicOrder_vi");
         simpleProviderHelper(EP.chooseLogarithmicOrder(EP.naturalIntegers(), Arrays.asList(-1, -2, -3, -4)),
-                "[0, -1, -2, 1, -3, 2, 3, 4, -4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, ...]");
+                "ExhaustiveProvider_chooseLogarithmicOrder_vii");
         simpleProviderHelper(EP.chooseLogarithmicOrder(Arrays.asList(-1, -2, -3, -4), EP.naturalIntegers()),
-                "[-1, 0, 1, -2, 2, -3, -4, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, ...]");
+                "ExhaustiveProvider_chooseLogarithmicOrder_viii");
         simpleProviderHelper(EP.chooseLogarithmicOrder(EP.positiveIntegers(), EP.negativeIntegers()),
-                "[1, -1, -2, 2, -3, 3, 4, 5, -4, 6, 7, 8, 9, 10, 11, 12, -5, 13, 14, 15, ...]");
+                "ExhaustiveProvider_chooseLogarithmicOrder_ix");
     }
 
     private static void choose_helper(@NotNull String as, @NotNull String bs, @NotNull String output) {
         Iterable<Integer> es = EP.choose(readIntegerListWithNulls(as), readIntegerListWithNulls(bs));
-        aeqit(es, output);
+        aeqitLog(es, output);
         testNoRemove(es);
     }
 
     @Test
     public void testChoose() {
-        choose_helper("[1, 2, 3, 4]", "[-1, -2, -3, -4]", "[1, -1, 2, -2, 3, -3, 4, -4]");
-        choose_helper("[1, 2, null, 4]", "[-1, -2, -3, -4]", "[1, -1, 2, -2, null, -3, 4, -4]");
-        choose_helper("[1, 2]", "[-1, -2, -3, -4]", "[1, -1, 2, -2, -3, -4]");
-        choose_helper("[1, 2, 3, 4]", "[-1, -2]", "[1, -1, 2, -2, 3, 4]");
-        choose_helper("[]", "[1, 2, 3, 4]", "[1, 2, 3, 4]");
-        choose_helper("[]", "[]", "[]");
+        choose_helper("[1, 2, 3, 4]", "[-1, -2, -3, -4]", "ExhaustiveProvider_choose_i");
+        choose_helper("[1, 2, null, 4]", "[-1, -2, -3, -4]", "ExhaustiveProvider_choose_ii");
+        choose_helper("[1, 2]", "[-1, -2, -3, -4]", "ExhaustiveProvider_choose_iii");
+        choose_helper("[1, 2, 3, 4]", "[-1, -2]", "ExhaustiveProvider_choose_iv");
+        choose_helper("[]", "[1, 2, 3, 4]", "ExhaustiveProvider_choose_v");
+        choose_helper("[]", "[]", "ExhaustiveProvider_choose_vi");
         simpleProviderHelper(EP.choose(EP.naturalIntegers(), Arrays.asList(-1, -2, -3, -4)),
-                "[0, -1, 1, -2, 2, -3, 3, -4, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, ...]");
+                "ExhaustiveProvider_choose_vii");
         simpleProviderHelper(EP.choose(Arrays.asList(-1, -2, -3, -4), EP.naturalIntegers()),
-                "[-1, 0, -2, 1, -3, 2, -4, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, ...]");
+                "ExhaustiveProvider_choose_viii");
         simpleProviderHelper(EP.choose(EP.positiveIntegers(), EP.negativeIntegers()),
-                "[1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6, 7, -7, 8, -8, 9, -9, 10, -10, ...]");
+                "ExhaustiveProvider_choose_ix");
     }
 
     private static void cartesianProduct_helper(@NotNull String input, @NotNull String output) {
-        aeqit(EP.cartesianProduct(readIntegerListWithNullsLists(input)), output);
+        aeqitLog(EP.cartesianProduct(readIntegerListWithNullsLists(input)), output);
     }
 
     private static void cartesianProduct_fail_helper(@NotNull String input) {
@@ -5662,20 +5525,17 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testCartesianProduct() {
-        cartesianProduct_helper("[]", "[[]]");
-        cartesianProduct_helper("[[]]", "[]");
-        cartesianProduct_helper("[[], []]", "[]");
-        cartesianProduct_helper("[[], [0]]", "[]");
-        cartesianProduct_helper("[[0], [0]]", "[[0, 0]]");
-        cartesianProduct_helper("[[0, 0, 0]]", "[[0], [0], [0]]");
-        cartesianProduct_helper("[[1, 2, 3]]", "[[1], [2], [3]]");
-        cartesianProduct_helper("[[null]]", "[[null]]");
-        cartesianProduct_helper("[[1], [1], [1], [1]]", "[[1, 1, 1, 1]]");
-        cartesianProduct_helper("[[0, 1, 2], [-3, -4], [null, 10]]",
-                "[[0, -3, null], [0, -3, 10], [0, -4, null], [0, -4, 10], [1, -3, null], [1, -3, 10], [1, -4, null]," +
-                " [1, -4, 10], [2, -3, null], [2, -3, 10], [2, -4, null], [2, -4, 10]]");
-        cartesianProduct_helper("[[0, 1], [0, 1], [0, 1]]",
-                "[[0, 0, 0], [0, 0, 1], [0, 1, 0], [0, 1, 1], [1, 0, 0], [1, 0, 1], [1, 1, 0], [1, 1, 1]]");
+        cartesianProduct_helper("[]", "ExhaustiveProvider_cartesianProduct_i");
+        cartesianProduct_helper("[[]]", "ExhaustiveProvider_cartesianProduct_ii");
+        cartesianProduct_helper("[[], []]", "ExhaustiveProvider_cartesianProduct_iii");
+        cartesianProduct_helper("[[], [0]]", "ExhaustiveProvider_cartesianProduct_iv");
+        cartesianProduct_helper("[[0], [0]]", "ExhaustiveProvider_cartesianProduct_v");
+        cartesianProduct_helper("[[0, 0, 0]]", "ExhaustiveProvider_cartesianProduct_vi");
+        cartesianProduct_helper("[[1, 2, 3]]", "ExhaustiveProvider_cartesianProduct_vii");
+        cartesianProduct_helper("[[null]]", "ExhaustiveProvider_cartesianProduct_viii");
+        cartesianProduct_helper("[[1], [1], [1], [1]]", "ExhaustiveProvider_cartesianProduct_ix");
+        cartesianProduct_helper("[[0, 1, 2], [-3, -4], [null, 10]]", "ExhaustiveProvider_cartesianProduct_x");
+        cartesianProduct_helper("[[0, 1], [0, 1], [0, 1]]", "ExhaustiveProvider_cartesianProduct_xi");
         cartesianProduct_fail_helper("[null]");
         cartesianProduct_fail_helper("[[1, 2, 3], null]");
     }
@@ -5697,116 +5557,11 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testRepeatingIterables() {
-        repeatingIterables_helper("[0, 1]",
-                "[[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ...]," +
-                " [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...]," +
-                " [0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, ...]," +
-                " [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, ...]," +
-                " [0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, ...]," +
-                " [0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, ...]," +
-                " [0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, ...]," +
-                " [0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, ...]," +
-                " [1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, ...]," +
-                " [0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, ...]," +
-                " [1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, ...]," +
-                " [0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, ...]," +
-                " [1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, ...]," +
-                " [0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, ...]," +
-                " [0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, ...]," +
-                " [0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, ...]," +
-                " [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, ...]," +
-                " [0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, ...]," +
-                " [0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, ...]," +
-                " [0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, ...], ...]");
-        repeatingIterables_helper("[1, 0]",
-                "[[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...]," +
-                " [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ...]," +
-                " [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, ...]," +
-                " [0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, ...]," +
-                " [1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, ...]," +
-                " [1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, ...]," +
-                " [1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, ...]," +
-                " [1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, ...]," +
-                " [0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, ...]," +
-                " [1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, ...]," +
-                " [0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, ...]," +
-                " [1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, ...]," +
-                " [0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, ...]," +
-                " [1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, ...]," +
-                " [1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, ...]," +
-                " [1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, ...]," +
-                " [1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, ...]," +
-                " [1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, ...]," +
-                " [1, 1, 1, 0, 0, 1, 1, 1, 0, 0, 1, 1, 1, 0, 0, 1, 1, 1, 0, 0, ...]," +
-                " [1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, ...], ...]");
-        repeatingIterables_helper("[0, 1, 1]",
-                "[[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ...]," +
-                " [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...]," +
-                " [0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, ...]," +
-                " [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, ...]," +
-                " [0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, ...]," +
-                " [0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, ...]," +
-                " [0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, ...]," +
-                " [0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, ...]," +
-                " [1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, ...]," +
-                " [0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, ...]," +
-                " [1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, ...]," +
-                " [0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, ...]," +
-                " [1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, ...]," +
-                " [0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, ...]," +
-                " [0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, ...]," +
-                " [0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, ...]," +
-                " [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, ...]," +
-                " [0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, ...]," +
-                " [0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, ...]," +
-                " [0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, ...], ...]");
-        repeatingIterables_helper("[4, null, -5]",
-                "[[4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, ...]," +
-                " [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null," +
-                " null, null, null, null, ...]," +
-                " [-5, -5, -5, -5, -5, -5, -5, -5, -5, -5, -5, -5, -5, -5, -5, -5, -5, -5, -5, -5, ...]," +
-                " [4, null, 4, null, 4, null, 4, null, 4, null, 4, null, 4, null, 4, null, 4, null, 4, null, ...]," +
-                " [null, 4, null, 4, null, 4, null, 4, null, 4, null, 4, null, 4, null, 4, null, 4, null, 4, ...]," +
-                " [4, 4, null, 4, 4, null, 4, 4, null, 4, 4, null, 4, 4, null, 4, 4, null, 4, 4, ...]," +
-                " [4, -5, 4, -5, 4, -5, 4, -5, 4, -5, 4, -5, 4, -5, 4, -5, 4, -5, 4, -5, ...]," +
-                " [4, null, 4, 4, null, 4, 4, null, 4, 4, null, 4, 4, null, 4, 4, null, 4, 4, null, ...]," +
-                " [null, -5, null, -5, null, -5, null, -5, null, -5, null, -5, null, -5, null, -5, null, -5, null," +
-                " -5, ...], [4, 4, 4, null, 4, 4, 4, null, 4, 4, 4, null, 4, 4, 4, null, 4, 4, 4, null, ...]," +
-                " [-5, 4, -5, 4, -5, 4, -5, 4, -5, 4, -5, 4, -5, 4, -5, 4, -5, 4, -5, 4, ...]," +
-                " [4, null, null, 4, null, null, 4, null, null, 4, null, null, 4, null, null, 4, null, null, 4," +
-                " null, ...]," +
-                " [-5, null, -5, null, -5, null, -5, null, -5, null, -5, null, -5, null, -5, null, -5, null, -5," +
-                " null, ...]," +
-                " [null, 4, 4, null, 4, 4, null, 4, 4, null, 4, 4, null, 4, 4, null, 4, 4, null, 4, ...]," +
-                " [4, 4, null, 4, 4, 4, null, 4, 4, 4, null, 4, 4, 4, null, 4, 4, 4, null, 4, ...]," +
-                " [null, 4, null, null, 4, null, null, 4, null, null, 4, null, null, 4, null, null, 4, null, null," +
-                " 4, ...], [4, 4, 4, 4, null, 4, 4, 4, 4, null, 4, 4, 4, 4, null, 4, 4, 4, 4, null, ...]," +
-                " [null, null, 4, null, null, 4, null, null, 4, null, null, 4, null, null, 4, null, null, 4, null," +
-                " null, ...]," +
-                " [4, 4, null, null, 4, 4, null, null, 4, 4, null, null, 4, 4, null, null, 4, 4, null, null, ...]," +
-                " [4, 4, -5, 4, 4, -5, 4, 4, -5, 4, 4, -5, 4, 4, -5, 4, 4, -5, 4, 4, ...], ...]");
-        repeatingIterables_helper(
-                EP.naturalIntegers(),
-                "[[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ...]," +
-                " [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...]," +
-                " [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, ...]," +
-                " [0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, ...]," +
-                " [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, ...]," +
-                " [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, ...]," +
-                " [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, ...]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, ...]," +
-                " [0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, ...]," +
-                " [6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, ...]," +
-                " [7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, ...]," +
-                " [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, ...]," +
-                " [0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, ...]," +
-                " [9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, ...]," +
-                " [0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, ...]," +
-                " [10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, ...]," +
-                " [0, 3, 0, 3, 0, 3, 0, 3, 0, 3, 0, 3, 0, 3, 0, 3, 0, 3, 0, 3, ...]," +
-                " [11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, ...]," +
-                " [0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, ...]," +
-                " [12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, ...], ...]");
+        repeatingIterables_helper("[0, 1]", "ExhaustiveProvider_repeatingIterables_i");
+        repeatingIterables_helper("[1, 0]", "ExhaustiveProvider_repeatingIterables_ii");
+        repeatingIterables_helper("[0, 1, 1]", "ExhaustiveProvider_repeatingIterables_iii");
+        repeatingIterables_helper("[4, null, -5]", "ExhaustiveProvider_repeatingIterables_iv");
+        repeatingIterables_helper(EP.naturalIntegers(), "ExhaustiveProvider_repeatingIterables_v");
         repeatingIterables_fail_helper("[]");
         repeatingIterables_fail_helper("[0]");
     }
@@ -5837,193 +5592,47 @@ public strictfp class ExhaustiveProviderTest {
     @Test
     public void testRepeatingIterablesDistinctAtLeast() {
         repeatingIterablesDistinctAtLeast_helper(2, "[0, 1]",
-                "[[0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, ...]," +
-                " [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, ...]," +
-                " [0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, ...]," +
-                " [0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, ...]," +
-                " [0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, ...]," +
-                " [0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, ...]," +
-                " [1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, ...]," +
-                " [0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, ...]," +
-                " [1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, ...]," +
-                " [0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, ...]," +
-                " [1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, ...]," +
-                " [0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, ...]," +
-                " [0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, ...]," +
-                " [0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, ...]," +
-                " [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, ...]," +
-                " [0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, ...]," +
-                " [0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, ...]," +
-                " [0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, ...]," +
-                " [1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, ...]," +
-                " [0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, ...], ...]");
+                "ExhaustiveProvider_repeatingIterablesDistinctAtLeast_i");
         repeatingIterablesDistinctAtLeast_helper(2, "[1, 0]",
-                "[[1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, ...]," +
-                " [0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, ...]," +
-                " [1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, ...]," +
-                " [1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, ...]," +
-                " [1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, ...]," +
-                " [1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, ...]," +
-                " [0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, ...]," +
-                " [1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, ...]," +
-                " [0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, ...]," +
-                " [1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, ...]," +
-                " [0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, ...]," +
-                " [1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, ...]," +
-                " [1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, ...]," +
-                " [1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, ...]," +
-                " [1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, ...]," +
-                " [1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, ...]," +
-                " [1, 1, 1, 0, 0, 1, 1, 1, 0, 0, 1, 1, 1, 0, 0, 1, 1, 1, 0, 0, ...]," +
-                " [1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, ...]," +
-                " [0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, ...]," +
-                " [1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, ...], ...]");
+                "ExhaustiveProvider_repeatingIterablesDistinctAtLeast_ii");
         repeatingIterablesDistinctAtLeast_helper(2, "[0, 1, 1]",
-                "[[0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, ...]," +
-                " [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, ...]," +
-                " [0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, ...]," +
-                " [0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, ...]," +
-                " [0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, ...]," +
-                " [0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, ...]," +
-                " [1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, ...]," +
-                " [0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, ...]," +
-                " [1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, ...]," +
-                " [0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, ...]," +
-                " [1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, ...]," +
-                " [0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, ...]," +
-                " [0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, ...]," +
-                " [0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, ...]," +
-                " [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, ...]," +
-                " [0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, ...]," +
-                " [0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, ...]," +
-                " [0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, ...]," +
-                " [1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, ...]," +
-                " [0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, ...], ...]");
+                "ExhaustiveProvider_repeatingIterablesDistinctAtLeast_iii");
         repeatingIterablesDistinctAtLeast_helper(2, "[4, null, -5]",
-                "[[4, null, 4, null, 4, null, 4, null, 4, null, 4, null, 4, null, 4, null, 4, null, 4, null, ...]," +
-                " [null, 4, null, 4, null, 4, null, 4, null, 4, null, 4, null, 4, null, 4, null, 4, null, 4, ...]," +
-                " [4, 4, null, 4, 4, null, 4, 4, null, 4, 4, null, 4, 4, null, 4, 4, null, 4, 4, ...]," +
-                " [4, -5, 4, -5, 4, -5, 4, -5, 4, -5, 4, -5, 4, -5, 4, -5, 4, -5, 4, -5, ...]," +
-                " [4, null, 4, 4, null, 4, 4, null, 4, 4, null, 4, 4, null, 4, 4, null, 4, 4, null, ...]," +
-                " [null, -5, null, -5, null, -5, null, -5, null, -5, null, -5, null, -5, null, -5, null, -5, null," +
-                " -5, ...], [4, 4, 4, null, 4, 4, 4, null, 4, 4, 4, null, 4, 4, 4, null, 4, 4, 4, null, ...]," +
-                " [-5, 4, -5, 4, -5, 4, -5, 4, -5, 4, -5, 4, -5, 4, -5, 4, -5, 4, -5, 4, ...]," +
-                " [4, null, null, 4, null, null, 4, null, null, 4, null, null, 4, null, null, 4, null, null, 4," +
-                " null, ...]," +
-                " [-5, null, -5, null, -5, null, -5, null, -5, null, -5, null, -5, null, -5, null, -5, null, -5," +
-                " null, ...]," +
-                " [null, 4, 4, null, 4, 4, null, 4, 4, null, 4, 4, null, 4, 4, null, 4, 4, null, 4, ...]," +
-                " [4, 4, null, 4, 4, 4, null, 4, 4, 4, null, 4, 4, 4, null, 4, 4, 4, null, 4, ...]," +
-                " [null, 4, null, null, 4, null, null, 4, null, null, 4, null, null, 4, null, null, 4, null, null," +
-                " 4, ...], [4, 4, 4, 4, null, 4, 4, 4, 4, null, 4, 4, 4, 4, null, 4, 4, 4, 4, null, ...]," +
-                " [null, null, 4, null, null, 4, null, null, 4, null, null, 4, null, null, 4, null, null, 4, null," +
-                " null, ...]," +
-                " [4, 4, null, null, 4, 4, null, null, 4, 4, null, null, 4, 4, null, null, 4, 4, null, null, ...]," +
-                " [4, 4, -5, 4, 4, -5, 4, 4, -5, 4, 4, -5, 4, 4, -5, 4, 4, -5, 4, 4, ...]," +
-                " [4, null, 4, 4, 4, null, 4, 4, 4, null, 4, 4, 4, null, 4, 4, 4, null, 4, 4, ...]," +
-                " [4, null, -5, 4, null, -5, 4, null, -5, 4, null, -5, 4, null, -5, 4, null, -5, 4, null, ...]," +
-                " [4, 4, 4, null, 4, 4, 4, 4, null, 4, 4, 4, 4, null, 4, 4, 4, 4, null, 4, ...], ...]");
+                "ExhaustiveProvider_repeatingIterablesDistinctAtLeast_iv");
         repeatingIterablesDistinctAtLeast_helper(3, "[4, null, -5]",
-                "[[4, null, -5, 4, null, -5, 4, null, -5, 4, null, -5, 4, null, -5, 4, null, -5, 4, null, ...]," +
-                " [null, 4, -5, null, 4, -5, null, 4, -5, null, 4, -5, null, 4, -5, null, 4, -5, null, 4, ...]," +
-                " [4, -5, null, 4, -5, null, 4, -5, null, 4, -5, null, 4, -5, null, 4, -5, null, 4, -5, ...]," +
-                " [null, -5, 4, null, -5, 4, null, -5, 4, null, -5, 4, null, -5, 4, null, -5, 4, null, -5, ...]," +
-                " [-5, 4, null, -5, 4, null, -5, 4, null, -5, 4, null, -5, 4, null, -5, 4, null, -5, 4, ...]," +
-                " [-5, null, 4, -5, null, 4, -5, null, 4, -5, null, 4, -5, null, 4, -5, null, 4, -5, null, ...]," +
-                " [4, 4, null, -5, 4, 4, null, -5, 4, 4, null, -5, 4, 4, null, -5, 4, 4, null, -5, ...]," +
-                " [4, null, 4, -5, 4, null, 4, -5, 4, null, 4, -5, 4, null, 4, -5, 4, null, 4, -5, ...]," +
-                " [4, null, null, -5, 4, null, null, -5, 4, null, null, -5, 4, null, null, -5, 4, null, null, -5," +
-                " ...], [null, 4, 4, -5, null, 4, 4, -5, null, 4, 4, -5, null, 4, 4, -5, null, 4, 4, -5, ...]," +
-                " [null, 4, null, -5, null, 4, null, -5, null, 4, null, -5, null, 4, null, -5, null, 4, null, -5," +
-                " ...]," +
-                " [null, null, 4, -5, null, null, 4, -5, null, null, 4, -5, null, null, 4, -5, null, null, 4, -5," +
-                " ...], [4, 4, -5, null, 4, 4, -5, null, 4, 4, -5, null, 4, 4, -5, null, 4, 4, -5, null, ...]," +
-                " [4, null, -5, 4, 4, null, -5, 4, 4, null, -5, 4, 4, null, -5, 4, 4, null, -5, 4, ...]," +
-                " [4, null, -5, null, 4, null, -5, null, 4, null, -5, null, 4, null, -5, null, 4, null, -5, null," +
-                " ...], [null, 4, -5, 4, null, 4, -5, 4, null, 4, -5, 4, null, 4, -5, 4, null, 4, -5, 4, ...]," +
-                " [null, 4, -5, null, null, 4, -5, null, null, 4, -5, null, null, 4, -5, null, null, 4, -5, null," +
-                " ...]," +
-                " [null, null, -5, 4, null, null, -5, 4, null, null, -5, 4, null, null, -5, 4, null, null, -5, 4," +
-                " ...], [4, null, -5, -5, 4, null, -5, -5, 4, null, -5, -5, 4, null, -5, -5, 4, null, -5, -5, ...]," +
-                " [null, 4, -5, -5, null, 4, -5, -5, null, 4, -5, -5, null, 4, -5, -5, null, 4, -5, -5, ...], ...]");
+                "ExhaustiveProvider_repeatingIterablesDistinctAtLeast_v");
         repeatingIterablesDistinctAtLeast_helper(2, EP.naturalIntegers(),
-                "[[0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, ...]," +
-                " [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, ...]," +
-                " [0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, ...]," +
-                " [0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, ...]," +
-                " [0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, ...]," +
-                " [0, 3, 0, 3, 0, 3, 0, 3, 0, 3, 0, 3, 0, 3, 0, 3, 0, 3, 0, 3, ...]," +
-                " [0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, ...]," +
-                " [1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, ...]," +
-                " [0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, ...]," +
-                " [1, 3, 1, 3, 1, 3, 1, 3, 1, 3, 1, 3, 1, 3, 1, 3, 1, 3, 1, 3, ...]," +
-                " [2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, ...]," +
-                " [1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, ...]," +
-                " [2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, ...]," +
-                " [0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, ...]," +
-                " [3, 0, 3, 0, 3, 0, 3, 0, 3, 0, 3, 0, 3, 0, 3, 0, 3, 0, 3, 0, ...]," +
-                " [1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, ...]," +
-                " [3, 1, 3, 1, 3, 1, 3, 1, 3, 1, 3, 1, 3, 1, 3, 1, 3, 1, 3, 1, ...]," +
-                " [0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, ...]," +
-                " [1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, ...]," +
-                " [2, 3, 2, 3, 2, 3, 2, 3, 2, 3, 2, 3, 2, 3, 2, 3, 2, 3, 2, 3, ...], ...]");
+                "ExhaustiveProvider_repeatingIterablesDistinctAtLeast_vi");
         repeatingIterablesDistinctAtLeast_helper(5, EP.naturalIntegers(),
-                "[[0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, ...]," +
-                " [0, 1, 2, 3, 5, 0, 1, 2, 3, 5, 0, 1, 2, 3, 5, 0, 1, 2, 3, 5, ...]," +
-                " [0, 1, 3, 2, 4, 0, 1, 3, 2, 4, 0, 1, 3, 2, 4, 0, 1, 3, 2, 4, ...]," +
-                " [0, 1, 3, 2, 5, 0, 1, 3, 2, 5, 0, 1, 3, 2, 5, 0, 1, 3, 2, 5, ...]," +
-                " [1, 0, 2, 3, 4, 1, 0, 2, 3, 4, 1, 0, 2, 3, 4, 1, 0, 2, 3, 4, ...]," +
-                " [1, 0, 2, 3, 5, 1, 0, 2, 3, 5, 1, 0, 2, 3, 5, 1, 0, 2, 3, 5, ...]," +
-                " [1, 0, 3, 2, 4, 1, 0, 3, 2, 4, 1, 0, 3, 2, 4, 1, 0, 3, 2, 4, ...]," +
-                " [1, 0, 3, 2, 5, 1, 0, 3, 2, 5, 1, 0, 3, 2, 5, 1, 0, 3, 2, 5, ...]," +
-                " [0, 1, 2, 3, 6, 0, 1, 2, 3, 6, 0, 1, 2, 3, 6, 0, 1, 2, 3, 6, ...]," +
-                " [0, 1, 2, 3, 7, 0, 1, 2, 3, 7, 0, 1, 2, 3, 7, 0, 1, 2, 3, 7, ...]," +
-                " [0, 1, 3, 2, 6, 0, 1, 3, 2, 6, 0, 1, 3, 2, 6, 0, 1, 3, 2, 6, ...]," +
-                " [0, 1, 3, 2, 7, 0, 1, 3, 2, 7, 0, 1, 3, 2, 7, 0, 1, 3, 2, 7, ...]," +
-                " [1, 0, 2, 3, 6, 1, 0, 2, 3, 6, 1, 0, 2, 3, 6, 1, 0, 2, 3, 6, ...]," +
-                " [1, 0, 2, 3, 7, 1, 0, 2, 3, 7, 1, 0, 2, 3, 7, 1, 0, 2, 3, 7, ...]," +
-                " [1, 0, 3, 2, 6, 1, 0, 3, 2, 6, 1, 0, 3, 2, 6, 1, 0, 3, 2, 6, ...]," +
-                " [1, 0, 3, 2, 7, 1, 0, 3, 2, 7, 1, 0, 3, 2, 7, 1, 0, 3, 2, 7, ...]," +
-                " [0, 2, 1, 3, 4, 0, 2, 1, 3, 4, 0, 2, 1, 3, 4, 0, 2, 1, 3, 4, ...]," +
-                " [0, 2, 1, 3, 5, 0, 2, 1, 3, 5, 0, 2, 1, 3, 5, 0, 2, 1, 3, 5, ...]," +
-                " [0, 3, 1, 2, 4, 0, 3, 1, 2, 4, 0, 3, 1, 2, 4, 0, 3, 1, 2, 4, ...]," +
-                " [0, 3, 1, 2, 5, 0, 3, 1, 2, 5, 0, 3, 1, 2, 5, 0, 3, 1, 2, 5, ...], ...]");
+                "ExhaustiveProvider_repeatingIterablesDistinctAtLeast_vii");
         repeatingIterablesDistinctAtLeast_fail_helper(2, "[]");
         repeatingIterablesDistinctAtLeast_fail_helper(2, "[0]");
         repeatingIterablesDistinctAtLeast_fail_helper(-1, "[0, 1]");
     }
 
     private static void sublists_helper(@NotNull String input, @NotNull String output) {
-        aeqit(EP.sublists(readIntegerListWithNulls(input)), output);
+        aeqitLog(EP.sublists(readIntegerListWithNulls(input)), output);
     }
 
     @Test
     public void testSublists() {
-        sublists_helper("[]", "[[]]");
-        sublists_helper("[1, 2, 3, 4]",
-                "[[], [1], [1, 2], [1, 2, 3], [2], [2, 3], [3], [1, 2, 3, 4], [2, 3, 4], [3, 4], [4]]");
-        sublists_helper("[1, null, 3, 4]",
-                "[[], [1], [1, null], [1, null, 3], [null], [null, 3], [3], [1, null, 3, 4], [null, 3, 4], [3, 4]," +
-                " [4]]");
-        sublists_helper("[3, 1, 4, 1]",
-                "[[], [3], [3, 1], [3, 1, 4], [1], [1, 4], [4], [3, 1, 4, 1], [1, 4, 1], [4, 1]]");
-        sublists_helper("[1, 1, 1, 1]", "[[], [1], [1, 1], [1, 1, 1], [1, 1, 1, 1]]");
+        sublists_helper("[]", "ExhaustiveProvider_sublists_i");
+        sublists_helper("[1, 2, 3, 4]", "ExhaustiveProvider_sublists_ii");
+        sublists_helper("[1, null, 3, 4]", "ExhaustiveProvider_sublists_iii");
+        sublists_helper("[3, 1, 4, 1]", "ExhaustiveProvider_sublists_iv");
+        sublists_helper("[1, 1, 1, 1]", "ExhaustiveProvider_sublists_v");
     }
 
     private static void substrings_helper(@NotNull String input, @NotNull String output) {
-        aeqit(EP.substrings(input), output);
+        aeqitLog(EP.substrings(input), output);
     }
 
     @Test
     public void testSubstrings() {
-        substrings_helper("", "[]");
-        substrings_helper("abcd", "[, a, ab, abc, b, bc, c, abcd, bcd, cd, d]");
-        substrings_helper("aaaa", "[, a, aa, aaa, aaaa]");
-        substrings_helper("Mississippi",
-                "[, M, Mi, Mis, i, is, s, Miss, Missi, iss, issi, Missis, Mississ, issis, ississ, ss, ssi, si, ssis," +
-                " ssiss, sis, siss, Mississi, Mississip, ississi, ississip, Mississipp, Mississippi, ississipp," +
-                " ississippi, ssissi, ssissip, sissi, sissip, ssissipp, ssissippi, sissipp, sissippi, issip, ssip," +
-                " issipp, issippi, ssipp, ssippi, sip, ip, sipp, sippi, ipp, ippi, p, pp, ppi, pi]");
+        substrings_helper("", "ExhaustiveProvider_substrings_i");
+        substrings_helper("abcd", "ExhaustiveProvider_substrings_ii");
+        substrings_helper("aaaa", "ExhaustiveProvider_substrings_iii");
+        substrings_helper("Mississippi", "ExhaustiveProvider_substrings_iv");
     }
 
     private static void listsWithElement_helper(
@@ -6040,33 +5649,13 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testListsWithElement() {
-        listsWithElement_helper(0, "[]", "[[0]]");
-        listsWithElement_helper(0, "[1, 2, 3]",
-                "[[0], [0, 1], [1, 0], [1, 0, 1], [0, 1, 1], [0, 2], [1, 0, 1, 1], [1, 0, 2], [1, 1, 0]," +
-                " [1, 1, 0, 1], [2, 0], [2, 0, 1], [1, 1, 0, 1, 1], [1, 1, 0, 2], [2, 0, 1, 1], [2, 0, 2]," +
-                " [0, 1, 1, 1], [0, 3], [1, 0, 1, 1, 1], [1, 0, 3], ...]");
-        listsWithElement_helper(null, "[1, 2, 3]",
-                "[[null], [null, 1], [1, null], [1, null, 1], [null, 1, 1], [null, 2], [1, null, 1, 1]," +
-                " [1, null, 2], [1, 1, null], [1, 1, null, 1], [2, null], [2, null, 1], [1, 1, null, 1, 1]," +
-                " [1, 1, null, 2], [2, null, 1, 1], [2, null, 2], [null, 1, 1, 1], [null, 3], [1, null, 1, 1, 1]," +
-                " [1, null, 3], ...]");
-        listsWithElement_helper(0, "[0, 1, 2]",
-                "[[0], [0, 0], [1, 0], [1, 0, 0], [0, 0, 0], [0, 1], [1, 0, 0, 0], [1, 0, 1], [1, 1, 0]," +
-                " [1, 1, 0, 0], [2, 0], [2, 0, 0], [1, 1, 0, 0, 0], [1, 1, 0, 1], [2, 0, 0, 0], [2, 0, 1]," +
-                " [0, 0, 0, 0], [0, 2], [1, 0, 0, 0, 0], [1, 0, 2], ...]");
-        listsWithElement_helper(null, EP.positiveIntegers(),
-                "[[null], [null, 1], [1, null], [1, null, 1], [null, 1, 1], [null, 2], [1, null, 1, 1]," +
-                " [1, null, 2], [1, 1, null], [1, 1, null, 1], [2, null], [2, null, 1], [1, 1, null, 1, 1]," +
-                " [1, 1, null, 2], [2, null, 1, 1], [2, null, 2], [null, 1, 1, 1], [null, 3], [1, null, 1, 1, 1]," +
-                " [1, null, 3], ...]");
-        listsWithElement_helper(3, EP.positiveIntegers(),
-                "[[3], [3, 1], [1, 3], [1, 3, 1], [3, 1, 1], [3, 2], [1, 3, 1, 1], [1, 3, 2], [1, 1, 3]," +
-                " [1, 1, 3, 1], [2, 3], [2, 3, 1], [1, 1, 3, 1, 1], [1, 1, 3, 2], [2, 3, 1, 1], [2, 3, 2]," +
-                " [3, 1, 1, 1], [3, 3], [1, 3, 1, 1, 1], [1, 3, 3], ...]");
-        listsWithElement_helper(0, repeat(1),
-                "[[0], [0, 1], [1, 0], [1, 0, 1], [0, 1, 1], [0, 1], [1, 0, 1, 1], [1, 0, 1], [1, 1, 0]," +
-                " [1, 1, 0, 1], [1, 0], [1, 0, 1], [1, 1, 0, 1, 1], [1, 1, 0, 1], [1, 0, 1, 1], [1, 0, 1]," +
-                " [0, 1, 1, 1], [0, 1], [1, 0, 1, 1, 1], [1, 0, 1], ...]");
+        listsWithElement_helper(0, "[]", "ExhaustiveProvider_listWithElement_i");
+        listsWithElement_helper(0, "[1, 2, 3]", "ExhaustiveProvider_listWithElement_ii");
+        listsWithElement_helper(null, "[1, 2, 3]", "ExhaustiveProvider_listWithElement_iii");
+        listsWithElement_helper(0, "[0, 1, 2]", "ExhaustiveProvider_listWithElement_iv");
+        listsWithElement_helper(null, EP.positiveIntegers(), "ExhaustiveProvider_listWithElement_v");
+        listsWithElement_helper(3, EP.positiveIntegers(), "ExhaustiveProvider_listWithElement_vi");
+        listsWithElement_helper(0, repeat(1), "ExhaustiveProvider_listWithElement_vii");
     }
 
     private static void stringsWithChar_char_String_helper(char c, @NotNull String input, @NotNull String output) {
@@ -6075,19 +5664,11 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testStringsWithChar_char_String() {
-        stringsWithChar_char_String_helper('a', "", "[a]");
-        stringsWithChar_char_String_helper('#', "abcd",
-                "[#, #a, a#, a#a, #aa, #b, a#aa, a#b, aa#, aa#a, b#, b#a, aa#aa, aa#b, b#aa, b#b, #aaa, #c, a#aaa," +
-                " a#c, ...]");
-        stringsWithChar_char_String_helper('a', "abcd",
-                "[a, aa, ba, baa, aaa, ab, baaa, bab, bba, bbaa, ca, caa, bbaaa, bbab, caaa, cab, aaaa, ac, baaaa," +
-                " bac, ...]");
-        stringsWithChar_char_String_helper('#', "aaaa",
-                "[#, #a, a#, a#a, #aa, #a, a#aa, a#a, aa#, aa#a, a#, a#a, aa#aa, aa#a, a#aa, a#a, #aaa, #a, a#aaa," +
-                " a#a, ...]");
-        stringsWithChar_char_String_helper('#', "Mississippi",
-                "[#, #M, M#, M#M, #MM, #i, M#MM, M#i, MM#, MM#M, i#, i#M, MM#MM, MM#i, i#MM, i#i, #MMM, #s, M#MMM," +
-                " M#s, ...]");
+        stringsWithChar_char_String_helper('a', "", "ExhaustiveProvider_stringsWithChar_char_String_i");
+        stringsWithChar_char_String_helper('#', "abcd", "ExhaustiveProvider_stringsWithChar_char_String_ii");
+        stringsWithChar_char_String_helper('a', "abcd", "ExhaustiveProvider_stringsWithChar_char_String_iii");
+        stringsWithChar_char_String_helper('#', "aaaa", "ExhaustiveProvider_stringsWithChar_char_String_iv");
+        stringsWithChar_char_String_helper('#', "Mississippi", "ExhaustiveProvider_stringsWithChar_char_String_v");
     }
 
     private static void stringsWithChar_char_helper(char c, @NotNull String output) {
@@ -6096,12 +5677,8 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testStringsWithChar_char() {
-        stringsWithChar_char_helper('a',
-                "[a, aa, ba, baa, aaa, ab, baaa, bab, bba, bbaa, ca, caa, bbaaa, bbab, caaa, cab, aaaa, ac, baaaa," +
-                " bac, ...]");
-        stringsWithChar_char_helper('#',
-                "[#, #a, a#, a#a, #aa, #b, a#aa, a#b, aa#, aa#a, b#, b#a, aa#aa, aa#b, b#aa, b#b, #aaa, #c, a#aaa," +
-                " a#c, ...]");
+        stringsWithChar_char_helper('a', "ExhaustiveProvider_stringsWithChar_char_i");
+        stringsWithChar_char_helper('#', "ExhaustiveProvider_stringsWithChar_char_ii");
     }
 
     private static void subsetsWithElement_helper(
@@ -6118,20 +5695,13 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testSubsetsWithElement() {
-        subsetsWithElement_helper(0, "[]", "[[0]]");
-        subsetsWithElement_helper(0, "[1, 2, 3]",
-                "[[0], [0, 1], [0, 1, 2], [0, 2], [0, 1, 2, 3], [0, 3], [0, 1, 3], [0, 2, 3]]");
-        subsetsWithElement_helper(1, "[1, 2, 3]", "[[1], [1, 2], [1, 2, 3], [1, 3]]");
-        subsetsWithElement_helper(2, "[1, 2, 3]", "[[2], [1, 2], [1, 2, 3], [2, 3]]");
-        subsetsWithElement_helper(3, "[1, 2, 3]", "[[3], [1, 3], [1, 2, 3], [2, 3]]");
-        subsetsWithElement_helper(3, EP.positiveIntegers(),
-                "[[3], [1, 3], [1, 2, 3], [2, 3], [1, 2, 3, 4], [3, 4], [1, 3, 4], [3, 5], [1, 2, 3, 4, 5], [3, 6]," +
-                " [2, 3, 4], [3, 7], [1, 2, 3, 5], [3, 8], [2, 3, 5], [3, 9], [1, 2, 3, 4, 5, 6], [3, 10]," +
-                " [1, 3, 5], [3, 11], ...]");
-        subsetsWithElement_helper(0, repeat(1),
-                "[[0], [0, 1], [0, 1, 1], [0, 1], [0, 1, 1, 1], [0, 1], [0, 1, 1], [0, 1], [0, 1, 1, 1, 1], [0, 1]," +
-                " [0, 1, 1], [0, 1], [0, 1, 1, 1], [0, 1], [0, 1, 1], [0, 1], [0, 1, 1, 1, 1, 1], [0, 1], [0, 1, 1]," +
-                " [0, 1], ...]");
+        subsetsWithElement_helper(0, "[]", "ExhaustiveProvider_subsetsWithElement_i");
+        subsetsWithElement_helper(0, "[1, 2, 3]", "ExhaustiveProvider_subsetsWithElement_ii");
+        subsetsWithElement_helper(1, "[1, 2, 3]", "ExhaustiveProvider_subsetsWithElement_iii");
+        subsetsWithElement_helper(2, "[1, 2, 3]", "ExhaustiveProvider_subsetsWithElement_iv");
+        subsetsWithElement_helper(3, "[1, 2, 3]", "ExhaustiveProvider_subsetsWithElement_v");
+        subsetsWithElement_helper(3, EP.positiveIntegers(), "ExhaustiveProvider_subsetsWithElement_vi");
+        subsetsWithElement_helper(0, repeat(1), "ExhaustiveProvider_subsetsWithElement_vii");
     }
 
     private static void stringSubsetsWithChar_char_String_helper(
@@ -6144,17 +5714,14 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testStringSubsetsWithChar_char_String() {
-        stringSubsetsWithChar_char_String_helper('a', "", "[a]");
-        stringSubsetsWithChar_char_String_helper('#', "abcd",
-                "[#, #a, #ab, #b, #abc, #c, #ac, #d, #abcd, #bc, #abd, #bd, #ad, #acd, #cd, #bcd]");
-        stringSubsetsWithChar_char_String_helper('a', "aabcd", "[a, ab, abc, ac, abcd, ad, abd, acd]");
-        stringSubsetsWithChar_char_String_helper('a', "abcd", "[a, ab, abc, ac, abcd, ad, abd, acd]");
-        stringSubsetsWithChar_char_String_helper('a', "aabcd", "[a, ab, abc, ac, abcd, ad, abd, acd]");
-        stringSubsetsWithChar_char_String_helper('#', "aaaa",
-                "[#, #a, #aa, #a, #aaa, #a, #aa, #a, #aaaa, #aa, #aaa, #aa, #aa, #aaa, #aa, #aaa]");
+        stringSubsetsWithChar_char_String_helper('a', "", "ExhaustiveProvider_subsetsWithChar_char_String_i");
+        stringSubsetsWithChar_char_String_helper('#', "abcd", "ExhaustiveProvider_subsetsWithChar_char_String_ii");
+        stringSubsetsWithChar_char_String_helper('a', "aabcd", "ExhaustiveProvider_subsetsWithChar_char_String_iii");
+        stringSubsetsWithChar_char_String_helper('a', "abcd", "ExhaustiveProvider_subsetsWithChar_char_String_iv");
+        stringSubsetsWithChar_char_String_helper('a', "aabcd", "ExhaustiveProvider_subsetsWithChar_char_String_v");
+        stringSubsetsWithChar_char_String_helper('#', "aaaa", "ExhaustiveProvider_subsetsWithChar_char_String_vi");
         stringSubsetsWithChar_char_String_helper('#', "Mississippi",
-                "[#, #M, #Mi, #i, #Mis, #s, #Ms, #s, #Miss, #i, #is, #s, #Mis, #s, #is, #i, #Miiss, #p, #Ms, #p," +
-                " ...]");
+                "ExhaustiveProvider_subsetsWithChar_char_String_vii");
     }
 
     private static void stringSubsetsWithChar_char_helper(char c, @NotNull String output) {
@@ -6163,63 +5730,42 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testStringSubsetsWithChar_char() {
-        stringSubsetsWithChar_char_helper('a',
-                "[a, ab, abc, ac, abcd, ad, abd, ae, abcde, af, acd, ag, abce, ah, ace, ai, abcdef, aj, abe, ak," +
-                " ...]");
-        stringSubsetsWithChar_char_helper('#',
-                "[#, #a, #ab, #b, #abc, #c, #ac, #d, #abcd, #e, #bc, #f, #abd, #g, #bd, #h, #abcde, #i, #ad, #j," +
-                " ...]");
+        stringSubsetsWithChar_char_helper('a', "ExhaustiveProvider_subsetsWithChar_char_i");
+        stringSubsetsWithChar_char_helper('#', "ExhaustiveProvider_subsetsWithChar_char_ii");
     }
 
     @Test
     public void testListsWithSublists() {
-        simpleProviderHelper(EP.listsWithSublists(Collections.emptyList(), Collections.singletonList(0)), "[]");
-        simpleProviderHelper(EP.listsWithSublists(Collections.emptyList(), Collections.emptyList()), "[]");
+        simpleProviderHelper(EP.listsWithSublists(Collections.emptyList(), Collections.singletonList(0)),
+                "ExhaustiveProvider_listsWithSublists_i");
+        simpleProviderHelper(EP.listsWithSublists(Collections.emptyList(), Collections.emptyList()),
+                "ExhaustiveProvider_listsWithSublists_ii");
         simpleProviderHelper(
                 EP.listsWithSublists(Collections.singletonList(Collections.emptyList()), Collections.emptyList()),
-                "[[]]"
+                "ExhaustiveProvider_listsWithSublists_iii"
         );
         simpleProviderHelper(
                 EP.listsWithSublists(Collections.singletonList(Collections.emptyList()), Collections.singletonList(0)),
-                "[[], [0], [0, 0], [0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]," +
-                " [0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0]," +
-                " [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]," +
-                " [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]," +
-                " [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]," +
-                " [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]," +
-                " [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]," +
-                " [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]," +
-                " [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ...]"
+                "ExhaustiveProvider_listsWithSublists_iv"
         );
         simpleProviderHelper(
                 EP.listsWithSublists(Collections.singletonList(Arrays.asList(1, 0, 1)), Collections.singletonList(0)),
-                "[[1, 0, 1], [1, 0, 1, 0], [0, 1, 0, 1], [0, 1, 0, 1, 0], [1, 0, 1, 0, 0], [1, 0, 1, 0, 0, 0]," +
-                " [0, 1, 0, 1, 0, 0], [0, 1, 0, 1, 0, 0, 0], [0, 0, 1, 0, 1], [0, 0, 1, 0, 1, 0]," +
-                " [0, 0, 0, 1, 0, 1], [0, 0, 0, 1, 0, 1, 0], [0, 0, 1, 0, 1, 0, 0], [0, 0, 1, 0, 1, 0, 0, 0]," +
-                " [0, 0, 0, 1, 0, 1, 0, 0], [0, 0, 0, 1, 0, 1, 0, 0, 0], [1, 0, 1, 0, 0, 0, 0]," +
-                " [1, 0, 1, 0, 0, 0, 0, 0], [0, 1, 0, 1, 0, 0, 0, 0], [0, 1, 0, 1, 0, 0, 0, 0, 0], ...]"
+                "ExhaustiveProvider_listsWithSublists_v"
         );
         simpleProviderHelper(
                 EP.listsWithSublists(Collections.singletonList(Arrays.asList(1, 0, 1)), EP.positiveIntegers()),
-                "[[1, 0, 1], [1, 0, 1, 1], [1, 1, 0, 1], [1, 1, 0, 1, 1], [1, 0, 1, 1, 1], [1, 0, 1, 2]," +
-                " [1, 1, 0, 1, 1, 1], [1, 1, 0, 1, 2], [1, 1, 1, 0, 1], [1, 1, 1, 0, 1, 1], [2, 1, 0, 1]," +
-                " [2, 1, 0, 1, 1], [1, 1, 1, 0, 1, 1, 1], [1, 1, 1, 0, 1, 2], [2, 1, 0, 1, 1, 1], [2, 1, 0, 1, 2]," +
-                " [1, 0, 1, 1, 1, 1], [1, 0, 1, 3], [1, 1, 0, 1, 1, 1, 1], [1, 1, 0, 1, 3], ...]"
+                "ExhaustiveProvider_listsWithSublists_vi"
         );
         simpleProviderHelper(
                 EP.listsWithSublists(
                         map(i -> Arrays.asList(i, i), EP.positiveIntegers()),
                         Collections.singletonList(0)
                 ),
-                "[[1, 1], [1, 1, 0], [2, 2], [2, 2, 0], [0, 1, 1], [0, 1, 1, 0], [0, 2, 2], [0, 2, 2, 0]," +
-                " [1, 1, 0, 0], [1, 1, 0, 0, 0], [2, 2, 0, 0], [2, 2, 0, 0, 0], [0, 1, 1, 0, 0], [0, 1, 1, 0, 0, 0]," +
-                " [0, 2, 2, 0, 0], [0, 2, 2, 0, 0, 0], [3, 3], [3, 3, 0], [4, 4], [4, 4, 0], ...]"
+                "ExhaustiveProvider_listsWithSublists_vii"
         );
         simpleProviderHelper(
                 EP.listsWithSublists(map(i -> Arrays.asList(i, i), EP.positiveIntegers()), EP.positiveIntegers()),
-                "[[1, 1], [1, 1, 1], [2, 2], [2, 2, 1], [1, 1, 1, 1], [1, 2, 2], [1, 2, 2, 1], [1, 1, 2]," +
-                " [2, 2, 1, 1], [2, 2, 2], [1, 1, 1, 1, 1], [1, 1, 1, 2], [1, 2, 2, 1, 1], [1, 2, 2, 2], [3, 3]," +
-                " [3, 3, 1], [4, 4], [4, 4, 1], [1, 3, 3], [1, 3, 3, 1], ...]"
+                "ExhaustiveProvider_listsWithSublists_viii"
         );
         try {
             toList(EP.listsWithSublists(Collections.singletonList(null), Collections.singletonList(0)));
@@ -6229,26 +5775,26 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testStringsWithSubstrings_Iterable_String_String() {
-        simpleProviderHelper(EP.stringsWithSubstrings(Collections.emptyList(), ""), "[]");
-        simpleProviderHelper(EP.stringsWithSubstrings(Collections.emptyList(), charsToString(range('a', 'z'))), "[]");
-        simpleProviderHelper(EP.stringsWithSubstrings(Collections.singletonList(""), ""), "[]");
-        aeq(length(EP.stringsWithSubstrings(Collections.singletonList(""), "")), 1);
+        simpleProviderHelper(EP.stringsWithSubstrings(Collections.emptyList(), ""),
+                "ExhaustiveProvider_stringsWithSubstrings_Iterable_String_String_i");
+        simpleProviderHelper(EP.stringsWithSubstrings(Collections.emptyList(), charsToString(range('a', 'z'))),
+                "ExhaustiveProvider_stringsWithSubstrings_Iterable_String_String_ii");
+        simpleProviderHelper(EP.stringsWithSubstrings(Collections.singletonList(""), ""),
+                "ExhaustiveProvider_stringsWithSubstrings_Iterable_String_String_iii");
         simpleProviderHelper(
                 EP.stringsWithSubstrings(Collections.singletonList(""), charsToString(range('a', 'z'))),
-                "[, a, aa, b, aaa, c, ab, d, aaaa, e, ba, f, aab, g, bb, h, aaaaa, i, ac, j, ...]"
+                "ExhaustiveProvider_stringsWithSubstrings_Iterable_String_String_iv"
         );
         simpleProviderHelper(
                 EP.stringsWithSubstrings(Collections.singletonList("cat"), charsToString(range('a', 'z'))),
-                "[cat, cata, acat, acata, cataa, catb, acataa, acatb, aacat, aacata, bcat, bcata, aacataa, aacatb," +
-                " bcataa, bcatb, cataaa, catc, acataaa, acatc, ...]"
+                "ExhaustiveProvider_stringsWithSubstrings_Iterable_String_String_v"
         );
         simpleProviderHelper(
                 EP.stringsWithSubstrings(
                         map(d -> Double.toString(d), EP.positiveDoubles()),
                         charsToString(range('a', 'z'))
                 ),
-                "[Infinity, Infinitya, 1.0, 1.0a, aInfinity, aInfinitya, a1.0, a1.0a, Infinityaa, Infinityb, 1.0aa," +
-                " 1.0b, aInfinityaa, aInfinityb, a1.0aa, a1.0b, 2.0, 2.0a, 3.0, 3.0a, ...]"
+                "ExhaustiveProvider_stringsWithSubstrings_Iterable_String_String_vi"
         );
         try {
             toList(EP.stringsWithSubstrings(Collections.singletonList(null), charsToString(range('a', 'z'))));
@@ -6258,15 +5804,14 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testStringsWithSubstrings_Iterable_String() {
-        simpleProviderHelper(EP.stringsWithSubstrings(Collections.emptyList()), "[]");
+        simpleProviderHelper(EP.stringsWithSubstrings(Collections.emptyList()),
+                "ExhaustiveProvider_stringsWithSubstrings_Iterable_String_i");
         simpleProviderHelper(EP.stringsWithSubstrings(Collections.singletonList("")),
-                "[, a, aa, b, aaa, c, ab, d, aaaa, e, ba, f, aab, g, bb, h, aaaaa, i, ac, j, ...]");
+                "ExhaustiveProvider_stringsWithSubstrings_Iterable_String_ii");
         simpleProviderHelper(EP.stringsWithSubstrings(Collections.singletonList("cat")),
-                "[cat, cata, acat, acata, cataa, catb, acataa, acatb, aacat, aacata, bcat, bcata, aacataa, aacatb," +
-                " bcataa, bcatb, cataaa, catc, acataaa, acatc, ...]");
+                "ExhaustiveProvider_stringsWithSubstrings_Iterable_String_iii");
         simpleProviderHelper(EP.stringsWithSubstrings(map(d -> Double.toString(d), EP.positiveDoubles())),
-                "[Infinity, Infinitya, 1.0, 1.0a, aInfinity, aInfinitya, a1.0, a1.0a, Infinityaa, Infinityb, 1.0aa," +
-                " 1.0b, aInfinityaa, aInfinityb, a1.0aa, a1.0b, 2.0, 2.0a, 3.0, 3.0a, ...]");
+                "ExhaustiveProvider_stringsWithSubstrings_Iterable_String_iv");
         try {
             toList(EP.stringsWithSubstrings(Collections.singletonList(null)));
             fail();
@@ -6283,57 +5828,29 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testMaps() {
-        maps_helper("[]", "[]", "[{}]");
-        maps_helper("[]", "[4]", "[{}]");
-        maps_helper("[]", "[1, 2, 3]", "[{}]");
-        maps_helper("[]", "[1, null, 3]", "[{}]");
-        maps_helper("[]", EP.positiveIntegers(), "[{}]");
-        maps_helper("[4]", "[]", "[]");
-        maps_helper("[4]", "[4]", "[{4=4}]");
-        maps_helper("[4]", "[1, 2, 3]", "[{4=1}, {4=2}, {4=3}]");
-        maps_helper("[4]", "[1, null, 3]", "[{4=1}, {4=null}, {4=3}]");
-        maps_helper("[4]", EP.positiveIntegers(),
-                "[{4=1}, {4=2}, {4=3}, {4=4}, {4=5}, {4=6}, {4=7}, {4=8}, {4=9}, {4=10}, {4=11}, {4=12}, {4=13}," +
-                " {4=14}, {4=15}, {4=16}, {4=17}, {4=18}, {4=19}, {4=20}, ...]");
-        maps_helper("[1, 2, 3]", "[]", "[]");
-        maps_helper("[1, 2, 3]", "[4]", "[{1=4, 2=4, 3=4}]");
-        maps_helper("[1, 2, 3]", "[1, 2, 3]",
-                "[{1=1, 2=1, 3=1}, {1=1, 2=1, 3=2}, {1=1, 2=2, 3=1}, {1=1, 2=2, 3=2}, {1=2, 2=1, 3=1}," +
-                " {1=2, 2=1, 3=2}, {1=2, 2=2, 3=1}, {1=2, 2=2, 3=2}, {1=1, 2=1, 3=3}, {1=1, 2=2, 3=3}," +
-                " {1=2, 2=1, 3=3}, {1=2, 2=2, 3=3}, {1=1, 2=3, 3=1}, {1=1, 2=3, 3=2}, {1=2, 2=3, 3=1}," +
-                " {1=2, 2=3, 3=2}, {1=1, 2=3, 3=3}, {1=2, 2=3, 3=3}, {1=3, 2=1, 3=1}, {1=3, 2=1, 3=2}, ...]");
-        maps_helper("[1, 2, 3]", "[1, null, 3]",
-                "[{1=1, 2=1, 3=1}, {1=1, 2=1, 3=null}, {1=1, 2=null, 3=1}, {1=1, 2=null, 3=null}," +
-                " {1=null, 2=1, 3=1}, {1=null, 2=1, 3=null}, {1=null, 2=null, 3=1}, {1=null, 2=null, 3=null}," +
-                " {1=1, 2=1, 3=3}, {1=1, 2=null, 3=3}, {1=null, 2=1, 3=3}, {1=null, 2=null, 3=3}, {1=1, 2=3, 3=1}," +
-                " {1=1, 2=3, 3=null}, {1=null, 2=3, 3=1}, {1=null, 2=3, 3=null}, {1=1, 2=3, 3=3}," +
-                " {1=null, 2=3, 3=3}, {1=3, 2=1, 3=1}, {1=3, 2=1, 3=null}, ...]");
-        maps_helper("[1, 2, 3]", EP.positiveIntegers(),
-                "[{1=1, 2=1, 3=1}, {1=1, 2=1, 3=2}, {1=1, 2=2, 3=1}, {1=1, 2=2, 3=2}, {1=2, 2=1, 3=1}," +
-                " {1=2, 2=1, 3=2}, {1=2, 2=2, 3=1}, {1=2, 2=2, 3=2}, {1=1, 2=1, 3=3}, {1=1, 2=1, 3=4}," +
-                " {1=1, 2=2, 3=3}, {1=1, 2=2, 3=4}, {1=2, 2=1, 3=3}, {1=2, 2=1, 3=4}, {1=2, 2=2, 3=3}," +
-                " {1=2, 2=2, 3=4}, {1=1, 2=3, 3=1}, {1=1, 2=3, 3=2}, {1=1, 2=4, 3=1}, {1=1, 2=4, 3=2}, ...]");
-        maps_helper("[1, null, 3]", "[]", "[]");
-        maps_helper("[1, null, 3]", "[4]", "[{null=4, 1=4, 3=4}]");
-        maps_helper("[1, null, 3]", "[1, 2, 3]",
-                "[{null=1, 1=1, 3=1}, {null=1, 1=1, 3=2}, {null=2, 1=1, 3=1}, {null=2, 1=1, 3=2}," +
-                " {null=1, 1=2, 3=1}, {null=1, 1=2, 3=2}, {null=2, 1=2, 3=1}, {null=2, 1=2, 3=2}," +
-                " {null=1, 1=1, 3=3}, {null=2, 1=1, 3=3}, {null=1, 1=2, 3=3}, {null=2, 1=2, 3=3}," +
-                " {null=3, 1=1, 3=1}, {null=3, 1=1, 3=2}, {null=3, 1=2, 3=1}, {null=3, 1=2, 3=2}," +
-                " {null=3, 1=1, 3=3}, {null=3, 1=2, 3=3}, {null=1, 1=3, 3=1}, {null=1, 1=3, 3=2}, ...]");
-        maps_helper("[1, null, 3]", "[1, null, 3]",
-                "[{null=1, 1=1, 3=1}, {null=1, 1=1, 3=null}, {null=null, 1=1, 3=1}, {null=null, 1=1, 3=null}," +
-                " {null=1, 1=null, 3=1}, {null=1, 1=null, 3=null}, {null=null, 1=null, 3=1}," +
-                " {null=null, 1=null, 3=null}, {null=1, 1=1, 3=3}, {null=null, 1=1, 3=3}, {null=1, 1=null, 3=3}," +
-                " {null=null, 1=null, 3=3}, {null=3, 1=1, 3=1}, {null=3, 1=1, 3=null}, {null=3, 1=null, 3=1}," +
-                " {null=3, 1=null, 3=null}, {null=3, 1=1, 3=3}, {null=3, 1=null, 3=3}, {null=1, 1=3, 3=1}," +
-                " {null=1, 1=3, 3=null}, ...]");
-        maps_helper("[1, null, 3]", EP.positiveIntegers(),
-                "[{null=1, 1=1, 3=1}, {null=1, 1=1, 3=2}, {null=2, 1=1, 3=1}, {null=2, 1=1, 3=2}," +
-                " {null=1, 1=2, 3=1}, {null=1, 1=2, 3=2}, {null=2, 1=2, 3=1}, {null=2, 1=2, 3=2}," +
-                " {null=1, 1=1, 3=3}, {null=1, 1=1, 3=4}, {null=2, 1=1, 3=3}, {null=2, 1=1, 3=4}," +
-                " {null=1, 1=2, 3=3}, {null=1, 1=2, 3=4}, {null=2, 1=2, 3=3}, {null=2, 1=2, 3=4}," +
-                " {null=3, 1=1, 3=1}, {null=3, 1=1, 3=2}, {null=4, 1=1, 3=1}, {null=4, 1=1, 3=2}, ...]");
+        maps_helper("[]", "[]", "ExhaustiveProvider_maps_i");
+        maps_helper("[]", "[4]", "ExhaustiveProvider_maps_ii");
+        maps_helper("[]", "[1, 2, 3]", "ExhaustiveProvider_maps_iii");
+        maps_helper("[]", "[1, null, 3]", "ExhaustiveProvider_maps_iv");
+        maps_helper("[]", EP.positiveIntegers(), "ExhaustiveProvider_maps_v");
+
+        maps_helper("[4]", "[]", "ExhaustiveProvider_maps_vi");
+        maps_helper("[4]", "[4]", "ExhaustiveProvider_maps_vii");
+        maps_helper("[4]", "[1, 2, 3]", "ExhaustiveProvider_maps_viii");
+        maps_helper("[4]", "[1, null, 3]", "ExhaustiveProvider_maps_ix");
+        maps_helper("[4]", EP.positiveIntegers(), "ExhaustiveProvider_maps_x");
+
+        maps_helper("[1, 2, 3]", "[]", "ExhaustiveProvider_maps_xi");
+        maps_helper("[1, 2, 3]", "[4]", "ExhaustiveProvider_maps_xii");
+        maps_helper("[1, 2, 3]", "[1, 2, 3]", "ExhaustiveProvider_maps_xiii");
+        maps_helper("[1, 2, 3]", "[1, null, 3]", "ExhaustiveProvider_maps_xiv");
+        maps_helper("[1, 2, 3]", EP.positiveIntegers(), "ExhaustiveProvider_maps_xv");
+
+        maps_helper("[1, null, 3]", "[]", "ExhaustiveProvider_maps_xvi");
+        maps_helper("[1, null, 3]", "[4]", "ExhaustiveProvider_maps_xvii");
+        maps_helper("[1, null, 3]", "[1, 2, 3]", "ExhaustiveProvider_maps_xviii");
+        maps_helper("[1, null, 3]", "[1, null, 3]", "ExhaustiveProvider_maps_xix");
+        maps_helper("[1, null, 3]", EP.positiveIntegers(), "ExhaustiveProvider_maps_xx");
     }
 
     private static void randomProvidersFixedScales_helper(
@@ -6347,114 +5864,31 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testRandomProvidersFixedScales() {
-        randomProvidersFixedScales_helper(8, 32, 2,
-                "[RandomProvider[@-7948823947390831374, 8, 32, 2], RandomProvider[@7302477663894715351, 8, 32, 2]," +
-                " RandomProvider[@5113382706114603938, 8, 32, 2], RandomProvider[@-1774083719213728003, 8, 32, 2]," +
-                " RandomProvider[@8538952961045368838, 8, 32, 2], RandomProvider[@7023783968100629274, 8, 32, 2]," +
-                " RandomProvider[@8397262361995169820, 8, 32, 2], RandomProvider[@7421997658690496630, 8, 32, 2]," +
-                " RandomProvider[@-7898255109170938473, 8, 32, 2], RandomProvider[@3868661580815414054, 8, 32, 2]," +
-                " RandomProvider[@453733778809658833, 8, 32, 2], RandomProvider[@-2636879068627078241, 8, 32, 2]," +
-                " RandomProvider[@6142487595818599495, 8, 32, 2], RandomProvider[@4681726659604324256, 8, 32, 2]," +
-                " RandomProvider[@1906427249022382973, 8, 32, 2], RandomProvider[@8356990522398738440, 8, 32, 2]," +
-                " RandomProvider[@1947303986473887049, 8, 32, 2], RandomProvider[@-7907745475302030450, 8, 32, 2]," +
-                " RandomProvider[@-9092377260523661242, 8, 32, 2], RandomProvider[@-1031230974728655171, 8, 32, 2]," +
-                " ...]");
-        randomProvidersFixedScales_helper(0, 0, 0,
-                "[RandomProvider[@-7948823947390831374, 0, 0, 0], RandomProvider[@7302477663894715351, 0, 0, 0]," +
-                " RandomProvider[@5113382706114603938, 0, 0, 0], RandomProvider[@-1774083719213728003, 0, 0, 0]," +
-                " RandomProvider[@8538952961045368838, 0, 0, 0], RandomProvider[@7023783968100629274, 0, 0, 0]," +
-                " RandomProvider[@8397262361995169820, 0, 0, 0], RandomProvider[@7421997658690496630, 0, 0, 0]," +
-                " RandomProvider[@-7898255109170938473, 0, 0, 0], RandomProvider[@3868661580815414054, 0, 0, 0]," +
-                " RandomProvider[@453733778809658833, 0, 0, 0], RandomProvider[@-2636879068627078241, 0, 0, 0]," +
-                " RandomProvider[@6142487595818599495, 0, 0, 0], RandomProvider[@4681726659604324256, 0, 0, 0]," +
-                " RandomProvider[@1906427249022382973, 0, 0, 0], RandomProvider[@8356990522398738440, 0, 0, 0]," +
-                " RandomProvider[@1947303986473887049, 0, 0, 0], RandomProvider[@-7907745475302030450, 0, 0, 0]," +
-                " RandomProvider[@-9092377260523661242, 0, 0, 0], RandomProvider[@-1031230974728655171, 0, 0, 0]," +
-                " ...]");
-        randomProvidersFixedScales_helper(-5, -10, -1,
-                "[RandomProvider[@-7948823947390831374, -5, -10, -1]," +
-                " RandomProvider[@7302477663894715351, -5, -10, -1]," +
-                " RandomProvider[@5113382706114603938, -5, -10, -1]," +
-                " RandomProvider[@-1774083719213728003, -5, -10, -1]," +
-                " RandomProvider[@8538952961045368838, -5, -10, -1]," +
-                " RandomProvider[@7023783968100629274, -5, -10, -1]," +
-                " RandomProvider[@8397262361995169820, -5, -10, -1]," +
-                " RandomProvider[@7421997658690496630, -5, -10, -1]," +
-                " RandomProvider[@-7898255109170938473, -5, -10, -1]," +
-                " RandomProvider[@3868661580815414054, -5, -10, -1]," +
-                " RandomProvider[@453733778809658833, -5, -10, -1]," +
-                " RandomProvider[@-2636879068627078241, -5, -10, -1]," +
-                " RandomProvider[@6142487595818599495, -5, -10, -1]," +
-                " RandomProvider[@4681726659604324256, -5, -10, -1]," +
-                " RandomProvider[@1906427249022382973, -5, -10, -1]," +
-                " RandomProvider[@8356990522398738440, -5, -10, -1]," +
-                " RandomProvider[@1947303986473887049, -5, -10, -1]," +
-                " RandomProvider[@-7907745475302030450, -5, -10, -1]," +
-                " RandomProvider[@-9092377260523661242, -5, -10, -1]," +
-                " RandomProvider[@-1031230974728655171, -5, -10, -1], ...]");
+        randomProvidersFixedScales_helper(8, 32, 2, "ExhaustiveProvider_randomProvidersFixedScales_i");
+        randomProvidersFixedScales_helper(0, 0, 0, "ExhaustiveProvider_randomProvidersFixedScales_ii");
+        randomProvidersFixedScales_helper(-5, -10, -1, "ExhaustiveProvider_randomProvidersFixedScales_iii");
     }
 
     @Test
     public void testRandomProvidersDefault() {
-        simpleProviderHelper(EP.randomProvidersDefault(),
-                "[RandomProvider[@-7948823947390831374, 32, 8, 2], RandomProvider[@7302477663894715351, 32, 8, 2]," +
-                " RandomProvider[@5113382706114603938, 32, 8, 2], RandomProvider[@-1774083719213728003, 32, 8, 2]," +
-                " RandomProvider[@8538952961045368838, 32, 8, 2], RandomProvider[@7023783968100629274, 32, 8, 2]," +
-                " RandomProvider[@8397262361995169820, 32, 8, 2], RandomProvider[@7421997658690496630, 32, 8, 2]," +
-                " RandomProvider[@-7898255109170938473, 32, 8, 2], RandomProvider[@3868661580815414054, 32, 8, 2]," +
-                " RandomProvider[@453733778809658833, 32, 8, 2], RandomProvider[@-2636879068627078241, 32, 8, 2]," +
-                " RandomProvider[@6142487595818599495, 32, 8, 2], RandomProvider[@4681726659604324256, 32, 8, 2]," +
-                " RandomProvider[@1906427249022382973, 32, 8, 2], RandomProvider[@8356990522398738440, 32, 8, 2]," +
-                " RandomProvider[@1947303986473887049, 32, 8, 2], RandomProvider[@-7907745475302030450, 32, 8, 2]," +
-                " RandomProvider[@-9092377260523661242, 32, 8, 2], RandomProvider[@-1031230974728655171, 32, 8, 2]," +
-                " ...]");
+        simpleProviderHelper(EP.randomProvidersDefault(), "ExhaustiveProvider_randomProvidersDefault");
     }
 
     @Test
     public void testRandomProvidersDefaultSecondaryAndTertiaryScale() {
         simpleProviderHelper(EP.randomProvidersDefaultSecondaryAndTertiaryScale(),
-                "[RandomProvider[@-7948823947390831374, 0, 8, 2], RandomProvider[@-7948823947390831374, 1, 8, 2]," +
-                " RandomProvider[@7302477663894715351, 0, 8, 2], RandomProvider[@7302477663894715351, 1, 8, 2]," +
-                " RandomProvider[@-7948823947390831374, -1, 8, 2], RandomProvider[@-7948823947390831374, 2, 8, 2]," +
-                " RandomProvider[@7302477663894715351, -1, 8, 2], RandomProvider[@7302477663894715351, 2, 8, 2]," +
-                " RandomProvider[@5113382706114603938, 0, 8, 2], RandomProvider[@5113382706114603938, 1, 8, 2]," +
-                " RandomProvider[@-1774083719213728003, 0, 8, 2], RandomProvider[@-1774083719213728003, 1, 8, 2]," +
-                " RandomProvider[@5113382706114603938, -1, 8, 2], RandomProvider[@5113382706114603938, 2, 8, 2]," +
-                " RandomProvider[@-1774083719213728003, -1, 8, 2], RandomProvider[@-1774083719213728003, 2, 8, 2]," +
-                " RandomProvider[@-7948823947390831374, -2, 8, 2], RandomProvider[@-7948823947390831374, 3, 8, 2]," +
-                " RandomProvider[@7302477663894715351, -2, 8, 2], RandomProvider[@7302477663894715351, 3, 8, 2]," +
-                " ...]");
+                "ExhaustiveProvider_randomProviderDefaultSecondaryAndTertiaryScale");
     }
 
     @Test
     public void testRandomProvidersDefaultTertiaryScale() {
         simpleProviderHelper(EP.randomProvidersDefaultTertiaryScale(),
-                "[RandomProvider[@-7948823947390831374, 0, 0, 2], RandomProvider[@-7948823947390831374, 0, 1, 2]," +
-                " RandomProvider[@7302477663894715351, 0, 0, 2], RandomProvider[@7302477663894715351, 0, 1, 2]," +
-                " RandomProvider[@-7948823947390831374, 1, 0, 2], RandomProvider[@-7948823947390831374, 1, 1, 2]," +
-                " RandomProvider[@7302477663894715351, 1, 0, 2], RandomProvider[@7302477663894715351, 1, 1, 2]," +
-                " RandomProvider[@5113382706114603938, 0, 0, 2], RandomProvider[@5113382706114603938, 0, 1, 2]," +
-                " RandomProvider[@-1774083719213728003, 0, 0, 2], RandomProvider[@-1774083719213728003, 0, 1, 2]," +
-                " RandomProvider[@5113382706114603938, 1, 0, 2], RandomProvider[@5113382706114603938, 1, 1, 2]," +
-                " RandomProvider[@-1774083719213728003, 1, 0, 2], RandomProvider[@-1774083719213728003, 1, 1, 2]," +
-                " RandomProvider[@-7948823947390831374, 0, -1, 2], RandomProvider[@-7948823947390831374, 0, 2, 2]," +
-                " RandomProvider[@7302477663894715351, 0, -1, 2]," +
-                " RandomProvider[@7302477663894715351, 0, 2, 2], ...]");
+                "ExhaustiveProvider_randomProvidersDefaultTertiaryScale");
     }
 
     @Test
     public void testRandomProviders() {
-        simpleProviderHelper(EP.randomProviders(),
-                "[RandomProvider[@-7948823947390831374, 0, 0, 0], RandomProvider[@-7948823947390831374, 0, 0, 1]," +
-                " RandomProvider[@7302477663894715351, 0, 0, 0], RandomProvider[@7302477663894715351, 0, 0, 1]," +
-                " RandomProvider[@-7948823947390831374, 0, 1, 0], RandomProvider[@-7948823947390831374, 0, 1, 1]," +
-                " RandomProvider[@7302477663894715351, 0, 1, 0], RandomProvider[@7302477663894715351, 0, 1, 1]," +
-                " RandomProvider[@5113382706114603938, 0, 0, 0], RandomProvider[@5113382706114603938, 0, 0, 1]," +
-                " RandomProvider[@-1774083719213728003, 0, 0, 0], RandomProvider[@-1774083719213728003, 0, 0, 1]," +
-                " RandomProvider[@5113382706114603938, 0, 1, 0], RandomProvider[@5113382706114603938, 0, 1, 1]," +
-                " RandomProvider[@-1774083719213728003, 0, 1, 0], RandomProvider[@-1774083719213728003, 0, 1, 1]," +
-                " RandomProvider[@-7948823947390831374, 1, 0, 0], RandomProvider[@-7948823947390831374, 1, 0, 1]," +
-                " RandomProvider[@7302477663894715351, 1, 0, 0], RandomProvider[@7302477663894715351, 1, 0, 1], ...]");
+        simpleProviderHelper(EP.randomProviders(), "ExhaustiveProvider_randomProviders");
     }
 
     @Test
