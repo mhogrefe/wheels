@@ -470,4 +470,8 @@ public final class MathUtils {
         //noinspection Convert2MethodRef
         return concat(map(i -> BigInteger.valueOf(i), intPrimes()), filterInfinite(MathUtils::isPrime, candidates));
     }
+
+    public static @NotNull BigInteger largestPerfectPowerFactor(int p, @NotNull BigInteger n) {
+        return productBigInteger(map(q -> q.a.pow(q.b / p), compactPrimeFactors(n)));
+    }
 }
