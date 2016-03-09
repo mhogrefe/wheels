@@ -211,14 +211,10 @@ public strictfp class BasicTest {
         aeq(R.getId(), 2449928962525148503L);
     }
 
-    private static <T> void simpleProviderHelper(
-            @NotNull Iterable<T> xs,
-            @NotNull String output,
-            @NotNull String sampleCountOutput
-    ) {
+    private static <T> void simpleProviderHelper(@NotNull Iterable<T> xs, @NotNull String output) {
         List<T> sample = toList(take(DEFAULT_SAMPLE_SIZE, xs));
-        aeqitLimit(TINY_LIMIT, sample, output);
-        aeqit(sampleCount(sample).entrySet(), sampleCountOutput);
+        aeqitLimitLog(TINY_LIMIT, sample, output);
+        aeqMapLog(sampleCount(sample), output);
         P.reset();
     }
 
@@ -229,28 +225,16 @@ public strictfp class BasicTest {
 
     @Test
     public void testLongs() {
-        aeqit(
-                take(TINY_LIMIT, P.longs()),
-                "[-4659160554254839351, -8530493328132264462, -4161321976937299265, -2018979083213524507," +
-                " -1067182698272227165, 1259309150092131537, -6844190056086445547, 2429155385556917621," +
-                " 441826621316521237, -2077924480219546458, 404281420475794401, -3799772176394282532," +
-                " -3259952746839854786, -1600663848124449857, 7874913887470575742, -6974357164754656982," +
-                " 8454731288392606713, 347198304573602423, -601743751419410562, -2127248600113938899]"
-        );
+        aeqitLimitLog(TINY_LIMIT, P.longs(), "RandomProvider_longs");
     }
 
     @Test
     public void testBooleans() {
-        simpleProviderHelper(
-                P.booleans(),
-                "[true, true, true, false, true, true, false, true, true, true, true, true, true, true, true, true," +
-                " false, true, true, false, ...]",
-                "[true=499965, false=500035]"
-        );
+        simpleProviderHelper(P.booleans(), "RandomProvider_booleans");
     }
 
     private static void uniformSample_Iterable_helper(@NotNull String xs, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.uniformSample(readIntegerListWithNulls(xs)), output);
+        aeqitLimitLog(TINY_LIMIT, P.uniformSample(readIntegerListWithNulls(xs)), output);
         P.reset();
     }
 
@@ -266,19 +250,13 @@ public strictfp class BasicTest {
 
     @Test
     public void testUniformSample_Iterable() {
-        uniformSample_Iterable_helper(
-                "[3, 1, 4, 1]",
-                "[1, 1, 1, 4, 1, 1, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 1, 1, 4, ...]"
-        );
-        uniformSample_Iterable_helper(
-                "[3, 1, null, 1]",
-                "[1, 1, 1, null, 1, 1, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 1, 1, null, ...]"
-        );
+        uniformSample_Iterable_helper("[3, 1, 4, 1]", "RandomProvider_uniformSample_Iterable_i");
+        uniformSample_Iterable_helper("[3, 1, null, 1]", "RandomProvider_uniformSample_Iterable_ii");
         uniformSample_Iterable_fail_helper("[]");
     }
 
     private static void uniformSample_String_helper(@NotNull String s, @NotNull String output) {
-        aeqcs(P.uniformSample(s), output);
+        aeqitLimitLog(SMALL_LIMIT, P.uniformSample(s), output);
         P.reset();
     }
 
@@ -294,125 +272,78 @@ public strictfp class BasicTest {
 
     @Test
     public void testUniformSample_String() {
-        uniformSample_String_helper(
-                "hello",
-                "eellhlelheeooleollleoololohllollllholhhlhhohllllehelollehllllllleolleolelehelllohoohelllllehllllolol"
-        );
+        uniformSample_String_helper("hello", "RandomProvider_uniformSample_String");
         uniformSample_String_fail_helper("");
     }
 
     @Test
     public void testOrderings() {
-        simpleProviderHelper(
-                P.orderings(),
-                "[LT, LT, GT, LT, EQ, LT, LT, LT, LT, LT, EQ, LT, LT, GT, LT, GT, EQ, GT, LT, LT, ...]",
-                "[LT=333313, GT=333615, EQ=333072]"
-        );
+        simpleProviderHelper(P.orderings(), "RandomProvider_orderings");
     }
 
     @Test
     public void testRoundingModes() {
-        simpleProviderHelper(
-                P.roundingModes(),
-                "[UP, UP, CEILING, DOWN, HALF_UP, HALF_EVEN, UNNECESSARY, HALF_UP, HALF_UP, CEILING, HALF_EVEN, UP," +
-                " HALF_EVEN, HALF_UP, CEILING, HALF_UP, UNNECESSARY, HALF_UP, UP, HALF_DOWN, ...]",
-                "[UP=124820, CEILING=125380, DOWN=124690, HALF_UP=124847, HALF_EVEN=124918, UNNECESSARY=124948," +
-                " HALF_DOWN=125283, FLOOR=125114]"
-        );
+        simpleProviderHelper(P.roundingModes(), "RandomProvider_roundingModes");
     }
 
     @Test
     public void testPositiveBytes() {
-        aeqitLimit(TINY_LIMIT, P.positiveBytes(),
-                "[41, 73, 3, 114, 53, 63, 56, 101, 125, 35, 127, 81, 103, 21, 115, 117, 120, 21, 49, 38, ...]");
+        aeqitLimitLog(TINY_LIMIT, P.positiveBytes(), "RandomProvider_positiveBytes");
     }
 
     @Test
     public void testPositiveShorts() {
-        aeqitLimit(TINY_LIMIT, P.positiveShorts(),
-                "[22057, 20937, 6531, 11762, 949, 17087, 9528, 12773, 6909, 163, 30463, 31953, 3431, 25109, 6131," +
-                " 23925, 12024, 23829, 15025, 31910, ...]");
+        aeqitLimitLog(TINY_LIMIT, P.positiveShorts(), "RandomProvider_positiveShorts");
     }
 
     @Test
     public void testPositiveIntegers() {
-        aeqitLimit(TINY_LIMIT, P.positiveIntegers(),
-                "[1062688297, 1143001545, 161323395, 970337778, 1178600373, 681591487, 1677403448, 136131045," +
-                " 1899010813, 1997176995, 293205759, 2040790225, 553946471, 1941234197, 565581811, 1951980917," +
-                " 102870776, 534895893, 1663679153, 1315765414, ...]");
+        aeqitLimitLog(TINY_LIMIT, P.positiveIntegers(), "RandomProvider_positiveIntegers");
     }
 
     @Test
     public void testPositiveLongs() {
-        aeqitLimit(TINY_LIMIT, P.positiveLongs(),
-                "[4564211482599936457, 692878708722511346, 5062050059917476543, 7204392953641251301," +
-                " 8156189338582548643, 1259309150092131537, 2379181980768330261, 2429155385556917621," +
-                " 441826621316521237, 7145447556635229350, 404281420475794401, 5423599860460493276," +
-                " 5963419290014921022, 7622708188730325951, 7874913887470575742, 2249014872100118826," +
-                " 8454731288392606713, 347198304573602423, 8621628285435365246, 7096123436740836909, ...]");
+        aeqitLimitLog(TINY_LIMIT, P.positiveLongs(), "RandomProvider_positiveLongs");
     }
 
     @Test
     public void testNegativeBytes() {
-        aeqitLimit(TINY_LIMIT, P.negativeBytes(),
-                "[-42, -74, -4, -115, -54, -64, -57, -102, -126, -36, -128, -82, -104, -22, -116, -118, -121, -22," +
-                " -50, -39, ...]");
+        aeqitLimitLog(TINY_LIMIT, P.negativeBytes(), "RandomProvider_negativeBytes");
     }
 
     @Test
     public void testNegativeShorts() {
-        aeqitLimit(TINY_LIMIT, P.negativeShorts(),
-                "[-22058, -20938, -6532, -11763, -950, -17088, -9529, -12774, -6910, -164, -30464, -31954, -3432," +
-                " -25110, -6132, -23926, -12025, -23830, -15026, -31911, ...]");
+        aeqitLimitLog(TINY_LIMIT, P.negativeShorts(), "RandomProvider_negativeShorts");
     }
 
     @Test
     public void testNegativeIntegers() {
-        aeqitLimit(TINY_LIMIT, P.negativeIntegers(),
-                "[-1062688298, -1143001546, -161323396, -970337779, -1178600374, -681591488, -1677403449," +
-                " -136131046, -1899010814, -1997176996, -293205760, -2040790226, -553946472, -1941234198," +
-                " -565581812, -1951980918, -102870777, -534895894, -1663679154, -1315765415, ...]");
+        aeqitLimitLog(TINY_LIMIT, P.negativeIntegers(), "RandomProvider_negativeIntegers");
     }
 
     @Test
     public void testNegativeLongs() {
-        aeqitLimit(TINY_LIMIT, P.negativeLongs(),
-                "[-4564211482599936458, -692878708722511347, -5062050059917476544, -7204392953641251302," +
-                " -8156189338582548644, -1259309150092131538, -2379181980768330262, -2429155385556917622," +
-                " -441826621316521238, -7145447556635229351, -404281420475794402, -5423599860460493277," +
-                " -5963419290014921023, -7622708188730325952, -7874913887470575743, -2249014872100118827," +
-                " -8454731288392606714, -347198304573602424, -8621628285435365247, -7096123436740836910, ...]");
+        aeqitLimitLog(TINY_LIMIT, P.negativeLongs(), "RandomProvider_negativeLongs");
     }
 
     @Test
     public void testNaturalBytes() {
-        aeqitLimit(TINY_LIMIT, P.naturalBytes(),
-                "[41, 73, 3, 114, 53, 63, 56, 101, 125, 35, 127, 81, 103, 21, 115, 117, 120, 21, 49, 38, ...]");
+        aeqitLimitLog(TINY_LIMIT, P.naturalBytes(), "RandomProvider_naturalBytes");
     }
 
     @Test
     public void testNaturalShorts() {
-        aeqitLimit(TINY_LIMIT, P.naturalShorts(),
-                "[22057, 20937, 6531, 11762, 949, 17087, 9528, 12773, 6909, 163, 30463, 31953, 3431, 25109, 6131," +
-                " 23925, 12024, 23829, 15025, 31910, ...]");
+        aeqitLimitLog(TINY_LIMIT, P.naturalShorts(), "RandomProvider_naturalShorts");
     }
 
     @Test
     public void testNaturalIntegers() {
-        aeqitLimit(TINY_LIMIT, P.naturalIntegers(),
-                "[1062688297, 1143001545, 161323395, 970337778, 1178600373, 681591487, 1677403448, 136131045," +
-                " 1899010813, 1997176995, 293205759, 2040790225, 553946471, 1941234197, 565581811, 1951980917," +
-                " 102870776, 534895893, 1663679153, 1315765414, ...]");
+        aeqitLimitLog(TINY_LIMIT, P.naturalIntegers(), "RandomProvider_naturalIntegers");
     }
 
     @Test
     public void testNaturalLongs() {
-        aeqitLimit(TINY_LIMIT, P.naturalLongs(),
-                "[4564211482599936457, 692878708722511346, 5062050059917476543, 7204392953641251301," +
-                " 8156189338582548643, 1259309150092131537, 2379181980768330261, 2429155385556917621," +
-                " 441826621316521237, 7145447556635229350, 404281420475794401, 5423599860460493276," +
-                " 5963419290014921022, 7622708188730325951, 7874913887470575742, 2249014872100118826," +
-                " 8454731288392606713, 347198304573602423, 8621628285435365246, 7096123436740836909, ...]");
+        aeqitLimitLog(TINY_LIMIT, P.naturalLongs(), "RandomProvider_naturalLongs");
     }
 
     @Test
