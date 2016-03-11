@@ -456,403 +456,190 @@ public strictfp class BasicTest {
     }
 
     private static void rangeDown_byte_helper(byte a, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.rangeDown(a), output);
+        aeqitLimitLog(TINY_LIMIT, P.rangeDown(a), output);
         P.reset();
     }
 
     @Test
     public void testRangeDown_byte() {
-        rangeDown_byte_helper((byte) 0,
-                "[-87, -72, -25, -107, -11, -107, -42, -65, -66, -11, -2, -100, -86, -49, -124, -9, -65, -2, -83," +
-                " -14, ...]");
-        rangeDown_byte_helper((byte) (1 << 6),
-                "[-87, 3, 53, 63, -72, 35, -25, -107, -11, -107, 49, 38, -42, -65, -66, 53, 63, -11, -2, -100, ...]");
-        rangeDown_byte_helper((byte) (-1 << 6),
-                "[-87, -125, -75, -65, -72, -93, -107, -107, -79, -90, -65, -66, -75, -65, -100, -86, -124, -65," +
-                " -85, -83, ...]");
-        rangeDown_byte_helper(Byte.MAX_VALUE,
-                "[-87, 73, 3, 114, 53, 63, -72, 101, 125, 35, 127, 81, -25, -107, 115, -11, 120, -107, 49, 38, ...]");
-        rangeDown_byte_helper(
-                Byte.MIN_VALUE,
-                "[-128, -128, -128, -128, -128, -128, -128, -128, -128, -128, -128, -128, -128, -128, -128, -128," +
-                " -128, -128, -128, -128, ...]");
+        rangeDown_byte_helper((byte) 0, "RandomProvider_rangeDown_byte_i");
+        rangeDown_byte_helper((byte) (1 << 6), "RandomProvider_rangeDown_byte_ii");
+        rangeDown_byte_helper((byte) (-1 << 6), "RandomProvider_rangeDown_byte_iii");
+        rangeDown_byte_helper(Byte.MAX_VALUE, "RandomProvider_rangeDown_byte_iv");
+        rangeDown_byte_helper(Byte.MIN_VALUE, "RandomProvider_rangeDown_byte_v");
     }
 
     private static void rangeDown_short_helper(short a, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.rangeDown(a), output);
+        aeqitLimitLog(TINY_LIMIT, P.rangeDown(a), output);
         P.reset();
     }
 
     @Test
     public void testRangeDown_short() {
-        rangeDown_short_helper((short) 0,
-                "[-10711, -21006, -31819, -15681, -23240, -19995, -26637, -13361, -31775, -170, -26148, -11713," +
-                " -20162, -13131, -1089, -12171, -8066, -25828, -24278, -17073, ...]");
-        rangeDown_short_helper((short) (1 << 14),
-                "[-10711, 6531, -21006, -31819, -15681, -23240, -19995, 6909, 163, 3431, -26637, 12024, 15025," +
-                " -13361, -31775, -170, -26148, -11713, -20162, -13131, ...]");
-        rangeDown_short_helper((short) (-1 << 14),
-                "[-26237, -21006, -31819, -23240, -19995, -25859, -32605, -29337, -26637, -20744, -17743, -31775," +
-                " -26148, -20162, -25828, -24278, -17073, -23559, -17801, -21185, ...]");
-        rangeDown_short_helper(Short.MAX_VALUE,
-                "[-10711, 20937, 6531, -21006, -31819, -15681, -23240, -19995, 6909, 163, 30463, 31953, 3431, 25109," +
-                " -26637, 23925, 12024, 23829, 15025, 31910, ...]");
-        rangeDown_short_helper(Short.MIN_VALUE,
-                "[-32768, -32768, -32768, -32768, -32768, -32768, -32768, -32768, -32768, -32768, -32768, -32768," +
-                " -32768, -32768, -32768, -32768, -32768, -32768, -32768, -32768, ...]");
+        rangeDown_short_helper((short) 0, "RandomProvider_rangeDown_short_i");
+        rangeDown_short_helper((short) (1 << 14), "RandomProvider_rangeDown_short_ii");
+        rangeDown_short_helper((short) (-1 << 14), "RandomProvider_rangeDown_short_iii");
+        rangeDown_short_helper(Short.MAX_VALUE, "RandomProvider_rangeDown_short_iv");
+        rangeDown_short_helper(Short.MIN_VALUE, "RandomProvider_rangeDown_short_v");
     }
 
     private static void rangeDown_int_helper(int a, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.rangeDown(a), output);
+        aeqitLimitLog(TINY_LIMIT, P.rangeDown(a), output);
         P.reset();
     }
 
     @Test
     public void testRangeDown_int() {
-        rangeDown_int_helper(0,
-                "[-1004482103, -150306653, -658504735, -291825188, -1552326530, -1038540502, -1965701250," +
-                " -1186791891, -1728239037, -18381468, -137739712, -604834249, -1131859022, -1686158854," +
-                " -1782600976, -2111534694, -1846406610, -553610990, -96510935, -2032484754, ...]");
-        rangeDown_int_helper(1 << 30,
-                "[-1004482103, 970337778, 681591487, 136131045, -150306653, 534895893, -658504735, -291825188," +
-                " 739062078, -1552326530, -1038540502, 985283191, -1965701250, -1186791891, 35433513, -1728239037," +
-                " 691399237, -18381468, -137739712, -604834249, ...]");
-        rangeDown_int_helper(-1 << 30,
-                "[-1177145870, -1465892161, -2011352603, -1612587755, -1408421570, -1552326530, -1162200457," +
-                " -1965701250, -1186791891, -2112050135, -1728239037, -1456084411, -1288200699, -1131859022," +
-                " -1655648634, -2073512899, -1686158854, -1782600976, -2111534694, -1846406610, ...]");
-        rangeDown_int_helper(Integer.MAX_VALUE,
-                "[-1004482103, 970337778, 681591487, 136131045, -150306653, 2040790225, 1941234197, 1951980917," +
-                " 534895893, 1315765414, -658504735, -291825188, 739062078, 2008775615, -1552326530, -1038540502," +
-                " 1275438073, 985283191, -1965701250, -1186791891, ...]");
-        rangeDown_int_helper(Integer.MIN_VALUE,
-                "[-2147483648, -2147483648, -2147483648, -2147483648, -2147483648, -2147483648, -2147483648," +
-                " -2147483648, -2147483648, -2147483648, -2147483648, -2147483648, -2147483648, -2147483648," +
-                " -2147483648, -2147483648, -2147483648, -2147483648, -2147483648, -2147483648, ...]");
+        rangeDown_int_helper(0, "RandomProvider_rangeDown_int_i");
+        rangeDown_int_helper(1 << 30, "RandomProvider_rangeDown_int_ii");
+        rangeDown_int_helper(-1 << 30, "RandomProvider_rangeDown_int_iii");
+        rangeDown_int_helper(Integer.MAX_VALUE, "RandomProvider_rangeDown_int_iv");
+        rangeDown_int_helper(Integer.MIN_VALUE, "RandomProvider_rangeDown_int_v");
     }
 
     private static void rangeDown_long_helper(long a, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.rangeDown(a), output);
+        aeqitLimitLog(TINY_LIMIT, P.rangeDown(a), output);
         P.reset();
     }
 
     @Test
     public void testRangeDown_long() {
-        rangeDown_long_helper(0L,
-                "[-3001719753101261693, -5920340473037142337, -6486340264786032387, -8953058930686899236," +
-                " -3259812015710032715, -307380066314523266, -7262442345795599793, -5933783335123481941," +
-                " -2942296318021176509, -6116173926626075902, -1045000064965076200, -6331375924936837000," +
-                " -7858199626387741934, -750497281407653010, -4964572946333319706, -3265594823497196973," +
-                " -7169158286100765709, -3899242950132782503, -354726065181537090, -8326391862079061231, ...]");
-        rangeDown_long_helper(1L << 62,
-                "[-3001719753101261693, -5920340473037142337, -6486340264786032387, 2946691002601937," +
-                " 938051737769800691, 4191131234584022735, -8953058930686899236, -3259812015710032715," +
-                " -307380066314523266, -7262442345795599793, 2523647485907371127, -5933783335123481941," +
-                " -2942296318021176509, 425447389768546624, -6116173926626075902, 2177406786277490478," +
-                " -1045000064965076200, 658654575245458808, -6331375924936837000, -7858199626387741934, ...]");
-        rangeDown_long_helper(-1L << 62,
-                "[-6244707352066318268, -8963960367505090887, -5403403905557946200, -5177455240371167864," +
-                " -5640149525592249138, -4660448456132719188, -5382705448837465097, -7198099522187093694," +
-                " -8899164521550398790, -4670893656599177974, -6089294534305496519, -8650775946964755326," +
-                " -7145123307227501859, -7605339026464506600, -6513958261454878089, -9034634951682803789," +
-                " -7138643007725401796, -7486951269179234622, -7852292981010661281, -8935306705831985167, ...]");
-        rangeDown_long_helper(Long.MAX_VALUE,
-                "[-3001719753101261693, -5920340473037142337, -6486340264786032387, 2946691002601937," +
-                " 938051737769800691, 6726395392388302357, 4191131234584022735, -8953058930686899236," +
-                " -3259812015710032715, -307380066314523266, -7262442345795599793, 2523647485907371127," +
-                " -5933783335123481941, 9097897703523752562, 8234018459023606428, -2942296318021176509," +
-                " 5939553317435058514, 425447389768546624, -6116173926626075902, 2177406786277490478, ...]");
-        rangeDown_long_helper(Long.MIN_VALUE,
-                "[-9223372036854775808, -9223372036854775808, -9223372036854775808, -9223372036854775808," +
-                " -9223372036854775808, -9223372036854775808, -9223372036854775808, -9223372036854775808," +
-                " -9223372036854775808, -9223372036854775808, -9223372036854775808, -9223372036854775808," +
-                " -9223372036854775808, -9223372036854775808, -9223372036854775808, -9223372036854775808," +
-                " -9223372036854775808, -9223372036854775808, -9223372036854775808, -9223372036854775808, ...]");
+        rangeDown_long_helper(0L, "RandomProvider_rangeDown_long_i");
+        rangeDown_long_helper(1L << 62, "RandomProvider_rangeDown_long_ii");
+        rangeDown_long_helper(-1L << 62, "RandomProvider_rangeDown_long_iii");
+        rangeDown_long_helper(Long.MAX_VALUE, "RandomProvider_rangeDown_long_iv");
+        rangeDown_long_helper(Long.MIN_VALUE, "RandomProvider_rangeDown_long_v");
     }
 
     private static void rangeDown_char_helper(char a, @NotNull String output) {
-        aeqcs(P.rangeDown(a), output);
+        aeqitLimitLog(SMALL_LIMIT, P.rangeDown(a), output);
         P.reset();
     }
 
     @Test
     public void testRangeDown_char() {
-        rangeDown_char_helper(
-                '\0',
-                "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0" +
-                "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0" +
-                "\0\0"
-        );
-        rangeDown_char_helper(
-                'a',
-                ")I\u00035?8#Q\25\u00151&OaV\\?>5?\34*O\4?+-B\7)\34\26CLER%@7\2\5.\u001c2S\6=V\30\nN\32X^$.\23\22\3K" +
-                "10);\u001c2EZF\17I`5\23OSS\5\3\5\u000b2Y\\K;\1CQ7&W\5>U7\21(Y\2"
-        );
-        rangeDown_char_helper(
-                'Ш',
-                "ǉƃεʿǥ\u02fd£ȕʱϏϡǜȿľοu~\u031cĪϹɷȇЖɃɌɅ\u0352ĥɀ\u0363ϯβœźŖǺĘǽˬǎ\u02f0ŨƚϘÞxȮĒưʻ²\u02da\u03605ȓ\u0353" +
-                "\u02d3\5ʅϳƋ2\u0359\u02ef\u036f\u033b|ɑʷ¦ϲ¾·\21ΨÙɨŔ\u0329ο\u0306\u0092\u0339σŚ\u036bBɗŪŤͽЋɵÊ\u037eʡɪ" +
-                "\35\u0366ț"
-        );
-        rangeDown_char_helper(
-                '\uffff',
-                "嘩퇉馃\u2df2ε䊿\u2538\u31e5髽肣\uf6ffﳑ赧\ue215\u17f3\udd75껸\udd15몱ﲦ䯏ϡ罖\u19dc刿ㄾ䲵箿偵恾ᬜK㵏ꏹ缄㩷" +
-                "ⴿ읾纫\ufe2d㗂䝲\uf207갩힜坤琖\u2a43퉌\uea45\ue352蕤餥䉀\u2b63\uf637鸂鸅误輮\uee1c\u33b2酓캆ᅺ됽煖䇺ᤘ\ue9fd" +
-                "\u2aec㖊짎\uaaf0全覚돘䱸\u28de\u2e24\uf878ሮܓ鄒\uff03띯\ue5cb\ua7b1聆尩굿\uecf5ꪻ疜\ue8b2빮빅\ue2da䟆\ue78f"
-        );
+        rangeDown_char_helper('\0', "RandomProvider_rangeDown_char_i");
+        rangeDown_char_helper('a', "RandomProvider_rangeDown_char_ii");
+        rangeDown_char_helper('Ш', "RandomProvider_rangeDown_char_iii");
+        rangeDown_char_helper('\uffff', "RandomProvider_rangeDown_char_iv");
     }
 
     private static void range_byte_byte_helper(int a, int b, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.range((byte) a, (byte) b), output);
+        aeqitLimitLog(TINY_LIMIT, P.range((byte) a, (byte) b), output);
         P.reset();
     }
 
     @Test
     public void testRange_byte_byte() {
-        range_byte_byte_helper(
-                10,
-                20,
-                "[19, 19, 13, 12, 15, 18, 15, 13, 11, 17, 15, 13, 15, 18, 15, 11, 16, 11, 16, 15, ...]"
-        );
-        range_byte_byte_helper(
-                10,
-                10,
-                "[10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, ...]"
-        );
-        range_byte_byte_helper((byte) 10, (byte) 9, "[]");
-        range_byte_byte_helper(
-                -20,
-                -10,
-                "[-11, -11, -17, -18, -15, -12, -15, -17, -19, -13, -15, -17, -15, -12, -15, -19, -14, -19, -14," +
-                " -15, ...]"
-        );
-        range_byte_byte_helper(
-                -20,
-                -20,
-                "[-20, -20, -20, -20, -20, -20, -20, -20, -20, -20, -20, -20, -20, -20, -20, -20, -20, -20, -20," +
-                " -20, ...]"
-        );
-        range_byte_byte_helper((byte) -20, (byte) -21, "[]");
-        range_byte_byte_helper(0, 0, "[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ...]");
-        range_byte_byte_helper(0, 10, "[9, 9, 3, 2, 5, 8, 5, 3, 1, 7, 5, 3, 5, 8, 5, 1, 6, 1, 6, 5, ...]");
-        range_byte_byte_helper(-5, 0, "[-4, -4, -2, -3, 0, -5, 0, 0, -2, -4, 0, -2, 0, -5, 0, -4, -4, -1, 0, 0, ...]");
-        range_byte_byte_helper(-5, 10, "[4, 4, -2, -3, 0, 10, 3, 0, 8, -2, 10, -4, 2, 0, -2, 0, 3, 0, -4, 1, ...]");
-        range_byte_byte_helper(
-                -10,
-                5,
-                "[-1, -1, -7, -8, -5, 5, -2, -5, 3, -7, 5, -9, -3, -5, -7, -5, -2, -5, -9, -4, ...]"
-        );
-        range_byte_byte_helper(5, -10, "[]");
+        range_byte_byte_helper(10, 20, "RandomProvider_range_byte_byte_i");
+        range_byte_byte_helper(10, 10, "RandomProvider_range_byte_byte_ii");
+        range_byte_byte_helper((byte) 10, (byte) 9, "RandomProvider_range_byte_byte_iii");
+        range_byte_byte_helper(-20, -10, "RandomProvider_range_byte_byte_iv");
+        range_byte_byte_helper(-20, -20, "RandomProvider_range_byte_byte_v");
+        range_byte_byte_helper((byte) -20, (byte) -21, "RandomProvider_range_byte_byte_vi");
+        range_byte_byte_helper(0, 0, "RandomProvider_range_byte_byte_vii");
+        range_byte_byte_helper(0, 10, "RandomProvider_range_byte_byte_viii");
+        range_byte_byte_helper(-5, 0, "RandomProvider_range_byte_byte_ix");
+        range_byte_byte_helper(-5, 10, "RandomProvider_range_byte_byte_x");
+        range_byte_byte_helper(-10, 5, "RandomProvider_range_byte_byte_xi");
+        range_byte_byte_helper(5, -10, "RandomProvider_range_byte_byte_xii");
     }
 
     private static void range_short_short_helper(int a, int b, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.range((short) a, (short) b), output);
+        aeqitLimitLog(TINY_LIMIT, P.range((short) a, (short) b), output);
         P.reset();
     }
 
     @Test
     public void testRange_short_short() {
-        range_short_short_helper(
-                10,
-                20,
-                "[19, 19, 13, 12, 15, 18, 15, 13, 11, 17, 15, 13, 15, 18, 15, 11, 16, 11, 16, 15, ...]"
-        );
-        range_short_short_helper(
-                10,
-                10,
-                "[10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, ...]"
-        );
-        range_short_short_helper((short) 10, (short) 9, "[]");
-        range_short_short_helper(
-                -20,
-                -10,
-                "[-11, -11, -17, -18, -15, -12, -15, -17, -19, -13, -15, -17, -15, -12, -15, -19, -14, -19, -14," +
-                " -15, ...]"
-        );
-        range_short_short_helper(
-                -20,
-                -20,
-                "[-20, -20, -20, -20, -20, -20, -20, -20, -20, -20, -20, -20, -20, -20, -20, -20, -20, -20, -20," +
-                " -20, ...]"
-        );
-        range_short_short_helper((short) -20, (short) -21, "[]");
-        range_short_short_helper(0, 0, "[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ...]");
-        range_short_short_helper(0, 10, "[9, 9, 3, 2, 5, 8, 5, 3, 1, 7, 5, 3, 5, 8, 5, 1, 6, 1, 6, 5, ...]");
-        range_short_short_helper(
-                -5,
-                0,
-                "[-4, -4, -2, -3, 0, -5, 0, 0, -2, -4, 0, -2, 0, -5, 0, -4, -4, -1, 0, 0, ...]"
-        );
-        range_short_short_helper(-5, 10, "[4, 4, -2, -3, 0, 10, 3, 0, 8, -2, 10, -4, 2, 0, -2, 0, 3, 0, -4, 1, ...]");
-        range_short_short_helper(
-                -10,
-                5,
-                "[-1, -1, -7, -8, -5, 5, -2, -5, 3, -7, 5, -9, -3, -5, -7, -5, -2, -5, -9, -4, ...]"
-        );
-        range_short_short_helper(5, -10, "[]");
+        range_short_short_helper(10, 20, "RandomProvider_range_short_short_i");
+        range_short_short_helper(10, 10, "RandomProvider_range_short_short_ii");
+        range_short_short_helper((short) 10, (short) 9, "RandomProvider_range_short_short_iii");
+        range_short_short_helper(-20, -10, "RandomProvider_range_short_short_iv");
+        range_short_short_helper(-20, -20, "RandomProvider_range_short_short_v");
+        range_short_short_helper((short) -20, (short) -21, "RandomProvider_range_short_short_vi");
+        range_short_short_helper(0, 0, "RandomProvider_range_short_short_vii");
+        range_short_short_helper(0, 10, "RandomProvider_range_short_short_viii");
+        range_short_short_helper(-5, 0, "RandomProvider_range_short_short_ix");
+        range_short_short_helper(-5, 10, "RandomProvider_range_short_short_x");
+        range_short_short_helper(-10, 5, "RandomProvider_range_short_short_xi");
+        range_short_short_helper(5, -10, "RandomProvider_range_short_short_xii");
     }
 
     private static void range_int_int_helper(int a, int b, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.range(a, b), output);
+        aeqitLimitLog(TINY_LIMIT, P.range(a, b), output);
         P.reset();
     }
 
     @Test
     public void testRange_int_int() {
-        range_int_int_helper(
-                10,
-                20,
-                "[19, 12, 15, 13, 11, 15, 15, 15, 16, 11, 20, 19, 17, 12, 19, 14, 13, 15, 14, 10, ...]"
-        );
-        range_int_int_helper(
-                10,
-                10,
-                "[10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, ...]"
-        );
-        range_int_int_helper(10, 9, "[]");
-        range_int_int_helper(
-                -20,
-                -10,
-                "[-11, -18, -15, -17, -19, -15, -15, -15, -14, -19, -10, -11, -13, -18, -11, -16, -17, -15, -16," +
-                " -20, ...]"
-        );
-        range_int_int_helper(
-                -20,
-                -20,
-                "[-20, -20, -20, -20, -20, -20, -20, -20, -20, -20, -20, -20, -20, -20, -20, -20, -20, -20, -20," +
-                " -20, ...]"
-        );
-        range_int_int_helper(-20, -21, "[]");
-        range_int_int_helper(0, 0, "[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ...]");
-        range_int_int_helper(0, 10, "[9, 2, 5, 3, 1, 5, 5, 5, 6, 1, 10, 9, 7, 2, 9, 4, 3, 5, 4, 0, ...]");
-        range_int_int_helper(-5, 0, "[-4, -3, 0, -2, -4, 0, 0, 0, -4, -1, -3, -4, 0, -3, -4, -1, -2, 0, -1, -5, ...]");
-        range_int_int_helper(-5, 10, "[4, -3, 10, 0, -2, -4, 0, 0, 0, 1, -4, 7, 9, 10, 9, 5, 4, 2, 9, 8, ...]");
-        range_int_int_helper(-10, 5, "[-1, -8, 5, -5, -7, -9, -5, -5, -5, -4, -9, 2, 4, 5, 4, 0, -1, -3, 4, 3, ...]");
-        range_int_int_helper(5, -10, "[]");
+        range_int_int_helper(10, 20, "RandomProvider_range_int_int_i");
+        range_int_int_helper(10, 10, "RandomProvider_range_int_int_ii");
+        range_int_int_helper(10, 9, "RandomProvider_range_int_int_iii");
+        range_int_int_helper(-20, -10, "RandomProvider_range_int_int_iv");
+        range_int_int_helper(-20, -20, "RandomProvider_range_int_int_v");
+        range_int_int_helper(-20, -21, "RandomProvider_range_int_int_vi");
+        range_int_int_helper(0, 0, "RandomProvider_range_int_int_vii");
+        range_int_int_helper(0, 10, "RandomProvider_range_int_int_viii");
+        range_int_int_helper(-5, 0, "RandomProvider_range_int_int_ix");
+        range_int_int_helper(-5, 10, "RandomProvider_range_int_int_x");
+        range_int_int_helper(-10, 5, "RandomProvider_range_int_int_xi");
+        range_int_int_helper(5, -10, "RandomProvider_range_int_int_xii");
     }
 
     private static void range_long_long_helper(long a, long b, @NotNull String output) {
         P.reset();
-        aeqitLimit(TINY_LIMIT, P.range(a, b), output);
+        aeqitLimitLog(TINY_LIMIT, P.range(a, b), output);
     }
 
     @Test
     public void testRange_long_long() {
-        range_long_long_helper(
-                10L,
-                20L,
-                "[19, 19, 13, 12, 15, 18, 15, 13, 11, 17, 15, 13, 15, 18, 15, 11, 16, 11, 16, 15, ...]"
-        );
-        range_long_long_helper(
-                10L,
-                10L,
-                "[10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, ...]"
-        );
-        range_long_long_helper(10L, 9L, "[]");
-        range_long_long_helper(
-                -20L,
-                -10L,
-                "[-11, -11, -17, -18, -15, -12, -15, -17, -19, -13, -15, -17, -15, -12, -15, -19, -14, -19, -14," +
-                " -15, ...]"
-        );
-        range_long_long_helper(
-                -20L,
-                -20L,
-                "[-20, -20, -20, -20, -20, -20, -20, -20, -20, -20, -20, -20, -20, -20, -20, -20, -20, -20, -20," +
-                " -20, ...]"
-        );
-        range_long_long_helper(-20L, -21L, "[]");
-        range_long_long_helper(0L, 0L, "[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ...]");
-        range_long_long_helper(0L, 10L, "[9, 9, 3, 2, 5, 8, 5, 3, 1, 7, 5, 3, 5, 8, 5, 1, 6, 1, 6, 5, ...]");
-        range_long_long_helper(
-                -5L,
-                0L,
-                "[-4, -4, -2, -3, 0, -5, 0, 0, -2, -4, 0, -2, 0, -5, 0, -4, -4, -1, 0, 0, ...]"
-        );
-        range_long_long_helper(-5L, 10L, "[4, 4, -2, -3, 0, 10, 3, 0, 8, -2, 10, -4, 2, 0, -2, 0, 3, 0, -4, 1, ...]");
-        range_long_long_helper(
-                -10L,
-                5L,
-                "[-1, -1, -7, -8, -5, 5, -2, -5, 3, -7, 5, -9, -3, -5, -7, -5, -2, -5, -9, -4, ...]"
-        );
-        range_long_long_helper(5L, -10L, "[]");
+        range_long_long_helper(10L, 20L, "RandomProvider_range_long_long_i");
+        range_long_long_helper(10L, 10L, "RandomProvider_range_long_long_ii");
+        range_long_long_helper(10L, 9L, "RandomProvider_range_long_long_iii");
+        range_long_long_helper(-20L, -10L, "RandomProvider_range_long_long_iv");
+        range_long_long_helper(-20L, -20L, "RandomProvider_range_long_long_v");
+        range_long_long_helper(-20L, -21L, "RandomProvider_range_long_long_vi");
+        range_long_long_helper(0L, 0L, "RandomProvider_range_long_long_vii");
+        range_long_long_helper(0L, 10L, "RandomProvider_range_long_long_viii");
+        range_long_long_helper(-5L, 0L, "RandomProvider_range_long_long_ix");
+        range_long_long_helper(-5L, 10L, "RandomProvider_range_long_long_x");
+        range_long_long_helper(-10L, 5L, "RandomProvider_range_long_long_xii");
+        range_long_long_helper(5L, -10L, "RandomProvider_range_long_long_xiii");
     }
 
     private static void range_BigInteger_BigInteger_helper(int a, int b, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.range(BigInteger.valueOf(a), BigInteger.valueOf(b)), output);
+        aeqitLimitLog(TINY_LIMIT, P.range(BigInteger.valueOf(a), BigInteger.valueOf(b)), output);
         P.reset();
     }
 
     @Test
     public void testRange_BigInteger_BigInteger() {
-        range_BigInteger_BigInteger_helper(
-                10,
-                20,
-                "[19, 19, 13, 12, 15, 18, 15, 13, 11, 17, 15, 13, 15, 18, 15, 11, 16, 11, 16, 15, ...]"
-        );
-        range_BigInteger_BigInteger_helper(
-                10,
-                10,
-                "[10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, ...]"
-        );
-        range_BigInteger_BigInteger_helper(10, 9, "[]");
-        range_BigInteger_BigInteger_helper(
-                -20,
-                -10,
-                "[-11, -11, -17, -18, -15, -12, -15, -17, -19, -13, -15, -17, -15, -12, -15, -19, -14, -19, -14," +
-                " -15, ...]"
-        );
-        range_BigInteger_BigInteger_helper(
-                -20,
-                -20,
-                "[-20, -20, -20, -20, -20, -20, -20, -20, -20, -20, -20, -20, -20, -20, -20, -20, -20, -20, -20," +
-                " -20, ...]"
-        );
-        range_BigInteger_BigInteger_helper(-20, -21, "[]");
-        range_BigInteger_BigInteger_helper(0, 0, "[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ...]");
-        range_BigInteger_BigInteger_helper(0, 10, "[9, 9, 3, 2, 5, 8, 5, 3, 1, 7, 5, 3, 5, 8, 5, 1, 6, 1, 6, 5, ...]");
-        range_BigInteger_BigInteger_helper(
-                -5,
-                0,
-                "[-4, -4, -2, -3, 0, -5, 0, 0, -2, -4, 0, -2, 0, -5, 0, -4, -4, -1, 0, 0, ...]"
-        );
-        range_BigInteger_BigInteger_helper(
-                -5,
-                10,
-                "[4, 4, -2, -3, 0, 10, 3, 0, 8, -2, 10, -4, 2, 0, -2, 0, 3, 0, -4, 1, ...]"
-        );
-        range_BigInteger_BigInteger_helper(
-                -10,
-                5,
-                "[-1, -1, -7, -8, -5, 5, -2, -5, 3, -7, 5, -9, -3, -5, -7, -5, -2, -5, -9, -4, ...]"
-        );
-        range_BigInteger_BigInteger_helper(5, -10, "[]");
+        range_BigInteger_BigInteger_helper(10, 20, "RandomProvider_range_BigInteger_BigInteger_i");
+        range_BigInteger_BigInteger_helper(10, 10, "RandomProvider_range_BigInteger_BigInteger_ii");
+        range_BigInteger_BigInteger_helper(10, 9, "RandomProvider_range_BigInteger_BigInteger_iii");
+        range_BigInteger_BigInteger_helper(-20, -10, "RandomProvider_range_BigInteger_BigInteger_iv");
+        range_BigInteger_BigInteger_helper(-20, -20, "RandomProvider_range_BigInteger_BigInteger_v");
+        range_BigInteger_BigInteger_helper(-20, -21, "RandomProvider_range_BigInteger_BigInteger_vi");
+        range_BigInteger_BigInteger_helper(0, 0, "RandomProvider_range_BigInteger_BigInteger_vii");
+        range_BigInteger_BigInteger_helper(0, 10, "RandomProvider_range_BigInteger_BigInteger_viii");
+        range_BigInteger_BigInteger_helper(-5, 0, "RandomProvider_range_BigInteger_BigInteger_ix");
+        range_BigInteger_BigInteger_helper(-5, 10, "RandomProvider_range_BigInteger_BigInteger_x");
+        range_BigInteger_BigInteger_helper(-10, 5, "RandomProvider_range_BigInteger_BigInteger_xi");
+        range_BigInteger_BigInteger_helper(5, -10, "RandomProvider_range_BigInteger_BigInteger_xii");
     }
 
     private static void range_char_char_helper(char a, char b, @NotNull String output) {
-        aeqcs(P.range(a, b), output);
+        aeqitLimitLog(SMALL_LIMIT, P.range(a, b), output);
         P.reset();
     }
 
     @Test
     public void testRange_char_char() {
-        range_char_char_helper(
-                'a',
-                'z',
-                "jjdsvyfdrhvtvyvrgpbwvvkpzexlncshjewdmfsefadxcfpostgwymkoqiyyeyotsdplrqjvsofgpjgavgtpttfdwftlszplpbdr"
-        );
-        range_char_char_helper(
-                'a',
-                'a',
-                "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
-        );
-        range_char_char_helper(
-                '!',
-                '9',
-                "**$369&$2(646962'0\"766+0%8,.#3(*%7$-&3%&!$8#&0/34'79-+/1)99%9/43$0,21*63/&'0*'!6'4044&$7&4,30,0\"$" +
-                "28'"
-        );
-        range_char_char_helper('a', 'A', "");
+        range_char_char_helper('a', 'z', "RandomProvider_range_char_char_i");
+        range_char_char_helper('a', 'a', "RandomProvider_range_char_char_ii");
+        range_char_char_helper('!', '9', "RandomProvider_range_char_char_iii");
+        range_char_char_helper('a', 'A', "RandomProvider_range_char_char_iv");
     }
 
     private static void geometricHelper(
