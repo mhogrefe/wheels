@@ -1446,40 +1446,52 @@ public class IntegerUtilsTest {
         logarithmicDemux_fail_helper("-5");
     }
 
+    private static void squareRootMux_helper(@NotNull String x, @NotNull String y, @NotNull String output) {
+        aeq(squareRootMux(Readers.readBigInteger(x).get(), Readers.readBigInteger(y).get()), output);
+    }
+
+    private static void squareRootMux_fail_helper(@NotNull String x, @NotNull String y) {
+        try {
+            squareRootMux(Readers.readBigInteger(x).get(), Readers.readBigInteger(y).get());
+            fail();
+        } catch (ArithmeticException ignored) {}
+    }
+
     @Test
     public void testSquareRootMux() {
-        aeq(squareRootMux(BigInteger.valueOf(0), BigInteger.valueOf(0)), 0);
-        aeq(squareRootMux(BigInteger.valueOf(0), BigInteger.valueOf(1)), 1);
-        aeq(squareRootMux(BigInteger.valueOf(1), BigInteger.valueOf(0)), 2);
-        aeq(squareRootMux(BigInteger.valueOf(5), BigInteger.valueOf(10)), 538);
-        aeq(squareRootMux(BigInteger.valueOf(10), BigInteger.valueOf(5)), 101);
-        aeq(squareRootMux(BigInteger.valueOf(7680), BigInteger.valueOf(76)), 1000000);
+        squareRootMux_helper("0", "0", "0");
+        squareRootMux_helper("0", "1", "1");
+        squareRootMux_helper("1", "0", "2");
+        squareRootMux_helper("5", "10", "538");
+        squareRootMux_helper("10", "5", "101");
+        squareRootMux_helper("7680", "76", "1000000");
+        squareRootMux_fail_helper("-5", "5");
+        squareRootMux_fail_helper("5", "-5");
+        squareRootMux_fail_helper("-5", "-5");
+    }
+
+    private static void squareRootDemux_helper(@NotNull String n, @NotNull String x, @NotNull String y) {
+        Pair<BigInteger, BigInteger> p = squareRootDemux(Readers.readBigInteger(n).get());
+        aeq(p.a, x);
+        aeq(p.b, y);
+    }
+
+    private static void squareRootDemux_fail_helper(@NotNull String n) {
         try {
-            squareRootMux(BigInteger.valueOf(-5), BigInteger.valueOf(5));
-            fail();
-        } catch (ArithmeticException ignored) {}
-        try {
-            squareRootMux(BigInteger.valueOf(5), BigInteger.valueOf(-5));
-            fail();
-        } catch (ArithmeticException ignored) {}
-        try {
-            squareRootMux(BigInteger.valueOf(-5), BigInteger.valueOf(-5));
+            squareRootDemux(Readers.readBigInteger(n).get());
             fail();
         } catch (ArithmeticException ignored) {}
     }
 
     @Test
     public void testSquareRootDemux() {
-        aeq(squareRootDemux(BigInteger.ZERO), "(0, 0)");
-        aeq(squareRootDemux(BigInteger.ONE), "(0, 1)");
-        aeq(squareRootDemux(TWO), "(1, 0)");
-        aeq(squareRootDemux(BigInteger.valueOf(538)), "(5, 10)");
-        aeq(squareRootDemux(BigInteger.valueOf(101)), "(10, 5)");
-        aeq(squareRootDemux(BigInteger.valueOf(1000000)), "(7680, 76)");
-        try {
-            squareRootDemux(BigInteger.valueOf(-5));
-            fail();
-        } catch (ArithmeticException ignored) {}
+        squareRootDemux_helper("0", "0", "0");
+        squareRootDemux_helper("1", "0", "1");
+        squareRootDemux_helper("2", "1", "0");
+        squareRootDemux_helper("538", "5", "10");
+        squareRootDemux_helper("101", "10", "5");
+        squareRootDemux_helper("1000000", "7680", "76");
+        squareRootDemux_fail_helper("-5");
     }
 
     @Test

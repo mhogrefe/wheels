@@ -1,7 +1,6 @@
 package mho.wheels.numberUtils;
 
 import mho.wheels.io.Readers;
-import mho.wheels.iterables.ExhaustiveProvider;
 import mho.wheels.iterables.IterableUtils;
 import mho.wheels.structures.Pair;
 import mho.wheels.testing.Testing;
@@ -1185,10 +1184,33 @@ public class IntegerUtils {
     public static @NotNull BigInteger squareRootMux(@NotNull BigInteger x, @NotNull BigInteger y) {
         List<Boolean> xBits = bits(x);
         List<Boolean> yBits = bits(y);
-        int outputSize = max(xBits.size(), yBits.size()) * 3;
-        Iterable<Iterable<Boolean>> xChunks = map(w -> w, chunk(2, concat(xBits, repeat(false))));
-        Iterable<Iterable<Boolean>> yChunks = map(Arrays::asList, concat(yBits, repeat(false)));
-        return fromBits(take(outputSize, concat(ExhaustiveProvider.INSTANCE.choose(yChunks, xChunks))));
+        int xBitSize = xBits.size();
+        int yBitSize = yBits.size();
+        return fromBits(() -> new Iterator<Boolean>() {
+            private int ix = 0;
+            private int iy = 0;
+            private int counter = 0;
+
+            @Override
+            public boolean hasNext() {
+                return ix < xBitSize || iy < yBitSize;
+            }
+
+            @Override
+            public Boolean next() {
+                boolean bit;
+                if (counter == 0) {
+                    bit = iy < yBitSize ? yBits.get(iy) : false;
+                    iy++;
+                    counter = 2;
+                } else {
+                    bit = ix < xBitSize ? xBits.get(ix) : false;
+                    ix++;
+                    counter--;
+                }
+                return bit;
+            }
+        });
     }
 
     /**
@@ -1205,10 +1227,19 @@ public class IntegerUtils {
      * @return a pair of {@code BigInteger}s generated bijectively from {@code n}
      */
     public static @NotNull Pair<BigInteger, BigInteger> squareRootDemux(@NotNull BigInteger n) {
-        List<Boolean> bits = bits(n);
-        Iterable<Boolean> xMask = cycle(Arrays.asList(false, true, true));
-        Iterable<Boolean> yMask = cycle(Arrays.asList(true, false, false));
-        return new Pair<>(fromBits(select(xMask, bits)), fromBits(select(yMask, bits)));
+        List<Boolean> xBits = new ArrayList<>();
+        List<Boolean> yBits = new ArrayList<>();
+        int counter = 0;
+        for (boolean bit : bits(n)) {
+            if (counter == 0) {
+                yBits.add(bit);
+                counter = 2;
+            } else {
+                xBits.add(bit);
+                counter--;
+            }
+        }
+        return new Pair<>(fromBits(xBits), fromBits(yBits));
     }
 
     /**

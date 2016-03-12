@@ -18,6 +18,7 @@ import static mho.wheels.numberUtils.IntegerUtils.demux;
 import static mho.wheels.numberUtils.IntegerUtils.mux;
 import static mho.wheels.ordering.Ordering.ge;
 import static mho.wheels.ordering.Ordering.lt;
+import static mho.wheels.ordering.Ordering.max;
 import static mho.wheels.testing.Testing.*;
 
 public class IntegerUtilsProperties extends TestProperties {
@@ -89,6 +90,9 @@ public class IntegerUtilsProperties extends TestProperties {
         propertiesLogarithmicMux();
         propertiesLogarithmicDemux();
         propertiesSquareRootMux();
+        compareImplementationsSquareRootMux();
+        propertiesSquareRootDemux();
+        compareImplementationsSquareRootDemux();
         propertiesSquareRootDemux();
         propertiesMux();
         propertiesDemux();
@@ -2020,12 +2024,20 @@ public class IntegerUtilsProperties extends TestProperties {
         }
     }
 
-    private void propertiesSquareRootMux() {
-        initialize("");
-        System.out.println("\t\ttesting squareRootMux(BigInteger, BigInteger) properties...");
+    private static @NotNull BigInteger squareRootMux_alt(@NotNull BigInteger x, @NotNull BigInteger y) {
+        List<Boolean> xBits = bits(x);
+        List<Boolean> yBits = bits(y);
+        int outputSize = max(xBits.size(), yBits.size()) * 3;
+        Iterable<Iterable<Boolean>> xChunks = map(w -> w, chunk(2, concat(xBits, repeat(false))));
+        Iterable<Iterable<Boolean>> yChunks = map(Arrays::asList, concat(yBits, repeat(false)));
+        return fromBits(take(outputSize, concat(ExhaustiveProvider.INSTANCE.choose(yChunks, xChunks))));
+    }
 
+    private void propertiesSquareRootMux() {
+        initialize("squareRootMux(BigInteger, BigInteger)");
         for (Pair<BigInteger, BigInteger> p : take(LIMIT, P.pairs(P.naturalBigIntegers()))) {
             BigInteger i = squareRootMux(p.a, p.b);
+            assertEquals(p, i, squareRootMux_alt(p.a, p.b));
             assertNotEquals(p, i.signum(), -1);
             assertEquals(p, squareRootDemux(i), p);
             assertTrue(p, lt(i, squareRootMux(p.a.add(BigInteger.ONE), p.b)));
@@ -2047,12 +2059,26 @@ public class IntegerUtilsProperties extends TestProperties {
         }
     }
 
-    private void propertiesSquareRootDemux() {
-        initialize("");
-        System.out.println("\t\ttesting squareRootDemux(BigInteger) properties...");
+    private void compareImplementationsSquareRootMux() {
+        Map<String, Function<Pair<BigInteger, BigInteger>, BigInteger>> functions = new LinkedHashMap<>();
+        functions.put("alt", p -> squareRootMux_alt(p.a, p.b));
+        functions.put("standard", p -> squareRootMux(p.a, p.b));
+        Iterable<Pair<BigInteger, BigInteger>> ps = P.pairs(P.naturalBigIntegers());
+        compareImplementations("squareRootMux(BigInteger, BigInteger)", take(LIMIT, ps), functions);
+    }
 
+    private static @NotNull Pair<BigInteger, BigInteger> squareRootDemux_alt(@NotNull BigInteger n) {
+        List<Boolean> bits = bits(n);
+        Iterable<Boolean> xMask = cycle(Arrays.asList(false, true, true));
+        Iterable<Boolean> yMask = cycle(Arrays.asList(true, false, false));
+        return new Pair<>(fromBits(select(xMask, bits)), fromBits(select(yMask, bits)));
+    }
+
+    private void propertiesSquareRootDemux() {
+        initialize("squareRootDemux(BigInteger)");
         for (BigInteger i : take(LIMIT, P.naturalBigIntegers())) {
             Pair<BigInteger, BigInteger> p = squareRootDemux(i);
+            assertEquals(i, p, squareRootDemux_alt(i));
             assertNotEquals(p, p.a.signum(), -1);
             assertNotEquals(p, p.b.signum(), -1);
             assertEquals(p, squareRootMux(p.a, p.b), i);
@@ -2064,6 +2090,13 @@ public class IntegerUtilsProperties extends TestProperties {
                 fail(i);
             } catch (ArithmeticException ignored) {}
         }
+    }
+
+    private void compareImplementationsSquareRootDemux() {
+        Map<String, Function<BigInteger, Pair<BigInteger, BigInteger>>> functions = new LinkedHashMap<>();
+        functions.put("alt", IntegerUtilsProperties::squareRootDemux_alt);
+        functions.put("standard", IntegerUtils::squareRootDemux);
+        compareImplementations("squareRootDemux(BigInteger)", take(LIMIT, P.naturalBigIntegers()), functions);
     }
 
     private void propertiesMux() {
