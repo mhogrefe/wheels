@@ -390,11 +390,11 @@ public final class MathUtils {
     }
 
     public static boolean isPrime(int n) {
-        return smallestPrimeFactor(n) == n;
+        return n != 1 && smallestPrimeFactor(n) == n;
     }
 
     public static boolean isPrime(@NotNull BigInteger n) {
-        return smallestPrimeFactor(n).equals(n);
+        return !n.equals(BigInteger.ONE) && smallestPrimeFactor(n).equals(n);
     }
 
     public static @NotNull Iterable<Integer> primeFactors(int n) {
