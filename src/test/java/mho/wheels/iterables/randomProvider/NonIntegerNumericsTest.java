@@ -1313,13 +1313,13 @@ public strictfp class NonIntegerNumericsTest {
 
     private static void floatHelper(@NotNull Iterable<Float> fs, @NotNull String output, float sampleMean) {
         List<Float> sample = toList(take(DEFAULT_SAMPLE_SIZE, fs));
-        aeqitLimit(TINY_LIMIT, sample, output);
+        aeqitLimitLog(TINY_LIMIT, sample, output);
         aeq(meanOfFloats(sample), sampleMean);
     }
 
     private static void doubleHelper(@NotNull Iterable<Double> ds, @NotNull String output, double sampleMean) {
         List<Double> sample = toList(take(DEFAULT_SAMPLE_SIZE, ds));
-        aeqitLimit(TINY_LIMIT, sample, output);
+        aeqitLimitLog(TINY_LIMIT, sample, output);
         aeq(meanOfDoubles(sample), sampleMean);
     }
 
@@ -1337,136 +1337,24 @@ public strictfp class NonIntegerNumericsTest {
 
     @Test
     public void testRangeUp_float() {
-        rangeUp_float_helper(
-                1.0f,
-                "[6.9505213E34, 3.0272395E24, 80483.79, 1.6275188E19, 3.4138216E26, 2.3000961E21, 2.4173826E35," +
-                " 3502559.5, 3.1639403E34, 19.584063, 1.11343182E15, 6.872559E24, 7.273829E30, 2.8495727E36," +
-                " 4.70190961E17, 465.4081, 3.59243305E16, 1.31713057E13, 20.567188, 6.4980443E10, ...]",
-                3.9935304E36f
-        );
-        rangeUp_float_helper(
-                1.0E20f,
-                "[3.04433E22, 3.4178768E35, 1.5544752E25, 7.6565523E24, 7.462906E33, 2.7189451E35, 7.1734916E31," +
-                " 1.702929E32, 4.7802825E28, 7.70691E34, 6.207445E28, 1.8053102E27, 1.8899614E34, 1.2311303E22," +
-                " 1.8317792E21, 1.7322734E27, 1.203059E36, 3.1734694E26, 1.5607085E35, 1.3585391E26, ...]",
-                8.267385E36f
-        );
-        rangeUp_float_helper(
-                -1.0f,
-                "[3.7808473E-36, 2.7802083E35, 1.2108957E25, 321935.12, 1.6510781E-5, 6.5100746E19, 9.92695E-24," +
-                " 1.4106354E-10, 1.3655285E27, -4.4543045E-22, 2.2500362E-37, 9.6695294E35, -3.1706085E-7," +
-                " -3.5548292E-35, 78.33624, -9.078497E-16, 2.7490233E25, 0.90437907, 4.822225E-5, 8.0389303E-22, ...]",
-                1.3550214E36f
-        );
-        rangeUp_float_helper(
-                -1.0E20f,
-                "[-9.307628E-22, 2.96792682E15, 124307.64, 3.3268185E-15, 1.7854671E-25, 0.70465326, 7.40886E27," +
-                " -3.572859E-34, 1.4644996E-30, 1.4661713E7, -0.043968614, -1.5706407E-20, 2.6133126E26," +
-                " 9.9048238E15, -2.96446339E13, -3.2540566E-15, 8.104416E-19, 5.2518837E36, -90269.33, 279434.75," +
-                " ...]",
-                1.14254505E36f
-        );
-        rangeUp_float_helper(
-                (float) Math.PI,
-                "[935.52563, 2.0670717E35, 8.814681E24, 235783.0, 4.2910363E33, 1.5385392E35, 4.0239202E31," +
-                " 1.0263343E32, 4.926593E19, 1.52713638E9, 2.41148562E15, 3.5306506E28, 1.03607016E27, 1.0753354E34," +
-                " 7.1735277E21, 56.54787, 5.4185808E7, 6.816983E35, 1.0409817E7, 9.090077E34, ...]",
-                4.026231E36f
-        );
-        rangeUp_float_helper(
-                (float) Math.sqrt(2),
-                "[427.6776, 9.034519E34, 4.0287464E24, 107629.69, 1.942262E33, 7.0422764E34, 1.8531663E31," +
-                " 4.496496E31, 2.1744522E19, 6.7950342E8, 1.07767306E15, 1.6102532E28, 4.6957504E26, 4.8779746E33," +
-                " 3.217043E21, 25.76861, 2.446588E7, 3.1056128E35, 4548152.5, 4.0242281E34, ...]",
-                3.9928994E36f
-        );
-        rangeUp_float_helper(
-                (float) -Math.PI,
-                "[1.2681087E-36, 9.159051E34, 4.06499E24, 108612.07, 5.7649772E-6, 2.2021039E19, 3.1917953E-24," +
-                " 4.7757354E-11, 4.742142E26, -1.3743442E-21, 7.6431964E-38, 3.1305192E35, -9.062986E-7," +
-                " -1.0086236E-34, 26.451319, -2.8296374E-15, 8.9480596E24, 0.30949044, 1.5401463E-5, 2.8107568E-22," +
-                " ...]",
-                1.3398904E36f
-        );
-        rangeUp_float_helper(
-                (float) -Math.sqrt(2),
-                "[2.7718172E-36, 2.091978E35, 8.887168E24, 237747.77, 1.2724587E-5, 4.9818964E19, 7.185915E-24," +
-                " 1.0462903E-10, 1.0453485E27, -6.208567E-22, 1.6758891E-37, 6.916608E35, -4.1581706E-7," +
-                " -4.552012E-35, 57.91329, -1.2757452E-15, 1.9478178E25, 0.6972723, 3.5581455E-5, 6.284668E-22, ...]",
-                1.3491116E36f
-        );
-        rangeUp_float_helper(
-                0.0f,
-                "[643.27783, 4.085149E-4, 1.7792513E-14, 4.7304115E-34, 2.809164E33, 1.06434E35, 2.8662074E31," +
-                " 6.872728E31, 9.565695E-20, 9.9399507E8, 1.688983E15, 2.4000717E28, 2.0064638E-12, 7.605229E33," +
-                " 1.3518749E-17, 38.282383, 3.5033056E7, 0.0014208097, 2.0586193E-32, 1.8595968E-4, ...]",
-                1.9848223E36f
-        );
-        rangeUp_float_helper(
-                -0.0f,
-                "[643.27783, 4.085149E-4, 1.7792513E-14, 4.7304115E-34, 2.809164E33, 1.06434E35, 2.8662074E31," +
-                " 6.872728E31, 9.565695E-20, 9.9399507E8, 1.688983E15, 2.4000717E28, 2.0064638E-12, 7.605229E33," +
-                " 1.3518749E-17, 38.282383, 3.5033056E7, 0.0014208097, 2.0586193E-32, 1.8595968E-4, ...]",
-                1.9848223E36f
-        );
-        rangeUp_float_helper(
-                Float.MIN_VALUE,
-                "[643.27795, 4.0851496E-4, 1.7792517E-14, 4.7304124E-34, 2.8091645E33, 1.0643402E35, 2.866208E31," +
-                " 6.872729E31, 9.565696E-20, 9.939952E8, 1.68898327E15, 2.4000722E28, 2.0064642E-12, 7.60523E33," +
-                " 1.3518751E-17, 38.28239, 3.5033064E7, 0.0014208099, 2.0586196E-32, 1.8595971E-4, ...]",
-                1.9848228E36f
-        );
-        rangeUp_float_helper(
-                Float.MIN_NORMAL,
-                "[1286.5558, 8.1702985E-4, 3.558503E-14, 9.460824E-34, 5.6183284E33, 2.1286803E35, 5.7324153E31," +
-                " 1.3745457E32, 1.9131391E-19, 1.98799027E9, 3.37796628E15, 4.800144E28, 4.012928E-12, 1.5210459E34," +
-                " 2.70375E-17, 76.56477, 7.006612E7, 0.0028416195, 4.117239E-32, 3.719194E-4, ...]",
-                2.0187889E36f
-        );
-        rangeUp_float_helper(
-                -Float.MIN_VALUE,
-                "[643.2778, 4.0851487E-4, 1.7792512E-14, 4.730411E-34, 2.8091636E33, 1.0643399E35, 2.8662072E31," +
-                " 6.8727273E31, 9.565694E-20, 9.9399501E8, 1.68898287E15, 2.4000715E28, 2.0064636E-12, 7.605228E33," +
-                " 1.3518748E-17, 38.28238, 3.5033052E7, 0.0014208095, 2.0586192E-32, 1.8595967E-4, ...]",
-                1.9848223E36f
-        );
-        rangeUp_float_helper(
-                -Float.MIN_NORMAL,
-                "[321.63892, 1.404582E33, 8.444915E14, 1.2000358E28, 6.7593746E-18, 19.141191, 1.02930965E-32," +
-                " 9.297984E-5, 3.2720818E-24, 7.6936063E37, 4.1022953E33, 6.8387656E16, 0.008374141, 1.0557211E-22," +
-                " 3.8706986E-26, 6.044153E-38, 1.9096035E-28, 4.6321023E18, 1.2419973E35, 4.1141146E-35, ...]",
-                2.0147774E36f
-        );
-        rangeUp_float_helper(
-                Float.MAX_VALUE,
-                "[Infinity, 3.4028235E38, Infinity, Infinity, Infinity, Infinity, Infinity, Infinity, Infinity," +
-                " 3.4028235E38, Infinity, 3.4028235E38, 3.4028235E38, Infinity, 3.4028235E38, 3.4028235E38," +
-                " Infinity, Infinity, 3.4028235E38, Infinity, ...]",
-                Float.POSITIVE_INFINITY
-        );
-        rangeUp_float_helper(
-                -Float.MAX_VALUE,
-                "[-0.0034054646, 8.1702985E-4, 3.558503E-14, 9.460824E-34, -7.387672E-34, 2.1286803E35," +
-                " 5.7324153E31, 1.3745457E32, 1.9131391E-19, 1.98799027E9, -1.3321625E-15, -9.028473E-29," +
-                " 4.012928E-12, 1.5210459E34, -1.5157211E17, -0.056364857, 7.006612E7, 0.0028416195, -1.0789021E32," +
-                " -12096.456, ...]",
-                -5.4709615E33f
-        );
-        rangeUp_float_helper(
-                Float.POSITIVE_INFINITY,
-                "[Infinity, Infinity, Infinity, Infinity, Infinity, Infinity, Infinity, Infinity, Infinity," +
-                " Infinity, Infinity, Infinity, Infinity, Infinity, Infinity, Infinity, Infinity, Infinity," +
-                " Infinity, Infinity, ...]",
-                Float.POSITIVE_INFINITY
-        );
-        rangeUp_float_helper(
-                Float.NEGATIVE_INFINITY,
-                "[-0.0034054648, 8.170298E-4, 3.5585026E-14, 9.460823E-34, -7.3876725E-34, 2.12868E35, 5.732415E31," +
-                " 1.3745456E32, 1.913139E-19, 1.98799014E9, -1.3321626E-15, -9.0284737E-29, 4.0129276E-12," +
-                " 1.5210458E34, -1.51572127E17, -0.05636486, 7.0066112E7, 0.0028416193, -1.0789022E32, -12096.457," +
-                " ...]",
-                -5.471121E33f
-        );
+        rangeUp_float_helper(1.0f, "RandomProvider_rangeUp_float_i", 3.9935304E36f);
+        rangeUp_float_helper(1.0E20f, "RandomProvider_rangeUp_float_ii", 8.267385E36f);
+        rangeUp_float_helper(-1.0f, "RandomProvider_rangeUp_float_iii", 1.3550214E36f);
+        rangeUp_float_helper(-1.0E20f, "RandomProvider_rangeUp_float_iv", 1.14254505E36f);
+        rangeUp_float_helper((float) Math.PI, "RandomProvider_rangeUp_float_v", 4.026231E36f);
+        rangeUp_float_helper((float) Math.sqrt(2), "RandomProvider_rangeUp_float_vi", 3.9928994E36f);
+        rangeUp_float_helper((float) -Math.PI, "RandomProvider_rangeUp_float_vii", 1.3398904E36f);
+        rangeUp_float_helper((float) -Math.sqrt(2), "RandomProvider_rangeUp_float_viii", 1.3491116E36f);
+        rangeUp_float_helper(0.0f, "RandomProvider_rangeUp_float_ix", 1.9848223E36f);
+        rangeUp_float_helper(-0.0f, "RandomProvider_rangeUp_float_x", 1.9848223E36f);
+        rangeUp_float_helper(Float.MIN_VALUE, "RandomProvider_rangeUp_float_xi", 1.9848228E36f);
+        rangeUp_float_helper(Float.MIN_NORMAL, "RandomProvider_rangeUp_float_xii", 2.0187889E36f);
+        rangeUp_float_helper(-Float.MIN_VALUE, "RandomProvider_rangeUp_float_xiii", 1.9848223E36f);
+        rangeUp_float_helper(-Float.MIN_NORMAL, "RandomProvider_rangeUp_float_xiv", 2.0147774E36f);
+        rangeUp_float_helper(Float.MAX_VALUE, "RandomProvider_rangeUp_float_xv", Float.POSITIVE_INFINITY);
+        rangeUp_float_helper(-Float.MAX_VALUE, "RandomProvider_rangeUp_float_xvi", -5.4709615E33f);
+        rangeUp_float_helper(Float.POSITIVE_INFINITY, "RandomProvider_rangeUp_float_xvii", Float.POSITIVE_INFINITY);
+        rangeUp_float_helper(Float.NEGATIVE_INFINITY, "RandomProvider_rangeUp_float_xviii", -5.471121E33f);
         rangeUp_float_fail_helper(Float.NaN);
     }
 
@@ -1484,145 +1372,26 @@ public strictfp class NonIntegerNumericsTest {
 
     @Test
     public void testRangeDown_float() {
-        rangeDown_float_helper(
-                1.0f,
-                "[-3.7808473E-36, -2.7802083E35, -1.2108957E25, -321935.12, -1.6510781E-5, -6.5100746E19," +
-                " -9.92695E-24, -1.4106354E-10, -1.3655285E27, 4.4543045E-22, -2.2500362E-37, -9.6695294E35," +
-                " 3.1706085E-7, 3.5548292E-35, -78.33624, 9.078497E-16, -2.7490233E25, -0.90437907, -4.822225E-5," +
-                " -8.0389303E-22, ...]",
-                -1.3550214E36f
-        );
-        rangeDown_float_helper(
-                1.0E20f,
-                "[9.307628E-22, -2.96792682E15, -124307.64, -3.3268185E-15, -1.7854671E-25, -0.70465326," +
-                " -7.40886E27, 3.572859E-34, -1.4644996E-30, -1.4661713E7, 0.043968614, 1.5706407E-20," +
-                " -2.6133126E26, -9.9048238E15, 2.96446339E13, 3.2540566E-15, -8.104416E-19, -5.2518837E36," +
-                " 90269.33, -279434.75, ...]",
-                -1.14254505E36f
-        );
-        rangeDown_float_helper(
-                -1.0f,
-                "[-6.9505213E34, -3.0272395E24, -80483.79, -1.6275188E19, -3.4138216E26, -2.3000961E21," +
-                " -2.4173826E35, -3502559.5, -3.1639403E34, -19.584063, -1.11343182E15, -6.872559E24, -7.273829E30," +
-                " -2.8495727E36, -4.70190961E17, -465.4081, -3.59243305E16, -1.31713057E13, -20.567188," +
-                " -6.4980443E10, ...]",
-                -3.9935304E36f
-        );
-        rangeDown_float_helper(
-                -1.0E20f,
-                "[-3.04433E22, -3.4178768E35, -1.5544752E25, -7.6565523E24, -7.462906E33, -2.7189451E35," +
-                " -7.1734916E31, -1.702929E32, -4.7802825E28, -7.70691E34, -6.207445E28, -1.8053102E27," +
-                " -1.8899614E34, -1.2311303E22, -1.8317792E21, -1.7322734E27, -1.203059E36, -3.1734694E26," +
-                " -1.5607085E35, -1.3585391E26, ...]",
-                -8.267385E36f
-        );
-        rangeDown_float_helper(
-                (float) Math.PI,
-                "[-1.2681087E-36, -9.159051E34, -4.06499E24, -108612.07, -5.7649772E-6, -2.2021039E19," +
-                " -3.1917953E-24, -4.7757354E-11, -4.742142E26, 1.3743442E-21, -7.6431964E-38, -3.1305192E35," +
-                " 9.062986E-7, 1.0086236E-34, -26.451319, 2.8296374E-15, -8.9480596E24, -0.30949044, -1.5401463E-5," +
-                " -2.8107568E-22, ...]",
-                -1.3398904E36f
-        );
-        rangeDown_float_helper(
-                (float) Math.sqrt(2),
-                "[-2.7718172E-36, -2.091978E35, -8.887168E24, -237747.77, -1.2724587E-5, -4.9818964E19," +
-                " -7.185915E-24, -1.0462903E-10, -1.0453485E27, 6.208567E-22, -1.6758891E-37, -6.916608E35," +
-                " 4.1581706E-7, 4.552012E-35, -57.91329, 1.2757452E-15, -1.9478178E25, -0.6972723, -3.5581455E-5," +
-                " -6.284668E-22, ...]",
-                -1.3491116E36f
-        );
-        rangeDown_float_helper(
-                (float) -Math.PI,
-                "[-935.52563, -2.0670717E35, -8.814681E24, -235783.0, -4.2910363E33, -1.5385392E35, -4.0239202E31," +
-                " -1.0263343E32, -4.926593E19, -1.52713638E9, -2.41148562E15, -3.5306506E28, -1.03607016E27," +
-                " -1.0753354E34, -7.1735277E21, -56.54787, -5.4185808E7, -6.816983E35, -1.0409817E7, -9.090077E34," +
-                " ...]",
-                -4.026231E36f
-        );
-        rangeDown_float_helper(
-                (float) -Math.sqrt(2),
-                "[-427.6776, -9.034519E34, -4.0287464E24, -107629.69, -1.942262E33, -7.0422764E34, -1.8531663E31," +
-                " -4.496496E31, -2.1744522E19, -6.7950342E8, -1.07767306E15, -1.6102532E28, -4.6957504E26," +
-                " -4.8779746E33, -3.217043E21, -25.76861, -2.446588E7, -3.1056128E35, -4548152.5, -4.0242281E34, ...]",
-                -3.9928994E36f
-        );
-        rangeDown_float_helper(
-                0.0f,
-                "[-643.27783, -4.085149E-4, -1.7792513E-14, -4.7304115E-34, -2.809164E33, -1.06434E35," +
-                " -2.8662074E31, -6.872728E31, -9.565695E-20, -9.9399507E8, -1.688983E15, -2.4000717E28," +
-                " -2.0064638E-12, -7.605229E33, -1.3518749E-17, -38.282383, -3.5033056E7, -0.0014208097," +
-                " -2.0586193E-32, -1.8595968E-4, ...]",
-                -1.9848223E36f
-        );
-        rangeDown_float_helper(
-                -0.0f,
-                "[-643.27783, -4.085149E-4, -1.7792513E-14, -4.7304115E-34, -2.809164E33, -1.06434E35," +
-                " -2.8662074E31, -6.872728E31, -9.565695E-20, -9.9399507E8, -1.688983E15, -2.4000717E28," +
-                " -2.0064638E-12, -7.605229E33, -1.3518749E-17, -38.282383, -3.5033056E7, -0.0014208097," +
-                " -2.0586193E-32, -1.8595968E-4, ...]",
-                -1.9848223E36f
-        );
-        rangeDown_float_helper(
-                Float.MIN_VALUE,
-                "[-643.2778, -4.0851487E-4, -1.7792512E-14, -4.730411E-34, -2.8091636E33, -1.0643399E35," +
-                " -2.8662072E31, -6.8727273E31, -9.565694E-20, -9.9399501E8, -1.68898287E15, -2.4000715E28," +
-                " -2.0064636E-12, -7.605228E33, -1.3518748E-17, -38.28238, -3.5033052E7, -0.0014208095," +
-                " -2.0586192E-32, -1.8595967E-4, ...]",
-                -1.9848223E36f
-        );
-        rangeDown_float_helper(
-                Float.MIN_NORMAL,
-                "[-321.63892, -1.404582E33, -8.444915E14, -1.2000358E28, -6.7593746E-18, -19.141191," +
-                " -1.02930965E-32, -9.297984E-5, -3.2720818E-24, -7.6936063E37, -4.1022953E33, -6.8387656E16," +
-                " -0.008374141, -1.0557211E-22, -3.8706986E-26, -6.044153E-38, -1.9096035E-28, -4.6321023E18," +
-                " -1.2419973E35, -4.1141146E-35, ...]",
-                -2.0147774E36f
-        );
-        rangeDown_float_helper(
-                -Float.MIN_VALUE,
-                "[-643.27795, -4.0851496E-4, -1.7792517E-14, -4.7304124E-34, -2.8091645E33, -1.0643402E35," +
-                " -2.866208E31, -6.872729E31, -9.565696E-20, -9.939952E8, -1.68898327E15, -2.4000722E28," +
-                " -2.0064642E-12, -7.60523E33, -1.3518751E-17, -38.28239, -3.5033064E7, -0.0014208099," +
-                " -2.0586196E-32, -1.8595971E-4, ...]",
-                -1.9848228E36f
-        );
-        rangeDown_float_helper(
-                -Float.MIN_NORMAL,
-                "[-1286.5558, -8.1702985E-4, -3.558503E-14, -9.460824E-34, -5.6183284E33, -2.1286803E35," +
-                " -5.7324153E31, -1.3745457E32, -1.9131391E-19, -1.98799027E9, -3.37796628E15, -4.800144E28," +
-                " -4.012928E-12, -1.5210459E34, -2.70375E-17, -76.56477, -7.006612E7, -0.0028416195, -4.117239E-32," +
-                " -3.719194E-4, ...]",
-                -2.0187889E36f
-        );
-        rangeDown_float_helper(
-                Float.MAX_VALUE,
-                "[0.0034054646, -8.1702985E-4, -3.558503E-14, -9.460824E-34, 7.387672E-34, -2.1286803E35," +
-                " -5.7324153E31, -1.3745457E32, -1.9131391E-19, -1.98799027E9, 1.3321625E-15, 9.028473E-29," +
-                " -4.012928E-12, -1.5210459E34, 1.5157211E17, 0.056364857, -7.006612E7, -0.0028416195, 1.0789021E32," +
-                " 12096.456, ...]",
-                5.4709615E33f
-        );
-        rangeDown_float_helper(
-                -Float.MAX_VALUE,
-                "[-Infinity, -3.4028235E38, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity," +
-                " -Infinity, -3.4028235E38, -Infinity, -3.4028235E38, -3.4028235E38, -Infinity, -3.4028235E38," +
-                " -3.4028235E38, -Infinity, -Infinity, -3.4028235E38, -Infinity, ...]",
-                Float.NEGATIVE_INFINITY
-        );
-        rangeDown_float_helper(
-                Float.POSITIVE_INFINITY,
-                "[0.0034054648, -8.170298E-4, -3.5585026E-14, -9.460823E-34, 7.3876725E-34, -2.12868E35," +
-                " -5.732415E31, -1.3745456E32, -1.913139E-19, -1.98799014E9, 1.3321626E-15, 9.0284737E-29," +
-                " -4.0129276E-12, -1.5210458E34, 1.51572127E17, 0.05636486, -7.0066112E7, -0.0028416193," +
-                " 1.0789022E32, 12096.457, ...]",
-                5.471121E33f
-        );
+        rangeDown_float_helper(1.0f, "RandomProvider_rangeDown_float_i", -1.3550214E36f);
+        rangeDown_float_helper(1.0E20f, "RandomProvider_rangeDown_float_ii", -1.14254505E36f);
+        rangeDown_float_helper(-1.0f, "RandomProvider_rangeDown_float_iii", -3.9935304E36f);
+        rangeDown_float_helper(-1.0E20f, "RandomProvider_rangeDown_float_iv", -8.267385E36f);
+        rangeDown_float_helper((float) Math.PI, "RandomProvider_rangeDown_float_v", -1.3398904E36f);
+        rangeDown_float_helper((float) Math.sqrt(2), "RandomProvider_rangeDown_float_vi", -1.3491116E36f);
+        rangeDown_float_helper((float) -Math.PI, "RandomProvider_rangeDown_float_vii", -4.026231E36f);
+        rangeDown_float_helper((float) -Math.sqrt(2), "RandomProvider_rangeDown_float_viii", -3.9928994E36f);
+        rangeDown_float_helper(0.0f, "RandomProvider_rangeDown_float_ix", -1.9848223E36f);
+        rangeDown_float_helper(-0.0f, "RandomProvider_rangeDown_float_x", -1.9848223E36f);
+        rangeDown_float_helper(Float.MIN_VALUE, "RandomProvider_rangeDown_float_xi", -1.9848223E36f);
+        rangeDown_float_helper(Float.MIN_NORMAL, "RandomProvider_rangeDown_float_xii", -2.0147774E36f);
+        rangeDown_float_helper(-Float.MIN_VALUE, "RandomProvider_rangeDown_float_xiii", -1.9848228E36f);
+        rangeDown_float_helper(-Float.MIN_NORMAL, "RandomProvider_rangeDown_float_xiv", -2.0187889E36f);
+        rangeDown_float_helper(Float.MAX_VALUE, "RandomProvider_rangeDown_float_xv", 5.4709615E33f);
+        rangeDown_float_helper(-Float.MAX_VALUE, "RandomProvider_rangeDown_float_xvi", Float.NEGATIVE_INFINITY);
+        rangeDown_float_helper(Float.POSITIVE_INFINITY, "RandomProvider_rangeDown_float_xvii", 5.471121E33f);
         rangeDown_float_helper(
                 Float.NEGATIVE_INFINITY,
-                "[-Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity," +
-                " -Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity," +
-                " -Infinity, -Infinity, ...]",
+                "RandomProvider_rangeDown_float_xviii",
                 Float.NEGATIVE_INFINITY
         );
         rangeDown_float_fail_helper(Float.NaN);
@@ -1642,165 +1411,79 @@ public strictfp class NonIntegerNumericsTest {
 
     @Test
     public void testRange_float_float() {
-        range_float_float_helper(
-                1.0f,
-                2.0f,
-                "[1.2564021, 1.2280852, 1.0820507, 1.6942583, 1.8514602, 1.1030653, 1.9482572, 1.1963246, 1.0440665," +
-                " 1.5233818, 1.4006178, 1.2240039, 1.330792, 1.4212118, 1.4345099, 1.6313026, 1.8180004, 1.994201," +
-                " 1.8040158, 1.7906964, ...]",
-                1.5001546f
-        );
-        range_float_float_helper(
-                1.0f,
-                3.0f,
-                "[1.2564021, 2.5040739, 1.2280852, 1.0820507, 2.5623057, 2.826299, 1.6942583, 1.8514602, 2.4234533," +
-                " 1.1030653, 2.9294279, 1.9482572, 1.1963246, 1.0440665, 2.9098184, 1.5233818, 1.4006178, 1.2240039," +
-                " 1.330792, 1.4212118, ...]",
-                1.8340441f
-        );
-        range_float_float_helper(
-                1.0f,
-                4.0f,
-                "[1.2564021, 2.5040739, 1.2280852, 1.6942583, 1.8514602, 3.0002367, 2.4234533, 1.1030653, 1.1963246," +
-                " 1.0440665, 2.9098184, 3.340301, 1.4006178, 1.2240039, 3.9557045, 3.6175165, 2.1437802, 1.8180004," +
-                " 1.8040158, 1.2854493, ...]",
-                2.2503035f
-        );
-        range_float_float_helper(
-                1.0f,
-                257.0f,
-                "[13.386217, 2.5040739, 1.2280852, 10.249223, 180.88313, 3.0002367, 124.68846, 19.141193, 46.557095," +
-                " 53.444817, 6.0935273, 22.409885, 19.584063, 3.9557045, 5.6848474, 242.96178, 91.80863, 127.62886," +
-                " 28.864252, 7.1627855, ...]",
-                47.948357f
-        );
-        range_float_float_helper(
-                -257.0f,
-                -1.0f,
-                "[-21.290066, -112.11964, -227.3051, -27.564054, -1.5907568, -96.242424, -2.111298, -14.460653," +
-                " -6.195988, -5.335023, -47.37678, -12.826307, -14.239219, -65.66746, -50.64622, -1.1057674," +
-                " -3.1387928, -2.0194106, -9.599124, -38.822716, ...]",
-                -47.890907f
-        );
-        range_float_float_helper(
-                1.0f,
-                1.0E20f,
-                "[321.63895, 80483.79, 1.6275188E19, 4.96997568E8, 8.4449157E14, 19.141193, 1.751653E7, 3502559.5," +
-                " 19.584063, 3.83574664E17, 1.11343182E15, 6.838766E16, 4.70190961E17, 465.4081, 3.59243305E16," +
-                " 28.864252, 3.07639296E10, 1.31713057E13, 20.567188, 6.4980443E10, ...]",
-                2.12897406E18f
-        );
-        range_float_float_helper(
-                -1.0E20f,
-                -1.0f,
-                "[-3.16722124E17, -1.26907788E15, -6.3627734, -2.06679671E11, -121578.086, -5.3446128E18," +
-                " -5.7666579E12, -2.96446318E13, -5.2169644E18, -262.26196, -90269.32, -1492.0846, -220.66562," +
-                " -2.21541405E17, -2787.434, -3.57690896E18, -3.3598592E9, -7792382.0, -4.9335977E18, -1.57203635E9," +
-                " ...]",
-                -2.12162781E18f
-        );
+        range_float_float_helper(1.0f, 2.0f, "RandomProvider_range_float_float_i", 1.5001546f);
+        range_float_float_helper(1.0f, 3.0f, "RandomProvider_range_float_float_ii", 1.8340441f);
+        range_float_float_helper(1.0f, 4.0f, "RandomProvider_range_float_float_iii", 2.2503035f);
+        range_float_float_helper(1.0f, 257.0f, "RandomProvider_range_float_float_iv", 47.948357f);
+        range_float_float_helper(-257.0f, -1.0f, "RandomProvider_range_float_float_v", -47.890907f);
+        range_float_float_helper(1.0f, 1.0E20f, "RandomProvider_range_float_float_vi", 2.12897406E18f);
+        range_float_float_helper(-1.0E20f, -1.0f, "RandomProvider_range_float_float_vii", -2.12162781E18f);
         range_float_float_helper(
                 (float) Math.sqrt(2),
                 (float) Math.PI,
-                "[1.6706157, 1.6422987, 1.4962642, 2.2169437, 2.5313475, 1.5172788, 2.7249415, 1.6105381, 1.4582801," +
-                " 1.9375954, 1.8148314, 1.6382174, 1.7450055, 1.8354254, 1.8487234, 2.9722073, 2.0910323, 2.464428," +
-                " 2.816829, 2.4364586, ...]",
+                "RandomProvider_range_float_float_viii",
                 2.1330023f
         );
         range_float_float_helper(
                 (float) Math.PI,
                 FloatingPointUtils.successor((float) Math.PI),
-                "[3.141593, 3.1415927, 3.141593, 3.141593, 3.141593, 3.141593, 3.141593, 3.141593, 3.141593," +
-                " 3.1415927, 3.141593, 3.1415927, 3.1415927, 3.141593, 3.1415927, 3.1415927, 3.141593, 3.141593," +
-                " 3.1415927, 3.141593, ...]",
+                "RandomProvider_range_float_float_ix",
                 3.1147525f
         );
-        range_float_float_helper(
-                0.0f,
-                1.0f,
-                "[1.8904236E-36, 4.085149E-4, 1.7792513E-14, 4.7304115E-34, 8.255391E-6, 3.1278143E-4, 8.4230265E-8," +
-                " 2.0197132E-7, 9.565695E-20, 2.921089E-30, 4.963475E-24, 7.053177E-11, 2.0064638E-12, 2.234976E-5," +
-                " 1.3518749E-17, 1.1250181E-37, 1.029529E-31, 0.0014208097, 2.0586193E-32, 1.8595968E-4, ...]",
-                0.011681142f
-        );
-        range_float_float_helper(
-                -1.0f,
-                1.0f,
-                "[3.7808473E-36, -1.5969847E-35, -3.6147032E-25, -1.3518638E-5, 1.6510781E-5, 6.2556285E-4," +
-                " 1.6846053E-7, 4.0394264E-7, -6.6973376E-20, 5.842178E-30, 9.92695E-24, 1.4106354E-10," +
-                " -3.0646636E-27, 4.469952E-5, -4.4543045E-22, 2.2500362E-37, 2.059058E-31, -4.649589E-36," +
-                " -3.1706085E-7, -3.5548292E-35, ...]",
-                4.273086E-5f
-        );
-        range_float_float_helper(
-                1.0f,
-                1.0f,
-                "[1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0," +
-                " 1.0, ...]",
-                1.0090389f
-        );
+        range_float_float_helper(0.0f, 1.0f, "RandomProvider_range_float_float_x", 0.011681142f);
+        range_float_float_helper(-1.0f, 1.0f, "RandomProvider_range_float_float_xi", 4.273086E-5f);
+        range_float_float_helper(1.0f, 1.0f, "RandomProvider_range_float_float_xii", 1.0090389f);
         range_float_float_helper(
                 1.0f,
                 Float.POSITIVE_INFINITY,
-                "[6.9505213E34, 3.0272395E24, 80483.79, 1.6275188E19, 3.4138216E26, 2.3000961E21, 2.4173826E35," +
-                " 3502559.5, 3.1639403E34, 19.584063, 1.11343182E15, 6.872559E24, 7.273829E30, 2.8495727E36," +
-                " 4.70190961E17, 465.4081, 3.59243305E16, 1.31713057E13, 20.567188, 6.4980443E10, ...]",
+                "RandomProvider_range_float_float_xiii",
                 3.9935304E36f
         );
         range_float_float_helper(
                 Float.NEGATIVE_INFINITY,
                 1.0f,
-                "[-0.0034054648, 8.170298E-4, 3.5585026E-14, 9.460823E-34, -7.3876725E-34, 1.913139E-19," +
-                " -1.3321626E-15, -9.0284737E-29, 4.0129276E-12, -1.51572127E17, -0.05636486, 0.0028416193," +
-                " -1.0789022E32, -12096.457, 2.3020953E-37, -3.0892525E23, 8.078653E-14, -1.4002981E-38," +
-                " -2.734538E-34, -1.5291396E-17, ...]",
+                "RandomProvider_range_float_float_xiv",
                 -1.3425657E36f
         );
         range_float_float_helper(
                 Float.MAX_VALUE,
                 Float.POSITIVE_INFINITY,
-                "[Infinity, 3.4028235E38, Infinity, Infinity, Infinity, Infinity, Infinity, Infinity, Infinity," +
-                " 3.4028235E38, Infinity, 3.4028235E38, 3.4028235E38, Infinity, 3.4028235E38, 3.4028235E38," +
-                " Infinity, Infinity, 3.4028235E38, Infinity, ...]",
+                "RandomProvider_range_float_float_xv",
                 Float.POSITIVE_INFINITY
         );
         range_float_float_helper(
                 Float.NEGATIVE_INFINITY,
                 -Float.MAX_VALUE,
-                "[-3.4028235E38, -Infinity, -3.4028235E38, -3.4028235E38, -3.4028235E38, -3.4028235E38," +
-                " -3.4028235E38, -3.4028235E38, -3.4028235E38, -Infinity, -3.4028235E38, -Infinity, -Infinity," +
-                " -3.4028235E38, -Infinity, -Infinity, -3.4028235E38, -3.4028235E38, -Infinity, -3.4028235E38, ...]",
+                "RandomProvider_range_float_float_xvi",
                 Float.NEGATIVE_INFINITY
         );
         range_float_float_helper(
                 Float.NEGATIVE_INFINITY,
                 Float.POSITIVE_INFINITY,
-                "[-0.0034054648, 8.170298E-4, 3.5585026E-14, 9.460823E-34, -7.3876725E-34, 2.12868E35, 5.732415E31," +
-                " 1.3745456E32, 1.913139E-19, 1.98799014E9, -1.3321626E-15, -9.0284737E-29, 4.0129276E-12," +
-                " 1.5210458E34, -1.51572127E17, -0.05636486, 7.0066112E7, 0.0028416193, -1.0789022E32, -12096.457," +
-                " ...]",
+                "RandomProvider_range_float_float_xvii",
                 -5.471121E33f
         );
         range_float_float_helper(
                 Float.POSITIVE_INFINITY,
                 Float.POSITIVE_INFINITY,
-                "[Infinity, Infinity, Infinity, Infinity, Infinity, Infinity, Infinity, Infinity, Infinity," +
-                " Infinity, Infinity, Infinity, Infinity, Infinity, Infinity, Infinity, Infinity, Infinity," +
-                " Infinity, Infinity, ...]",
+                "RandomProvider_range_float_float_xviii",
                 Float.POSITIVE_INFINITY
         );
         range_float_float_helper(
                 Float.NEGATIVE_INFINITY,
                 Float.NEGATIVE_INFINITY,
-                "[-Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity," +
-                " -Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity," +
-                " -Infinity, -Infinity, ...]",
+                "RandomProvider_range_float_float_xix",
                 Float.NEGATIVE_INFINITY
         );
-        range_float_float_helper(1.0f, -1.0f, "[]", 0.0f);
-        range_float_float_helper(Float.POSITIVE_INFINITY, Float.NEGATIVE_INFINITY, "[]", 0.0f);
-        range_float_float_helper(Float.POSITIVE_INFINITY, 1.0f, "[]", 0.0f);
-        range_float_float_helper(1.0f, Float.NEGATIVE_INFINITY, "[]", 0.0f);
+        range_float_float_helper(1.0f, -1.0f, "RandomProvider_range_float_float_xx", 0.0f);
+        range_float_float_helper(
+                Float.POSITIVE_INFINITY,
+                Float.NEGATIVE_INFINITY,
+                "RandomProvider_range_float_float_xxi",
+                0.0f
+        );
+        range_float_float_helper(Float.POSITIVE_INFINITY, 1.0f, "RandomProvider_range_float_float_xxii", 0.0f);
+        range_float_float_helper(1.0f, Float.NEGATIVE_INFINITY, "RandomProvider_range_float_float_xxiii", 0.0f);
         range_float_float_fail_helper(Float.NaN, 1.0f);
         range_float_float_fail_helper(Float.NaN, Float.POSITIVE_INFINITY);
         range_float_float_fail_helper(Float.NaN, Float.NEGATIVE_INFINITY);
