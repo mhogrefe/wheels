@@ -28,7 +28,7 @@ Progress
 | MathUtils                   | ✔       | ✘       | ✘     | ✘     | ✘          |
 | BigDecimalUtils             | ✔       | ✔       | ✔     | ✔     | ✔          |
 | FloatingPointUtils          | ✔       | ✔       | ✔     | ✔     | ✔          |
-| IntegerUtils                | ✔       | ✘       | ✘     | ✘     | ✘          |
+| IntegerUtils                | ✔       | ✔       | ✔     | ✔     | ✔          |
 | LexComparator               | ✔       | ✔       | ✘     | ✘     | ✘          |
 | ListBasedComparator         | ✔       | ✘       | ✘     | ✘     | ✘          |
 | OptionalComparator          | ✔       | ✘       | ✘     | ✘     | ✘          |

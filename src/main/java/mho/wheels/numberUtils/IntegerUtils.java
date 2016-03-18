@@ -1,7 +1,6 @@
 package mho.wheels.numberUtils;
 
 import mho.wheels.io.Readers;
-import mho.wheels.iterables.IterableUtils;
 import mho.wheels.structures.Pair;
 import mho.wheels.testing.Testing;
 import org.jetbrains.annotations.NotNull;
@@ -1250,7 +1249,7 @@ public class IntegerUtils {
      * {@link mho.wheels.numberUtils.IntegerUtils#demux}.
      *
      * <ul>
-     *  <li>Every element of {@code xs} cannot be negative.</li>
+     *  <li>No element of {@code xs} can be negative.</li>
      *  <li>The result is non-negative.</li>
      * </ul>
      *
@@ -1259,9 +1258,37 @@ public class IntegerUtils {
      */
     public static @NotNull BigInteger mux(@NotNull List<BigInteger> xs) {
         if (xs.isEmpty()) return BigInteger.ZERO;
-        Iterable<Boolean> muxedBits = IterableUtils.mux(toList(map(x -> concat(bits(x), repeat(false)), reverse(xs))));
-        int outputSize = maximum(map(BigInteger::bitLength, xs)) * xs.size();
-        return fromBits(take(outputSize, muxedBits));
+        int maxBitLength = 0;
+        for (BigInteger x : xs) {
+            if (x.signum() == -1) {
+                throw new ArithmeticException("No element of xs can be negative. Invalid xs: " + xs);
+            }
+            int bitLength = x.bitLength();
+            if (bitLength > maxBitLength) maxBitLength = bitLength;
+        }
+        int outputBitLength = maxBitLength * xs.size() + 1;
+        int byteLength = outputBitLength >> 3;
+        if (byteLength << 3 != outputBitLength) {
+            byteLength++;
+        }
+        byte[] bytes = new byte[byteLength];
+        int k = xs.size() - 1;
+        int j = 0;
+        for (int i = bytes.length - 1; i >= 0; i--) {
+            int b = 0;
+            for (int m = 1; m < 256; m <<= 1) {
+                if (xs.get(k).testBit(j)) {
+                    b |= m;
+                }
+                if (k == 0) {
+                    k = xs.size();
+                    j++;
+                }
+                k--;
+            }
+            bytes[i] = (byte) b;
+        }
+        return new BigInteger(bytes);
     }
 
     /**

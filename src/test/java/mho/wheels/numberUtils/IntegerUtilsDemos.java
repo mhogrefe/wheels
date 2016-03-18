@@ -1,7 +1,5 @@
 package mho.wheels.numberUtils;
 
-import mho.wheels.iterables.ExhaustiveProvider;
-import mho.wheels.iterables.RandomProvider;
 import mho.wheels.structures.Pair;
 import mho.wheels.structures.Triple;
 import mho.wheels.testing.Demos;
@@ -348,26 +346,17 @@ public class IntegerUtilsDemos extends Demos {
     }
 
     private void demoMux() {
-        for (List<BigInteger> is : take(LIMIT, P.lists(P.naturalBigIntegers()))) {
+        for (List<BigInteger> is : take(LIMIT, P.withScale(4).lists(P.naturalBigIntegers()))) {
             String listString = tail(init(is.toString()));
             System.out.println("mux(" + listString + ") = " + mux(is));
         }
     }
 
     private void demoDemux() {
-        Iterable<Pair<BigInteger, Integer>> ps;
-        Pair<BigInteger, Integer> zeroPair = new Pair<>(BigInteger.ZERO, 0);
-        if (P instanceof ExhaustiveProvider) {
-            ps = cons(
-                    zeroPair,
-                    ((ExhaustiveProvider) P).pairsLogarithmicOrder(P.naturalBigIntegers(), P.positiveIntegers())
-            );
-        } else {
-            ps = ((RandomProvider) P).withElement(
-                    zeroPair,
-                    P.pairs(P.naturalBigIntegers(), P.withScale(20).positiveIntegersGeometric())
-            );
-        }
+        Iterable<Pair<BigInteger, Integer>> ps = P.withElement(
+                new Pair<>(BigInteger.ZERO, 0),
+                P.pairsLogarithmicOrder(P.naturalBigIntegers(), P.positiveIntegersGeometric())
+        );
         for (Pair<BigInteger, Integer> p : take(LIMIT, ps)) {
             System.out.println("demux(" + p.b + ", " + p.a + ") = " + demux(p.b, p.a));
         }

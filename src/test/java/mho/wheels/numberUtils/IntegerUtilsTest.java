@@ -1494,64 +1494,70 @@ public class IntegerUtilsTest {
         squareRootDemux_fail_helper("-5");
     }
 
+    private static void mux_helper(@NotNull String input, @NotNull String output) {
+        aeq(mux(readBigIntegerList(input)), output);
+    }
+
+    private static void mux_fail_helper(@NotNull String input) {
+        try {
+            mux(readBigIntegerListWithNulls(input));
+            fail();
+        } catch (NullPointerException | IllegalArgumentException | ArithmeticException ignored) {}
+    }
+
     @Test
     public void testMux() {
-        aeq(mux(readBigIntegerList("[]")), 0);
-        aeq(mux(readBigIntegerList("[0]")), 0);
-        aeq(mux(readBigIntegerList("[1]")), 1);
-        aeq(mux(readBigIntegerList("[2]")), 2);
-        aeq(mux(readBigIntegerList("[0, 0]")), 0);
-        aeq(mux(readBigIntegerList("[0, 1]")), 1);
-        aeq(mux(readBigIntegerList("[1, 0]")), 2);
-        aeq(mux(readBigIntegerList("[5, 10]")), 102);
-        aeq(mux(readBigIntegerList("[10, 5]")), 153);
-        aeq(mux(readBigIntegerList("[784, 904]")), 1000000);
-        aeq(mux(readBigIntegerList("[0, 0, 0]")), 0);
-        aeq(mux(readBigIntegerList("[10, 10, 10]")), 3640);
-        aeq(mux(readBigIntegerList("[48, 96, 76]")), 1000000);
-        aeq(mux(readBigIntegerList("[1, 2, 3, 4]")), 362);
-        aeq(mux(readBigIntegerList("[3, 2, 2, 3, 0, 2, 0, 0, 0, 0]")), 1000000);
+        mux_helper("[]", "0");
+        mux_helper("[0]", "0");
+        mux_helper("[1]", "1");
+        mux_helper("[2]", "2");
+        mux_helper("[0, 0]", "0");
+        mux_helper("[0, 1]", "1");
+        mux_helper("[1, 0]", "2");
+        mux_helper("[5, 10]", "102");
+        mux_helper("[10, 5]", "153");
+        mux_helper("[784, 904]", "1000000");
+        mux_helper("[0, 0, 0]", "0");
+        mux_helper("[10, 10, 10]", "3640");
+        mux_helper("[48, 96, 76]", "1000000");
+        mux_helper("[1, 2, 3, 4]", "362");
+        mux_helper("[3, 2, 2, 3, 0, 2, 0, 0, 0, 0]", "1000000");
+
+        mux_fail_helper("[1, 2, -3]");
+        mux_fail_helper("[1, null, 2]");
+    }
+
+    private static void demux_helper(int size, @NotNull String n, @NotNull String output) {
+        aeq(demux(size, Readers.readBigInteger(n).get()), output);
+    }
+
+    private static void demux_fail_helper(int size, @NotNull String n) {
         try {
-            mux(readBigIntegerList("[1, 2, -3]"));
+            demux(size, Readers.readBigInteger(n).get());
             fail();
         } catch (ArithmeticException ignored) {}
-        try {
-            mux(readBigIntegerListWithNulls("[1, null, 2]"));
-            fail();
-        } catch (NullPointerException | IllegalArgumentException ignored) {}
     }
 
     @Test
     public void testDemux() {
-        aeq(demux(0, BigInteger.ZERO), "[]");
-        aeq(demux(1, BigInteger.ZERO), "[0]");
-        aeq(demux(1, BigInteger.ONE), "[1]");
-        aeq(demux(1, TWO), "[2]");
-        aeq(demux(2, BigInteger.ZERO), "[0, 0]");
-        aeq(demux(2, BigInteger.ONE), "[0, 1]");
-        aeq(demux(2, TWO), "[1, 0]");
-        aeq(demux(2, BigInteger.valueOf(1000000)), "[784, 904]");
-        aeq(demux(3, BigInteger.ZERO), "[0, 0, 0]");
-        aeq(demux(3, BigInteger.valueOf(3640)), "[10, 10, 10]");
-        aeq(demux(3, BigInteger.valueOf(1000000)), "[48, 96, 76]");
-        aeq(demux(4, BigInteger.valueOf(362)), "[1, 2, 3, 4]");
-        aeq(demux(10, BigInteger.valueOf(1000000)), "[3, 2, 2, 3, 0, 2, 0, 0, 0, 0]");
-        try {
-            demux(0, BigInteger.ONE);
-            fail();
-        } catch (ArithmeticException ignored) {}
-        try {
-            demux(-2, BigInteger.ZERO);
-            fail();
-        } catch (ArithmeticException ignored) {}
-        try {
-            demux(-2, BigInteger.ONE);
-            fail();
-        } catch (ArithmeticException ignored) {}
-        try {
-            demux(2, BigInteger.valueOf(-5));
-            fail();
-        } catch (ArithmeticException ignored) {}
+        demux_helper(0, "0", "[]");
+        demux_helper(1, "0", "[0]");
+        demux_helper(1, "1", "[1]");
+        demux_helper(1, "2", "[2]");
+        demux_helper(2, "0", "[0, 0]");
+        demux_helper(2, "1", "[0, 1]");
+        demux_helper(2, "2", "[1, 0]");
+        demux_helper(2, "1000000", "[784, 904]");
+        demux_helper(3, "0", "[0, 0, 0]");
+        demux_helper(3, "3640", "[10, 10, 10]");
+        demux_helper(3, "1000000", "[48, 96, 76]");
+        demux_helper(4, "362", "[1, 2, 3, 4]");
+        demux_helper(10, "1000000", "[3, 2, 2, 3, 0, 2, 0, 0, 0, 0]");
+
+        demux_fail_helper(0, "1");
+        demux_fail_helper(-2, "0");
+        demux_fail_helper(-2, "1");
+        demux_fail_helper(2, "-5");
     }
 
     private static @NotNull List<Boolean> readBooleanList(@NotNull String s) {
