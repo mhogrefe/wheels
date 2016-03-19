@@ -10,42 +10,60 @@ import static mho.wheels.testing.Testing.aeq;
 import static org.junit.Assert.fail;
 
 public class MathUtilsTest {
+    private static void gcd_int_int_helper(int x, int y, int output) {
+        aeq(gcd(x, y), output);
+    }
+
+    private static void gcd_int_int_fail_helper(int x, int y) {
+        try {
+            gcd(x, y);
+            fail();
+        } catch (ArithmeticException ignored) {}
+    }
+
     @Test
     public void testGcd_int_int() {
-        aeq(gcd(12, 15), 3);
-        aeq(gcd(35, 210), 35);
-        aeq(gcd(17, 20), 1);
-        aeq(gcd(1, 5), 1);
-        aeq(gcd(-12, 15), 3);
-        aeq(gcd(12, -15), 3);
-        aeq(gcd(-12, -15), 3);
-        aeq(gcd(6, 0), 6);
-        aeq(gcd(-6, 0), 6);
-        aeq(gcd(0, 6), 6);
-        aeq(gcd(0, -6), 6);
+        gcd_int_int_helper(12, 15, 3);
+        gcd_int_int_helper(35, 210, 35);
+        gcd_int_int_helper(17, 20, 1);
+        gcd_int_int_helper(1, 5, 1);
+        gcd_int_int_helper(-12, 15, 3);
+        gcd_int_int_helper(12, -15, 3);
+        gcd_int_int_helper(-12, -15, 3);
+        gcd_int_int_helper(6, 0, 6);
+        gcd_int_int_helper(-6, 0, 6);
+        gcd_int_int_helper(0, 6, 6);
+        gcd_int_int_helper(0, -6, 6);
+
+        gcd_int_int_fail_helper(0, 0);
+    }
+
+    private static void gcd_long_long_helper(long x, long y, long output) {
+        aeq(gcd(x, y), output);
+    }
+
+    private static void gcd_long_long_fail_helper(long x, long y) {
         try {
-            gcd(0, 0);
+            gcd(x, y);
             fail();
         } catch (ArithmeticException ignored) {}
     }
 
     @Test
     public void testGcd_long_long() {
-        aeq(gcd(12L, 15L), 3);
-        aeq(gcd(35L, 210L), 35);
-        aeq(gcd(17L, 20L), 1);
-        aeq(gcd(1L, 5L), 1);
-        aeq(gcd(-12L, 15L), 3);
-        aeq(gcd(12L, -15L), 3);
-        aeq(gcd(-12L, -15L), 3);
-        aeq(gcd(6L, 0L), 6);
-        aeq(gcd(-6L, 0L), 6);
-        aeq(gcd(0L, 6L), 6);
-        aeq(gcd(0L, -6L), 6);
-        try {
-            gcd(0L, 0L);
-            fail();
-        } catch (ArithmeticException ignored) {}
+        gcd_long_long_helper(12L, 15L, 3L);
+        gcd_long_long_helper(35L, 210L, 35L);
+        gcd_long_long_helper(17L, 20L, 1L);
+        gcd_long_long_helper(1L, 5L, 1L);
+        gcd_long_long_helper(-12L, 15L, 3L);
+        gcd_long_long_helper(12L, -15L, 3L);
+        gcd_long_long_helper(-12L, -15L, 3L);
+        gcd_long_long_helper(6L, 0L, 6L);
+        gcd_long_long_helper(-6L, 0L, 6L);
+        gcd_long_long_helper(0L, 6L, 6L);
+        gcd_long_long_helper(0L, -6L, 6L);
+
+        gcd_long_long_fail_helper(0L, 0L);
     }
 
     @Test

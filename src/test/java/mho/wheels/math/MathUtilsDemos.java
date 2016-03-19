@@ -18,15 +18,13 @@ public class MathUtilsDemos extends Demos {
     }
 
     private void demoGcd_int_int() {
-        Iterable<Pair<Integer, Integer>> ps = filter(p -> p.a != 0 || p.b != 0, P.pairs(P.integers()));
-        for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
+        for (Pair<Integer, Integer> p : take(LIMIT, filter(q -> q.a != 0 || q.b != 0, P.pairs(P.integers())))) {
             System.out.println("gcd(" + p.a + ", " + p.b + ") = " + gcd(p.a, p.b));
         }
     }
 
     private void demoGcd_long_long() {
-        Iterable<Pair<Long, Long>> ps = filter(p -> p.a != 0 || p.b != 0, P.pairs(P.longs()));
-        for (Pair<Long, Long> p : take(LIMIT, ps)) {
+        for (Pair<Long, Long> p : take(LIMIT, filter(q -> q.a != 0 || q.b != 0, P.pairs(P.longs())))) {
             System.out.println("gcd(" + p.a + ", " + p.b + ") = " + gcd(p.a, p.b));
         }
     }

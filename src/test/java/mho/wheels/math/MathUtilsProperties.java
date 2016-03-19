@@ -26,7 +26,8 @@ public class MathUtilsProperties extends TestProperties {
         propertiesGcd_int_int();
         compareImplementationsGcd_int_int();
         propertiesGcd_long_long();
-        compareImplementationsGcd_long_long();
+        compareImplementationsGcd_long_long1();
+        compareImplementationsGcd_long_long2();
         propertiesLcm();
         compareImplementationsLcm();
         propertiesReversePermutationSign();
@@ -46,11 +47,8 @@ public class MathUtilsProperties extends TestProperties {
     }
 
     private void propertiesGcd_int_int() {
-        initialize("");
-        System.out.println("\t\ttesting gcd(int, int) properties...");
-
-        Iterable<Pair<Integer, Integer>> ps = filter(p -> p.a != 0 || p.b != 0, P.pairs(P.integers()));
-        for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
+        initialize("gcd(int, int)");
+        for (Pair<Integer, Integer> p : take(LIMIT, filter(q -> q.a != 0 || q.b != 0, P.pairs(P.integers())))) {
             int gcd = gcd(p.a, p.b);
             assertEquals(p, gcd, gcd_int_int_simplest(p.a, p.b));
             assertEquals(p, gcd, gcd_int_int_explicit(p.a, p.b));
@@ -65,10 +63,10 @@ public class MathUtilsProperties extends TestProperties {
         }
 
         for (int i : take(LIMIT, P.integers())) {
-            assertEquals(i, gcd(i, 1), 1);
+            idempotent(j -> gcd(i, j), 1);
         }
 
-        for (int i : take(LIMIT, filter(j -> j != 0, P.integers()))) {
+        for (int i : take(LIMIT, P.nonzeroIntegers())) {
             assertEquals(i, gcd(i, i), Math.abs(i));
             assertEquals(i, gcd(i, 0), Math.abs(i));
         }
@@ -78,39 +76,17 @@ public class MathUtilsProperties extends TestProperties {
                 P.triples(P.integers())
         );
         for (Triple<Integer, Integer, Integer> t : take(LIMIT, ts)) {
-            int gcd1 = gcd(gcd(t.a, t.b), t.c);
-            int gcd2 = gcd(t.a, gcd(t.b, t.c));
-            assertEquals(t, gcd1, gcd2);
+            associative(MathUtils::gcd, t);
         }
     }
 
     private void compareImplementationsGcd_int_int() {
-        initialize("");
-        System.out.println("\t\tcomparing gcd(int, int) implementations...");
-
-        long totalTime = 0;
-        Iterable<Pair<Integer, Integer>> ps = filter(p -> p.a != 0 || p.b != 0, P.pairs(P.integers()));
-        for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
-            long time = System.nanoTime();
-            gcd_int_int_simplest(p.a, p.b);
-            totalTime += (System.nanoTime() - time);
-        }
-        System.out.println("\t\t\tsimplest: " + ((double) totalTime) / 1e9 + " s");
-
-        for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
-            long time = System.nanoTime();
-            gcd_int_int_explicit(p.a, p.b);
-            totalTime += (System.nanoTime() - time);
-        }
-        System.out.println("\t\t\texplicit: " + ((double) totalTime) / 1e9 + " s");
-
-        totalTime = 0;
-        for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
-            long time = System.nanoTime();
-            gcd(p.a, p.b);
-            totalTime += (System.nanoTime() - time);
-        }
-        System.out.println("\t\t\tstandard: " + ((double) totalTime) / 1e9 + " s");
+        Map<String, Function<Pair<Integer, Integer>, Integer>> functions = new LinkedHashMap<>();
+        functions.put("simplest", p -> gcd_int_int_simplest(p.a, p.b));
+        functions.put("explicit", p -> gcd_int_int_explicit(p.a, p.b));
+        functions.put("standard", p -> gcd(p.a, p.b));
+        Iterable<Pair<Integer, Integer>> ps = filter(q -> q.a != 0 || q.b != 0, P.pairs(P.integers()));
+        compareImplementations("gcd(int, int)", take(LIMIT, ps), functions);
     }
 
     private static long gcd_long_long_simplest(long x, long y) {
@@ -126,11 +102,8 @@ public class MathUtilsProperties extends TestProperties {
     }
 
     private void propertiesGcd_long_long() {
-        initialize("");
-        System.out.println("\t\ttesting gcd(long, long) properties...");
-
-        Iterable<Pair<Long, Long>> ps = filter(p -> p.a != 0 || p.b != 0, P.pairs(P.longs()));
-        for (Pair<Long, Long> p : take(LIMIT, ps)) {
+        initialize("gcd(long, long)");
+        for (Pair<Long, Long> p : take(LIMIT, filter(q -> q.a != 0 || q.b != 0, P.pairs(P.longs())))) {
             long gcd = gcd(p.a, p.b);
             assertEquals(p, gcd, gcd_long_long_simplest(p.a, p.b));
             if (Math.abs(p.a) <= Integer.MAX_VALUE && Math.abs(p.b) <= Integer.MAX_VALUE) {
@@ -147,10 +120,10 @@ public class MathUtilsProperties extends TestProperties {
         }
 
         for (long l : take(LIMIT, P.longs())) {
-            assertEquals(l, gcd(l, 1L), 1L);
+            idempotent(m -> gcd(l, m), 1L);
         }
 
-        for (long l : take(LIMIT, filter(m -> m != 0L, P.longs()))) {
+        for (long l : take(LIMIT, P.nonzeroLongs())) {
             assertEquals(l, gcd(l, l), Math.abs(l));
             assertEquals(l, gcd(l, 0L), Math.abs(l));
         }
@@ -160,44 +133,24 @@ public class MathUtilsProperties extends TestProperties {
                 P.triples(P.longs())
         );
         for (Triple<Long, Long, Long> t : take(LIMIT, ts)) {
-            long gcd1 = gcd(gcd(t.a, t.b), t.c);
-            long gcd2 = gcd(t.a, gcd(t.b, t.c));
-            assertEquals(t, gcd1, gcd2);
+            associative(MathUtils::gcd, t);
         }
     }
 
-    private void compareImplementationsGcd_long_long() {
-        initialize("");
-        System.out.println("\t\tcomparing gcd(long, long) implementations...");
+    private void compareImplementationsGcd_long_long1() {
+        Map<String, Function<Pair<Long, Long>, Long>> functions = new LinkedHashMap<>();
+        functions.put("simplest", p -> gcd_long_long_simplest(p.a, p.b));
+        functions.put("standard", p -> gcd(p.a, p.b));
+        Iterable<Pair<Long, Long>> ps = filter(q -> q.a != 0 || q.b != 0, P.pairs(P.longs()));
+        compareImplementations("gcd(long, long)", take(LIMIT, ps), functions);
+    }
 
-        long totalTime = 0;
-        Iterable<Pair<Long, Long>> ps = filter(p -> p.a != 0 || p.b != 0, P.pairs(P.longs()));
-        for (Pair<Long, Long> p : take(LIMIT, ps)) {
-            long time = System.nanoTime();
-            gcd_long_long_simplest(p.a, p.b);
-            totalTime += (System.nanoTime() - time);
-        }
-        System.out.println("\t\t\tsimplest: " + ((double) totalTime) / 1e9 + " s");
-
-        if (P instanceof ExhaustiveProvider) {
-            totalTime = 0;
-            for (Pair<Long, Long> p : take(LIMIT, ps)) {
-                long time = System.nanoTime();
-                gcd_long_long_explicit(p.a, p.b);
-                totalTime += (System.nanoTime() - time);
-            }
-            System.out.println("\t\t\texplicit: " + ((double) totalTime) / 1e9 + " s");
-        } else {
-            System.out.println("\t\t\texplicit: too long");
-        }
-
-        totalTime = 0;
-        for (Pair<Long, Long> p : take(LIMIT, ps)) {
-            long time = System.nanoTime();
-            gcd(p.a, p.b);
-            totalTime += (System.nanoTime() - time);
-        }
-        System.out.println("\t\t\tstandard: " + ((double) totalTime) / 1e9 + " s");
+    private void compareImplementationsGcd_long_long2() {
+        Map<String, Function<Pair<Long, Long>, Long>> functions = new LinkedHashMap<>();
+        functions.put("explicit", p -> gcd_long_long_explicit(p.a, p.b));
+        functions.put("standard", p -> gcd(p.a, p.b));
+        Iterable<Pair<Long, Long>> ps = filter(q -> q.a != 0 || q.b != 0, P.pairs(map(i -> (long) i, P.integers())));
+        compareImplementations("gcd(long, long)", take(LIMIT, ps), functions);
     }
 
     private static @NotNull BigInteger lcm_explicit(@NotNull BigInteger x, @NotNull BigInteger y) {
