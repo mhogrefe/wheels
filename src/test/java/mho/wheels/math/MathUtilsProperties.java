@@ -1,6 +1,5 @@
 package mho.wheels.math;
 
-import mho.wheels.iterables.ExhaustiveProvider;
 import mho.wheels.structures.Pair;
 import mho.wheels.structures.Triple;
 import mho.wheels.testing.TestProperties;
@@ -13,7 +12,6 @@ import java.util.function.Function;
 
 import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.math.MathUtils.*;
-import static mho.wheels.ordering.Ordering.le;
 import static mho.wheels.testing.Testing.*;
 
 public class MathUtilsProperties extends TestProperties {
@@ -28,8 +26,8 @@ public class MathUtilsProperties extends TestProperties {
         propertiesGcd_long_long();
         compareImplementationsGcd_long_long1();
         compareImplementationsGcd_long_long2();
-        propertiesLcm();
-        compareImplementationsLcm();
+        propertiesLcm_BigInteger_BigInteger();
+        compareImplementationsLcm_BigInteger_BigInteger();
         propertiesReversePermutationSign();
         compareImplementationsReversePermutationSign();
     }
@@ -157,10 +155,8 @@ public class MathUtilsProperties extends TestProperties {
         return head(orderedIntersection(rangeBy(x, x), rangeBy(y, y)));
     }
 
-    private void propertiesLcm() {
-        initialize("");
-        System.out.println("\t\ttesting lcm(BigInteger, BigInteger) properties...");
-
+    private void propertiesLcm_BigInteger_BigInteger() {
+        initialize("lcm(BigInteger, BigInteger)");
         for (Pair<BigInteger, BigInteger> p : take(LIMIT, P.pairs(P.positiveBigIntegers()))) {
             BigInteger lcm = lcm(p.a, p.b);
             assertEquals(p, lcm, lcm(p.b, p.a));
@@ -172,26 +168,26 @@ public class MathUtilsProperties extends TestProperties {
             }
         }
 
-        Iterable<Pair<BigInteger, BigInteger>> ps = P.pairs(
-                filter(i -> le(i, BigInteger.valueOf(1000000)), P.withScale(10).positiveBigIntegers())
-        );
+        //noinspection Convert2MethodRef
+        Iterable<Pair<BigInteger, BigInteger>> ps = P.pairs(map(s -> BigInteger.valueOf(s), P.positiveShorts()));
         for (Pair<BigInteger, BigInteger> p : take(LIMIT, ps)) {
             BigInteger lcm = lcm(p.a, p.b);
             assertEquals(p, lcm, lcm_explicit(p.a, p.b));
         }
 
         for (BigInteger i : take(LIMIT, P.positiveBigIntegers())) {
-            assertEquals(i, lcm(i, BigInteger.ONE), i);
-            assertEquals(i, lcm(i, i), i);
+            idempotent(j -> lcm(i, j), BigInteger.ONE);
+            idempotent(j -> lcm(j, j), i);
         }
 
         for (Triple<BigInteger, BigInteger, BigInteger> t : take(LIMIT, P.triples(P.positiveBigIntegers()))) {
-            BigInteger lcm1 = lcm(lcm(t.a, t.b), t.c);
-            BigInteger lcm2 = lcm(t.a, lcm(t.b, t.c));
-            assertEquals(t, lcm1, lcm2);
+            associative(MathUtils::lcm, t);
         }
 
-        Iterable<Pair<BigInteger, BigInteger>> psFail = P.pairs(P.rangeDown(BigInteger.ZERO), P.positiveBigIntegers());
+        Iterable<Pair<BigInteger, BigInteger>> psFail = P.pairs(
+                P.withElement(BigInteger.ZERO, P.negativeBigIntegers()),
+                P.positiveBigIntegers()
+        );
         for (Pair<BigInteger, BigInteger> p : take(LIMIT, psFail)) {
             try {
                 lcm(p.a, p.b);
@@ -204,30 +200,13 @@ public class MathUtilsProperties extends TestProperties {
         }
     }
 
-    private void compareImplementationsLcm() {
-        initialize("");
-        System.out.println("\t\tcomparing lcm(BigInteger, BigInteger) implementations...");
-
-        long totalTime = 0;
-
-        if (P instanceof ExhaustiveProvider) {
-            for (Pair<BigInteger, BigInteger> p : take(LIMIT, P.pairs(P.positiveBigIntegers()))) {
-                long time = System.nanoTime();
-                lcm_explicit(p.a, p.b);
-                totalTime += (System.nanoTime() - time);
-            }
-            System.out.println("\t\t\texplicit: " + ((double) totalTime) / 1e9 + " s");
-        } else {
-            System.out.println("\t\t\texplicit: too long");
-        }
-
-        totalTime = 0;
-        for (Pair<BigInteger, BigInteger> p : take(LIMIT, P.pairs(P.positiveBigIntegers()))) {
-            long time = System.nanoTime();
-            lcm(p.a, p.b);
-            totalTime += (System.nanoTime() - time);
-        }
-        System.out.println("\t\t\tstandard: " + ((double) totalTime) / 1e9 + " s");
+    private void compareImplementationsLcm_BigInteger_BigInteger() {
+        Map<String, Function<Pair<BigInteger, BigInteger>, BigInteger>> functions = new LinkedHashMap<>();
+        functions.put("explicit", p -> lcm_explicit(p.a, p.b));
+        functions.put("standard", p -> lcm(p.a, p.b));
+        //noinspection Convert2MethodRef
+        Iterable<Pair<BigInteger, BigInteger>> ps = P.pairs(map(s -> BigInteger.valueOf(s), P.positiveShorts()));
+        compareImplementations("lcm(BigInteger, BigInteger)", take(LIMIT, ps), functions);
     }
 
     private static boolean reversePermutationSign_alt(int i) {

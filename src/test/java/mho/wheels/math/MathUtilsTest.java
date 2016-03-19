@@ -1,6 +1,8 @@
 package mho.wheels.math;
 
+import mho.wheels.io.Readers;
 import mho.wheels.numberUtils.IntegerUtils;
+import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
 
 import java.math.BigInteger;
@@ -66,36 +68,30 @@ public class MathUtilsTest {
         gcd_long_long_fail_helper(0L, 0L);
     }
 
+    private static void lcm_helper(@NotNull String x, @NotNull String y, @NotNull String output) {
+        aeq(lcm(Readers.readBigInteger(x).get(), Readers.readBigInteger(y).get()), output);
+    }
+
+    private static void lcm_fail_helper(@NotNull String x, @NotNull String y) {
+        try {
+            lcm(Readers.readBigInteger(x).get(), Readers.readBigInteger(y).get());
+            fail();
+        } catch (ArithmeticException ignored) {}
+    }
+
     @Test
-    public void testLcm() {
-        aeq(lcm(BigInteger.valueOf(12), BigInteger.valueOf(15)), 60);
-        aeq(lcm(BigInteger.valueOf(35), BigInteger.valueOf(210)), 210);
-        aeq(lcm(BigInteger.valueOf(17), BigInteger.valueOf(20)), 340);
-        aeq(lcm(BigInteger.ONE, BigInteger.valueOf(5)), 5);
-        try {
-            lcm(BigInteger.valueOf(-12), BigInteger.valueOf(15));
-            fail();
-        } catch (ArithmeticException ignored) {}
-        try {
-            lcm(BigInteger.valueOf(12), BigInteger.valueOf(-15));
-            fail();
-        } catch (ArithmeticException ignored) {}
-        try {
-            lcm(BigInteger.valueOf(-12), BigInteger.valueOf(-15));
-            fail();
-        } catch (ArithmeticException ignored) {}
-        try {
-            lcm(BigInteger.valueOf(6), BigInteger.ZERO);
-            fail();
-        } catch (ArithmeticException ignored) {}
-        try {
-            lcm(BigInteger.ZERO, BigInteger.valueOf(6));
-            fail();
-        } catch (ArithmeticException ignored) {}
-        try {
-            lcm(BigInteger.ZERO, BigInteger.ZERO);
-            fail();
-        } catch (ArithmeticException ignored) {}
+    public void testLcm_BigInteger_BigInteger() {
+        lcm_helper("12", "15", "60");
+        lcm_helper("35", "210", "210");
+        lcm_helper("17", "20", "340");
+        lcm_helper("1", "5", "5");
+
+        lcm_fail_helper("-12", "15");
+        lcm_fail_helper("12", "-15");
+        lcm_fail_helper("-12", "-15");
+        lcm_fail_helper("6", "0");
+        lcm_fail_helper("0", "6");
+        lcm_fail_helper("0", "0");
     }
 
     @Test

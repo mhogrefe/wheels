@@ -29,7 +29,7 @@ public class MathUtilsDemos extends Demos {
         }
     }
 
-    private void demoLcm() {
+    private void demoLcm_BigInteger_BigInteger() {
         for (Pair<BigInteger, BigInteger> p : take(LIMIT, P.pairs(P.positiveBigIntegers()))) {
             System.out.println("lcm(" + p.a + ", " + p.b + ") = " + lcm(p.a, p.b));
         }
