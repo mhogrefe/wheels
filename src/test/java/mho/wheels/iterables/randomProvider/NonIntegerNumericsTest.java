@@ -2034,14 +2034,13 @@ public strictfp class NonIntegerNumericsTest {
     private static void bigDecimalHelper(
             @NotNull Iterable<BigDecimal> xs,
             @NotNull String output,
-            @NotNull String topSampleCount,
             double sampleMean,
             double unscaledBitSizeMean,
             double scaleMean
     ) {
         List<BigDecimal> sample = toList(take(DEFAULT_SAMPLE_SIZE, xs));
-        aeqitLimit(TINY_LIMIT, sample, output);
-        aeq(topSampleCount(DEFAULT_TOP_COUNT, sample), topSampleCount);
+        aeqitLimitLog(TINY_LIMIT, sample, output);
+        aeqMapLog(topSampleCount(DEFAULT_TOP_COUNT, sample), output);
         aeq(meanOfBigDecimals(sample), sampleMean);
         aeq(meanOfIntegers(toList(map(x -> x.unscaledValue().abs().bitLength(), sample))), unscaledBitSizeMean);
         aeq(meanOfIntegers(toList(map(x -> Math.abs(x.scale()), sample))), scaleMean);
@@ -2051,7 +2050,6 @@ public strictfp class NonIntegerNumericsTest {
             int meanUnscaledBitSize,
             int meanScaleSize,
             @NotNull String output,
-            @NotNull String topSampleCount,
             double sampleMean,
             double unscaledBitSizeMean,
             double scaleMean
@@ -2059,7 +2057,6 @@ public strictfp class NonIntegerNumericsTest {
         bigDecimalHelper(
                 P.withScale(meanUnscaledBitSize).withSecondaryScale(meanScaleSize).positiveBigDecimals(),
                 output,
-                topSampleCount,
                 sampleMean,
                 unscaledBitSizeMean,
                 scaleMean
@@ -2082,9 +2079,7 @@ public strictfp class NonIntegerNumericsTest {
         positiveBigDecimals_helper(
                 2,
                 1,
-                "[1.3, 47.7, 0.2, 4, 0.3, 2E+2, 1, 0.1, 3E+1, 1, 2, 1, 1, 1, 0.003, 10, 1E+2, 0.00003, 5, 0.19, ...]",
-                "{1=250428, 0.1=62680, 1E+1=62588, 3=62216, 2=62123, 0.01=31370, 1E+2=31080, 0.3=15830, 6=15720," +
-                " 0.2=15679}",
+                "RandomProvider_positiveBigDecimals_i",
                 1.0009534254522994E16,
                 2.0010259999798934,
                 0.9987319999976897
@@ -2092,10 +2087,7 @@ public strictfp class NonIntegerNumericsTest {
         positiveBigDecimals_helper(
                 5,
                 3,
-                "[2.1E-7, 2.07646E+10, 13, 1E+1, 0.000002, 5.3E-12, 3.44E+6, 6E-11, 9881, 192, 1.2E+5, 6, 4701, 46," +
-                " 1.4E+3, 2E+5, 1E+2, 0.8, 0.0002, 0.62, ...]",
-                "{1=49801, 3=20202, 2=20107, 1E+1=18795, 0.1=18688, 1E+2=14052, 0.01=13960, 1E+3=10567, 0.001=10524," +
-                " 4=8101}",
+                "RandomProvider_positiveBigDecimals_ii",
                 1.6850709563045524E40,
                 5.00820000000873,
                 3.0015849999914943
@@ -2103,11 +2095,7 @@ public strictfp class NonIntegerNumericsTest {
         positiveBigDecimals_helper(
                 32,
                 8,
-                "[9.899036265412338E+22, 2.25462717E+36, 1.65780717136E+16, 1E+17, 2.883801664E+19, 4.45551E+6," +
-                " 1.5973E+14, 4.372E+5, 8.040, 10, 6483542254218470125815.323736137, 3E+6, 3.238, 1.05164088156E+30," +
-                " 6.261899171E+17, 1E+14, 1.388001050110E+14, 1.0161242E-22, 3.7E-30, 289, ...]",
-                "{1=3367, 2=1761, 3=1685, 1E+1=1549, 0.1=1527, 1E+2=1381, 0.01=1363, 0.001=1235, 1E+3=1142," +
-                " 0.0001=1094}",
+                "RandomProvider_positiveBigDecimals_iii",
                 1.2572425193762146E145,
                 32.00852100002276,
                 7.997832000016788
@@ -2115,16 +2103,7 @@ public strictfp class NonIntegerNumericsTest {
         positiveBigDecimals_helper(
                 100,
                 10,
-                "[9.4790976865653102300816908025048767680216168E+58, 4.630900152605E+18, 1.07302372E+20, 1.300E+6," +
-                " 110207667890702717891682993862216378208126.1, 1.42361763E+31, 2.7934853437353795793120507739E+30," +
-                " 1.121036E-34, 1307879802.6233, 2.378861914519634593E+23, 1.6636E+6," +
-                " 1.1780491659396320304092245748596897246965E+49, 1.01342E+35," +
-                " 4281825112654693651459071466596876043334654508762035987794871586.861109396215," +
-                " 87894315763.404085565781671205346, 7.802322497623E+39, 3.50516300835593753E+38, 75.2585," +
-                " 6.57125105137779066251367372137060396099924931317E+50," +
-                " 1.5713218602914447431492283897880756550610073314504466517671827791587317575567925917482809548" +
-                "E+125, ...]",
-                "{1=923, 0.1=439, 3=438, 2=431, 1E+2=419, 0.01=391, 1E+1=356, 0.001=337, 1E+3=320, 1E+4=317}",
+                "RandomProvider_positiveBigDecimals_iv",
                 Double.POSITIVE_INFINITY,
                 99.91674399999913,
                 10.005905000005157
@@ -2137,7 +2116,6 @@ public strictfp class NonIntegerNumericsTest {
             int meanUnscaledBitSize,
             int meanScaleSize,
             @NotNull String output,
-            @NotNull String topSampleCount,
             double sampleMean,
             double unscaledBitSizeMean,
             double scaleMean
@@ -2145,7 +2123,6 @@ public strictfp class NonIntegerNumericsTest {
         bigDecimalHelper(
                 P.withScale(meanUnscaledBitSize).withSecondaryScale(meanScaleSize).negativeBigDecimals(),
                 output,
-                topSampleCount,
                 sampleMean,
                 unscaledBitSizeMean,
                 scaleMean
@@ -2168,10 +2145,7 @@ public strictfp class NonIntegerNumericsTest {
         negativeBigDecimals_helper(
                 2,
                 1,
-                "[-1.3, -47.7, -0.2, -4, -0.3, -2E+2, -1, -0.1, -3E+1, -1, -2, -1, -1, -1, -0.003, -10, -1E+2," +
-                " -0.00003, -5, -0.19, ...]",
-                "{-1=250428, -0.1=62680, -1E+1=62588, -3=62216, -2=62123, -0.01=31370, -1E+2=31080, -0.3=15830," +
-                " -6=15720, -0.2=15679}",
+                "RandomProvider_negativeBigDecimals_i",
                 -1.0009534254522994E16,
                 2.0010259999798934,
                 0.9987319999976897
@@ -2179,10 +2153,7 @@ public strictfp class NonIntegerNumericsTest {
         negativeBigDecimals_helper(
                 5,
                 3,
-                "[-2.1E-7, -2.07646E+10, -13, -1E+1, -0.000002, -5.3E-12, -3.44E+6, -6E-11, -9881, -192, -1.2E+5," +
-                " -6, -4701, -46, -1.4E+3, -2E+5, -1E+2, -0.8, -0.0002, -0.62, ...]",
-                "{-1=49801, -3=20202, -2=20107, -1E+1=18795, -0.1=18688, -1E+2=14052, -0.01=13960, -1E+3=10567," +
-                " -0.001=10524, -4=8101}",
+                "RandomProvider_negativeBigDecimals_ii",
                 -1.6850709563045524E40,
                 5.00820000000873,
                 3.0015849999914943
@@ -2190,12 +2161,7 @@ public strictfp class NonIntegerNumericsTest {
         negativeBigDecimals_helper(
                 32,
                 8,
-                "[-9.899036265412338E+22, -2.25462717E+36, -1.65780717136E+16, -1E+17, -2.883801664E+19," +
-                " -4.45551E+6, -1.5973E+14, -4.372E+5, -8.040, -10, -6483542254218470125815.323736137, -3E+6, " +
-                "-3.238, -1.05164088156E+30, -6.261899171E+17, -1E+14, -1.388001050110E+14, -1.0161242E-22," +
-                " -3.7E-30, -289, ...]",
-                "{-1=3367, -2=1761, -3=1685, -1E+1=1549, -0.1=1527, -1E+2=1381, -0.01=1363, -0.001=1235, -1E+3=1142," +
-                " -0.0001=1094}",
+                "RandomProvider_negativeBigDecimals_iii",
                 -1.2572425193762146E145,
                 32.00852100002276,
                 7.997832000016788
@@ -2203,17 +2169,7 @@ public strictfp class NonIntegerNumericsTest {
         negativeBigDecimals_helper(
                 100,
                 10,
-                "[-9.4790976865653102300816908025048767680216168E+58, -4.630900152605E+18, -1.07302372E+20," +
-                " -1.300E+6, -110207667890702717891682993862216378208126.1, -1.42361763E+31," +
-                " -2.7934853437353795793120507739E+30, -1.121036E-34, -1307879802.6233, -2.378861914519634593E+23," +
-                " -1.6636E+6, -1.1780491659396320304092245748596897246965E+49, -1.01342E+35," +
-                " -4281825112654693651459071466596876043334654508762035987794871586.861109396215," +
-                " -87894315763.404085565781671205346, -7.802322497623E+39, -3.50516300835593753E+38, -75.2585," +
-                " -6.57125105137779066251367372137060396099924931317E+50," +
-                " -1.5713218602914447431492283897880756550610073314504466517671827791587317575567925917482809548" +
-                "E+125, ...]",
-                "{-1=923, -0.1=439, -3=438, -2=431, -1E+2=419, -0.01=391, -1E+1=356, -0.001=337, -1E+3=320," +
-                " -1E+4=317}",
+                "RandomProvider_negativeBigDecimals_iv",
                 Double.NEGATIVE_INFINITY,
                 99.91674399999913,
                 10.005905000005157
@@ -2226,7 +2182,6 @@ public strictfp class NonIntegerNumericsTest {
             int meanUnscaledBitSize,
             int meanScaleSize,
             @NotNull String output,
-            @NotNull String topSampleCount,
             double sampleMean,
             double unscaledBitSizeMean,
             double scaleMean
@@ -2234,7 +2189,6 @@ public strictfp class NonIntegerNumericsTest {
         bigDecimalHelper(
                 P.withScale(meanUnscaledBitSize).withSecondaryScale(meanScaleSize).nonzeroBigDecimals(),
                 output,
-                topSampleCount,
                 sampleMean,
                 unscaledBitSizeMean,
                 scaleMean
@@ -2257,10 +2211,7 @@ public strictfp class NonIntegerNumericsTest {
         nonzeroBigDecimals_helper(
                 2,
                 1,
-                "[13, 477, 2, -0.04, 3, -0.4, 1, 3, -1, -1E+1, -1, -1, 0.03, -1.0E+2, 4, 3.7, 0.001, -0.7, -5E+2," +
-                " -1, ...]",
-                "{1=125504, -1=124734, 3=31556, 0.1=31392, -3=31366, -0.1=31338, -1E+1=31314, 1E+1=31220, -2=31116," +
-                " 2=30955}",
+                "RandomProvider_nonzeroBigDecimals_i",
                 -3.0002088848452557E17,
                 1.99926999997992,
                 0.9998329999977443
@@ -2268,9 +2219,7 @@ public strictfp class NonIntegerNumericsTest {
         nonzeroBigDecimals_helper(
                 5,
                 3,
-                "[0.0000021, 2.07646E+9, -1.3E+3, -2, 4.1E+3, -5E-12, -3.44E+5, -6E-10, -9.881E+7, -1.2E+10, -1E+3," +
-                " -6E+4, -3.49E+13, -1, 1E+1, 2E+4, 1E+1, -8, 0.002, 6.2, ...]",
-                "{-1=25120, 1=24967, -3=10194, 3=9982, -2=9947, 2=9926, -0.1=9452, 1E+1=9348, -1E+1=9325, 0.1=9264}",
+                "RandomProvider_nonzeroBigDecimals_ii",
                 -3.2241232349714534E39,
                 5.007370000008868,
                 2.996820999991485
@@ -2278,10 +2227,7 @@ public strictfp class NonIntegerNumericsTest {
         nonzeroBigDecimals_helper(
                 32,
                 8,
-                "[-9.899036265412338E+21, -2.25462717E+35, -1.65780717136E+16, -1E+16, 2.883801664E+18, -4.45551E+6," +
-                " 1.5973E+13, 4.372E+5, -80.40, 10, -64835422542184701258153.23736137, -3E+5, 32.38," +
-                " 1.05164088156E+29, 6.261899171E+16, -1E+14, -1.388001050110E+13, 1.0161242E-21, 3.7E-29, 289, ...]",
-                "{-1=1735, 1=1665, -2=876, 2=867, 3=825, -3=807, -1E+1=786, 0.1=785, 1E+1=768, -0.1=737}",
+                "RandomProvider_nonzeroBigDecimals_iii",
                 1.2572425193762147E144,
                 32.00133300002266,
                 8.001691000016947
@@ -2289,16 +2235,7 @@ public strictfp class NonIntegerNumericsTest {
         nonzeroBigDecimals_helper(
                 100,
                 10,
-                "[9.4790976865653102300816908025048767680216168E+58, 4.630900152605E+17, 1.07302372E+19, 1.300E+5," +
-                " 1102076678907027178916829938622163782081261, -1.42361763E+31, -2.7934853437353795793120507739E+29," +
-                " 1.121036E-33, 1307879802.6233, -2.378861914519634593E+23, -1.6636E+5," +
-                " -1.1780491659396320304092245748596897246965E+49, 1.01342E+34," +
-                " 4281825112654693651459071466596876043334654508762035987794871586.861109396215," +
-                " -87894315763.404085565781671205346, 7.802322497623E+38, -3.50516300835593753E+37, 752.585," +
-                " 6.57125105137779066251367372137060396099924931317E+50," +
-                " 1.5713218602914447431492283897880756550610073314504466517671827791587317575567925917482809548" +
-                "E+124, ...]",
-                "{-1=456, 1=424, 0.1=228, 3=228, -0.1=225, 1E+1=222, -1E+1=213, -3=209, -2=209, 2=207}",
+                "RandomProvider_nonzeroBigDecimals_iv",
                 Double.NaN,
                 99.9163349999983,
                 10.004244000004174
@@ -2311,7 +2248,6 @@ public strictfp class NonIntegerNumericsTest {
             int meanUnscaledBitSize,
             int meanScaleSize,
             @NotNull String output,
-            @NotNull String topSampleCount,
             double sampleMean,
             double unscaledBitSizeMean,
             double scaleMean
@@ -2319,7 +2255,6 @@ public strictfp class NonIntegerNumericsTest {
         bigDecimalHelper(
                 P.withScale(meanUnscaledBitSize).withSecondaryScale(meanScaleSize).bigDecimals(),
                 output,
-                topSampleCount,
                 sampleMean,
                 unscaledBitSizeMean,
                 scaleMean
@@ -2342,10 +2277,7 @@ public strictfp class NonIntegerNumericsTest {
         bigDecimals_helper(
                 2,
                 1,
-                "[0.0000013, -1.5E+4, 3, -1.2, -0.01, 1, -5, 0, 0, 5E+2, -0.000053, 0.003, -8.9E+3, 0, 0, -0.019, 0," +
-                " 0E+3, 0, -1, ...]",
-                "{0=166632, 1=55897, -1=55494, 0.0=41797, 0E+1=41557, 0E+2=20993, 0.00=20867, -3=18540, 3=18457," +
-                " 2=18432}",
+                "RandomProvider_bigDecimals_i",
                 -6.179780535515134E14,
                 2.0001599999890485,
                 1.0009719999977271
@@ -2353,10 +2285,7 @@ public strictfp class NonIntegerNumericsTest {
         bigDecimals_helper(
                 5,
                 3,
-                "[0.0000021, 2.304798E+10, -1.3E+3, -1, 2.5E+3, -5E-12, -8.56E+5, -2E-10, -1.04780E+9, -1.2E+10," +
-                " 0E+4, -6E+4, -6.05E+13, 0, 2E+1, 2E+4, 0E+2, -8, 0.001, 6.2, ...]",
-                "{0=41643, -1=17502, 1=17490, 0.0=15636, 0E+1=15578, 0E+2=11658, 0.00=11597, 0.000=8873, 0E+3=8747," +
-                " 2=7280}",
+                "RandomProvider_bigDecimals_ii",
                 -1.606745484001922E40,
                 5.010166000005216,
                 2.995944999991484
@@ -2364,11 +2293,7 @@ public strictfp class NonIntegerNumericsTest {
         bigDecimals_helper(
                 32,
                 8,
-                "[4.69790E+12, 1.65298870766E+28, -2.8E+18, -1.128758E+14, -7.884E+4, 9.4E+10, 1.48E+4, -0.47," +
-                " -1E+6, -97124357730709467551.3, -6.4580E+23, -2.5406601196076549E+17, 1.2571E-24, 6534.8892," +
-                " -0.5007894, 5.0E+10, -1.466398006247E+14, -1.3562E+6, -25246, 1.674206E+27, ...]",
-                "{0=3373, -1=1609, 1=1562, 0.0=1484, 0E+1=1409, 0E+2=1376, 0.00=1326, 0.000=1235, 0E+3=1229," +
-                " 0.0000=999}",
+                "RandomProvider_bigDecimals_iii",
                 -1.0670887202897772E136,
                 32.02927300002175,
                 8.000781000016627
@@ -2376,16 +2301,7 @@ public strictfp class NonIntegerNumericsTest {
         bigDecimals_helper(
                 100,
                 10,
-                "[6.30008861630388057697674146568609443823746152E+59, 4.630900152605E+17, 4.0193508E+18, 7.88E+4," +
-                " 1102076678907027178916829938622163782081261, -7.5252899E+30, -1.8031333123070753593927513947E+29," +
-                " 5.96748E-34, 868075151.5129, -2.378861914519634593E+23, -8.444E+4," +
-                " -3.3558563142336381965748220624230062780149E+49, 2.32414E+34," +
-                " 2472573718321628097965774825836127483127310998361402174678346836.737466745591," +
-                " -87894315763.404085565781671205346, 7.802322497623E+38, -3.50516300835593753E+37, 1801.161," +
-                " 2.91749695805053336700446163957989641185941795573E+50," +
-                " 2.9993448730505813375871128575092481295300716927908377277152633911765951809249090756140387330" +
-                "E+124, ...]",
-                "{0=909, 0.0=439, 1=429, -1=412, 0E+2=402, 0.00=394, 0E+1=355, 0.000=339, 0E+3=325, 0E+4=313}",
+                "RandomProvider_bigDecimals_iv",
                 Double.NaN,
                 99.91854699999466,
                 10.00440500000418
@@ -2398,7 +2314,6 @@ public strictfp class NonIntegerNumericsTest {
             int meanUnscaledBitSize,
             int meanScaleSize,
             @NotNull String output,
-            @NotNull String topSampleCount,
             double sampleMean,
             double unscaledBitSizeMean,
             double scaleMean
@@ -2406,7 +2321,6 @@ public strictfp class NonIntegerNumericsTest {
         bigDecimalHelper(
                 P.withScale(meanUnscaledBitSize).withSecondaryScale(meanScaleSize).positiveCanonicalBigDecimals(),
                 output,
-                topSampleCount,
                 sampleMean,
                 unscaledBitSizeMean,
                 scaleMean
@@ -2429,9 +2343,7 @@ public strictfp class NonIntegerNumericsTest {
         positiveCanonicalBigDecimals_helper(
                 2,
                 1,
-                "[0.005, 7E-8, 0.1, 12, 7, 0.6, 0.01, 0.2, 0.5, 0.1, 0.1, 1, 0.1, 1, 1, 1, 2.5, 0.001, 0.1, 0.1, ...]",
-                "{1=249991, 0.1=124728, 2=62606, 3=62591, 0.01=62142, 0.001=31606, 0.3=31288, 0.2=31004, 5=15796," +
-                " 7=15770}",
+                "RandomProvider_positiveCanonicalBigDecimals_i",
                 6.995086292023604,
                 1.9993349999798273,
                 1.0016879999976924
@@ -2439,10 +2351,7 @@ public strictfp class NonIntegerNumericsTest {
         positiveCanonicalBigDecimals_helper(
                 5,
                 3,
-                "[0.000013, 0.25387, 0.00029, 2, 0.1, 1, 0.000117, 3.44E-11, 0.0001, 2, 1.8073E-7, 320, 28, 0.0014," +
-                " 8797, 46, 30, 0.04, 0.00002, 0.01, ...]",
-                "{1=49969, 0.1=37361, 0.01=28100, 0.001=21268, 2=20017, 3=19806, 0.0001=15587, 0.3=15037, 0.2=14924," +
-                " 0.00001=11705}",
+                "RandomProvider_positiveCanonicalBigDecimals_ii",
                 5.0163406598608475E10,
                 5.010096000008702,
                 2.9996349999914838
@@ -2450,11 +2359,7 @@ public strictfp class NonIntegerNumericsTest {
         positiveCanonicalBigDecimals_helper(
                 32,
                 8,
-                "[4.04936997654063E-17, 3.03219670608E-16, 0.00003, 5.254848612E-8, 0.00969839, 2416.5," +
-                " 0.0000012564, 121.36, 0.018, 16911639184143047868995522284006, 5E-9, 0.005286, 242603041.628," +
-                " 1.4851833763E-9, 3E-8, 0.02487512677886, 235204.68, 6.9E-27, 8.01E-29, 39, ...]",
-                "{1=3543, 0.1=3098, 0.01=2697, 0.001=2426, 0.0001=2127, 0.00001=2023, 2=1696, 3=1678, 0.000001=1641," +
-                " 1E-7=1589}",
+                "RandomProvider_positiveCanonicalBigDecimals_iii",
                 2.1875960862631944E131,
                 32.00952900002345,
                 7.992489000016789
@@ -2462,15 +2367,7 @@ public strictfp class NonIntegerNumericsTest {
         positiveCanonicalBigDecimals_helper(
                 100,
                 10,
-                "[0.000572989721722831798340552401503927, 0.0004630900152605, 187.100459, 1.391E-8," +
-                " 11020766789070271789168299386221637820812.61, 41079721.9, 604019.34935913508416666426308," +
-                " 321818.8, 3.0670984070649E-27, 699054793294702.2497, 0.64652," +
-                " 335585631423363819657482206242300627801.49, 0.000232414," +
-                " 7900327901320824758445664748118373163749341529.563303614027921087108394697463," +
-                " 250153592592617448957.359681493474, 7.802322497623E-9, 6.38746676987305497E-10, 1.801161E-15," +
-                " 88208944088305682602813392107305565097650624.6571," +
-                " 15713218602914447431492283897880756550610073314504466517671827791587317575567925917482809.548, ...]",
-                "{1=948, 0.01=768, 0.1=753, 0.001=692, 0.0001=623, 0.00001=515, 0.000001=515, 1E-7=479, 2=472, 3=456}",
+                "RandomProvider_positiveCanonicalBigDecimals_iv",
                 Double.POSITIVE_INFINITY,
                 99.93904899999788,
                 10.005566000005233
@@ -2483,7 +2380,6 @@ public strictfp class NonIntegerNumericsTest {
             int meanUnscaledBitSize,
             int meanScaleSize,
             @NotNull String output,
-            @NotNull String topSampleCount,
             double sampleMean,
             double unscaledBitSizeMean,
             double scaleMean
@@ -2491,7 +2387,6 @@ public strictfp class NonIntegerNumericsTest {
         bigDecimalHelper(
                 P.withScale(meanUnscaledBitSize).withSecondaryScale(meanScaleSize).negativeCanonicalBigDecimals(),
                 output,
-                topSampleCount,
                 sampleMean,
                 unscaledBitSizeMean,
                 scaleMean
@@ -2514,10 +2409,7 @@ public strictfp class NonIntegerNumericsTest {
         negativeCanonicalBigDecimals_helper(
                 2,
                 1,
-                "[-0.005, -7E-8, -0.1, -12, -7, -0.6, -0.01, -0.2, -0.5, -0.1, -0.1, -1, -0.1, -1, -1, -1, -2.5," +
-                " -0.001, -0.1, -0.1, ...]",
-                "{-1=249991, -0.1=124728, -2=62606, -3=62591, -0.01=62142, -0.001=31606, -0.3=31288, -0.2=31004," +
-                " -5=15796, -7=15770}",
+                "RandomProvider_negativeCanonicalBigDecimals_i",
                 -6.995086292023604,
                 1.9993349999798273,
                 1.0016879999976924
@@ -2525,10 +2417,7 @@ public strictfp class NonIntegerNumericsTest {
         negativeCanonicalBigDecimals_helper(
                 5,
                 3,
-                "[-0.000013, -0.25387, -0.00029, -2, -0.1, -1, -0.000117, -3.44E-11, -0.0001, -2, -1.8073E-7, -320," +
-                " -28, -0.0014, -8797, -46, -30, -0.04, -0.00002, -0.01, ...]",
-                "{-1=49969, -0.1=37361, -0.01=28100, -0.001=21268, -2=20017, -3=19806, -0.0001=15587, -0.3=15037," +
-                " -0.2=14924, -0.00001=11705}",
+                "RandomProvider_negativeCanonicalBigDecimals_ii",
                 -5.0163406598608475E10,
                 5.010096000008702,
                 2.9996349999914838
@@ -2536,12 +2425,7 @@ public strictfp class NonIntegerNumericsTest {
         negativeCanonicalBigDecimals_helper(
                 32,
                 8,
-                "[-4.04936997654063E-17, -3.03219670608E-16, -0.00003, -5.254848612E-8, -0.00969839, -2416.5," +
-                " -0.0000012564, -121.36, -0.018, -16911639184143047868995522284006, -5E-9, -0.005286," +
-                " -242603041.628, -1.4851833763E-9, -3E-8, -0.02487512677886, -235204.68, -6.9E-27, -8.01E-29, -39," +
-                " ...]",
-                "{-1=3543, -0.1=3098, -0.01=2697, -0.001=2426, -0.0001=2127, -0.00001=2023, -2=1696, -3=1678," +
-                " -0.000001=1641, -1E-7=1589}",
+                "RandomProvider_negativeCanonicalBigDecimals_iii",
                 -2.1875960862631944E131,
                 32.00952900002345,
                 7.992489000016789
@@ -2549,17 +2433,7 @@ public strictfp class NonIntegerNumericsTest {
         negativeCanonicalBigDecimals_helper(
                 100,
                 10,
-                "[-0.000572989721722831798340552401503927, -0.0004630900152605, -187.100459, -1.391E-8," +
-                " -11020766789070271789168299386221637820812.61, -41079721.9, -604019.34935913508416666426308," +
-                " -321818.8, -3.0670984070649E-27, -699054793294702.2497, -0.64652," +
-                " -335585631423363819657482206242300627801.49, -0.000232414," +
-                " -7900327901320824758445664748118373163749341529.563303614027921087108394697463," +
-                " -250153592592617448957.359681493474, -7.802322497623E-9, -6.38746676987305497E-10, -1.801161E-15," +
-                " -88208944088305682602813392107305565097650624.6571," +
-                " -15713218602914447431492283897880756550610073314504466517671827791587317575567925917482809.548," +
-                " ...]",
-                "{-1=948, -0.01=768, -0.1=753, -0.001=692, -0.0001=623, -0.00001=515, -0.000001=515, -1E-7=479," +
-                " -2=472, -3=456}",
+                "RandomProvider_negativeCanonicalBigDecimals_iv",
                 Double.NEGATIVE_INFINITY,
                 99.93904899999788,
                 10.005566000005233
@@ -2572,7 +2446,6 @@ public strictfp class NonIntegerNumericsTest {
             int meanUnscaledBitSize,
             int meanScaleSize,
             @NotNull String output,
-            @NotNull String topSampleCount,
             double sampleMean,
             double unscaledBitSizeMean,
             double scaleMean
@@ -2580,7 +2453,6 @@ public strictfp class NonIntegerNumericsTest {
         bigDecimalHelper(
                 P.withScale(meanUnscaledBitSize).withSecondaryScale(meanScaleSize).nonzeroCanonicalBigDecimals(),
                 output,
-                topSampleCount,
                 sampleMean,
                 unscaledBitSizeMean,
                 scaleMean
@@ -2603,9 +2475,7 @@ public strictfp class NonIntegerNumericsTest {
         nonzeroCanonicalBigDecimals_helper(
                 2,
                 1,
-                "[0.005, 7E-7, -1, 0.001, 0.7, 1, 1, 2, 5, 1, -1, -1, -1, -1, 1, 25, 0.01, 1, -1, -0.000009, ...]",
-                "{1=125141, -1=124288, 0.1=62644, -0.1=62522, -3=31390, -2=31337, -0.01=31293, 3=31288, 0.01=31171," +
-                " 2=31110}",
+                "RandomProvider_nonzeroCanonicalBigDecimals_i",
                 2.6687974633912868,
                 2.0000579999799557,
                 1.0015309999976933
@@ -2613,10 +2483,7 @@ public strictfp class NonIntegerNumericsTest {
         nonzeroCanonicalBigDecimals_helper(
                 5,
                 3,
-                "[0.000013, 2.5387, -0.0029, -0.01, 2, -0.00117, -3.44E-10, -0.001, -1, -0.0000018073, -0.0028," +
-                " -1E-9, -0.014, -0.0605, -1E-11, 2, 0.4, 0.0002, 0.1, -0.01, ...]",
-                "{-1=24984, 1=24637, 0.1=18865, -0.1=18659, -0.01=14149, 0.01=14107, 0.001=10462, -0.001=10401," +
-                " 2=10091, -2=9987}",
+                "RandomProvider_nonzeroCanonicalBigDecimals_ii",
                 -7.081594725123083E13,
                 5.008832000008888,
                 2.9996669999914487
@@ -2624,11 +2491,7 @@ public strictfp class NonIntegerNumericsTest {
         nonzeroCanonicalBigDecimals_helper(
                 32,
                 8,
-                "[4.04936997654063E-17, -3.03219670608E-15, -0.00003, -5.254848612E-7, -0.0969839, 2416.5," +
-                " 0.000012564, -121.36, 0.18, -16911639184143047868995522284006, -5E-8, 0.05286, 2426030416.28," +
-                " 1.4851833763E-8, -3E-7, -0.02487512677886, 2352046.8, 6.9E-27, 8.01E-28, -39, ...]",
-                "{1=1812, -1=1753, -0.1=1526, 0.1=1456, 0.01=1382, -0.01=1349, -0.001=1188, 0.001=1171," +
-                " -0.0001=1127, 0.0001=1114}",
+                "RandomProvider_nonzeroCanonicalBigDecimals_iii",
                 2.1875960862631944E131,
                 32.006803000023154,
                 7.998565000016982
@@ -2636,16 +2499,7 @@ public strictfp class NonIntegerNumericsTest {
         nonzeroCanonicalBigDecimals_helper(
                 100,
                 10,
-                "[0.000572989721722831798340552401503927, 0.004630900152605, -1871.00459, 1.391E-8," +
-                " 110207667890702717891682993862216378208126.1, -410797219, -604019.34935913508416666426308," +
-                " 321818.8, 3.0670984070649E-26, -699054793294702.2497, -0.64652," +
-                " -3355856314233638196574822062423006278014.9, 0.000232414," +
-                " 79003279013208247584456647481183731637493415295.63303614027921087108394697463," +
-                " -250153592592617448957.359681493474, 7.802322497623E-9, -6.38746676987305497E-9, 1.801161E-14," +
-                " 882089440883056826028133921073055650976506246.571," +
-                " 157132186029144474314922838978807565506100733145044665176718277915873175755679259174828095.48, ...]",
-                "{-1=450, 1=427, 0.1=421, -0.1=409, -0.01=400, 0.01=357, -0.001=355, 0.001=344, 0.0001=297," +
-                " -0.0001=296}",
+                "RandomProvider_nonzeroCanonicalBigDecimals_iv",
                 Double.NaN,
                 99.93122599999683,
                 10.008305000004126
@@ -2658,7 +2512,6 @@ public strictfp class NonIntegerNumericsTest {
             int meanUnscaledBitSize,
             int meanScaleSize,
             @NotNull String output,
-            @NotNull String topSampleCount,
             double sampleMean,
             double unscaledBitSizeMean,
             double scaleMean
@@ -2666,7 +2519,6 @@ public strictfp class NonIntegerNumericsTest {
         bigDecimalHelper(
                 P.withScale(meanUnscaledBitSize).withSecondaryScale(meanScaleSize).canonicalBigDecimals(),
                 output,
-                topSampleCount,
                 sampleMean,
                 unscaledBitSizeMean,
                 scaleMean
@@ -2689,10 +2541,7 @@ public strictfp class NonIntegerNumericsTest {
         canonicalBigDecimals_helper(
                 2,
                 1,
-                "[0.005, 7E-7, 0, 6, 0.7, -2, 0.2, 6, -13, -1, 0, 0, 2.5, 0.01, -5, -0.000009, -0.00015, -0.9," +
-                " -0.01, 0, ...]",
-                "{0=166144, -0.1=62544, 0.1=62440, 1=55648, -1=55389, 0.01=31366, -0.01=31309, 3=18600, 2=18525," +
-                " -2=18445}",
+                "RandomProvider_canonicalBigDecimals_i",
                 -763.4558908243097,
                 2.0009919999845023,
                 1.0021219999976965
@@ -2700,10 +2549,7 @@ public strictfp class NonIntegerNumericsTest {
         canonicalBigDecimals_helper(
                 5,
                 3,
-                "[0.000013, 2.5387, -0.0029, -0.01, 1, -0.00117, -3.44E-10, -0.001, 0, -1.8073E-7, -0.0028, -1E-9," +
-                " -0.014, -0.0605, -1E-11, 2, 0.4, 0.0002, 0.1, -0.01, ...]",
-                "{0=41405, 0.1=18877, -0.1=18614, 1=17329, -1=17242, -0.01=14144, 0.01=14105, 0.001=10507," +
-                " -0.001=10435, -0.0001=7929}",
+                "RandomProvider_canonicalBigDecimals_ii",
                 1.0252835941140206E14,
                 5.008561000007895,
                 3.000018999991451
@@ -2711,11 +2557,7 @@ public strictfp class NonIntegerNumericsTest {
         canonicalBigDecimals_helper(
                 32,
                 8,
-                "[4.04936997654063E-17, -3.03219670608E-15, -0.00003, -5.254848612E-7, -0.0969839, 2416.5," +
-                " 0.000012564, -121.36, 0.18, -97522628338787590093079, 24260304162.8, 1.4851833763E-8, -3E-7," +
-                " -0.02487512677886, 2352046.8, 6.9E-27, 8.01E-28, -2910742, 0.0003541, 1E-8, ...]",
-                "{0=3437, 1=1624, -1=1604, -0.1=1524, 0.1=1473, 0.01=1378, -0.01=1336, -0.001=1203, 0.001=1162," +
-                " -0.0001=1119}",
+                "RandomProvider_canonicalBigDecimals_iii",
                 -6.239390326218754E113,
                 32.01280800002317,
                 8.001077000016947
@@ -2723,15 +2565,7 @@ public strictfp class NonIntegerNumericsTest {
         canonicalBigDecimals_helper(
                 100,
                 10,
-                "[0.000572989721722831798340552401503927, 0.004630900152605, -1871.00459, 1.391E-8," +
-                " 110207667890702717891682993862216378208126.1, -142361763, -604019.34935913508416666426308," +
-                " 321818.8, 3.0670984070649E-26, -699054793294702.2497, -0.64652," +
-                " -3355856314233638196574822062423006278014.9, 0.000232414," +
-                " 79003279013208247584456647481183731637493415295.63303614027921087108394697463," +
-                " -250153592592617448957.359681493474, 7.802322497623E-9, -6.38746676987305497E-9, 1.801161E-14," +
-                " 882089440883056826028133921073055650976506246.571," +
-                " 157132186029144474314922838978807565506100733145044665176718277915873175755679259174828095.48, ...]",
-                "{0=872, -1=492, 1=469, 0.1=423, -0.1=413, -0.01=397, 0.01=357, -0.001=352, 0.001=344, -0.0001=298}",
+                "RandomProvider_canonicalBigDecimals_iv",
                 Double.NaN,
                 99.93086299999682,
                 10.008105000004125
@@ -2745,7 +2579,6 @@ public strictfp class NonIntegerNumericsTest {
             int secondaryScale,
             @NotNull String a,
             @NotNull String output,
-            @NotNull String topSampleCount,
             double sampleMean,
             double unscaledBitSizeMean,
             double scaleMean
@@ -2753,7 +2586,6 @@ public strictfp class NonIntegerNumericsTest {
         bigDecimalHelper(
                 P.withScale(scale).withSecondaryScale(secondaryScale).rangeUp(Readers.readBigDecimal(a).get()),
                 output,
-                topSampleCount,
                 sampleMean,
                 unscaledBitSizeMean,
                 scaleMean
@@ -2781,10 +2613,7 @@ public strictfp class NonIntegerNumericsTest {
                 2,
                 1,
                 "0",
-                "[0.0050000000, 0.04, 0.0010, 0.060, 1, 0.01, 0, 3.00, 0, 0.010, 0E+3, 0.0, 0E+3, 1.00, 1.0, 0E+1," +
-                " 0, 0.010, 0, 0.02, ...]",
-                "{0=142898, 0.1=53939, 1=47402, 0.0=35927, 0E+1=35743, 0.10=26605, 0.01=26502, 1.0=24115," +
-                " 0E+2=17760, 0.00=17699}",
+                "RandomProvider_rangeUp_BigDecimal_i",
                 4494.6230398148555,
                 3.9558340000009817,
                 1.8595289999882512
@@ -2793,11 +2622,7 @@ public strictfp class NonIntegerNumericsTest {
                 5,
                 3,
                 "0",
-                "[0.0000130000, 0.0090030000, 0, 0E-11, 2.0, 2.0000, 0.1, 1.000, 0.00140, 0.000800000000," +
-                " 4.56500000000000000, 2, 0.9, 2.00000000000000000E-13, 0.000100000, 0.30000, 12.6000, 0.00060," +
-                " 0.0100, 0.25000000, ...]",
-                "{0=20179, 0.1=8947, 1=8287, 0E+1=7546, 0.0=7379, 0.01=6731, 0.10=6717, 1.0=6191, 0.00=5575," +
-                " 0E+2=5513}",
+                "RandomProvider_rangeUp_BigDecimal_ii",
                 1.3254633226393647E14,
                 13.827922999990745,
                 5.872869000007163
@@ -2806,13 +2631,7 @@ public strictfp class NonIntegerNumericsTest {
                 32,
                 8,
                 "0",
-                "[4.0493699765406300000000000000000000000000E-17, 2416.5000000000, 0.18," +
-                " 180547618411867370588.2748088000000000, 76448.5400, 0.00000148518337630000000," +
-                " 2352046.80000000000000000000000000000, 22222723878.730960000, 1.60161406000000000000000000000," +
-                " 4.16666200000E-8, 109590.1908685744217951578289, 0.0000050000000000000000, 784415066.00," +
-                " 284001.000000000000000000, 1.70605244111048790E-14, 0.00075000, 2.900000000E-18," +
-                " 0.00142577220000000000, 8.5730000000000000000000000000000000000, 13908417840098258750.12656, ...]",
-                "{0=761, 0.0=367, 1=362, 0E+1=333, 1.0=331, 0.1=329, 0.10=317, 0.01=313, 1.00=286, 0E+2=279}",
+                "RandomProvider_rangeUp_BigDecimal_iii",
                 4.18021886093211E113,
                 58.30837600001352,
                 15.959809999995937
@@ -2821,10 +2640,7 @@ public strictfp class NonIntegerNumericsTest {
                 2,
                 1,
                 "0.0",
-                "[0.0050000000, 0.04, 0.0010, 0.060, 1, 0.01, 0, 3.00, 0, 0.010, 0E+3, 0.0, 0E+3, 1.00, 1.0, 0E+1," +
-                " 0, 0.010, 0, 0.02, ...]",
-                "{0=142898, 0.1=53939, 1=47402, 0.0=35927, 0E+1=35743, 0.10=26605, 0.01=26502, 1.0=24115," +
-                " 0E+2=17760, 0.00=17699}",
+                "RandomProvider_rangeUp_BigDecimal_iv",
                 4494.6230398148555,
                 3.9558340000009817,
                 1.8595289999882512
@@ -2833,11 +2649,7 @@ public strictfp class NonIntegerNumericsTest {
                 5,
                 3,
                 "0.0",
-                "[0.0000130000, 0.0090030000, 0, 0E-11, 2.0, 2.0000, 0.1, 1.000, 0.00140, 0.000800000000," +
-                " 4.56500000000000000, 2, 0.9, 2.00000000000000000E-13, 0.000100000, 0.30000, 12.6000, 0.00060," +
-                " 0.0100, 0.25000000, ...]",
-                "{0=20179, 0.1=8947, 1=8287, 0E+1=7546, 0.0=7379, 0.01=6731, 0.10=6717, 1.0=6191, 0.00=5575," +
-                " 0E+2=5513}",
+                "RandomProvider_rangeUp_BigDecimal_v",
                 1.3254633226393647E14,
                 13.827922999990745,
                 5.872869000007163
@@ -2846,13 +2658,7 @@ public strictfp class NonIntegerNumericsTest {
                 32,
                 8,
                 "0.0",
-                "[4.0493699765406300000000000000000000000000E-17, 2416.5000000000, 0.18," +
-                " 180547618411867370588.2748088000000000, 76448.5400, 0.00000148518337630000000," +
-                " 2352046.80000000000000000000000000000, 22222723878.730960000, 1.60161406000000000000000000000," +
-                " 4.16666200000E-8, 109590.1908685744217951578289, 0.0000050000000000000000, 784415066.00," +
-                " 284001.000000000000000000, 1.70605244111048790E-14, 0.00075000, 2.900000000E-18," +
-                " 0.00142577220000000000, 8.5730000000000000000000000000000000000, 13908417840098258750.12656, ...]",
-                "{0=761, 0.0=367, 1=362, 0E+1=333, 1.0=331, 0.1=329, 0.10=317, 0.01=313, 1.00=286, 0E+2=279}",
+                "RandomProvider_rangeUp_BigDecimal_vi",
                 4.18021886093211E113,
                 58.30837600001352,
                 15.959809999995937
@@ -2861,10 +2667,7 @@ public strictfp class NonIntegerNumericsTest {
                 2,
                 1,
                 "1",
-                "[1.0050000000, 1.04, 1.0010, 1.060, 2, 1.01, 1, 6.00, 1, 1.000, 1, 1.0, 1.100, 1, 2.00, 2.0, 1.0," +
-                " 1, 1.0, 1.02, ...]",
-                "{1=143066, 1.0=71565, 1.1=53796, 2=47223, 1.00=35476, 1.01=26881, 1.10=26765, 2.0=23894," +
-                " 1.000=17826, 3=15821}",
+                "RandomProvider_rangeUp_BigDecimal_vii",
                 1385.5639559372435,
                 7.622173999998321,
                 1.8598829999882969
@@ -2873,11 +2676,7 @@ public strictfp class NonIntegerNumericsTest {
                 5,
                 3,
                 "1",
-                "[1.0000130000, 1.0090030000, 1, 26.00, 1.00000000000, 3.0, 3.0000, 1.1, 2.000, 1.00140," +
-                " 1.000800000000, 5.56500000000000000, 3, 1.9, 1.000000000000200000000000000000, 1.000100000," +
-                " 1.30000, 13.6000, 1.00060, 1.0100, ...]",
-                "{1=20050, 1.0=14979, 1.00=11085, 1.1=8894, 1.000=8460, 2=8311, 1.10=6736, 1.01=6731, 2.0=6216," +
-                " 1.0000=6179}",
+                "RandomProvider_rangeUp_BigDecimal_viii",
                 1.3255156090700816E14,
                 21.815920999973557,
                 5.873468000007206
@@ -2886,15 +2685,7 @@ public strictfp class NonIntegerNumericsTest {
                 32,
                 8,
                 "1",
-                "[1.000000000000000040493699765406300000000000000000000000000, 2417.5000000000, 1.18," +
-                " 180547618411867370589.2748088000000000, 76449.5400, 1.00000148518337630000000," +
-                " 2352047.80000000000000000000000000000, 22222723879.730960000, 2.60161406000000000000000000000," +
-                " 1.0000000416666200000, 109591.1908685744217951578289, 1.0000050000000000000000, 784415067.00," +
-                " 284002.000000000000000000, 1.0000000000000170605244111048790, 1.00075000," +
-                " 1.000000000000000002900000000, 1.00142577220000000000, 9.5730000000000000000000000000000000000," +
-                " 13908417840098258751.12656, ...]",
-                "{1=759, 1.0=701, 1.00=556, 1.000=506, 1.0000=460, 1.00000=403, 1.000000=364, 2=362, 2.0=331," +
-                " 1.1=329}",
+                "RandomProvider_rangeUp_BigDecimal_ix",
                 4.18021886093211E113,
                 71.05169100002996,
                 15.959081999996279
@@ -2903,10 +2694,7 @@ public strictfp class NonIntegerNumericsTest {
                 2,
                 1,
                 "-1",
-                "[-0.9950000000, -0.96, -0.9990, -0.940, 0, -0.9, -1, 4.00, -1, -1.000, -1, -1.0, -0.900, -1, 0E+2," +
-                " -0.90, -1.0, -1, -1.0, -0.98, ...]",
-                "{-1=143309, -1.0=71581, -0.9=53722, 0=47163, -1.00=35534, -0.99=26886, -0.90=26730, -1.000=17908," +
-                " 1=15828, 2=15721}",
+                "RandomProvider_rangeUp_BigDecimal_x",
                 3211.5313539618583,
                 6.861828000004236,
                 1.8599939999883222
@@ -2915,11 +2703,7 @@ public strictfp class NonIntegerNumericsTest {
                 5,
                 3,
                 "-1",
-                "[-0.9999870000, -0.9909970000, -1, 24.00, -1.00000000000, 1.0, 1.0000, -0.9, 0.000, -0.9860," +
-                " -0.999200000000, 3.56500000000000000, 1, -0.1, -0.999999999999800000000000000000, -0.999900000," +
-                " -0.70000, 11.6000, -0.99940, -0.9900, ...]",
-                "{-1=20079, -1.0=14983, -1.00=11090, -0.9=8875, -1.000=8461, 0=8331, -0.90=6748, -0.99=6736," +
-                " -1.0000=6196, -0.990=5084}",
+                "RandomProvider_rangeUp_BigDecimal_xi",
                 1.3255142240731088E14,
                 21.0937569999323,
                 5.872534000007241
@@ -2928,15 +2712,7 @@ public strictfp class NonIntegerNumericsTest {
                 32,
                 8,
                 "-1",
-                "[-0.999999999999999959506300234593700000000000000000000000000, 2415.5000000000, -0.82," +
-                " 180547618411867370587.2748088000000000, 76447.5400, -0.99999851481662370000000," +
-                " 2352045.80000000000000000000000000000, 22222723877.730960000, 0.60161406000000000000000000000," +
-                " -0.9999999583333800000, 109589.1908685744217951578289, -0.9999950000000000000000, 784415065.00," +
-                " 284000.000000000000000, -0.9999999999999829394755888951210, -0.99925000," +
-                " -0.999999999999999997100000000, -0.99857422780000000000, 7.5730000000000000000000000000000000000," +
-                " 13908417840098258749.12656, ...]",
-                "{-1=760, -1.0=701, -1.00=556, -1.000=507, -1.0000=459, -1.00000=404, -1.000000=363, 0=362," +
-                " -0.9=329, -1.0000000=321}",
+                "RandomProvider_rangeUp_BigDecimal_xii",
                 4.18021886093211E113,
                 70.8140910000301,
                 15.95903799999594
@@ -2945,10 +2721,7 @@ public strictfp class NonIntegerNumericsTest {
                 2,
                 1,
                 "1.0",
-                "[1.0050000000, 1.04, 1.0010, 1.060, 2, 1.01, 1, 6.00, 1, 1.000, 1, 1.0, 1.100, 1, 2.00, 2.0, 1.0," +
-                " 1, 1.0, 1.02, ...]",
-                "{1=143066, 1.0=71565, 1.1=53796, 2=47223, 1.00=35476, 1.01=26881, 1.10=26765, 2.0=23894," +
-                " 1.000=17826, 3=15821}",
+                "RandomProvider_rangeUp_BigDecimal_xiii",
                 1385.5639559372435,
                 7.622173999998321,
                 1.8598829999882969
@@ -2957,11 +2730,7 @@ public strictfp class NonIntegerNumericsTest {
                 5,
                 3,
                 "1.0",
-                "[1.0000130000, 1.0090030000, 1, 26.00, 1.00000000000, 3.0, 3.0000, 1.1, 2.000, 1.00140," +
-                " 1.000800000000, 5.56500000000000000, 3, 1.9, 1.000000000000200000000000000000, 1.000100000," +
-                " 1.30000, 13.6000, 1.00060, 1.0100, ...]",
-                "{1=20050, 1.0=14979, 1.00=11085, 1.1=8894, 1.000=8460, 2=8311, 1.10=6736, 1.01=6731, 2.0=6216," +
-                " 1.0000=6179}",
+                "RandomProvider_rangeUp_BigDecimal_xiv",
                 1.3255156090700816E14,
                 21.815920999973557,
                 5.873468000007206
@@ -2970,15 +2739,7 @@ public strictfp class NonIntegerNumericsTest {
                 32,
                 8,
                 "1.0",
-                "[1.000000000000000040493699765406300000000000000000000000000, 2417.5000000000, 1.18," +
-                " 180547618411867370589.2748088000000000, 76449.5400, 1.00000148518337630000000," +
-                " 2352047.80000000000000000000000000000, 22222723879.730960000, 2.60161406000000000000000000000," +
-                " 1.0000000416666200000, 109591.1908685744217951578289, 1.0000050000000000000000, 784415067.00," +
-                " 284002.000000000000000000, 1.0000000000000170605244111048790, 1.00075000," +
-                " 1.000000000000000002900000000, 1.00142577220000000000, 9.5730000000000000000000000000000000000," +
-                " 13908417840098258751.12656, ...]",
-                "{1=759, 1.0=701, 1.00=556, 1.000=506, 1.0000=460, 1.00000=403, 1.000000=364, 2=362, 2.0=331," +
-                " 1.1=329}",
+                "RandomProvider_rangeUp_BigDecimal_xv",
                 4.18021886093211E113,
                 71.05169100002996,
                 15.959081999996279
@@ -2987,10 +2748,7 @@ public strictfp class NonIntegerNumericsTest {
                 2,
                 1,
                 "-1.0",
-                "[-0.9950000000, -0.96, -0.9990, -0.940, 0, -0.9, -1, 4.00, -1, -1.000, -1, -1.0, -0.900, -1, 0E+2," +
-                " -0.90, -1.0, -1, -1.0, -0.98, ...]",
-                "{-1=143309, -1.0=71581, -0.9=53722, 0=47163, -1.00=35534, -0.99=26886, -0.90=26730, -1.000=17908," +
-                " 1=15828, 2=15721}",
+                "RandomProvider_rangeUp_BigDecimal_xvi",
                 3211.5313539618583,
                 6.861828000004236,
                 1.8599939999883222
@@ -2999,11 +2757,7 @@ public strictfp class NonIntegerNumericsTest {
                 5,
                 3,
                 "-1.0",
-                "[-0.9999870000, -0.9909970000, -1, 24.00, -1.00000000000, 1.0, 1.0000, -0.9, 0.000, -0.9860," +
-                " -0.999200000000, 3.56500000000000000, 1, -0.1, -0.999999999999800000000000000000, -0.999900000," +
-                " -0.70000, 11.6000, -0.99940, -0.9900, ...]",
-                "{-1=20079, -1.0=14983, -1.00=11090, -0.9=8875, -1.000=8461, 0=8331, -0.90=6748, -0.99=6736," +
-                " -1.0000=6196, -0.990=5084}",
+                "RandomProvider_rangeUp_BigDecimal_xvii",
                 1.3255142240731088E14,
                 21.0937569999323,
                 5.872534000007241
@@ -3012,15 +2766,7 @@ public strictfp class NonIntegerNumericsTest {
                 32,
                 8,
                 "-1.0",
-                "[-0.999999999999999959506300234593700000000000000000000000000, 2415.5000000000, -0.82," +
-                " 180547618411867370587.2748088000000000, 76447.5400, -0.99999851481662370000000," +
-                " 2352045.80000000000000000000000000000, 22222723877.730960000, 0.60161406000000000000000000000," +
-                " -0.9999999583333800000, 109589.1908685744217951578289, -0.9999950000000000000000, 784415065.00," +
-                " 284000.000000000000000, -0.9999999999999829394755888951210, -0.99925000," +
-                " -0.999999999999999997100000000, -0.99857422780000000000, 7.5730000000000000000000000000000000000," +
-                " 13908417840098258749.12656, ...]",
-                "{-1=760, -1.0=701, -1.00=556, -1.000=507, -1.0000=459, -1.00000=404, -1.000000=363, 0=362," +
-                " -0.9=329, -1.0000000=321}",
+                "RandomProvider_rangeUp_BigDecimal_xviii",
                 4.18021886093211E113,
                 70.8140910000301,
                 15.95903799999594
@@ -3029,10 +2775,7 @@ public strictfp class NonIntegerNumericsTest {
                 2,
                 1,
                 "9",
-                "[9.0050000000, 9.04, 9.0010, 9.060, 1E+1, 9.01, 9, 14.00, 9, 9.000, 9, 9.0, 9.100, 9, 10.0, 10," +
-                " 9.0, 9, 9.0, 9.02, ...]",
-                "{9=143066, 9.0=71565, 9.1=53796, 1E+1=47223, 9.00=35476, 9.01=26881, 9.10=26765, 10=23894," +
-                " 9.000=17826, 11=15821}",
+                "RandomProvider_rangeUp_BigDecimal_xix",
                 1393.5639559349913,
                 9.880917999979038,
                 1.8592359999871946
@@ -3041,11 +2784,7 @@ public strictfp class NonIntegerNumericsTest {
                 5,
                 3,
                 "9",
-                "[9.0000130000, 9.0090030000, 9, 34.00, 9.00000000000, 11.0, 11.0000, 9.1, 10.00, 9.00140," +
-                " 9.000800000000, 13.56500000000000000, 11, 9.9, 9.000000000000200000000000000000, 9.000100000," +
-                " 9.30000, 21.6000, 9.00060, 9.0100, ...]",
-                "{9=20050, 9.0=14979, 9.00=11085, 9.1=8894, 9.000=8460, 1E+1=8311, 9.10=6736, 9.01=6731, 10=6216," +
-                " 9.0000=6179}",
+                "RandomProvider_rangeUp_BigDecimal_xx",
                 1.3255156090701044E14,
                 24.11267099993038,
                 5.856708000007621
@@ -3054,15 +2793,7 @@ public strictfp class NonIntegerNumericsTest {
                 32,
                 8,
                 "9",
-                "[9.000000000000000040493699765406300000000000000000000000000, 2425.5000000000, 9.18," +
-                " 180547618411867370597.2748088000000000, 76457.5400, 9.00000148518337630000000," +
-                " 2352055.80000000000000000000000000000, 22222723887.730960000, 10.60161406000000000000000000000," +
-                " 9.0000000416666200000, 109599.1908685744217951578289, 9.0000050000000000000000, 784415075.00," +
-                " 284010.00000000000000000, 9.0000000000000170605244111048790, 9.00075000," +
-                " 9.000000000000000002900000000, 9.00142577220000000000, 17.5730000000000000000000000000000000000," +
-                " 13908417840098258759.12656, ...]",
-                "{9=759, 9.0=701, 9.00=556, 9.000=506, 9.0000=460, 9.00000=403, 9.000000=364, 1E+1=362, 10=331," +
-                " 9.1=329}",
+                "RandomProvider_rangeUp_BigDecimal_xxi",
                 4.18021886093211E113,
                 72.54750000002102,
                 15.956679999995899
@@ -3071,10 +2802,7 @@ public strictfp class NonIntegerNumericsTest {
                 2,
                 1,
                 "-9",
-                "[-8.9950000000, -8.96, -8.9990, -8.940, -8, -8.99, -9, -4.00, -9, -9.000, -9, -9.0, -8.900, -9," +
-                " -8.00, -8.0, -9.0, -9, -9.0, -8.98, ...]",
-                "{-9=143083, -9.0=71532, -8.9=53760, -8=47248, -9.00=35506, -8.99=26881, -8.90=26747, -8.0=23909," +
-                " -9.000=17821, -7=15816}",
+                "RandomProvider_rangeUp_BigDecimal_xxii",
                 1378.9562815626282,
                 9.876909999983395,
                 1.8597449999883424
@@ -3083,11 +2811,7 @@ public strictfp class NonIntegerNumericsTest {
                 5,
                 3,
                 "-9",
-                "[-8.9999870000, -8.9909970000, -9, 16.00, -9.00000000000, -7.0, -7.0000, -8.9, -8.000, -8.99860," +
-                " -8.999200000000, -4.43500000000000000, -7, -8.1, -8.999999999999800000000000000000, -8.999900000," +
-                " -8.70000, 3.6000, -8.99940, -8.9900, ...]",
-                "{-9=20051, -9.0=14976, -9.00=11083, -8.9=8895, -9.000=8470, -8=8308, -8.99=6744, -8.90=6738," +
-                " -8.0=6218, -9.0000=6179}",
+                "RandomProvider_rangeUp_BigDecimal_xxiii",
                 1.3255156101085684E14,
                 23.87646199989173,
                 5.874416000007179
@@ -3096,15 +2820,7 @@ public strictfp class NonIntegerNumericsTest {
                 32,
                 8,
                 "-9",
-                "[-8.999999999999999959506300234593700000000000000000000000000, 2407.5000000000, -8.82," +
-                " 180547618411867370579.2748088000000000, 76439.5400, -8.99999851481662370000000," +
-                " 2352037.80000000000000000000000000000, 22222723869.730960000, -7.39838594000000000000000000000," +
-                " -8.9999999583333800000, 109581.1908685744217951578289, -8.9999950000000000000000, 784415057.00," +
-                " 283992.000000000000000000, -8.9999999999999829394755888951210, -8.99925000," +
-                " -8.999999999999999997100000000, -8.99857422780000000000, -0.4270000000000000000000000000000000000," +
-                " 13908417840098258741.12656, ...]",
-                "{-9=759, -9.0=701, -9.00=556, -9.000=506, -9.0000=460, -9.00000=403, -9.000000=364, -8=362," +
-                " -8.0=331, -8.9=329}",
+                "RandomProvider_rangeUp_BigDecimal_xxiv",
                 4.18021886093211E113,
                 72.39022300002145,
                 15.95933799999627
@@ -3113,10 +2829,7 @@ public strictfp class NonIntegerNumericsTest {
                 2,
                 1,
                 "10",
-                "[10.0050000000, 10.04, 10.0010, 10.060, 11, 10.01, 1E+1, 15.00, 1E+1, 10.00, 1E+1, 10, 10.100," +
-                " 1E+1, 11.00, 11.0, 10, 1E+1, 10, 10.02, ...]",
-                "{1E+1=143066, 10=71565, 10.1=53796, 11=47223, 10.0=35476, 10.01=26881, 10.10=26765, 11.0=23894," +
-                " 10.00=17826, 12=15821}",
+                "RandomProvider_rangeUp_BigDecimal_xxv",
                 1394.5639559317256,
                 9.344789999982071,
                 1.8601429999848516
@@ -3125,11 +2838,7 @@ public strictfp class NonIntegerNumericsTest {
                 5,
                 3,
                 "10",
-                "[10.0000130000, 10.0090030000, 1E+1, 35.00, 10.0000000000, 12.0, 12.0000, 10.1, 11.000, 10.00140," +
-                " 10.000800000000, 14.56500000000000000, 12, 10.9, 10.000000000000200000000000000000, 10.000100000," +
-                " 10.30000, 22.6000, 10.00060, 10.0100, ...]",
-                "{1E+1=20050, 10=14979, 10.0=11085, 10.1=8894, 10.00=8460, 11=8311, 10.10=6736, 10.01=6731," +
-                " 11.0=6216, 10.000=6179}",
+                "RandomProvider_rangeUp_BigDecimal_xxvi",
                 1.3255156090701067E14,
                 24.027310999942575,
                 5.833906000008166
@@ -3138,15 +2847,7 @@ public strictfp class NonIntegerNumericsTest {
                 32,
                 8,
                 "10",
-                "[10.000000000000000040493699765406300000000000000000000000000, 2426.5000000000, 10.18," +
-                " 180547618411867370598.2748088000000000, 76458.5400, 10.00000148518337630000000," +
-                " 2352056.80000000000000000000000000000, 22222723888.730960000, 11.60161406000000000000000000000," +
-                " 10.0000000416666200000, 109600.1908685744217951578289, 10.0000050000000000000000, 784415076.00," +
-                " 284011.000000000000000000, 10.0000000000000170605244111048790, 10.00075000," +
-                " 10.000000000000000002900000000, 10.00142577220000000000, 18.5730000000000000000000000000000000000," +
-                " 13908417840098258760.12656, ...]",
-                "{1E+1=759, 10=701, 10.0=556, 10.00=506, 10.000=460, 10.0000=403, 10.00000=364, 11=362, 11.0=331," +
-                " 10.1=329}",
+                "RandomProvider_rangeUp_BigDecimal_xxvii",
                 4.18021886093211E113,
                 72.6158040000279,
                 15.954095999995749
@@ -3155,10 +2856,7 @@ public strictfp class NonIntegerNumericsTest {
                 2,
                 1,
                 "-10",
-                "[-9.9950000000, -9.96, -9.9990, -9.940, -9, -9.99, -1E+1, -5.00, -1E+1, -10.00, -1E+1, -10, -9.900," +
-                " -1E+1, -9.00, -9.0, -10, -1E+1, -10, -9.98, ...]",
-                "{-1E+1=143116, -10=71551, -9.9=53806, -9=47211, -10.0=35447, -9.99=26881, -9.90=26772, -9.0=23886," +
-                " -10.00=17821, -8=15836}",
+                "RandomProvider_rangeUp_BigDecimal_xxviii",
                 1371.5161272222995,
                 9.041028999984173,
                 1.8600609999848983
@@ -3167,11 +2865,7 @@ public strictfp class NonIntegerNumericsTest {
                 5,
                 3,
                 "-10",
-                "[-9.9999870000, -9.9909970000, -1E+1, 15.00, -10.0000000000, -8.0, -8.0000, -9.9, -9.000, -9.99860," +
-                " -9.999200000000, -5.43500000000000000, -8, -9.1, -9.999999999999800000000000000000, -9.999900000," +
-                " -9.70000, 2.6000, -9.99940, -9.9900, ...]",
-                "{-1E+1=20056, -10=14969, -10.0=11080, -9.9=8899, -10.00=8454, -9=8307, -9.90=6733, -9.99=6731," +
-                " -9.0=6224, -10.000=6186}",
+                "RandomProvider_rangeUp_BigDecimal_xxix",
                 1.3255156078209173E14,
                 23.679469999889513,
                 5.835174000008125
@@ -3180,15 +2874,7 @@ public strictfp class NonIntegerNumericsTest {
                 32,
                 8,
                 "-10",
-                "[-9.999999999999999959506300234593700000000000000000000000000, 2406.5000000000, -9.82," +
-                " 180547618411867370578.2748088000000000, 76438.5400, -9.99999851481662370000000," +
-                " 2352036.80000000000000000000000000000, 22222723868.730960000, -8.39838594000000000000000000000," +
-                " -9.9999999583333800000, 109580.1908685744217951578289, -9.9999950000000000000000, 784415056.00," +
-                " 283991.000000000000000000, -9.9999999999999829394755888951210, -9.99925000," +
-                " -9.999999999999999997100000000, -9.99857422780000000000, -1.4270000000000000000000000000000000000," +
-                " 13908417840098258740.12656, ...]",
-                "{-1E+1=758, -10=701, -10.0=556, -10.00=506, -10.000=460, -10.0000=403, -10.00000=363, -9=362," +
-                " -9.0=331, -9.9=329}",
+                "RandomProvider_rangeUp_BigDecimal_xxx",
                 4.18021886093211E113,
                 72.45249300002985,
                 15.954258999995814
@@ -3197,10 +2883,7 @@ public strictfp class NonIntegerNumericsTest {
                 2,
                 1,
                 "101",
-                "[101.0050000000, 101.04, 101.0010, 101.060, 102, 101.01, 101, 106.00, 101, 101.000, 101, 101.0," +
-                " 101.100, 101, 102.00, 102.0, 101.0, 101, 101.0, 101.02, ...]",
-                "{101=143066, 101.0=71565, 101.1=53796, 102=47223, 101.00=35476, 101.01=26881, 101.10=26765," +
-                " 102.0=23894, 101.000=17826, 103=15821}",
+                "RandomProvider_rangeUp_BigDecimal_xxxi",
                 1485.5639559341907,
                 13.261434999963267,
                 1.8598879999882962
@@ -3209,11 +2892,7 @@ public strictfp class NonIntegerNumericsTest {
                 5,
                 3,
                 "101",
-                "[101.0000130000, 101.0090030000, 101, 126.00, 101.00000000000, 103.0, 103.0000, 101.1, 102.000," +
-                " 101.00140, 101.000800000000, 105.56500000000000000, 103, 101.9," +
-                " 101.000000000000200000000000000000, 101.000100000, 101.30000, 113.6000, 101.00060, 101.0100, ...]",
-                "{101=20050, 101.0=14979, 101.00=11085, 101.1=8894, 101.000=8460, 102=8311, 101.10=6736," +
-                " 101.01=6731, 102.0=6216, 101.0000=6179}",
+                "RandomProvider_rangeUp_BigDecimal_xxxii",
                 1.3255156090703184E14,
                 27.119858999869805,
                 5.873467000007205
@@ -3222,15 +2901,7 @@ public strictfp class NonIntegerNumericsTest {
                 32,
                 8,
                 "101",
-                "[101.000000000000000040493699765406300000000000000000000000000, 2517.5000000000, 101.18," +
-                " 180547618411867370689.2748088000000000, 76549.5400, 101.00000148518337630000000," +
-                " 2352147.80000000000000000000000000000, 22222723979.730960000, 102.60161406000000000000000000000," +
-                " 101.0000000416666200000, 109691.1908685744217951578289, 101.0000050000000000000000, 784415167.00," +
-                " 284102.000000000000000000, 101.0000000000000170605244111048790, 101.00075000," +
-                " 101.000000000000000002900000000, 101.00142577220000000000," +
-                " 109.5730000000000000000000000000000000000, 13908417840098258851.12656, ...]",
-                "{101=759, 101.0=701, 101.00=556, 101.000=506, 101.0000=460, 101.00000=403, 101.000000=364, 102=362," +
-                " 102.0=331, 101.1=329}",
+                "RandomProvider_rangeUp_BigDecimal_xxxiii",
                 4.18021886093211E113,
                 74.39138300003185,
                 15.959073999996285
@@ -3239,10 +2910,7 @@ public strictfp class NonIntegerNumericsTest {
                 2,
                 1,
                 "-101",
-                "[-100.9950000000, -100.96, -100.9990, -100.940, -1E+2, -100.99, -101, -96.00, -101, -101.000, -101," +
-                " -101.0, -100.900, -101, -100, -1.0E+2, -101.0, -101, -101.0, -100.98, ...]",
-                "{-101=143062, -101.0=71569, -100.9=53802, -1E+2=47221, -101.00=35483, -100.99=26881, -100.90=26764," +
-                " -1.0E+2=23895, -101.000=17823, -99=15820}",
+                "RandomProvider_rangeUp_BigDecimal_xxxiv",
                 1283.5659129612752,
                 12.548057999941495,
                 1.9062969999885824
@@ -3251,12 +2919,7 @@ public strictfp class NonIntegerNumericsTest {
                 5,
                 3,
                 "-101",
-                "[-100.9999870000, -100.9909970000, -101, -76.00, -101.00000000000, -99.0, -99.0000, -100.9, -100.0," +
-                " -100.99860, -100.999200000000, -96.43500000000000000, -99, -100.1," +
-                " -100.999999999999800000000000000000, -100.999900000, -100.70000, -88.4000, -100.99940, -100.9900," +
-                " ...]",
-                "{-101=20049, -101.0=14983, -101.00=11083, -100.9=8895, -101.000=8462, -1E+2=8310, -100.90=6737," +
-                " -100.99=6728, -1.0E+2=6215, -101.0000=6179}",
+                "RandomProvider_rangeUp_BigDecimal_xxxv",
                 1.3255156090699792E14,
                 26.704327999833442,
                 5.8527580000076265
@@ -3265,15 +2928,7 @@ public strictfp class NonIntegerNumericsTest {
                 32,
                 8,
                 "-101",
-                "[-100.999999999999999959506300234593700000000000000000000000000, 2315.5000000000, -100.82," +
-                " 180547618411867370487.2748088000000000, 76347.5400, -100.99999851481662370000000," +
-                " 2351945.80000000000000000000000000000, 22222723777.730960000, -99.39838594000000000000000000000," +
-                " -100.9999999583333800000, 109489.1908685744217951578289, -100.9999950000000000000000," +
-                " 784414965.00, 283900.0000000000000000, -100.9999999999999829394755888951210, -100.99925000," +
-                " -100.999999999999999997100000000, -100.99857422780000000000," +
-                " -92.4270000000000000000000000000000000000, 13908417840098258649.12656, ...]",
-                "{-101=759, -101.0=701, -101.00=556, -101.000=506, -101.0000=460, -101.00000=403, -101.000000=364," +
-                " -1E+2=362, -1.0E+2=331, -100.9=329}",
+                "RandomProvider_rangeUp_BigDecimal_xxxvi",
                 4.18021886093211E113,
                 74.22560500003182,
                 15.954912999995985
@@ -3282,11 +2937,7 @@ public strictfp class NonIntegerNumericsTest {
                 2,
                 1,
                 "1234567",
-                "[1234567.0050000000, 1234567.04, 1234567.0010, 1234567.060, 1234568, 1234567.01, 1234567," +
-                " 1234572.00, 1234567, 1234567.000, 1234567, 1234567.0, 1234567.100, 1234567, 1234568.00, 1234568.0," +
-                " 1234567.0, 1234567, 1234567.0, 1234567.02, ...]",
-                "{1234567=143066, 1234567.0=71565, 1234567.1=53796, 1234568=47223, 1234567.00=35476," +
-                " 1234567.01=26881, 1234567.10=26765, 1234568.0=23894, 1234567.000=17826, 1234569=15821}",
+                "RandomProvider_rangeUp_BigDecimal_xxxvii",
                 1235951.5639480965,
                 26.786103999874832,
                 1.8600099999879223
@@ -3295,12 +2946,7 @@ public strictfp class NonIntegerNumericsTest {
                 5,
                 3,
                 "1234567",
-                "[1234567.0000130000, 1234567.0090030000, 1234567, 1234592.00, 1234567.00000000000, 1234569.0," +
-                " 1234569.0000, 1234567.1, 1234568.000, 1234567.00140, 1234567.000800000000," +
-                " 1234571.56500000000000000, 1234569, 1234567.9, 1234567.000000000000200000000000000000," +
-                " 1234567.000100000, 1234567.30000, 1234579.6000, 1234567.00060, 1234567.0100, ...]",
-                "{1234567=20050, 1234567.0=14979, 1234567.00=11085, 1234567.1=8894, 1234567.000=8460, 1234568=8311," +
-                " 1234567.10=6736, 1234567.01=6731, 1234568.0=6216, 1234567.0000=6179}",
+                "RandomProvider_rangeUp_BigDecimal_xxxviii",
                 1.3255156214142816E14,
                 40.21804799994806,
                 5.866811000007397
@@ -3309,16 +2955,7 @@ public strictfp class NonIntegerNumericsTest {
                 32,
                 8,
                 "1234567",
-                "[1234567.000000000000000040493699765406300000000000000000000000000, 1236983.5000000000, 1234567.18," +
-                " 180547618411868605155.2748088000000000, 1311015.5400, 1234567.00000148518337630000000," +
-                " 3586613.80000000000000000000000000000, 22223958445.730960000," +
-                " 1234568.60161406000000000000000000000, 1234567.0000000416666200000," +
-                " 1344157.1908685744217951578289, 1234567.0000050000000000000000, 785649633.00," +
-                " 1518568.000000000000000000, 1234567.0000000000000170605244111048790, 1234567.00075000," +
-                " 1234567.000000000000000002900000000, 1234567.00142577220000000000," +
-                " 1234575.5730000000000000000000000000000000000, 13908417840099493317.12656, ...]",
-                "{1234567=759, 1234567.0=701, 1234567.00=556, 1234567.000=506, 1234567.0000=460, 1234567.00000=403," +
-                " 1234567.000000=364, 1234568=362, 1234568.0=331, 1234567.1=329}",
+                "RandomProvider_rangeUp_BigDecimal_xxxix",
                 4.18021886093211E113,
                 83.01889800010139,
                 15.958300999996053
@@ -3327,11 +2964,7 @@ public strictfp class NonIntegerNumericsTest {
                 2,
                 1,
                 "-1234567",
-                "[-1234566.9950000000, -1234566.96, -1234566.9990, -1234566.940, -1234566, -1234566.99, -1234567," +
-                " -1234562.00, -1234567, -1234567.000, -1234567, -1234567.0, -1234566.900, -1234567, -1234566.00," +
-                " -1234566.0, -1234567.0, -1234567, -1234567.0, -1234566.98, ...]",
-                "{-1234567=143066, -1234567.0=71565, -1234566.9=53796, -1234566=47223, -1234567.00=35476," +
-                " -1234566.99=26881, -1234566.90=26765, -1234566.0=23894, -1234567.000=17826, -1234565=15821}",
+                "RandomProvider_rangeUp_BigDecimal_xl",
                 -1233182.4360437375,
                 26.87187099987704,
                 1.8600259999881925
@@ -3340,12 +2973,7 @@ public strictfp class NonIntegerNumericsTest {
                 5,
                 3,
                 "-1234567",
-                "[-1234566.9999870000, -1234566.9909970000, -1234567, -1234542.00, -1234567.00000000000, -1234565.0," +
-                " -1234565.0000, -1234566.9, -1234566.000, -1234566.99860, -1234566.999200000000," +
-                " -1234562.43500000000000000, -1234565, -1234566.1, -1234566.999999999999800000000000000000," +
-                " -1234566.999900000, -1234566.70000, -1234554.4000, -1234566.99940, -1234566.9900, ...]",
-                "{-1234567=20050, -1234567.0=14979, -1234567.00=11085, -1234566.9=8894, -1234567.000=8460," +
-                " -1234566=8311, -1234566.90=6736, -1234566.99=6731, -1234566.0=6216, -1234567.0000=6179}",
+                "RandomProvider_rangeUp_BigDecimal_xli",
                 1.3255155967258822E14,
                 40.239422999948026,
                 5.871547000007296
@@ -3354,16 +2982,7 @@ public strictfp class NonIntegerNumericsTest {
                 32,
                 8,
                 "-1234567",
-                "[-1234566.999999999999999959506300234593700000000000000000000000000, -1232150.5000000000," +
-                " -1234566.82, 180547618411866136021.2748088000000000, -1158118.4600," +
-                " -1234566.99999851481662370000000, 1117479.80000000000000000000000000000, 22221489311.730960000," +
-                " -1234565.39838594000000000000000000000, -1234566.9999999583333800000," +
-                " -1124976.8091314255782048421711, -1234566.9999950000000000000000, 783180499.00," +
-                " -950566.000000000000000000, -1234566.9999999999999829394755888951210, -1234566.99925000," +
-                " -1234566.999999999999999997100000000, -1234566.99857422780000000000," +
-                " -1234558.4270000000000000000000000000000000000, 13908417840097024183.12656, ...]",
-                "{-1234567=759, -1234567.0=701, -1234567.00=556, -1234567.000=506, -1234567.0000=460," +
-                " -1234567.00000=403, -1234567.000000=364, -1234566=362, -1234566.0=331, -1234566.9=329}",
+                "RandomProvider_rangeUp_BigDecimal_xlii",
                 4.18021886093211E113,
                 82.92891300009914,
                 15.958750999996031
@@ -3372,10 +2991,7 @@ public strictfp class NonIntegerNumericsTest {
                 2,
                 1,
                 "0.09",
-                "[0.0950000000, 0.13, 0.0910, 0.150, 1.09, 0.1, 0.09, 5.0900, 0.09, 0.09000, 0.09, 0.090, 0.1900," +
-                " 0.09, 1.0900, 1.090, 0.090, 0.09, 0.090, 0.11, ...]",
-                "{0.09=143066, 0.090=71565, 0.19=53796, 1.09=47223, 0.0900=35476, 0.1=26881, 0.190=26765," +
-                " 1.090=23894, 0.09000=17826, 2.09=15821}",
+                "RandomProvider_rangeUp_BigDecimal_xliii",
                 1384.6539559255805,
                 9.721092999988024,
                 3.1611809999692686
@@ -3384,11 +3000,7 @@ public strictfp class NonIntegerNumericsTest {
                 5,
                 3,
                 "0.09",
-                "[0.0900130000, 0.0990030000, 0.09, 25.0900, 0.0900000000000, 2.090, 2.090000, 0.19, 1.09000," +
-                " 0.09140, 0.090800000000, 4.65500000000000000, 2.09, 0.99, 0.090000000000200000000000000000," +
-                " 0.090100000, 0.390000, 12.69000, 0.09060, 0.100, ...]",
-                "{0.09=20050, 0.090=14979, 0.0900=11085, 0.19=8894, 0.09000=8460, 1.09=8311, 0.190=6736, 0.1=6731," +
-                " 1.090=6216, 0.090000=6179}",
+                "RandomProvider_rangeUp_BigDecimal_xliv",
                 1.3255156090700805E14,
                 22.11084499998398,
                 6.582647000006659
@@ -3397,15 +3009,7 @@ public strictfp class NonIntegerNumericsTest {
                 32,
                 8,
                 "0.09",
-                "[0.090000000000000040493699765406300000000000000000000000000, 2416.59000000000, 0.27," +
-                " 180547618411867370588.3648088000000000, 76448.6300, 0.09000148518337630000000," +
-                " 2352046.890000000000000000000000000000, 22222723878.820960000, 1.69161406000000000000000000000," +
-                " 0.0900000416666200000, 109590.2808685744217951578289, 0.0900050000000000000000, 784415066.0900," +
-                " 284001.09000000000000000000, 0.0900000000000170605244111048790, 0.09075000," +
-                " 0.090000000000000002900000000, 0.09142577220000000000, 8.6630000000000000000000000000000000000," +
-                " 13908417840098258750.21656, ...]",
-                "{0.09=759, 0.090=701, 0.0900=556, 0.09000=506, 0.090000=460, 0.0900000=403, 0.09000000=364," +
-                " 1.09=362, 1.090=331, 0.19=329}",
+                "RandomProvider_rangeUp_BigDecimal_xlv",
                 4.18021886093211E113,
                 70.64934000002235,
                 16.281369000005466
@@ -3414,10 +3018,7 @@ public strictfp class NonIntegerNumericsTest {
                 2,
                 1,
                 "-0.09",
-                "[-0.0850000000, -0.05, -0.0890, -0.030, 0.91, -0.08, -0.09, 4.9100, -0.09, -0.09000, -0.09, -0.090," +
-                " 0.0100, -0.09, 0.9100, 0.910, -0.090, -0.09, -0.090, -0.07, ...]",
-                "{-0.09=143067, -0.090=71578, 0.01=53805, 0.91=47253, -0.0900=35463, -0.08=26874, 0.010=26763," +
-                " 0.910=23886, -0.09000=17817, 1.91=15822}",
+                "RandomProvider_rangeUp_BigDecimal_xlvi",
                 1384.4640551254167,
                 9.249282999984306,
                 3.213727999966871
@@ -3426,11 +3027,7 @@ public strictfp class NonIntegerNumericsTest {
                 5,
                 3,
                 "-0.09",
-                "[-0.0899870000, -0.0809970000, -0.09, 24.9100, -0.0900000000000, 1.910, 1.910000, 0.01, 0.91000," +
-                " -0.08860, -0.089200000000, 4.47500000000000000, 1.91, 0.81, -0.089999999999800000000000000000," +
-                " -0.089900000, 0.210000, 12.51000, -0.08940, -0.0800, ...]",
-                "{-0.09=20041, -0.090=14981, -0.0900=11088, 0.01=8904, -0.09000=8458, 0.91=8311, 0.010=6733," +
-                " -0.08=6732, 0.910=6215, -0.090000=6179}",
+                "RandomProvider_rangeUp_BigDecimal_xlvii",
                 1.3255156086335206E14,
                 21.758886999950676,
                 6.607647000006336
@@ -3439,15 +3036,7 @@ public strictfp class NonIntegerNumericsTest {
                 32,
                 8,
                 "-0.09",
-                "[-0.089999999999999959506300234593700000000000000000000000000, 2416.41000000000, 0.09," +
-                " 180547618411867370588.1848088000000000, 76448.4500, -0.08999851481662370000000," +
-                " 2352046.710000000000000000000000000000, 22222723878.640960000, 1.51161406000000000000000000000," +
-                " -0.0899999583333800000, 109590.1008685744217951578289, -0.0899950000000000000000, 784415065.9100," +
-                " 284000.91000000000000000000, -0.0899999999999829394755888951210, -0.08925000," +
-                " -0.089999999999999997100000000, -0.08857422780000000000, 8.4830000000000000000000000000000000000," +
-                " 13908417840098258750.03656, ...]",
-                "{-0.09=760, -0.090=701, -0.0900=556, -0.09000=506, -0.090000=460, -0.0900000=403, -0.09000000=364," +
-                " 0.91=362, 0.910=331, 0.01=329}",
+                "RandomProvider_rangeUp_BigDecimal_xlviii",
                 4.18021886093211E113,
                 70.50093900002139,
                 16.283410000005688
@@ -3456,12 +3045,7 @@ public strictfp class NonIntegerNumericsTest {
                 2,
                 1,
                 "1E-12",
-                "[0.0050000000010000000, 0.040000000001, 0.0010000000010, 0.0600000000010, 1.000000000001," +
-                " 0.010000000001, 1E-12, 5.00000000000100, 1E-12, 1.000E-12, 1E-12, 1.0E-12, 0.10000000000100," +
-                " 1E-12, 1.00000000000100, 1.0000000000010, 1.0E-12, 1E-12, 1.0E-12, 0.020000000001, ...]",
-                "{1E-12=143066, 1.0E-12=71565, 0.100000000001=53796, 1.000000000001=47223, 1.00E-12=35476," +
-                " 0.010000000001=26881, 0.1000000000010=26765, 1.0000000000010=23894, 1.000E-12=17826," +
-                " 2.000000000001=15821}",
+                "RandomProvider_rangeUp_BigDecimal_xlix",
                 1384.5639559361018,
                 30.66109999998521,
                 13.00223999988918
@@ -3470,14 +3054,7 @@ public strictfp class NonIntegerNumericsTest {
                 5,
                 3,
                 "1E-12",
-                "[0.0000130000010000, 0.0090030000010000, 1E-12, 25.00000000000100, 1.00000000000E-12," +
-                " 2.0000000000010, 2.0000000000010000, 0.100000000001, 1.000000000001000, 0.0014000000010," +
-                " 0.00080000000100000000, 4.56500000000100000000000000, 2.000000000001, 0.900000000001," +
-                " 1.200000000000000000E-12, 0.00010000000100000, 0.3000000000010000, 12.600000000001000," +
-                " 0.0006000000010, 0.01000000000100, ...]",
-                "{1E-12=20050, 1.0E-12=14979, 1.00E-12=11085, 0.100000000001=8894, 1.000E-12=8460," +
-                " 1.000000000001=8311, 0.1000000000010=6736, 0.010000000001=6731, 1.0000000000010=6216," +
-                " 1.0000E-12=6179}",
+                "RandomProvider_rangeUp_BigDecimal_l",
                 1.3255156090700803E14,
                 42.33828099999371,
                 15.086760999914567
@@ -3486,15 +3063,7 @@ public strictfp class NonIntegerNumericsTest {
                 32,
                 8,
                 "1E-12",
-                "[1.000040493699765406300000000000000000000000000E-12, 2416.500000000001000000000, 0.180000000001," +
-                " 180547618411867370588.274808800001000000000, 76448.54000000000100, 0.00000148518437630000000," +
-                " 2352046.8000000000010000000000000000000000000000, 22222723878.7309600000010000," +
-                " 1.601614060001000000000000000000000, 4.16676200000E-8, 109590.1908685744227951578289," +
-                " 0.0000050000010000000000000000, 784415066.00000000000100, 284001.000000000001000000000000000000," +
-                " 1.0170605244111048790E-12, 0.000750000001000, 1.000002900000000E-12, 0.0014257722010000000000," +
-                " 8.5730000000010000000000000000000000000000000000, 13908417840098258750.126560000001, ...]",
-                "{1E-12=759, 1.0E-12=701, 1.00E-12=556, 1.000E-12=506, 1.0000E-12=460, 1.00000E-12=403," +
-                " 1.000000E-12=364, 1.000000000001=362, 1.0000000000010=331, 0.100000000001=329}",
+                "RandomProvider_rangeUp_BigDecimal_li",
                 4.18021886093211E113,
                 81.12436300001744,
                 21.93101600001485
@@ -3503,12 +3072,7 @@ public strictfp class NonIntegerNumericsTest {
                 2,
                 1,
                 "-1E-12",
-                "[0.0049999999990000000, 0.039999999999, 0.0009999999990, 0.0599999999990, 0.999999999999," +
-                " 0.009999999999, -1E-12, 4.99999999999900, -1E-12, -1.000E-12, -1E-12, -1.0E-12, 0.09999999999900," +
-                " -1E-12, 0.99999999999900, 0.9999999999990, -1.0E-12, -1E-12, -1.0E-12, 0.019999999999, ...]",
-                "{-1E-12=143063, -1.0E-12=71570, 0.099999999999=53796, 0.999999999999=47221, -1.00E-12=35476," +
-                " 0.009999999999=26881, 0.0999999999990=26765, 0.9999999999990=23892, -1.000E-12=17827," +
-                " 1.999999999999=15820}",
+                "RandomProvider_rangeUp_BigDecimal_lii",
                 1384.5634216923115,
                 30.66058399998519,
                 13.001653999889186
@@ -3517,14 +3081,7 @@ public strictfp class NonIntegerNumericsTest {
                 5,
                 3,
                 "-1E-12",
-                "[0.0000129999990000, 0.0090029999990000, -1E-12, 24.99999999999900, -1.00000000000E-12," +
-                " 1.9999999999990, 1.9999999999990000, 0.099999999999, 0.999999999999000, 0.0013999999990," +
-                " 0.00079999999900000000, 4.56499999999900000000000000, 1.999999999999, 0.899999999999," +
-                " -8.00000000000000000E-13, 0.00009999999900000, 0.2999999999990000, 12.599999999999000," +
-                " 0.0005999999990, 0.00999999999900, ...]",
-                "{-1E-12=20047, -1.0E-12=14975, -1.00E-12=11080, 0.099999999999=8893, -1.000E-12=8454," +
-                " 0.999999999999=8305, 0.0999999999990=6742, 0.009999999999=6731, 0.9999999999990=6216," +
-                " -1.0000E-12=6172}",
+                "RandomProvider_rangeUp_BigDecimal_liii",
                 1.3255156106591658E14,
                 42.30981799999284,
                 15.068190999914787
@@ -3533,15 +3090,7 @@ public strictfp class NonIntegerNumericsTest {
                 32,
                 8,
                 "-1E-12",
-                "[-9.99959506300234593700000000000000000000000000E-13, 2416.499999999999000000000, 0.179999999999," +
-                " 180547618411867370588.274808799999000000000, 76448.53999999999900, 0.00000148518237630000000," +
-                " 2352046.7999999999990000000000000000000000000000, 22222723878.7309599999990000," +
-                " 1.601614059999000000000000000000000, 4.16656200000E-8, 109590.1908685744207951578289," +
-                " 0.0000049999990000000000000000, 784415065.99999999999900, 284000.999999999999000000000000000000," +
-                " -9.829394755888951210E-13, 0.000749999999000, -9.99997100000000E-13, 0.0014257721990000000000," +
-                " 8.5729999999990000000000000000000000000000000000, 13908417840098258750.126559999999, ...]",
-                "{-1E-12=759, -1.0E-12=703, -1.00E-12=556, -1.000E-12=506, -1.0000E-12=460, -1.00000E-12=404," +
-                " -1.000000E-12=364, 0.999999999999=362, 0.9999999999990=331, 0.099999999999=329}",
+                "RandomProvider_rangeUp_BigDecimal_liv",
                 4.18021886093211E113,
                 81.06456700001691,
                 21.920668000014597
@@ -3550,12 +3099,7 @@ public strictfp class NonIntegerNumericsTest {
                 2,
                 1,
                 "1E+12",
-                "[1000000000000.0050000000, 1000000000000.04, 1000000000000.0010, 1000000000000.060, 1000000000001," +
-                " 1000000000000.01, 1E+12, 1000000000005.00, 1E+12, 1.000E+12, 1E+12, 1.0E+12, 1000000000000.100," +
-                " 1E+12, 1000000000001.00, 1000000000001.0, 1.0E+12, 1E+12, 1.0E+12, 1000000000000.02, ...]",
-                "{1E+12=143066, 1.0E+12=71565, 1000000000000.1=53796, 1000000000001=47223, 1.00E+12=35476," +
-                " 1000000000000.01=26881, 1000000000000.10=26765, 1000000000001.0=23894, 1.000E+12=17826," +
-                " 1000000000002=15821}",
+                "RandomProvider_rangeUp_BigDecimal_lv",
                 1.0000000013833472E12,
                 35.175007999926635,
                 4.719209999999073
@@ -3564,14 +3108,7 @@ public strictfp class NonIntegerNumericsTest {
                 5,
                 3,
                 "1E+12",
-                "[1000000000000.0000130000, 1000000000000.0090030000, 1E+12, 1000000000025.00, 1.00000000000E+12," +
-                " 1000000000002.0, 1000000000002.0000, 1000000000000.1, 1000000000001.000, 1000000000000.00140," +
-                " 1000000000000.000800000000, 1000000000004.56500000000000000, 1000000000002, 1000000000000.9," +
-                " 1000000000000.000000000000200000000000000000, 1000000000000.000100000, 1000000000000.30000," +
-                " 1000000000012.6000, 1000000000000.00060, 1000000000000.0100, ...]",
-                "{1E+12=20050, 1.0E+12=14979, 1.00E+12=11085, 1000000000000.1=8894, 1.000E+12=8460," +
-                " 1000000000001=8311, 1000000000000.10=6736, 1000000000000.01=6731, 1000000000001.0=6216," +
-                " 1.0000E+12=6179}",
+                "RandomProvider_rangeUp_BigDecimal_lvi",
                 1.3355156090700798E14,
                 56.715418000037005,
                 6.368124000006292
@@ -3580,17 +3117,7 @@ public strictfp class NonIntegerNumericsTest {
                 32,
                 8,
                 "1E+12",
-                "[1000000000000.000000000000000040493699765406300000000000000000000000000, 1000000002416.5000000000," +
-                " 1000000000000.18, 180547619411867370588.2748088000000000, 1000000076448.5400," +
-                " 1000000000000.00000148518337630000000, 1000002352046.80000000000000000000000000000," +
-                " 1022222723878.730960000, 1000000000001.60161406000000000000000000000," +
-                " 1000000000000.0000000416666200000, 1000000109590.1908685744217951578289," +
-                " 1000000000000.0000050000000000000000, 1000784415066.00, 1000000284001.000000000000000000," +
-                " 1000000000000.0000000000000170605244111048790, 1000000000000.00075000," +
-                " 1000000000000.000000000000000002900000000, 1000000000000.00142577220000000000," +
-                " 1000000000008.5730000000000000000000000000000000000, 13908418840098258750.12656, ...]",
-                "{1E+12=759, 1.0E+12=701, 1.00E+12=556, 1.000E+12=506, 1.0000E+12=460, 1.00000E+12=403," +
-                " 1.000000E+12=364, 1000000000001=362, 1000000000001.0=331, 1000000000000.1=329}",
+                "RandomProvider_rangeUp_BigDecimal_lvii",
                 4.18021886093211E113,
                 98.11771199995576,
                 15.959104999996125
@@ -3599,13 +3126,7 @@ public strictfp class NonIntegerNumericsTest {
                 2,
                 1,
                 "-1E+12",
-                "[-999999999999.9950000000, -999999999999.96, -999999999999.9990, -999999999999.940, -999999999999," +
-                " -999999999999.99, -1E+12, -999999999995.00, -1E+12, -1.000E+12, -1E+12, -1.0E+12," +
-                " -999999999999.900, -1E+12, -999999999999.00, -999999999999.0, -1.0E+12, -1E+12, -1.0E+12," +
-                " -999999999999.98, ...]",
-                "{-1E+12=143066, -1.0E+12=71565, -999999999999.9=53796, -999999999999=47223, -1.00E+12=35476," +
-                " -999999999999.99=26881, -999999999999.90=26765, -999999999999.0=23894, -1.000E+12=17826," +
-                " -999999999998=15821}",
+                "RandomProvider_rangeUp_BigDecimal_lviii",
                 -9.999999986166528E11,
                 35.175007999926635,
                 4.719209999999073
@@ -3614,14 +3135,7 @@ public strictfp class NonIntegerNumericsTest {
                 5,
                 3,
                 "-1E+12",
-                "[-999999999999.9999870000, -999999999999.9909970000, -1E+12, -999999999975.00, -1.00000000000E+12," +
-                " -999999999998.0, -999999999998.0000, -999999999999.9, -999999999999.000, -999999999999.99860," +
-                " -999999999999.999200000000, -999999999995.43500000000000000, -999999999998, -999999999999.1," +
-                " -999999999999.999999999999800000000000000000, -999999999999.999900000, -999999999999.70000," +
-                " -999999999987.4000, -999999999999.99940, -999999999999.9900, ...]",
-                "{-1E+12=20050, -1.0E+12=14979, -1.00E+12=11085, -999999999999.9=8894, -1.000E+12=8460," +
-                " -999999999999=8311, -999999999999.90=6736, -999999999999.99=6731, -999999999999.0=6216," +
-                " -1.0000E+12=6179}",
+                "RandomProvider_rangeUp_BigDecimal_lix",
                 1.3155156090700802E14,
                 56.71513600003691,
                 6.368124000006292
@@ -3630,17 +3144,7 @@ public strictfp class NonIntegerNumericsTest {
                 32,
                 8,
                 "-1E+12",
-                "[-999999999999.999999999999999959506300234593700000000000000000000000000, -999999997583.5000000000," +
-                " -999999999999.82, 180547617411867370588.2748088000000000, -999999923551.4600," +
-                " -999999999999.99999851481662370000000, -999997647953.20000000000000000000000000000," +
-                " -977777276121.269040000, -999999999998.39838594000000000000000000000," +
-                " -999999999999.9999999583333800000, -999999890409.8091314255782048421711," +
-                " -999999999999.9999950000000000000000, -999215584934.00, -999999715999.000000000000000000," +
-                " -999999999999.9999999999999829394755888951210, -999999999999.99925000," +
-                " -999999999999.999999999999999997100000000, -999999999999.99857422780000000000," +
-                " -999999999991.4270000000000000000000000000000000000, 13908416840098258750.12656, ...]",
-                "{-1E+12=759, -1.0E+12=701, -1.00E+12=556, -1.000E+12=506, -1.0000E+12=460, -1.00000E+12=403," +
-                " -1.000000E+12=364, -999999999999=362, -999999999999.0=331, -999999999999.9=329}",
+                "RandomProvider_rangeUp_BigDecimal_lx",
                 4.18021886093211E113,
                 98.06712599995508,
                 15.959104999996125
@@ -3654,7 +3158,6 @@ public strictfp class NonIntegerNumericsTest {
             int secondaryScale,
             @NotNull String a,
             @NotNull String output,
-            @NotNull String topSampleCount,
             double sampleMean,
             double unscaledBitSizeMean,
             double scaleMean
@@ -3662,7 +3165,6 @@ public strictfp class NonIntegerNumericsTest {
         bigDecimalHelper(
                 P.withScale(scale).withSecondaryScale(secondaryScale).rangeDown(Readers.readBigDecimal(a).get()),
                 output,
-                topSampleCount,
                 sampleMean,
                 unscaledBitSizeMean,
                 scaleMean
@@ -3690,10 +3192,7 @@ public strictfp class NonIntegerNumericsTest {
                 2,
                 1,
                 "0",
-                "[-0.0050000000, -0.04, -0.0010, -0.060, -1, -0.01, 0, -3.00, 0, -0.010, 0E+3, 0.0, 0E+3, -1.00," +
-                " -1.0, 0E+1, 0, -0.010, 0, -0.02, ...]",
-                "{0=142898, -0.1=53939, -1=47402, 0.0=35927, 0E+1=35743, -0.10=26605, -0.01=26502, -1.0=24115," +
-                " 0E+2=17760, 0.00=17699}",
+                "RandomProvider_rangeDown_BigDecimal_i",
                 -4494.6230398148555,
                 3.9558340000009817,
                 1.8595289999882512
@@ -3702,11 +3201,7 @@ public strictfp class NonIntegerNumericsTest {
                 5,
                 3,
                 "0",
-                "[-0.0000130000, -0.0090030000, 0, 0E-11, -2.0, -2.0000, -0.1, -1.000, -0.00140, -0.000800000000," +
-                " -4.56500000000000000, -2, -0.9, -2.00000000000000000E-13, -0.000100000, -0.30000, -12.6000," +
-                " -0.00060, -0.0100, -0.25000000, ...]",
-                "{0=20179, -0.1=8947, -1=8287, 0E+1=7546, 0.0=7379, -0.01=6731, -0.10=6717, -1.0=6191, 0.00=5575," +
-                " 0E+2=5513}",
+                "RandomProvider_rangeDown_BigDecimal_ii",
                 -1.3254633226393647E14,
                 13.827922999990745,
                 5.872869000007163
@@ -3715,14 +3210,7 @@ public strictfp class NonIntegerNumericsTest {
                 32,
                 8,
                 "0",
-                "[-4.0493699765406300000000000000000000000000E-17, -2416.5000000000, -0.18," +
-                " -180547618411867370588.2748088000000000, -76448.5400, -0.00000148518337630000000," +
-                " -2352046.80000000000000000000000000000, -22222723878.730960000, -1.60161406000000000000000000000," +
-                " -4.16666200000E-8, -109590.1908685744217951578289, -0.0000050000000000000000, -784415066.00," +
-                " -284001.000000000000000000, -1.70605244111048790E-14, -0.00075000, -2.900000000E-18," +
-                " -0.00142577220000000000, -8.5730000000000000000000000000000000000, -13908417840098258750.12656," +
-                " ...]",
-                "{0=761, 0.0=367, -1=362, 0E+1=333, -1.0=331, -0.1=329, -0.10=317, -0.01=313, -1.00=286, 0E+2=279}",
+                "RandomProvider_rangeDown_BigDecimal_iii",
                 -4.18021886093211E113,
                 58.30837600001352,
                 15.959809999995937
@@ -3731,10 +3219,7 @@ public strictfp class NonIntegerNumericsTest {
                 2,
                 1,
                 "0.0",
-                "[-0.0050000000, -0.04, -0.0010, -0.060, -1, -0.01, 0, -3.00, 0, -0.010, 0E+3, 0.0, 0E+3, -1.00," +
-                " -1.0, 0E+1, 0, -0.010, 0, -0.02, ...]",
-                "{0=142898, -0.1=53939, -1=47402, 0.0=35927, 0E+1=35743, -0.10=26605, -0.01=26502, -1.0=24115," +
-                " 0E+2=17760, 0.00=17699}",
+                "RandomProvider_rangeDown_BigDecimal_iv",
                 -4494.6230398148555,
                 3.9558340000009817,
                 1.8595289999882512
@@ -3743,11 +3228,7 @@ public strictfp class NonIntegerNumericsTest {
                 5,
                 3,
                 "0.0",
-                "[-0.0000130000, -0.0090030000, 0, 0E-11, -2.0, -2.0000, -0.1, -1.000, -0.00140, -0.000800000000," +
-                " -4.56500000000000000, -2, -0.9, -2.00000000000000000E-13, -0.000100000, -0.30000, -12.6000," +
-                " -0.00060, -0.0100, -0.25000000, ...]",
-                "{0=20179, -0.1=8947, -1=8287, 0E+1=7546, 0.0=7379, -0.01=6731, -0.10=6717, -1.0=6191, 0.00=5575," +
-                " 0E+2=5513}",
+                "RandomProvider_rangeDown_BigDecimal_v",
                 -1.3254633226393647E14,
                 13.827922999990745,
                 5.872869000007163
@@ -3756,14 +3237,7 @@ public strictfp class NonIntegerNumericsTest {
                 32,
                 8,
                 "0.0",
-                "[-4.0493699765406300000000000000000000000000E-17, -2416.5000000000, -0.18," +
-                " -180547618411867370588.2748088000000000, -76448.5400, -0.00000148518337630000000," +
-                " -2352046.80000000000000000000000000000, -22222723878.730960000, -1.60161406000000000000000000000," +
-                " -4.16666200000E-8, -109590.1908685744217951578289, -0.0000050000000000000000, -784415066.00," +
-                " -284001.000000000000000000, -1.70605244111048790E-14, -0.00075000, -2.900000000E-18," +
-                " -0.00142577220000000000, -8.5730000000000000000000000000000000000, -13908417840098258750.12656," +
-                " ...]",
-                "{0=761, 0.0=367, -1=362, 0E+1=333, -1.0=331, -0.1=329, -0.10=317, -0.01=313, -1.00=286, 0E+2=279}",
+                "RandomProvider_rangeDown_BigDecimal_vi",
                 -4.18021886093211E113,
                 58.30837600001352,
                 15.959809999995937
@@ -3772,10 +3246,7 @@ public strictfp class NonIntegerNumericsTest {
                 2,
                 1,
                 "1",
-                "[0.9950000000, 0.96, 0.9990, 0.940, 0, 0.9, 1, -4.00, 1, 1.000, 1, 1.0, 0.900, 1, 0E+2, 0.90, 1.0," +
-                " 1, 1.0, 0.98, ...]",
-                "{1=143309, 1.0=71581, 0.9=53722, 0=47163, 1.00=35534, 0.99=26886, 0.90=26730, 1.000=17908," +
-                " -1=15828, -2=15721}",
+                "RandomProvider_rangeDown_BigDecimal_vii",
                 -3211.5313539618583,
                 6.861828000004236,
                 1.8599939999883222
@@ -3784,11 +3255,7 @@ public strictfp class NonIntegerNumericsTest {
                 5,
                 3,
                 "1",
-                "[0.9999870000, 0.9909970000, 1, -24.00, 1.00000000000, -1.0, -1.0000, 0.9, 0.000, 0.9860," +
-                " 0.999200000000, -3.56500000000000000, -1, 0.1, 0.999999999999800000000000000000, 0.999900000," +
-                " 0.70000, -11.6000, 0.99940, 0.9900, ...]",
-                "{1=20079, 1.0=14983, 1.00=11090, 0.9=8875, 1.000=8461, 0=8331, 0.90=6748, 0.99=6736, 1.0000=6196," +
-                " 0.990=5084}",
+                "RandomProvider_rangeDown_BigDecimal_viii",
                 -1.3255142240731088E14,
                 21.0937569999323,
                 5.872534000007241
@@ -3797,15 +3264,7 @@ public strictfp class NonIntegerNumericsTest {
                 32,
                 8,
                 "1",
-                "[0.999999999999999959506300234593700000000000000000000000000, -2415.5000000000, 0.82," +
-                " -180547618411867370587.2748088000000000, -76447.5400, 0.99999851481662370000000," +
-                " -2352045.80000000000000000000000000000, -22222723877.730960000, -0.60161406000000000000000000000," +
-                " 0.9999999583333800000, -109589.1908685744217951578289, 0.9999950000000000000000, -784415065.00," +
-                " -284000.000000000000000, 0.9999999999999829394755888951210, 0.99925000," +
-                " 0.999999999999999997100000000, 0.99857422780000000000, -7.5730000000000000000000000000000000000," +
-                " -13908417840098258749.12656, ...]",
-                "{1=760, 1.0=701, 1.00=556, 1.000=507, 1.0000=459, 1.00000=404, 1.000000=363, 0=362, 0.9=329," +
-                " 1.0000000=321}",
+                "RandomProvider_rangeDown_BigDecimal_ix",
                 -4.18021886093211E113,
                 70.8140910000301,
                 15.95903799999594
@@ -3814,10 +3273,7 @@ public strictfp class NonIntegerNumericsTest {
                 2,
                 1,
                 "-1",
-                "[-1.0050000000, -1.04, -1.0010, -1.060, -2, -1.01, -1, -6.00, -1, -1.000, -1, -1.0, -1.100, -1," +
-                " -2.00, -2.0, -1.0, -1, -1.0, -1.02, ...]",
-                "{-1=143066, -1.0=71565, -1.1=53796, -2=47223, -1.00=35476, -1.01=26881, -1.10=26765, -2.0=23894," +
-                " -1.000=17826, -3=15821}",
+                "RandomProvider_rangeDown_BigDecimal_x",
                 -1385.5639559372435,
                 7.622173999998321,
                 1.8598829999882969
@@ -3826,11 +3282,7 @@ public strictfp class NonIntegerNumericsTest {
                 5,
                 3,
                 "-1",
-                "[-1.0000130000, -1.0090030000, -1, -26.00, -1.00000000000, -3.0, -3.0000, -1.1, -2.000, -1.00140," +
-                " -1.000800000000, -5.56500000000000000, -3, -1.9, -1.000000000000200000000000000000, -1.000100000," +
-                " -1.30000, -13.6000, -1.00060, -1.0100, ...]",
-                "{-1=20050, -1.0=14979, -1.00=11085, -1.1=8894, -1.000=8460, -2=8311, -1.10=6736, -1.01=6731," +
-                " -2.0=6216, -1.0000=6179}",
+                "RandomProvider_rangeDown_BigDecimal_xi",
                 -1.3255156090700816E14,
                 21.815920999973557,
                 5.873468000007206
@@ -3839,15 +3291,7 @@ public strictfp class NonIntegerNumericsTest {
                 32,
                 8,
                 "-1",
-                "[-1.000000000000000040493699765406300000000000000000000000000, -2417.5000000000, -1.18," +
-                " -180547618411867370589.2748088000000000, -76449.5400, -1.00000148518337630000000," +
-                " -2352047.80000000000000000000000000000, -22222723879.730960000, -2.60161406000000000000000000000," +
-                " -1.0000000416666200000, -109591.1908685744217951578289, -1.0000050000000000000000, -784415067.00," +
-                " -284002.000000000000000000, -1.0000000000000170605244111048790, -1.00075000," +
-                " -1.000000000000000002900000000, -1.00142577220000000000, -9.5730000000000000000000000000000000000," +
-                " -13908417840098258751.12656, ...]",
-                "{-1=759, -1.0=701, -1.00=556, -1.000=506, -1.0000=460, -1.00000=403, -1.000000=364, -2=362," +
-                " -2.0=331, -1.1=329}",
+                "RandomProvider_rangeDown_BigDecimal_xii",
                 -4.18021886093211E113,
                 71.05169100002996,
                 15.959081999996279
@@ -3856,10 +3300,7 @@ public strictfp class NonIntegerNumericsTest {
                 2,
                 1,
                 "1.0",
-                "[0.9950000000, 0.96, 0.9990, 0.940, 0, 0.9, 1, -4.00, 1, 1.000, 1, 1.0, 0.900, 1, 0E+2, 0.90, 1.0," +
-                " 1, 1.0, 0.98, ...]",
-                "{1=143309, 1.0=71581, 0.9=53722, 0=47163, 1.00=35534, 0.99=26886, 0.90=26730, 1.000=17908," +
-                " -1=15828, -2=15721}",
+                "RandomProvider_rangeDown_BigDecimal_xiii",
                 -3211.5313539618583,
                 6.861828000004236,
                 1.8599939999883222
@@ -3868,11 +3309,7 @@ public strictfp class NonIntegerNumericsTest {
                 5,
                 3,
                 "1.0",
-                "[0.9999870000, 0.9909970000, 1, -24.00, 1.00000000000, -1.0, -1.0000, 0.9, 0.000, 0.9860," +
-                " 0.999200000000, -3.56500000000000000, -1, 0.1, 0.999999999999800000000000000000, 0.999900000," +
-                " 0.70000, -11.6000, 0.99940, 0.9900, ...]",
-                "{1=20079, 1.0=14983, 1.00=11090, 0.9=8875, 1.000=8461, 0=8331, 0.90=6748, 0.99=6736, 1.0000=6196," +
-                " 0.990=5084}",
+                "RandomProvider_rangeDown_BigDecimal_xiv",
                 -1.3255142240731088E14,
                 21.0937569999323,
                 5.872534000007241
@@ -3881,15 +3318,7 @@ public strictfp class NonIntegerNumericsTest {
                 32,
                 8,
                 "1.0",
-                "[0.999999999999999959506300234593700000000000000000000000000, -2415.5000000000, 0.82," +
-                " -180547618411867370587.2748088000000000, -76447.5400, 0.99999851481662370000000," +
-                " -2352045.80000000000000000000000000000, -22222723877.730960000, -0.60161406000000000000000000000," +
-                " 0.9999999583333800000, -109589.1908685744217951578289, 0.9999950000000000000000, -784415065.00," +
-                " -284000.000000000000000, 0.9999999999999829394755888951210, 0.99925000," +
-                " 0.999999999999999997100000000, 0.99857422780000000000, -7.5730000000000000000000000000000000000," +
-                " -13908417840098258749.12656, ...]",
-                "{1=760, 1.0=701, 1.00=556, 1.000=507, 1.0000=459, 1.00000=404, 1.000000=363, 0=362, 0.9=329," +
-                " 1.0000000=321}",
+                "RandomProvider_rangeDown_BigDecimal_xv",
                 -4.18021886093211E113,
                 70.8140910000301,
                 15.95903799999594
@@ -3898,10 +3327,7 @@ public strictfp class NonIntegerNumericsTest {
                 2,
                 1,
                 "-1.0",
-                "[-1.0050000000, -1.04, -1.0010, -1.060, -2, -1.01, -1, -6.00, -1, -1.000, -1, -1.0, -1.100, -1," +
-                " -2.00, -2.0, -1.0, -1, -1.0, -1.02, ...]",
-                "{-1=143066, -1.0=71565, -1.1=53796, -2=47223, -1.00=35476, -1.01=26881, -1.10=26765, -2.0=23894," +
-                " -1.000=17826, -3=15821}",
+                "RandomProvider_rangeDown_BigDecimal_xvi",
                 -1385.5639559372435,
                 7.622173999998321,
                 1.8598829999882969
@@ -3910,11 +3336,7 @@ public strictfp class NonIntegerNumericsTest {
                 5,
                 3,
                 "-1.0",
-                "[-1.0000130000, -1.0090030000, -1, -26.00, -1.00000000000, -3.0, -3.0000, -1.1, -2.000, -1.00140," +
-                " -1.000800000000, -5.56500000000000000, -3, -1.9, -1.000000000000200000000000000000, -1.000100000," +
-                " -1.30000, -13.6000, -1.00060, -1.0100, ...]",
-                "{-1=20050, -1.0=14979, -1.00=11085, -1.1=8894, -1.000=8460, -2=8311, -1.10=6736, -1.01=6731," +
-                " -2.0=6216, -1.0000=6179}",
+                "RandomProvider_rangeDown_BigDecimal_xvii",
                 -1.3255156090700816E14,
                 21.815920999973557,
                 5.873468000007206
@@ -3923,15 +3345,7 @@ public strictfp class NonIntegerNumericsTest {
                 32,
                 8,
                 "-1.0",
-                "[-1.000000000000000040493699765406300000000000000000000000000, -2417.5000000000, -1.18," +
-                " -180547618411867370589.2748088000000000, -76449.5400, -1.00000148518337630000000," +
-                " -2352047.80000000000000000000000000000, -22222723879.730960000, -2.60161406000000000000000000000," +
-                " -1.0000000416666200000, -109591.1908685744217951578289, -1.0000050000000000000000, -784415067.00," +
-                " -284002.000000000000000000, -1.0000000000000170605244111048790, -1.00075000," +
-                " -1.000000000000000002900000000, -1.00142577220000000000, -9.5730000000000000000000000000000000000," +
-                " -13908417840098258751.12656, ...]",
-                "{-1=759, -1.0=701, -1.00=556, -1.000=506, -1.0000=460, -1.00000=403, -1.000000=364, -2=362," +
-                " -2.0=331, -1.1=329}",
+                "RandomProvider_rangeDown_BigDecimal_xviii",
                 -4.18021886093211E113,
                 71.05169100002996,
                 15.959081999996279
@@ -3940,10 +3354,7 @@ public strictfp class NonIntegerNumericsTest {
                 2,
                 1,
                 "9",
-                "[8.9950000000, 8.96, 8.9990, 8.940, 8, 8.99, 9, 4.00, 9, 9.000, 9, 9.0, 8.900, 9, 8.00, 8.0, 9.0," +
-                " 9, 9.0, 8.98, ...]",
-                "{9=143083, 9.0=71532, 8.9=53760, 8=47248, 9.00=35506, 8.99=26881, 8.90=26747, 8.0=23909," +
-                " 9.000=17821, 7=15816}",
+                "RandomProvider_rangeDown_BigDecimal_xix",
                 -1378.9562815626282,
                 9.876909999983395,
                 1.8597449999883424
@@ -3952,11 +3363,7 @@ public strictfp class NonIntegerNumericsTest {
                 5,
                 3,
                 "9",
-                "[8.9999870000, 8.9909970000, 9, -16.00, 9.00000000000, 7.0, 7.0000, 8.9, 8.000, 8.99860," +
-                " 8.999200000000, 4.43500000000000000, 7, 8.1, 8.999999999999800000000000000000, 8.999900000," +
-                " 8.70000, -3.6000, 8.99940, 8.9900, ...]",
-                "{9=20051, 9.0=14976, 9.00=11083, 8.9=8895, 9.000=8470, 8=8308, 8.99=6744, 8.90=6738, 8.0=6218," +
-                " 9.0000=6179}",
+                "RandomProvider_rangeDown_BigDecimal_xx",
                 -1.3255156101085684E14,
                 23.87646199989173,
                 5.874416000007179
@@ -3965,15 +3372,7 @@ public strictfp class NonIntegerNumericsTest {
                 32,
                 8,
                 "9",
-                "[8.999999999999999959506300234593700000000000000000000000000, -2407.5000000000, 8.82," +
-                " -180547618411867370579.2748088000000000, -76439.5400, 8.99999851481662370000000," +
-                " -2352037.80000000000000000000000000000, -22222723869.730960000, 7.39838594000000000000000000000," +
-                " 8.9999999583333800000, -109581.1908685744217951578289, 8.9999950000000000000000, -784415057.00," +
-                " -283992.000000000000000000, 8.9999999999999829394755888951210, 8.99925000," +
-                " 8.999999999999999997100000000, 8.99857422780000000000, 0.4270000000000000000000000000000000000," +
-                " -13908417840098258741.12656, ...]",
-                "{9=759, 9.0=701, 9.00=556, 9.000=506, 9.0000=460, 9.00000=403, 9.000000=364, 8=362, 8.0=331," +
-                " 8.9=329}",
+                "RandomProvider_rangeDown_BigDecimal_xxi",
                 -4.18021886093211E113,
                 72.39022300002145,
                 15.95933799999627
@@ -3982,10 +3381,7 @@ public strictfp class NonIntegerNumericsTest {
                 2,
                 1,
                 "-9",
-                "[-9.0050000000, -9.04, -9.0010, -9.060, -1E+1, -9.01, -9, -14.00, -9, -9.000, -9, -9.0, -9.100, -9," +
-                " -10.0, -10, -9.0, -9, -9.0, -9.02, ...]",
-                "{-9=143066, -9.0=71565, -9.1=53796, -1E+1=47223, -9.00=35476, -9.01=26881, -9.10=26765, -10=23894," +
-                " -9.000=17826, -11=15821}",
+                "RandomProvider_rangeDown_BigDecimal_xxii",
                 -1393.5639559349913,
                 9.880917999979038,
                 1.8592359999871946
@@ -3994,11 +3390,7 @@ public strictfp class NonIntegerNumericsTest {
                 5,
                 3,
                 "-9",
-                "[-9.0000130000, -9.0090030000, -9, -34.00, -9.00000000000, -11.0, -11.0000, -9.1, -10.00, -9.00140," +
-                " -9.000800000000, -13.56500000000000000, -11, -9.9, -9.000000000000200000000000000000," +
-                " -9.000100000, -9.30000, -21.6000, -9.00060, -9.0100, ...]",
-                "{-9=20050, -9.0=14979, -9.00=11085, -9.1=8894, -9.000=8460, -1E+1=8311, -9.10=6736, -9.01=6731," +
-                " -10=6216, -9.0000=6179}",
+                "RandomProvider_rangeDown_BigDecimal_xxiii",
                 -1.3255156090701044E14,
                 24.11267099993038,
                 5.856708000007621
@@ -4007,15 +3399,7 @@ public strictfp class NonIntegerNumericsTest {
                 32,
                 8,
                 "-9",
-                "[-9.000000000000000040493699765406300000000000000000000000000, -2425.5000000000, -9.18," +
-                " -180547618411867370597.2748088000000000, -76457.5400, -9.00000148518337630000000," +
-                " -2352055.80000000000000000000000000000, -22222723887.730960000, -10.60161406000000000000000000000," +
-                " -9.0000000416666200000, -109599.1908685744217951578289, -9.0000050000000000000000, -784415075.00," +
-                " -284010.00000000000000000, -9.0000000000000170605244111048790, -9.00075000," +
-                " -9.000000000000000002900000000, -9.00142577220000000000," +
-                " -17.5730000000000000000000000000000000000, -13908417840098258759.12656, ...]",
-                "{-9=759, -9.0=701, -9.00=556, -9.000=506, -9.0000=460, -9.00000=403, -9.000000=364, -1E+1=362," +
-                " -10=331, -9.1=329}",
+                "RandomProvider_rangeDown_BigDecimal_xxiv",
                 -4.18021886093211E113,
                 72.54750000002102,
                 15.956679999995899
@@ -4024,10 +3408,7 @@ public strictfp class NonIntegerNumericsTest {
                 2,
                 1,
                 "10",
-                "[9.9950000000, 9.96, 9.9990, 9.940, 9, 9.99, 1E+1, 5.00, 1E+1, 10.00, 1E+1, 10, 9.900, 1E+1, 9.00," +
-                " 9.0, 10, 1E+1, 10, 9.98, ...]",
-                "{1E+1=143116, 10=71551, 9.9=53806, 9=47211, 10.0=35447, 9.99=26881, 9.90=26772, 9.0=23886," +
-                " 10.00=17821, 8=15836}",
+                "RandomProvider_rangeDown_BigDecimal_xxv",
                 -1371.5161272222995,
                 9.041028999984173,
                 1.8600609999848983
@@ -4036,11 +3417,7 @@ public strictfp class NonIntegerNumericsTest {
                 5,
                 3,
                 "10",
-                "[9.9999870000, 9.9909970000, 1E+1, -15.00, 10.0000000000, 8.0, 8.0000, 9.9, 9.000, 9.99860," +
-                " 9.999200000000, 5.43500000000000000, 8, 9.1, 9.999999999999800000000000000000, 9.999900000," +
-                " 9.70000, -2.6000, 9.99940, 9.9900, ...]",
-                "{1E+1=20056, 10=14969, 10.0=11080, 9.9=8899, 10.00=8454, 9=8307, 9.90=6733, 9.99=6731, 9.0=6224," +
-                " 10.000=6186}",
+                "RandomProvider_rangeDown_BigDecimal_xxvi",
                 -1.3255156078209173E14,
                 23.679469999889513,
                 5.835174000008125
@@ -4049,15 +3426,7 @@ public strictfp class NonIntegerNumericsTest {
                 32,
                 8,
                 "10",
-                "[9.999999999999999959506300234593700000000000000000000000000, -2406.5000000000, 9.82," +
-                " -180547618411867370578.2748088000000000, -76438.5400, 9.99999851481662370000000," +
-                " -2352036.80000000000000000000000000000, -22222723868.730960000, 8.39838594000000000000000000000," +
-                " 9.9999999583333800000, -109580.1908685744217951578289, 9.9999950000000000000000, -784415056.00," +
-                " -283991.000000000000000000, 9.9999999999999829394755888951210, 9.99925000," +
-                " 9.999999999999999997100000000, 9.99857422780000000000, 1.4270000000000000000000000000000000000," +
-                " -13908417840098258740.12656, ...]",
-                "{1E+1=758, 10=701, 10.0=556, 10.00=506, 10.000=460, 10.0000=403, 10.00000=363, 9=362, 9.0=331," +
-                " 9.9=329}",
+                "RandomProvider_rangeDown_BigDecimal_xxvii",
                 -4.18021886093211E113,
                 72.45249300002985,
                 15.954258999995814
@@ -4066,10 +3435,7 @@ public strictfp class NonIntegerNumericsTest {
                 2,
                 1,
                 "-10",
-                "[-10.0050000000, -10.04, -10.0010, -10.060, -11, -10.01, -1E+1, -15.00, -1E+1, -10.00, -1E+1, -10," +
-                " -10.100, -1E+1, -11.00, -11.0, -10, -1E+1, -10, -10.02, ...]",
-                "{-1E+1=143066, -10=71565, -10.1=53796, -11=47223, -10.0=35476, -10.01=26881, -10.10=26765," +
-                " -11.0=23894, -10.00=17826, -12=15821}",
+                "RandomProvider_rangeDown_BigDecimal_xxviii",
                 -1394.5639559317256,
                 9.344789999982071,
                 1.8601429999848516
@@ -4078,11 +3444,7 @@ public strictfp class NonIntegerNumericsTest {
                 5,
                 3,
                 "-10",
-                "[-10.0000130000, -10.0090030000, -1E+1, -35.00, -10.0000000000, -12.0, -12.0000, -10.1, -11.000," +
-                " -10.00140, -10.000800000000, -14.56500000000000000, -12, -10.9," +
-                " -10.000000000000200000000000000000, -10.000100000, -10.30000, -22.6000, -10.00060, -10.0100, ...]",
-                "{-1E+1=20050, -10=14979, -10.0=11085, -10.1=8894, -10.00=8460, -11=8311, -10.10=6736, -10.01=6731," +
-                " -11.0=6216, -10.000=6179}",
+                "RandomProvider_rangeDown_BigDecimal_xxix",
                 -1.3255156090701067E14,
                 24.027310999942575,
                 5.833906000008166
@@ -4091,15 +3453,7 @@ public strictfp class NonIntegerNumericsTest {
                 32,
                 8,
                 "-10",
-                "[-10.000000000000000040493699765406300000000000000000000000000, -2426.5000000000, -10.18," +
-                " -180547618411867370598.2748088000000000, -76458.5400, -10.00000148518337630000000," +
-                " -2352056.80000000000000000000000000000, -22222723888.730960000, -11.60161406000000000000000000000," +
-                " -10.0000000416666200000, -109600.1908685744217951578289, -10.0000050000000000000000," +
-                " -784415076.00, -284011.000000000000000000, -10.0000000000000170605244111048790, -10.00075000," +
-                " -10.000000000000000002900000000, -10.00142577220000000000," +
-                " -18.5730000000000000000000000000000000000, -13908417840098258760.12656, ...]",
-                "{-1E+1=759, -10=701, -10.0=556, -10.00=506, -10.000=460, -10.0000=403, -10.00000=364, -11=362," +
-                " -11.0=331, -10.1=329}",
+                "RandomProvider_rangeDown_BigDecimal_xxx",
                 -4.18021886093211E113,
                 72.6158040000279,
                 15.954095999995749
@@ -4108,10 +3462,7 @@ public strictfp class NonIntegerNumericsTest {
                 2,
                 1,
                 "101",
-                "[100.9950000000, 100.96, 100.9990, 100.940, 1E+2, 100.99, 101, 96.00, 101, 101.000, 101, 101.0," +
-                " 100.900, 101, 100, 1.0E+2, 101.0, 101, 101.0, 100.98, ...]",
-                "{101=143062, 101.0=71569, 100.9=53802, 1E+2=47221, 101.00=35483, 100.99=26881, 100.90=26764," +
-                " 1.0E+2=23895, 101.000=17823, 99=15820}",
+                "RandomProvider_rangeDown_BigDecimal_xxxi",
                 -1283.5659129612752,
                 12.548057999941495,
                 1.9062969999885824
@@ -4120,11 +3471,7 @@ public strictfp class NonIntegerNumericsTest {
                 5,
                 3,
                 "101",
-                "[100.9999870000, 100.9909970000, 101, 76.00, 101.00000000000, 99.0, 99.0000, 100.9, 100.0," +
-                " 100.99860, 100.999200000000, 96.43500000000000000, 99, 100.1, 100.999999999999800000000000000000," +
-                " 100.999900000, 100.70000, 88.4000, 100.99940, 100.9900, ...]",
-                "{101=20049, 101.0=14983, 101.00=11083, 100.9=8895, 101.000=8462, 1E+2=8310, 100.90=6737," +
-                " 100.99=6728, 1.0E+2=6215, 101.0000=6179}",
+                "RandomProvider_rangeDown_BigDecimal_xxxii",
                 -1.3255156090699792E14,
                 26.704327999833442,
                 5.8527580000076265
@@ -4133,15 +3480,7 @@ public strictfp class NonIntegerNumericsTest {
                 32,
                 8,
                 "101",
-                "[100.999999999999999959506300234593700000000000000000000000000, -2315.5000000000, 100.82," +
-                " -180547618411867370487.2748088000000000, -76347.5400, 100.99999851481662370000000," +
-                " -2351945.80000000000000000000000000000, -22222723777.730960000, 99.39838594000000000000000000000," +
-                " 100.9999999583333800000, -109489.1908685744217951578289, 100.9999950000000000000000," +
-                " -784414965.00, -283900.0000000000000000, 100.9999999999999829394755888951210, 100.99925000," +
-                " 100.999999999999999997100000000, 100.99857422780000000000," +
-                " 92.4270000000000000000000000000000000000, -13908417840098258649.12656, ...]",
-                "{101=759, 101.0=701, 101.00=556, 101.000=506, 101.0000=460, 101.00000=403, 101.000000=364," +
-                " 1E+2=362, 1.0E+2=331, 100.9=329}",
+                "RandomProvider_rangeDown_BigDecimal_xxxiii",
                 -4.18021886093211E113,
                 74.22560500003182,
                 15.954912999995985
@@ -4150,10 +3489,7 @@ public strictfp class NonIntegerNumericsTest {
                 2,
                 1,
                 "-101",
-                "[-101.0050000000, -101.04, -101.0010, -101.060, -102, -101.01, -101, -106.00, -101, -101.000, -101," +
-                " -101.0, -101.100, -101, -102.00, -102.0, -101.0, -101, -101.0, -101.02, ...]",
-                "{-101=143066, -101.0=71565, -101.1=53796, -102=47223, -101.00=35476, -101.01=26881, -101.10=26765," +
-                " -102.0=23894, -101.000=17826, -103=15821}",
+                "RandomProvider_rangeDown_BigDecimal_xxxiv",
                 -1485.5639559341907,
                 13.261434999963267,
                 1.8598879999882962
@@ -4162,12 +3498,7 @@ public strictfp class NonIntegerNumericsTest {
                 5,
                 3,
                 "-101",
-                "[-101.0000130000, -101.0090030000, -101, -126.00, -101.00000000000, -103.0, -103.0000, -101.1," +
-                " -102.000, -101.00140, -101.000800000000, -105.56500000000000000, -103, -101.9," +
-                " -101.000000000000200000000000000000, -101.000100000, -101.30000, -113.6000, -101.00060, -101.0100," +
-                " ...]",
-                "{-101=20050, -101.0=14979, -101.00=11085, -101.1=8894, -101.000=8460, -102=8311, -101.10=6736," +
-                " -101.01=6731, -102.0=6216, -101.0000=6179}",
+                "RandomProvider_rangeDown_BigDecimal_xxxv",
                 -1.3255156090703184E14,
                 27.119858999869805,
                 5.873467000007205
@@ -4176,16 +3507,7 @@ public strictfp class NonIntegerNumericsTest {
                 32,
                 8,
                 "-101",
-                "[-101.000000000000000040493699765406300000000000000000000000000, -2517.5000000000, -101.18," +
-                " -180547618411867370689.2748088000000000, -76549.5400, -101.00000148518337630000000," +
-                " -2352147.80000000000000000000000000000, -22222723979.730960000," +
-                " -102.60161406000000000000000000000, -101.0000000416666200000, -109691.1908685744217951578289," +
-                " -101.0000050000000000000000, -784415167.00, -284102.000000000000000000," +
-                " -101.0000000000000170605244111048790, -101.00075000, -101.000000000000000002900000000," +
-                " -101.00142577220000000000, -109.5730000000000000000000000000000000000," +
-                " -13908417840098258851.12656, ...]",
-                "{-101=759, -101.0=701, -101.00=556, -101.000=506, -101.0000=460, -101.00000=403, -101.000000=364," +
-                " -102=362, -102.0=331, -101.1=329}",
+                "RandomProvider_rangeDown_BigDecimal_xxxvi",
                 -4.18021886093211E113,
                 74.39138300003185,
                 15.959073999996285
@@ -4194,11 +3516,7 @@ public strictfp class NonIntegerNumericsTest {
                 2,
                 1,
                 "1234567",
-                "[1234566.9950000000, 1234566.96, 1234566.9990, 1234566.940, 1234566, 1234566.99, 1234567," +
-                " 1234562.00, 1234567, 1234567.000, 1234567, 1234567.0, 1234566.900, 1234567, 1234566.00, 1234566.0," +
-                " 1234567.0, 1234567, 1234567.0, 1234566.98, ...]",
-                "{1234567=143066, 1234567.0=71565, 1234566.9=53796, 1234566=47223, 1234567.00=35476," +
-                " 1234566.99=26881, 1234566.90=26765, 1234566.0=23894, 1234567.000=17826, 1234565=15821}",
+                "RandomProvider_rangeDown_BigDecimal_xxxvii",
                 1233182.4360437375,
                 26.87187099987704,
                 1.8600259999881925
@@ -4207,12 +3525,7 @@ public strictfp class NonIntegerNumericsTest {
                 5,
                 3,
                 "1234567",
-                "[1234566.9999870000, 1234566.9909970000, 1234567, 1234542.00, 1234567.00000000000, 1234565.0," +
-                " 1234565.0000, 1234566.9, 1234566.000, 1234566.99860, 1234566.999200000000," +
-                " 1234562.43500000000000000, 1234565, 1234566.1, 1234566.999999999999800000000000000000," +
-                " 1234566.999900000, 1234566.70000, 1234554.4000, 1234566.99940, 1234566.9900, ...]",
-                "{1234567=20050, 1234567.0=14979, 1234567.00=11085, 1234566.9=8894, 1234567.000=8460, 1234566=8311," +
-                " 1234566.90=6736, 1234566.99=6731, 1234566.0=6216, 1234567.0000=6179}",
+                "RandomProvider_rangeDown_BigDecimal_xxxviii",
                 -1.3255155967258822E14,
                 40.239422999948026,
                 5.871547000007296
@@ -4221,16 +3534,7 @@ public strictfp class NonIntegerNumericsTest {
                 32,
                 8,
                 "1234567",
-                "[1234566.999999999999999959506300234593700000000000000000000000000, 1232150.5000000000, 1234566.82," +
-                " -180547618411866136021.2748088000000000, 1158118.4600, 1234566.99999851481662370000000," +
-                " -1117479.80000000000000000000000000000, -22221489311.730960000," +
-                " 1234565.39838594000000000000000000000, 1234566.9999999583333800000," +
-                " 1124976.8091314255782048421711, 1234566.9999950000000000000000, -783180499.00," +
-                " 950566.000000000000000000, 1234566.9999999999999829394755888951210, 1234566.99925000," +
-                " 1234566.999999999999999997100000000, 1234566.99857422780000000000," +
-                " 1234558.4270000000000000000000000000000000000, -13908417840097024183.12656, ...]",
-                "{1234567=759, 1234567.0=701, 1234567.00=556, 1234567.000=506, 1234567.0000=460, 1234567.00000=403," +
-                " 1234567.000000=364, 1234566=362, 1234566.0=331, 1234566.9=329}",
+                "RandomProvider_rangeDown_BigDecimal_xxxix",
                 -4.18021886093211E113,
                 82.92891300009914,
                 15.958750999996031
@@ -4239,11 +3543,7 @@ public strictfp class NonIntegerNumericsTest {
                 2,
                 1,
                 "-1234567",
-                "[-1234567.0050000000, -1234567.04, -1234567.0010, -1234567.060, -1234568, -1234567.01, -1234567," +
-                " -1234572.00, -1234567, -1234567.000, -1234567, -1234567.0, -1234567.100, -1234567, -1234568.00," +
-                " -1234568.0, -1234567.0, -1234567, -1234567.0, -1234567.02, ...]",
-                "{-1234567=143066, -1234567.0=71565, -1234567.1=53796, -1234568=47223, -1234567.00=35476," +
-                " -1234567.01=26881, -1234567.10=26765, -1234568.0=23894, -1234567.000=17826, -1234569=15821}",
+                "RandomProvider_rangeDown_BigDecimal_xl",
                 -1235951.5639480965,
                 26.786103999874832,
                 1.8600099999879223
@@ -4252,12 +3552,7 @@ public strictfp class NonIntegerNumericsTest {
                 5,
                 3,
                 "-1234567",
-                "[-1234567.0000130000, -1234567.0090030000, -1234567, -1234592.00, -1234567.00000000000, -1234569.0," +
-                " -1234569.0000, -1234567.1, -1234568.000, -1234567.00140, -1234567.000800000000," +
-                " -1234571.56500000000000000, -1234569, -1234567.9, -1234567.000000000000200000000000000000," +
-                " -1234567.000100000, -1234567.30000, -1234579.6000, -1234567.00060, -1234567.0100, ...]",
-                "{-1234567=20050, -1234567.0=14979, -1234567.00=11085, -1234567.1=8894, -1234567.000=8460," +
-                " -1234568=8311, -1234567.10=6736, -1234567.01=6731, -1234568.0=6216, -1234567.0000=6179}",
+                "RandomProvider_rangeDown_BigDecimal_xli",
                 -1.3255156214142816E14,
                 40.21804799994806,
                 5.866811000007397
@@ -4266,16 +3561,7 @@ public strictfp class NonIntegerNumericsTest {
                 32,
                 8,
                 "-1234567",
-                "[-1234567.000000000000000040493699765406300000000000000000000000000, -1236983.5000000000," +
-                " -1234567.18, -180547618411868605155.2748088000000000, -1311015.5400," +
-                " -1234567.00000148518337630000000, -3586613.80000000000000000000000000000, -22223958445.730960000," +
-                " -1234568.60161406000000000000000000000, -1234567.0000000416666200000," +
-                " -1344157.1908685744217951578289, -1234567.0000050000000000000000, -785649633.00," +
-                " -1518568.000000000000000000, -1234567.0000000000000170605244111048790, -1234567.00075000," +
-                " -1234567.000000000000000002900000000, -1234567.00142577220000000000," +
-                " -1234575.5730000000000000000000000000000000000, -13908417840099493317.12656, ...]",
-                "{-1234567=759, -1234567.0=701, -1234567.00=556, -1234567.000=506, -1234567.0000=460," +
-                " -1234567.00000=403, -1234567.000000=364, -1234568=362, -1234568.0=331, -1234567.1=329}",
+                "RandomProvider_rangeDown_BigDecimal_xlii",
                 -4.18021886093211E113,
                 83.01889800010139,
                 15.958300999996053
@@ -4284,10 +3570,7 @@ public strictfp class NonIntegerNumericsTest {
                 2,
                 1,
                 "0.09",
-                "[0.0850000000, 0.05, 0.0890, 0.030, -0.91, 0.08, 0.09, -4.9100, 0.09, 0.09000, 0.09, 0.090," +
-                " -0.0100, 0.09, -0.9100, -0.910, 0.090, 0.09, 0.090, 0.07, ...]",
-                "{0.09=143067, 0.090=71578, -0.01=53805, -0.91=47253, 0.0900=35463, 0.08=26874, -0.010=26763," +
-                " -0.910=23886, 0.09000=17817, -1.91=15822}",
+                "RandomProvider_rangeDown_BigDecimal_xliii",
                 -1384.4640551254167,
                 9.249282999984306,
                 3.213727999966871
@@ -4296,11 +3579,7 @@ public strictfp class NonIntegerNumericsTest {
                 5,
                 3,
                 "0.09",
-                "[0.0899870000, 0.0809970000, 0.09, -24.9100, 0.0900000000000, -1.910, -1.910000, -0.01, -0.91000," +
-                " 0.08860, 0.089200000000, -4.47500000000000000, -1.91, -0.81, 0.089999999999800000000000000000," +
-                " 0.089900000, -0.210000, -12.51000, 0.08940, 0.0800, ...]",
-                "{0.09=20041, 0.090=14981, 0.0900=11088, -0.01=8904, 0.09000=8458, -0.91=8311, -0.010=6733," +
-                " 0.08=6732, -0.910=6215, 0.090000=6179}",
+                "RandomProvider_rangeDown_BigDecimal_xliv",
                 -1.3255156086335206E14,
                 21.758886999950676,
                 6.607647000006336
@@ -4309,15 +3588,7 @@ public strictfp class NonIntegerNumericsTest {
                 32,
                 8,
                 "0.09",
-                "[0.089999999999999959506300234593700000000000000000000000000, -2416.41000000000, -0.09," +
-                " -180547618411867370588.1848088000000000, -76448.4500, 0.08999851481662370000000," +
-                " -2352046.710000000000000000000000000000, -22222723878.640960000, -1.51161406000000000000000000000," +
-                " 0.0899999583333800000, -109590.1008685744217951578289, 0.0899950000000000000000, -784415065.9100," +
-                " -284000.91000000000000000000, 0.0899999999999829394755888951210, 0.08925000," +
-                " 0.089999999999999997100000000, 0.08857422780000000000, -8.4830000000000000000000000000000000000," +
-                " -13908417840098258750.03656, ...]",
-                "{0.09=760, 0.090=701, 0.0900=556, 0.09000=506, 0.090000=460, 0.0900000=403, 0.09000000=364," +
-                " -0.91=362, -0.910=331, -0.01=329}",
+                "RandomProvider_rangeDown_BigDecimal_xlv",
                 -4.18021886093211E113,
                 70.50093900002139,
                 16.283410000005688
@@ -4326,10 +3597,7 @@ public strictfp class NonIntegerNumericsTest {
                 2,
                 1,
                 "-0.09",
-                "[-0.0950000000, -0.13, -0.0910, -0.150, -1.09, -0.1, -0.09, -5.0900, -0.09, -0.09000, -0.09," +
-                " -0.090, -0.1900, -0.09, -1.0900, -1.090, -0.090, -0.09, -0.090, -0.11, ...]",
-                "{-0.09=143066, -0.090=71565, -0.19=53796, -1.09=47223, -0.0900=35476, -0.1=26881, -0.190=26765," +
-                " -1.090=23894, -0.09000=17826, -2.09=15821}",
+                "RandomProvider_rangeDown_BigDecimal_xlvi",
                 -1384.6539559255805,
                 9.721092999988024,
                 3.1611809999692686
@@ -4338,11 +3606,7 @@ public strictfp class NonIntegerNumericsTest {
                 5,
                 3,
                 "-0.09",
-                "[-0.0900130000, -0.0990030000, -0.09, -25.0900, -0.0900000000000, -2.090, -2.090000, -0.19," +
-                " -1.09000, -0.09140, -0.090800000000, -4.65500000000000000, -2.09, -0.99," +
-                " -0.090000000000200000000000000000, -0.090100000, -0.390000, -12.69000, -0.09060, -0.100, ...]",
-                "{-0.09=20050, -0.090=14979, -0.0900=11085, -0.19=8894, -0.09000=8460, -1.09=8311, -0.190=6736," +
-                " -0.1=6731, -1.090=6216, -0.090000=6179}",
+                "RandomProvider_rangeDown_BigDecimal_xlvii",
                 -1.3255156090700805E14,
                 22.11084499998398,
                 6.582647000006659
@@ -4351,15 +3615,7 @@ public strictfp class NonIntegerNumericsTest {
                 32,
                 8,
                 "-0.09",
-                "[-0.090000000000000040493699765406300000000000000000000000000, -2416.59000000000, -0.27," +
-                " -180547618411867370588.3648088000000000, -76448.6300, -0.09000148518337630000000," +
-                " -2352046.890000000000000000000000000000, -22222723878.820960000, -1.69161406000000000000000000000," +
-                " -0.0900000416666200000, -109590.2808685744217951578289, -0.0900050000000000000000," +
-                " -784415066.0900, -284001.09000000000000000000, -0.0900000000000170605244111048790, -0.09075000," +
-                " -0.090000000000000002900000000, -0.09142577220000000000, -8.6630000000000000000000000000000000000," +
-                " -13908417840098258750.21656, ...]",
-                "{-0.09=759, -0.090=701, -0.0900=556, -0.09000=506, -0.090000=460, -0.0900000=403, -0.09000000=364," +
-                " -1.09=362, -1.090=331, -0.19=329}",
+                "RandomProvider_rangeDown_BigDecimal_xlviii",
                 -4.18021886093211E113,
                 70.64934000002235,
                 16.281369000005466
@@ -4368,12 +3624,7 @@ public strictfp class NonIntegerNumericsTest {
                 2,
                 1,
                 "1E-12",
-                "[-0.0049999999990000000, -0.039999999999, -0.0009999999990, -0.0599999999990, -0.999999999999," +
-                " -0.009999999999, 1E-12, -4.99999999999900, 1E-12, 1.000E-12, 1E-12, 1.0E-12, -0.09999999999900," +
-                " 1E-12, -0.99999999999900, -0.9999999999990, 1.0E-12, 1E-12, 1.0E-12, -0.019999999999, ...]",
-                "{1E-12=143063, 1.0E-12=71570, -0.099999999999=53796, -0.999999999999=47221, 1.00E-12=35476," +
-                " -0.009999999999=26881, -0.0999999999990=26765, -0.9999999999990=23892, 1.000E-12=17827," +
-                " -1.999999999999=15820}",
+                "RandomProvider_rangeDown_BigDecimal_xlix",
                 -1384.5634216923115,
                 30.66058399998519,
                 13.001653999889186
@@ -4382,14 +3633,7 @@ public strictfp class NonIntegerNumericsTest {
                 5,
                 3,
                 "1E-12",
-                "[-0.0000129999990000, -0.0090029999990000, 1E-12, -24.99999999999900, 1.00000000000E-12," +
-                " -1.9999999999990, -1.9999999999990000, -0.099999999999, -0.999999999999000, -0.0013999999990," +
-                " -0.00079999999900000000, -4.56499999999900000000000000, -1.999999999999, -0.899999999999," +
-                " 8.00000000000000000E-13, -0.00009999999900000, -0.2999999999990000, -12.599999999999000," +
-                " -0.0005999999990, -0.00999999999900, ...]",
-                "{1E-12=20047, 1.0E-12=14975, 1.00E-12=11080, -0.099999999999=8893, 1.000E-12=8454," +
-                " -0.999999999999=8305, -0.0999999999990=6742, -0.009999999999=6731, -0.9999999999990=6216," +
-                " 1.0000E-12=6172}",
+                "RandomProvider_rangeDown_BigDecimal_l",
                 -1.3255156106591658E14,
                 42.30981799999284,
                 15.068190999914787
@@ -4398,16 +3642,7 @@ public strictfp class NonIntegerNumericsTest {
                 32,
                 8,
                 "1E-12",
-                "[9.99959506300234593700000000000000000000000000E-13, -2416.499999999999000000000, -0.179999999999," +
-                " -180547618411867370588.274808799999000000000, -76448.53999999999900, -0.00000148518237630000000," +
-                " -2352046.7999999999990000000000000000000000000000, -22222723878.7309599999990000," +
-                " -1.601614059999000000000000000000000, -4.16656200000E-8, -109590.1908685744207951578289," +
-                " -0.0000049999990000000000000000, -784415065.99999999999900," +
-                " -284000.999999999999000000000000000000, 9.829394755888951210E-13, -0.000749999999000," +
-                " 9.99997100000000E-13, -0.0014257721990000000000," +
-                " -8.5729999999990000000000000000000000000000000000, -13908417840098258750.126559999999, ...]",
-                "{1E-12=759, 1.0E-12=703, 1.00E-12=556, 1.000E-12=506, 1.0000E-12=460, 1.00000E-12=404," +
-                " 1.000000E-12=364, -0.999999999999=362, -0.9999999999990=331, -0.099999999999=329}",
+                "RandomProvider_rangeDown_BigDecimal_li",
                 -4.18021886093211E113,
                 81.06456700001691,
                 21.920668000014597
@@ -4416,13 +3651,7 @@ public strictfp class NonIntegerNumericsTest {
                 2,
                 1,
                 "-1E-12",
-                "[-0.0050000000010000000, -0.040000000001, -0.0010000000010, -0.0600000000010, -1.000000000001," +
-                " -0.010000000001, -1E-12, -5.00000000000100, -1E-12, -1.000E-12, -1E-12, -1.0E-12," +
-                " -0.10000000000100, -1E-12, -1.00000000000100, -1.0000000000010, -1.0E-12, -1E-12, -1.0E-12," +
-                " -0.020000000001, ...]",
-                "{-1E-12=143066, -1.0E-12=71565, -0.100000000001=53796, -1.000000000001=47223, -1.00E-12=35476," +
-                " -0.010000000001=26881, -0.1000000000010=26765, -1.0000000000010=23894, -1.000E-12=17826," +
-                " -2.000000000001=15821}",
+                "RandomProvider_rangeDown_BigDecimal_lii",
                 -1384.5639559361018,
                 30.66109999998521,
                 13.00223999988918
@@ -4431,14 +3660,7 @@ public strictfp class NonIntegerNumericsTest {
                 5,
                 3,
                 "-1E-12",
-                "[-0.0000130000010000, -0.0090030000010000, -1E-12, -25.00000000000100, -1.00000000000E-12," +
-                " -2.0000000000010, -2.0000000000010000, -0.100000000001, -1.000000000001000, -0.0014000000010," +
-                " -0.00080000000100000000, -4.56500000000100000000000000, -2.000000000001, -0.900000000001," +
-                " -1.200000000000000000E-12, -0.00010000000100000, -0.3000000000010000, -12.600000000001000," +
-                " -0.0006000000010, -0.01000000000100, ...]",
-                "{-1E-12=20050, -1.0E-12=14979, -1.00E-12=11085, -0.100000000001=8894, -1.000E-12=8460," +
-                " -1.000000000001=8311, -0.1000000000010=6736, -0.010000000001=6731, -1.0000000000010=6216," +
-                " -1.0000E-12=6179}",
+                "RandomProvider_rangeDown_BigDecimal_liii",
                 -1.3255156090700803E14,
                 42.33828099999371,
                 15.086760999914567
@@ -4447,16 +3669,7 @@ public strictfp class NonIntegerNumericsTest {
                 32,
                 8,
                 "-1E-12",
-                "[-1.000040493699765406300000000000000000000000000E-12, -2416.500000000001000000000," +
-                " -0.180000000001, -180547618411867370588.274808800001000000000, -76448.54000000000100," +
-                " -0.00000148518437630000000, -2352046.8000000000010000000000000000000000000000," +
-                " -22222723878.7309600000010000, -1.601614060001000000000000000000000, -4.16676200000E-8," +
-                " -109590.1908685744227951578289, -0.0000050000010000000000000000, -784415066.00000000000100," +
-                " -284001.000000000001000000000000000000, -1.0170605244111048790E-12, -0.000750000001000," +
-                " -1.000002900000000E-12, -0.0014257722010000000000," +
-                " -8.5730000000010000000000000000000000000000000000, -13908417840098258750.126560000001, ...]",
-                "{-1E-12=759, -1.0E-12=701, -1.00E-12=556, -1.000E-12=506, -1.0000E-12=460, -1.00000E-12=403," +
-                " -1.000000E-12=364, -1.000000000001=362, -1.0000000000010=331, -0.100000000001=329}",
+                "RandomProvider_rangeDown_BigDecimal_liv",
                 -4.18021886093211E113,
                 81.12436300001744,
                 21.93101600001485
@@ -4465,12 +3678,7 @@ public strictfp class NonIntegerNumericsTest {
                 2,
                 1,
                 "1E+12",
-                "[999999999999.9950000000, 999999999999.96, 999999999999.9990, 999999999999.940, 999999999999," +
-                " 999999999999.99, 1E+12, 999999999995.00, 1E+12, 1.000E+12, 1E+12, 1.0E+12, 999999999999.900," +
-                " 1E+12, 999999999999.00, 999999999999.0, 1.0E+12, 1E+12, 1.0E+12, 999999999999.98, ...]",
-                "{1E+12=143066, 1.0E+12=71565, 999999999999.9=53796, 999999999999=47223, 1.00E+12=35476," +
-                " 999999999999.99=26881, 999999999999.90=26765, 999999999999.0=23894, 1.000E+12=17826," +
-                " 999999999998=15821}",
+                "RandomProvider_rangeDown_BigDecimal_lv",
                 9.999999986166528E11,
                 35.175007999926635,
                 4.719209999999073
@@ -4479,14 +3687,7 @@ public strictfp class NonIntegerNumericsTest {
                 5,
                 3,
                 "1E+12",
-                "[999999999999.9999870000, 999999999999.9909970000, 1E+12, 999999999975.00, 1.00000000000E+12," +
-                " 999999999998.0, 999999999998.0000, 999999999999.9, 999999999999.000, 999999999999.99860," +
-                " 999999999999.999200000000, 999999999995.43500000000000000, 999999999998, 999999999999.1," +
-                " 999999999999.999999999999800000000000000000, 999999999999.999900000, 999999999999.70000," +
-                " 999999999987.4000, 999999999999.99940, 999999999999.9900, ...]",
-                "{1E+12=20050, 1.0E+12=14979, 1.00E+12=11085, 999999999999.9=8894, 1.000E+12=8460," +
-                " 999999999999=8311, 999999999999.90=6736, 999999999999.99=6731, 999999999999.0=6216," +
-                " 1.0000E+12=6179}",
+                "RandomProvider_rangeDown_BigDecimal_lvi",
                 -1.3155156090700802E14,
                 56.71513600003691,
                 6.368124000006292
@@ -4495,17 +3696,7 @@ public strictfp class NonIntegerNumericsTest {
                 32,
                 8,
                 "1E+12",
-                "[999999999999.999999999999999959506300234593700000000000000000000000000, 999999997583.5000000000," +
-                " 999999999999.82, -180547617411867370588.2748088000000000, 999999923551.4600," +
-                " 999999999999.99999851481662370000000, 999997647953.20000000000000000000000000000," +
-                " 977777276121.269040000, 999999999998.39838594000000000000000000000," +
-                " 999999999999.9999999583333800000, 999999890409.8091314255782048421711," +
-                " 999999999999.9999950000000000000000, 999215584934.00, 999999715999.000000000000000000," +
-                " 999999999999.9999999999999829394755888951210, 999999999999.99925000," +
-                " 999999999999.999999999999999997100000000, 999999999999.99857422780000000000," +
-                " 999999999991.4270000000000000000000000000000000000, -13908416840098258750.12656, ...]",
-                "{1E+12=759, 1.0E+12=701, 1.00E+12=556, 1.000E+12=506, 1.0000E+12=460, 1.00000E+12=403," +
-                " 1.000000E+12=364, 999999999999=362, 999999999999.0=331, 999999999999.9=329}",
+                "RandomProvider_rangeDown_BigDecimal_lvii",
                 -4.18021886093211E113,
                 98.06712599995508,
                 15.959104999996125
@@ -4514,13 +3705,7 @@ public strictfp class NonIntegerNumericsTest {
                 2,
                 1,
                 "-1E+12",
-                "[-1000000000000.0050000000, -1000000000000.04, -1000000000000.0010, -1000000000000.060," +
-                " -1000000000001, -1000000000000.01, -1E+12, -1000000000005.00, -1E+12, -1.000E+12, -1E+12," +
-                " -1.0E+12, -1000000000000.100, -1E+12, -1000000000001.00, -1000000000001.0, -1.0E+12, -1E+12," +
-                " -1.0E+12, -1000000000000.02, ...]",
-                "{-1E+12=143066, -1.0E+12=71565, -1000000000000.1=53796, -1000000000001=47223, -1.00E+12=35476," +
-                " -1000000000000.01=26881, -1000000000000.10=26765, -1000000000001.0=23894, -1.000E+12=17826," +
-                " -1000000000002=15821}",
+                "RandomProvider_rangeDown_BigDecimal_lviii",
                 -1.0000000013833472E12,
                 35.175007999926635,
                 4.719209999999073
@@ -4529,15 +3714,7 @@ public strictfp class NonIntegerNumericsTest {
                 5,
                 3,
                 "-1E+12",
-                "[-1000000000000.0000130000, -1000000000000.0090030000, -1E+12, -1000000000025.00," +
-                " -1.00000000000E+12, -1000000000002.0, -1000000000002.0000, -1000000000000.1, -1000000000001.000," +
-                " -1000000000000.00140, -1000000000000.000800000000, -1000000000004.56500000000000000," +
-                " -1000000000002, -1000000000000.9, -1000000000000.000000000000200000000000000000," +
-                " -1000000000000.000100000, -1000000000000.30000, -1000000000012.6000, -1000000000000.00060," +
-                " -1000000000000.0100, ...]",
-                "{-1E+12=20050, -1.0E+12=14979, -1.00E+12=11085, -1000000000000.1=8894, -1.000E+12=8460," +
-                " -1000000000001=8311, -1000000000000.10=6736, -1000000000000.01=6731, -1000000000001.0=6216," +
-                " -1.0000E+12=6179}",
+                "RandomProvider_rangeDown_BigDecimal_lix",
                 -1.3355156090700798E14,
                 56.715418000037005,
                 6.368124000006292
@@ -4546,18 +3723,7 @@ public strictfp class NonIntegerNumericsTest {
                 32,
                 8,
                 "-1E+12",
-                "[-1000000000000.000000000000000040493699765406300000000000000000000000000," +
-                " -1000000002416.5000000000, -1000000000000.18, -180547619411867370588.2748088000000000," +
-                " -1000000076448.5400, -1000000000000.00000148518337630000000," +
-                " -1000002352046.80000000000000000000000000000, -1022222723878.730960000," +
-                " -1000000000001.60161406000000000000000000000, -1000000000000.0000000416666200000," +
-                " -1000000109590.1908685744217951578289, -1000000000000.0000050000000000000000, -1000784415066.00," +
-                " -1000000284001.000000000000000000, -1000000000000.0000000000000170605244111048790," +
-                " -1000000000000.00075000, -1000000000000.000000000000000002900000000," +
-                " -1000000000000.00142577220000000000, -1000000000008.5730000000000000000000000000000000000," +
-                " -13908418840098258750.12656, ...]",
-                "{-1E+12=759, -1.0E+12=701, -1.00E+12=556, -1.000E+12=506, -1.0000E+12=460, -1.00000E+12=403," +
-                " -1.000000E+12=364, -1000000000001=362, -1000000000001.0=331, -1000000000000.1=329}",
+                "RandomProvider_rangeDown_BigDecimal_lx",
                 -4.18021886093211E113,
                 98.11771199995576,
                 15.959104999996125
@@ -4572,7 +3738,6 @@ public strictfp class NonIntegerNumericsTest {
             @NotNull String a,
             @NotNull String b,
             @NotNull String output,
-            @NotNull String topSampleCount,
             double sampleMean,
             double mantissaBitSizeMean,
             double exponentMean
@@ -4581,7 +3746,6 @@ public strictfp class NonIntegerNumericsTest {
                 P.withScale(scale).withSecondaryScale(secondaryScale)
                         .range(Readers.readBigDecimal(a).get(), Readers.readBigDecimal(b).get()),
                 output,
-                topSampleCount,
                 sampleMean,
                 mantissaBitSizeMean,
                 exponentMean
@@ -4612,10 +3776,7 @@ public strictfp class NonIntegerNumericsTest {
                 1,
                 "0",
                 "1",
-                "[0.835, 0.3668627520, 0.930, 0.028, 0.64, 0.080, 0.0, 0.0, 0.60, 0E+1, 0.90, 0, 0, 0, 1.000," +
-                " 0.1471, 1.0, 1, 0.37949900, 0.2, ...]",
-                "{1=125223, 0=124880, 1.0=61822, 1.00=31428, 0.0=31408, 0E+1=31268, 0.00=15688, 1.000=15604," +
-                " 0E+2=15584, 0.4=14225}",
+                "RandomProvider_range_BigDecimal_BigDecimal_i",
                 0.49974181014590885,
                 5.59269400000979,
                 1.9986289999875098
@@ -4625,11 +3786,7 @@ public strictfp class NonIntegerNumericsTest {
                 3,
                 "0",
                 "1",
-                "[0.34025400000000, 0.9300620000, 0.82700000000, 0.0, 0.6, 0.144266000000, 0.1, 0.90, 0.000000," +
-                " 0.7450000000, 0.0171211820157700000000000, 0.314420, 0E-12, 0.0610371000000, 0.39245, 0.522600000," +
-                " 0, 0.05164631, 0.3283, 0.0870000, ...]",
-                "{1=31394, 0=31302, 1.0=23292, 1.00=17533, 1.000=12994, 0E+1=11709, 0.0=11702, 1.0000=9880," +
-                " 0.00=8832, 0E+2=8770}",
+                "RandomProvider_range_BigDecimal_BigDecimal_ii",
                 0.49994173214022963,
                 18.1187839999679,
                 6.007439000007458
@@ -4639,13 +3796,7 @@ public strictfp class NonIntegerNumericsTest {
                 8,
                 "0",
                 "1",
-                "[0.785693340317779469094037902976600000, 0.69391141900000," +
-                " 0.685943636832238796031981604360000000000000, 0.40000, 1.00000000000000000," +
-                " 0.134524124471900000000, 0.5166270, 0.2150, 0.540000, 0.3357467208000000, 0.94100000, 0.2130," +
-                " 0.3000000, 0.3762251310192458010260689857798878599420706722260, 0.41457400000, 0.000," +
-                " 0.15400000000000000000000, 0.7078719408522190373200000000000, 0.400000000, 1.00000000000000, ...]",
-                "{0=6192, 1=6029, 1.0=5544, 1.00=4771, 1.000=4340, 1.0000=3863, 1.00000=3476, 1.000000=3070," +
-                " 0.0=2772, 1.0000000=2738}",
+                "RandomProvider_range_BigDecimal_BigDecimal_iii",
                 0.500371540682368,
                 50.84739499999407,
                 15.985023999996871
@@ -4655,9 +3806,7 @@ public strictfp class NonIntegerNumericsTest {
                 1,
                 "0",
                 "3",
-                "[2, 2.9, 3.00, 0.0, 0.0, 3.0, 0, 0, 0, 0, 0E+2, 2, 0.300, 0, 0, 0.3000, 0, 0.960, 1, 0E+3, ...]",
-                "{0=305715, 0.0=76846, 0E+1=76484, 0.00=38300, 0E+2=38001, 2=34118, 3=34056, 1=33807, 0E+3=19299," +
-                " 0.000=19277}",
+                "RandomProvider_range_BigDecimal_BigDecimal_iv",
                 0.6835993574261239,
                 2.9379489999931696,
                 1.3677679999925896
@@ -4667,10 +3816,7 @@ public strictfp class NonIntegerNumericsTest {
                 3,
                 "0",
                 "3",
-                "[0.847400, 1.3194000000, 1, 1.230, 0E-12, 0.610371000000, 0E+3, 2.8254, 0.5164631, 0.7, 0.3, 0.1," +
-                " 0.9953, 1.0000, 0, 3.00, 2.3956700000, 2.0100000, 0.70765000, 1.0111768, ...]",
-                "{0=87823, 0.0=33102, 0E+1=32590, 0E+2=24592, 0.00=24481, 0.000=18814, 0E+3=18400, 3=14624, 1=14516," +
-                " 2=14502}",
+                "RandomProvider_range_BigDecimal_BigDecimal_v",
                 1.062113959074216,
                 13.332859999998846,
                 4.897865000002074
@@ -4680,13 +3826,7 @@ public strictfp class NonIntegerNumericsTest {
                 8,
                 "0",
                 "3",
-                "[2.093200000000, 2.08332953832284170220810772700000000000, 0.08400000000000000000," +
-                " 1.34524124471900000000, 3.0, 2.59340000000000, 1.811578800, 2.52790400, 0E+7, 2.300000, 0.000," +
-                " 1.5400000000000000000000, 2.5272187617000000000, 2.8400000000000000000000000000000," +
-                " 0.223823000000, 1.5000000, 2.55000000000000000000000000, 2.687062506957968000000000000000000000," +
-                " 2.22700000000000000000000, 0E+35, ...]",
-                "{0=18846, 0.0=8430, 0E+1=8388, 0E+2=7545, 0.00=7535, 0E+3=6746, 0.000=6589, 0.0000=5894, 0E+4=5884," +
-                " 0E+5=5348}",
+                "RandomProvider_range_BigDecimal_BigDecimal_vi",
                 1.2962726292409759,
                 44.45600600002838,
                 14.560672999996417
@@ -4696,10 +3836,7 @@ public strictfp class NonIntegerNumericsTest {
                 1,
                 "0",
                 "1E+6",
-                "[8.35E+5, 366862.7520, 9.30E+5, 2.8E+4, 6.4E+5, 8.0E+4, 0.0, 0.0, 6.0E+5, 0E+1, 9.0E+5, 0, 0, 0," +
-                " 1.000E+6, 1.471E+5, 1.0E+6, 1E+6, 379499.00, 2E+5, ...]",
-                "{1E+6=125223, 0=124880, 1.0E+6=61822, 1.00E+6=31428, 0.0=31408, 0E+1=31268, 0.00=15688," +
-                " 1.000E+6=15604, 0E+2=15584, 4E+5=14225}",
+                "RandomProvider_range_BigDecimal_BigDecimal_vii",
                 499741.81014750147,
                 5.59269400000979,
                 3.1484789999806573
@@ -4709,11 +3846,7 @@ public strictfp class NonIntegerNumericsTest {
                 3,
                 "0",
                 "1E+6",
-                "[340254.00000000, 930062.0000, 827000.00000, 0.0, 6E+5, 144266.000000, 1E+5, 9.0E+5, 0.000000," +
-                " 745000.0000, 17121.1820157700000000000, 314420, 0E-12, 61037.1000000, 3.9245E+5, 522600.000, 0," +
-                " 51646.31, 3.283E+5, 87000.0, ...]",
-                "{1E+6=31394, 0=31302, 1.0E+6=23292, 1.00E+6=17533, 1.000E+6=12994, 0E+1=11709, 0.0=11702," +
-                " 1.0000E+6=9880, 0.00=8832, 0E+2=8770}",
+                "RandomProvider_range_BigDecimal_BigDecimal_viii",
                 499941.7321406794,
                 18.1187839999679,
                 3.6066369999861645
@@ -4723,13 +3856,7 @@ public strictfp class NonIntegerNumericsTest {
                 8,
                 "0",
                 "1E+6",
-                "[785693.340317779469094037902976600000, 693911.41900000," +
-                " 685943.636832238796031981604360000000000000, 4.0000E+5, 1000000.00000000000," +
-                " 134524.124471900000000, 516627.0, 2.150E+5, 540000, 335746.7208000000, 941000.00, 2.130E+5," +
-                " 300000.0, 376225.1310192458010260689857798878599420706722260, 414574.00000, 0.000," +
-                " 154000.00000000000000000, 707871.9408522190373200000000000, 400000.000, 1000000.00000000, ...]",
-                "{0=6192, 1E+6=6029, 1.0E+6=5544, 1.00E+6=4771, 1.000E+6=4340, 1.0000E+6=3863, 1.00000E+6=3476," +
-                " 1000000=3070, 0.0=2772, 1000000.0=2738}",
+                "RandomProvider_range_BigDecimal_BigDecimal_ix",
                 500371.54068251094,
                 50.84739499999407,
                 11.149427999999784
@@ -4739,10 +3866,7 @@ public strictfp class NonIntegerNumericsTest {
                 1,
                 "0",
                 "0.000001",
-                "[8.35E-7, 3.668627520E-7, 9.30E-7, 2.8E-8, 6.4E-7, 8.0E-8, 0.0, 0.0, 6.0E-7, 0E+1, 9.0E-7, 0, 0, 0," +
-                " 0.000001000, 1.471E-7, 0.0000010, 0.000001, 3.7949900E-7, 2E-7, ...]",
-                "{0.000001=125223, 0=124880, 0.0000010=61822, 0.00000100=31428, 0.0=31408, 0E+1=31268, 0.00=15688," +
-                " 0.000001000=15604, 0E+2=15584, 4E-7=14225}",
+                "RandomProvider_range_BigDecimal_BigDecimal_x",
                 4.997418101445085E-7,
                 5.59269400000979,
                 6.496949000021773
@@ -4752,11 +3876,7 @@ public strictfp class NonIntegerNumericsTest {
                 3,
                 "0",
                 "0.000001",
-                "[3.4025400000000E-7, 9.300620000E-7, 8.2700000000E-7, 0.0, 6E-7, 1.44266000000E-7, 1E-7, 9.0E-7," +
-                " 0.000000, 7.450000000E-7, 1.71211820157700000000000E-8, 3.14420E-7, 0E-12, 6.10371000000E-8," +
-                " 3.9245E-7, 5.22600000E-7, 0, 5.164631E-8, 3.283E-7, 8.70000E-8, ...]",
-                "{0.000001=31394, 0=31302, 0.0000010=23292, 0.00000100=17533, 0.000001000=12994, 0E+1=11709," +
-                " 0.0=11702, 0.0000010000=9880, 0.00=8832, 0E+2=8770}",
+                "RandomProvider_range_BigDecimal_BigDecimal_xi",
                 4.999417321390705E-7,
                 18.1187839999679,
                 11.257294999992666
@@ -4766,14 +3886,7 @@ public strictfp class NonIntegerNumericsTest {
                 8,
                 "0",
                 "0.000001",
-                "[7.85693340317779469094037902976600000E-7, 6.9391141900000E-7," +
-                " 6.85943636832238796031981604360000000000000E-7, 4.0000E-7, 0.00000100000000000000000," +
-                " 1.34524124471900000000E-7, 5.166270E-7, 2.150E-7, 5.40000E-7, 3.357467208000000E-7, 9.4100000E-7," +
-                " 2.130E-7, 3.000000E-7, 3.762251310192458010260689857798878599420706722260E-7, 4.1457400000E-7," +
-                " 0.000, 1.5400000000000000000000E-7, 7.078719408522190373200000000000E-7, 4.00000000E-7," +
-                " 0.00000100000000000000, ...]",
-                "{0=6192, 0.000001=6029, 0.0000010=5544, 0.00000100=4771, 0.000001000=4340, 0.0000010000=3863," +
-                " 0.00000100000=3476, 0.000001000000=3070, 0.0=2772, 0.0000010000000=2738}",
+                "RandomProvider_range_BigDecimal_BigDecimal_xii",
                 5.003715406817602E-7,
                 50.84739499999407,
                 21.652756000007802
@@ -4783,9 +3896,7 @@ public strictfp class NonIntegerNumericsTest {
                 1,
                 "1",
                 "3",
-                "[3, 1.0, 1.60, 1.0, 1, 2, 1, 1, 1.00, 3, 1.300, 1, 1, 1.00, 2.90, 1, 1.0000, 1.0, 2, 1.000, ...]",
-                "{1=350765, 1.0=176392, 1.00=87798, 1.000=43973, 3=38937, 2=38840, 1.0000=22084, 3.0=19540," +
-                " 2.0=19515, 1.00000=10909}",
+                "RandomProvider_range_BigDecimal_BigDecimal_xiii",
                 1.3749136388746568,
                 5.285133000014813,
                 1.2841969999935254
@@ -4795,10 +3906,7 @@ public strictfp class NonIntegerNumericsTest {
                 3,
                 "1",
                 "3",
-                "[1.847400, 2.3194000000, 2, 2.230, 1.000000000000, 1.000000000, 1.7, 1.3, 1.1, 1.9953, 2.0000, 1," +
-                " 2.57500, 2.0111768, 1.00, 1.00, 2.100000, 2.1810734569620763550000000, 2.0, 1.0, ...]",
-                "{1=111378, 1.0=84210, 1.00=62707, 1.000=47671, 1.0000=35170, 1.00000=26580, 1.000000=20029," +
-                " 3=18714, 2=18547, 1.0000000=14959}",
+                "RandomProvider_range_BigDecimal_BigDecimal_xiv",
                 1.6272101053585095,
                 16.43551499998298,
                 4.613846999999211
@@ -4808,12 +3916,7 @@ public strictfp class NonIntegerNumericsTest {
                 8,
                 "1",
                 "3",
-                "[2.6422, 1.09114620894935190000000000000, 1.7076500, 1.0000000, 1.819000, 1.223823000000," +
-                " 2.5000000, 2.48873020000000000000000, 1.822733391300000000000, 1.96743000000000000000000000," +
-                " 1.00000000000000000000000000000000000, 1.762, 2.640801332000000000000, 1.000000000000, 3.00, 1," +
-                " 1.3020000000000000, 1.00000000, 2.248000000000000, 3.00000000, ...]",
-                "{1=26218, 1.0=23251, 1.00=20651, 1.000=18390, 1.0000=16409, 1.00000=14597, 1.000000=12734," +
-                " 1.0000000=11487, 1.00000000=10189, 1.000000000=9020}",
+                "RandomProvider_range_BigDecimal_BigDecimal_xv",
                 1.8119114824740903,
                 47.84639700000742,
                 14.026318999996679
@@ -4823,10 +3926,7 @@ public strictfp class NonIntegerNumericsTest {
                 1,
                 "1",
                 "1E+6",
-                "[835001, 366863.7520, 930001.0, 28001, 640001, 80001.0, 1.0, 500001.0, 60001.0, 1.0, 1, 100001, 1," +
-                " 1, 349001.000, 1.0, 100001.0, 379500, 200001, 636001.0, ...]",
-                "{1=166190, 1.0=83763, 1.00=41701, 1.000=20927, 100001=18699, 400001=18693, 600001=18690," +
-                " 200001=18603, 900001=18550, 300001=18477}",
+                "RandomProvider_range_BigDecimal_BigDecimal_xvi",
                 333040.3334871308,
                 16.332860999928386,
                 1.0213529999973245
@@ -4836,11 +3936,7 @@ public strictfp class NonIntegerNumericsTest {
                 3,
                 "1",
                 "1E+6",
-                "[340255.00000000, 930063.0000, 827001.00000000, 1.0, 380001, 144267.000000, 100001, 900001.0," +
-                " 1.000000, 147101.00000, 17122.1820157700000000000, 314421.0, 1.000000000000, 441347.380," +
-                " 117473.0000, 400001.00, 1.0000, 1, 907349.6280, 1.000, ...]",
-                "{1=35884, 1.0=26965, 1.00=20035, 1.000=15153, 1.0000=11267, 1.00000=8378, 1.000000=6330," +
-                " 900001=6025, 800001=5989, 400001=5970}",
+                "RandomProvider_range_BigDecimal_BigDecimal_xvii",
                 428881.9766954399,
                 28.3818839999616,
                 3.61354699999148
@@ -4850,14 +3946,7 @@ public strictfp class NonIntegerNumericsTest {
                 8,
                 "1",
                 "1E+6",
-                "[785694.340317779469094037902976600000, 693912.41900000," +
-                " 685944.636832238796031981604360000000000000, 400001.0000, 9115.620894935190000000000000," +
-                " 875969.29700000, 742001.000, 1.0, 540001.0000, 335747.7208000000, 941001.00000, 213001.0," +
-                " 300001.000000, 376226.1310192458010260689857798878599420706722260, 414575.00000, 1.000," +
-                " 468801.000000000000000000, 707872.9408522190373200000000000, 400001.00000000," +
-                " 647965.03494407000000000000000000000, ...]",
-                "{1=6569, 1.0=5837, 1.00=5145, 1.000=4615, 1.0000=4107, 1.00000=3646, 1.000000=3278, 1.0000000=2781," +
-                " 1.00000000=2510, 1.000000000=2194}",
+                "RandomProvider_range_BigDecimal_BigDecimal_xviii",
                 470615.7681893622,
                 58.28940599998806,
                 12.153703999997873
@@ -4867,10 +3956,7 @@ public strictfp class NonIntegerNumericsTest {
                 1,
                 "-1",
                 "0",
-                "[-0.165, -0.6331372480, -0.070, -0.972, -0.36, -0.920, -1.0, -0.50, -0.940, -1.0, 0, 0, -1, -1, -1," +
-                " 0, -0.651000, -1.0, 0E+1, -0.600000, ...]",
-                "{0=124925, -1=124757, -1.0=62776, 0.0=31281, -1.00=31098, 0E+1=31007, -1.000=15681, 0E+2=15673," +
-                " 0.00=15619, -0.6=14124}",
+                "RandomProvider_range_BigDecimal_BigDecimal_xix",
                 -0.5003224338184838,
                 5.6016160000096455,
                 2.000491999987506
@@ -4880,11 +3966,7 @@ public strictfp class NonIntegerNumericsTest {
                 3,
                 "-1",
                 "0",
-                "[-0.65974600000000, -0.0699380000, -0.17300000000, -1.0, -0.62, -0.855734000000, -0.9, -0.10," +
-                " -1.000000, -0.852900000, -0.9828788179842300000000000, -0.685580, -1.000000000000, -0.558653620," +
-                " -0.8825280000, -0.600, -1.0000, -1, -0.0926513720, -1.000, ...]",
-                "{0=31322, -1=31174, -1.0=23762, -1.00=17797, -1.000=13154, 0.0=11623, 0E+1=11480, -1.0000=9911," +
-                " 0E+2=8818, 0.00=8746}",
+                "RandomProvider_range_BigDecimal_BigDecimal_xx",
                 -0.49979485012240055,
                 18.1147109999674,
                 6.007397000007255
@@ -4894,13 +3976,7 @@ public strictfp class NonIntegerNumericsTest {
                 8,
                 "-1",
                 "0",
-                "[-0.214306659682220530905962097023400000, -0.30608858100000," +
-                " -0.314056363167761203968018395640000000000000, -0.60000, 0E+17, -0.865475875528100000000," +
-                " -0.4833730, -0.7850, -0.460000, -0.6642532792000000, -0.05900000, -0.7870, -0.7000000," +
-                " -0.6237748689807541989739310142201121400579293277740, -0.58542600000, -1.000," +
-                " -0.5312000000000000000000, -0.2921280591477809626800000000000, -0.600000000, 0E+14, ...]",
-                "{-1=6211, 0=6042, -1.0=5431, -1.00=4850, -1.000=4334, -1.0000=3899, -1.00000=3424, -1.000000=3080," +
-                " 0E+1=2794, 0.0=2775}",
+                "RandomProvider_range_BigDecimal_BigDecimal_xxi",
                 -0.4997172674593811,
                 50.82451099999267,
                 15.983411999996747
@@ -4910,10 +3986,7 @@ public strictfp class NonIntegerNumericsTest {
                 1,
                 "-3",
                 "0",
-                "[-1, -0.1, 0E+2, -3.0, -2.40, -3.0, -3, -2, -3, -3, -3.00, -1, -2.700, -3, -3, -3.00, -1.10, -3," +
-                " -3.0000, -3.0, ...]",
-                "{-3=305718, -3.0=153639, -3.00=76393, -3.000=38257, 0=34112, -2=33897, -1=33879, -3.0000=19119," +
-                " -1.0=17038, -2.0=16975}",
+                "RandomProvider_range_BigDecimal_BigDecimal_xxii",
                 -2.316612149630881,
                 5.819886999996417,
                 1.3681939999925739
@@ -4923,11 +3996,7 @@ public strictfp class NonIntegerNumericsTest {
                 3,
                 "-3",
                 "0",
-                "[-2.152600, -1.6806000000, -2, -1.770, -3.000000000000, -0.1746, -2.4835369, -2.3, -2.7, -2.9," +
-                " -2.0047, -2.0000, -3, -1.42500, -1.9888232, -3.00, -3.00, -1.900000, -1.8189265430379236450000000," +
-                " -2.0, ...]",
-                "{-3=87536, -3.0=65795, -3.00=48873, -3.000=37412, -3.0000=27657, -3.00000=20698, -3.000000=15713," +
-                " 0=14678, -1=14509, -2=14507}",
+                "RandomProvider_range_BigDecimal_BigDecimal_xxiii",
                 -1.938844730320883,
                 16.847756000016705,
                 4.902132000002184
@@ -4937,14 +4006,7 @@ public strictfp class NonIntegerNumericsTest {
                 8,
                 "-3",
                 "0",
-                "[-0.906800000000, -0.91667046167715829779189227300000000000, -2.91600000000000000000," +
-                " -1.65475875528100000000, 0.0, -2.2923500, -0.47209600, -3.0000000, -0.864200000, -3.000," +
-                " -0.7402489985431079300000000000000000, -1.343761912376224000000000," +
-                " -0.1600000000000000000000000000000, -2.776177000000, -1.5000000, -0.45000000000000000000000000," +
-                " -0.312937493042032000000000000000000000, -0.77300000000000000000000," +
-                " -3.00000000000000000000000000000000000, -2.238, ...]",
-                "{-3=18852, -3.0=16881, -3.00=15082, -3.000=13343, -3.0000=11750, -3.00000=10563, -3.000000=9300," +
-                " -3.0000000=8363, -3.00000000=7429, -3.000000000=6566}",
+                "RandomProvider_range_BigDecimal_BigDecimal_xxiv",
                 -1.7039183609959918,
                 48.36847900004126,
                 14.560999999996431
@@ -4954,10 +4016,7 @@ public strictfp class NonIntegerNumericsTest {
                 1,
                 "-1E+6",
                 "0",
-                "[-1.65E+5, -633137.2480, -7.0E+4, -9.72E+5, -3.6E+5, -9.20E+5, -1.0E+6, -5.0E+5, -9.40E+5, -1.0E+6," +
-                " 0, 0, -1E+6, -1E+6, -1E+6, 0, -651000, -1.0E+6, 0E+1, -600000, ...]",
-                "{0=124925, -1E+6=124757, -1.0E+6=62776, 0.0=31281, -1.00E+6=31098, 0E+1=31007, -1.000E+6=15681," +
-                " 0E+2=15673, 0.00=15619, -6E+5=14124}",
+                "RandomProvider_range_BigDecimal_BigDecimal_xxv",
                 -500322.43382010004,
                 5.6016160000096455,
                 3.1490699999805405
@@ -4967,11 +4026,7 @@ public strictfp class NonIntegerNumericsTest {
                 3,
                 "-1E+6",
                 "0",
-                "[-659746.00000000, -69938.0000, -173000.00000, -1.0E+6, -6.2E+5, -855734.000000, -9E+5, -1.0E+5," +
-                " -1000000, -852900.000, -982878.8179842300000000000, -685580, -1000000.000000, -558653.620," +
-                " -882528.0000, -6.00E+5, -1.0000E+6, -1E+6, -92651.3720, -1.000E+6, ...]",
-                "{0=31322, -1E+6=31174, -1.0E+6=23762, -1.00E+6=17797, -1.000E+6=13154, 0.0=11623, 0E+1=11480," +
-                " -1.0000E+6=9911, 0E+2=8818, 0.00=8746}",
+                "RandomProvider_range_BigDecimal_BigDecimal_xxvi",
                 -499794.8501228811,
                 18.1147109999674,
                 3.608310999986109
@@ -4981,13 +4036,7 @@ public strictfp class NonIntegerNumericsTest {
                 8,
                 "-1E+6",
                 "0",
-                "[-214306.659682220530905962097023400000, -306088.58100000," +
-                " -314056.363167761203968018395640000000000000, -6.0000E+5, 0E+17, -865475.875528100000000," +
-                " -483373.0, -7.850E+5, -460000, -664253.2792000000, -59000.00, -7.870E+5, -700000.0," +
-                " -623774.8689807541989739310142201121400579293277740, -585426.00000, -1.000E+6," +
-                " -531200.0000000000000000, -292128.0591477809626800000000000, -600000.000, 0E+14, ...]",
-                "{-1E+6=6211, 0=6042, -1.0E+6=5431, -1.00E+6=4850, -1.000E+6=4334, -1.0000E+6=3899," +
-                " -1.00000E+6=3424, -1000000=3080, 0E+1=2794, 0.0=2775}",
+                "RandomProvider_range_BigDecimal_BigDecimal_xxvii",
                 -499717.26745949313,
                 50.82451099999267,
                 11.151406000000007
@@ -4997,11 +4046,7 @@ public strictfp class NonIntegerNumericsTest {
                 1,
                 "-0.000001",
                 "0",
-                "[-1.65E-7, -6.331372480E-7, -7.0E-8, -9.72E-7, -3.6E-7, -9.20E-7, -0.0000010, -5.0E-7, -9.40E-7," +
-                " -0.0000010, 0, 0, -0.000001, -0.000001, -0.000001, 0, -6.51000E-7, -0.0000010, 0E+1, -6.00000E-7," +
-                " ...]",
-                "{0=124925, -0.000001=124757, -0.0000010=62776, 0.0=31281, -0.00000100=31098, 0E+1=31007," +
-                " -0.000001000=15681, 0E+2=15673, 0.00=15619, -6E-7=14124}",
+                "RandomProvider_range_BigDecimal_BigDecimal_xxviii",
                 -5.003224338171066E-7,
                 5.6016160000096455,
                 6.5015840000220155
@@ -5011,12 +4056,7 @@ public strictfp class NonIntegerNumericsTest {
                 3,
                 "-0.000001",
                 "0",
-                "[-6.5974600000000E-7, -6.99380000E-8, -1.7300000000E-7, -0.0000010, -6.2E-7, -8.55734000000E-7," +
-                " -9E-7, -1.0E-7, -0.000001000000, -8.52900000E-7, -9.828788179842300000000000E-7, -6.85580E-7," +
-                " -0.000001000000000000, -5.58653620E-7, -8.825280000E-7, -6.00E-7, -0.0000010000, -0.000001," +
-                " -9.26513720E-8, -0.000001000, ...]",
-                "{0=31322, -0.000001=31174, -0.0000010=23762, -0.00000100=17797, -0.000001000=13154, 0.0=11623," +
-                " 0E+1=11480, -0.0000010000=9911, 0E+2=8818, 0.00=8746}",
+                "RandomProvider_range_BigDecimal_BigDecimal_xxix",
                 -4.99794850121267E-7,
                 18.1147109999674,
                 11.25785899999279
@@ -5026,14 +4066,7 @@ public strictfp class NonIntegerNumericsTest {
                 8,
                 "-0.000001",
                 "0",
-                "[-2.14306659682220530905962097023400000E-7, -3.0608858100000E-7," +
-                " -3.14056363167761203968018395640000000000000E-7, -6.0000E-7, 0E+17, -8.65475875528100000000E-7," +
-                " -4.833730E-7, -7.850E-7, -4.60000E-7, -6.642532792000000E-7, -5.900000E-8, -7.870E-7," +
-                " -7.000000E-7, -6.237748689807541989739310142201121400579293277740E-7, -5.8542600000E-7," +
-                " -0.000001000, -5.312000000000000000000E-7, -2.921280591477809626800000000000E-7, -6.00000000E-7," +
-                " 0E+14, ...]",
-                "{-0.000001=6211, 0=6042, -0.0000010=5431, -0.00000100=4850, -0.000001000=4334, -0.0000010000=3899," +
-                " -0.00000100000=3424, -0.000001000000=3080, 0E+1=2794, 0.0=2775}",
+                "RandomProvider_range_BigDecimal_BigDecimal_xxx",
                 -4.997172674587391E-7,
                 50.82451099999267,
                 21.648954000007993
@@ -5043,10 +4076,7 @@ public strictfp class NonIntegerNumericsTest {
                 1,
                 "-3",
                 "-1",
-                "[-1, -3.0, -2.40, -3.0, -3, -2, -3, -3, -3.00, -1, -2.700, -3, -3, -3.00, -1.10, -3, -3.0000, -3.0," +
-                " -2, -3.000, ...]",
-                "{-3=350765, -3.0=176392, -3.00=87798, -3.000=43973, -1=38937, -2=38840, -3.0000=22084, -1.0=19540," +
-                " -2.0=19515, -3.00000=10909}",
+                "RandomProvider_range_BigDecimal_BigDecimal_xxxi",
                 -2.6250863610944726,
                 6.044352999999744,
                 1.2841969999935254
@@ -5056,11 +4086,7 @@ public strictfp class NonIntegerNumericsTest {
                 3,
                 "-3",
                 "-1",
-                "[-2.152600, -1.6806000000, -2, -1.770, -3.000000000000, -3.000000000, -2.3, -2.7, -2.9, -2.0047," +
-                " -2.0000, -3, -1.42500, -1.9888232, -3.00, -3.00, -1.900000, -1.8189265430379236450000000, -2.0," +
-                " -3.0, ...]",
-                "{-3=111378, -3.0=84210, -3.00=62707, -3.000=47671, -3.0000=35170, -3.00000=26580, -3.000000=20029," +
-                " -1=18714, -2=18547, -3.0000000=14959}",
+                "RandomProvider_range_BigDecimal_BigDecimal_xxxii",
                 -2.372789894616791,
                 16.967438000029702,
                 4.613846999999211
@@ -5070,12 +4096,7 @@ public strictfp class NonIntegerNumericsTest {
                 8,
                 "-3",
                 "-1",
-                "[-1.3578, -2.90885379105064810000000000000, -2.2923500, -3.0000000, -2.181000, -2.776177000000," +
-                " -1.5000000, -1.51126980000000000000000, -2.177266608700000000000, -2.03257000000000000000000000," +
-                " -3.00000000000000000000000000000000000, -2.238, -1.359198668000000000000, -3.000000000000, -1.00," +
-                " -3, -2.6980000000000000, -3.00000000, -1.752000000000000, -1.00000000, ...]",
-                "{-3=26218, -3.0=23251, -3.00=20651, -3.000=18390, -3.0000=16409, -3.00000=14597, -3.000000=12734," +
-                " -3.0000000=11487, -3.00000000=10189, -3.000000000=9020}",
+                "RandomProvider_range_BigDecimal_BigDecimal_xxxiii",
                 -2.1880885175115052,
                 48.136073000057394,
                 14.026318999996679
@@ -5085,10 +4106,7 @@ public strictfp class NonIntegerNumericsTest {
                 1,
                 "-1E+6",
                 "-1",
-                "[-1.65E+5, -633137.2480, -7.0E+4, -9.72E+5, -3.6E+5, -9.20E+5, -1.0E+6, -5.0E+5, -9.40E+5, -1.0E+6," +
-                " -1E+6, -9E+5, -1E+6, -1E+6, -651000, -1.0E+6, -9.0E+5, -620501.00, -8E+5, -3.640E+5, ...]",
-                "{-1E+6=166190, -1.0E+6=83763, -1.00E+6=41701, -1.000E+6=20927, -9E+5=18699, -6E+5=18693," +
-                " -4E+5=18690, -8E+5=18603, -1E+5=18550, -7E+5=18477}",
+                "RandomProvider_range_BigDecimal_BigDecimal_xxxiv",
                 -666960.6665137309,
                 7.471091000009681,
                 3.863571999971566
@@ -5098,11 +4116,7 @@ public strictfp class NonIntegerNumericsTest {
                 3,
                 "-1E+6",
                 "-1",
-                "[-659746.00000000, -69938.0000, -173000.00000, -1.0E+6, -6.2E+5, -855734.000000, -9E+5, -1.0E+5," +
-                " -1000000, -852900.000, -982878.8179842300000000000, -685580, -1000000.000000, -558653.620," +
-                " -882528.0000, -6.00E+5, -1.0000E+6, -1E+6, -92651.3720, -1.000E+6, ...]",
-                "{-1E+6=35884, -1.0E+6=26965, -1.00E+6=20035, -1.000E+6=15153, -1.0000E+6=11267, -1.00000E+6=8378," +
-                " -1000000=6330, -1E+5=6025, -2E+5=5989, -6E+5=5970}",
+                "RandomProvider_range_BigDecimal_BigDecimal_xxxv",
                 -571119.023304855,
                 20.706134999956284,
                 3.6956279999854234
@@ -5112,14 +4126,7 @@ public strictfp class NonIntegerNumericsTest {
                 8,
                 "-1E+6",
                 "-1",
-                "[-214306.659682220530905962097023400000, -306088.58100000," +
-                " -314056.363167761203968018395640000000000000, -6.0000E+5, -990885.379105064810000000000000," +
-                " -124031.70300000, -258000, -1.0E+6, -460000, -664253.2792000000, -59000.00, -7.870E+5, -700000.0," +
-                " -623774.8689807541989739310142201121400579293277740, -585426.00000, -1.000E+6," +
-                " -531200.0000000000000000, -292128.0591477809626800000000000, -600000.000," +
-                " -352035.96505593000000000000000000000, ...]",
-                "{-1E+6=6569, -1.0E+6=5837, -1.00E+6=5145, -1.000E+6=4615, -1.0000E+6=4107, -1.00000E+6=3646," +
-                " -1000000=3278, -1000000.0=2781, -1000000.00=2510, -1000000.000=2194}",
+                "RandomProvider_range_BigDecimal_BigDecimal_xxxvi",
                 -529385.2318107232,
                 53.81033699999196,
                 11.33299799999915
@@ -5129,10 +4136,7 @@ public strictfp class NonIntegerNumericsTest {
                 1,
                 "100",
                 "101",
-                "[100.835, 100.3668627520, 100.930, 100.028, 100.64, 100.080, 1.0E+2, 100.50, 100.060, 1.0E+2, 101," +
-                " 1.0E+2, 1E+2, 1E+2, 1E+2, 1.0E+2, 100.7286, 101, 101.0, 101, ...]",
-                "{1E+2=124856, 101=124803, 1.0E+2=62583, 101.0=62048, 101.00=31346, 100=31235, 100.0=15760," +
-                " 101.000=15441, 100.4=14299, 100.5=14020}",
+                "RandomProvider_range_BigDecimal_BigDecimal_xxxvii",
                 100.49956052399139,
                 12.080524999929484,
                 2.125093999988825
@@ -5142,11 +4146,7 @@ public strictfp class NonIntegerNumericsTest {
                 3,
                 "100",
                 "101",
-                "[100.34025400000000, 100.9300620000, 100.82700000000, 1.0E+2, 100.38, 100.144266000000, 100.1," +
-                " 100.90, 100.0000, 100.147100000, 100.0171211820157700000000000, 100.314420, 100.0000000000," +
-                " 100.441346380, 100.1174720000, 100.400, 100.00, 1E+2, 100.9073486280, 100.0, ...]",
-                "{101=31296, 1E+2=31161, 1.0E+2=23576, 101.0=23159, 100=17727, 101.00=17542, 101.000=13229," +
-                " 100.0=13153, 101.0000=9921, 100.00=9849}",
+                "RandomProvider_range_BigDecimal_BigDecimal_xxxviii",
                 100.50017215152612,
                 26.214576999832683,
                 5.9297770000088414
@@ -5156,14 +4156,7 @@ public strictfp class NonIntegerNumericsTest {
                 8,
                 "100",
                 "101",
-                "[100.785693340317779469094037902976600000, 100.69391141900000," +
-                " 100.685943636832238796031981604360000000000000, 100.40000, 101.00000000000000000," +
-                " 100.134524124471900000000, 100.5166270, 100.2150, 100.540000, 100.3357467208000000, 100.94100000," +
-                " 100.2130, 100.3000000, 100.3762251310192458010260689857798878599420706722260, 100.41457400000," +
-                " 100.0, 100.4688000000000000000000, 100.7078719408522190373200000000000, 100.400000000," +
-                " 101.00000000000000, ...]",
-                "{1E+2=6183, 101=6066, 101.0=5576, 1.0E+2=5472, 100=4850, 101.00=4787, 100.0=4326, 101.000=4307," +
-                " 100.00=3879, 101.0000=3867}",
+                "RandomProvider_range_BigDecimal_BigDecimal_xxxix",
                 100.50033153589463,
                 59.864782000072,
                 15.909656999996354
@@ -5173,10 +4166,7 @@ public strictfp class NonIntegerNumericsTest {
                 1,
                 "2.7183",
                 "3.1416",
-                "[2.9183, 3.0083, 3.018300, 2.71830, 3.11830, 3.0083, 2.71830, 2.7183, 2.7183, 2.7183, 2.71830," +
-                " 2.71830, 2.81830, 3.09779900, 2.9183, 2.748300, 2.7183, 2.7183, 2.718300, 2.90830, ...]",
-                "{2.7183=267665, 2.71830=133894, 2.718300=66690, 2.7183000=33405, 2.8183=29912, 3.1183=29843," +
-                " 3.0183=29824, 2.9183=29698, 2.71830000=16610, 3.11830=15121}",
+                "RandomProvider_range_BigDecimal_BigDecimal_xl",
                 2.825842387956162,
                 18.745504000095565,
                 5.0517519999509375
@@ -5186,11 +4176,7 @@ public strictfp class NonIntegerNumericsTest {
                 3,
                 "2.7183",
                 "3.1416",
-                "[3.05855400000000, 3.10850, 2.85024000000, 2.8183, 3.11830000000000, 3.032720, 2.7183000000000000," +
-                " 3.05830000, 3.118300, 2.71830000, 2.7183, 3.0183000, 2.7183000, 3.018300, 3.0183, 2.7283, 2.81783," +
-                " 2.81830000, 2.7183, 2.875800, ...]",
-                "{2.7183=70293, 2.71830=52612, 2.718300=39293, 2.7183000=29791, 2.71830000=22061, 2.718300000=16508," +
-                " 2.7183000000=12546, 2.8183=11702, 3.0183=11517, 3.1183=11507}",
+                "RandomProvider_range_BigDecimal_BigDecimal_xli",
                 2.877667574471862,
                 28.275335000400293,
                 7.899351999956035
@@ -5200,15 +4186,7 @@ public strictfp class NonIntegerNumericsTest {
                 8,
                 "2.7183",
                 "3.1416",
-                "[2.9276200000000, 2.926632953832284170220810772700000000000, 3.11830000," +
-                " 2.727414620894935190000000000000, 2.93330, 3.0540467208000000, 2.93130, 3.0183000000," +
-                " 3.0945251310192458010260689857798878599420706722260, 3.13287400000, 2.7183000," +
-                " 2.94427510014568920700000000000000000, 2.8839238087623776000000000," +
-                " 3.002300000000000000000000000000000, 2.7406823000000, 2.8683000000," +
-                " 2.9733000000000000000000000000, 2.9870062506957968000000000000000000000," +
-                " 3.0912056957045900000000000, 2.815043000000000000000000000, ...]",
-                "{2.7183=14169, 2.71830=12571, 2.718300=11272, 2.7183000=10004, 2.71830000=8833, 2.718300000=7930," +
-                " 2.7183000000=7075, 2.71830000000=6322, 2.718300000000=5500, 2.7183000000000=4858}",
+                "RandomProvider_range_BigDecimal_BigDecimal_li",
                 2.9066625149504075,
                 58.079359000018094,
                 16.867250000012355
@@ -5218,11 +4196,7 @@ public strictfp class NonIntegerNumericsTest {
                 1,
                 "-3.1416",
                 "2.7183",
-                "[-1.1416, -0.2416, -0.141600, -3.14160, 1.85840, -2.54160, -3.14160, -3.1416, -2.1416, -3.1416," +
-                " -3.1416, 0.3484000, -3.14160, -2.14160, 0.6533900, -1.1416, -2.841600, -3.1416, -3.1416," +
-                " -3.141600, ...]",
-                "{-3.1416=233391, -3.14160=117263, -3.141600=58309, -3.1416000=29125, 0.8584=26116, -0.1416=25975," +
-                " -1.1416=25926, 1.8584=25915, -2.1416=25774, -3.14160000=14501}",
+                "RandomProvider_range_BigDecimal_BigDecimal_lii",
                 -1.5598804219080757,
                 17.89980300004773,
                 5.028742999950965
@@ -5232,11 +4206,7 @@ public strictfp class NonIntegerNumericsTest {
                 3,
                 "-3.1416",
                 "2.7183",
-                "[0.2609400000000, 0.76040, -1.8222000000, -2.1416, 2.27696700000000000, -2.92040000000, 0.00260," +
-                " -3.1416000000000000, 1.27186380, -1.966880000, 0.858400, -3.14160000, -3.1416, -0.1416000," +
-                " -3.1416000, -0.141600, -0.1416, 1.8584000, -2.001600, -3.141600000, ...]",
-                "{-3.1416=56028, -3.14160=41974, -3.141600=31473, -3.1416000=23767, -3.14160000=17581," +
-                " -3.141600000=13132, -3.1416000000=10012, 1.8584=9418, 0.8584=9305, -2.1416=9285}",
+                "RandomProvider_range_BigDecimal_BigDecimal_liii",
                 -0.8501281134081722,
                 26.622813000158892,
                 7.745819999954518
@@ -5246,14 +4216,7 @@ public strictfp class NonIntegerNumericsTest {
                 8,
                 "-3.1416",
                 "2.7183",
-                "[-1.048400000000, -1.05827046167715829779189227300000000000, 0.85840000," +
-                " -3.05045379105064810000000000000, -0.99160, 2.25840000, 0.215867208000000, -1.01160," +
-                " -0.1416000000, 0.620651310192458010260689857798878599420706722260, 1.0041400000, -3.1416000," +
-                " 1.5464000000000000000000, -0.6143812383000000000, 1.702953952686614629470, -1.4291152000," +
-                " 1.479574892263310636373561892250, 1.414887978330000000, 2.15215900000000, -3.14160, ...]",
-                "{-3.1416=10682, -3.14160=9348, -3.141600=8542, -3.1416000=7514, -3.14160000=6756," +
-                " -3.141600000=5985, -3.1416000000=5319, -3.14160000000=4777, -3.141600000000=4200," +
-                " -3.1416000000000=3656}",
+                "RandomProvider_range_BigDecimal_BigDecimal_liv",
                 -0.4897316229434775,
                 55.57982800002947,
                 16.511090000011794
@@ -5263,10 +4226,7 @@ public strictfp class NonIntegerNumericsTest {
                 1,
                 "0",
                 "0",
-                "[0.000, 0.0, 0E-8, 0.0, 0E+1, 0.0, 0E+2, 0, 0.0, 0.0, 0E+1, 0E+2, 0, 0, 0, 0.0, 0.0, 0E+1, 0, 0," +
-                " ...]",
-                "{0=500069, 0.0=125042, 0E+1=125020, 0.00=62554, 0E+2=62266, 0E+3=31431, 0.000=31320, 0.0000=15667," +
-                " 0E+4=15448, 0E+5=7835}",
+                "RandomProvider_range_BigDecimal_BigDecimal_lv",
                 0.0,
                 0.0,
                 0.9994539999976759
@@ -5276,10 +4236,7 @@ public strictfp class NonIntegerNumericsTest {
                 3,
                 "0",
                 "0",
-                "[0.000000, 0E-8, 0.00000, 0E+5, 0.00, 0E+8, 0.00, 0.0, 0, 0E+5, 0.000000, 0, 0E+1, 0E+1, 0E+1," +
-                " 0E-7, 0E+3, 0E-7, 0E-13, 0.0000, ...]",
-                "{0=249778, 0E+1=93626, 0.0=93467, 0E+2=70571, 0.00=70056, 0.000=53060, 0E+3=52604, 0E+4=39246," +
-                " 0.0000=39217, 0.00000=29959}",
+                "RandomProvider_range_BigDecimal_BigDecimal_lvi",
                 0.0,
                 0.0,
                 3.0055569999915344
@@ -5289,10 +4246,7 @@ public strictfp class NonIntegerNumericsTest {
                 8,
                 "0",
                 "0",
-                "[0E-31, 0E+8, 0E-8, 0.00000, 0E+28, 0E+17, 0, 0E+5, 0, 0E+17, 0E+13, 0, 0E+9, 0E+5, 0E+2, 0E+3," +
-                " 0E+1, 0.00, 0E+4, 0E+10, ...]",
-                "{0=110920, 0E+1=49476, 0.0=49456, 0.00=44126, 0E+2=43730, 0.000=39444, 0E+3=38954, 0.0000=34701," +
-                " 0E+4=34320, 0.00000=31042}",
+                "RandomProvider_range_BigDecimal_BigDecimal_lvii",
                 0.0,
                 0.0,
                 7.998792000016782
@@ -5302,10 +4256,7 @@ public strictfp class NonIntegerNumericsTest {
                 1,
                 "0",
                 "0.0",
-                "[0.000, 0.0, 0E-8, 0.0, 0E+1, 0.0, 0E+2, 0, 0.0, 0.0, 0E+1, 0E+2, 0, 0, 0, 0.0, 0.0, 0E+1, 0, 0," +
-                " ...]",
-                "{0=500069, 0.0=125042, 0E+1=125020, 0.00=62554, 0E+2=62266, 0E+3=31431, 0.000=31320, 0.0000=15667," +
-                " 0E+4=15448, 0E+5=7835}",
+                "RandomProvider_range_BigDecimal_BigDecimal_lviii",
                 0.0,
                 0.0,
                 0.9994539999976759
@@ -5315,10 +4266,7 @@ public strictfp class NonIntegerNumericsTest {
                 3,
                 "0",
                 "0.0",
-                "[0.000000, 0E-8, 0.00000, 0E+5, 0.00, 0E+8, 0.00, 0.0, 0, 0E+5, 0.000000, 0, 0E+1, 0E+1, 0E+1," +
-                " 0E-7, 0E+3, 0E-7, 0E-13, 0.0000, ...]",
-                "{0=249778, 0E+1=93626, 0.0=93467, 0E+2=70571, 0.00=70056, 0.000=53060, 0E+3=52604, 0E+4=39246," +
-                " 0.0000=39217, 0.00000=29959}",
+                "RandomProvider_range_BigDecimal_BigDecimal_lix",
                 0.0,
                 0.0,
                 3.0055569999915344
@@ -5328,10 +4276,7 @@ public strictfp class NonIntegerNumericsTest {
                 8,
                 "0",
                 "0.0",
-                "[0E-31, 0E+8, 0E-8, 0.00000, 0E+28, 0E+17, 0, 0E+5, 0, 0E+17, 0E+13, 0, 0E+9, 0E+5, 0E+2, 0E+3," +
-                " 0E+1, 0.00, 0E+4, 0E+10, ...]",
-                "{0=110920, 0E+1=49476, 0.0=49456, 0.00=44126, 0E+2=43730, 0.000=39444, 0E+3=38954, 0.0000=34701," +
-                " 0E+4=34320, 0.00000=31042}",
+                "RandomProvider_range_BigDecimal_BigDecimal_lx",
                 0.0,
                 0.0,
                 7.998792000016782
@@ -5341,10 +4286,7 @@ public strictfp class NonIntegerNumericsTest {
                 1,
                 "0.0",
                 "0",
-                "[0.000, 0.0, 0E-8, 0.0, 0E+1, 0.0, 0E+2, 0, 0.0, 0.0, 0E+1, 0E+2, 0, 0, 0, 0.0, 0.0, 0E+1, 0, 0," +
-                " ...]",
-                "{0=500069, 0.0=125042, 0E+1=125020, 0.00=62554, 0E+2=62266, 0E+3=31431, 0.000=31320, 0.0000=15667," +
-                " 0E+4=15448, 0E+5=7835}",
+                "RandomProvider_range_BigDecimal_BigDecimal_lxi",
                 0.0,
                 0.0,
                 0.9994539999976759
@@ -5354,10 +4296,7 @@ public strictfp class NonIntegerNumericsTest {
                 3,
                 "0.0",
                 "0",
-                "[0.000000, 0E-8, 0.00000, 0E+5, 0.00, 0E+8, 0.00, 0.0, 0, 0E+5, 0.000000, 0, 0E+1, 0E+1, 0E+1," +
-                " 0E-7, 0E+3, 0E-7, 0E-13, 0.0000, ...]",
-                "{0=249778, 0E+1=93626, 0.0=93467, 0E+2=70571, 0.00=70056, 0.000=53060, 0E+3=52604, 0E+4=39246," +
-                " 0.0000=39217, 0.00000=29959}",
+                "RandomProvider_range_BigDecimal_BigDecimal_lxii",
                 0.0,
                 0.0,
                 3.0055569999915344
@@ -5367,10 +4306,7 @@ public strictfp class NonIntegerNumericsTest {
                 8,
                 "0.0",
                 "0",
-                "[0E-31, 0E+8, 0E-8, 0.00000, 0E+28, 0E+17, 0, 0E+5, 0, 0E+17, 0E+13, 0, 0E+9, 0E+5, 0E+2, 0E+3," +
-                " 0E+1, 0.00, 0E+4, 0E+10, ...]",
-                "{0=110920, 0E+1=49476, 0.0=49456, 0.00=44126, 0E+2=43730, 0.000=39444, 0E+3=38954, 0.0000=34701," +
-                " 0E+4=34320, 0.00000=31042}",
+                "RandomProvider_range_BigDecimal_BigDecimal_lxiii",
                 0.0,
                 0.0,
                 7.998792000016782
@@ -5380,10 +4316,7 @@ public strictfp class NonIntegerNumericsTest {
                 1,
                 "0.0",
                 "0.0",
-                "[0.000, 0.0, 0E-8, 0.0, 0E+1, 0.0, 0E+2, 0, 0.0, 0.0, 0E+1, 0E+2, 0, 0, 0, 0.0, 0.0, 0E+1, 0, 0," +
-                " ...]",
-                "{0=500069, 0.0=125042, 0E+1=125020, 0.00=62554, 0E+2=62266, 0E+3=31431, 0.000=31320, 0.0000=15667," +
-                " 0E+4=15448, 0E+5=7835}",
+                "RandomProvider_range_BigDecimal_BigDecimal_lxiv",
                 0.0,
                 0.0,
                 0.9994539999976759
@@ -5393,10 +4326,7 @@ public strictfp class NonIntegerNumericsTest {
                 3,
                 "0.0",
                 "0.0",
-                "[0.000000, 0E-8, 0.00000, 0E+5, 0.00, 0E+8, 0.00, 0.0, 0, 0E+5, 0.000000, 0, 0E+1, 0E+1, 0E+1," +
-                " 0E-7, 0E+3, 0E-7, 0E-13, 0.0000, ...]",
-                "{0=249778, 0E+1=93626, 0.0=93467, 0E+2=70571, 0.00=70056, 0.000=53060, 0E+3=52604, 0E+4=39246," +
-                " 0.0000=39217, 0.00000=29959}",
+                "RandomProvider_range_BigDecimal_BigDecimal_lxv",
                 0.0,
                 0.0,
                 3.0055569999915344
@@ -5406,10 +4336,7 @@ public strictfp class NonIntegerNumericsTest {
                 8,
                 "0.0",
                 "0.0",
-                "[0E-31, 0E+8, 0E-8, 0.00000, 0E+28, 0E+17, 0, 0E+5, 0, 0E+17, 0E+13, 0, 0E+9, 0E+5, 0E+2, 0E+3," +
-                " 0E+1, 0.00, 0E+4, 0E+10, ...]",
-                "{0=110920, 0E+1=49476, 0.0=49456, 0.00=44126, 0E+2=43730, 0.000=39444, 0E+3=38954, 0.0000=34701," +
-                " 0E+4=34320, 0.00000=31042}",
+                "RandomProvider_range_BigDecimal_BigDecimal_lxvi",
                 0.0,
                 0.0,
                 7.998792000016782
@@ -5419,10 +4346,7 @@ public strictfp class NonIntegerNumericsTest {
                 1,
                 "1",
                 "1",
-                "[1.000, 1.00, 1.000000000, 1.00, 1.00, 1, 1.0, 1.000, 1, 1, 1.00, 1.00, 1.00, 1, 1.00, 1, 1, 1.0," +
-                " 1.0, 1, ...]",
-                "{1=499125, 1.0=250897, 1.00=124849, 1.000=62518, 1.0000=31407, 1.00000=15634, 1.000000=7825," +
-                " 1.0000000=3926, 1.00000000=1896, 1.000000000=956}",
+                "RandomProvider_range_BigDecimal_BigDecimal_lxvii",
                 1.000000000007918,
                 4.073980000046605,
                 1.0008359999977228
@@ -5432,10 +4356,7 @@ public strictfp class NonIntegerNumericsTest {
                 3,
                 "1",
                 "1",
-                "[1.000000, 1.000000000, 1.000000, 1.000000, 1.000, 1.000000000, 1, 1.00, 1.00, 1.0, 1.000000," +
-                " 1.0000000, 1.0, 1.00, 1, 1.0, 1, 1.0, 1, 1.0000000, ...]",
-                "{1=250407, 1.0=187060, 1.00=139994, 1.000=105560, 1.0000=79154, 1.00000=58963, 1.000000=44920," +
-                " 1.0000000=33524, 1.00000000=25356, 1.000000000=18834}",
+                "RandomProvider_range_BigDecimal_BigDecimal_lxviii",
                 1.000000000007918,
                 10.558456999961003,
                 3.003367999991497
@@ -5445,18 +4366,41 @@ public strictfp class NonIntegerNumericsTest {
                 8,
                 "1",
                 "1",
-                "[1.0000000000000000000000000000000, 1.000000000, 1.000000000, 1.00000," +
-                " 1.00000000000000000000000000000, 1.000000000000000000, 1.0, 1.00000, 1, 1.00000000000000000," +
-                " 1.0000000000000, 1, 1.0000000000, 1.000000, 1.000, 1.000, 1, 1.0, 1.00, 1.00000, ...]",
-                "{1=110949, 1.0=98973, 1.00=87810, 1.000=78512, 1.0000=69401, 1.00000=61358, 1.000000=54691," +
-                " 1.0000000=48553, 1.00000000=43415, 1.000000000=38254}",
+                "RandomProvider_range_BigDecimal_BigDecimal_lxix",
                 1.000000000007918,
                 27.0739779999554,
                 7.996049000016875
         );
-        range_BigDecimal_BigDecimal_helper(1, 1, "5", "3", "[]", "{}", 0.0, 0.0, 0.0);
-        range_BigDecimal_BigDecimal_helper(5, 3, "5", "3", "[]", "{}", 0.0, 0.0, 0.0);
-        range_BigDecimal_BigDecimal_helper(32, 8, "5", "3", "[]", "{}", 0.0, 0.0, 0.0);
+        range_BigDecimal_BigDecimal_helper(
+                1,
+                1,
+                "5",
+                "3",
+                "RandomProvider_range_BigDecimal_BigDecimal_lxx",
+                0.0,
+                0.0,
+                0.0
+        );
+        range_BigDecimal_BigDecimal_helper(
+                5,
+                3,
+                "5",
+                "3",
+                "RandomProvider_range_BigDecimal_BigDecimal_lxxi",
+                0.0,
+                0.0,
+                0.0
+        );
+        range_BigDecimal_BigDecimal_helper(
+                32,
+                8,
+                "5",
+                "3",
+                "RandomProvider_range_BigDecimal_BigDecimal_lxxii",
+                0.0,
+                0.0,
+                0.0
+        );
         range_BigDecimal_BigDecimal_fail_helper(0, 1, "0", "1");
         range_BigDecimal_BigDecimal_fail_helper(1, 0, "0", "1");
     }
@@ -5475,7 +4419,6 @@ public strictfp class NonIntegerNumericsTest {
                 P.withScale(scale).withSecondaryScale(secondaryScale)
                         .rangeUpCanonical(Readers.readBigDecimal(a).get()),
                 output,
-                topSampleCount,
                 sampleMean,
                 unscaledBitSizeMean,
                 scaleMean
@@ -6310,7 +5253,6 @@ public strictfp class NonIntegerNumericsTest {
                 P.withScale(scale).withSecondaryScale(secondaryScale)
                         .rangeDownCanonical(Readers.readBigDecimal(a).get()),
                 output,
-                topSampleCount,
                 sampleMean,
                 unscaledBitSizeMean,
                 scaleMean
@@ -7147,7 +6089,6 @@ public strictfp class NonIntegerNumericsTest {
                 P.withScale(scale).withSecondaryScale(secondaryScale)
                         .rangeCanonical(Readers.readBigDecimal(a).get(), Readers.readBigDecimal(b).get()),
                 output,
-                topSampleCount,
                 sampleMean,
                 mantissaBitSizeMean,
                 exponentMean
