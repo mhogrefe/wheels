@@ -104,16 +104,12 @@ public strictfp class Testing {
                     }
                     break;
                 case MAP:
-                    if (key == null) {
-                        key = readTestOutput(line, quoted);
-                    } else {
-                        map.put(key, readTestOutput(line, quoted));
-                        key = null;
-                        counter--;
-                        if (counter == 0) {
-                            testingMaps.put(name, map);
-                            state = ReadState.NONE;
-                        }
+                    int colonIndex = line.indexOf(':');
+                    map.put(readTestOutput(line.substring(colonIndex + 2), quoted), line.substring(0, colonIndex));
+                    counter--;
+                    if (counter == 0) {
+                        testingMaps.put(name, map);
+                        state = ReadState.NONE;
                     }
             }
         }
@@ -281,20 +277,28 @@ public strictfp class Testing {
             } else {
                 System.out.println();
             }
+            Map<Integer, Set<String>> sortedActual = new TreeMap<>(Comparator.reverseOrder());
             for (Map.Entry<String, String> entry : actual.entrySet()) {
-                if (quote) System.out.print('\'');
-                System.out.print(escape(entry.getKey()));
-                if (quote) {
-                    System.out.println('\'');
-                } else {
-                    System.out.println();
+                int frequency = Integer.parseInt(entry.getValue());
+                Set<String> values = sortedActual.get(frequency);
+                if (values == null) {
+                    values = new TreeSet<>();
+                    sortedActual.put(frequency, values);
                 }
-                if (quote) System.out.print('\'');
-                System.out.print(escape(entry.getValue()));
-                if (quote) {
-                    System.out.println('\'');
-                } else {
-                    System.out.println();
+                values.add(entry.getKey());
+            }
+            for (Map.Entry<Integer, Set<String>> entry : sortedActual.entrySet()) {
+                int frequency = entry.getKey();
+                for (String value : entry.getValue()) {
+                    System.out.print(frequency);
+                    System.out.print(": ");
+                    if (quote) System.out.print('\'');
+                    System.out.print(escape(value));
+                    if (quote) {
+                        System.out.println('\'');
+                    } else {
+                        System.out.println();
+                    }
                 }
             }
             fail("No match for " + b);
