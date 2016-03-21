@@ -4,9 +4,9 @@ import mho.wheels.structures.Pair;
 import mho.wheels.testing.Demos;
 
 import java.math.BigInteger;
+import java.util.List;
 
-import static mho.wheels.iterables.IterableUtils.filter;
-import static mho.wheels.iterables.IterableUtils.take;
+import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.math.MathUtils.gcd;
 import static mho.wheels.math.MathUtils.lcm;
 import static mho.wheels.math.MathUtils.reversePermutationSign;
@@ -18,13 +18,13 @@ public class MathUtilsDemos extends Demos {
     }
 
     private void demoGcd_int_int() {
-        for (Pair<Integer, Integer> p : take(LIMIT, filter(q -> q.a != 0 || q.b != 0, P.pairs(P.integers())))) {
+        for (Pair<Integer, Integer> p : take(LIMIT, P.pairs(P.integers()))) {
             System.out.println("gcd(" + p.a + ", " + p.b + ") = " + gcd(p.a, p.b));
         }
     }
 
     private void demoGcd_long_long() {
-        for (Pair<Long, Long> p : take(LIMIT, filter(q -> q.a != 0 || q.b != 0, P.pairs(P.longs())))) {
+        for (Pair<Long, Long> p : take(LIMIT, P.pairs(P.longs()))) {
             System.out.println("gcd(" + p.a + ", " + p.b + ") = " + gcd(p.a, p.b));
         }
     }
@@ -32,6 +32,20 @@ public class MathUtilsDemos extends Demos {
     private void demoLcm_BigInteger_BigInteger() {
         for (Pair<BigInteger, BigInteger> p : take(LIMIT, P.pairs(P.positiveBigIntegers()))) {
             System.out.println("lcm(" + p.a + ", " + p.b + ") = " + lcm(p.a, p.b));
+        }
+    }
+
+    private void demoGcd_List_BigInteger() {
+        for (List<BigInteger> is : take(LIMIT, P.withScale(4).lists(P.bigIntegers()))) {
+            String listString = tail(init(is.toString()));
+            System.out.println("gcd(" + listString + ") = " + gcd(is));
+        }
+    }
+
+    private void demoLcm_List_BigInteger() {
+        for (List<BigInteger> is : take(LIMIT, P.withScale(4).listsAtLeast(1, P.positiveBigIntegers()))) {
+            String listString = tail(init(is.toString()));
+            System.out.println("lcm(" + listString + ") = " + lcm(is));
         }
     }
 

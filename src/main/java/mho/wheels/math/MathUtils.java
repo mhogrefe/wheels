@@ -36,25 +36,22 @@ public final class MathUtils {
     private MathUtils() {}
 
     /**
-     * The greatest common divisor of two {@link int}s. If both {@code x} and {@code y} are zero, the result is
-     * undefined. Otherwise, the result is positive.
+     * The greatest common divisor of two {@link int}s. If both {@code x} and {@code y} are zero, the result is zero.
+     * Otherwise, the result is positive.
      *
      * <ul>
      *  <li>{@code x} may be any {@code int}.</li>
      *  <li>{@code y} may be any {@code int}.</li>
-     *  <li>{@code x} and {@code y} may not both be zero.</li>
      *  <li>The result is non-negative.</li>
      * </ul>
      *
      * @param x the first number
      * @param y the second number
-     * @return gcd(x, y)
+     * @return gcd({@code x}, {@code y})
      */
+    @SuppressWarnings("JavaDoc")
     public static int gcd(int x, int y) {
-        if (x == 0 && y == 0) {
-            throw new ArithmeticException("x and y may not both be zero.");
-        }
-        return positiveGcd(Math.abs(x), Math.abs(y));
+        return nonNegativeGcd(Math.abs(x), Math.abs(y));
     }
 
     /**
@@ -63,39 +60,36 @@ public final class MathUtils {
      * <ul>
      *  <li>{@code x} cannot be negative.</li>
      *  <li>{@code y} cannot be negative.</li>
-     *  <li>{@code x} and {@code y} may not both be zero.</li>
      *  <li>The result is non-negative.</li>
      * </ul>
      *
      * @param x the first number
      * @param y the second number
-     * @return gcd(x, y)
+     * @return gcd({@code x}, {@code y})
      */
-    private static int positiveGcd(int x, int y) {
+    @SuppressWarnings("JavaDoc")
+    private static int nonNegativeGcd(int x, int y) {
         //noinspection SuspiciousNameCombination
-        return y == 0 ? x : positiveGcd(y, x % y);
+        return y == 0 ? x : nonNegativeGcd(y, x % y);
     }
 
     /**
-     * The greatest common divisor of two {@link long}s. If both {@code x} and {@code y} are zero, the result is
-     * undefined. Otherwise, the result is positive.
+     * The greatest common divisor of two {@link long}s. If both {@code x} and {@code y} are zero, the result is zero.
+     * Otherwise, the result is positive.
      *
      * <ul>
      *  <li>{@code x} may be any {@code long}.</li>
      *  <li>{@code y} may be any {@code long}.</li>
-     *  <li>{@code x} and {@code y} may not both be zero.</li>
      *  <li>The result is non-negative.</li>
      * </ul>
      *
      * @param x the first number
      * @param y the second number
-     * @return gcd(x, y)
+     * @return gcd({@code x}, {@code y})
      */
+    @SuppressWarnings("JavaDoc")
     public static long gcd(long x, long y) {
-        if (x == 0L && y == 0L) {
-            throw new ArithmeticException("x and y may not both be zero.");
-        }
-        return positiveGcd(Math.abs(x), Math.abs(y));
+        return nonNegativeGcd(Math.abs(x), Math.abs(y));
     }
 
     /**
@@ -104,17 +98,17 @@ public final class MathUtils {
      * <ul>
      *  <li>{@code x} cannot be negative.</li>
      *  <li>{@code y} cannot be negative.</li>
-     *  <li>{@code x} and {@code y} may not both be zero.</li>
      *  <li>The result is non-negative.</li>
      * </ul>
      *
      * @param x the first number
      * @param y the second number
-     * @return gcd(x, y)
+     * @return gcd({@code x}, {@code y})
      */
-    private static long positiveGcd(long x, long y) {
+    @SuppressWarnings("JavaDoc")
+    private static long nonNegativeGcd(long x, long y) {
         //noinspection SuspiciousNameCombination
-        return y == 0 ? x : positiveGcd(y, x % y);
+        return y == 0 ? x : nonNegativeGcd(y, x % y);
     }
 
     /**
@@ -129,8 +123,9 @@ public final class MathUtils {
      *
      * @param x the first number
      * @param y the second number
-     * @return lcm(x, y)
+     * @return lcm({@code x}, {@code y})
      */
+    @SuppressWarnings("JavaDoc")
     public static @NotNull BigInteger lcm(@NotNull BigInteger x, @NotNull BigInteger y) {
         if (x.signum() != 1) {
             throw new ArithmeticException("x must be positive. Invalid x: " + x);
@@ -141,12 +136,43 @@ public final class MathUtils {
         return x.divide(x.gcd(y)).multiply(y);
     }
 
-    public static @NotNull BigInteger gcd(@NotNull Iterable<BigInteger> xs) {
+    /**
+     * The greatest common divisor of a {@code List} of {@code BigInteger}s. The GCD of an empty {@code Iterable}, or
+     * an {@code Iterable} containing only zeros, is zero.
+     *
+     * <ul>
+     *  <li>{@code xs} cannot contain any nulls.</li>
+     *  <li>The result is non-negative.</li>
+     * </ul>
+     *
+     * @param xs some numbers
+     * @return gcd({@code xs})
+     */
+    @SuppressWarnings("JavaDoc")
+    public static @NotNull BigInteger gcd(@NotNull List<BigInteger> xs) {
         return foldl(BigInteger::gcd, BigInteger.ZERO, xs);
     }
 
-    public static @NotNull BigInteger lcm(@NotNull Iterable<BigInteger> xs) {
-        return foldl1(MathUtils::lcm, xs);
+    /**
+     * The least common multiple of a {@code List} of {@code BigInteger}s.
+     *
+     * <ul>
+     *  <li>{@code xs} cannot be empty, and every element of {@code xs} must be positive.</li>
+     *  <li>The result is positive.</li>
+     * </ul>
+     *
+     * @param xs some numbers
+     * @return lcm({@code xs})
+     */
+    @SuppressWarnings("JavaDoc")
+    public static @NotNull BigInteger lcm(@NotNull List<BigInteger> xs) {
+        if (xs.isEmpty()) {
+            throw new ArithmeticException("xs cannot be empty.");
+        }
+        if (any(x -> x.signum() != 1, xs)) {
+            throw new ArithmeticException("Every element of xs must be positive. Invalid xs: " + xs);
+        }
+        return foldl1(MathUtils::lcm, sort(xs));
     }
 
     /**

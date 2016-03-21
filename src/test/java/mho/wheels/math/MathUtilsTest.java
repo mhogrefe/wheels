@@ -6,6 +6,7 @@ import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
 
 import java.math.BigInteger;
+import java.util.List;
 
 import static mho.wheels.math.MathUtils.*;
 import static mho.wheels.testing.Testing.aeq;
@@ -16,15 +17,13 @@ public class MathUtilsTest {
         aeq(gcd(x, y), output);
     }
 
-    private static void gcd_int_int_fail_helper(int x, int y) {
-        try {
-            gcd(x, y);
-            fail();
-        } catch (ArithmeticException ignored) {}
-    }
-
     @Test
     public void testGcd_int_int() {
+        gcd_int_int_helper(0, 0, 0);
+        gcd_int_int_helper(6, 0, 6);
+        gcd_int_int_helper(-6, 0, 6);
+        gcd_int_int_helper(0, 6, 6);
+        gcd_int_int_helper(0, -6, 6);
         gcd_int_int_helper(12, 15, 3);
         gcd_int_int_helper(35, 210, 35);
         gcd_int_int_helper(17, 20, 1);
@@ -32,27 +31,19 @@ public class MathUtilsTest {
         gcd_int_int_helper(-12, 15, 3);
         gcd_int_int_helper(12, -15, 3);
         gcd_int_int_helper(-12, -15, 3);
-        gcd_int_int_helper(6, 0, 6);
-        gcd_int_int_helper(-6, 0, 6);
-        gcd_int_int_helper(0, 6, 6);
-        gcd_int_int_helper(0, -6, 6);
-
-        gcd_int_int_fail_helper(0, 0);
     }
 
     private static void gcd_long_long_helper(long x, long y, long output) {
         aeq(gcd(x, y), output);
     }
 
-    private static void gcd_long_long_fail_helper(long x, long y) {
-        try {
-            gcd(x, y);
-            fail();
-        } catch (ArithmeticException ignored) {}
-    }
-
     @Test
     public void testGcd_long_long() {
+        gcd_long_long_helper(0L, 0L, 0L);
+        gcd_long_long_helper(6L, 0L, 6L);
+        gcd_long_long_helper(-6L, 0L, 6L);
+        gcd_long_long_helper(0L, 6L, 6L);
+        gcd_long_long_helper(0L, -6L, 6L);
         gcd_long_long_helper(12L, 15L, 3L);
         gcd_long_long_helper(35L, 210L, 35L);
         gcd_long_long_helper(17L, 20L, 1L);
@@ -60,19 +51,17 @@ public class MathUtilsTest {
         gcd_long_long_helper(-12L, 15L, 3L);
         gcd_long_long_helper(12L, -15L, 3L);
         gcd_long_long_helper(-12L, -15L, 3L);
-        gcd_long_long_helper(6L, 0L, 6L);
-        gcd_long_long_helper(-6L, 0L, 6L);
-        gcd_long_long_helper(0L, 6L, 6L);
-        gcd_long_long_helper(0L, -6L, 6L);
-
-        gcd_long_long_fail_helper(0L, 0L);
     }
 
-    private static void lcm_helper(@NotNull String x, @NotNull String y, @NotNull String output) {
+    private static void lcm_BigInteger_BigInteger_helper(
+            @NotNull String x,
+            @NotNull String y,
+            @NotNull String output
+    ) {
         aeq(lcm(Readers.readBigInteger(x).get(), Readers.readBigInteger(y).get()), output);
     }
 
-    private static void lcm_fail_helper(@NotNull String x, @NotNull String y) {
+    private static void lcm_BigInteger_BigInteger_fail_helper(@NotNull String x, @NotNull String y) {
         try {
             lcm(Readers.readBigInteger(x).get(), Readers.readBigInteger(y).get());
             fail();
@@ -81,17 +70,75 @@ public class MathUtilsTest {
 
     @Test
     public void testLcm_BigInteger_BigInteger() {
-        lcm_helper("12", "15", "60");
-        lcm_helper("35", "210", "210");
-        lcm_helper("17", "20", "340");
-        lcm_helper("1", "5", "5");
+        lcm_BigInteger_BigInteger_helper("12", "15", "60");
+        lcm_BigInteger_BigInteger_helper("35", "210", "210");
+        lcm_BigInteger_BigInteger_helper("17", "20", "340");
+        lcm_BigInteger_BigInteger_helper("1", "5", "5");
 
-        lcm_fail_helper("-12", "15");
-        lcm_fail_helper("12", "-15");
-        lcm_fail_helper("-12", "-15");
-        lcm_fail_helper("6", "0");
-        lcm_fail_helper("0", "6");
-        lcm_fail_helper("0", "0");
+        lcm_BigInteger_BigInteger_fail_helper("-12", "15");
+        lcm_BigInteger_BigInteger_fail_helper("12", "-15");
+        lcm_BigInteger_BigInteger_fail_helper("-12", "-15");
+        lcm_BigInteger_BigInteger_fail_helper("6", "0");
+        lcm_BigInteger_BigInteger_fail_helper("0", "6");
+        lcm_BigInteger_BigInteger_fail_helper("0", "0");
+    }
+
+    private static void gcd_List_BigInteger_helper(@NotNull String input, @NotNull String output) {
+        aeq(gcd(readBigIntegerList(input)), output);
+    }
+
+    private static void gcd_List_BigInteger_fail_helper(@NotNull String input) {
+        try {
+            gcd(readBigIntegerListWithNulls(input));
+            fail();
+        } catch (NullPointerException ignored) {}
+    }
+
+    @Test
+    public void testGcd_List_BigInteger() {
+        gcd_List_BigInteger_helper("[]", "0");
+        gcd_List_BigInteger_helper("[0]", "0");
+        gcd_List_BigInteger_helper("[1]", "1");
+        gcd_List_BigInteger_helper("[5]", "5");
+        gcd_List_BigInteger_helper("[-5]", "5");
+        gcd_List_BigInteger_helper("[35, 210]", "35");
+        gcd_List_BigInteger_helper("[2, 4, 6]", "2");
+        gcd_List_BigInteger_helper("[20, 40, 60]", "20");
+        gcd_List_BigInteger_helper("[20, 40, -60]", "20");
+        gcd_List_BigInteger_helper("[20, 40, 1]", "1");
+        gcd_List_BigInteger_helper("[20, 40, 0]", "20");
+        gcd_List_BigInteger_helper("[0, 0, 0]", "0");
+
+        gcd_List_BigInteger_fail_helper("[1, 2, null]");
+    }
+
+    private static void lcm_List_BigInteger_helper(@NotNull String input, @NotNull String output) {
+        aeq(lcm(readBigIntegerList(input)), output);
+    }
+
+    private static void lcm_List_BigInteger_fail_helper(@NotNull String input) {
+        try {
+            lcm(readBigIntegerListWithNulls(input));
+            fail();
+        } catch (IllegalArgumentException | ArithmeticException | NullPointerException ignored) {}
+    }
+
+    @Test
+    public void testLcm_List_BigInteger() {
+        lcm_List_BigInteger_helper("[1]", "1");
+        lcm_List_BigInteger_helper("[5]", "5");
+        lcm_List_BigInteger_helper("[35, 210]", "210");
+        lcm_List_BigInteger_helper("[2, 4, 6]", "12");
+        lcm_List_BigInteger_helper("[20, 40, 60]", "120");
+        lcm_List_BigInteger_helper("[20, 40, 1]", "40");
+
+        lcm_List_BigInteger_fail_helper("[]");
+        lcm_List_BigInteger_fail_helper("[0]");
+        lcm_List_BigInteger_fail_helper("[-5]");
+        lcm_List_BigInteger_fail_helper("[0, 0, 0]");
+        lcm_List_BigInteger_fail_helper("[1, 0, 2]");
+        lcm_List_BigInteger_fail_helper("[1, -3, 2]");
+        lcm_List_BigInteger_fail_helper("[1, 2, null]");
     }
 
     @Test
@@ -185,5 +232,13 @@ public class MathUtilsTest {
         reversePermutationsSign_helper(-3, true);
         reversePermutationsSign_helper(-4, true);
         reversePermutationsSign_helper(-5, false);
+    }
+
+    private static @NotNull List<BigInteger> readBigIntegerList(@NotNull String s) {
+        return Readers.readList(Readers::readBigInteger).apply(s).get();
+    }
+
+    private static @NotNull List<BigInteger> readBigIntegerListWithNulls(@NotNull String s) {
+        return Readers.readListWithNulls(Readers::readBigInteger).apply(s).get();
     }
 }
