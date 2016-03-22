@@ -63964,3 +63964,889 @@ RandomProvider_rangeCanonical_BigDecimal_BigDecimal_lxii map 0
 RandomProvider_rangeCanonical_BigDecimal_BigDecimal_lxiii list 0
 
 RandomProvider_rangeCanonical_BigDecimal_BigDecimal_lxiii map 0
+
+RandomProvider_withElement_i list 21
+1
+null
+1
+1
+1
+1
+1
+1
+1
+null
+1
+null
+null
+1
+null
+null
+1
+1
+null
+1
+...
+
+RandomProvider_withElement_ii list 21
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+...
+
+RandomProvider_withElement_iii list 21
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+...
+
+RandomProvider_withElement_iv list 21
+null
+10
+2
+3
+null
+2
+3
+null
+2
+10
+3
+10
+10
+null
+10
+10
+2
+3
+10
+null
+...
+
+RandomProvider_withElement_v list 21
+null
+2
+3
+null
+2
+3
+null
+2
+3
+null
+2
+3
+null
+2
+3
+null
+2
+3
+null
+2
+...
+
+RandomProvider_withElement_vi list 21
+null
+2
+3
+null
+2
+3
+null
+2
+3
+null
+2
+3
+null
+2
+3
+null
+2
+3
+null
+2
+...
+
+RandomProvider_withNull_i list 21
+1
+null
+1
+1
+1
+1
+1
+1
+1
+null
+1
+null
+null
+1
+null
+null
+1
+1
+null
+1
+...
+
+RandomProvider_withNull_ii list 21
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+...
+
+RandomProvider_withNull_iii list 21
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+...
+
+RandomProvider_withNull_iv list 21
+1
+null
+2
+3
+1
+2
+3
+1
+2
+null
+3
+null
+null
+1
+null
+null
+2
+3
+null
+1
+...
+
+RandomProvider_withNull_v list 21
+1
+2
+3
+1
+2
+3
+1
+2
+3
+1
+2
+3
+1
+2
+3
+1
+2
+3
+1
+2
+...
+
+RandomProvider_withNull_vi list 21
+1
+2
+3
+1
+2
+3
+1
+2
+3
+1
+2
+3
+1
+2
+3
+1
+2
+3
+1
+2
+...
+
+RandomProvider_optionals_i list 21
+Optional[1]
+Optional.empty
+Optional[1]
+Optional[1]
+Optional[1]
+Optional[1]
+Optional[1]
+Optional[1]
+Optional[1]
+Optional.empty
+Optional[1]
+Optional.empty
+Optional.empty
+Optional[1]
+Optional.empty
+Optional.empty
+Optional[1]
+Optional[1]
+Optional.empty
+Optional[1]
+...
+
+RandomProvider_optionals_ii list 21
+Optional[1]
+Optional[1]
+Optional[1]
+Optional[1]
+Optional[1]
+Optional[1]
+Optional[1]
+Optional[1]
+Optional[1]
+Optional[1]
+Optional[1]
+Optional[1]
+Optional[1]
+Optional[1]
+Optional[1]
+Optional[1]
+Optional[1]
+Optional[1]
+Optional[1]
+Optional[1]
+...
+
+RandomProvider_optionals_iii list 21
+Optional[1]
+Optional[1]
+Optional[1]
+Optional[1]
+Optional[1]
+Optional[1]
+Optional[1]
+Optional[1]
+Optional[1]
+Optional[1]
+Optional[1]
+Optional[1]
+Optional[1]
+Optional[1]
+Optional[1]
+Optional[1]
+Optional[1]
+Optional[1]
+Optional[1]
+Optional[1]
+...
+
+RandomProvider_optionals_iv list 21
+Optional[1]
+Optional.empty
+Optional[2]
+Optional[3]
+Optional[1]
+Optional[2]
+Optional[3]
+Optional[1]
+Optional[2]
+Optional.empty
+Optional[3]
+Optional.empty
+Optional.empty
+Optional[1]
+Optional.empty
+Optional.empty
+Optional[2]
+Optional[3]
+Optional.empty
+Optional[1]
+...
+
+RandomProvider_optionals_v list 21
+Optional[1]
+Optional[2]
+Optional[3]
+Optional[1]
+Optional[2]
+Optional[3]
+Optional[1]
+Optional[2]
+Optional[3]
+Optional[1]
+Optional[2]
+Optional[3]
+Optional[1]
+Optional[2]
+Optional[3]
+Optional[1]
+Optional[2]
+Optional[3]
+Optional[1]
+Optional[2]
+...
+
+RandomProvider_optionals_vi list 21
+Optional[1]
+Optional[2]
+Optional[3]
+Optional[1]
+Optional[2]
+Optional[3]
+Optional[1]
+Optional[2]
+Optional[3]
+Optional[1]
+Optional[2]
+Optional[3]
+Optional[1]
+Optional[2]
+Optional[3]
+Optional[1]
+Optional[2]
+Optional[3]
+Optional[1]
+Optional[2]
+...
+
+RandomProvider_nullableOptionals_i list 21
+NullableOptional[1]
+NullableOptional.empty
+NullableOptional[1]
+NullableOptional[1]
+NullableOptional[1]
+NullableOptional[1]
+NullableOptional[1]
+NullableOptional[1]
+NullableOptional[1]
+NullableOptional.empty
+NullableOptional[1]
+NullableOptional.empty
+NullableOptional.empty
+NullableOptional[1]
+NullableOptional.empty
+NullableOptional.empty
+NullableOptional[1]
+NullableOptional[1]
+NullableOptional.empty
+NullableOptional[1]
+...
+
+RandomProvider_nullableOptionals_ii list 21
+NullableOptional[1]
+NullableOptional[1]
+NullableOptional[1]
+NullableOptional[1]
+NullableOptional[1]
+NullableOptional[1]
+NullableOptional[1]
+NullableOptional[1]
+NullableOptional[1]
+NullableOptional[1]
+NullableOptional[1]
+NullableOptional[1]
+NullableOptional[1]
+NullableOptional[1]
+NullableOptional[1]
+NullableOptional[1]
+NullableOptional[1]
+NullableOptional[1]
+NullableOptional[1]
+NullableOptional[1]
+...
+
+RandomProvider_nullableOptionals_iii list 21
+NullableOptional[1]
+NullableOptional[1]
+NullableOptional[1]
+NullableOptional[1]
+NullableOptional[1]
+NullableOptional[1]
+NullableOptional[1]
+NullableOptional[1]
+NullableOptional[1]
+NullableOptional[1]
+NullableOptional[1]
+NullableOptional[1]
+NullableOptional[1]
+NullableOptional[1]
+NullableOptional[1]
+NullableOptional[1]
+NullableOptional[1]
+NullableOptional[1]
+NullableOptional[1]
+NullableOptional[1]
+...
+
+RandomProvider_nullableOptionals_iv list 21
+NullableOptional[null]
+NullableOptional.empty
+NullableOptional[2]
+NullableOptional[3]
+NullableOptional[null]
+NullableOptional[2]
+NullableOptional[3]
+NullableOptional[null]
+NullableOptional[2]
+NullableOptional.empty
+NullableOptional[3]
+NullableOptional.empty
+NullableOptional.empty
+NullableOptional[null]
+NullableOptional.empty
+NullableOptional.empty
+NullableOptional[2]
+NullableOptional[3]
+NullableOptional.empty
+NullableOptional[null]
+...
+
+RandomProvider_nullableOptionals_v list 21
+NullableOptional[null]
+NullableOptional[2]
+NullableOptional[3]
+NullableOptional[null]
+NullableOptional[2]
+NullableOptional[3]
+NullableOptional[null]
+NullableOptional[2]
+NullableOptional[3]
+NullableOptional[null]
+NullableOptional[2]
+NullableOptional[3]
+NullableOptional[null]
+NullableOptional[2]
+NullableOptional[3]
+NullableOptional[null]
+NullableOptional[2]
+NullableOptional[3]
+NullableOptional[null]
+NullableOptional[2]
+...
+
+RandomProvider_nullableOptionals_vi list 21
+NullableOptional[null]
+NullableOptional[2]
+NullableOptional[3]
+NullableOptional[null]
+NullableOptional[2]
+NullableOptional[3]
+NullableOptional[null]
+NullableOptional[2]
+NullableOptional[3]
+NullableOptional[null]
+NullableOptional[2]
+NullableOptional[3]
+NullableOptional[null]
+NullableOptional[2]
+NullableOptional[3]
+NullableOptional[null]
+NullableOptional[2]
+NullableOptional[3]
+NullableOptional[null]
+NullableOptional[2]
+...
+
+RandomProvider_dependentPairsInfinite list 21
+(2, ds)
+(4, rhvt)
+(1, v)
+(2, wv)
+(5, kpzex)
+(3, hje)
+(4, mfse)
+(1, d)
+(3, fpo)
+(3, tgw)
+(1, m)
+(1, y)
+(1, o)
+(3, dpl)
+(1, j)
+(5, sofgp)
+(4, pttf)
+(4, lszp)
+(2, dr)
+(3, fvx)
+...
+
+RandomProvider_permutationsFinite_i list 21
+[]
+[]
+[]
+[]
+[]
+[]
+[]
+[]
+[]
+[]
+[]
+[]
+[]
+[]
+[]
+[]
+[]
+[]
+[]
+[]
+...
+
+RandomProvider_permutationsFinite_i map 1
+1000000: []
+
+RandomProvider_permutationsFinite_ii list 21
+[5]
+[5]
+[5]
+[5]
+[5]
+[5]
+[5]
+[5]
+[5]
+[5]
+[5]
+[5]
+[5]
+[5]
+[5]
+[5]
+[5]
+[5]
+[5]
+[5]
+...
+
+RandomProvider_permutationsFinite_ii map 1
+1000000: [5]
+
+RandomProvider_permutationsFinite_iii list 21
+[2, 1]
+[1, 2]
+[2, 1]
+[2, 1]
+[2, 1]
+[2, 1]
+[2, 1]
+[2, 1]
+[2, 1]
+[1, 2]
+[2, 1]
+[1, 2]
+[1, 2]
+[2, 1]
+[1, 2]
+[1, 2]
+[2, 1]
+[2, 1]
+[1, 2]
+[2, 1]
+...
+
+RandomProvider_permutationsFinite_iii map 2
+500745: [2, 1]
+499255: [1, 2]
+
+RandomProvider_permutationsFinite_iv list 21
+[2, 1, 3]
+[2, 3, 1]
+[2, 3, 1]
+[2, 3, 1]
+[3, 1, 2]
+[1, 2, 3]
+[3, 2, 1]
+[2, 3, 1]
+[3, 1, 2]
+[3, 1, 2]
+[1, 3, 2]
+[2, 1, 3]
+[1, 3, 2]
+[2, 1, 3]
+[3, 2, 1]
+[2, 1, 3]
+[2, 1, 3]
+[1, 2, 3]
+[1, 2, 3]
+[3, 2, 1]
+...
+
+RandomProvider_permutationsFinite_iv map 6
+167387: [2, 3, 1]
+167243: [3, 2, 1]
+166538: [1, 3, 2]
+166496: [1, 2, 3]
+166232: [3, 1, 2]
+166104: [2, 1, 3]
+
+RandomProvider_permutationsFinite_v list 21
+[2, 4, 1, 3]
+[2, 3, 4, 1]
+[2, 3, 1, 4]
+[2, 1, 3, 4]
+[4, 1, 3, 2]
+[2, 4, 1, 3]
+[3, 1, 2, 4]
+[4, 3, 2, 1]
+[1, 3, 2, 4]
+[3, 4, 2, 1]
+[3, 1, 2, 4]
+[1, 4, 3, 2]
+[1, 4, 3, 2]
+[4, 3, 1, 2]
+[2, 1, 3, 4]
+[3, 4, 2, 1]
+[4, 3, 2, 1]
+[4, 1, 3, 2]
+[4, 2, 1, 3]
+[3, 4, 1, 2]
+...
+
+RandomProvider_permutationsFinite_v map 10
+42026: [4, 2, 3, 1]
+42012: [2, 3, 1, 4]
+41883: [4, 1, 3, 2]
+41846: [1, 4, 3, 2]
+41820: [3, 2, 4, 1]
+41782: [4, 3, 1, 2]
+41776: [3, 1, 4, 2]
+41771: [3, 4, 1, 2]
+41764: [2, 1, 3, 4]
+41745: [4, 3, 2, 1]
+
+RandomProvider_permutationsFinite_vi list 21
+[2, 4, 1, 2]
+[2, 2, 4, 1]
+[2, 2, 1, 4]
+[2, 1, 2, 4]
+[4, 1, 2, 2]
+[2, 4, 1, 2]
+[2, 1, 2, 4]
+[4, 2, 2, 1]
+[1, 2, 2, 4]
+[2, 4, 2, 1]
+[2, 1, 2, 4]
+[1, 4, 2, 2]
+[1, 4, 2, 2]
+[4, 2, 1, 2]
+[2, 1, 2, 4]
+[2, 4, 2, 1]
+[4, 2, 2, 1]
+[4, 1, 2, 2]
+[4, 2, 1, 2]
+[2, 4, 1, 2]
+...
+
+RandomProvider_permutationsFinite_vi map 10
+83771: [4, 2, 2, 1]
+83554: [2, 2, 1, 4]
+83502: [2, 2, 4, 1]
+83498: [2, 4, 1, 2]
+83476: [4, 1, 2, 2]
+83417: [1, 4, 2, 2]
+83341: [2, 1, 4, 2]
+83271: [4, 2, 1, 2]
+83193: [2, 4, 2, 1]
+83115: [2, 1, 2, 4]
+
+RandomProvider_permutationsFinite_vii list 21
+[2, 2, 2, 2]
+[2, 2, 2, 2]
+[2, 2, 2, 2]
+[2, 2, 2, 2]
+[2, 2, 2, 2]
+[2, 2, 2, 2]
+[2, 2, 2, 2]
+[2, 2, 2, 2]
+[2, 2, 2, 2]
+[2, 2, 2, 2]
+[2, 2, 2, 2]
+[2, 2, 2, 2]
+[2, 2, 2, 2]
+[2, 2, 2, 2]
+[2, 2, 2, 2]
+[2, 2, 2, 2]
+[2, 2, 2, 2]
+[2, 2, 2, 2]
+[2, 2, 2, 2]
+[2, 2, 2, 2]
+...
+
+RandomProvider_permutationsFinite_vii map 1
+1000000: [2, 2, 2, 2]
+
+RandomProvider_permutationsFinite_viii list 21
+[1, 1, 3, 4]
+[1, 4, 1, 3]
+[1, 4, 3, 1]
+[1, 3, 4, 1]
+[1, 3, 4, 1]
+[1, 1, 3, 4]
+[4, 3, 1, 1]
+[1, 4, 1, 3]
+[3, 4, 1, 1]
+[4, 1, 1, 3]
+[4, 3, 1, 1]
+[3, 1, 4, 1]
+[3, 1, 4, 1]
+[1, 4, 3, 1]
+[1, 3, 4, 1]
+[4, 1, 1, 3]
+[1, 4, 1, 3]
+[1, 3, 4, 1]
+[1, 1, 3, 4]
+[4, 1, 3, 1]
+...
+
+RandomProvider_permutationsFinite_viii map 10
+83794: [1, 4, 3, 1]
+83659: [1, 1, 4, 3]
+83647: [1, 3, 4, 1]
+83427: [1, 4, 1, 3]
+83380: [4, 1, 1, 3]
+83325: [3, 1, 4, 1]
+83313: [4, 1, 3, 1]
+83216: [1, 1, 3, 4]
+83158: [1, 3, 1, 4]
+83127: [4, 3, 1, 1]
+
+RandomProvider_permutationsFinite_ix list 21
+[1, 1, 3, null]
+[1, null, 1, 3]
+[1, null, 3, 1]
+[1, 3, null, 1]
+[1, 3, null, 1]
+[1, 1, 3, null]
+[null, 3, 1, 1]
+[1, null, 1, 3]
+[3, null, 1, 1]
+[null, 1, 1, 3]
+[null, 3, 1, 1]
+[3, 1, null, 1]
+[3, 1, null, 1]
+[1, null, 3, 1]
+[1, 3, null, 1]
+[null, 1, 1, 3]
+[1, null, 1, 3]
+[1, 3, null, 1]
+[1, 1, 3, null]
+[null, 1, 3, 1]
+...
+
+RandomProvider_permutationsFinite_ix map 10
+83794: [1, null, 3, 1]
+83659: [1, 1, null, 3]
+83647: [1, 3, null, 1]
+83427: [1, null, 1, 3]
+83380: [null, 1, 1, 3]
+83325: [3, 1, null, 1]
+83313: [null, 1, 3, 1]
+83216: [1, 1, 3, null]
+83158: [1, 3, 1, null]
+83127: [null, 3, 1, 1]
+
+RandomProvider_permutationsFinite_x list 21
+[10, 4, 1, 9, 8, 7, 5, 2, 3, 6]
+[7, 3, 1, 10, 2, 5, 4, 6, 8, 9]
+[3, 6, 2, 9, 4, 1, 10, 5, 8, 7]
+[3, 8, 2, 6, 10, 1, 7, 5, 9, 4]
+[5, 4, 10, 1, 6, 3, 9, 2, 8, 7]
+[7, 1, 6, 2, 10, 9, 3, 8, 5, 4]
+[2, 8, 5, 10, 3, 1, 4, 6, 9, 7]
+[5, 8, 4, 6, 2, 1, 7, 10, 3, 9]
+[3, 9, 2, 10, 4, 1, 6, 8, 7, 5]
+[7, 2, 3, 1, 8, 10, 6, 5, 9, 4]
+[4, 8, 9, 7, 5, 2, 3, 6, 1, 10]
+[9, 2, 1, 5, 3, 7, 6, 4, 10, 8]
+[3, 4, 9, 5, 10, 7, 6, 8, 2, 1]
+[9, 6, 4, 10, 5, 2, 3, 8, 1, 7]
+[4, 2, 9, 1, 6, 5, 3, 7, 10, 8]
+[3, 1, 7, 5, 8, 9, 4, 6, 2, 10]
+[9, 8, 2, 6, 4, 5, 10, 7, 3, 1]
+[9, 2, 7, 3, 5, 10, 1, 6, 4, 8]
+[10, 3, 2, 1, 6, 7, 8, 4, 9, 5]
+[3, 6, 2, 1, 10, 8, 9, 5, 7, 4]
+...
+
+RandomProvider_permutationsFinite_x map 10
+6: [7, 4, 2, 6, 9, 3, 1, 5, 10, 8]
+5: [1, 3, 4, 6, 2, 5, 9, 10, 8, 7]
+5: [10, 9, 5, 3, 8, 1, 7, 2, 6, 4]
+5: [3, 10, 4, 7, 8, 9, 1, 5, 6, 2]
+5: [3, 9, 6, 4, 1, 10, 5, 7, 8, 2]
+5: [4, 1, 6, 5, 8, 10, 3, 7, 2, 9]
+5: [4, 5, 6, 7, 1, 10, 3, 8, 2, 9]
+5: [5, 3, 6, 2, 8, 10, 1, 9, 7, 4]
+5: [5, 8, 1, 10, 6, 3, 9, 4, 7, 2]
+5: [8, 5, 6, 2, 7, 9, 4, 3, 1, 10]

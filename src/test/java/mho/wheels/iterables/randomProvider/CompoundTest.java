@@ -36,55 +36,20 @@ public strictfp class CompoundTest {
     ) {
         Iterable<Integer> xs = P.withScale(scale).withElement(element, cycle(readIntegerListWithNulls(input)));
         List<Integer> sample = toList(take(DEFAULT_SAMPLE_SIZE, xs));
-        aeqitLimit(TINY_LIMIT, sample, output);
+        aeqitLimitLog(TINY_LIMIT, sample, output);
         aeq(meanOfIntegers(toList(map(x -> Objects.equals(x, element) ? 1 : 0, sample))), elementFrequency);
         P.reset();
     }
 
     @Test
     public void testWithElement() {
-        withElement_helper(
-                2,
-                "[1]",
-                null,
-                "[1, null, 1, 1, 1, 1, 1, 1, 1, null, 1, null, null, 1, null, null, 1, 1, null, 1, ...]",
-                0.4992549999935604
-        );
-        withElement_helper(
-                8,
-                "[1]",
-                null,
-                "[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...]",
-                0.12480700000010415
-        );
-        withElement_helper(
-                32,
-                "[1]",
-                null,
-                "[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...]",
-                0.031218000000010567
-        );
-        withElement_helper(
-                2,
-                "[null, 2, 3]",
-                10,
-                "[null, 10, 2, 3, null, 2, 3, null, 2, 10, 3, 10, 10, null, 10, 10, 2, 3, 10, null, ...]",
-                0.4992549999935604
-        );
-        withElement_helper(
-                8,
-                "[null, 2, 3]",
-                10,
-                "[null, 2, 3, null, 2, 3, null, 2, 3, null, 2, 3, null, 2, 3, null, 2, 3, null, 2, ...]",
-                0.12480700000010415
-        );
-        withElement_helper(
-                32,
-                "[null, 2, 3]",
-                10,
-                "[null, 2, 3, null, 2, 3, null, 2, 3, null, 2, 3, null, 2, 3, null, 2, 3, null, 2, ...]",
-                0.031218000000010567
-        );
+        withElement_helper(2, "[1]", null, "RandomProvider_withElement_i", 0.4992549999935604);
+        withElement_helper(8, "[1]", null, "RandomProvider_withElement_ii", 0.12480700000010415);
+        withElement_helper(32, "[1]", null, "RandomProvider_withElement_iii", 0.031218000000010567);
+        withElement_helper(2, "[null, 2, 3]", 10, "RandomProvider_withElement_iv", 0.4992549999935604);
+        withElement_helper(8, "[null, 2, 3]", 10, "RandomProvider_withElement_v", 0.12480700000010415);
+        withElement_helper(32, "[null, 2, 3]", 10, "RandomProvider_withElement_vi", 0.031218000000010567);
+
         try {
             toList(P.withElement(null, readIntegerListWithNulls("[1, 2, 3]")));
             fail();
@@ -103,49 +68,20 @@ public strictfp class CompoundTest {
     ) {
         Iterable<Integer> xs = P.withScale(scale).withNull(cycle(readIntegerListWithNulls(input)));
         List<Integer> sample = toList(take(DEFAULT_SAMPLE_SIZE, xs));
-        aeqitLimit(TINY_LIMIT, sample, output);
+        aeqitLimitLog(TINY_LIMIT, sample, output);
         aeq(meanOfIntegers(toList(map(x -> x == null ? 1 : 0, sample))), nullFrequency);
         P.reset();
     }
 
     @Test
     public void testWithNull() {
-        withNull_helper(
-                2,
-                "[1]",
-                "[1, null, 1, 1, 1, 1, 1, 1, 1, null, 1, null, null, 1, null, null, 1, 1, null, 1, ...]",
-                0.4992549999935604
-        );
-        withNull_helper(
-                8,
-                "[1]",
-                "[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...]",
-                0.12480700000010415
-        );
-        withNull_helper(
-                32,
-                "[1]",
-                "[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...]",
-                0.031218000000010567
-        );
-        withNull_helper(
-                2,
-                "[1, 2, 3]",
-                "[1, null, 2, 3, 1, 2, 3, 1, 2, null, 3, null, null, 1, null, null, 2, 3, null, 1, ...]",
-                0.4992549999935604
-        );
-        withNull_helper(
-                8,
-                "[1, 2, 3]",
-                "[1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, ...]",
-                0.12480700000010415
-        );
-        withNull_helper(
-                32,
-                "[1, 2, 3]",
-                "[1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, ...]",
-                0.031218000000010567
-        );
+        withNull_helper(2, "[1]", "RandomProvider_withNull_i", 0.4992549999935604);
+        withNull_helper(8, "[1]", "RandomProvider_withNull_ii", 0.12480700000010415);
+        withNull_helper(32, "[1]", "RandomProvider_withNull_iii", 0.031218000000010567);
+        withNull_helper(2, "[1, 2, 3]", "RandomProvider_withNull_iv", 0.4992549999935604);
+        withNull_helper(8, "[1, 2, 3]", "RandomProvider_withNull_v", 0.12480700000010415);
+        withNull_helper(32, "[1, 2, 3]", "RandomProvider_withNull_vi", 0.031218000000010567);
+
         try {
             toList(P.withNull(readIntegerListWithNulls("[1, 2, 3]")));
             fail();
@@ -164,63 +100,20 @@ public strictfp class CompoundTest {
     ) {
         Iterable<Optional<Integer>> xs = P.withScale(scale).optionals(cycle(readIntegerListWithNulls(input)));
         List<Optional<Integer>> sample = toList(take(DEFAULT_SAMPLE_SIZE, xs));
-        aeqitLimit(TINY_LIMIT, sample, output);
+        aeqitLimitLog(TINY_LIMIT, sample, output);
         aeq(meanOfIntegers(toList(map(x -> x.isPresent() ? 0 : 1, sample))), emptyFrequency);
         P.reset();
     }
 
     @Test
     public void testOptionals() {
-        optionalsHelper(
-                2,
-                "[1]",
-                "[Optional[1], Optional.empty, Optional[1], Optional[1], Optional[1], Optional[1], Optional[1]," +
-                " Optional[1], Optional[1], Optional.empty, Optional[1], Optional.empty, Optional.empty," +
-                " Optional[1], Optional.empty, Optional.empty, Optional[1], Optional[1], Optional.empty," +
-                " Optional[1], ...]",
-                0.4992549999935604
-        );
-        optionalsHelper(
-                8,
-                "[1]",
-                "[Optional[1], Optional[1], Optional[1], Optional[1], Optional[1], Optional[1], Optional[1]," +
-                " Optional[1], Optional[1], Optional[1], Optional[1], Optional[1], Optional[1], Optional[1]," +
-                " Optional[1], Optional[1], Optional[1], Optional[1], Optional[1], Optional[1], ...]",
-                0.12480700000010415
-        );
-        optionalsHelper(
-                32,
-                "[1]",
-                "[Optional[1], Optional[1], Optional[1], Optional[1], Optional[1], Optional[1], Optional[1]," +
-                " Optional[1], Optional[1], Optional[1], Optional[1], Optional[1], Optional[1], Optional[1]," +
-                " Optional[1], Optional[1], Optional[1], Optional[1], Optional[1], Optional[1], ...]",
-                0.031218000000010567
-        );
-        optionalsHelper(
-                2,
-                "[1, 2, 3]",
-                "[Optional[1], Optional.empty, Optional[2], Optional[3], Optional[1], Optional[2], Optional[3]," +
-                " Optional[1], Optional[2], Optional.empty, Optional[3], Optional.empty, Optional.empty," +
-                " Optional[1], Optional.empty, Optional.empty, Optional[2], Optional[3], Optional.empty," +
-                " Optional[1], ...]",
-                0.4992549999935604
-        );
-        optionalsHelper(
-                8,
-                "[1, 2, 3]",
-                "[Optional[1], Optional[2], Optional[3], Optional[1], Optional[2], Optional[3], Optional[1]," +
-                " Optional[2], Optional[3], Optional[1], Optional[2], Optional[3], Optional[1], Optional[2]," +
-                " Optional[3], Optional[1], Optional[2], Optional[3], Optional[1], Optional[2], ...]",
-                0.12480700000010415
-        );
-        optionalsHelper(
-                32,
-                "[1, 2, 3]",
-                "[Optional[1], Optional[2], Optional[3], Optional[1], Optional[2], Optional[3], Optional[1]," +
-                " Optional[2], Optional[3], Optional[1], Optional[2], Optional[3], Optional[1], Optional[2]," +
-                " Optional[3], Optional[1], Optional[2], Optional[3], Optional[1], Optional[2], ...]",
-                0.031218000000010567
-        );
+        optionalsHelper(2, "[1]", "RandomProvider_optionals_i", 0.4992549999935604);
+        optionalsHelper(8, "[1]", "RandomProvider_optionals_ii", 0.12480700000010415);
+        optionalsHelper(32, "[1]", "RandomProvider_optionals_iii", 0.031218000000010567);
+        optionalsHelper(2, "[1, 2, 3]", "RandomProvider_optionals_iv", 0.4992549999935604);
+        optionalsHelper(8, "[1, 2, 3]", "RandomProvider_optionals_v", 0.12480700000010415);
+        optionalsHelper(32, "[1, 2, 3]", "RandomProvider_optionals_vi", 0.031218000000010567);
+
         try {
             toList(P.optionals(readIntegerListWithNulls("[1, 2, 3]")));
             fail();
@@ -240,73 +133,20 @@ public strictfp class CompoundTest {
         Iterable<NullableOptional<Integer>> xs = P.withScale(scale)
                 .nullableOptionals(cycle(readIntegerListWithNulls(input)));
         List<NullableOptional<Integer>> sample = toList(take(DEFAULT_SAMPLE_SIZE, xs));
-        aeqitLimit(TINY_LIMIT, sample, output);
+        aeqitLimitLog(TINY_LIMIT, sample, output);
         aeq(meanOfIntegers(toList(map(x -> x.isPresent() ? 0 : 1, sample))), emptyFrequency);
         P.reset();
     }
 
     @Test
     public void testNullableOptionals() {
-        nullableOptionals_helper(
-                2,
-                "[1]",
-                "[NullableOptional[1], NullableOptional.empty, NullableOptional[1], NullableOptional[1]," +
-                " NullableOptional[1], NullableOptional[1], NullableOptional[1], NullableOptional[1]," +
-                " NullableOptional[1], NullableOptional.empty, NullableOptional[1], NullableOptional.empty," +
-                " NullableOptional.empty, NullableOptional[1], NullableOptional.empty, NullableOptional.empty," +
-                " NullableOptional[1], NullableOptional[1], NullableOptional.empty, NullableOptional[1], ...]",
-                0.4992549999935604
-        );
-        nullableOptionals_helper(
-                8,
-                "[1]",
-                "[NullableOptional[1], NullableOptional[1], NullableOptional[1], NullableOptional[1]," +
-                " NullableOptional[1], NullableOptional[1], NullableOptional[1], NullableOptional[1]," +
-                " NullableOptional[1], NullableOptional[1], NullableOptional[1], NullableOptional[1]," +
-                " NullableOptional[1], NullableOptional[1], NullableOptional[1], NullableOptional[1]," +
-                " NullableOptional[1], NullableOptional[1], NullableOptional[1], NullableOptional[1], ...]",
-                0.12480700000010415
-        );
-        nullableOptionals_helper(
-                32,
-                "[1]",
-                "[NullableOptional[1], NullableOptional[1], NullableOptional[1], NullableOptional[1]," +
-                " NullableOptional[1], NullableOptional[1], NullableOptional[1], NullableOptional[1]," +
-                " NullableOptional[1], NullableOptional[1], NullableOptional[1], NullableOptional[1]," +
-                " NullableOptional[1], NullableOptional[1], NullableOptional[1], NullableOptional[1]," +
-                " NullableOptional[1], NullableOptional[1], NullableOptional[1], NullableOptional[1], ...]",
-                0.031218000000010567
-        );
-        nullableOptionals_helper(
-                2,
-                "[null, 2, 3]",
-                "[NullableOptional[null], NullableOptional.empty, NullableOptional[2], NullableOptional[3]," +
-                " NullableOptional[null], NullableOptional[2], NullableOptional[3], NullableOptional[null]," +
-                " NullableOptional[2], NullableOptional.empty, NullableOptional[3], NullableOptional.empty," +
-                " NullableOptional.empty, NullableOptional[null], NullableOptional.empty, NullableOptional.empty," +
-                " NullableOptional[2], NullableOptional[3], NullableOptional.empty, NullableOptional[null], ...]",
-                0.4992549999935604
-        );
-        nullableOptionals_helper(
-                8,
-                "[null, 2, 3]",
-                "[NullableOptional[null], NullableOptional[2], NullableOptional[3], NullableOptional[null]," +
-                " NullableOptional[2], NullableOptional[3], NullableOptional[null], NullableOptional[2]," +
-                " NullableOptional[3], NullableOptional[null], NullableOptional[2], NullableOptional[3]," +
-                " NullableOptional[null], NullableOptional[2], NullableOptional[3], NullableOptional[null]," +
-                " NullableOptional[2], NullableOptional[3], NullableOptional[null], NullableOptional[2], ...]",
-                0.12480700000010415
-        );
-        nullableOptionals_helper(
-                32,
-                "[null, 2, 3]",
-                "[NullableOptional[null], NullableOptional[2], NullableOptional[3], NullableOptional[null]," +
-                " NullableOptional[2], NullableOptional[3], NullableOptional[null], NullableOptional[2]," +
-                " NullableOptional[3], NullableOptional[null], NullableOptional[2], NullableOptional[3]," +
-                " NullableOptional[null], NullableOptional[2], NullableOptional[3], NullableOptional[null]," +
-                " NullableOptional[2], NullableOptional[3], NullableOptional[null], NullableOptional[2], ...]",
-                0.031218000000010567
-        );
+        nullableOptionals_helper(2, "[1]", "RandomProvider_nullableOptionals_i", 0.4992549999935604);
+        nullableOptionals_helper(8, "[1]", "RandomProvider_nullableOptionals_ii", 0.12480700000010415);
+        nullableOptionals_helper(32, "[1]", "RandomProvider_nullableOptionals_iii", 0.031218000000010567);
+        nullableOptionals_helper(2, "[null, 2, 3]", "RandomProvider_nullableOptionals_iv", 0.4992549999935604);
+        nullableOptionals_helper(8, "[null, 2, 3]", "RandomProvider_nullableOptionals_v", 0.12480700000010415);
+        nullableOptionals_helper(32, "[null, 2, 3]", "RandomProvider_nullableOptionals_vi", 0.031218000000010567);
+
         try {
             toList(P.nullableOptionals(readIntegerListWithNulls("[1, 2, 3]")));
             fail();
@@ -319,11 +159,10 @@ public strictfp class CompoundTest {
 
     @Test
     public void dependentPairsInfiniteTest() {
-        aeqitLimit(
+        aeqitLimitLog(
                 TINY_LIMIT,
                 P.dependentPairsInfinite(P.range(1, 5), i -> P.strings(i, charsToString(range('a', 'z')))),
-                "[(2, ds), (4, rhvt), (1, v), (2, wv), (5, kpzex), (3, hje), (4, mfse), (1, d), (3, fpo), (3, tgw)," +
-                " (1, m), (1, y), (1, o), (3, dpl), (1, j), (5, sofgp), (4, pttf), (4, lszp), (2, dr), (3, fvx), ...]"
+                "RandomProvider_dependentPairsInfinite"
         );
         P.reset();
 
@@ -378,101 +217,29 @@ public strictfp class CompoundTest {
         shuffle_helper(toList(IterableUtils.range(1, 10)), "[10, 4, 1, 9, 8, 7, 5, 2, 3, 6]");
     }
 
-    private static void permutationsFinite_helper(
-            @NotNull String input,
-            @NotNull String output,
-            @NotNull String topSampleCount
-    ) {
-        permutationsFinite_helper(readIntegerListWithNulls(input), output, topSampleCount);
+    private static void permutationsFinite_helper(@NotNull String input, @NotNull String output) {
+        permutationsFinite_helper(readIntegerListWithNulls(input), output);
     }
 
-    private static void permutationsFinite_helper(
-            @NotNull List<Integer> input,
-            @NotNull String output,
-            @NotNull String topSampleCount
-    ) {
+    private static void permutationsFinite_helper(@NotNull List<Integer> input, @NotNull String output) {
         List<List<Integer>> sample = toList(take(DEFAULT_SAMPLE_SIZE, P.permutationsFinite(input)));
-        aeqitLimit(TINY_LIMIT, sample, output);
-        aeq(topSampleCount(DEFAULT_TOP_COUNT, sample), topSampleCount);
+        aeqitLimitLog(TINY_LIMIT, sample, output);
+        aeqMapLog(topSampleCount(DEFAULT_TOP_COUNT, sample), output);
         P.reset();
     }
 
     @Test
     public void testPermutationsFinite() {
-        permutationsFinite_helper(
-                "[]",
-                "[[], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], ...]",
-                "{[]=1000000}");
-        permutationsFinite_helper(
-                "[5]",
-                "[[5], [5], [5], [5], [5], [5], [5], [5], [5], [5], [5], [5], [5], [5], [5], [5], [5], [5], [5]," +
-                " [5], ...]",
-                "{[5]=1000000}");
-        permutationsFinite_helper(
-                "[1, 2]",
-                "[[2, 1], [1, 2], [2, 1], [2, 1], [2, 1], [2, 1], [2, 1], [2, 1], [2, 1], [1, 2], [2, 1], [1, 2]," +
-                " [1, 2], [2, 1], [1, 2], [1, 2], [2, 1], [2, 1], [1, 2], [2, 1], ...]",
-                "{[2, 1]=500745, [1, 2]=499255}");
-        permutationsFinite_helper(
-                "[1, 2, 3]",
-                "[[2, 1, 3], [2, 3, 1], [2, 3, 1], [2, 3, 1], [3, 1, 2], [1, 2, 3], [3, 2, 1], [2, 3, 1], [3, 1, 2]," +
-                " [3, 1, 2], [1, 3, 2], [2, 1, 3], [1, 3, 2], [2, 1, 3], [3, 2, 1], [2, 1, 3], [2, 1, 3], [1, 2, 3]," +
-                " [1, 2, 3], [3, 2, 1], ...]",
-                "{[2, 3, 1]=167387, [3, 2, 1]=167243, [1, 3, 2]=166538, [1, 2, 3]=166496, [3, 1, 2]=166232," +
-                " [2, 1, 3]=166104}");
-        permutationsFinite_helper(
-                "[1, 2, 3, 4]",
-                "[[2, 4, 1, 3], [2, 3, 4, 1], [2, 3, 1, 4], [2, 1, 3, 4], [4, 1, 3, 2], [2, 4, 1, 3], [3, 1, 2, 4]," +
-                " [4, 3, 2, 1], [1, 3, 2, 4], [3, 4, 2, 1], [3, 1, 2, 4], [1, 4, 3, 2], [1, 4, 3, 2], [4, 3, 1, 2]," +
-                " [2, 1, 3, 4], [3, 4, 2, 1], [4, 3, 2, 1], [4, 1, 3, 2], [4, 2, 1, 3], [3, 4, 1, 2], ...]",
-                "{[4, 2, 3, 1]=42026, [2, 3, 1, 4]=42012, [4, 1, 3, 2]=41883, [1, 4, 3, 2]=41846," +
-                " [3, 2, 4, 1]=41820, [4, 3, 1, 2]=41782, [3, 1, 4, 2]=41776, [3, 4, 1, 2]=41771," +
-                " [2, 1, 3, 4]=41764, [4, 3, 2, 1]=41745}");
-        permutationsFinite_helper(
-                "[1, 2, 2, 4]",
-                "[[2, 4, 1, 2], [2, 2, 4, 1], [2, 2, 1, 4], [2, 1, 2, 4], [4, 1, 2, 2], [2, 4, 1, 2], [2, 1, 2, 4]," +
-                " [4, 2, 2, 1], [1, 2, 2, 4], [2, 4, 2, 1], [2, 1, 2, 4], [1, 4, 2, 2], [1, 4, 2, 2], [4, 2, 1, 2]," +
-                " [2, 1, 2, 4], [2, 4, 2, 1], [4, 2, 2, 1], [4, 1, 2, 2], [4, 2, 1, 2], [2, 4, 1, 2], ...]",
-                "{[4, 2, 2, 1]=83771, [2, 2, 1, 4]=83554, [2, 2, 4, 1]=83502, [2, 4, 1, 2]=83498," +
-                " [4, 1, 2, 2]=83476, [1, 4, 2, 2]=83417, [2, 1, 4, 2]=83341, [4, 2, 1, 2]=83271," +
-                " [2, 4, 2, 1]=83193, [2, 1, 2, 4]=83115}");
-        permutationsFinite_helper(
-                "[2, 2, 2, 2]",
-                "[[2, 2, 2, 2], [2, 2, 2, 2], [2, 2, 2, 2], [2, 2, 2, 2], [2, 2, 2, 2], [2, 2, 2, 2], [2, 2, 2, 2]," +
-                " [2, 2, 2, 2], [2, 2, 2, 2], [2, 2, 2, 2], [2, 2, 2, 2], [2, 2, 2, 2], [2, 2, 2, 2], [2, 2, 2, 2]," +
-                " [2, 2, 2, 2], [2, 2, 2, 2], [2, 2, 2, 2], [2, 2, 2, 2], [2, 2, 2, 2], [2, 2, 2, 2], ...]",
-                "{[2, 2, 2, 2]=1000000}");
-        permutationsFinite_helper(
-                "[3, 1, 4, 1]",
-                "[[1, 1, 3, 4], [1, 4, 1, 3], [1, 4, 3, 1], [1, 3, 4, 1], [1, 3, 4, 1], [1, 1, 3, 4], [4, 3, 1, 1]," +
-                " [1, 4, 1, 3], [3, 4, 1, 1], [4, 1, 1, 3], [4, 3, 1, 1], [3, 1, 4, 1], [3, 1, 4, 1], [1, 4, 3, 1]," +
-                " [1, 3, 4, 1], [4, 1, 1, 3], [1, 4, 1, 3], [1, 3, 4, 1], [1, 1, 3, 4], [4, 1, 3, 1], ...]",
-                "{[1, 4, 3, 1]=83794, [1, 1, 4, 3]=83659, [1, 3, 4, 1]=83647, [1, 4, 1, 3]=83427," +
-                " [4, 1, 1, 3]=83380, [3, 1, 4, 1]=83325, [4, 1, 3, 1]=83313, [1, 1, 3, 4]=83216," +
-                " [1, 3, 1, 4]=83158, [4, 3, 1, 1]=83127}");
-        permutationsFinite_helper(
-                "[3, 1, null, 1]",
-                "[[1, 1, 3, null], [1, null, 1, 3], [1, null, 3, 1], [1, 3, null, 1], [1, 3, null, 1]," +
-                " [1, 1, 3, null], [null, 3, 1, 1], [1, null, 1, 3], [3, null, 1, 1], [null, 1, 1, 3]," +
-                " [null, 3, 1, 1], [3, 1, null, 1], [3, 1, null, 1], [1, null, 3, 1], [1, 3, null, 1]," +
-                " [null, 1, 1, 3], [1, null, 1, 3], [1, 3, null, 1], [1, 1, 3, null], [null, 1, 3, 1], ...]",
-                "{[1, null, 3, 1]=83794, [1, 1, null, 3]=83659, [1, 3, null, 1]=83647, [1, null, 1, 3]=83427," +
-                " [null, 1, 1, 3]=83380, [3, 1, null, 1]=83325, [null, 1, 3, 1]=83313, [1, 1, 3, null]=83216," +
-                " [1, 3, 1, null]=83158, [null, 3, 1, 1]=83127}");
-        permutationsFinite_helper(
-                toList(IterableUtils.range(1, 10)),
-                "[[10, 4, 1, 9, 8, 7, 5, 2, 3, 6], [7, 3, 1, 10, 2, 5, 4, 6, 8, 9], [3, 6, 2, 9, 4, 1, 10, 5, 8, 7]," +
-                " [3, 8, 2, 6, 10, 1, 7, 5, 9, 4], [5, 4, 10, 1, 6, 3, 9, 2, 8, 7], [7, 1, 6, 2, 10, 9, 3, 8, 5, 4]," +
-                " [2, 8, 5, 10, 3, 1, 4, 6, 9, 7], [5, 8, 4, 6, 2, 1, 7, 10, 3, 9], [3, 9, 2, 10, 4, 1, 6, 8, 7, 5]," +
-                " [7, 2, 3, 1, 8, 10, 6, 5, 9, 4], [4, 8, 9, 7, 5, 2, 3, 6, 1, 10], [9, 2, 1, 5, 3, 7, 6, 4, 10, 8]," +
-                " [3, 4, 9, 5, 10, 7, 6, 8, 2, 1], [9, 6, 4, 10, 5, 2, 3, 8, 1, 7], [4, 2, 9, 1, 6, 5, 3, 7, 10, 8]," +
-                " [3, 1, 7, 5, 8, 9, 4, 6, 2, 10], [9, 8, 2, 6, 4, 5, 10, 7, 3, 1], [9, 2, 7, 3, 5, 10, 1, 6, 4, 8]," +
-                " [10, 3, 2, 1, 6, 7, 8, 4, 9, 5], [3, 6, 2, 1, 10, 8, 9, 5, 7, 4], ...]",
-                "{[7, 4, 2, 6, 9, 3, 1, 5, 10, 8]=6, [10, 9, 5, 3, 8, 1, 7, 2, 6, 4]=5," +
-                " [5, 8, 1, 10, 6, 3, 9, 4, 7, 2]=5, [3, 9, 6, 4, 1, 10, 5, 7, 8, 2]=5," +
-                " [4, 1, 6, 5, 8, 10, 3, 7, 2, 9]=5, [8, 5, 6, 2, 7, 9, 4, 3, 1, 10]=5," +
-                " [1, 3, 4, 6, 2, 5, 9, 10, 8, 7]=5, [4, 5, 6, 7, 1, 10, 3, 8, 2, 9]=5," +
-                " [5, 3, 6, 2, 8, 10, 1, 9, 7, 4]=5, [3, 10, 4, 7, 8, 9, 1, 5, 6, 2]=5}");
+        permutationsFinite_helper("[]", "RandomProvider_permutationsFinite_i");
+        permutationsFinite_helper("[5]", "RandomProvider_permutationsFinite_ii");
+        permutationsFinite_helper("[1, 2]", "RandomProvider_permutationsFinite_iii");
+        permutationsFinite_helper("[1, 2, 3]", "RandomProvider_permutationsFinite_iv");
+        permutationsFinite_helper("[1, 2, 3, 4]", "RandomProvider_permutationsFinite_v");
+        permutationsFinite_helper("[1, 2, 2, 4]", "RandomProvider_permutationsFinite_vi");
+        permutationsFinite_helper("[2, 2, 2, 2]", "RandomProvider_permutationsFinite_vii");
+        permutationsFinite_helper("[3, 1, 4, 1]", "RandomProvider_permutationsFinite_viii");
+        permutationsFinite_helper("[3, 1, null, 1]", "RandomProvider_permutationsFinite_ix");
+        permutationsFinite_helper(toList(IterableUtils.range(1, 10)), "RandomProvider_permutationsFinite_x");
     }
 
     private static void stringPermutations_helper(
