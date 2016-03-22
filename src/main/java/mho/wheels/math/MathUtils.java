@@ -6,10 +6,7 @@ import mho.wheels.structures.Pair;
 import org.jetbrains.annotations.NotNull;
 
 import java.math.BigInteger;
-import java.util.Arrays;
-import java.util.BitSet;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.Function;
 
 import static mho.wheels.iterables.IterableUtils.*;
@@ -176,7 +173,7 @@ public final class MathUtils {
     }
 
     /**
-     * The factorial function {@code n}!
+     * The factorial function {@code n}! Multiplies the odd factors first, then the powers of 2.
      *
      * <ul>
      *  <li>{@code n} cannot be negative.</li>
@@ -187,13 +184,30 @@ public final class MathUtils {
      * @return {@code n}!
      */
     public static @NotNull BigInteger factorial(int n) {
-        if (n < 0)
-            throw new ArithmeticException("cannot take factorial of " + n);
-        return productBigInteger(range(BigInteger.ONE, BigInteger.valueOf(n)));
+        if (n < 0) {
+            throw new ArithmeticException("n cannot be negative. Invalid n: " + n);
+        }
+        BigInteger factorial = BigInteger.ONE;
+        List<Integer> halves = new ArrayList<>();
+        int h = n;
+        while (h > 2) {
+            halves.add(h % 2 == 0 ? h - 1 : h);
+            h >>= 1;
+        }
+        int j = halves.size() - 1;
+        BigInteger subproduct = BigInteger.ONE;
+        for (int i = 3; i <= n; i += 2) {
+            subproduct = subproduct.multiply(BigInteger.valueOf(i));
+            if (i >= halves.get(j)) {
+                factorial = factorial.multiply(subproduct);
+                j--;
+            }
+        }
+        return factorial.shiftLeft(n - Integer.bitCount(n));
     }
 
     /**
-     * The factorial function {@code n}!
+     * The factorial function {@code n}! Multiplies the odd factors first, then the powers of 2.
      *
      * <ul>
      *  <li>{@code n} cannot be negative.</li>
@@ -204,9 +218,26 @@ public final class MathUtils {
      * @return {@code n}!
      */
     public static @NotNull BigInteger factorial(@NotNull BigInteger n) {
-        if (n.signum() == -1)
-            throw new ArithmeticException("cannot take factorial of " + n);
-        return productBigInteger(range(BigInteger.ONE, n));
+        if (n.signum() == -1) {
+            throw new ArithmeticException("n cannot be negative. Invalid n: " + n);
+        }
+        BigInteger factorial = BigInteger.ONE;
+        List<BigInteger> halves = new ArrayList<>();
+        BigInteger h = n;
+        while (gt(h, IntegerUtils.TWO)) {
+            halves.add(h.and(BigInteger.ONE).equals(BigInteger.ZERO) ? h.subtract(BigInteger.ONE) : h);
+            h = h.shiftRight(1);
+        }
+        int j = halves.size() - 1;
+        BigInteger subproduct = BigInteger.ONE;
+        for (BigInteger i = BigInteger.valueOf(3); le(i, n); i = i.add(IntegerUtils.TWO)) {
+            subproduct = subproduct.multiply(i);
+            if (ge(i, halves.get(j))) {
+                factorial = factorial.multiply(subproduct);
+                j--;
+            }
+        }
+        return factorial.shiftLeft(n.subtract(BigInteger.valueOf(n.bitCount())).intValueExact());
     }
 
     /**
@@ -214,15 +245,16 @@ public final class MathUtils {
      *
      * <ul>
      *  <li>{@code n} cannot be negative.</li>
-     *  <li>The result is a subfactorial (rencontres number).</li>
+     *  <li>The result is a subfactorial (derangement number).</li>
      * </ul>
      *
      * @param n the argument
      * @return !{@code n}
      */
     public static @NotNull BigInteger subfactorial(int n) {
-        if (n < 0)
-            throw new ArithmeticException("cannot take subfactorial of " + n);
+        if (n < 0) {
+            throw new ArithmeticException("n cannot be negative. Invalid n: " + n);
+        }
         BigInteger sf = BigInteger.ONE;
         for (int i = 1; i <= n; i++) {
             sf = sf.multiply(BigInteger.valueOf(i));
@@ -240,15 +272,16 @@ public final class MathUtils {
      *
      * <ul>
      *  <li>{@code n} cannot be negative.</li>
-     *  <li>The result is a subfactorial (rencontres number).</li>
+     *  <li>The result is a subfactorial (derangement number).</li>
      * </ul>
      *
      * @param n the argument
      * @return !{@code n}
      */
     public static @NotNull BigInteger subfactorial(@NotNull BigInteger n) {
-        if (n.signum() == -1)
-            throw new ArithmeticException("cannot take subfactorial of " + n);
+        if (n.signum() == -1) {
+            throw new ArithmeticException("n cannot be negative. Invalid n: " + n);
+        }
         BigInteger sf = BigInteger.ONE;
         for (BigInteger i : range(BigInteger.ONE, n)) {
             sf = sf.multiply(i);

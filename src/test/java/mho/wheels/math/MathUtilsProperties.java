@@ -33,6 +33,13 @@ public class MathUtilsProperties extends TestProperties {
         compareImplementationsGcd_List_BigInteger();
         propertiesLcm_List_BigInteger();
         compareImplementationsLcm_List_BigInteger();
+        propertiesFactorial_int();
+        compareImplementationsFactorial_int();
+        propertiesFactorial_BigInteger();
+        compareImplementationsFactorial_BigInteger();
+        propertiesSubfactorial_int();
+        compareImplementationsSubfactorial_int();
+        propertiesSubfactorial_BigInteger();
         propertiesReversePermutationSign();
         compareImplementationsReversePermutationSign();
     }
@@ -285,6 +292,118 @@ public class MathUtilsProperties extends TestProperties {
         functions.put("standard", MathUtils::lcm);
         Iterable<List<BigInteger>> iss = P.listsAtLeast(1, P.positiveBigIntegers());
         compareImplementations("lcm(List<BigInteger>)", take(LIMIT, iss), functions);
+    }
+
+    private static @NotNull BigInteger factorial_int_simplest(int n) {
+        return factorial(BigInteger.valueOf(n));
+    }
+
+    private static @NotNull BigInteger factorial_int_alt(int n) {
+        if (n < 0) {
+            throw new ArithmeticException("n cannot be negative. Invalid n: " + n);
+        }
+        return productBigInteger(range(BigInteger.ONE, BigInteger.valueOf(n)));
+    }
+
+    private void propertiesFactorial_int() {
+        initialize("factorial(int)");
+        for (int i : take(MEDIUM_LIMIT, P.naturalIntegersGeometric())) {
+            BigInteger factorial = factorial(i);
+            assertEquals(i, factorial, factorial_int_simplest(i));
+            assertEquals(i, factorial, factorial_int_alt(i));
+            assertEquals(i, factorial.signum(), 1);
+        }
+
+        for (int i : take(LIMIT, P.negativeIntegers())) {
+            try {
+                factorial(i);
+                fail(i);
+            } catch (ArithmeticException ignored) {}
+        }
+    }
+
+    private void compareImplementationsFactorial_int() {
+        Map<String, Function<Integer, BigInteger>> functions = new LinkedHashMap<>();
+        functions.put("simplest", MathUtilsProperties::factorial_int_simplest);
+        functions.put("alt", MathUtilsProperties::factorial_int_alt);
+        functions.put("standard", MathUtils::factorial);
+        compareImplementations("factorial(int)", take(MEDIUM_LIMIT, P.naturalIntegersGeometric()), functions);
+    }
+
+    private static @NotNull BigInteger factorial_BigInteger_alt(@NotNull BigInteger n) {
+        if (n.signum() == -1) {
+            throw new ArithmeticException("n cannot be negative. Invalid n: " + n);
+        }
+        return productBigInteger(range(BigInteger.ONE, n));
+    }
+
+    private void propertiesFactorial_BigInteger() {
+        initialize("factorial(BigInteger)");
+        //noinspection Convert2MethodRef
+        for (BigInteger i : take(MEDIUM_LIMIT, map(j -> BigInteger.valueOf(j), P.naturalIntegersGeometric()))) {
+            BigInteger factorial = factorial(i);
+            assertEquals(i, factorial, factorial_BigInteger_alt(i));
+            assertEquals(i, factorial.signum(), 1);
+        }
+
+        for (BigInteger i : take(LIMIT, P.negativeBigIntegers())) {
+            try {
+                factorial(i);
+                fail(i);
+            } catch (ArithmeticException ignored) {}
+        }
+    }
+
+    private void compareImplementationsFactorial_BigInteger() {
+        Map<String, Function<BigInteger, BigInteger>> functions = new LinkedHashMap<>();
+        functions.put("alt", MathUtilsProperties::factorial_BigInteger_alt);
+        functions.put("standard", MathUtils::factorial);
+        //noinspection Convert2MethodRef
+        Iterable<BigInteger> is = map(j -> BigInteger.valueOf(j), P.naturalIntegersGeometric());
+        compareImplementations("factorial(BigInteger)", take(MEDIUM_LIMIT, is), functions);
+    }
+
+    private static @NotNull BigInteger subfactorial_int_simplest(int n) {
+        return subfactorial(BigInteger.valueOf(n));
+    }
+
+    private void propertiesSubfactorial_int() {
+        initialize("subfactorial(int)");
+        for (int i : take(MEDIUM_LIMIT, P.naturalIntegersGeometric())) {
+            BigInteger subfactorial = subfactorial(i);
+            assertEquals(i, subfactorial, subfactorial_int_simplest(i));
+            assertNotEquals(i, subfactorial.signum(), -1);
+        }
+
+        for (int i : take(LIMIT, P.negativeIntegers())) {
+            try {
+                subfactorial(i);
+                fail(i);
+            } catch (ArithmeticException ignored) {}
+        }
+    }
+
+    private void compareImplementationsSubfactorial_int() {
+        Map<String, Function<Integer, BigInteger>> functions = new LinkedHashMap<>();
+        functions.put("simplest", MathUtilsProperties::subfactorial_int_simplest);
+        functions.put("standard", MathUtils::subfactorial);
+        compareImplementations("subfactorial(int)", take(MEDIUM_LIMIT, P.naturalIntegersGeometric()), functions);
+    }
+
+    private void propertiesSubfactorial_BigInteger() {
+        initialize("subfactorial(BigInteger)");
+        //noinspection Convert2MethodRef
+        for (BigInteger i : take(MEDIUM_LIMIT, map(j -> BigInteger.valueOf(j), P.naturalIntegersGeometric()))) {
+            BigInteger subfactorial = subfactorial(i);
+            assertNotEquals(i, subfactorial.signum(), -1);
+        }
+
+        for (int i : take(LIMIT, P.negativeIntegers())) {
+            try {
+                subfactorial(i);
+                fail(i);
+            } catch (ArithmeticException ignored) {}
+        }
     }
 
     private static boolean reversePermutationSign_alt(int i) {

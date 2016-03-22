@@ -7,9 +7,8 @@ import java.math.BigInteger;
 import java.util.List;
 
 import static mho.wheels.iterables.IterableUtils.*;
-import static mho.wheels.math.MathUtils.gcd;
-import static mho.wheels.math.MathUtils.lcm;
-import static mho.wheels.math.MathUtils.reversePermutationSign;
+import static mho.wheels.math.MathUtils.*;
+import static mho.wheels.testing.Testing.*;
 
 @SuppressWarnings("UnusedDeclaration")
 public class MathUtilsDemos extends Demos {
@@ -46,6 +45,32 @@ public class MathUtilsDemos extends Demos {
         for (List<BigInteger> is : take(LIMIT, P.withScale(4).listsAtLeast(1, P.positiveBigIntegers()))) {
             String listString = tail(init(is.toString()));
             System.out.println("lcm(" + listString + ") = " + lcm(is));
+        }
+    }
+
+    private void demoFactorial_int() {
+        for (int i : take(SMALL_LIMIT, P.naturalIntegersGeometric())) {
+            System.out.println(i + "! = " + factorial(i));
+        }
+    }
+
+    private void demoFactorial_BigInteger() {
+        //noinspection Convert2MethodRef
+        for (BigInteger i : take(SMALL_LIMIT, map(j -> BigInteger.valueOf(j), P.naturalIntegersGeometric()))) {
+            System.out.println(i + "! = " + factorial(i));
+        }
+    }
+
+    private void demoSubfactorial_int() {
+        for (int i : take(SMALL_LIMIT, P.naturalIntegersGeometric())) {
+            System.out.println("!" + i + " = " + subfactorial(i));
+        }
+    }
+
+    private void demoSubfactorial_BigInteger() {
+        //noinspection Convert2MethodRef
+        for (BigInteger i : take(SMALL_LIMIT, map(j -> BigInteger.valueOf(j), P.naturalIntegersGeometric()))) {
+            System.out.println("!" + i + " = " + subfactorial(i));
         }
     }
 

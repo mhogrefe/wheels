@@ -1,7 +1,6 @@
 package mho.wheels.math;
 
 import mho.wheels.io.Readers;
-import mho.wheels.numberUtils.IntegerUtils;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
 
@@ -141,78 +140,116 @@ public class MathUtilsTest {
         lcm_List_BigInteger_fail_helper("[1, 2, null]");
     }
 
+    private static void factorial_int_helper(int input, @NotNull String output) {
+        aeq(factorial(input), output);
+    }
+
+    private static void factorial_int_fail_helper(int input) {
+        try {
+            factorial(input);
+            fail();
+        } catch (ArithmeticException ignored) {}
+    }
+
     @Test
     public void testFactorial_int() {
-        aeq(factorial(0), 1);
-        aeq(factorial(1), 1);
-        aeq(factorial(2), 2);
-        aeq(factorial(3), 6);
-        aeq(factorial(4), 24);
-        aeq(factorial(5), 120);
-        aeq(factorial(6), 720);
-        aeq(factorial(10), 3628800);
-        aeq(factorial(100), "9332621544394415268169923885626670049071596826438162146859296389521759999322991" +
-                            "5608941463976156518286253697920827223758251185210916864000000000000000000000000");
+        factorial_int_helper(0, "1");
+        factorial_int_helper(1, "1");
+        factorial_int_helper(2, "2");
+        factorial_int_helper(3, "6");
+        factorial_int_helper(4, "24");
+        factorial_int_helper(5, "120");
+        factorial_int_helper(6, "720");
+        factorial_int_helper(10, "3628800");
+        factorial_int_helper(100,
+                "933262154439441526816992388562667004907159682643816214685929638952175999932299156089414639761565182" +
+                "86253697920827223758251185210916864000000000000000000000000");
+
+        factorial_int_fail_helper(-1);
+    }
+
+    private static void factorial_BigInteger_helper(@NotNull String input, @NotNull String output) {
+        aeq(factorial(Readers.readBigInteger(input).get()), output);
+    }
+
+    private static void factorial_BigInteger_fail_helper(@NotNull String input) {
         try {
-            factorial(-1);
+            factorial(Readers.readBigInteger(input).get());
             fail();
         } catch (ArithmeticException ignored) {}
     }
 
     @Test
     public void testFactorial_BigInteger() {
-        aeq(factorial(BigInteger.ZERO), 1);
-        aeq(factorial(BigInteger.ONE), 1);
-        aeq(factorial(IntegerUtils.TWO), 2);
-        aeq(factorial(BigInteger.valueOf(3)), 6);
-        aeq(factorial(BigInteger.valueOf(4)), 24);
-        aeq(factorial(BigInteger.valueOf(5)), 120);
-        aeq(factorial(BigInteger.valueOf(6)), 720);
-        aeq(factorial(BigInteger.TEN), 3628800);
-        aeq(factorial(BigInteger.valueOf(100)),
-                "9332621544394415268169923885626670049071596826438162146859296389521759999322991" +
-                "5608941463976156518286253697920827223758251185210916864000000000000000000000000");
+        factorial_BigInteger_helper("0", "1");
+        factorial_BigInteger_helper("1", "1");
+        factorial_BigInteger_helper("2", "2");
+        factorial_BigInteger_helper("3", "6");
+        factorial_BigInteger_helper("4", "24");
+        factorial_BigInteger_helper("5", "120");
+        factorial_BigInteger_helper("6", "720");
+        factorial_BigInteger_helper("10", "3628800");
+        factorial_BigInteger_helper("100",
+                "933262154439441526816992388562667004907159682643816214685929638952175999932299156089414639761565182" +
+                "86253697920827223758251185210916864000000000000000000000000");
+
+        factorial_BigInteger_fail_helper("-1");
+    }
+
+    private static void subfactorial_int_helper(int input, @NotNull String output) {
+        aeq(subfactorial(input), output);
+    }
+
+    private static void subfactorial_int_fail_helper(int input) {
         try {
-            factorial(IntegerUtils.NEGATIVE_ONE);
+            subfactorial(input);
             fail();
         } catch (ArithmeticException ignored) {}
     }
 
     @Test
     public void testSubfactorial_int() {
-        aeq(subfactorial(0), 1);
-        aeq(subfactorial(1), 0);
-        aeq(subfactorial(2), 1);
-        aeq(subfactorial(3), 2);
-        aeq(subfactorial(4), 9);
-        aeq(subfactorial(5), 44);
-        aeq(subfactorial(6), 265);
-        aeq(subfactorial(10), 1334961);
-        aeq(subfactorial(100), "3433279598416380476519597752677614203236578380537578498354340028268518079332763" +
-                               "2432791396429850988990237345920155783984828001486412574060553756854137069878601"); ///
+        subfactorial_int_helper(0, "1");
+        subfactorial_int_helper(1, "0");
+        subfactorial_int_helper(2, "1");
+        subfactorial_int_helper(3, "2");
+        subfactorial_int_helper(4, "9");
+        subfactorial_int_helper(5, "44");
+        subfactorial_int_helper(6, "265");
+        subfactorial_int_helper(10, "1334961");
+        subfactorial_int_helper(100,
+                "343327959841638047651959775267761420323657838053757849835434002826851807933276324327913964298509889" +
+                "90237345920155783984828001486412574060553756854137069878601");
+
+        subfactorial_int_fail_helper(-1);
+    }
+
+    private static void subfactorial_BigInteger_helper(@NotNull String input, @NotNull String output) {
+        aeq(subfactorial(Readers.readBigInteger(input).get()), output);
+    }
+
+    private static void subfactorial_BigInteger_fail_helper(@NotNull String input) {
         try {
-            subfactorial(-1);
+            subfactorial(Readers.readBigInteger(input).get());
             fail();
         } catch (ArithmeticException ignored) {}
     }
 
     @Test
     public void testSubfactorial_BigInteger() {
-        aeq(subfactorial(BigInteger.ZERO), 1);
-        aeq(subfactorial(BigInteger.ONE), 0);
-        aeq(subfactorial(IntegerUtils.TWO), 1);
-        aeq(subfactorial(BigInteger.valueOf(3)), 2);
-        aeq(subfactorial(BigInteger.valueOf(4)), 9);
-        aeq(subfactorial(BigInteger.valueOf(5)), 44);
-        aeq(subfactorial(BigInteger.valueOf(6)), 265);
-        aeq(subfactorial(BigInteger.TEN), 1334961);
-        aeq(subfactorial(BigInteger.valueOf(100)),
-                "3433279598416380476519597752677614203236578380537578498354340028268518079332763" +
-                "2432791396429850988990237345920155783984828001486412574060553756854137069878601");
-        try {
-            subfactorial(IntegerUtils.NEGATIVE_ONE);
-            fail();
-        } catch (ArithmeticException ignored) {}
+        subfactorial_BigInteger_helper("0", "1");
+        subfactorial_BigInteger_helper("1", "0");
+        subfactorial_BigInteger_helper("2", "1");
+        subfactorial_BigInteger_helper("3", "2");
+        subfactorial_BigInteger_helper("4", "9");
+        subfactorial_BigInteger_helper("5", "44");
+        subfactorial_BigInteger_helper("6", "265");
+        subfactorial_BigInteger_helper("10", "1334961");
+        subfactorial_BigInteger_helper("100",
+                "343327959841638047651959775267761420323657838053757849835434002826851807933276324327913964298509889" +
+                "90237345920155783984828001486412574060553756854137069878601");
+
+        subfactorial_BigInteger_fail_helper("-1");
     }
 
     private static void reversePermutationsSign_helper(int i, boolean output) {
