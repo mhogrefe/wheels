@@ -252,6 +252,92 @@ public class MathUtilsTest {
         subfactorial_BigInteger_fail_helper("-1");
     }
 
+    private static void fallingFactorial_helper(@NotNull String x, int n, @NotNull String output) {
+        aeq(fallingFactorial(Readers.readBigInteger(x).get(), n), output);
+    }
+
+    private static void fallingFactorial_fail_helper(@NotNull String x, int n) {
+        try {
+            fallingFactorial(Readers.readBigInteger(x).get(), n);
+            fail();
+        } catch (ArithmeticException ignored) {}
+    }
+
+    @Test
+    public void testFallingFactorial() {
+        fallingFactorial_helper("0", 0, "1");
+        fallingFactorial_helper("0", 1, "0");
+        fallingFactorial_helper("0", 2, "0");
+        fallingFactorial_helper("1", 0, "1");
+        fallingFactorial_helper("1", 1, "1");
+        fallingFactorial_helper("1", 2, "0");
+        fallingFactorial_helper("10", 0, "1");
+        fallingFactorial_helper("10", 1, "10");
+        fallingFactorial_helper("10", 2, "90");
+        fallingFactorial_helper("100", 20, "1303995018204712451095685346159820800000");
+
+        fallingFactorial_fail_helper("-1", 0);
+        fallingFactorial_fail_helper("0", -1);
+    }
+
+    private static void numberOfArrangementsOfASet_int_helper(int input, @NotNull String output) {
+        aeq(numberOfArrangementsOfASet(input), output);
+    }
+
+    private static void numberOfArrangementsOfASet_int_fail_helper(int input) {
+        try {
+            numberOfArrangementsOfASet(input);
+            fail();
+        } catch (ArithmeticException ignored) {}
+    }
+
+    @Test
+    public void testNumberOfArrangementsOfASet_int() {
+        numberOfArrangementsOfASet_int_helper(0, "1");
+        numberOfArrangementsOfASet_int_helper(1, "2");
+        numberOfArrangementsOfASet_int_helper(2, "5");
+        numberOfArrangementsOfASet_int_helper(3, "16");
+        numberOfArrangementsOfASet_int_helper(4, "65");
+        numberOfArrangementsOfASet_int_helper(5, "326");
+        numberOfArrangementsOfASet_int_helper(6, "1957");
+        numberOfArrangementsOfASet_int_helper(10, "9864101");
+        numberOfArrangementsOfASet_int_helper(100,
+                "253686955560127297415270748212280220445147578566298142232775185987449253908386446518940485425152049" +
+                "793267407732328003493609513499849694176709764490323163992001");
+
+        numberOfArrangementsOfASet_int_fail_helper(-1);
+    }
+
+    private static void numberOfArrangementsOfASet_int_int_helper(int minSize, int n, @NotNull String output) {
+        aeq(numberOfArrangementsOfASet(minSize, n), output);
+    }
+
+    private static void numberOfArrangementsOfASet_int_int_fail_helper(int minSize, int n) {
+        try {
+            numberOfArrangementsOfASet(minSize, n);
+            fail();
+        } catch (ArithmeticException ignored) {}
+    }
+
+    @Test
+    public void testNumberOfArrangementsOfASet_int_int() {
+        numberOfArrangementsOfASet_int_int_helper(0, 0, "1");
+        numberOfArrangementsOfASet_int_int_helper(1, 0, "0");
+        numberOfArrangementsOfASet_int_int_helper(2, 0, "0");
+        numberOfArrangementsOfASet_int_int_helper(0, 1, "2");
+        numberOfArrangementsOfASet_int_int_helper(1, 1, "1");
+        numberOfArrangementsOfASet_int_int_helper(2, 1, "0");
+        numberOfArrangementsOfASet_int_int_helper(0, 10, "9864101");
+        numberOfArrangementsOfASet_int_int_helper(1, 10, "9864100");
+        numberOfArrangementsOfASet_int_int_helper(2, 10, "9864090");
+        numberOfArrangementsOfASet_int_int_helper(20, 100,
+                "253686955560127297415270748212280220445147578566298142232775185987449253908386446518940485425152049" +
+                "793267407732328003493593216076399867112102621246975180800000");
+
+        numberOfArrangementsOfASet_int_int_fail_helper(0, -1);
+        numberOfArrangementsOfASet_int_int_fail_helper(-1, 0);
+    }
+
     private static void reversePermutationsSign_helper(int i, boolean output) {
         aeq(reversePermutationSign(i), output);
     }

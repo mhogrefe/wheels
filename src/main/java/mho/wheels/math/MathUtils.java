@@ -294,12 +294,71 @@ public final class MathUtils {
         return sf;
     }
 
+    /**
+     * The falling factorial, or Pochhammer symbol, of {@code x} and {@code n}. Given a set containing {@code x}
+     * elements, returns the number of length-{@code n} lists of elements from the set.
+     *
+     * <ul>
+     *  <li>{@code x} cannot be negative.</li>
+     *  <li>{@code n} cannot be negative.</li>
+     *  <li>The result is not negative.</li>
+     * </ul>
+     *
+     * @param x the number of elements in a set
+     * @param n the length of a list made by choosing elements from the set
+     * @return ({@code x})<sub>{@code n}</sub>
+     */
+    @SuppressWarnings("JavaDoc")
+    public static @NotNull BigInteger fallingFactorial(@NotNull BigInteger x, int n) {
+        if (x.signum() == -1) {
+            throw new ArithmeticException("x cannot be negative. Invalid x: " + x);
+        }
+        if (n < 0) {
+            throw new ArithmeticException("n cannot be negative. Invalid n: " + n);
+        }
+        return productBigInteger(range(x.subtract(BigInteger.valueOf(n - 1)), x));
+    }
+
+    /**
+     * The number of arrangements (of any length) of a set with {@code n} elements. OEIS A000522.
+     *
+     * <ul>
+     *  <li>{@code n} cannot be negative.</li>
+     *  <li>The result is positive.</li>
+     * </ul>
+     *
+     * @param n the number of elements in a set
+     * @return the number of different lists that can be made by choosing elements from the set
+     */
     public static @NotNull BigInteger numberOfArrangementsOfASet(int n) {
+        if (n < 0) {
+            throw new ArithmeticException("n cannot be negative. Invalid n: " + n);
+        }
         BigInteger bigN = BigInteger.valueOf(n);
         return sumBigInteger(map(k -> fallingFactorial(bigN, k), range(0, n)));
     }
 
+    /**
+     * The number of arrangements (of length at least {@code minSize}) of a set with {@code n} elements.
+     *
+     * <ul>
+     *  <li>{@code minSize} cannot be negative.</li>
+     *  <li>{@code n} cannot be negative.</li>
+     *  <li>The result is not negative.</li>
+     * </ul>
+     *
+     * @param minSize the minimum length of the arrangements
+     * @param n the number of elements in a set
+     * @return the number of different lists that can be made by choosing at least {@code minSize} elements from the
+     * set
+     */
     public static @NotNull BigInteger numberOfArrangementsOfASet(int minSize, int n) {
+        if (minSize < 0) {
+            throw new ArithmeticException("minSize cannot be negative. Invalid minSize: " + minSize);
+        }
+        if (n < 0) {
+            throw new ArithmeticException("n cannot be negative. Invalid n: " + n);
+        }
         BigInteger bigN = BigInteger.valueOf(n);
         return sumBigInteger(map(k -> fallingFactorial(bigN, k), range(minSize, n)));
     }
@@ -312,10 +371,6 @@ public final class MathUtils {
             }
         }
         return result;
-    }
-
-    public static @NotNull BigInteger fallingFactorial(@NotNull BigInteger x, int n) {
-        return productBigInteger(range(x.subtract(BigInteger.valueOf(n - 1)), x));
     }
 
     public static @NotNull BigInteger binomialCoefficient(@NotNull BigInteger n, int k) {

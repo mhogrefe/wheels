@@ -74,6 +74,30 @@ public class MathUtilsDemos extends Demos {
         }
     }
 
+    private void demoFallingFactorial() {
+        //noinspection Convert2MethodRef
+        Iterable<Pair<BigInteger, Integer>> ps = P.pairs(
+                map(i -> BigInteger.valueOf(i), P.naturalIntegersGeometric()),
+                P.naturalIntegersGeometric()
+        );
+        for (Pair<BigInteger, Integer> p : take(LIMIT, ps)) {
+            System.out.println("fallingFactorial(" + p.a + ", " + p.b + ") = " + fallingFactorial(p.a, p.b));
+        }
+    }
+
+    private void demoNumberOfArrangementsOfASet_int() {
+        for (int i : take(SMALL_LIMIT, P.naturalIntegersGeometric())) {
+            System.out.println("numberOfArrangementsOfASet(" + i + ") = " + numberOfArrangementsOfASet(i));
+        }
+    }
+
+    private void demoNumberOfArrangementsOfASet_int_int() {
+        for (Pair<Integer, Integer> p : take(MEDIUM_LIMIT, P.pairs(P.naturalIntegersGeometric()))) {
+            System.out.println("numberOfArrangementsOfASet(" + p.a + ", " + p.b + ") = " +
+                    numberOfArrangementsOfASet(p.a, p.b));
+        }
+    }
+
     private void demoReversePermutationSign() {
         for (int i : take(LIMIT, P.integers())) {
             System.out.println("reversePermutationSign(" + i + ") = " + reversePermutationSign(i));
