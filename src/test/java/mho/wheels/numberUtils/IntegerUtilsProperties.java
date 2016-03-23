@@ -16,9 +16,7 @@ import static mho.wheels.math.MathUtils.ceilingLog;
 import static mho.wheels.numberUtils.IntegerUtils.*;
 import static mho.wheels.numberUtils.IntegerUtils.demux;
 import static mho.wheels.numberUtils.IntegerUtils.mux;
-import static mho.wheels.ordering.Ordering.ge;
-import static mho.wheels.ordering.Ordering.lt;
-import static mho.wheels.ordering.Ordering.max;
+import static mho.wheels.ordering.Ordering.*;
 import static mho.wheels.testing.Testing.*;
 
 public class IntegerUtilsProperties extends TestProperties {

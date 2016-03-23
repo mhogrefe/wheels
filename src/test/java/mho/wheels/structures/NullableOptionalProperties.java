@@ -8,9 +8,7 @@ import java.util.Collections;
 import java.util.Optional;
 
 import static mho.wheels.iterables.IterableUtils.*;
-import static mho.wheels.structures.NullableOptional.empty;
-import static mho.wheels.structures.NullableOptional.fromOptional;
-import static mho.wheels.structures.NullableOptional.of;
+import static mho.wheels.structures.NullableOptional.*;
 import static mho.wheels.testing.Testing.*;
 
 public class NullableOptionalProperties extends TestProperties {

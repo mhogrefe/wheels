@@ -10,7 +10,7 @@ import java.util.List;
 
 import static mho.wheels.numberUtils.IntegerUtils.*;
 import static mho.wheels.testing.Testing.aeq;
-import static org.junit.Assert.*;
+import static org.junit.Assert.fail;
 
 public class IntegerUtilsTest {
     @Test

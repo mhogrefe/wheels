@@ -5,10 +5,9 @@ import mho.wheels.testing.Demos;
 import java.util.Collections;
 import java.util.Optional;
 
-import static mho.wheels.iterables.IterableUtils.*;
-import static mho.wheels.structures.NullableOptional.empty;
-import static mho.wheels.structures.NullableOptional.fromOptional;
-import static mho.wheels.structures.NullableOptional.of;
+import static mho.wheels.iterables.IterableUtils.map;
+import static mho.wheels.iterables.IterableUtils.take;
+import static mho.wheels.structures.NullableOptional.*;
 
 @SuppressWarnings("UnusedDeclaration")
 public class NullableOptionalDemos extends Demos {
