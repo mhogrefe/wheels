@@ -105,7 +105,10 @@ public strictfp class Testing {
                     break;
                 case MAP:
                     int colonIndex = line.indexOf(':');
-                    map.put(readTestOutput(line.substring(colonIndex + 2), quoted), line.substring(0, colonIndex));
+                    String value = colonIndex == line.length() - 1 ?
+                            "" :
+                            readTestOutput(line.substring(colonIndex + 2), quoted);
+                    map.put(value, line.substring(0, colonIndex));
                     counter--;
                     if (counter == 0) {
                         testingMaps.put(name, map);
