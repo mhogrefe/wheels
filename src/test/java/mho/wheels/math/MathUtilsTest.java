@@ -338,6 +338,68 @@ public class MathUtilsTest {
         numberOfArrangementsOfASet_int_int_fail_helper(-1, 0);
     }
 
+    private static void binomialCoefficient_helper(@NotNull String n, int k, @NotNull String output) {
+        aeq(binomialCoefficient(Readers.readBigInteger(n).get(), k), output);
+    }
+
+    private static void binomialCoefficient_fail_helper(@NotNull String n, int k) {
+        try {
+            binomialCoefficient(Readers.readBigInteger(n).get(), k);
+            fail();
+        } catch (ArithmeticException ignored) {}
+    }
+
+    @Test
+    public void testBinomialCoefficient() {
+        binomialCoefficient_helper("0", 0, "1");
+        binomialCoefficient_helper("0", 1, "0");
+        binomialCoefficient_helper("0", 2, "0");
+        binomialCoefficient_helper("1", 0, "1");
+        binomialCoefficient_helper("1", 1, "1");
+        binomialCoefficient_helper("1", 2, "0");
+        binomialCoefficient_helper("10", 0, "1");
+        binomialCoefficient_helper("10", 1, "10");
+        binomialCoefficient_helper("10", 2, "45");
+        binomialCoefficient_helper("10", 3, "120");
+        binomialCoefficient_helper("10", 4, "210");
+        binomialCoefficient_helper("10", 5, "252");
+        binomialCoefficient_helper("100", 20, "535983370403809682970");
+
+        binomialCoefficient_fail_helper("-1", 0);
+        binomialCoefficient_fail_helper("0", -1);
+    }
+
+    private static void multisetCoefficient_helper(@NotNull String n, int k, @NotNull String output) {
+        aeq(multisetCoefficient(Readers.readBigInteger(n).get(), k), output);
+    }
+
+    private static void multisetCoefficient_fail_helper(@NotNull String n, int k) {
+        try {
+            multisetCoefficient(Readers.readBigInteger(n).get(), k);
+            fail();
+        } catch (ArithmeticException ignored) {}
+    }
+
+    @Test
+    public void testMultisetCoefficient() {
+        multisetCoefficient_helper("0", 0, "1");
+        multisetCoefficient_helper("0", 1, "0");
+        multisetCoefficient_helper("0", 2, "0");
+        multisetCoefficient_helper("1", 0, "1");
+        multisetCoefficient_helper("1", 1, "1");
+        multisetCoefficient_helper("1", 2, "1");
+        multisetCoefficient_helper("10", 0, "1");
+        multisetCoefficient_helper("10", 1, "10");
+        multisetCoefficient_helper("10", 2, "55");
+        multisetCoefficient_helper("10", 3, "220");
+        multisetCoefficient_helper("10", 4, "715");
+        multisetCoefficient_helper("10", 5, "2002");
+        multisetCoefficient_helper("100", 20, "24551856075980529765105");
+
+        multisetCoefficient_fail_helper("-1", 0);
+        multisetCoefficient_fail_helper("0", -1);
+    }
+
     private static void reversePermutationsSign_helper(int i, boolean output) {
         aeq(reversePermutationSign(i), output);
     }

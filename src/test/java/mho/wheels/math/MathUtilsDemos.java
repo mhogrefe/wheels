@@ -99,6 +99,28 @@ public class MathUtilsDemos extends Demos {
         }
     }
 
+    private void demoBinomialCoefficient() {
+        //noinspection Convert2MethodRef
+        Iterable<Pair<BigInteger, Integer>> ps = P.pairs(
+                map(i -> BigInteger.valueOf(i), P.naturalIntegersGeometric()),
+                P.naturalIntegersGeometric()
+        );
+        for (Pair<BigInteger, Integer> p : take(LIMIT, ps)) {
+            System.out.println("binomialCoefficient(" + p.a + ", " + p.b + ") = " + binomialCoefficient(p.a, p.b));
+        }
+    }
+
+    private void demoMultisetCoefficient() {
+        //noinspection Convert2MethodRef
+        Iterable<Pair<BigInteger, Integer>> ps = P.pairs(
+                map(i -> BigInteger.valueOf(i), P.naturalIntegersGeometric()),
+                P.naturalIntegersGeometric()
+        );
+        for (Pair<BigInteger, Integer> p : take(LIMIT, ps)) {
+            System.out.println("multisetCoefficient(" + p.a + ", " + p.b + ") = " + multisetCoefficient(p.a, p.b));
+        }
+    }
+
     private void demoReversePermutationSign() {
         for (int i : take(LIMIT, P.integers())) {
             System.out.println("reversePermutationSign(" + i + ") = " + reversePermutationSign(i));

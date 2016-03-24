@@ -364,8 +364,68 @@ public final class MathUtils {
         if (n < 0) {
             throw new ArithmeticException("n cannot be negative. Invalid n: " + n);
         }
-        BigInteger bigN = BigInteger.valueOf(n);
-        return sumBigInteger(map(k -> fallingFactorial(bigN, k), range(minSize, n)));
+        if (minSize > n) {
+            return BigInteger.ZERO;
+        }
+        BigInteger sum = minSize == 0 ? BigInteger.ONE : BigInteger.ZERO;
+        BigInteger product = BigInteger.ONE;
+        int limit = n - minSize + 1;
+        for (int i = n; i >= 0; i--) {
+            product = product.multiply(BigInteger.valueOf(i));
+            if (i <= limit) {
+                sum = sum.add(product);
+            }
+        }
+        return sum;
+    }
+
+    /**
+     * The binomial coefficient <sub>{@code n}</sub>C<sub>{@code k}</sub>, or the number of {@code k}-element subsets
+     * of an {@code n}-element set.
+     *
+     * <ul>
+     *  <li>{@code n} cannot be negative.</li>
+     *  <li>{@code k} cannot be negative.</li>
+     *  <li>The result is not negative.</li>
+     * </ul>
+     *
+     * @param n the number of elements in a set
+     * @param k the number of elements in a subset of the set
+     * @return {@code n} choose {@code k}
+     */
+    public static @NotNull BigInteger binomialCoefficient(@NotNull BigInteger n, int k) {
+        return fallingFactorial(n, k).divide(factorial(k));
+    }
+
+    /**
+     * The multiset coefficient of {@code n} and {@code k}, or the number of {@code k}-element sub-multisets of an
+     * {@code n}-element set.
+     *
+     * <ul>
+     *  <li>{@code n} cannot be negative.</li>
+     *  <li>{@code k} cannot be negative.</li>
+     *  <li>The result is not negative.</li>
+     * </ul>
+     *
+     * @param n the number of elements in a multiset
+     * @param k the number of elements in a sub-multiset of the set
+     * @return The number of ways to choose {@code k} elements from a set of {@code n} elements, disregarding order and
+     * allowing repetitions
+     */
+    public static @NotNull BigInteger multisetCoefficient(@NotNull BigInteger n, int k) {
+        if (k < 0) {
+            throw new ArithmeticException("k cannot be negative. Invalid k: " + k);
+        }
+        if (n.equals(BigInteger.ZERO)) {
+            return k == 0 ? BigInteger.ONE : BigInteger.ZERO;
+        }
+        return binomialCoefficient(n.add(BigInteger.valueOf(k - 1)), k);
+    }
+
+    public static @NotNull BigInteger subsetCount(int minSize, @NotNull BigInteger n) {
+        return sumBigInteger(
+                map(k -> binomialCoefficient(n, k.intValueExact()), range(BigInteger.valueOf(minSize), n))
+        );
     }
 
     public static @NotNull <T> BigInteger permutationCount(@NotNull List<T> xs) {
@@ -376,20 +436,6 @@ public final class MathUtils {
             }
         }
         return result;
-    }
-
-    public static @NotNull BigInteger binomialCoefficient(@NotNull BigInteger n, int k) {
-        return fallingFactorial(n, k).divide(factorial(k));
-    }
-
-    public static @NotNull BigInteger subsetCount(int minSize, @NotNull BigInteger n) {
-        return sumBigInteger(
-                map(k -> binomialCoefficient(n, k.intValueExact()), range(BigInteger.valueOf(minSize), n))
-        );
-    }
-
-    public static @NotNull BigInteger multisetCoefficient(@NotNull BigInteger n, int k) {
-        return binomialCoefficient(n.add(BigInteger.valueOf(k - 1)), k);
     }
 
     public static boolean reversePermutationSign(int i) {

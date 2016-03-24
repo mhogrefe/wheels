@@ -13,7 +13,8 @@ import java.util.function.Function;
 
 import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.math.MathUtils.*;
-import static mho.wheels.ordering.Ordering.*;
+import static mho.wheels.ordering.Ordering.ge;
+import static mho.wheels.ordering.Ordering.lt;
 import static mho.wheels.testing.Testing.*;
 
 public class MathUtilsProperties extends TestProperties {
@@ -513,19 +514,8 @@ public class MathUtilsProperties extends TestProperties {
         if (n < 0) {
             throw new ArithmeticException("n cannot be negative. Invalid n: " + n);
         }
-        if (minSize > n) {
-            return BigInteger.ZERO;
-        }
-        BigInteger sum = minSize == 0 ? BigInteger.ONE : BigInteger.ZERO;
-        BigInteger product = BigInteger.ONE;
-        int limit = n - minSize + 1;
-        for (int i = n; i >= 0; i--) {
-            product = product.multiply(BigInteger.valueOf(i));
-            if (i <= limit) {
-                sum = sum.add(product);
-            }
-        }
-        return sum;
+        BigInteger bigN = BigInteger.valueOf(n);
+        return sumBigInteger(map(k -> fallingFactorial(bigN, k), range(minSize, n)));
     }
 
     private void propertiesNumberOfArrangementsOfASet_int_int() {
