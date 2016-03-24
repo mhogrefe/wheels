@@ -13,6 +13,7 @@ import java.util.function.Function;
 
 import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.math.MathUtils.*;
+import static mho.wheels.ordering.Ordering.*;
 import static mho.wheels.testing.Testing.*;
 
 public class MathUtilsProperties extends TestProperties {
@@ -40,6 +41,11 @@ public class MathUtilsProperties extends TestProperties {
         propertiesSubfactorial_int();
         compareImplementationsSubfactorial_int();
         propertiesSubfactorial_BigInteger();
+        propertiesFallingFactorial();
+        propertiesNumberOfArrangementsOfASet_int();
+        compareImplementationsNumberOfArrangementsOfASet_int();
+        propertiesNumberOfArrangementsOfASet_int_int();
+        compareImplementationsNumberOfArrangementsOfASet_int_int();
         propertiesReversePermutationSign();
         compareImplementationsReversePermutationSign();
     }
@@ -314,6 +320,10 @@ public class MathUtilsProperties extends TestProperties {
             assertEquals(i, factorial.signum(), 1);
         }
 
+        for (int i : take(MEDIUM_LIMIT, P.positiveIntegersGeometric())) {
+            assertTrue(i, lt(factorial(i), factorial(i + 1)));
+        }
+
         for (int i : take(LIMIT, P.negativeIntegers())) {
             try {
                 factorial(i);
@@ -346,6 +356,11 @@ public class MathUtilsProperties extends TestProperties {
             assertEquals(i, factorial.signum(), 1);
         }
 
+        //noinspection Convert2MethodRef
+        for (BigInteger i : take(MEDIUM_LIMIT, map(j -> BigInteger.valueOf(j), P.positiveIntegersGeometric()))) {
+            assertTrue(i, lt(factorial(i), factorial(i.add(BigInteger.ONE))));
+        }
+
         for (BigInteger i : take(LIMIT, P.negativeBigIntegers())) {
             try {
                 factorial(i);
@@ -375,6 +390,10 @@ public class MathUtilsProperties extends TestProperties {
             assertNotEquals(i, subfactorial.signum(), -1);
         }
 
+        for (int i : take(MEDIUM_LIMIT, P.positiveIntegersGeometric())) {
+            assertTrue(i, lt(subfactorial(i), subfactorial(i + 1)));
+        }
+
         for (int i : take(LIMIT, P.negativeIntegers())) {
             try {
                 subfactorial(i);
@@ -398,12 +417,154 @@ public class MathUtilsProperties extends TestProperties {
             assertNotEquals(i, subfactorial.signum(), -1);
         }
 
+        //noinspection Convert2MethodRef
+        for (BigInteger i : take(MEDIUM_LIMIT, map(j -> BigInteger.valueOf(j), P.positiveIntegersGeometric()))) {
+            assertTrue(i, lt(subfactorial(i), subfactorial(i.add(BigInteger.ONE))));
+        }
+
         for (int i : take(LIMIT, P.negativeIntegers())) {
             try {
                 subfactorial(i);
                 fail(i);
             } catch (ArithmeticException ignored) {}
         }
+    }
+
+    private void propertiesFallingFactorial() {
+        initialize("fallingFactorial(BigInteger, int)");
+        //noinspection Convert2MethodRef
+        Iterable<Pair<BigInteger, Integer>> ps = P.pairs(
+                map(i -> BigInteger.valueOf(i), P.naturalIntegersGeometric()),
+                P.naturalIntegersGeometric()
+        );
+        for (Pair<BigInteger, Integer> p : take(LIMIT, ps)) {
+            BigInteger fallingFactorial = fallingFactorial(p.a, p.b);
+            assertNotEquals(p, fallingFactorial.signum(), -1);
+            assertTrue(p, ge(fallingFactorial(p.a.add(BigInteger.ONE), p.b), fallingFactorial));
+        }
+
+        for (int i : take(SMALL_LIMIT, P.naturalIntegersGeometric())) {
+            assertEquals(i, fallingFactorial(BigInteger.valueOf(i), i), factorial(i));
+        }
+
+        //noinspection Convert2MethodRef
+        for (BigInteger i : take(LIMIT, map(j -> BigInteger.valueOf(j), P.naturalIntegersGeometric()))) {
+            assertEquals(i, fallingFactorial(i, 0), BigInteger.ONE);
+            assertEquals(i, fallingFactorial(i, 1), i);
+        }
+
+        ps = map(p -> new Pair<>(BigInteger.valueOf(p.a), p.b), P.subsetPairs(P.naturalIntegersGeometric()));
+        for (Pair<BigInteger, Integer> p : take(LIMIT, ps)) {
+            assertEquals(p, fallingFactorial(p.a, p.b), BigInteger.ZERO);
+        }
+
+        for (Pair<BigInteger, Integer> p : take(LIMIT, P.pairs(P.negativeBigIntegers(), P.naturalIntegers()))) {
+            try {
+                fallingFactorial(p.a, p.b);
+                fail(p);
+            } catch (ArithmeticException ignored) {}
+        }
+
+        for (Pair<BigInteger, Integer> p : take(LIMIT, P.pairs(P.naturalBigIntegers(), P.negativeIntegers()))) {
+            try {
+                fallingFactorial(p.a, p.b);
+                fail(p);
+            } catch (ArithmeticException ignored) {}
+        }
+    }
+
+    private static @NotNull BigInteger numberOfArrangementsOfASet_int_alt(int n) {
+        if (n < 0) {
+            throw new ArithmeticException("n cannot be negative. Invalid n: " + n);
+        }
+        BigInteger bigN = BigInteger.valueOf(n);
+        return sumBigInteger(map(k -> fallingFactorial(bigN, k), range(0, n)));
+    }
+
+    private void propertiesNumberOfArrangementsOfASet_int() {
+        initialize("numberOfArrangementsOfASet(int)");
+        for (int i : take(SMALL_LIMIT, P.naturalIntegersGeometric())) {
+            BigInteger n = numberOfArrangementsOfASet(i);
+            assertEquals(i, numberOfArrangementsOfASet_int_alt(i), n);
+            assertEquals(i, n.signum(), 1);
+            assertTrue(i, lt(n, numberOfArrangementsOfASet(i + 1)));
+        }
+
+        for (int i : take(LIMIT, P.negativeIntegers())) {
+            try {
+                numberOfArrangementsOfASet(i);
+                fail(i);
+            } catch (ArithmeticException ignored) {}
+        }
+    }
+
+    private void compareImplementationsNumberOfArrangementsOfASet_int() {
+        Map<String, Function<Integer, BigInteger>> functions = new LinkedHashMap<>();
+        functions.put("alt", MathUtilsProperties::numberOfArrangementsOfASet_int_alt);
+        functions.put("standard", MathUtils::numberOfArrangementsOfASet);
+        Iterable<Integer> is = P.naturalIntegersGeometric();
+        compareImplementations("numberOfArrangementsOfASet(int)", take(SMALL_LIMIT, is), functions);
+    }
+
+    private static @NotNull BigInteger numberOfArrangementsOfASet_int_int_alt(int minSize, int n) {
+        if (minSize < 0) {
+            throw new ArithmeticException("minSize cannot be negative. Invalid minSize: " + minSize);
+        }
+        if (n < 0) {
+            throw new ArithmeticException("n cannot be negative. Invalid n: " + n);
+        }
+        if (minSize > n) {
+            return BigInteger.ZERO;
+        }
+        BigInteger sum = minSize == 0 ? BigInteger.ONE : BigInteger.ZERO;
+        BigInteger product = BigInteger.ONE;
+        int limit = n - minSize + 1;
+        for (int i = n; i >= 0; i--) {
+            product = product.multiply(BigInteger.valueOf(i));
+            if (i <= limit) {
+                sum = sum.add(product);
+            }
+        }
+        return sum;
+    }
+
+    private void propertiesNumberOfArrangementsOfASet_int_int() {
+        initialize("numberOfArrangementsOfASet(int, int)");
+        for (Pair<Integer, Integer> p : take(LIMIT, P.pairs(P.naturalIntegersGeometric()))) {
+            BigInteger n = numberOfArrangementsOfASet(p.a, p.b);
+            assertEquals(p, numberOfArrangementsOfASet_int_int_alt(p.a, p.b), n);
+            assertTrue(p, ge(numberOfArrangementsOfASet(p.a, p.b + 1), n));
+        }
+
+        for (int i : take(SMALL_LIMIT, P.naturalIntegersGeometric())) {
+            assertEquals(i, numberOfArrangementsOfASet(0, i), numberOfArrangementsOfASet(i));
+        }
+
+        for (Pair<Integer, Integer> p : take(LIMIT, P.subsetPairs(P.naturalIntegersGeometric()))) {
+            assertEquals(p, numberOfArrangementsOfASet(p.b, p.a), BigInteger.ZERO);
+        }
+
+        for (Pair<Integer, Integer> p : take(LIMIT, P.pairs(P.negativeIntegers(), P.naturalIntegers()))) {
+            try {
+                numberOfArrangementsOfASet(p.a, p.b);
+                fail(p);
+            } catch (ArithmeticException ignored) {}
+        }
+
+        for (Pair<Integer, Integer> p : take(LIMIT, P.pairs(P.naturalIntegers(), P.negativeIntegers()))) {
+            try {
+                numberOfArrangementsOfASet(p.a, p.b);
+                fail(p);
+            } catch (ArithmeticException ignored) {}
+        }
+    }
+
+    private void compareImplementationsNumberOfArrangementsOfASet_int_int() {
+        Map<String, Function<Pair<Integer, Integer>, BigInteger>> functions = new LinkedHashMap<>();
+        functions.put("alt", p -> numberOfArrangementsOfASet_int_int_alt(p.a, p.b));
+        functions.put("standard", p -> numberOfArrangementsOfASet(p.a, p.b));
+        Iterable<Pair<Integer, Integer>> ps = P.pairs(P.naturalIntegersGeometric());
+        compareImplementations("numberOfArrangementsOfASet(int, int)", take(LIMIT, ps), functions);
     }
 
     private static boolean reversePermutationSign_alt(int i) {

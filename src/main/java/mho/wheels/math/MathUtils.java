@@ -334,8 +334,13 @@ public final class MathUtils {
         if (n < 0) {
             throw new ArithmeticException("n cannot be negative. Invalid n: " + n);
         }
-        BigInteger bigN = BigInteger.valueOf(n);
-        return sumBigInteger(map(k -> fallingFactorial(bigN, k), range(0, n)));
+        BigInteger sum = BigInteger.ONE;
+        BigInteger product = BigInteger.ONE;
+        for (int i = n; i > 0; i--) {
+            product = product.multiply(BigInteger.valueOf(i));
+            sum = sum.add(product);
+        }
+        return sum;
     }
 
     /**
