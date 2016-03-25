@@ -47,6 +47,8 @@ public class MathUtilsProperties extends TestProperties {
         compareImplementationsNumberOfArrangementsOfASet_int();
         propertiesNumberOfArrangementsOfASet_int_int();
         compareImplementationsNumberOfArrangementsOfASet_int_int();
+        propertiesBinomialCoefficient();
+        propertiesMultisetCoefficient();
         propertiesReversePermutationSign();
         compareImplementationsReversePermutationSign();
     }
@@ -555,6 +557,81 @@ public class MathUtilsProperties extends TestProperties {
         functions.put("standard", p -> numberOfArrangementsOfASet(p.a, p.b));
         Iterable<Pair<Integer, Integer>> ps = P.pairs(P.naturalIntegersGeometric());
         compareImplementations("numberOfArrangementsOfASet(int, int)", take(LIMIT, ps), functions);
+    }
+
+    private void propertiesBinomialCoefficient() {
+        initialize("binomialCoefficient(BigInteger, int)");
+        //noinspection Convert2MethodRef
+        Iterable<Pair<BigInteger, Integer>> ps = P.pairs(
+                map(i -> BigInteger.valueOf(i), P.naturalIntegersGeometric()),
+                P.naturalIntegersGeometric()
+        );
+        for (Pair<BigInteger, Integer> p : take(LIMIT, ps)) {
+            BigInteger binomialCoefficient = binomialCoefficient(p.a, p.b);
+            assertNotEquals(p, binomialCoefficient.signum(), -1);
+            assertTrue(p, ge(binomialCoefficient(p.a.add(BigInteger.ONE), p.b), binomialCoefficient));
+        }
+
+        //noinspection Convert2MethodRef
+        for (BigInteger i : take(LIMIT, map(j -> BigInteger.valueOf(j), P.naturalIntegersGeometric()))) {
+            assertEquals(i, binomialCoefficient(i, 0), BigInteger.ONE);
+            assertEquals(i, binomialCoefficient(i, 1), i);
+        }
+
+        for (Pair<Integer, Integer> p : take(LIMIT, P.subsetPairs(P.naturalIntegersGeometric()))) {
+            assertEquals(p, binomialCoefficient(BigInteger.valueOf(p.a), p.b), BigInteger.ZERO);
+            BigInteger binomialCoefficient = binomialCoefficient(BigInteger.valueOf(p.b), p.a);
+            assertEquals(p, binomialCoefficient, binomialCoefficient(BigInteger.valueOf(p.b), p.b - p.a));
+            assertEquals(p, binomialCoefficient, factorial(p.b).divide(factorial(p.a).multiply(factorial(p.b - p.a))));
+        }
+
+        for (Pair<BigInteger, Integer> p : take(LIMIT, P.pairs(P.negativeBigIntegers(), P.naturalIntegers()))) {
+            try {
+                binomialCoefficient(p.a, p.b);
+                fail(p);
+            } catch (ArithmeticException ignored) {}
+        }
+
+        for (Pair<BigInteger, Integer> p : take(LIMIT, P.pairs(P.naturalBigIntegers(), P.negativeIntegers()))) {
+            try {
+                binomialCoefficient(p.a, p.b);
+                fail(p);
+            } catch (ArithmeticException ignored) {}
+        }
+    }
+
+    private void propertiesMultisetCoefficient() {
+        initialize("multisetCoefficient(BigInteger, int)");
+        //noinspection Convert2MethodRef
+        Iterable<Pair<BigInteger, Integer>> ps = P.pairs(
+                map(i -> BigInteger.valueOf(i), P.naturalIntegersGeometric()),
+                P.naturalIntegersGeometric()
+        );
+        for (Pair<BigInteger, Integer> p : take(LIMIT, ps)) {
+            BigInteger multisetCoefficient = multisetCoefficient(p.a, p.b);
+            assertNotEquals(p, multisetCoefficient.signum(), -1);
+            assertTrue(p, ge(multisetCoefficient(p.a.add(BigInteger.ONE), p.b), multisetCoefficient));
+        }
+
+        //noinspection Convert2MethodRef
+        for (BigInteger i : take(LIMIT, map(j -> BigInteger.valueOf(j), P.naturalIntegersGeometric()))) {
+            assertEquals(i, multisetCoefficient(i, 0), BigInteger.ONE);
+            assertEquals(i, multisetCoefficient(i, 1), i);
+        }
+
+        for (Pair<BigInteger, Integer> p : take(LIMIT, P.pairs(P.negativeBigIntegers(), P.naturalIntegers()))) {
+            try {
+                multisetCoefficient(p.a, p.b);
+                fail(p);
+            } catch (ArithmeticException ignored) {}
+        }
+
+        for (Pair<BigInteger, Integer> p : take(LIMIT, P.pairs(P.naturalBigIntegers(), P.negativeIntegers()))) {
+            try {
+                multisetCoefficient(p.a, p.b);
+                fail(p);
+            } catch (ArithmeticException ignored) {}
+        }
     }
 
     private static boolean reversePermutationSign_alt(int i) {

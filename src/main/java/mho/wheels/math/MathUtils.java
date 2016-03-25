@@ -413,6 +413,9 @@ public final class MathUtils {
      * allowing repetitions
      */
     public static @NotNull BigInteger multisetCoefficient(@NotNull BigInteger n, int k) {
+        if (n.signum() == -1) {
+            throw new ArithmeticException("n cannot be negative. Invalid n: " + n);
+        }
         if (k < 0) {
             throw new ArithmeticException("k cannot be negative. Invalid k: " + k);
         }
