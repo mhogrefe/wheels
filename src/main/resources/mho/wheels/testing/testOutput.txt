@@ -66147,3 +66147,2105 @@ RandomProvider_prefixPermutations_xxxvi list 21
 
 RandomProvider_prefixPermutations_xxxvi map 1
 1000000: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...]
+
+RandomProvider_strings_int_String_i list 21
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+...
+
+RandomProvider_strings_int_String_i map 1
+1000000:
+
+RandomProvider_strings_int_String_ii list 21
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+...
+
+RandomProvider_strings_int_String_ii map 1
+1000000:
+
+RandomProvider_strings_int_String_iii list 21
+a
+a
+a
+a
+a
+a
+a
+a
+a
+a
+a
+a
+a
+a
+a
+a
+a
+a
+a
+a
+...
+
+RandomProvider_strings_int_String_iii map 1
+1000000: a
+
+RandomProvider_strings_int_String_iv list 21
+aa
+aa
+aa
+aa
+aa
+aa
+aa
+aa
+aa
+aa
+aa
+aa
+aa
+aa
+aa
+aa
+aa
+aa
+aa
+aa
+...
+
+RandomProvider_strings_int_String_iv map 1
+1000000: aa
+
+RandomProvider_strings_int_String_v list 21
+aaa
+aaa
+aaa
+aaa
+aaa
+aaa
+aaa
+aaa
+aaa
+aaa
+aaa
+aaa
+aaa
+aaa
+aaa
+aaa
+aaa
+aaa
+aaa
+aaa
+...
+
+RandomProvider_strings_int_String_v map 1
+1000000: aaa
+
+RandomProvider_strings_int_String_vi list 21
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+...
+
+RandomProvider_strings_int_String_vi map 1
+1000000:
+
+RandomProvider_strings_int_String_vii list 21
+b
+b
+c
+b
+a
+b
+b
+b
+b
+b
+a
+b
+b
+c
+b
+c
+a
+c
+b
+b
+...
+
+RandomProvider_strings_int_String_vii map 3
+333615: c
+333313: b
+333072: a
+
+RandomProvider_strings_int_String_viii list 21
+bb
+cb
+ab
+bb
+bb
+ab
+bc
+bc
+ac
+bb
+ca
+cb
+ac
+bc
+cb
+aa
+ca
+bc
+ab
+ac
+...
+
+RandomProvider_strings_int_String_viii map 9
+111390: cb
+111322: bc
+111219: ca
+111121: aa
+111088: ba
+111028: cc
+111012: ab
+110943: bb
+110877: ac
+
+RandomProvider_strings_int_String_ix list 21
+bbc
+bab
+bbb
+bab
+bcb
+cac
+bbc
+acb
+acb
+ccb
+aac
+abc
+aba
+cbc
+acc
+cbc
+cab
+acc
+aac
+aac
+...
+
+RandomProvider_strings_int_String_ix map 10
+37441: aaa
+37355: bbb
+37327: cac
+37306: bcb
+37273: cbc
+37236: cba
+37231: cca
+37214: ccc
+37158: bca
+37136: aab
+
+RandomProvider_strings_int_String_x list 21
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+...
+
+RandomProvider_strings_int_String_x map 1
+1000000:
+
+RandomProvider_strings_int_String_xi list 21
+b
+b
+c
+b
+b
+c
+a
+b
+b
+c
+c
+b
+c
+b
+c
+b
+a
+b
+b
+b
+...
+
+RandomProvider_strings_int_String_xi map 3
+499640: b
+250298: c
+250062: a
+
+RandomProvider_strings_int_String_xii list 21
+bb
+cb
+bc
+ab
+bc
+cb
+cb
+cb
+ab
+bb
+cb
+ba
+cb
+bc
+bb
+ab
+cb
+ac
+cb
+cb
+...
+
+RandomProvider_strings_int_String_xii map 9
+250376: bb
+124904: bc
+124818: cb
+124686: ab
+124685: ba
+62739: ac
+62694: cc
+62656: aa
+62442: ca
+
+RandomProvider_strings_int_String_xiii list 21
+bbc
+bbc
+abb
+ccb
+cbc
+bab
+bbc
+bba
+cbb
+cbb
+abc
+bac
+cbc
+bbb
+cba
+abc
+abb
+aba
+ccb
+bcb
+...
+
+RandomProvider_strings_int_String_xiii map 10
+125202: bbb
+62727: cbb
+62625: bba
+62606: bbc
+62481: abb
+62386: bab
+62173: bcb
+31470: acb
+31464: bcc
+31441: cbc
+
+RandomProvider_strings_int_String_xiv list 21
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+...
+
+RandomProvider_strings_int_String_xiv map 1
+1000000:
+
+RandomProvider_strings_int_String_xv list 21
+p
+p
+s
+s
+s
+p
+s
+s
+i
+i
+s
+s
+s
+p
+s
+i
+s
+i
+s
+s
+...
+
+RandomProvider_strings_int_String_xv map 4
+363979: s
+363703: i
+181581: p
+90737: M
+
+RandomProvider_strings_int_String_xvi list 21
+pp
+ss
+sp
+ss
+ii
+ss
+sp
+si
+si
+ss
+si
+pi
+is
+si
+pi
+ss
+ss
+is
+Ms
+is
+...
+
+RandomProvider_strings_int_String_xvi map 10
+132606: ss
+132473: si
+132392: is
+131960: ii
+66316: ps
+66221: sp
+66050: ip
+65612: pi
+33235: Mi
+33071: pp
+
+RandomProvider_strings_int_String_xvii list 21
+pps
+ssp
+ssi
+iss
+sps
+isi
+sss
+ipi
+iss
+ipi
+sss
+sis
+Msi
+sss
+ssi
+sip
+iMp
+ipp
+ips
+ssi
+...
+
+RandomProvider_strings_int_String_xvii map 10
+48687: sss
+48297: sis
+48283: ssi
+48220: iis
+48107: sii
+48048: iii
+47940: iss
+47797: isi
+24274: psi
+24260: pss
+
+RandomProvider_strings_int_i list 21
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+...
+
+RandomProvider_strings_int_i map 1
+1000000:
+
+RandomProvider_strings_int_ii list 21
+\u5629
+\ud1c9
+\u9983
+\u2df2
+\u03b5
+\u42bf
+\u2538
+\u31e5
+\u9afd
+\u80a3
+\uf6ff
+\ufcd1
+\u8d67
+\ue215
+\u17f3
+\udd75
+\uaef8
+\udd15
+\ubab1
+\ufca6
+...
+
+RandomProvider_strings_int_ii map 10
+36: \uf1b2
+35: \u64a2
+34: \u0a86
+34: \ud243
+33: \u0017
+32: \u3592
+32: \u97d6
+31: \u35de
+31: \u4566
+31: \u8197
+
+RandomProvider_strings_int_iii list 21
+\u5629\ud1c9
+\u9983\u2df2
+\u03b5\u42bf
+\u2538\u31e5
+\u9afd\u80a3
+\uf6ff\ufcd1
+\u8d67\ue215
+\u17f3\udd75
+\uaef8\udd15
+\ubab1\ufca6
+\u4bcf\u03e1
+\u7f56\u19dc
+\u523f\u313e
+\u4cb5\u7bbf
+\u5075\u607e
+\u1b1c\u212a
+\u3d4f\ua3f9
+\u7f04\u3a77
+\u2d3f\uc77e
+\u7eab\ufe2d
+...
+
+RandomProvider_strings_int_iii map 10
+2: \u2cc8\uace0
+2: \u3470\uf5be
+2: \u371b\ub579
+2: \u696e\u8b42
+2: \u7dd1\ue709
+2: \ua8ed\u2c04
+2: \ue283\u637f
+2: \ue429\u83e7
+2: \uf310\ud2fa
+2: \uf480\u23c0
+
+RandomProvider_strings_int_iv list 21
+\u5629\ud1c9\u9983
+\u2df2\u03b5\u42bf
+\u2538\u31e5\u9afd
+\u80a3\uf6ff\ufcd1
+\u8d67\ue215\u17f3
+\udd75\uaef8\udd15
+\ubab1\ufca6\u4bcf
+\u03e1\u7f56\u19dc
+\u523f\u313e\u4cb5
+\u7bbf\u5075\u607e
+\u1b1c\u212a\u3d4f
+\ua3f9\u7f04\u3a77
+\u2d3f\uc77e\u7eab
+\ufe2d\u35c2\u4772
+\uf207\uac29\ud79c
+\u5764\u7416\u2a43
+\ud24c\uea45\ue352
+\u8564\u9925\u4240
+\u2b63\uf637\u9e02
+\u9e05\u8bef\u8f2e
+...
+
+RandomProvider_strings_int_iv map 10
+1: \u03e1\u7f56\u19dc
+1: \u2538\u31e5\u9afd
+1: \u2df2\u03b5\u42bf
+1: \u523f\u313e\u4cb5
+1: \u5629\ud1c9\u9983
+1: \u7bbf\u5075\u607e
+1: \u80a3\uf6ff\ufcd1
+1: \u8d67\ue215\u17f3
+1: \ubab1\ufca6\u4bcf
+1: \udd75\uaef8\udd15
+
+RandomProvider_lists_Iterable_i list 21
+[5, 5, 5]
+[5, 5]
+[5, 5, 5, 5, 5, 5, 5, 5, 5]
+[5, 5]
+[5, 5]
+[]
+[5]
+[5, 5, 5]
+[]
+[]
+[5, 5]
+[5, 5]
+[5, 5]
+[]
+[5, 5]
+[]
+[]
+[5]
+[5]
+[]
+...
+
+RandomProvider_lists_Iterable_i map 10
+499125: []
+250897: [5]
+124849: [5, 5]
+62518: [5, 5, 5]
+31407: [5, 5, 5, 5]
+15634: [5, 5, 5, 5, 5]
+7825: [5, 5, 5, 5, 5, 5]
+3926: [5, 5, 5, 5, 5, 5, 5]
+1896: [5, 5, 5, 5, 5, 5, 5, 5]
+956: [5, 5, 5, 5, 5, 5, 5, 5, 5]
+
+RandomProvider_lists_Iterable_ii list 21
+[5, 5, 5, 5]
+[5, 5, 5, 5, 5]
+[5, 5, 5, 5, 5]
+[5, 5, 5, 5]
+[5, 5]
+[5, 5, 5, 5, 5]
+[]
+[5]
+[5, 5]
+[5]
+[5, 5, 5]
+[5, 5, 5, 5, 5, 5]
+[5]
+[5, 5]
+[]
+[5]
+[]
+[5]
+[]
+[5, 5, 5]
+...
+
+RandomProvider_lists_Iterable_ii map 10
+333813: []
+221150: [5]
+148025: [5, 5]
+98992: [5, 5, 5]
+66270: [5, 5, 5, 5]
+43747: [5, 5, 5, 5, 5]
+29389: [5, 5, 5, 5, 5, 5]
+19567: [5, 5, 5, 5, 5, 5, 5]
+12958: [5, 5, 5, 5, 5, 5, 5, 5]
+8571: [5, 5, 5, 5, 5, 5, 5, 5, 5]
+
+RandomProvider_lists_Iterable_iii list 21
+[5, 5, 5, 5]
+[5, 5, 5]
+[5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]
+[5, 5, 5, 5, 5, 5, 5]
+[5, 5]
+[]
+[5]
+[]
+[5]
+[5, 5, 5, 5, 5]
+[5, 5, 5, 5, 5, 5]
+[5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]
+[5, 5, 5, 5, 5]
+[5, 5]
+[5, 5, 5, 5, 5, 5, 5]
+[5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]
+[]
+[5, 5, 5, 5, 5, 5, 5, 5]
+[5]
+[5, 5, 5, 5]
+...
+
+RandomProvider_lists_Iterable_iii map 10
+200194: []
+160489: [5]
+127708: [5, 5]
+101606: [5, 5, 5]
+82008: [5, 5, 5, 5]
+65900: [5, 5, 5, 5, 5]
+52157: [5, 5, 5, 5, 5, 5]
+41827: [5, 5, 5, 5, 5, 5, 5]
+33413: [5, 5, 5, 5, 5, 5, 5, 5]
+26877: [5, 5, 5, 5, 5, 5, 5, 5, 5]
+
+RandomProvider_lists_Iterable_iv list 21
+[2, 1, 2]
+[2, 2, 3, 2, 3, 1, 3, 2]
+[1, 3]
+[3, 2]
+[]
+[]
+[1, 3]
+[2]
+[]
+[]
+[3]
+[1, 3]
+[3]
+[3]
+[]
+[3]
+[]
+[]
+[]
+[]
+...
+
+RandomProvider_lists_Iterable_iv map 10
+499504: []
+83540: [2]
+83439: [3]
+83275: [1]
+13999: [2, 3]
+13964: [2, 2]
+13961: [1, 1]
+13913: [3, 2]
+13882: [2, 1]
+13879: [1, 2]
+
+RandomProvider_lists_Iterable_v list 21
+[2, 2, 2, 2]
+[2]
+[3, 2, 2, 3]
+[]
+[3, 2]
+[1, 3, 1]
+[2, 1]
+[3, 3, 3]
+[2, 1, 3]
+[1]
+[1]
+[1]
+[2, 2, 1]
+[2, 3, 2, 3, 2, 3, 2]
+[]
+[2]
+[2, 3, 3, 1, 1, 3]
+[]
+[]
+[]
+...
+
+RandomProvider_lists_Iterable_v map 10
+333247: []
+74291: [2]
+74037: [3]
+73733: [1]
+16580: [3, 1]
+16560: [1, 2]
+16556: [3, 3]
+16422: [2, 1]
+16411: [1, 3]
+16379: [3, 2]
+
+RandomProvider_lists_Iterable_vi list 21
+[2, 2, 2, 2]
+[2]
+[3, 2, 3, 1, 3, 3, 3, 2, 3, 3, 1, 2, 1, 3, 3, 1, 1]
+[1]
+[3]
+[2, 2, 1, 3, 3]
+[2, 3]
+[2, 3, 3, 1, 1, 3, 1, 1, 1, 3, 3, 2, 3, 3, 3, 3, 2]
+[]
+[3, 1, 3, 2, 1, 1, 3, 3, 2, 1, 1, 1, 1, 3]
+[1, 3, 3]
+[3, 1, 3, 3, 3]
+[3, 1, 3, 3, 2, 3, 2, 2, 2, 2, 3]
+[]
+[]
+[3, 3, 1, 1]
+[1]
+[3, 1, 1, 1]
+[]
+[1, 3, 1]
+...
+
+RandomProvider_lists_Iterable_vi map 10
+199912: []
+53484: [2]
+53481: [1]
+53282: [3]
+14347: [2, 3]
+14328: [1, 1]
+14321: [1, 2]
+14304: [3, 1]
+14257: [2, 2]
+14250: [3, 3]
+
+RandomProvider_lists_Iterable_vii list 21
+[null, 1, null]
+[null, null, 3, null, 3, 1, 3, null]
+[1, 3]
+[3, null]
+[]
+[]
+[1, 3]
+[null]
+[]
+[]
+[3]
+[1, 3]
+[3]
+[3]
+[]
+[3]
+[]
+[]
+[]
+[]
+...
+
+RandomProvider_lists_Iterable_vii map 10
+499504: []
+83540: [null]
+83439: [3]
+83275: [1]
+13999: [null, 3]
+13964: [null, null]
+13961: [1, 1]
+13913: [3, null]
+13882: [null, 1]
+13879: [1, null]
+
+RandomProvider_lists_Iterable_viii list 21
+[null, null, null, null]
+[null]
+[3, null, null, 3]
+[]
+[3, null]
+[1, 3, 1]
+[null, 1]
+[3, 3, 3]
+[null, 1, 3]
+[1]
+[1]
+[1]
+[null, null, 1]
+[null, 3, null, 3, null, 3, null]
+[]
+[null]
+[null, 3, 3, 1, 1, 3]
+[]
+[]
+[]
+...
+
+RandomProvider_lists_Iterable_viii map 10
+333247: []
+74291: [null]
+74037: [3]
+73733: [1]
+16580: [3, 1]
+16560: [1, null]
+16556: [3, 3]
+16422: [null, 1]
+16411: [1, 3]
+16379: [3, null]
+
+RandomProvider_lists_Iterable_ix list 21
+[null, null, null, null]
+[null]
+[3, null, 3, 1, 3, 3, 3, null, 3, 3, 1, null, 1, 3, 3, 1, 1]
+[1]
+[3]
+[null, null, 1, 3, 3]
+[null, 3]
+[null, 3, 3, 1, 1, 3, 1, 1, 1, 3, 3, null, 3, 3, 3, 3, null]
+[]
+[3, 1, 3, null, 1, 1, 3, 3, null, 1, 1, 1, 1, 3]
+[1, 3, 3]
+[3, 1, 3, 3, 3]
+[3, 1, 3, 3, null, 3, null, null, null, null, 3]
+[]
+[]
+[3, 3, 1, 1]
+[1]
+[3, 1, 1, 1]
+[]
+[1, 3, 1]
+...
+
+RandomProvider_lists_Iterable_ix map 10
+199912: []
+53484: [null]
+53481: [1]
+53282: [3]
+14347: [null, 3]
+14328: [1, 1]
+14321: [1, null]
+14304: [3, 1]
+14257: [null, null]
+14250: [3, 3]
+
+RandomProvider_lists_Iterable_x list 21
+[2, 4, 1]
+[2, 2, 3, 4, 2, 3, 1, 4, 3]
+[1, 3, 4]
+[4]
+[4]
+[3]
+[1, 3]
+[2]
+[]
+[]
+[4]
+[2]
+[1]
+[]
+[3]
+[3]
+[]
+[3]
+[]
+[]
+...
+
+RandomProvider_lists_Iterable_x map 10
+499557: []
+62855: [3]
+62711: [1]
+62536: [2]
+62330: [4]
+8015: [2, 2]
+7980: [4, 3]
+7963: [1, 4]
+7893: [2, 3]
+7892: [4, 2]
+
+RandomProvider_lists_Iterable_xi list 21
+[2, 2, 4, 4]
+[2, 2, 3]
+[4, 3]
+[3, 4, 2]
+[]
+[1, 3, 4, 1, 2]
+[2]
+[]
+[3, 4, 3]
+[2, 1, 3, 3]
+[]
+[]
+[1]
+[1]
+[2, 4, 2]
+[]
+[2, 3, 4, 4, 4, 4, 2]
+[4, 4, 4, 4]
+[4]
+[2, 3, 4, 4, 3, 1, 1]
+...
+
+RandomProvider_lists_Iterable_xi map 10
+333041: []
+55655: [1]
+55628: [2]
+55498: [4]
+55246: [3]
+9433: [3, 3]
+9373: [2, 2]
+9320: [2, 4]
+9312: [3, 4]
+9295: [2, 1]
+
+RandomProvider_lists_Iterable_xii list 21
+[2, 2, 4, 4]
+[2, 2]
+[4, 4, 3, 2, 4, 3, 1, 3, 4, 3, 3, 2, 3, 3, 1, 2]
+[1, 3]
+[]
+[]
+[3]
+[2, 4, 2, 4, 1]
+[2, 3, 4]
+[2, 3, 4, 4, 3, 1, 1, 3, 1, 1, 1, 3, 3, 2, 4, 3]
+[4, 3, 2, 4, 4]
+[3, 1, 3, 4, 2, 4, 1, 1, 3, 4, 3]
+[1]
+[]
+[1, 3, 4, 3]
+[3, 1, 3, 3, 3]
+[3, 1, 3, 3, 2, 3, 4, 2, 2, 2, 4]
+[3]
+[]
+[3, 4, 3, 1]
+...
+
+RandomProvider_lists_Iterable_xii map 10
+200010: []
+40047: [2]
+39960: [4]
+39955: [3]
+39861: [1]
+8182: [4, 1]
+8116: [3, 2]
+8107: [4, 3]
+8029: [1, 1]
+8025: [4, 2]
+
+RandomProvider_lists_Iterable_xiii list 21
+[2, 4, 1]
+[2, 2, 2, 4, 2, 2, 1, 4, 2]
+[1, 2, 4]
+[4]
+[4]
+[2]
+[1, 2]
+[2]
+[]
+[]
+[4]
+[2]
+[1]
+[]
+[2]
+[2]
+[]
+[2]
+[]
+[]
+...
+
+RandomProvider_lists_Iterable_xiii map 10
+499557: []
+125391: [2]
+62711: [1]
+62330: [4]
+31328: [2, 2]
+15872: [4, 2]
+15491: [2, 1]
+15489: [1, 2]
+15329: [2, 4]
+7963: [1, 4]
+
+RandomProvider_lists_Iterable_xiv list 21
+[2, 2, 4, 4]
+[2, 2, 2]
+[4, 2]
+[2, 4, 2]
+[]
+[1, 2, 4, 1, 2]
+[2]
+[]
+[2, 4, 2]
+[2, 1, 2, 2]
+[]
+[]
+[1]
+[1]
+[2, 4, 2]
+[]
+[2, 2, 4, 4, 4, 4, 2]
+[4, 4, 4, 4]
+[4]
+[2, 2, 4, 4, 2, 1, 1]
+...
+
+RandomProvider_lists_Iterable_xiv map 10
+333041: []
+110874: [2]
+55655: [1]
+55498: [4]
+37235: [2, 2]
+18632: [2, 4]
+18512: [1, 2]
+18480: [2, 1]
+18414: [4, 2]
+12455: [2, 2, 2]
+
+RandomProvider_lists_Iterable_xv list 21
+[2, 2, 4, 4]
+[2, 2]
+[4, 4, 2, 2, 4, 2, 1, 2, 4, 2, 2, 2, 2, 2, 1, 2]
+[1, 2]
+[]
+[]
+[2]
+[2, 4, 2, 4, 1]
+[2, 2, 4]
+[2, 2, 4, 4, 2, 1, 1, 2, 1, 1, 1, 2, 2, 2, 4, 2]
+[4, 2, 2, 4, 4]
+[2, 1, 2, 4, 2, 4, 1, 1, 2, 4, 2]
+[1]
+[]
+[1, 2, 4, 2]
+[2, 1, 2, 2, 2]
+[2, 1, 2, 2, 2, 2, 4, 2, 2, 2, 4]
+[2]
+[]
+[2, 4, 2, 1]
+...
+
+RandomProvider_lists_Iterable_xv map 10
+200010: []
+80002: [2]
+39960: [4]
+39861: [1]
+32002: [2, 2]
+16132: [4, 2]
+16010: [2, 4]
+15945: [2, 1]
+15898: [1, 2]
+12985: [2, 2, 2]
+
+RandomProvider_lists_Iterable_xvi list 21
+[2, 2, 2]
+[2, 2, 2, 2, 2, 2, 2, 2, 2]
+[2, 2, 2]
+[2]
+[2]
+[2]
+[2, 2]
+[2]
+[]
+[]
+[2]
+[2]
+[2]
+[]
+[2]
+[2]
+[]
+[2]
+[]
+[]
+...
+
+RandomProvider_lists_Iterable_xvi map 10
+499557: []
+250432: [2]
+124756: [2, 2]
+62825: [2, 2, 2]
+31144: [2, 2, 2, 2]
+15656: [2, 2, 2, 2, 2]
+7784: [2, 2, 2, 2, 2, 2]
+3987: [2, 2, 2, 2, 2, 2, 2]
+1945: [2, 2, 2, 2, 2, 2, 2, 2]
+945: [2, 2, 2, 2, 2, 2, 2, 2, 2]
+
+RandomProvider_lists_Iterable_xvii list 21
+[2, 2, 2, 2]
+[2, 2, 2]
+[2, 2]
+[2, 2, 2]
+[]
+[2, 2, 2, 2, 2]
+[2]
+[]
+[2, 2, 2]
+[2, 2, 2, 2]
+[]
+[]
+[2]
+[2]
+[2, 2, 2]
+[]
+[2, 2, 2, 2, 2, 2, 2]
+[2, 2, 2, 2]
+[2]
+[2, 2, 2, 2, 2, 2, 2]
+...
+
+RandomProvider_lists_Iterable_xvii map 10
+333041: []
+222027: [2]
+148088: [2, 2]
+98825: [2, 2, 2]
+65746: [2, 2, 2, 2]
+44116: [2, 2, 2, 2, 2]
+29303: [2, 2, 2, 2, 2, 2]
+19671: [2, 2, 2, 2, 2, 2, 2]
+13059: [2, 2, 2, 2, 2, 2, 2, 2]
+8625: [2, 2, 2, 2, 2, 2, 2, 2, 2]
+
+RandomProvider_lists_Iterable_xviii list 21
+[2, 2, 2, 2]
+[2, 2]
+[2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2]
+[2, 2]
+[]
+[]
+[2]
+[2, 2, 2, 2, 2]
+[2, 2, 2]
+[2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2]
+[2, 2, 2, 2, 2]
+[2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2]
+[2]
+[]
+[2, 2, 2, 2]
+[2, 2, 2, 2, 2]
+[2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2]
+[2]
+[]
+[2, 2, 2, 2]
+...
+
+RandomProvider_lists_Iterable_xviii map 10
+200010: []
+159823: [2]
+128026: [2, 2]
+102068: [2, 2, 2]
+82001: [2, 2, 2, 2]
+65507: [2, 2, 2, 2, 2]
+52528: [2, 2, 2, 2, 2, 2]
+41779: [2, 2, 2, 2, 2, 2, 2]
+33653: [2, 2, 2, 2, 2, 2, 2, 2]
+26990: [2, 2, 2, 2, 2, 2, 2, 2, 2]
+
+RandomProvider_lists_Iterable_xix list 21
+[6, 9, 6]
+[6, 2, 7, 2, 7, 6, 6, 10]
+[]
+[3, 3]
+[5, 7]
+[6]
+[]
+[]
+[4]
+[6]
+[3]
+[7]
+[]
+[]
+[1]
+[]
+[]
+[]
+[]
+[]
+...
+
+RandomProvider_lists_Iterable_xix map 10
+500030: []
+25344: [10]
+25129: [1]
+25128: [4]
+25106: [7]
+25093: [2]
+25064: [6]
+24996: [8]
+24945: [3]
+24916: [5]
+
+RandomProvider_lists_Iterable_xx list 21
+[6, 4, 2, 8]
+[6, 2]
+[6, 6, 10]
+[]
+[5, 7, 4, 6, 3]
+[]
+[4]
+[3, 4, 7]
+[1, 9, 9, 9]
+[9]
+[10, 6, 3]
+[6, 7, 4, 4, 4, 6]
+[2, 4, 2, 8]
+[10, 3, 8, 5, 9, 7]
+[]
+[]
+[]
+[4, 8, 3, 8, 7, 7, 5, 6]
+[2, 7]
+[]
+...
+
+RandomProvider_lists_Iterable_xx map 10
+333018: []
+22348: [7]
+22330: [10]
+22322: [6]
+22312: [2]
+22212: [4]
+22163: [1]
+22146: [3]
+22122: [5]
+22019: [8]
+
+RandomProvider_lists_Iterable_xxi list 21
+[6, 4, 2, 8]
+[6]
+[4, 8, 3, 6, 3, 4, 7, 7, 9, 1, 9, 9, 9, 5, 9, 4, 3]
+[10, 6, 3]
+[6, 7]
+[10, 3, 8, 5, 9, 7, 5, 1, 7, 10, 8, 3, 3, 4, 7, 3, 10]
+[]
+[7, 1, 4, 5, 5, 3, 8, 1, 1, 7, 4, 7, 6, 7]
+[3, 8]
+[7, 1, 10, 3, 10]
+[3, 5, 2, 3, 2, 10]
+[1]
+[3, 9, 5, 6]
+[5]
+[3, 1, 9, 8]
+[]
+[]
+[1, 4, 1]
+[6, 7]
+[4, 9, 6, 4, 2]
+...
+
+RandomProvider_lists_Iterable_xxi map 10
+200177: []
+16184: [8]
+16147: [10]
+16096: [6]
+16095: [1]
+16049: [9]
+16043: [5]
+15982: [7]
+15958: [2]
+15950: [3]
+
+RandomProvider_lists_Iterable_xxii list 21
+[3, 10, 7]
+[5]
+[]
+[10, 1]
+[]
+[3]
+[7]
+[]
+[5]
+[3]
+[]
+[]
+[]
+[]
+[]
+[]
+[]
+[]
+[5]
+[9, 15, 6, 12]
+...
+
+RandomProvider_lists_Iterable_xxii map 10
+499603: []
+62583: [1]
+46821: [2]
+35045: [3]
+26163: [4]
+20032: [5]
+14805: [6]
+11067: [7]
+8386: [8]
+7678: [1, 1]
+
+RandomProvider_lists_Iterable_xxiii list 21
+[10, 7, 7, 4]
+[1, 3, 3, 2, 7]
+[2, 3, 1, 2, 1, 2]
+[]
+[5, 9, 15]
+[12]
+[1, 2, 1]
+[]
+[9, 4, 7, 6, 2, 5, 1, 6]
+[]
+[]
+[]
+[3, 1, 5, 1, 1]
+[2]
+[1, 4, 5, 4]
+[12]
+[2]
+[]
+[4, 1]
+[1]
+...
+
+RandomProvider_lists_Iterable_xxiii map 10
+333149: []
+55129: [1]
+41612: [2]
+31155: [3]
+23246: [4]
+17762: [5]
+13192: [6]
+9863: [7]
+9292: [1, 1]
+7549: [8]
+
+RandomProvider_lists_Iterable_xxiv list 21
+[10, 7, 7, 4]
+[7, 8, 2, 3, 1, 2, 1, 2, 1, 8]
+[15, 6, 12, 6, 1, 2]
+[13]
+[2, 5, 1, 6, 1, 1, 1, 10, 3, 1, 5, 1, 1, 4]
+[]
+[2, 12, 2, 2, 1, 4, 4, 1, 3, 1, 1, 6, 2]
+[]
+[]
+[]
+[1, 2, 3]
+[5, 4]
+[9]
+[4, 1, 6, 7, 5]
+[]
+[1, 1, 2, 1, 3, 2, 3]
+[13, 7, 10]
+[4, 19]
+[2, 4, 1, 22, 17, 2, 1, 2, 1, 3, 4, 3]
+[]
+...
+
+RandomProvider_lists_Iterable_xxiv map 10
+199867: []
+39597: [1]
+30067: [2]
+22409: [3]
+16944: [4]
+12477: [5]
+9434: [6]
+8183: [1, 1]
+7055: [7]
+6035: [2, 1]
+
+RandomProvider_lists_Iterable_xxv list 21
+[1, 1, 1]
+[1, 1]
+[1, 1, 1, 1, 1, 1, 1, 1, 1]
+[1, 1]
+[1, 1]
+[]
+[1]
+[1, 1, 1]
+[]
+[]
+[1, 1]
+[1, 1]
+[1, 1]
+[]
+[1, 1]
+[]
+[]
+[1]
+[1]
+[]
+...
+
+RandomProvider_lists_Iterable_xxv map 10
+499125: []
+250897: [1]
+124849: [1, 1]
+62518: [1, 1, 1]
+31407: [1, 1, 1, 1]
+15634: [1, 1, 1, 1, 1]
+7825: [1, 1, 1, 1, 1, 1]
+3926: [1, 1, 1, 1, 1, 1, 1]
+1896: [1, 1, 1, 1, 1, 1, 1, 1]
+956: [1, 1, 1, 1, 1, 1, 1, 1, 1]
+
+RandomProvider_lists_Iterable_xxvi list 21
+[1, 1, 1, 1]
+[1, 1, 1, 1, 1]
+[1, 1, 1, 1, 1]
+[1, 1, 1, 1]
+[1, 1]
+[1, 1, 1, 1, 1]
+[]
+[1]
+[1, 1]
+[1]
+[1, 1, 1]
+[1, 1, 1, 1, 1, 1]
+[1]
+[1, 1]
+[]
+[1]
+[]
+[1]
+[]
+[1, 1, 1]
+...
+
+RandomProvider_lists_Iterable_xxvi map 10
+333813: []
+221150: [1]
+148025: [1, 1]
+98992: [1, 1, 1]
+66270: [1, 1, 1, 1]
+43747: [1, 1, 1, 1, 1]
+29389: [1, 1, 1, 1, 1, 1]
+19567: [1, 1, 1, 1, 1, 1, 1]
+12958: [1, 1, 1, 1, 1, 1, 1, 1]
+8571: [1, 1, 1, 1, 1, 1, 1, 1, 1]
+
+RandomProvider_lists_Iterable_xxvii list 21
+[1, 1, 1, 1]
+[1, 1, 1]
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+[1, 1, 1, 1, 1, 1, 1]
+[1, 1]
+[]
+[1]
+[]
+[1]
+[1, 1, 1, 1, 1]
+[1, 1, 1, 1, 1, 1]
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+[1, 1, 1, 1, 1]
+[1, 1]
+[1, 1, 1, 1, 1, 1, 1]
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+[]
+[1, 1, 1, 1, 1, 1, 1, 1]
+[1]
+[1, 1, 1, 1]
+...
+
+RandomProvider_lists_Iterable_xxvii map 10
+200194: []
+160489: [1]
+127708: [1, 1]
+101606: [1, 1, 1]
+82008: [1, 1, 1, 1]
+65900: [1, 1, 1, 1, 1]
+52157: [1, 1, 1, 1, 1, 1]
+41827: [1, 1, 1, 1, 1, 1, 1]
+33413: [1, 1, 1, 1, 1, 1, 1, 1]
+26877: [1, 1, 1, 1, 1, 1, 1, 1, 1]
+
+RandomProvider_strings_String_i list 21
+aaa
+aa
+aaaaaaaaa
+aa
+aa
+
+a
+aaa
+
+
+aa
+aa
+aa
+
+aa
+
+
+a
+a
+
+...
+
+RandomProvider_strings_String_i map 10
+499125:
+250897: a
+124849: aa
+62518: aaa
+31407: aaaa
+15634: aaaaa
+7825: aaaaaa
+3926: aaaaaaa
+1896: aaaaaaaa
+956: aaaaaaaaa
+
+RandomProvider_strings_String_ii list 21
+aaaa
+aaaaa
+aaaaa
+aaaa
+aa
+aaaaa
+
+a
+aa
+a
+aaa
+aaaaaa
+a
+aa
+
+a
+
+a
+
+aaa
+...
+
+RandomProvider_strings_String_ii map 10
+333813:
+221150: a
+148025: aa
+98992: aaa
+66270: aaaa
+43747: aaaaa
+29389: aaaaaa
+19567: aaaaaaa
+12958: aaaaaaaa
+8571: aaaaaaaaa
+
+RandomProvider_strings_String_iii list 21
+aaaa
+aaa
+aaaaaaaaaaaaaaaaa
+aaaaaaa
+aa
+
+a
+
+a
+aaaaa
+aaaaaa
+aaaaaaaaaaaaaaaaa
+aaaaa
+aa
+aaaaaaa
+aaaaaaaaaaaaaa
+
+aaaaaaaa
+a
+aaaa
+...
+
+RandomProvider_strings_String_iii map 10
+200194:
+160489: a
+127708: aa
+101606: aaa
+82008: aaaa
+65900: aaaaa
+52157: aaaaaa
+41827: aaaaaaa
+33413: aaaaaaaa
+26877: aaaaaaaaa
+
+RandomProvider_strings_String_iv list 21
+bab
+bbcbcacb
+ac
+cb
+
+
+ac
+b
+
+
+c
+ac
+c
+c
+
+c
+
+
+
+
+...
+
+RandomProvider_strings_String_iv map 10
+499504:
+83540: b
+83439: c
+83275: a
+13999: bc
+13964: bb
+13961: aa
+13913: cb
+13882: ba
+13879: ab
+
+RandomProvider_strings_String_v list 21
+bbbb
+b
+cbbc
+
+cb
+aca
+ba
+ccc
+bac
+a
+a
+a
+bba
+bcbcbcb
+
+b
+bccaac
+
+
+
+...
+
+RandomProvider_strings_String_v map 10
+333247:
+74291: b
+74037: c
+73733: a
+16580: ca
+16560: ab
+16556: cc
+16422: ba
+16411: ac
+16379: cb
+
+RandomProvider_strings_String_vi list 21
+bbbb
+b
+cbcacccbccabaccaa
+a
+c
+bbacc
+bc
+bccaacaaaccbccccb
+
+cacbaaccbaaaac
+acc
+caccc
+caccbcbbbbc
+
+
+ccaa
+a
+caaa
+
+aca
+...
+
+RandomProvider_strings_String_vi map 10
+199912:
+53484: b
+53481: a
+53282: c
+14347: bc
+14328: aa
+14321: ab
+14304: ca
+14257: bb
+14250: cc
+
+RandomProvider_strings_String_vii list 21
+bca
+bbbcbbacb
+abc
+c
+c
+b
+ab
+b
+
+
+c
+b
+a
+
+b
+b
+
+b
+
+
+...
+
+RandomProvider_strings_String_vii map 10
+499557:
+125391: b
+62711: a
+62330: c
+31328: bb
+15872: cb
+15491: ba
+15489: ab
+15329: bc
+7963: ac
+
+RandomProvider_strings_String_viii list 21
+bbcc
+bbb
+cb
+bcb
+
+abcab
+b
+
+bcb
+babb
+
+
+a
+a
+bcb
+
+bbccccb
+cccc
+c
+bbccbaa
+...
+
+RandomProvider_strings_String_viii map 10
+333041:
+110874: b
+55655: a
+55498: c
+37235: bb
+18632: bc
+18512: ab
+18480: ba
+18414: cb
+12455: bbb
+
+RandomProvider_strings_String_ix list 21
+bbcc
+bb
+ccbbcbabcbbbbbab
+ab
+
+
+b
+bcbca
+bbc
+bbccbaabaaabbbcb
+cbbcc
+babcbcaabcb
+a
+
+abcb
+babbb
+babbbbcbbbc
+b
+
+bcba
+...
+
+RandomProvider_strings_String_ix map 10
+200010:
+80002: b
+39960: c
+39861: a
+32002: bb
+16132: cb
+16010: bc
+15945: ba
+15898: ab
+12985: bbb
+
+RandomProvider_strings_String_x list 21
+sps
+sisisssi
+is
+
+is
+s
+
+
+s
+s
+s
+i
+i
+
+i
+
+
+
+
+
+...
+
+RandomProvider_strings_String_x map 10
+499907:
+91141: s
+91078: i
+45481: p
+22586: M
+16547: si
+16526: is
+16500: ss
+16475: ii
+8402: ip
+
+RandomProvider_strings_String_xi list 21
+ssii
+si
+ssi
+i
+issss
+
+s
+sss
+iMpi
+
+
+p
+pss
+ssssss
+isii
+psiiip
+i
+
+siisisis
+
+...
+
+RandomProvider_strings_String_xi map 10
+333528:
+80737: s
+80484: i
+40277: p
+20228: M
+19746: ss
+19600: is
+19560: si
+19556: ii
+9890: ip
+
+RandomProvider_strings_String_xii list 21
+ssii
+s
+sisssssisipiMpipp
+s
+psss
+ss
+psiiipsiMspisssss
+s
+sMisiiisiMMss
+si
+sMiip
+siisipipsM
+
+spis
+i
+sMpi
+
+
+MsM
+ss
+...
+
+RandomProvider_strings_String_xii map 10
+199852:
+58261: s
+58255: i
+29278: p
+17043: si
+16951: is
+16925: ss
+16678: ii
+14538: M
+8503: ip
+
+RandomProvider_strings_i list 21
+\u03b5\u42bf\u2538
+\udd15\ubab1\ufca6\u4bcf\u03e1\u7f56\u19dc\u523f\u313e
+\u1b1c\u212a\u3d4f
+\u3a77
+\u7eab
+\u4772
+\u5764\u7416
+\uea45
+
+
+\u2b63
+\u9e05
+\uee1c
+
+\u117a
+\u41fa
+
+\u358a
+
+
+...
+
+RandomProvider_strings_i map 10
+499557:
+15: \uf59a
+14: \u12c7
+14: \u50f5
+14: \u760d
+14: \ue0de
+13: \u40e2
+13: \u55bd
+13: \u74eb
+13: \ua838
+
+RandomProvider_strings_ii list 21
+\u31e5\u9afd\u80a3\uf6ff
+\udd15\ubab1\ufca6
+\u523f\u313e
+\u212a\u3d4f\ua3f9
+
+\u5764\u7416\u2a43\ud24c\uea45
+\u9925
+
+\u33b2\u9153\uce86
+\ue9fd\u2aec\u358a\uc9ce
+
+
+\u4c78
+\uf878
+\u5c29\uad7f\uecf5
+
+\u7035\ucee6\u5213\u55cf\u3353\ue2d3\ud805
+\u4aef\u564b\uf36f\ua33b
+\ud643
+\u58d9\udd82\ud52b\u9f27\u061a\u2e94\u7a68
+...
+
+RandomProvider_strings_ii map 10
+333041:
+15: \u8da4
+13: \u2fae
+13: \u6317
+12: \u0978
+12: \u45b8
+12: \u9624
+12: \uab10
+12: \ue2fe
+12: \ue973
+
+RandomProvider_strings_iii list 21
+\u31e5\u9afd\u80a3\uf6ff
+\udd15\ubab1
+\u2b63\uf637\u9e02\u9e05\u8bef\u8f2e\uee1c\u33b2\u9153\uce86\u117a\ub43d\u7156\u41fa\u1918\ue9fd
+\u5168\u899a
+
+
+\u122e
+\u5c29\uad7f\uecf5\uaabb\u759c
+\u7035\ucee6\u5213
+\u58d9\udd82\ud52b\u9f27\u061a\u2e94\u7a68\u3f56\ufdbc\u4954\ud540\u7ce6\u55ee\uf329\ufee7\udd42
+\uabc3\u615a\ucd1d\u0e77\uf36b
+\u99c6\ud250\u5eba\u2293\ued0d\u4d3b\ua3a4\u69d4\u6a2a\u976f\u0922
+\u40fc
+
+\ub9cc\u1452\u62f7\ue68e
+\u2506\u56c0\u037a\u124e\uaaaa
+\u5d82\ucdf4\u453e\ud11e\uead1\u7302\u552f\u6e51\ufb8d\u8e59\u7527
+\uab6e
+
+\u6ede\ue89b\u1592\u3fd8
+...
+
+RandomProvider_strings_iii map 10
+200010:
+11: \ua495
+11: \ub4cf
+11: \ued08
+10: \u36bc
+10: \u5e71
+10: \ua494
+10: \ua65a
+10: \ud663
+10: \ufe86
