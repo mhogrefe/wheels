@@ -133,6 +133,18 @@ public final strictfp class IterableUtils {
         return list;
     }
 
+    public static @NotNull <T> HashSet<T> toHashSet(@NotNull Iterable<T> xs) {
+        HashSet<T> set = new HashSet<>();
+        addTo(xs, set);
+        return set;
+    }
+
+    public static @NotNull <T extends Comparable<T>> TreeSet<T> toTreeSet(@NotNull Iterable<T> xs) {
+        TreeSet<T> set = new TreeSet<>();
+        addTo(xs, set);
+        return set;
+    }
+
     /**
      * Creates a {@code String} representation of {@code xs}. Each element is converted to a {@code String} and
      * those {@code String}s are placed in a comma-separated list surrounded by square brackets. Only works for finite
@@ -188,6 +200,30 @@ public final strictfp class IterableUtils {
         }
         sb.append(']');
         return sb.toString();
+    }
+
+    public static @NotNull <T> List<String> itsList(int size, @NotNull Iterable<T> xs) {
+        if (size < 0)
+            throw new IllegalArgumentException("size cannot be negative");
+        List<String> out = new ArrayList<>();
+        Iterator<T> it = xs.iterator();
+        int i = 0;
+        while (it.hasNext() && i < size) {
+            out.add(Objects.toString(it.next()));
+            i++;
+        }
+        if (it.hasNext()) {
+            out.add("...");
+        }
+        return out;
+    }
+
+    public static @NotNull <A, B> Map<String, String> itsMap(@NotNull Map<A, B> map) {
+        Map<String, String> out = new HashMap<>();
+        for (Map.Entry<A, B> entry : map.entrySet()) {
+            out.put(entry.getKey().toString(), entry.getValue().toString());
+        }
+        return out;
     }
 
     /**
@@ -2118,6 +2154,9 @@ public final strictfp class IterableUtils {
                 started = true;
             }
         }
+        if (!started) {
+            throw new IllegalArgumentException();
+        }
         return result;
     }
 
@@ -2980,6 +3019,9 @@ public final strictfp class IterableUtils {
 
             @Override
             public T next() {
+                if (i == n) {
+                    throw new NoSuchElementException();
+                }
                 i++;
                 return xsi.next();
             }
@@ -4436,6 +4478,26 @@ public final strictfp class IterableUtils {
         return NullableOptional.empty();
     }
 
+    public static <A extends Comparable<A>, B> NullableOptional<B> lookupSorted(List<Pair<A, B>> xs, A key) {
+        int low = 0;
+        int high = xs.size() - 1;
+
+        while (low <= high) {
+            int mid = (low + high) >>> 1;
+            A midKey = xs.get(mid).a;
+            int cmp = midKey.compareTo(key);
+
+            if (cmp < 0) {
+                low = mid + 1;
+            } else if (cmp > 0) {
+                high = mid - 1;
+            } else {
+                return NullableOptional.of(xs.get(mid).b);
+            }
+        }
+        return NullableOptional.empty();
+    }
+
     public static @NotNull <T> Optional<T> find(@NotNull Predicate<T> p, @NotNull Iterable<T> xs) {
         for (T x : xs) {
             if (p.test(x)) return Optional.of(x);
@@ -5662,8 +5724,7 @@ public final strictfp class IterableUtils {
 
     public static <T> boolean isSubsetOf(@NotNull Iterable<T> xs, @NotNull Iterable<T> ys) {
         if (isEmpty(xs)) return true;
-        HashSet<T> set = new HashSet<>();
-        addTo(xs, set);
+        HashSet<T> set = toHashSet(xs);
         for (T y : ys) {
             set.remove(y);
             if (set.isEmpty()) return true;
@@ -5676,11 +5737,95 @@ public final strictfp class IterableUtils {
     }
 
     public static @NotNull <T> Iterable<T> intersect(@NotNull Iterable<T> xs, @NotNull Iterable<T> ys) {
-        return filter(x -> elem(x, ys), xs);
+        return () -> new NoRemoveIterator<T>() {
+            private final @NotNull Iterator<T> xsi = xs.iterator();
+            private final @NotNull Iterator<T> ysi = ys.iterator();
+            private final @NotNull Map<T, Integer> seenXs = new HashMap<>();
+            private final @NotNull Map<T, Integer> seenYs = new HashMap<>();
+            private T next_;
+            private boolean hasNext_ = advance();
+
+            private boolean advance() {
+                while (xsi.hasNext() && ysi.hasNext()) {
+                    T x = xsi.next();
+                    Integer xCount = seenYs.get(x);
+                    if (xCount != null) {
+                        if (xCount == 1) {
+                            seenYs.remove(x);
+                        } else {
+                            seenYs.put(x, xCount - 1);
+                        }
+                        next_ = x;
+                        return true;
+                    }
+                    xCount = seenXs.get(x);
+                    if (xCount == null) {
+                        xCount = 0;
+                    }
+                    seenXs.put(x, xCount + 1);
+
+                    T y = ysi.next();
+                    Integer yCount = seenXs.get(y);
+                    if (yCount != null) {
+                        if (yCount == 1) {
+                            seenXs.remove(y);
+                        } else {
+                            seenXs.put(y, yCount - 1);
+                        }
+                        next_ = y;
+                        return true;
+                    }
+                    yCount = seenYs.get(y);
+                    if (yCount == null) {
+                        yCount = 0;
+                    }
+                    seenYs.put(y, yCount + 1);
+                }
+                while (xsi.hasNext()) {
+                    T x = xsi.next();
+                    Integer xCount = seenYs.get(x);
+                    if (xCount != null) {
+                        if (xCount == 1) {
+                            seenYs.remove(x);
+                        } else {
+                            seenYs.put(x, xCount - 1);
+                        }
+                        next_ = x;
+                        return true;
+                    }
+                }
+                while (ysi.hasNext()) {
+                    T y = ysi.next();
+                    Integer yCount = seenXs.get(y);
+                    if (yCount != null) {
+                        if (yCount == 1) {
+                            seenXs.remove(y);
+                        } else {
+                            seenXs.put(y, yCount - 1);
+                        }
+                        next_ = y;
+                        return true;
+                    }
+                }
+                return false;
+            }
+
+            @Override
+            public boolean hasNext() {
+                return hasNext_;
+            }
+
+            @Override
+            public T next() {
+                T oldNext = next_;
+                hasNext_ = advance();
+                return oldNext;
+            }
+        };
     }
 
     public static @NotNull String intersect(@NotNull String s, @NotNull String t) {
-        return filter(c -> elem(c, t), s);
+        return charsToString(intersect(fromString(s), fromString(t)));
     }
 
     public static @NotNull <T extends Comparable<T>> Iterable<T> merge(

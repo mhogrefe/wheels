@@ -36,55 +36,20 @@ public strictfp class CompoundTest {
     ) {
         Iterable<Integer> xs = P.withScale(scale).withElement(element, cycle(readIntegerListWithNulls(input)));
         List<Integer> sample = toList(take(DEFAULT_SAMPLE_SIZE, xs));
-        aeqitLimit(TINY_LIMIT, sample, output);
+        aeqitLimitLog(TINY_LIMIT, sample, output);
         aeq(meanOfIntegers(toList(map(x -> Objects.equals(x, element) ? 1 : 0, sample))), elementFrequency);
         P.reset();
     }
 
     @Test
     public void testWithElement() {
-        withElement_helper(
-                2,
-                "[1]",
-                null,
-                "[1, null, 1, 1, 1, 1, 1, 1, 1, null, 1, null, null, 1, null, null, 1, 1, null, 1, ...]",
-                0.4992549999935604
-        );
-        withElement_helper(
-                8,
-                "[1]",
-                null,
-                "[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...]",
-                0.12480700000010415
-        );
-        withElement_helper(
-                32,
-                "[1]",
-                null,
-                "[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...]",
-                0.031218000000010567
-        );
-        withElement_helper(
-                2,
-                "[null, 2, 3]",
-                10,
-                "[null, 10, 2, 3, null, 2, 3, null, 2, 10, 3, 10, 10, null, 10, 10, 2, 3, 10, null, ...]",
-                0.4992549999935604
-        );
-        withElement_helper(
-                8,
-                "[null, 2, 3]",
-                10,
-                "[null, 2, 3, null, 2, 3, null, 2, 3, null, 2, 3, null, 2, 3, null, 2, 3, null, 2, ...]",
-                0.12480700000010415
-        );
-        withElement_helper(
-                32,
-                "[null, 2, 3]",
-                10,
-                "[null, 2, 3, null, 2, 3, null, 2, 3, null, 2, 3, null, 2, 3, null, 2, 3, null, 2, ...]",
-                0.031218000000010567
-        );
+        withElement_helper(2, "[1]", null, "RandomProvider_withElement_i", 0.4992549999935604);
+        withElement_helper(8, "[1]", null, "RandomProvider_withElement_ii", 0.12480700000010415);
+        withElement_helper(32, "[1]", null, "RandomProvider_withElement_iii", 0.031218000000010567);
+        withElement_helper(2, "[null, 2, 3]", 10, "RandomProvider_withElement_iv", 0.4992549999935604);
+        withElement_helper(8, "[null, 2, 3]", 10, "RandomProvider_withElement_v", 0.12480700000010415);
+        withElement_helper(32, "[null, 2, 3]", 10, "RandomProvider_withElement_vi", 0.031218000000010567);
+
         try {
             toList(P.withElement(null, readIntegerListWithNulls("[1, 2, 3]")));
             fail();
@@ -103,49 +68,20 @@ public strictfp class CompoundTest {
     ) {
         Iterable<Integer> xs = P.withScale(scale).withNull(cycle(readIntegerListWithNulls(input)));
         List<Integer> sample = toList(take(DEFAULT_SAMPLE_SIZE, xs));
-        aeqitLimit(TINY_LIMIT, sample, output);
+        aeqitLimitLog(TINY_LIMIT, sample, output);
         aeq(meanOfIntegers(toList(map(x -> x == null ? 1 : 0, sample))), nullFrequency);
         P.reset();
     }
 
     @Test
     public void testWithNull() {
-        withNull_helper(
-                2,
-                "[1]",
-                "[1, null, 1, 1, 1, 1, 1, 1, 1, null, 1, null, null, 1, null, null, 1, 1, null, 1, ...]",
-                0.4992549999935604
-        );
-        withNull_helper(
-                8,
-                "[1]",
-                "[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...]",
-                0.12480700000010415
-        );
-        withNull_helper(
-                32,
-                "[1]",
-                "[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...]",
-                0.031218000000010567
-        );
-        withNull_helper(
-                2,
-                "[1, 2, 3]",
-                "[1, null, 2, 3, 1, 2, 3, 1, 2, null, 3, null, null, 1, null, null, 2, 3, null, 1, ...]",
-                0.4992549999935604
-        );
-        withNull_helper(
-                8,
-                "[1, 2, 3]",
-                "[1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, ...]",
-                0.12480700000010415
-        );
-        withNull_helper(
-                32,
-                "[1, 2, 3]",
-                "[1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, ...]",
-                0.031218000000010567
-        );
+        withNull_helper(2, "[1]", "RandomProvider_withNull_i", 0.4992549999935604);
+        withNull_helper(8, "[1]", "RandomProvider_withNull_ii", 0.12480700000010415);
+        withNull_helper(32, "[1]", "RandomProvider_withNull_iii", 0.031218000000010567);
+        withNull_helper(2, "[1, 2, 3]", "RandomProvider_withNull_iv", 0.4992549999935604);
+        withNull_helper(8, "[1, 2, 3]", "RandomProvider_withNull_v", 0.12480700000010415);
+        withNull_helper(32, "[1, 2, 3]", "RandomProvider_withNull_vi", 0.031218000000010567);
+
         try {
             toList(P.withNull(readIntegerListWithNulls("[1, 2, 3]")));
             fail();
@@ -164,63 +100,20 @@ public strictfp class CompoundTest {
     ) {
         Iterable<Optional<Integer>> xs = P.withScale(scale).optionals(cycle(readIntegerListWithNulls(input)));
         List<Optional<Integer>> sample = toList(take(DEFAULT_SAMPLE_SIZE, xs));
-        aeqitLimit(TINY_LIMIT, sample, output);
+        aeqitLimitLog(TINY_LIMIT, sample, output);
         aeq(meanOfIntegers(toList(map(x -> x.isPresent() ? 0 : 1, sample))), emptyFrequency);
         P.reset();
     }
 
     @Test
     public void testOptionals() {
-        optionalsHelper(
-                2,
-                "[1]",
-                "[Optional[1], Optional.empty, Optional[1], Optional[1], Optional[1], Optional[1], Optional[1]," +
-                " Optional[1], Optional[1], Optional.empty, Optional[1], Optional.empty, Optional.empty," +
-                " Optional[1], Optional.empty, Optional.empty, Optional[1], Optional[1], Optional.empty," +
-                " Optional[1], ...]",
-                0.4992549999935604
-        );
-        optionalsHelper(
-                8,
-                "[1]",
-                "[Optional[1], Optional[1], Optional[1], Optional[1], Optional[1], Optional[1], Optional[1]," +
-                " Optional[1], Optional[1], Optional[1], Optional[1], Optional[1], Optional[1], Optional[1]," +
-                " Optional[1], Optional[1], Optional[1], Optional[1], Optional[1], Optional[1], ...]",
-                0.12480700000010415
-        );
-        optionalsHelper(
-                32,
-                "[1]",
-                "[Optional[1], Optional[1], Optional[1], Optional[1], Optional[1], Optional[1], Optional[1]," +
-                " Optional[1], Optional[1], Optional[1], Optional[1], Optional[1], Optional[1], Optional[1]," +
-                " Optional[1], Optional[1], Optional[1], Optional[1], Optional[1], Optional[1], ...]",
-                0.031218000000010567
-        );
-        optionalsHelper(
-                2,
-                "[1, 2, 3]",
-                "[Optional[1], Optional.empty, Optional[2], Optional[3], Optional[1], Optional[2], Optional[3]," +
-                " Optional[1], Optional[2], Optional.empty, Optional[3], Optional.empty, Optional.empty," +
-                " Optional[1], Optional.empty, Optional.empty, Optional[2], Optional[3], Optional.empty," +
-                " Optional[1], ...]",
-                0.4992549999935604
-        );
-        optionalsHelper(
-                8,
-                "[1, 2, 3]",
-                "[Optional[1], Optional[2], Optional[3], Optional[1], Optional[2], Optional[3], Optional[1]," +
-                " Optional[2], Optional[3], Optional[1], Optional[2], Optional[3], Optional[1], Optional[2]," +
-                " Optional[3], Optional[1], Optional[2], Optional[3], Optional[1], Optional[2], ...]",
-                0.12480700000010415
-        );
-        optionalsHelper(
-                32,
-                "[1, 2, 3]",
-                "[Optional[1], Optional[2], Optional[3], Optional[1], Optional[2], Optional[3], Optional[1]," +
-                " Optional[2], Optional[3], Optional[1], Optional[2], Optional[3], Optional[1], Optional[2]," +
-                " Optional[3], Optional[1], Optional[2], Optional[3], Optional[1], Optional[2], ...]",
-                0.031218000000010567
-        );
+        optionalsHelper(2, "[1]", "RandomProvider_optionals_i", 0.4992549999935604);
+        optionalsHelper(8, "[1]", "RandomProvider_optionals_ii", 0.12480700000010415);
+        optionalsHelper(32, "[1]", "RandomProvider_optionals_iii", 0.031218000000010567);
+        optionalsHelper(2, "[1, 2, 3]", "RandomProvider_optionals_iv", 0.4992549999935604);
+        optionalsHelper(8, "[1, 2, 3]", "RandomProvider_optionals_v", 0.12480700000010415);
+        optionalsHelper(32, "[1, 2, 3]", "RandomProvider_optionals_vi", 0.031218000000010567);
+
         try {
             toList(P.optionals(readIntegerListWithNulls("[1, 2, 3]")));
             fail();
@@ -240,73 +133,20 @@ public strictfp class CompoundTest {
         Iterable<NullableOptional<Integer>> xs = P.withScale(scale)
                 .nullableOptionals(cycle(readIntegerListWithNulls(input)));
         List<NullableOptional<Integer>> sample = toList(take(DEFAULT_SAMPLE_SIZE, xs));
-        aeqitLimit(TINY_LIMIT, sample, output);
+        aeqitLimitLog(TINY_LIMIT, sample, output);
         aeq(meanOfIntegers(toList(map(x -> x.isPresent() ? 0 : 1, sample))), emptyFrequency);
         P.reset();
     }
 
     @Test
     public void testNullableOptionals() {
-        nullableOptionals_helper(
-                2,
-                "[1]",
-                "[NullableOptional[1], NullableOptional.empty, NullableOptional[1], NullableOptional[1]," +
-                " NullableOptional[1], NullableOptional[1], NullableOptional[1], NullableOptional[1]," +
-                " NullableOptional[1], NullableOptional.empty, NullableOptional[1], NullableOptional.empty," +
-                " NullableOptional.empty, NullableOptional[1], NullableOptional.empty, NullableOptional.empty," +
-                " NullableOptional[1], NullableOptional[1], NullableOptional.empty, NullableOptional[1], ...]",
-                0.4992549999935604
-        );
-        nullableOptionals_helper(
-                8,
-                "[1]",
-                "[NullableOptional[1], NullableOptional[1], NullableOptional[1], NullableOptional[1]," +
-                " NullableOptional[1], NullableOptional[1], NullableOptional[1], NullableOptional[1]," +
-                " NullableOptional[1], NullableOptional[1], NullableOptional[1], NullableOptional[1]," +
-                " NullableOptional[1], NullableOptional[1], NullableOptional[1], NullableOptional[1]," +
-                " NullableOptional[1], NullableOptional[1], NullableOptional[1], NullableOptional[1], ...]",
-                0.12480700000010415
-        );
-        nullableOptionals_helper(
-                32,
-                "[1]",
-                "[NullableOptional[1], NullableOptional[1], NullableOptional[1], NullableOptional[1]," +
-                " NullableOptional[1], NullableOptional[1], NullableOptional[1], NullableOptional[1]," +
-                " NullableOptional[1], NullableOptional[1], NullableOptional[1], NullableOptional[1]," +
-                " NullableOptional[1], NullableOptional[1], NullableOptional[1], NullableOptional[1]," +
-                " NullableOptional[1], NullableOptional[1], NullableOptional[1], NullableOptional[1], ...]",
-                0.031218000000010567
-        );
-        nullableOptionals_helper(
-                2,
-                "[null, 2, 3]",
-                "[NullableOptional[null], NullableOptional.empty, NullableOptional[2], NullableOptional[3]," +
-                " NullableOptional[null], NullableOptional[2], NullableOptional[3], NullableOptional[null]," +
-                " NullableOptional[2], NullableOptional.empty, NullableOptional[3], NullableOptional.empty," +
-                " NullableOptional.empty, NullableOptional[null], NullableOptional.empty, NullableOptional.empty," +
-                " NullableOptional[2], NullableOptional[3], NullableOptional.empty, NullableOptional[null], ...]",
-                0.4992549999935604
-        );
-        nullableOptionals_helper(
-                8,
-                "[null, 2, 3]",
-                "[NullableOptional[null], NullableOptional[2], NullableOptional[3], NullableOptional[null]," +
-                " NullableOptional[2], NullableOptional[3], NullableOptional[null], NullableOptional[2]," +
-                " NullableOptional[3], NullableOptional[null], NullableOptional[2], NullableOptional[3]," +
-                " NullableOptional[null], NullableOptional[2], NullableOptional[3], NullableOptional[null]," +
-                " NullableOptional[2], NullableOptional[3], NullableOptional[null], NullableOptional[2], ...]",
-                0.12480700000010415
-        );
-        nullableOptionals_helper(
-                32,
-                "[null, 2, 3]",
-                "[NullableOptional[null], NullableOptional[2], NullableOptional[3], NullableOptional[null]," +
-                " NullableOptional[2], NullableOptional[3], NullableOptional[null], NullableOptional[2]," +
-                " NullableOptional[3], NullableOptional[null], NullableOptional[2], NullableOptional[3]," +
-                " NullableOptional[null], NullableOptional[2], NullableOptional[3], NullableOptional[null]," +
-                " NullableOptional[2], NullableOptional[3], NullableOptional[null], NullableOptional[2], ...]",
-                0.031218000000010567
-        );
+        nullableOptionals_helper(2, "[1]", "RandomProvider_nullableOptionals_i", 0.4992549999935604);
+        nullableOptionals_helper(8, "[1]", "RandomProvider_nullableOptionals_ii", 0.12480700000010415);
+        nullableOptionals_helper(32, "[1]", "RandomProvider_nullableOptionals_iii", 0.031218000000010567);
+        nullableOptionals_helper(2, "[null, 2, 3]", "RandomProvider_nullableOptionals_iv", 0.4992549999935604);
+        nullableOptionals_helper(8, "[null, 2, 3]", "RandomProvider_nullableOptionals_v", 0.12480700000010415);
+        nullableOptionals_helper(32, "[null, 2, 3]", "RandomProvider_nullableOptionals_vi", 0.031218000000010567);
+
         try {
             toList(P.nullableOptionals(readIntegerListWithNulls("[1, 2, 3]")));
             fail();
@@ -319,11 +159,10 @@ public strictfp class CompoundTest {
 
     @Test
     public void dependentPairsInfiniteTest() {
-        aeqitLimit(
+        aeqitLimitLog(
                 TINY_LIMIT,
                 P.dependentPairsInfinite(P.range(1, 5), i -> P.strings(i, charsToString(range('a', 'z')))),
-                "[(2, ds), (4, rhvt), (1, v), (2, wv), (5, kpzex), (3, hje), (4, mfse), (1, d), (3, fpo), (3, tgw)," +
-                " (1, m), (1, y), (1, o), (3, dpl), (1, j), (5, sofgp), (4, pttf), (4, lszp), (2, dr), (3, fvx), ...]"
+                "RandomProvider_dependentPairsInfinite"
         );
         P.reset();
 
@@ -378,180 +217,71 @@ public strictfp class CompoundTest {
         shuffle_helper(toList(IterableUtils.range(1, 10)), "[10, 4, 1, 9, 8, 7, 5, 2, 3, 6]");
     }
 
-    private static void permutationsFinite_helper(
-            @NotNull String input,
-            @NotNull String output,
-            @NotNull String topSampleCount
-    ) {
-        permutationsFinite_helper(readIntegerListWithNulls(input), output, topSampleCount);
+    private static void permutationsFinite_helper(@NotNull String input, @NotNull String output) {
+        permutationsFinite_helper(readIntegerListWithNulls(input), output);
     }
 
-    private static void permutationsFinite_helper(
-            @NotNull List<Integer> input,
-            @NotNull String output,
-            @NotNull String topSampleCount
-    ) {
+    private static void permutationsFinite_helper(@NotNull List<Integer> input, @NotNull String output) {
         List<List<Integer>> sample = toList(take(DEFAULT_SAMPLE_SIZE, P.permutationsFinite(input)));
-        aeqitLimit(TINY_LIMIT, sample, output);
-        aeq(topSampleCount(DEFAULT_TOP_COUNT, sample), topSampleCount);
+        aeqitLimitLog(TINY_LIMIT, sample, output);
+        aeqMapLog(topSampleCount(DEFAULT_TOP_COUNT, sample), output);
         P.reset();
     }
 
     @Test
     public void testPermutationsFinite() {
-        permutationsFinite_helper(
-                "[]",
-                "[[], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], ...]",
-                "{[]=1000000}");
-        permutationsFinite_helper(
-                "[5]",
-                "[[5], [5], [5], [5], [5], [5], [5], [5], [5], [5], [5], [5], [5], [5], [5], [5], [5], [5], [5]," +
-                " [5], ...]",
-                "{[5]=1000000}");
-        permutationsFinite_helper(
-                "[1, 2]",
-                "[[2, 1], [1, 2], [2, 1], [2, 1], [2, 1], [2, 1], [2, 1], [2, 1], [2, 1], [1, 2], [2, 1], [1, 2]," +
-                " [1, 2], [2, 1], [1, 2], [1, 2], [2, 1], [2, 1], [1, 2], [2, 1], ...]",
-                "{[2, 1]=500745, [1, 2]=499255}");
-        permutationsFinite_helper(
-                "[1, 2, 3]",
-                "[[2, 1, 3], [2, 3, 1], [2, 3, 1], [2, 3, 1], [3, 1, 2], [1, 2, 3], [3, 2, 1], [2, 3, 1], [3, 1, 2]," +
-                " [3, 1, 2], [1, 3, 2], [2, 1, 3], [1, 3, 2], [2, 1, 3], [3, 2, 1], [2, 1, 3], [2, 1, 3], [1, 2, 3]," +
-                " [1, 2, 3], [3, 2, 1], ...]",
-                "{[2, 3, 1]=167387, [3, 2, 1]=167243, [1, 3, 2]=166538, [1, 2, 3]=166496, [3, 1, 2]=166232," +
-                " [2, 1, 3]=166104}");
-        permutationsFinite_helper(
-                "[1, 2, 3, 4]",
-                "[[2, 4, 1, 3], [2, 3, 4, 1], [2, 3, 1, 4], [2, 1, 3, 4], [4, 1, 3, 2], [2, 4, 1, 3], [3, 1, 2, 4]," +
-                " [4, 3, 2, 1], [1, 3, 2, 4], [3, 4, 2, 1], [3, 1, 2, 4], [1, 4, 3, 2], [1, 4, 3, 2], [4, 3, 1, 2]," +
-                " [2, 1, 3, 4], [3, 4, 2, 1], [4, 3, 2, 1], [4, 1, 3, 2], [4, 2, 1, 3], [3, 4, 1, 2], ...]",
-                "{[4, 2, 3, 1]=42026, [2, 3, 1, 4]=42012, [4, 1, 3, 2]=41883, [1, 4, 3, 2]=41846," +
-                " [3, 2, 4, 1]=41820, [4, 3, 1, 2]=41782, [3, 1, 4, 2]=41776, [3, 4, 1, 2]=41771," +
-                " [2, 1, 3, 4]=41764, [4, 3, 2, 1]=41745}");
-        permutationsFinite_helper(
-                "[1, 2, 2, 4]",
-                "[[2, 4, 1, 2], [2, 2, 4, 1], [2, 2, 1, 4], [2, 1, 2, 4], [4, 1, 2, 2], [2, 4, 1, 2], [2, 1, 2, 4]," +
-                " [4, 2, 2, 1], [1, 2, 2, 4], [2, 4, 2, 1], [2, 1, 2, 4], [1, 4, 2, 2], [1, 4, 2, 2], [4, 2, 1, 2]," +
-                " [2, 1, 2, 4], [2, 4, 2, 1], [4, 2, 2, 1], [4, 1, 2, 2], [4, 2, 1, 2], [2, 4, 1, 2], ...]",
-                "{[4, 2, 2, 1]=83771, [2, 2, 1, 4]=83554, [2, 2, 4, 1]=83502, [2, 4, 1, 2]=83498," +
-                " [4, 1, 2, 2]=83476, [1, 4, 2, 2]=83417, [2, 1, 4, 2]=83341, [4, 2, 1, 2]=83271," +
-                " [2, 4, 2, 1]=83193, [2, 1, 2, 4]=83115}");
-        permutationsFinite_helper(
-                "[2, 2, 2, 2]",
-                "[[2, 2, 2, 2], [2, 2, 2, 2], [2, 2, 2, 2], [2, 2, 2, 2], [2, 2, 2, 2], [2, 2, 2, 2], [2, 2, 2, 2]," +
-                " [2, 2, 2, 2], [2, 2, 2, 2], [2, 2, 2, 2], [2, 2, 2, 2], [2, 2, 2, 2], [2, 2, 2, 2], [2, 2, 2, 2]," +
-                " [2, 2, 2, 2], [2, 2, 2, 2], [2, 2, 2, 2], [2, 2, 2, 2], [2, 2, 2, 2], [2, 2, 2, 2], ...]",
-                "{[2, 2, 2, 2]=1000000}");
-        permutationsFinite_helper(
-                "[3, 1, 4, 1]",
-                "[[1, 1, 3, 4], [1, 4, 1, 3], [1, 4, 3, 1], [1, 3, 4, 1], [1, 3, 4, 1], [1, 1, 3, 4], [4, 3, 1, 1]," +
-                " [1, 4, 1, 3], [3, 4, 1, 1], [4, 1, 1, 3], [4, 3, 1, 1], [3, 1, 4, 1], [3, 1, 4, 1], [1, 4, 3, 1]," +
-                " [1, 3, 4, 1], [4, 1, 1, 3], [1, 4, 1, 3], [1, 3, 4, 1], [1, 1, 3, 4], [4, 1, 3, 1], ...]",
-                "{[1, 4, 3, 1]=83794, [1, 1, 4, 3]=83659, [1, 3, 4, 1]=83647, [1, 4, 1, 3]=83427," +
-                " [4, 1, 1, 3]=83380, [3, 1, 4, 1]=83325, [4, 1, 3, 1]=83313, [1, 1, 3, 4]=83216," +
-                " [1, 3, 1, 4]=83158, [4, 3, 1, 1]=83127}");
-        permutationsFinite_helper(
-                "[3, 1, null, 1]",
-                "[[1, 1, 3, null], [1, null, 1, 3], [1, null, 3, 1], [1, 3, null, 1], [1, 3, null, 1]," +
-                " [1, 1, 3, null], [null, 3, 1, 1], [1, null, 1, 3], [3, null, 1, 1], [null, 1, 1, 3]," +
-                " [null, 3, 1, 1], [3, 1, null, 1], [3, 1, null, 1], [1, null, 3, 1], [1, 3, null, 1]," +
-                " [null, 1, 1, 3], [1, null, 1, 3], [1, 3, null, 1], [1, 1, 3, null], [null, 1, 3, 1], ...]",
-                "{[1, null, 3, 1]=83794, [1, 1, null, 3]=83659, [1, 3, null, 1]=83647, [1, null, 1, 3]=83427," +
-                " [null, 1, 1, 3]=83380, [3, 1, null, 1]=83325, [null, 1, 3, 1]=83313, [1, 1, 3, null]=83216," +
-                " [1, 3, 1, null]=83158, [null, 3, 1, 1]=83127}");
-        permutationsFinite_helper(
-                toList(IterableUtils.range(1, 10)),
-                "[[10, 4, 1, 9, 8, 7, 5, 2, 3, 6], [7, 3, 1, 10, 2, 5, 4, 6, 8, 9], [3, 6, 2, 9, 4, 1, 10, 5, 8, 7]," +
-                " [3, 8, 2, 6, 10, 1, 7, 5, 9, 4], [5, 4, 10, 1, 6, 3, 9, 2, 8, 7], [7, 1, 6, 2, 10, 9, 3, 8, 5, 4]," +
-                " [2, 8, 5, 10, 3, 1, 4, 6, 9, 7], [5, 8, 4, 6, 2, 1, 7, 10, 3, 9], [3, 9, 2, 10, 4, 1, 6, 8, 7, 5]," +
-                " [7, 2, 3, 1, 8, 10, 6, 5, 9, 4], [4, 8, 9, 7, 5, 2, 3, 6, 1, 10], [9, 2, 1, 5, 3, 7, 6, 4, 10, 8]," +
-                " [3, 4, 9, 5, 10, 7, 6, 8, 2, 1], [9, 6, 4, 10, 5, 2, 3, 8, 1, 7], [4, 2, 9, 1, 6, 5, 3, 7, 10, 8]," +
-                " [3, 1, 7, 5, 8, 9, 4, 6, 2, 10], [9, 8, 2, 6, 4, 5, 10, 7, 3, 1], [9, 2, 7, 3, 5, 10, 1, 6, 4, 8]," +
-                " [10, 3, 2, 1, 6, 7, 8, 4, 9, 5], [3, 6, 2, 1, 10, 8, 9, 5, 7, 4], ...]",
-                "{[7, 4, 2, 6, 9, 3, 1, 5, 10, 8]=6, [10, 9, 5, 3, 8, 1, 7, 2, 6, 4]=5," +
-                " [5, 8, 1, 10, 6, 3, 9, 4, 7, 2]=5, [3, 9, 6, 4, 1, 10, 5, 7, 8, 2]=5," +
-                " [4, 1, 6, 5, 8, 10, 3, 7, 2, 9]=5, [8, 5, 6, 2, 7, 9, 4, 3, 1, 10]=5," +
-                " [1, 3, 4, 6, 2, 5, 9, 10, 8, 7]=5, [4, 5, 6, 7, 1, 10, 3, 8, 2, 9]=5," +
-                " [5, 3, 6, 2, 8, 10, 1, 9, 7, 4]=5, [3, 10, 4, 7, 8, 9, 1, 5, 6, 2]=5}");
+        permutationsFinite_helper("[]", "RandomProvider_permutationsFinite_i");
+        permutationsFinite_helper("[5]", "RandomProvider_permutationsFinite_ii");
+        permutationsFinite_helper("[1, 2]", "RandomProvider_permutationsFinite_iii");
+        permutationsFinite_helper("[1, 2, 3]", "RandomProvider_permutationsFinite_iv");
+        permutationsFinite_helper("[1, 2, 3, 4]", "RandomProvider_permutationsFinite_v");
+        permutationsFinite_helper("[1, 2, 2, 4]", "RandomProvider_permutationsFinite_vi");
+        permutationsFinite_helper("[2, 2, 2, 2]", "RandomProvider_permutationsFinite_vii");
+        permutationsFinite_helper("[3, 1, 4, 1]", "RandomProvider_permutationsFinite_viii");
+        permutationsFinite_helper("[3, 1, null, 1]", "RandomProvider_permutationsFinite_ix");
+        permutationsFinite_helper(toList(IterableUtils.range(1, 10)), "RandomProvider_permutationsFinite_x");
     }
 
-    private static void stringPermutations_helper(
-            @NotNull String input,
-            @NotNull String output,
-            @NotNull String topSampleCount
-    ) {
+    private static void stringPermutations_helper(@NotNull String input, @NotNull String output) {
         List<String> sample = toList(take(DEFAULT_SAMPLE_SIZE, P.stringPermutations(input)));
-        aeqitLimit(TINY_LIMIT, sample, output);
-        aeq(topSampleCount(DEFAULT_TOP_COUNT, sample), topSampleCount);
+        aeqitLimitLog(TINY_LIMIT, sample, output);
+        aeqMapLog(topSampleCount(DEFAULT_TOP_COUNT, sample), output);
         P.reset();
     }
 
     @Test
     public void testStringPermutations() {
-        stringPermutations_helper("", "[, , , , , , , , , , , , , , , , , , , , ...]", "{=1000000}");
-        stringPermutations_helper(
-                "a",
-                "[a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, ...]",
-                "{a=1000000}");
-        stringPermutations_helper(
-                "abc",
-                "[bac, bca, bca, bca, cab, abc, cba, bca, cab, cab, acb, bac, acb, bac, cba, bac, bac, abc, abc," +
-                " cba, ...]",
-                "{bca=167387, cba=167243, acb=166538, abc=166496, cab=166232, bac=166104}");
-        stringPermutations_helper(
-                "foo",
-                "[ofo, oof, oof, oof, ofo, foo, oof, oof, ofo, ofo, foo, ofo, foo, ofo, oof, ofo, ofo, foo, foo," +
-                " oof, ...]",
-                "{oof=334630, foo=333034, ofo=332336}");
-        stringPermutations_helper(
-                "hello",
-                "[elhol, elloh, eholl, lhoel, lheol, oellh, lleho, leolh, olhle, ellho, loehl, lohle, lhloe, lehlo," +
-                " llheo, olleh, elohl, loehl, lhleo, helol, ...]",
-                "{elolh=16971, lehlo=16937, lhloe=16931, llhoe=16917, leohl=16876, lleoh=16866, ollhe=16835," +
-                " olhel=16828, lleho=16806, leolh=16802}");
-        stringPermutations_helper(
-                "Mississippi",
-                "[psissisiipM, iMpssissipi, Mpipsiiisss, ipsisiipssM, iiissMpspsi, iiipsMispss, psiisiMspsi," +
-                " sisMipiissp, siisspipiMs, piiMsssisip, ssMiipisspi, piisiiMssps, Mispspsiisi, iisssMisppi," +
-                " sspsspMiiii, sipssiMspii, sipipissiMs, iissipisMps, isipiMsssip, siMipiipsss, ...]",
-                "{iipssMiissp=54, iisMpissips=52, iisMsspiips=52, ssispiiMpis=51, spMsisiipsi=51, iMspiipssis=51," +
-                " ssisMppiiis=50, sMsipssiipi=50, spisiiiMpss=50, sipMspsiisi=50}");
+        stringPermutations_helper("", "RandomProvider_stringPermutations_i");
+        stringPermutations_helper("a", "RandomProvider_stringPermutations_ii");
+        stringPermutations_helper("abc", "RandomProvider_stringPermutations_iii");
+        stringPermutations_helper("foo", "RandomProvider_stringPermutations_iv");
+        stringPermutations_helper("hello", "RandomProvider_stringPermutations_v");
+        stringPermutations_helper("Mississippi", "RandomProvider_stringPermutations_vi");
     }
 
-    private static void prefixPermutations_helper(
-            int scale,
-            @NotNull String input,
-            @NotNull String output,
-            @NotNull String topSampleCount
-    ) {
-        prefixPermutations_helper(scale, readIntegerListWithNulls(input), output, topSampleCount);
+    private static void prefixPermutations_helper(int scale, @NotNull String input, @NotNull String output) {
+        prefixPermutations_helper(scale, readIntegerListWithNulls(input), output);
     }
 
-    private static void prefixPermutations_helper(
-            int scale,
-            @NotNull List<Integer> input,
-            @NotNull String output,
-            @NotNull String topSampleCount
-    ) {
+    private static void prefixPermutations_helper(int scale, @NotNull List<Integer> input, @NotNull String output) {
         List<List<Integer>> sample = toList(
                 take(DEFAULT_SAMPLE_SIZE, map(IterableUtils::toList, P.withScale(scale).prefixPermutations(input)))
         );
-        aeqitLimit(TINY_LIMIT, sample, output);
-        aeq(topSampleCount(DEFAULT_TOP_COUNT, sample), topSampleCount);
+        aeqitLimitLog(TINY_LIMIT, sample, output);
+        aeqMapLog(topSampleCount(DEFAULT_TOP_COUNT, sample), output);
         P.reset();
     }
 
     private static void prefixPermutations_helper(
             int scale,
             @NotNull Iterable<Integer> input,
-            @NotNull String output,
-            @NotNull String topSampleCount
+            @NotNull String output
     ) {
         List<String> sample = toList(
                 take(DEFAULT_SAMPLE_SIZE, map(Testing::its, P.withScale(scale).prefixPermutations(input)))
         );
-        aeqitLimit(TINY_LIMIT, sample, output);
-        aeq(topSampleCount(DEFAULT_TOP_COUNT, sample), topSampleCount);
+        aeqitLimitLog(TINY_LIMIT, sample, output);
+        aeqMapLog(topSampleCount(DEFAULT_TOP_COUNT, sample), output);
         P.reset();
     }
 
@@ -567,465 +297,54 @@ public strictfp class CompoundTest {
 
     @Test
     public void testPrefixPermutations() {
-        prefixPermutations_helper(
-                1,
-                "[]",
-                "[[], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], ...]",
-                "{[]=1000000}"
-        );
-        prefixPermutations_helper(
-                2,
-                "[]",
-                "[[], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], ...]",
-                "{[]=1000000}"
-        );
-        prefixPermutations_helper(
-                4,
-                "[]",
-                "[[], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], ...]",
-                "{[]=1000000}"
-        );
-        prefixPermutations_helper(
-                1,
-                "[5]",
-                "[[5], [5], [5], [5], [5], [5], [5], [5], [5], [5], [5], [5], [5], [5], [5], [5], [5], [5], [5]," +
-                " [5], ...]",
-                "{[5]=1000000}"
-        );
-        prefixPermutations_helper(
-                2,
-                "[5]",
-                "[[5], [5], [5], [5], [5], [5], [5], [5], [5], [5], [5], [5], [5], [5], [5], [5], [5], [5], [5]," +
-                " [5], ...]",
-                "{[5]=1000000}"
-        );
-        prefixPermutations_helper(
-                4,
-                "[5]",
-                "[[5], [5], [5], [5], [5], [5], [5], [5], [5], [5], [5], [5], [5], [5], [5], [5], [5], [5], [5]," +
-                " [5], ...]",
-                "{[5]=1000000}"
-        );
-        prefixPermutations_helper(
-                1,
-                "[1, 2]",
-                "[[2, 1], [2, 1], [2, 1], [2, 1], [2, 1], [2, 1], [1, 2], [2, 1], [2, 1], [1, 2], [1, 2], [1, 2]," +
-                " [2, 1], [1, 2], [1, 2], [1, 2], [1, 2], [2, 1], [1, 2], [2, 1], ...]",
-                "{[1, 2]=500128, [2, 1]=499872}"
-        );
-        prefixPermutations_helper(
-                2,
-                "[1, 2]",
-                "[[2, 1], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [1, 2], [2, 1], [2, 1], [2, 1], [2, 1], [2, 1]," +
-                " [1, 2], [2, 1], [1, 2], [1, 2], [1, 2], [2, 1], [1, 2], [2, 1], ...]",
-                "{[2, 1]=500320, [1, 2]=499680}"
-        );
-        prefixPermutations_helper(
-                4,
-                "[1, 2]",
-                "[[1, 2], [1, 2], [2, 1], [2, 1], [2, 1], [2, 1], [2, 1], [2, 1], [2, 1], [1, 2], [2, 1], [1, 2]," +
-                " [1, 2], [1, 2], [1, 2], [2, 1], [1, 2], [1, 2], [1, 2], [2, 1], ...]",
-                "{[1, 2]=500657, [2, 1]=499343}"
-        );
-        prefixPermutations_helper(
-                1,
-                "[1, 2, 3]",
-                "[[2, 3, 1], [3, 1, 2], [1, 3, 2], [2, 1, 3], [3, 1, 2], [2, 3, 1], [3, 2, 1], [3, 2, 1], [1, 2, 3]," +
-                " [1, 3, 2], [2, 3, 1], [1, 3, 2], [1, 2, 3], [2, 3, 1], [3, 1, 2], [3, 1, 2], [2, 1, 3], [1, 3, 2]," +
-                " [3, 1, 2], [1, 2, 3], ...]",
-                "{[1, 3, 2]=166994, [3, 1, 2]=166913, [2, 3, 1]=166781, [3, 2, 1]=166581, [1, 2, 3]=166397," +
-                " [2, 1, 3]=166334}"
-        );
-        prefixPermutations_helper(
-                2,
-                "[1, 2, 3]",
-                "[[3, 2, 1], [3, 1, 2], [3, 2, 1], [3, 2, 1], [1, 3, 2], [2, 3, 1], [1, 2, 3], [3, 1, 2], [3, 1, 2]," +
-                " [2, 3, 1], [3, 1, 2], [1, 3, 2], [2, 1, 3], [2, 3, 1], [1, 2, 3], [2, 1, 3], [2, 1, 3], [2, 3, 1]," +
-                " [1, 2, 3], [2, 1, 3], ...]",
-                "{[1, 2, 3]=167294, [2, 1, 3]=166661, [3, 2, 1]=166629, [2, 3, 1]=166619, [3, 1, 2]=166593," +
-                " [1, 3, 2]=166204}"
-        );
-        prefixPermutations_helper(
-                4,
-                "[1, 2, 3]",
-                "[[2, 3, 1], [3, 1, 2], [2, 3, 1], [1, 2, 3], [3, 1, 2], [2, 3, 1], [2, 3, 1], [1, 2, 3], [1, 3, 2]," +
-                " [3, 2, 1], [2, 1, 3], [1, 3, 2], [1, 3, 2], [1, 2, 3], [2, 1, 3], [3, 2, 1], [1, 2, 3], [2, 3, 1]," +
-                " [2, 3, 1], [2, 3, 1], ...]",
-                "{[3, 1, 2]=167085, [1, 3, 2]=167081, [2, 3, 1]=166636, [1, 2, 3]=166544, [2, 1, 3]=166445," +
-                " [3, 2, 1]=166209}"
-        );
-        prefixPermutations_helper(
-                1,
-                "[1, 2, 3, 4]",
-                "[[2, 3, 1, 4], [4, 1, 2, 3], [1, 4, 3, 2], [4, 1, 2, 3], [2, 4, 3, 1], [2, 4, 3, 1], [1, 3, 2, 4]," +
-                " [3, 1, 2, 4], [1, 3, 4, 2], [3, 1, 4, 2], [2, 1, 4, 3], [4, 3, 1, 2], [1, 4, 2, 3], [1, 3, 4, 2]," +
-                " [1, 2, 4, 3], [2, 1, 4, 3], [3, 4, 1, 2], [1, 3, 4, 2], [2, 1, 3, 4], [1, 3, 2, 4], ...]",
-                "{[3, 1, 2, 4]=42143, [3, 4, 1, 2]=41973, [2, 1, 4, 3]=41966, [1, 3, 4, 2]=41863," +
-                " [4, 3, 2, 1]=41814, [2, 3, 1, 4]=41774, [2, 1, 3, 4]=41765, [3, 1, 4, 2]=41743," +
-                " [4, 3, 1, 2]=41704, [4, 1, 2, 3]=41663}"
-        );
-        prefixPermutations_helper(
-                2,
-                "[1, 2, 3, 4]",
-                "[[2, 1, 4, 3], [4, 2, 1, 3], [3, 4, 1, 2], [3, 1, 2, 4], [3, 2, 4, 1], [2, 3, 1, 4], [3, 4, 1, 2]," +
-                " [1, 3, 2, 4], [3, 1, 4, 2], [1, 2, 4, 3], [2, 3, 4, 1], [3, 2, 4, 1], [4, 1, 2, 3], [4, 1, 3, 2]," +
-                " [1, 3, 2, 4], [4, 3, 2, 1], [2, 1, 4, 3], [1, 2, 3, 4], [3, 2, 1, 4], [3, 4, 1, 2], ...]",
-                "{[3, 2, 1, 4]=42069, [4, 2, 1, 3]=42028, [3, 4, 2, 1]=42017, [4, 1, 2, 3]=41899," +
-                " [2, 1, 4, 3]=41847, [1, 3, 4, 2]=41824, [2, 4, 1, 3]=41808, [2, 4, 3, 1]=41726," +
-                " [1, 2, 3, 4]=41711, [3, 4, 1, 2]=41707}"
-        );
-        prefixPermutations_helper(
-                4,
-                "[1, 2, 3, 4]",
-                "[[2, 1, 4, 3], [3, 4, 1, 2], [4, 2, 1, 3], [1, 3, 2, 4], [1, 3, 4, 2], [3, 4, 1, 2], [4, 3, 1, 2]," +
-                " [1, 4, 2, 3], [4, 2, 3, 1], [2, 3, 4, 1], [2, 4, 3, 1], [2, 3, 4, 1], [4, 2, 1, 3], [2, 3, 4, 1]," +
-                " [3, 2, 1, 4], [2, 3, 1, 4], [1, 2, 4, 3], [4, 1, 2, 3], [3, 2, 4, 1], [4, 3, 1, 2], ...]",
-                "{[2, 1, 4, 3]=41909, [1, 2, 3, 4]=41878, [1, 3, 2, 4]=41859, [3, 1, 4, 2]=41836," +
-                " [2, 4, 1, 3]=41825, [1, 2, 4, 3]=41813, [3, 2, 1, 4]=41781, [2, 3, 4, 1]=41776," +
-                " [4, 1, 2, 3]=41766, [4, 3, 1, 2]=41710}"
-        );
-        prefixPermutations_helper(
-                1,
-                "[1, 2, 2, 4]",
-                "[[2, 2, 1, 4], [4, 1, 2, 2], [1, 4, 2, 2], [4, 1, 2, 2], [2, 4, 2, 1], [2, 4, 2, 1], [1, 2, 2, 4]," +
-                " [2, 1, 2, 4], [1, 2, 4, 2], [2, 1, 4, 2], [2, 1, 4, 2], [4, 2, 1, 2], [1, 4, 2, 2], [1, 2, 4, 2]," +
-                " [1, 2, 4, 2], [2, 1, 4, 2], [2, 4, 1, 2], [1, 2, 4, 2], [2, 1, 2, 4], [1, 2, 2, 4], ...]",
-                "{[2, 1, 2, 4]=83908, [2, 1, 4, 2]=83709, [2, 4, 1, 2]=83591, [1, 2, 4, 2]=83469," +
-                " [4, 2, 2, 1]=83413, [2, 2, 1, 4]=83293, [4, 2, 1, 2]=83185, [1, 2, 2, 4]=83168," +
-                " [2, 2, 4, 1]=83139, [2, 4, 2, 1]=83052}"
-        );
-        prefixPermutations_helper(
-                2,
-                "[1, 2, 2, 4]",
-                "[[2, 1, 4, 2], [4, 2, 1, 2], [2, 4, 1, 2], [2, 1, 2, 4], [2, 2, 4, 1], [2, 2, 1, 4], [2, 4, 1, 2]," +
-                " [1, 2, 2, 4], [2, 1, 4, 2], [1, 2, 4, 2], [2, 2, 4, 1], [2, 2, 4, 1], [4, 1, 2, 2], [4, 1, 2, 2]," +
-                " [1, 2, 2, 4], [4, 2, 2, 1], [2, 1, 4, 2], [1, 2, 2, 4], [2, 2, 1, 4], [2, 4, 1, 2], ...]",
-                "{[2, 4, 2, 1]=83743, [2, 2, 1, 4]=83582, [4, 2, 1, 2]=83535, [2, 4, 1, 2]=83515," +
-                " [4, 1, 2, 2]=83348, [2, 1, 4, 2]=83342, [2, 1, 2, 4]=83257, [1, 2, 2, 4]=83237," +
-                " [1, 2, 4, 2]=83215, [1, 4, 2, 2]=83101}"
-        );
-        prefixPermutations_helper(
-                4,
-                "[1, 2, 2, 4]",
-                "[[2, 1, 4, 2], [2, 4, 1, 2], [4, 2, 1, 2], [1, 2, 2, 4], [1, 2, 4, 2], [2, 4, 1, 2], [4, 2, 1, 2]," +
-                " [1, 4, 2, 2], [4, 2, 2, 1], [2, 2, 4, 1], [2, 4, 2, 1], [2, 2, 4, 1], [4, 2, 1, 2], [2, 2, 4, 1]," +
-                " [2, 2, 1, 4], [2, 2, 1, 4], [1, 2, 4, 2], [4, 1, 2, 2], [2, 2, 4, 1], [4, 2, 1, 2], ...]",
-                "{[2, 1, 4, 2]=83745, [1, 2, 2, 4]=83737, [1, 2, 4, 2]=83458, [2, 2, 4, 1]=83446," +
-                " [2, 2, 1, 4]=83442, [4, 2, 2, 1]=83360, [2, 4, 1, 2]=83245, [4, 2, 1, 2]=83230," +
-                " [2, 4, 2, 1]=83181, [1, 4, 2, 2]=83133}"
-        );
-        prefixPermutations_helper(
-                1,
-                "[2, 2, 2, 2]",
-                "[[2, 2, 2, 2], [2, 2, 2, 2], [2, 2, 2, 2], [2, 2, 2, 2], [2, 2, 2, 2], [2, 2, 2, 2], [2, 2, 2, 2]," +
-                " [2, 2, 2, 2], [2, 2, 2, 2], [2, 2, 2, 2], [2, 2, 2, 2], [2, 2, 2, 2], [2, 2, 2, 2], [2, 2, 2, 2]," +
-                " [2, 2, 2, 2], [2, 2, 2, 2], [2, 2, 2, 2], [2, 2, 2, 2], [2, 2, 2, 2], [2, 2, 2, 2], ...]",
-                "{[2, 2, 2, 2]=1000000}"
-        );
-        prefixPermutations_helper(
-                2,
-                "[2, 2, 2, 2]",
-                "[[2, 2, 2, 2], [2, 2, 2, 2], [2, 2, 2, 2], [2, 2, 2, 2], [2, 2, 2, 2], [2, 2, 2, 2], [2, 2, 2, 2]," +
-                " [2, 2, 2, 2], [2, 2, 2, 2], [2, 2, 2, 2], [2, 2, 2, 2], [2, 2, 2, 2], [2, 2, 2, 2], [2, 2, 2, 2]," +
-                " [2, 2, 2, 2], [2, 2, 2, 2], [2, 2, 2, 2], [2, 2, 2, 2], [2, 2, 2, 2], [2, 2, 2, 2], ...]",
-                "{[2, 2, 2, 2]=1000000}"
-        );
-        prefixPermutations_helper(
-                4,
-                "[2, 2, 2, 2]",
-                "[[2, 2, 2, 2], [2, 2, 2, 2], [2, 2, 2, 2], [2, 2, 2, 2], [2, 2, 2, 2], [2, 2, 2, 2], [2, 2, 2, 2]," +
-                " [2, 2, 2, 2], [2, 2, 2, 2], [2, 2, 2, 2], [2, 2, 2, 2], [2, 2, 2, 2], [2, 2, 2, 2], [2, 2, 2, 2]," +
-                " [2, 2, 2, 2], [2, 2, 2, 2], [2, 2, 2, 2], [2, 2, 2, 2], [2, 2, 2, 2], [2, 2, 2, 2], ...]",
-                "{[2, 2, 2, 2]=1000000}"
-        );
-        prefixPermutations_helper(
-                1,
-                "[3, 1, 4, 1]",
-                "[[1, 4, 3, 1], [1, 3, 1, 4], [3, 1, 4, 1], [1, 3, 1, 4], [1, 1, 4, 3], [1, 1, 4, 3], [3, 4, 1, 1]," +
-                " [4, 3, 1, 1], [3, 4, 1, 1], [4, 3, 1, 1], [1, 3, 1, 4], [1, 4, 3, 1], [3, 1, 1, 4], [3, 4, 1, 1]," +
-                " [3, 1, 1, 4], [1, 3, 1, 4], [4, 1, 3, 1], [3, 4, 1, 1], [1, 3, 4, 1], [3, 4, 1, 1], ...]",
-                "{[4, 3, 1, 1]=83886, [1, 3, 1, 4]=83629, [3, 4, 1, 1]=83508, [4, 1, 3, 1]=83492," +
-                " [1, 4, 3, 1]=83478, [1, 4, 1, 3]=83387, [1, 3, 4, 1]=83135, [4, 1, 1, 3]=83122," +
-                " [3, 1, 1, 4]=83104, [1, 1, 3, 4]=83099}"
-        );
-        prefixPermutations_helper(
-                2,
-                "[3, 1, 4, 1]",
-                "[[1, 3, 1, 4], [1, 1, 3, 4], [4, 1, 3, 1], [4, 3, 1, 1], [4, 1, 1, 3], [1, 4, 3, 1], [4, 1, 3, 1]," +
-                " [3, 4, 1, 1], [4, 3, 1, 1], [3, 1, 1, 4], [1, 4, 1, 3], [4, 1, 1, 3], [1, 3, 1, 4], [1, 3, 4, 1]," +
-                " [3, 4, 1, 1], [1, 4, 1, 3], [1, 3, 1, 4], [3, 1, 4, 1], [4, 1, 3, 1], [4, 1, 3, 1], ...]",
-                "{[1, 1, 3, 4]=83836, [4, 1, 3, 1]=83776, [1, 3, 1, 4]=83746, [4, 1, 1, 3]=83601," +
-                " [3, 4, 1, 1]=83350, [3, 1, 4, 1]=83286, [1, 1, 4, 3]=83153, [4, 3, 1, 1]=83129," +
-                " [1, 4, 1, 3]=83114, [1, 3, 4, 1]=83072}"
-        );
-        prefixPermutations_helper(
-                4,
-                "[3, 1, 4, 1]",
-                "[[1, 3, 1, 4], [4, 1, 3, 1], [1, 1, 3, 4], [3, 4, 1, 1], [3, 4, 1, 1], [4, 1, 3, 1], [1, 4, 3, 1]," +
-                " [3, 1, 1, 4], [1, 1, 4, 3], [1, 4, 1, 3], [1, 1, 4, 3], [1, 4, 1, 3], [1, 1, 3, 4], [1, 4, 1, 3]," +
-                " [4, 1, 3, 1], [1, 4, 3, 1], [3, 1, 1, 4], [1, 3, 1, 4], [4, 1, 1, 3], [1, 4, 3, 1], ...]",
-                "{[1, 3, 1, 4]=83675, [3, 4, 1, 1]=83504, [1, 4, 1, 3]=83477, [3, 1, 1, 4]=83475," +
-                " [4, 3, 1, 1]=83395, [1, 4, 3, 1]=83371, [3, 1, 4, 1]=83349, [1, 1, 3, 4]=83345," +
-                " [4, 1, 1, 3]=83297, [1, 1, 4, 3]=83213}"
-        );
-        prefixPermutations_helper(
-                1,
-                "[3, 1, null, 1]",
-                "[[1, null, 3, 1], [1, 3, 1, null], [3, 1, null, 1], [1, 3, 1, null], [1, 1, null, 3]," +
-                " [1, 1, null, 3], [3, null, 1, 1], [null, 3, 1, 1], [3, null, 1, 1], [null, 3, 1, 1]," +
-                " [1, 3, 1, null], [1, null, 3, 1], [3, 1, 1, null], [3, null, 1, 1], [3, 1, 1, null]," +
-                " [1, 3, 1, null], [null, 1, 3, 1], [3, null, 1, 1], [1, 3, null, 1], [3, null, 1, 1], ...]",
-                "{[null, 3, 1, 1]=83886, [1, 3, 1, null]=83629, [3, null, 1, 1]=83508, [null, 1, 3, 1]=83492," +
-                " [1, null, 3, 1]=83478, [1, null, 1, 3]=83387, [1, 3, null, 1]=83135, [null, 1, 1, 3]=83122," +
-                " [3, 1, 1, null]=83104, [1, 1, 3, null]=83099}"
-        );
-        prefixPermutations_helper(
-                2,
-                "[3, 1, null, 1]",
-                "[[1, 3, 1, null], [1, 1, 3, null], [null, 1, 3, 1], [null, 3, 1, 1], [null, 1, 1, 3]," +
-                " [1, null, 3, 1], [null, 1, 3, 1], [3, null, 1, 1], [null, 3, 1, 1], [3, 1, 1, null]," +
-                " [1, null, 1, 3], [null, 1, 1, 3], [1, 3, 1, null], [1, 3, null, 1], [3, null, 1, 1]," +
-                " [1, null, 1, 3], [1, 3, 1, null], [3, 1, null, 1], [null, 1, 3, 1], [null, 1, 3, 1], ...]",
-                "{[1, 1, 3, null]=83836, [null, 1, 3, 1]=83776, [1, 3, 1, null]=83746, [null, 1, 1, 3]=83601," +
-                " [3, null, 1, 1]=83350, [3, 1, null, 1]=83286, [1, 1, null, 3]=83153, [null, 3, 1, 1]=83129," +
-                " [1, null, 1, 3]=83114, [1, 3, null, 1]=83072}"
-        );
-        prefixPermutations_helper(
-                4,
-                "[3, 1, null, 1]",
-                "[[1, 3, 1, null], [null, 1, 3, 1], [1, 1, 3, null], [3, null, 1, 1], [3, null, 1, 1]," +
-                " [null, 1, 3, 1], [1, null, 3, 1], [3, 1, 1, null], [1, 1, null, 3], [1, null, 1, 3]," +
-                " [1, 1, null, 3], [1, null, 1, 3], [1, 1, 3, null], [1, null, 1, 3], [null, 1, 3, 1]," +
-                " [1, null, 3, 1], [3, 1, 1, null], [1, 3, 1, null], [null, 1, 1, 3], [1, null, 3, 1], ...]",
-                "{[1, 3, 1, null]=83675, [3, null, 1, 1]=83504, [1, null, 1, 3]=83477, [3, 1, 1, null]=83475," +
-                " [null, 3, 1, 1]=83395, [1, null, 3, 1]=83371, [3, 1, null, 1]=83349, [1, 1, 3, null]=83345," +
-                " [null, 1, 1, 3]=83297, [1, 1, null, 3]=83213}"
-        );
-        prefixPermutations_helper(
-                1,
-                "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]",
-                "[[2, 3, 1, 4, 5, 6, 7, 8, 9, 10], [2, 6, 1, 4, 3, 5, 7, 8, 9, 10], [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]," +
-                " [2, 1, 3, 4, 5, 6, 7, 8, 9, 10], [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]," +
-                " [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]," +
-                " [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], [2, 1, 3, 4, 5, 6, 7, 8, 9, 10]," +
-                " [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]," +
-                " [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]," +
-                " [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], ...]",
-                "{[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]=3553, [2, 1, 3, 4, 5, 6, 7, 8, 9, 10]=298," +
-                " [1, 3, 2, 4, 5, 6, 7, 8, 9, 10]=65, [2, 3, 1, 4, 5, 6, 7, 8, 9, 10]=62," +
-                " [3, 1, 2, 4, 5, 6, 7, 8, 9, 10]=47, [3, 2, 1, 4, 5, 6, 7, 8, 9, 10]=41," +
-                " [1, 4, 2, 3, 5, 6, 7, 8, 9, 10]=9, [3, 4, 1, 2, 5, 6, 7, 8, 9, 10]=9," +
-                " [4, 3, 2, 1, 5, 6, 7, 8, 9, 10]=9, [4, 1, 3, 2, 5, 6, 7, 8, 9, 10]=9}"
-        );
-        prefixPermutations_helper(
-                2,
-                "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]",
-                "[[2, 1, 4, 3, 5, 6, 7, 8, 9, 10], [3, 1, 2, 4, 5, 6, 7, 8, 9, 10], [2, 1, 3, 4, 5, 6, 7, 8, 9, 10]," +
-                " [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], [5, 4, 2, 1, 3, 6, 7, 8, 9, 10], [3, 2, 1, 4, 5, 6, 7, 8, 9, 10]," +
-                " [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]," +
-                " [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]," +
-                " [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], [3, 1, 2, 4, 5, 6, 7, 8, 9, 10], [3, 1, 4, 2, 5, 6, 7, 8, 9, 10]," +
-                " [2, 1, 3, 4, 5, 6, 7, 8, 9, 10], [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], [3, 6, 7, 2, 4, 5, 1, 8, 9, 10]," +
-                " [3, 4, 2, 1, 5, 6, 7, 8, 9, 10], [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], ...]",
-                "{[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]=28, [2, 1, 3, 4, 5, 6, 7, 8, 9, 10]=6," +
-                " [7, 5, 2, 10, 9, 8, 6, 3, 4, 1]=6, [1, 10, 4, 2, 6, 8, 7, 9, 3, 5]=6," +
-                " [2, 5, 3, 6, 4, 7, 1, 9, 10, 8]=6, [10, 3, 1, 2, 6, 9, 7, 8, 4, 5]=6," +
-                " [4, 5, 3, 10, 9, 8, 7, 6, 2, 1]=6, [8, 1, 7, 2, 10, 6, 9, 3, 4, 5]=6," +
-                " [9, 7, 2, 10, 4, 6, 5, 8, 1, 3]=5, [9, 7, 6, 5, 2, 3, 10, 1, 8, 4]=5}"
-        );
-        prefixPermutations_helper(
-                4,
-                "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]",
-                "[[2, 1, 4, 3, 5, 6, 7, 8, 9, 10], [7, 8, 5, 4, 10, 3, 1, 6, 9, 2], [10, 9, 1, 2, 8, 7, 6, 5, 4, 3]," +
-                " [7, 4, 2, 10, 1, 6, 3, 5, 8, 9], [10, 8, 2, 7, 9, 5, 4, 1, 6, 3], [5, 9, 4, 8, 7, 6, 2, 1, 10, 3]," +
-                " [5, 10, 9, 1, 6, 7, 8, 3, 2, 4], [2, 10, 7, 8, 6, 3, 5, 4, 1, 9], [1, 2, 9, 5, 4, 7, 10, 6, 3, 8]," +
-                " [3, 6, 10, 8, 2, 9, 7, 5, 1, 4], [9, 4, 3, 2, 6, 7, 10, 1, 8, 5], [1, 2, 9, 3, 4, 5, 6, 8, 7, 10]," +
-                " [8, 4, 1, 10, 3, 9, 7, 2, 5, 6], [5, 9, 1, 3, 4, 2, 6, 8, 10, 7], [6, 1, 5, 9, 8, 3, 4, 2, 10, 7]," +
-                " [9, 2, 1, 10, 6, 8, 7, 5, 4, 3], [4, 3, 8, 2, 10, 9, 6, 1, 5, 7], [10, 2, 6, 9, 8, 3, 4, 1, 7, 5]," +
-                " [3, 8, 10, 1, 5, 6, 4, 7, 9, 2], [10, 7, 2, 3, 4, 8, 5, 6, 1, 9], ...]",
-                "{[2, 4, 5, 7, 8, 3, 10, 9, 6, 1]=6, [4, 10, 2, 9, 7, 3, 1, 5, 6, 8]=5," +
-                " [10, 8, 3, 2, 4, 6, 9, 7, 5, 1]=5, [9, 4, 8, 10, 5, 1, 6, 7, 3, 2]=5," +
-                " [9, 7, 5, 2, 10, 8, 1, 6, 4, 3]=5, [2, 3, 10, 1, 9, 6, 8, 7, 4, 5]=5," +
-                " [9, 2, 7, 10, 4, 8, 5, 6, 1, 3]=5, [8, 9, 2, 7, 5, 10, 1, 4, 6, 3]=5," +
-                " [2, 4, 7, 1, 8, 6, 10, 9, 5, 3]=5, [3, 5, 2, 9, 7, 8, 1, 6, 4, 10]=5}"
-        );
+        prefixPermutations_helper(1, "[]", "RandomProvider_prefixPermutations_i");
+        prefixPermutations_helper(2, "[]", "RandomProvider_prefixPermutations_ii");
+        prefixPermutations_helper(4, "[]", "RandomProvider_prefixPermutations_iii");
+        prefixPermutations_helper(1, "[5]", "RandomProvider_prefixPermutations_iv");
+        prefixPermutations_helper(2, "[5]", "RandomProvider_prefixPermutations_v");
+        prefixPermutations_helper(4, "[5]", "RandomProvider_prefixPermutations_vi");
+        prefixPermutations_helper(1, "[1, 2]", "RandomProvider_prefixPermutations_vii");
+        prefixPermutations_helper(2, "[1, 2]", "RandomProvider_prefixPermutations_viii");
+        prefixPermutations_helper(4, "[1, 2]", "RandomProvider_prefixPermutations_ix");
+        prefixPermutations_helper(1, "[1, 2, 3]", "RandomProvider_prefixPermutations_x");
+        prefixPermutations_helper(2, "[1, 2, 3]", "RandomProvider_prefixPermutations_xi");
+        prefixPermutations_helper(4, "[1, 2, 3]", "RandomProvider_prefixPermutations_xii");
+        prefixPermutations_helper(1, "[1, 2, 3, 4]", "RandomProvider_prefixPermutations_xiii");
+        prefixPermutations_helper(2, "[1, 2, 3, 4]", "RandomProvider_prefixPermutations_xiv");
+        prefixPermutations_helper(4, "[1, 2, 3, 4]", "RandomProvider_prefixPermutations_xv");
+        prefixPermutations_helper(1, "[1, 2, 2, 4]", "RandomProvider_prefixPermutations_xvi");
+        prefixPermutations_helper(2, "[1, 2, 2, 4]", "RandomProvider_prefixPermutations_xvii");
+        prefixPermutations_helper(4, "[1, 2, 2, 4]", "RandomProvider_prefixPermutations_xviii");
+        prefixPermutations_helper(1, "[2, 2, 2, 2]", "RandomProvider_prefixPermutations_xix");
+        prefixPermutations_helper(2, "[2, 2, 2, 2]", "RandomProvider_prefixPermutations_xx");
+        prefixPermutations_helper(4, "[2, 2, 2, 2]", "RandomProvider_prefixPermutations_xxi");
+        prefixPermutations_helper(1, "[3, 1, 4, 1]", "RandomProvider_prefixPermutations_xxii");
+        prefixPermutations_helper(2, "[3, 1, 4, 1]", "RandomProvider_prefixPermutations_xxiii");
+        prefixPermutations_helper(4, "[3, 1, 4, 1]", "RandomProvider_prefixPermutations_xxiv");
+        prefixPermutations_helper(1, "[3, 1, null, 1]", "RandomProvider_prefixPermutations_xxv");
+        prefixPermutations_helper(2, "[3, 1, null, 1]", "RandomProvider_prefixPermutations_xxvi");
+        prefixPermutations_helper(4, "[3, 1, null, 1]", "RandomProvider_prefixPermutations_xxvii");
+        prefixPermutations_helper(1, "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]", "RandomProvider_prefixPermutations_xxviii");
+        prefixPermutations_helper(2, "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]", "RandomProvider_prefixPermutations_xxix");
+        prefixPermutations_helper(4, "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]", "RandomProvider_prefixPermutations_xxx");
         prefixPermutations_helper(
                 1,
                 ExhaustiveProvider.INSTANCE.positiveIntegers(),
-                "[[2, 3, 1, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]," +
-                " [2, 6, 1, 4, 3, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]," +
-                " [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]," +
-                " [2, 1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]," +
-                " [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]," +
-                " [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]," +
-                " [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]," +
-                " [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]," +
-                " [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]," +
-                " [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]," +
-                " [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]," +
-                " [2, 1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]," +
-                " [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]," +
-                " [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]," +
-                " [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]," +
-                " [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]," +
-                " [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]," +
-                " [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]," +
-                " [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]," +
-                " [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...], ...]",
-                "{[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]=824351," +
-                " [2, 1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]=74171," +
-                " [3, 1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]=11916," +
-                " [1, 3, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]=11875," +
-                " [3, 2, 1, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]=11874," +
-                " [2, 3, 1, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]=11862," +
-                " [3, 4, 1, 2, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]=1485," +
-                " [4, 3, 1, 2, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]=1481," +
-                " [1, 4, 3, 2, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]=1474," +
-                " [3, 2, 4, 1, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]=1469}"
+                "RandomProvider_prefixPermutations_xxxi"
         );
         prefixPermutations_helper(
                 2,
                 ExhaustiveProvider.INSTANCE.positiveIntegers(),
-                "[[2, 1, 4, 3, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]," +
-                " [3, 1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]," +
-                " [2, 1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]," +
-                " [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]," +
-                " [5, 4, 2, 1, 3, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]," +
-                " [3, 2, 1, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]," +
-                " [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]," +
-                " [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]," +
-                " [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]," +
-                " [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]," +
-                " [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]," +
-                " [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]," +
-                " [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]," +
-                " [3, 1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]," +
-                " [3, 1, 4, 2, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]," +
-                " [2, 1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]," +
-                " [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]," +
-                " [3, 6, 7, 2, 4, 5, 1, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]," +
-                " [3, 4, 2, 1, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]," +
-                " [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...], ...]",
-                "{[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]=648981," +
-                " [2, 1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]=93409," +
-                " [2, 3, 1, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]=19809," +
-                " [3, 2, 1, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]=19717," +
-                " [3, 1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]=19627," +
-                " [1, 3, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]=19442," +
-                " [3, 1, 4, 2, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]=3322," +
-                " [4, 2, 1, 3, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]=3273," +
-                " [3, 4, 1, 2, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]=3264," +
-                " [2, 1, 4, 3, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]=3260}"
+                "RandomProvider_prefixPermutations_xxxii"
         );
         prefixPermutations_helper(
                 4,
                 ExhaustiveProvider.INSTANCE.positiveIntegers(),
-                "[[2, 1, 4, 3, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]," +
-                " [8, 7, 5, 10, 15, 16, 2, 6, 13, 1, 9, 11, 14, 3, 12, 4, 17, 18, 19, 20, ...]," +
-                " [3, 1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]," +
-                " [3, 9, 7, 10, 2, 12, 16, 4, 1, 13, 8, 6, 15, 5, 14, 11, 17, 18, 19, 20, ...]," +
-                " [1, 5, 6, 8, 9, 10, 3, 7, 2, 4, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]," +
-                " [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]," +
-                " [1, 4, 2, 3, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]," +
-                " [5, 8, 1, 3, 6, 7, 4, 2, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]," +
-                " [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]," +
-                " [4, 2, 1, 3, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]," +
-                " [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]," +
-                " [1, 5, 3, 4, 2, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]," +
-                " [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]," +
-                " [2, 1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]," +
-                " [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]," +
-                " [4, 2, 1, 5, 3, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]," +
-                " [1, 9, 6, 2, 8, 3, 5, 4, 7, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]," +
-                " [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]," +
-                " [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]," +
-                " [1, 6, 2, 4, 5, 3, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...], ...]",
-                "{[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]=445737," +
-                " [2, 1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]=83952," +
-                " [2, 3, 1, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]=21276," +
-                " [1, 3, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]=21147," +
-                " [3, 1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]=21128," +
-                " [3, 2, 1, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]=21069," +
-                " [2, 1, 4, 3, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]=4172," +
-                " [4, 1, 2, 3, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]=4121," +
-                " [3, 2, 4, 1, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]=4098," +
-                " [3, 4, 1, 2, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]=4060}"
+                "RandomProvider_prefixPermutations_xxxiii"
         );
-        prefixPermutations_helper(
-                1,
-                repeat(1),
-                "[[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...]," +
-                " [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...]," +
-                " [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...]," +
-                " [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...]," +
-                " [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...]," +
-                " [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...]," +
-                " [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...]," +
-                " [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...]," +
-                " [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...]," +
-                " [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...]," +
-                " [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...]," +
-                " [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...]," +
-                " [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...]," +
-                " [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...]," +
-                " [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...]," +
-                " [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...]," +
-                " [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...]," +
-                " [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...]," +
-                " [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...]," +
-                " [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...], ...]",
-                "{[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...]=1000000}"
-        );
-        prefixPermutations_helper(
-                2,
-                repeat(1),
-                "[[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...]," +
-                " [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...]," +
-                " [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...]," +
-                " [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...]," +
-                " [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...]," +
-                " [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...]," +
-                " [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...]," +
-                " [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...]," +
-                " [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...]," +
-                " [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...]," +
-                " [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...]," +
-                " [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...]," +
-                " [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...]," +
-                " [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...]," +
-                " [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...]," +
-                " [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...]," +
-                " [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...]," +
-                " [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...]," +
-                " [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...]," +
-                " [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...], ...]",
-                "{[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...]=1000000}"
-        );
-        prefixPermutations_helper(
-                4,
-                repeat(1),
-                "[[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...]," +
-                " [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...]," +
-                " [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...]," +
-                " [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...]," +
-                " [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...]," +
-                " [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...]," +
-                " [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...]," +
-                " [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...]," +
-                " [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...]," +
-                " [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...]," +
-                " [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...]," +
-                " [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...]," +
-                " [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...]," +
-                " [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...]," +
-                " [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...]," +
-                " [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...]," +
-                " [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...]," +
-                " [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...]," +
-                " [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...]," +
-                " [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...], ...]",
-                "{[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...]=1000000}"
-        );
+        prefixPermutations_helper(1, repeat(1), "RandomProvider_prefixPermutations_xxxiv");
+        prefixPermutations_helper(2, repeat(1), "RandomProvider_prefixPermutations_xxxv");
+        prefixPermutations_helper(4, repeat(1), "RandomProvider_prefixPermutations_xxxvi");
         prefixPermutations_fail_helper(0, "[1, 2, 3]");
         prefixPermutations_fail_helper(-1, "[1, 2, 3]");
     }

@@ -6,10 +6,7 @@ import mho.wheels.structures.Pair;
 import org.jetbrains.annotations.NotNull;
 
 import java.math.BigInteger;
-import java.util.Arrays;
-import java.util.BitSet;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.Function;
 
 import static mho.wheels.iterables.IterableUtils.*;
@@ -36,25 +33,22 @@ public final class MathUtils {
     private MathUtils() {}
 
     /**
-     * The greatest common divisor of two {@link int}s. If both {@code x} and {@code y} are zero, the result is
-     * undefined. Otherwise, the result is positive.
+     * The greatest common divisor of two {@link int}s. If both {@code x} and {@code y} are zero, the result is zero.
+     * Otherwise, the result is positive.
      *
      * <ul>
      *  <li>{@code x} may be any {@code int}.</li>
      *  <li>{@code y} may be any {@code int}.</li>
-     *  <li>{@code x} and {@code y} may not both be zero.</li>
      *  <li>The result is non-negative.</li>
      * </ul>
      *
      * @param x the first number
      * @param y the second number
-     * @return gcd(x, y)
+     * @return gcd({@code x}, {@code y})
      */
+    @SuppressWarnings("JavaDoc")
     public static int gcd(int x, int y) {
-        if (x == 0 && y == 0) {
-            throw new ArithmeticException("x and y may not both be zero.");
-        }
-        return positiveGcd(Math.abs(x), Math.abs(y));
+        return nonNegativeGcd(Math.abs(x), Math.abs(y));
     }
 
     /**
@@ -63,39 +57,36 @@ public final class MathUtils {
      * <ul>
      *  <li>{@code x} cannot be negative.</li>
      *  <li>{@code y} cannot be negative.</li>
-     *  <li>{@code x} and {@code y} may not both be zero.</li>
      *  <li>The result is non-negative.</li>
      * </ul>
      *
      * @param x the first number
      * @param y the second number
-     * @return gcd(x, y)
+     * @return gcd({@code x}, {@code y})
      */
-    private static int positiveGcd(int x, int y) {
+    @SuppressWarnings("JavaDoc")
+    private static int nonNegativeGcd(int x, int y) {
         //noinspection SuspiciousNameCombination
-        return y == 0 ? x : positiveGcd(y, x % y);
+        return y == 0 ? x : nonNegativeGcd(y, x % y);
     }
 
     /**
-     * The greatest common divisor of two {@link long}s. If both {@code x} and {@code y} are zero, the result is
-     * undefined. Otherwise, the result is positive.
+     * The greatest common divisor of two {@link long}s. If both {@code x} and {@code y} are zero, the result is zero.
+     * Otherwise, the result is positive.
      *
      * <ul>
      *  <li>{@code x} may be any {@code long}.</li>
      *  <li>{@code y} may be any {@code long}.</li>
-     *  <li>{@code x} and {@code y} may not both be zero.</li>
      *  <li>The result is non-negative.</li>
      * </ul>
      *
      * @param x the first number
      * @param y the second number
-     * @return gcd(x, y)
+     * @return gcd({@code x}, {@code y})
      */
+    @SuppressWarnings("JavaDoc")
     public static long gcd(long x, long y) {
-        if (x == 0L && y == 0L) {
-            throw new ArithmeticException("x and y may not both be zero.");
-        }
-        return positiveGcd(Math.abs(x), Math.abs(y));
+        return nonNegativeGcd(Math.abs(x), Math.abs(y));
     }
 
     /**
@@ -104,17 +95,17 @@ public final class MathUtils {
      * <ul>
      *  <li>{@code x} cannot be negative.</li>
      *  <li>{@code y} cannot be negative.</li>
-     *  <li>{@code x} and {@code y} may not both be zero.</li>
      *  <li>The result is non-negative.</li>
      * </ul>
      *
      * @param x the first number
      * @param y the second number
-     * @return gcd(x, y)
+     * @return gcd({@code x}, {@code y})
      */
-    private static long positiveGcd(long x, long y) {
+    @SuppressWarnings("JavaDoc")
+    private static long nonNegativeGcd(long x, long y) {
         //noinspection SuspiciousNameCombination
-        return y == 0 ? x : positiveGcd(y, x % y);
+        return y == 0 ? x : nonNegativeGcd(y, x % y);
     }
 
     /**
@@ -129,8 +120,9 @@ public final class MathUtils {
      *
      * @param x the first number
      * @param y the second number
-     * @return lcm(x, y)
+     * @return lcm({@code x}, {@code y})
      */
+    @SuppressWarnings("JavaDoc")
     public static @NotNull BigInteger lcm(@NotNull BigInteger x, @NotNull BigInteger y) {
         if (x.signum() != 1) {
             throw new ArithmeticException("x must be positive. Invalid x: " + x);
@@ -142,7 +134,46 @@ public final class MathUtils {
     }
 
     /**
-     * The factorial function {@code n}!
+     * The greatest common divisor of a {@code List} of {@code BigInteger}s. The GCD of an empty {@code Iterable}, or
+     * an {@code Iterable} containing only zeros, is zero.
+     *
+     * <ul>
+     *  <li>{@code xs} cannot contain any nulls.</li>
+     *  <li>The result is non-negative.</li>
+     * </ul>
+     *
+     * @param xs some numbers
+     * @return gcd({@code xs})
+     */
+    @SuppressWarnings("JavaDoc")
+    public static @NotNull BigInteger gcd(@NotNull List<BigInteger> xs) {
+        return foldl(BigInteger::gcd, BigInteger.ZERO, xs);
+    }
+
+    /**
+     * The least common multiple of a {@code List} of {@code BigInteger}s.
+     *
+     * <ul>
+     *  <li>{@code xs} cannot be empty, and every element of {@code xs} must be positive.</li>
+     *  <li>The result is positive.</li>
+     * </ul>
+     *
+     * @param xs some numbers
+     * @return lcm({@code xs})
+     */
+    @SuppressWarnings("JavaDoc")
+    public static @NotNull BigInteger lcm(@NotNull List<BigInteger> xs) {
+        if (xs.isEmpty()) {
+            throw new ArithmeticException("xs cannot be empty.");
+        }
+        if (any(x -> x.signum() != 1, xs)) {
+            throw new ArithmeticException("Every element of xs must be positive. Invalid xs: " + xs);
+        }
+        return foldl1(MathUtils::lcm, sort(xs));
+    }
+
+    /**
+     * The factorial function {@code n}! Multiplies the odd factors first, then the powers of 2.
      *
      * <ul>
      *  <li>{@code n} cannot be negative.</li>
@@ -153,13 +184,30 @@ public final class MathUtils {
      * @return {@code n}!
      */
     public static @NotNull BigInteger factorial(int n) {
-        if (n < 0)
-            throw new ArithmeticException("cannot take factorial of " + n);
-        return productBigInteger(range(BigInteger.ONE, BigInteger.valueOf(n)));
+        if (n < 0) {
+            throw new ArithmeticException("n cannot be negative. Invalid n: " + n);
+        }
+        BigInteger factorial = BigInteger.ONE;
+        List<Integer> halves = new ArrayList<>();
+        int h = n;
+        while (h > 2) {
+            halves.add(h % 2 == 0 ? h - 1 : h);
+            h >>= 1;
+        }
+        int j = halves.size() - 1;
+        BigInteger subproduct = BigInteger.ONE;
+        for (int i = 3; i <= n; i += 2) {
+            subproduct = subproduct.multiply(BigInteger.valueOf(i));
+            if (i >= halves.get(j)) {
+                factorial = factorial.multiply(subproduct);
+                j--;
+            }
+        }
+        return factorial.shiftLeft(n - Integer.bitCount(n));
     }
 
     /**
-     * The factorial function {@code n}!
+     * The factorial function {@code n}! Multiplies the odd factors first, then the powers of 2.
      *
      * <ul>
      *  <li>{@code n} cannot be negative.</li>
@@ -170,9 +218,26 @@ public final class MathUtils {
      * @return {@code n}!
      */
     public static @NotNull BigInteger factorial(@NotNull BigInteger n) {
-        if (n.signum() == -1)
-            throw new ArithmeticException("cannot take factorial of " + n);
-        return productBigInteger(range(BigInteger.ONE, n));
+        if (n.signum() == -1) {
+            throw new ArithmeticException("n cannot be negative. Invalid n: " + n);
+        }
+        BigInteger factorial = BigInteger.ONE;
+        List<BigInteger> halves = new ArrayList<>();
+        BigInteger h = n;
+        while (gt(h, IntegerUtils.TWO)) {
+            halves.add(h.and(BigInteger.ONE).equals(BigInteger.ZERO) ? h.subtract(BigInteger.ONE) : h);
+            h = h.shiftRight(1);
+        }
+        int j = halves.size() - 1;
+        BigInteger subproduct = BigInteger.ONE;
+        for (BigInteger i = BigInteger.valueOf(3); le(i, n); i = i.add(IntegerUtils.TWO)) {
+            subproduct = subproduct.multiply(i);
+            if (ge(i, halves.get(j))) {
+                factorial = factorial.multiply(subproduct);
+                j--;
+            }
+        }
+        return factorial.shiftLeft(n.subtract(BigInteger.valueOf(n.bitCount())).intValueExact());
     }
 
     /**
@@ -180,15 +245,16 @@ public final class MathUtils {
      *
      * <ul>
      *  <li>{@code n} cannot be negative.</li>
-     *  <li>The result is a subfactorial (rencontres number).</li>
+     *  <li>The result is a subfactorial (derangement number).</li>
      * </ul>
      *
      * @param n the argument
      * @return !{@code n}
      */
     public static @NotNull BigInteger subfactorial(int n) {
-        if (n < 0)
-            throw new ArithmeticException("cannot take subfactorial of " + n);
+        if (n < 0) {
+            throw new ArithmeticException("n cannot be negative. Invalid n: " + n);
+        }
         BigInteger sf = BigInteger.ONE;
         for (int i = 1; i <= n; i++) {
             sf = sf.multiply(BigInteger.valueOf(i));
@@ -206,15 +272,16 @@ public final class MathUtils {
      *
      * <ul>
      *  <li>{@code n} cannot be negative.</li>
-     *  <li>The result is a subfactorial (rencontres number).</li>
+     *  <li>The result is a subfactorial (derangement number).</li>
      * </ul>
      *
      * @param n the argument
      * @return !{@code n}
      */
     public static @NotNull BigInteger subfactorial(@NotNull BigInteger n) {
-        if (n.signum() == -1)
-            throw new ArithmeticException("cannot take subfactorial of " + n);
+        if (n.signum() == -1) {
+            throw new ArithmeticException("n cannot be negative. Invalid n: " + n);
+        }
         BigInteger sf = BigInteger.ONE;
         for (BigInteger i : range(BigInteger.ONE, n)) {
             sf = sf.multiply(i);
@@ -227,14 +294,138 @@ public final class MathUtils {
         return sf;
     }
 
-    public static @NotNull BigInteger numberOfArrangementsOfASet(int n) {
-        BigInteger bigN = BigInteger.valueOf(n);
-        return sumBigInteger(map(k -> fallingFactorial(bigN, k), range(0, n)));
+    /**
+     * The falling factorial, or Pochhammer symbol, of {@code x} and {@code n}. Given a set containing {@code x}
+     * elements, returns the number of length-{@code n} lists of elements from the set.
+     *
+     * <ul>
+     *  <li>{@code x} cannot be negative.</li>
+     *  <li>{@code n} cannot be negative.</li>
+     *  <li>The result is not negative.</li>
+     * </ul>
+     *
+     * @param x the number of elements in a set
+     * @param n the length of a list made by choosing elements from the set
+     * @return ({@code x})<sub>{@code n}</sub>
+     */
+    @SuppressWarnings("JavaDoc")
+    public static @NotNull BigInteger fallingFactorial(@NotNull BigInteger x, int n) {
+        if (x.signum() == -1) {
+            throw new ArithmeticException("x cannot be negative. Invalid x: " + x);
+        }
+        if (n < 0) {
+            throw new ArithmeticException("n cannot be negative. Invalid n: " + n);
+        }
+        return productBigInteger(range(x.subtract(BigInteger.valueOf(n - 1)), x));
     }
 
+    /**
+     * The number of arrangements (of any length) of a set with {@code n} elements. OEIS A000522.
+     *
+     * <ul>
+     *  <li>{@code n} cannot be negative.</li>
+     *  <li>The result is positive.</li>
+     * </ul>
+     *
+     * @param n the number of elements in a set
+     * @return the number of different lists that can be made by choosing elements from the set
+     */
+    public static @NotNull BigInteger numberOfArrangementsOfASet(int n) {
+        if (n < 0) {
+            throw new ArithmeticException("n cannot be negative. Invalid n: " + n);
+        }
+        BigInteger sum = BigInteger.ONE;
+        BigInteger product = BigInteger.ONE;
+        for (int i = n; i > 0; i--) {
+            product = product.multiply(BigInteger.valueOf(i));
+            sum = sum.add(product);
+        }
+        return sum;
+    }
+
+    /**
+     * The number of arrangements (of length at least {@code minSize}) of a set with {@code n} elements.
+     *
+     * <ul>
+     *  <li>{@code minSize} cannot be negative.</li>
+     *  <li>{@code n} cannot be negative.</li>
+     *  <li>The result is not negative.</li>
+     * </ul>
+     *
+     * @param minSize the minimum length of the arrangements
+     * @param n the number of elements in a set
+     * @return the number of different lists that can be made by choosing at least {@code minSize} elements from the
+     * set
+     */
     public static @NotNull BigInteger numberOfArrangementsOfASet(int minSize, int n) {
-        BigInteger bigN = BigInteger.valueOf(n);
-        return sumBigInteger(map(k -> fallingFactorial(bigN, k), range(minSize, n)));
+        if (minSize < 0) {
+            throw new ArithmeticException("minSize cannot be negative. Invalid minSize: " + minSize);
+        }
+        if (n < 0) {
+            throw new ArithmeticException("n cannot be negative. Invalid n: " + n);
+        }
+        if (minSize > n) {
+            return BigInteger.ZERO;
+        }
+        BigInteger sum = minSize == 0 ? BigInteger.ONE : BigInteger.ZERO;
+        BigInteger product = BigInteger.ONE;
+        int limit = n - minSize + 1;
+        for (int i = n; i >= 0; i--) {
+            product = product.multiply(BigInteger.valueOf(i));
+            if (i <= limit) {
+                sum = sum.add(product);
+            }
+        }
+        return sum;
+    }
+
+    /**
+     * The binomial coefficient <sub>{@code n}</sub>C<sub>{@code k}</sub>, or the number of {@code k}-element subsets
+     * of an {@code n}-element set.
+     *
+     * <ul>
+     *  <li>{@code n} cannot be negative.</li>
+     *  <li>{@code k} cannot be negative.</li>
+     *  <li>The result is not negative.</li>
+     * </ul>
+     *
+     * @param n the number of elements in a set
+     * @param k the number of elements in a subset of the set
+     * @return {@code n} choose {@code k}
+     */
+    public static @NotNull BigInteger binomialCoefficient(@NotNull BigInteger n, int k) {
+        return fallingFactorial(n, k).divide(factorial(k));
+    }
+
+    /**
+     * The multiset coefficient of {@code n} and {@code k}, or the number of {@code k}-element sub-multisets of an
+     * {@code n}-element set.
+     *
+     * <ul>
+     *  <li>{@code n} cannot be negative.</li>
+     *  <li>{@code k} cannot be negative.</li>
+     *  <li>The result is not negative.</li>
+     * </ul>
+     *
+     * @param n the number of elements in a multiset
+     * @param k the number of elements in a sub-multiset of the set
+     * @return The number of ways to choose {@code k} elements from a set of {@code n} elements, disregarding order and
+     * allowing repetitions
+     */
+    public static @NotNull BigInteger multisetCoefficient(@NotNull BigInteger n, int k) {
+        if (k < 0) {
+            throw new ArithmeticException("k cannot be negative. Invalid k: " + k);
+        }
+        if (n.equals(BigInteger.ZERO)) {
+            return k == 0 ? BigInteger.ONE : BigInteger.ZERO;
+        }
+        return binomialCoefficient(n.add(BigInteger.valueOf(k - 1)), k);
+    }
+
+    public static @NotNull BigInteger subsetCount(int minSize, @NotNull BigInteger n) {
+        return sumBigInteger(
+                map(k -> binomialCoefficient(n, k.intValueExact()), range(BigInteger.valueOf(minSize), n))
+        );
     }
 
     public static @NotNull <T> BigInteger permutationCount(@NotNull List<T> xs) {
@@ -247,22 +438,8 @@ public final class MathUtils {
         return result;
     }
 
-    public static @NotNull BigInteger fallingFactorial(@NotNull BigInteger x, int n) {
-        return productBigInteger(range(x.subtract(BigInteger.valueOf(n - 1)), x));
-    }
-
-    public static @NotNull BigInteger binomialCoefficient(@NotNull BigInteger n, int k) {
-        return fallingFactorial(n, k).divide(factorial(k));
-    }
-
-    public static @NotNull BigInteger subsetCount(int minSize, @NotNull BigInteger n) {
-        return sumBigInteger(
-                map(k -> binomialCoefficient(n, k.intValueExact()), range(BigInteger.valueOf(minSize), n))
-        );
-    }
-
-    public static @NotNull BigInteger multisetCoefficient(@NotNull BigInteger n, int k) {
-        return binomialCoefficient(n.add(BigInteger.valueOf(k - 1)), k);
+    public static boolean reversePermutationSign(int i) {
+        return (i & 2) == 0;
     }
 
     public static @NotNull BigInteger fastGrowingCeilingInverse(
@@ -378,11 +555,11 @@ public final class MathUtils {
     }
 
     public static boolean isPrime(int n) {
-        return smallestPrimeFactor(n) == n;
+        return n != 1 && smallestPrimeFactor(n) == n;
     }
 
     public static boolean isPrime(@NotNull BigInteger n) {
-        return smallestPrimeFactor(n).equals(n);
+        return !n.equals(BigInteger.ONE) && smallestPrimeFactor(n).equals(n);
     }
 
     public static @NotNull Iterable<Integer> primeFactors(int n) {
@@ -457,5 +634,9 @@ public final class MathUtils {
         );
         //noinspection Convert2MethodRef
         return concat(map(i -> BigInteger.valueOf(i), intPrimes()), filterInfinite(MathUtils::isPrime, candidates));
+    }
+
+    public static @NotNull BigInteger largestPerfectPowerFactor(int p, @NotNull BigInteger n) {
+        return productBigInteger(map(q -> q.a.pow(q.b / p), compactPrimeFactors(n)));
     }
 }

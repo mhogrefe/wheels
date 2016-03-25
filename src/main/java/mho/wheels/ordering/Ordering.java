@@ -54,96 +54,48 @@ public enum Ordering {
         return a.compareTo(b) == 0;
     }
 
-    public static <T extends Comparable<T>> boolean equalTo(T a, T b) {
-        return eq(a, b);
-    }
-
     public static <T extends Comparable<T>> boolean ne(T a, T b) {
         return a.compareTo(b) != 0;
-    }
-
-    public static <T extends Comparable<T>> boolean notEqualTo(T a, T b) {
-        return ne(a, b);
     }
 
     public static <T extends Comparable<T>> boolean lt(T a, T b) {
         return a.compareTo(b) < 0;
     }
 
-    public static <T extends Comparable<T>> boolean lessThan(T a, T b) {
-        return lt(a, b);
-    }
-
     public static <T extends Comparable<T>> boolean gt(T a, T b) {
         return a.compareTo(b) > 0;
-    }
-
-    public static <T extends Comparable<T>> boolean greaterThan(T a, T b) {
-        return gt(a, b);
     }
 
     public static <T extends Comparable<T>> boolean le(T a, T b) {
         return a.compareTo(b) <= 0;
     }
 
-    public static <T extends Comparable<T>> boolean lessThanOrEqualTo(T a, T b) {
-        return le(a, b);
-    }
-
     public static <T extends Comparable<T>> boolean ge(T a, T b) {
         return a.compareTo(b) >= 0;
-    }
-
-    public static <T extends Comparable<T>> boolean greaterThanOrEqualTo(T a, T b) {
-        return ge(a, b);
     }
 
     public static <T> boolean eq(Comparator<T> comparator, T a, T b) {
         return comparator.compare(a, b) == 0;
     }
 
-    public static <T> boolean equalTo(Comparator<T> comparator, T a, T b) {
-        return eq(comparator, a, b);
-    }
-
     public static <T> boolean ne(Comparator<T> comparator, T a, T b) {
         return comparator.compare(a, b) != 0;
-    }
-
-    public static <T> boolean notEqualTo(Comparator<T> comparator, T a, T b) {
-        return ne(comparator, a, b);
     }
 
     public static <T> boolean lt(Comparator<T> comparator, T a, T b) {
         return comparator.compare(a, b) < 0;
     }
 
-    public static <T> boolean lessThan(Comparator<T> comparator, T a, T b) {
-        return lt(comparator, a, b);
-    }
-
     public static <T> boolean gt(Comparator<T> comparator, T a, T b) {
         return comparator.compare(a, b) > 0;
-    }
-
-    public static <T> boolean greaterThan(Comparator<T> comparator, T a, T b) {
-        return gt(comparator, a, b);
     }
 
     public static <T> boolean le(Comparator<T> comparator, T a, T b) {
         return comparator.compare(a, b) <= 0;
     }
 
-    public static <T> boolean lessThanOrEqualTo(Comparator<T> comparator, T a, T b) {
-        return le(comparator, a, b);
-    }
-
     public static <T> boolean ge(Comparator<T> comparator, T a, T b) {
         return comparator.compare(a, b) >= 0;
-    }
-
-    public static <T> boolean greaterThanOrEqualTo(Comparator<T> comparator, T a, T b) {
-        return ge(comparator, a, b);
     }
 
     public static <T extends Comparable<T>> T min(T a, T b) {

@@ -11,10 +11,7 @@ import mho.wheels.ordering.Ordering;
 import mho.wheels.ordering.comparators.ListBasedComparator;
 import mho.wheels.ordering.comparators.WithNullComparator;
 import mho.wheels.random.IsaacPRNG;
-import mho.wheels.structures.FiniteDomainFunction;
-import mho.wheels.structures.NullableOptional;
-import mho.wheels.structures.Pair;
-import mho.wheels.structures.Triple;
+import mho.wheels.structures.*;
 import mho.wheels.testing.TestProperties;
 import org.jetbrains.annotations.NotNull;
 
@@ -42,9 +39,11 @@ public class RandomProviderProperties extends TestProperties {
         propertiesConstructor_List_Integer();
         propertiesGetScale();
         propertiesGetSecondaryScale();
+        propertiesGetTertiaryScale();
         propertiesGetSeed();
         propertiesWithScale();
         propertiesWithSecondaryScale();
+        propertiesWithTertiaryScale();
         propertiesCopy();
         propertiesDeepCopy();
         propertiesReset();
@@ -215,7 +214,8 @@ public class RandomProviderProperties extends TestProperties {
         propertiesMaps();
         propertiesRandomProvidersFixedScales();
         propertiesRandomProvidersDefault();
-        propertiesRandomProvidersDefaultSecondaryScale();
+        propertiesRandomProvidersDefaultSecondaryAndTertiaryScale();
+        propertiesRandomProvidersDefaultTertiaryScale();
         propertiesRandomProviders();
         propertiesEquals();
         propertiesHashCode();
@@ -257,6 +257,7 @@ public class RandomProviderProperties extends TestProperties {
             rp.validate();
             assertEquals(is, rp.getScale(), 32);
             assertEquals(is, rp.getSecondaryScale(), 8);
+            assertEquals(is, rp.getTertiaryScale(), 2);
         }
 
         Iterable<List<Integer>> isFail = filterInfinite(js -> js.size() != IsaacPRNG.SIZE, P.lists(P.integers()));
@@ -284,6 +285,14 @@ public class RandomProviderProperties extends TestProperties {
         }
     }
 
+    private void propertiesGetTertiaryScale() {
+        initialize("getTertiaryScale()");
+        for (RandomProvider rp : take(LIMIT, P.randomProviders())) {
+            int tertiaryScale = rp.getTertiaryScale();
+            assertEquals(rp, rp.withTertiaryScale(tertiaryScale), rp);
+        }
+    }
+
     private void propertiesGetSeed() {
         initialize("getSeed()");
         for (RandomProvider rp : take(LIMIT, P.randomProviders())) {
@@ -291,7 +300,8 @@ public class RandomProviderProperties extends TestProperties {
             assertEquals(rp, seed.size(), IsaacPRNG.SIZE);
             assertEquals(
                     rp,
-                    new RandomProvider(seed).withScale(rp.getScale()).withSecondaryScale(rp.getSecondaryScale()),
+                    new RandomProvider(seed).withScale(rp.getScale()).withSecondaryScale(rp.getSecondaryScale())
+                            .withTertiaryScale(rp.getTertiaryScale()),
                     rp
             );
         }
@@ -304,6 +314,7 @@ public class RandomProviderProperties extends TestProperties {
             rp.validate();
             assertEquals(p, rp.getScale(), p.b);
             assertEquals(p, rp.getSecondaryScale(), p.a.getSecondaryScale());
+            assertEquals(p, rp.getTertiaryScale(), p.a.getTertiaryScale());
             assertEquals(p, rp.getSeed(), p.a.getSeed());
             inverse(x -> x.withScale(p.b), (RandomProvider y) -> y.withScale(p.a.getScale()), p.a);
         }
@@ -320,6 +331,7 @@ public class RandomProviderProperties extends TestProperties {
             rp.validate();
             assertEquals(p, rp.getScale(), p.a.getScale());
             assertEquals(p, rp.getSecondaryScale(), p.b);
+            assertEquals(p, rp.getTertiaryScale(), p.a.getTertiaryScale());
             assertEquals(p, rp.getSeed(), p.a.getSeed());
             inverse(
                     x -> x.withSecondaryScale(p.b),
@@ -330,6 +342,27 @@ public class RandomProviderProperties extends TestProperties {
 
         for (RandomProvider rp : take(LIMIT, P.randomProviders())) {
             idempotent(x -> x.withSecondaryScale(rp.getSecondaryScale()), rp);
+        }
+    }
+
+    private void propertiesWithTertiaryScale() {
+        initialize("withTertiaryScale(int)");
+        for (Pair<RandomProvider, Integer> p : take(LIMIT, P.pairs(P.randomProviders(), P.naturalIntegers()))) {
+            RandomProvider rp = p.a.withTertiaryScale(p.b);
+            rp.validate();
+            assertEquals(p, rp.getScale(), p.a.getScale());
+            assertEquals(p, rp.getSecondaryScale(), p.a.getSecondaryScale());
+            assertEquals(p, rp.getTertiaryScale(), p.b);
+            assertEquals(p, rp.getSeed(), p.a.getSeed());
+            inverse(
+                    x -> x.withTertiaryScale(p.b),
+                    (RandomProvider y) -> y.withTertiaryScale(p.a.getTertiaryScale()),
+                    p.a
+            );
+        }
+
+        for (RandomProvider rp : take(LIMIT, P.randomProviders())) {
+            idempotent(x -> x.withTertiaryScale(rp.getTertiaryScale()), rp);
         }
     }
 
@@ -850,7 +883,7 @@ public class RandomProviderProperties extends TestProperties {
         initialize("positiveIntegersGeometric()");
         Iterable<RandomProvider> rps = filterInfinite(
                 x -> x.getScale() >= 2,
-                P.randomProvidersDefaultSecondaryScale()
+                P.randomProvidersDefaultSecondaryAndTertiaryScale()
         );
         for (RandomProvider rp : take(LIMIT, rps)) {
             Iterable<Integer> is = rp.positiveIntegersGeometric();
@@ -859,7 +892,7 @@ public class RandomProviderProperties extends TestProperties {
 
         Iterable<RandomProvider> rpsFail = filterInfinite(
                 x -> x.getScale() < 2,
-                P.randomProvidersDefaultSecondaryScale()
+                P.randomProvidersDefaultSecondaryAndTertiaryScale()
         );
         for (RandomProvider rp : take(LIMIT, rpsFail)) {
             try {
@@ -873,7 +906,7 @@ public class RandomProviderProperties extends TestProperties {
         initialize("negativeIntegersGeometric()");
         Iterable<RandomProvider> rps = filterInfinite(
                 x -> x.getScale() >= 2,
-                P.randomProvidersDefaultSecondaryScale()
+                P.randomProvidersDefaultSecondaryAndTertiaryScale()
         );
         for (RandomProvider rp : take(LIMIT, rps)) {
             Iterable<Integer> is = rp.negativeIntegersGeometric();
@@ -882,7 +915,7 @@ public class RandomProviderProperties extends TestProperties {
 
         Iterable<RandomProvider> rpsFail = filterInfinite(
                 x -> x.getScale() < 2,
-                P.randomProvidersDefaultSecondaryScale()
+                P.randomProvidersDefaultSecondaryAndTertiaryScale()
         );
         for (RandomProvider rp : take(LIMIT, rpsFail)) {
             try {
@@ -896,7 +929,7 @@ public class RandomProviderProperties extends TestProperties {
         initialize("naturalIntegersGeometric()");
         Iterable<RandomProvider> rps = filterInfinite(
                 x -> x.getScale() > 0 && x.getScale() != Integer.MAX_VALUE,
-                P.randomProvidersDefaultSecondaryScale()
+                P.randomProvidersDefaultSecondaryAndTertiaryScale()
         );
         for (RandomProvider rp : take(LIMIT, rps)) {
             Iterable<Integer> is = rp.naturalIntegersGeometric();
@@ -905,7 +938,7 @@ public class RandomProviderProperties extends TestProperties {
 
         Iterable<RandomProvider> rpsFail = filterInfinite(
                 x -> x.getScale() < 1,
-                P.randomProvidersDefaultSecondaryScale()
+                P.randomProvidersDefaultSecondaryAndTertiaryScale()
         );
         for (RandomProvider rp : take(LIMIT, rpsFail)) {
             try {
@@ -926,7 +959,7 @@ public class RandomProviderProperties extends TestProperties {
         initialize("nonzeroIntegersGeometric()");
         Iterable<RandomProvider> rps = filterInfinite(
                 x -> x.getScale() >= 2,
-                P.randomProvidersDefaultSecondaryScale()
+                P.randomProvidersDefaultSecondaryAndTertiaryScale()
         );
         for (RandomProvider rp : take(LIMIT, rps)) {
             Iterable<Integer> is = rp.nonzeroIntegersGeometric();
@@ -935,7 +968,7 @@ public class RandomProviderProperties extends TestProperties {
 
         Iterable<RandomProvider> rpsFail = filterInfinite(
                 x -> x.getScale() < 2,
-                P.randomProvidersDefaultSecondaryScale()
+                P.randomProvidersDefaultSecondaryAndTertiaryScale()
         );
         for (RandomProvider rp : take(LIMIT, rpsFail)) {
             try {
@@ -949,7 +982,7 @@ public class RandomProviderProperties extends TestProperties {
         initialize("integersGeometric()");
         Iterable<RandomProvider> rps = filterInfinite(
                 x -> x.getScale() > 0 && x.getScale() != Integer.MAX_VALUE,
-                P.randomProvidersDefaultSecondaryScale()
+                P.randomProvidersDefaultSecondaryAndTertiaryScale()
         );
         for (RandomProvider rp : take(LIMIT, rps)) {
             Iterable<Integer> is = rp.integersGeometric();
@@ -958,7 +991,7 @@ public class RandomProviderProperties extends TestProperties {
 
         Iterable<RandomProvider> rpsFail = filterInfinite(
                 x -> x.getScale() < 1,
-                P.randomProvidersDefaultSecondaryScale()
+                P.randomProvidersDefaultSecondaryAndTertiaryScale()
         );
         for (RandomProvider rp : take(LIMIT, rpsFail)) {
             try {
@@ -979,7 +1012,7 @@ public class RandomProviderProperties extends TestProperties {
         initialize("rangeUpGeometric(int)");
         Iterable<Pair<RandomProvider, Integer>> ps = filterInfinite(
                 p -> p.a.getScale() > p.b && (p.b >= 1 || p.a.getScale() < Integer.MAX_VALUE + p.b),
-                P.pairs(P.randomProvidersDefaultSecondaryScale(), P.integersGeometric())
+                P.pairs(P.randomProvidersDefaultSecondaryAndTertiaryScale(), P.integersGeometric())
         );
         for (Pair<RandomProvider, Integer> p : take(LIMIT, ps)) {
             Iterable<Integer> is = p.a.rangeUpGeometric(p.b);
@@ -988,7 +1021,7 @@ public class RandomProviderProperties extends TestProperties {
 
         Iterable<Pair<RandomProvider, Integer>> psFail = filterInfinite(
                 p -> p.a.getScale() <= p.b || p.b < 1 && p.a.getScale() >= Integer.MAX_VALUE + p.b,
-                P.pairs(P.randomProvidersDefaultSecondaryScale(), P.integersGeometric())
+                P.pairs(P.randomProvidersDefaultSecondaryAndTertiaryScale(), P.integersGeometric())
         );
         for (Pair<RandomProvider, Integer> p : take(LIMIT, psFail)) {
             try {
@@ -1002,7 +1035,7 @@ public class RandomProviderProperties extends TestProperties {
         initialize("rangeDownGeometric(int)");
         Iterable<Pair<RandomProvider, Integer>> ps = filterInfinite(
                 p -> p.a.getScale() < p.b && (p.b <= -1 || p.a.getScale() > p.b - Integer.MAX_VALUE),
-                P.pairs(P.randomProvidersDefaultSecondaryScale(), P.integersGeometric())
+                P.pairs(P.randomProvidersDefaultSecondaryAndTertiaryScale(), P.integersGeometric())
         );
         for (Pair<RandomProvider, Integer> p : take(LIMIT, ps)) {
             Iterable<Integer> is = p.a.rangeDownGeometric(p.b);
@@ -1011,7 +1044,7 @@ public class RandomProviderProperties extends TestProperties {
 
         Iterable<Pair<RandomProvider, Integer>> psFail = filterInfinite(
                 p -> p.a.getScale() >= p.b || p.b > -1 && p.a.getScale() <= p.b - Integer.MAX_VALUE,
-                P.pairs(P.randomProvidersDefaultSecondaryScale(), P.integersGeometric())
+                P.pairs(P.randomProvidersDefaultSecondaryAndTertiaryScale(), P.integersGeometric())
         );
         for (Pair<RandomProvider, Integer> p : take(LIMIT, psFail)) {
             try {
@@ -1025,7 +1058,7 @@ public class RandomProviderProperties extends TestProperties {
         initialize("positiveBigIntegers()");
         Iterable<RandomProvider> rps = filterInfinite(
                 x -> x.getScale() >= 2,
-                P.randomProvidersDefaultSecondaryScale()
+                P.randomProvidersDefaultSecondaryAndTertiaryScale()
         );
         for (RandomProvider rp : take(LIMIT, rps)) {
             Iterable<BigInteger> is = rp.positiveBigIntegers();
@@ -1034,7 +1067,7 @@ public class RandomProviderProperties extends TestProperties {
 
         Iterable<RandomProvider> rpsFail = filterInfinite(
                 x -> x.getScale() < 2,
-                P.randomProvidersDefaultSecondaryScale()
+                P.randomProvidersDefaultSecondaryAndTertiaryScale()
         );
         for (RandomProvider rp : take(LIMIT, rpsFail)) {
             try {
@@ -1049,7 +1082,7 @@ public class RandomProviderProperties extends TestProperties {
         initialize("negativeBigIntegers()");
         Iterable<RandomProvider> rps = filterInfinite(
                 x -> x.getScale() >= 2,
-                P.randomProvidersDefaultSecondaryScale()
+                P.randomProvidersDefaultSecondaryAndTertiaryScale()
         );
         for (RandomProvider rp : take(LIMIT, rps)) {
             Iterable<BigInteger> is = rp.negativeBigIntegers();
@@ -1058,7 +1091,7 @@ public class RandomProviderProperties extends TestProperties {
 
         Iterable<RandomProvider> rpsFail = filterInfinite(
                 x -> x.getScale() < 2,
-                P.randomProvidersDefaultSecondaryScale()
+                P.randomProvidersDefaultSecondaryAndTertiaryScale()
         );
         for (RandomProvider rp : take(LIMIT, rpsFail)) {
             try {
@@ -1072,7 +1105,7 @@ public class RandomProviderProperties extends TestProperties {
         initialize("naturalBigIntegers()");
         Iterable<RandomProvider> rps = filterInfinite(
                 x -> x.getScale() > 0 && x.getScale() != Integer.MAX_VALUE,
-                P.randomProvidersDefaultSecondaryScale()
+                P.randomProvidersDefaultSecondaryAndTertiaryScale()
         );
         for (RandomProvider rp : take(LIMIT, rps)) {
             Iterable<BigInteger> is = rp.naturalBigIntegers();
@@ -1081,7 +1114,7 @@ public class RandomProviderProperties extends TestProperties {
 
         Iterable<RandomProvider> rpsFail = filterInfinite(
                 x -> x.getScale() < 1,
-                P.randomProvidersDefaultSecondaryScale()
+                P.randomProvidersDefaultSecondaryAndTertiaryScale()
         );
         for (RandomProvider rp : take(LIMIT, rpsFail)) {
             try {
@@ -1102,7 +1135,7 @@ public class RandomProviderProperties extends TestProperties {
         initialize("nonzeroBigIntegers()");
         Iterable<RandomProvider> rps = filterInfinite(
                 x -> x.getScale() >= 2,
-                P.randomProvidersDefaultSecondaryScale()
+                P.randomProvidersDefaultSecondaryAndTertiaryScale()
         );
         for (RandomProvider rp : take(LIMIT, rps)) {
             Iterable<BigInteger> is = rp.nonzeroBigIntegers();
@@ -1111,7 +1144,7 @@ public class RandomProviderProperties extends TestProperties {
 
         Iterable<RandomProvider> rpsFail = filterInfinite(
                 x -> x.getScale() < 2,
-                P.randomProvidersDefaultSecondaryScale()
+                P.randomProvidersDefaultSecondaryAndTertiaryScale()
         );
         for (RandomProvider rp : take(LIMIT, rpsFail)) {
             try {
@@ -1125,7 +1158,7 @@ public class RandomProviderProperties extends TestProperties {
         initialize("bigIntegers()");
         Iterable<RandomProvider> rps = filterInfinite(
                 x -> x.getScale() > 0 && x.getScale() != Integer.MAX_VALUE,
-                P.randomProvidersDefaultSecondaryScale()
+                P.randomProvidersDefaultSecondaryAndTertiaryScale()
         );
         for (RandomProvider rp : take(LIMIT, rps)) {
             Iterable<BigInteger> is = rp.bigIntegers();
@@ -1134,7 +1167,7 @@ public class RandomProviderProperties extends TestProperties {
 
         Iterable<RandomProvider> rpsFail = filterInfinite(
                 x -> x.getScale() < 1,
-                P.randomProvidersDefaultSecondaryScale()
+                P.randomProvidersDefaultSecondaryAndTertiaryScale()
         );
         for (RandomProvider rp : take(LIMIT, rpsFail)) {
             try {
@@ -1158,7 +1191,7 @@ public class RandomProviderProperties extends TestProperties {
                     int minBitLength = p.b.signum() == -1 ? 0 : p.b.bitLength();
                     return p.a.getScale() > minBitLength && (minBitLength == 0 || p.a.getScale() != Integer.MAX_VALUE);
                 },
-                P.pairs(P.randomProvidersDefaultSecondaryScale(), P.bigIntegers())
+                P.pairs(P.randomProvidersDefaultSecondaryAndTertiaryScale(), P.bigIntegers())
         );
         for (Pair<RandomProvider, BigInteger> p : take(LIMIT, ps)) {
             Iterable<BigInteger> is = p.a.rangeUp(p.b);
@@ -1170,7 +1203,7 @@ public class RandomProviderProperties extends TestProperties {
                     int minBitLength = p.b.signum() == -1 ? 0 : p.b.bitLength();
                     return p.a.getScale() <= minBitLength || minBitLength != 0 && p.a.getScale() == Integer.MAX_VALUE;
                 },
-                P.pairs(P.randomProvidersDefaultSecondaryScale(), P.bigIntegers())
+                P.pairs(P.randomProvidersDefaultSecondaryAndTertiaryScale(), P.bigIntegers())
         );
         for (Pair<RandomProvider, BigInteger> p : take(LIMIT, psFail)) {
             try {
@@ -1187,7 +1220,7 @@ public class RandomProviderProperties extends TestProperties {
                     int minBitLength = p.b.signum() == 1 ? 0 : p.b.negate().bitLength();
                     return p.a.getScale() > minBitLength && (minBitLength == 0 || p.a.getScale() != Integer.MAX_VALUE);
                 },
-                P.pairs(P.randomProvidersDefaultSecondaryScale(), P.bigIntegers())
+                P.pairs(P.randomProvidersDefaultSecondaryAndTertiaryScale(), P.bigIntegers())
         );
         for (Pair<RandomProvider, BigInteger> p : take(LIMIT, ps)) {
             Iterable<BigInteger> is = p.a.rangeDown(p.b);
@@ -1199,7 +1232,7 @@ public class RandomProviderProperties extends TestProperties {
                     int minBitLength = p.b.signum() == 1 ? 0 : p.b.negate().bitLength();
                     return p.a.getScale() <= minBitLength || minBitLength != 0 && p.a.getScale() == Integer.MAX_VALUE;
                 },
-                P.pairs(P.randomProvidersDefaultSecondaryScale(), P.bigIntegers())
+                P.pairs(P.randomProvidersDefaultSecondaryAndTertiaryScale(), P.bigIntegers())
         );
         for (Pair<RandomProvider, BigInteger> p : take(LIMIT, psFail)) {
             try {
@@ -1213,7 +1246,7 @@ public class RandomProviderProperties extends TestProperties {
         initialize("positiveBinaryFractions()");
         Iterable<RandomProvider> rps = filterInfinite(
                 x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
-                P.randomProviders()
+                P.randomProvidersDefaultTertiaryScale()
         );
         for (RandomProvider rp : take(LIMIT, rps)) {
             Iterable<BinaryFraction> bfs = rp.positiveBinaryFractions();
@@ -1222,14 +1255,19 @@ public class RandomProviderProperties extends TestProperties {
             simpleTest(rp, bfs, bf -> bf.signum() == 1);
         }
 
-        for (RandomProvider rp : take(LIMIT, filterInfinite(x -> x.getScale() < 2, P.randomProviders()))) {
+        Iterable<RandomProvider> rpsFail = filterInfinite(
+                x -> x.getScale() < 2,
+                P.randomProvidersDefaultTertiaryScale()
+        );
+        for (RandomProvider rp : take(LIMIT, rpsFail)) {
             try {
                 rp.positiveBinaryFractions();
                 fail(rp);
             } catch (IllegalStateException ignored) {}
         }
 
-        for (RandomProvider rp : take(LIMIT, filterInfinite(x -> x.getSecondaryScale() < 1, P.randomProviders()))) {
+        rpsFail = filterInfinite(x -> x.getSecondaryScale() < 1, P.randomProvidersDefaultTertiaryScale());
+        for (RandomProvider rp : take(LIMIT, rpsFail)) {
             try {
                 rp.positiveBinaryFractions();
                 fail(rp);
@@ -1241,7 +1279,7 @@ public class RandomProviderProperties extends TestProperties {
         initialize("negativeBinaryFractions()");
         Iterable<RandomProvider> rps = filterInfinite(
                 x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
-                P.randomProviders()
+                P.randomProvidersDefaultTertiaryScale()
         );
         for (RandomProvider rp : take(LIMIT, rps)) {
             Iterable<BinaryFraction> bfs = rp.negativeBinaryFractions();
@@ -1250,14 +1288,19 @@ public class RandomProviderProperties extends TestProperties {
             simpleTest(rp, bfs, bf -> bf.signum() == -1);
         }
 
-        for (RandomProvider rp : take(LIMIT, filterInfinite(x -> x.getScale() < 2, P.randomProviders()))) {
+        Iterable<RandomProvider> rpsFail = filterInfinite(
+                x -> x.getScale() < 2,
+                P.randomProvidersDefaultTertiaryScale()
+        );
+        for (RandomProvider rp : take(LIMIT, rpsFail)) {
             try {
                 rp.negativeBinaryFractions();
                 fail(rp);
             } catch (IllegalStateException ignored) {}
         }
 
-        for (RandomProvider rp : take(LIMIT, filterInfinite(x -> x.getSecondaryScale() < 1, P.randomProviders()))) {
+        rpsFail = filterInfinite(x -> x.getSecondaryScale() < 1, P.randomProvidersDefaultTertiaryScale());
+        for (RandomProvider rp : take(LIMIT, rpsFail)) {
             try {
                 rp.negativeBinaryFractions();
                 fail(rp);
@@ -1269,7 +1312,7 @@ public class RandomProviderProperties extends TestProperties {
         initialize("nonzeroBinaryFractions()");
         Iterable<RandomProvider> rps = filterInfinite(
                 x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
-                P.randomProviders()
+                P.randomProvidersDefaultTertiaryScale()
         );
         for (RandomProvider rp : take(LIMIT, rps)) {
             Iterable<BinaryFraction> bfs = rp.nonzeroBinaryFractions();
@@ -1278,14 +1321,19 @@ public class RandomProviderProperties extends TestProperties {
             simpleTest(rp, bfs, bf -> bf != BinaryFraction.ZERO);
         }
 
-        for (RandomProvider rp : take(LIMIT, filterInfinite(x -> x.getScale() < 2, P.randomProviders()))) {
+        Iterable<RandomProvider> rpsFail = filterInfinite(
+                x -> x.getScale() < 2,
+                P.randomProvidersDefaultTertiaryScale()
+        );
+        for (RandomProvider rp : take(LIMIT, rpsFail)) {
             try {
                 rp.nonzeroBinaryFractions();
                 fail(rp);
             } catch (IllegalStateException ignored) {}
         }
 
-        for (RandomProvider rp : take(LIMIT, filterInfinite(x -> x.getSecondaryScale() < 1, P.randomProviders()))) {
+        rpsFail = filterInfinite(x -> x.getSecondaryScale() < 1, P.randomProvidersDefaultTertiaryScale());
+        for (RandomProvider rp : take(LIMIT, rpsFail)) {
             try {
                 rp.nonzeroBinaryFractions();
                 fail(rp);
@@ -1297,7 +1345,7 @@ public class RandomProviderProperties extends TestProperties {
         initialize("binaryFractions()");
         Iterable<RandomProvider> rps = filterInfinite(
                 x -> x.getScale() > 0 && x.getSecondaryScale() > 0,
-                P.randomProviders()
+                P.randomProvidersDefaultTertiaryScale()
         );
         for (RandomProvider rp : take(LIMIT, rps)) {
             Iterable<BinaryFraction> bfs = rp.binaryFractions();
@@ -1306,14 +1354,19 @@ public class RandomProviderProperties extends TestProperties {
             simpleTest(rp, bfs, bf -> true);
         }
 
-        for (RandomProvider rp : take(LIMIT, filterInfinite(x -> x.getScale() < 1, P.randomProviders()))) {
+        Iterable<RandomProvider> rpsFail = filterInfinite(
+                x -> x.getScale() < 1,
+                P.randomProvidersDefaultTertiaryScale()
+        );
+        for (RandomProvider rp : take(LIMIT, rpsFail)) {
             try {
                 rp.binaryFractions();
                 fail(rp);
             } catch (IllegalStateException ignored) {}
         }
 
-        for (RandomProvider rp : take(LIMIT, filterInfinite(x -> x.getSecondaryScale() < 1, P.randomProviders()))) {
+        rpsFail = filterInfinite(x -> x.getSecondaryScale() < 1, P.randomProvidersDefaultTertiaryScale());
+        for (RandomProvider rp : take(LIMIT, rpsFail)) {
             try {
                 rp.binaryFractions();
                 fail(rp);
@@ -1324,7 +1377,10 @@ public class RandomProviderProperties extends TestProperties {
     private void propertiesRangeUp_BinaryFraction() {
         initialize("rangeUp(BinaryFraction)");
         Iterable<Pair<RandomProvider, BinaryFraction>> ps = P.pairs(
-                filterInfinite(x -> x.getScale() > 0 && x.getSecondaryScale() > 0, P.randomProviders()),
+                filterInfinite(
+                        x -> x.getScale() > 0 && x.getSecondaryScale() > 0,
+                        P.randomProvidersDefaultTertiaryScale()
+                ),
                 P.binaryFractions()
         );
         for (Pair<RandomProvider, BinaryFraction> p : take(LIMIT, ps)) {
@@ -1333,7 +1389,7 @@ public class RandomProviderProperties extends TestProperties {
         }
 
         Iterable<Pair<RandomProvider, BinaryFraction>> psFail = P.pairs(
-                filterInfinite(x -> x.getScale() < 1, P.randomProviders()),
+                filterInfinite(x -> x.getScale() < 1, P.randomProvidersDefaultTertiaryScale()),
                 P.binaryFractions()
         );
         for (Pair<RandomProvider, BinaryFraction> p : take(LIMIT, psFail)) {
@@ -1343,7 +1399,10 @@ public class RandomProviderProperties extends TestProperties {
             } catch (IllegalStateException ignored) {}
         }
 
-        psFail = P.pairs(filterInfinite(x -> x.getSecondaryScale() < 1, P.randomProviders()), P.binaryFractions());
+        psFail = P.pairs(
+                filterInfinite(x -> x.getSecondaryScale() < 1, P.randomProvidersDefaultTertiaryScale()),
+                P.binaryFractions()
+        );
         for (Pair<RandomProvider, BinaryFraction> p : take(LIMIT, psFail)) {
             try {
                 p.a.rangeUp(p.b);
@@ -1355,7 +1414,10 @@ public class RandomProviderProperties extends TestProperties {
     private void propertiesRangeDown_BinaryFraction() {
         initialize("rangeDown(BinaryFraction)");
         Iterable<Pair<RandomProvider, BinaryFraction>> ps = P.pairs(
-                filterInfinite(x -> x.getScale() > 0 && x.getSecondaryScale() > 0, P.randomProviders()),
+                filterInfinite(
+                        x -> x.getScale() > 0 && x.getSecondaryScale() > 0,
+                        P.randomProvidersDefaultTertiaryScale()
+                ),
                 P.binaryFractions()
         );
         for (Pair<RandomProvider, BinaryFraction> p : take(LIMIT, ps)) {
@@ -1364,7 +1426,7 @@ public class RandomProviderProperties extends TestProperties {
         }
 
         Iterable<Pair<RandomProvider, BinaryFraction>> psFail = P.pairs(
-                filterInfinite(x -> x.getScale() < 1, P.randomProviders()),
+                filterInfinite(x -> x.getScale() < 1, P.randomProvidersDefaultTertiaryScale()),
                 P.binaryFractions()
         );
         for (Pair<RandomProvider, BinaryFraction> p : take(LIMIT, psFail)) {
@@ -1374,7 +1436,10 @@ public class RandomProviderProperties extends TestProperties {
             } catch (IllegalStateException ignored) {}
         }
 
-        psFail = P.pairs(filterInfinite(x -> x.getSecondaryScale() < 1, P.randomProviders()), P.binaryFractions());
+        psFail = P.pairs(
+                filterInfinite(x -> x.getSecondaryScale() < 1, P.randomProvidersDefaultTertiaryScale()),
+                P.binaryFractions()
+        );
         for (Pair<RandomProvider, BinaryFraction> p : take(LIMIT, psFail)) {
             try {
                 p.a.rangeDown(p.b);
@@ -1389,7 +1454,7 @@ public class RandomProviderProperties extends TestProperties {
         Iterable<Triple<RandomProvider, BinaryFraction, BinaryFraction>> ts = P.triples(
                 filterInfinite(
                         x -> x.getScale() > 0 && x.getScale() != Integer.MAX_VALUE,
-                        P.randomProvidersDefaultSecondaryScale()
+                        P.randomProvidersDefaultSecondaryAndTertiaryScale()
                 ),
                 P.binaryFractions(),
                 P.binaryFractions()
@@ -1407,7 +1472,7 @@ public class RandomProviderProperties extends TestProperties {
         }
 
         Iterable<Triple<RandomProvider, BinaryFraction, BinaryFraction>> tsFail = P.triples(
-                filterInfinite(x -> x.getScale() < 1, P.randomProvidersDefaultSecondaryScale()),
+                filterInfinite(x -> x.getScale() < 1, P.randomProvidersDefaultSecondaryAndTertiaryScale()),
                 P.binaryFractions(),
                 P.binaryFractions()
         );
@@ -1839,7 +1904,7 @@ public class RandomProviderProperties extends TestProperties {
         initialize("positiveBigDecimals()");
         Iterable<RandomProvider> rps = filterInfinite(
                 x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
-                P.randomProviders()
+                P.randomProvidersDefaultTertiaryScale()
         );
         for (RandomProvider rp : take(LIMIT, rps)) {
             Iterable<BigDecimal> bds = rp.positiveBigDecimals();
@@ -1847,14 +1912,19 @@ public class RandomProviderProperties extends TestProperties {
             simpleTest(rp, bds, bd -> bd.signum() == 1);
         }
 
-        for (RandomProvider rp : take(LIMIT, filterInfinite(x -> x.getScale() < 2, P.randomProviders()))) {
+        Iterable<RandomProvider> rpsFail = filterInfinite(
+                x -> x.getScale() < 2,
+                P.randomProvidersDefaultTertiaryScale()
+        );
+        for (RandomProvider rp : take(LIMIT, rpsFail)) {
             try {
                 rp.positiveBigDecimals();
                 fail(rp);
             } catch (IllegalStateException ignored) {}
         }
 
-        for (RandomProvider rp : take(LIMIT, filterInfinite(x -> x.getSecondaryScale() < 1, P.randomProviders()))) {
+        rpsFail = filterInfinite(x -> x.getSecondaryScale() < 1, P.randomProvidersDefaultTertiaryScale());
+        for (RandomProvider rp : take(LIMIT, rpsFail)) {
             try {
                 rp.positiveBigDecimals();
                 fail(rp);
@@ -1866,7 +1936,7 @@ public class RandomProviderProperties extends TestProperties {
         initialize("negativeBigDecimals()");
         Iterable<RandomProvider> rps = filterInfinite(
                 x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
-                P.randomProviders()
+                P.randomProvidersDefaultTertiaryScale()
         );
         for (RandomProvider rp : take(LIMIT, rps)) {
             Iterable<BigDecimal> bds = rp.negativeBigDecimals();
@@ -1874,14 +1944,19 @@ public class RandomProviderProperties extends TestProperties {
             simpleTest(rp, bds, bd -> bd.signum() == -1);
         }
 
-        for (RandomProvider rp : take(LIMIT, filterInfinite(x -> x.getScale() < 2, P.randomProviders()))) {
+        Iterable<RandomProvider> rpsFail = filterInfinite(
+                x -> x.getScale() < 2,
+                P.randomProvidersDefaultTertiaryScale()
+        );
+        for (RandomProvider rp : take(LIMIT, rpsFail)) {
             try {
                 rp.negativeBigDecimals();
                 fail(rp);
             } catch (IllegalStateException ignored) {}
         }
 
-        for (RandomProvider rp : take(LIMIT, filterInfinite(x -> x.getSecondaryScale() < 1, P.randomProviders()))) {
+        rpsFail = filterInfinite(x -> x.getSecondaryScale() < 1, P.randomProvidersDefaultTertiaryScale());
+        for (RandomProvider rp : take(LIMIT, rpsFail)) {
             try {
                 rp.negativeBigDecimals();
                 fail(rp);
@@ -1893,7 +1968,7 @@ public class RandomProviderProperties extends TestProperties {
         initialize("nonzeroBigDecimals()");
         Iterable<RandomProvider> rps = filterInfinite(
                 x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
-                P.randomProviders()
+                P.randomProvidersDefaultTertiaryScale()
         );
         for (RandomProvider rp : take(LIMIT, rps)) {
             Iterable<BigDecimal> bds = rp.nonzeroBigDecimals();
@@ -1901,14 +1976,19 @@ public class RandomProviderProperties extends TestProperties {
             simpleTest(rp, bds, bd -> ne(bd, BigDecimal.ZERO));
         }
 
-        for (RandomProvider rp : take(LIMIT, filterInfinite(x -> x.getScale() < 2, P.randomProviders()))) {
+        Iterable<RandomProvider> rpsFail = filterInfinite(
+                x -> x.getScale() < 2,
+                P.randomProvidersDefaultTertiaryScale()
+        );
+        for (RandomProvider rp : take(LIMIT, rpsFail)) {
             try {
                 rp.nonzeroBigDecimals();
                 fail(rp);
             } catch (IllegalStateException ignored) {}
         }
 
-        for (RandomProvider rp : take(LIMIT, filterInfinite(x -> x.getSecondaryScale() < 1, P.randomProviders()))) {
+        rpsFail = filterInfinite(x -> x.getSecondaryScale() < 1, P.randomProvidersDefaultTertiaryScale());
+        for (RandomProvider rp : take(LIMIT, rpsFail)) {
             try {
                 rp.nonzeroBigDecimals();
                 fail(rp);
@@ -1920,7 +2000,7 @@ public class RandomProviderProperties extends TestProperties {
         initialize("bigDecimals()");
         Iterable<RandomProvider> rps = filterInfinite(
                 x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
-                P.randomProviders()
+                P.randomProvidersDefaultTertiaryScale()
         );
         for (RandomProvider rp : take(LIMIT, rps)) {
             Iterable<BigDecimal> bds = rp.bigDecimals();
@@ -1928,14 +2008,19 @@ public class RandomProviderProperties extends TestProperties {
             simpleTest(rp, bds, bd -> true);
         }
 
-        for (RandomProvider rp : take(LIMIT, filterInfinite(x -> x.getScale() < 1, P.randomProviders()))) {
+        Iterable<RandomProvider> rpsFail = filterInfinite(
+                x -> x.getScale() < 1,
+                P.randomProvidersDefaultTertiaryScale()
+        );
+        for (RandomProvider rp : take(LIMIT, rpsFail)) {
             try {
                 rp.bigDecimals();
                 fail(rp);
             } catch (IllegalStateException ignored) {}
         }
 
-        for (RandomProvider rp : take(LIMIT, filterInfinite(x -> x.getSecondaryScale() < 1, P.randomProviders()))) {
+        rpsFail = filterInfinite(x -> x.getSecondaryScale() < 1, P.randomProvidersDefaultTertiaryScale());
+        for (RandomProvider rp : take(LIMIT, rpsFail)) {
             try {
                 rp.bigDecimals();
                 fail(rp);
@@ -1947,7 +2032,7 @@ public class RandomProviderProperties extends TestProperties {
         initialize("positiveCanonicalBigDecimals()");
         Iterable<RandomProvider> rps = filterInfinite(
                 x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
-                P.randomProviders()
+                P.randomProvidersDefaultTertiaryScale()
         );
         for (RandomProvider rp : take(LIMIT, rps)) {
             Iterable<BigDecimal> bds = rp.positiveCanonicalBigDecimals();
@@ -1955,14 +2040,19 @@ public class RandomProviderProperties extends TestProperties {
             simpleTest(rp, bds, bd -> bd.signum() == 1 && BigDecimalUtils.isCanonical(bd));
         }
 
-        for (RandomProvider rp : take(LIMIT, filterInfinite(x -> x.getScale() < 2, P.randomProviders()))) {
+        Iterable<RandomProvider> rpsFail = filterInfinite(
+                x -> x.getScale() < 2,
+                P.randomProvidersDefaultTertiaryScale()
+        );
+        for (RandomProvider rp : take(LIMIT, rpsFail)) {
             try {
                 rp.positiveCanonicalBigDecimals();
                 fail(rp);
             } catch (IllegalStateException ignored) {}
         }
 
-        for (RandomProvider rp : take(LIMIT, filterInfinite(x -> x.getSecondaryScale() < 1, P.randomProviders()))) {
+        rpsFail = filterInfinite(x -> x.getSecondaryScale() < 1, P.randomProvidersDefaultTertiaryScale());
+        for (RandomProvider rp : take(LIMIT, rpsFail)) {
             try {
                 rp.positiveCanonicalBigDecimals();
                 fail(rp);
@@ -1974,7 +2064,7 @@ public class RandomProviderProperties extends TestProperties {
         initialize("negativeCanonicalBigDecimals()");
         Iterable<RandomProvider> rps = filterInfinite(
                 x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
-                P.randomProviders()
+                P.randomProvidersDefaultTertiaryScale()
         );
         for (RandomProvider rp : take(LIMIT, rps)) {
             Iterable<BigDecimal> bds = rp.negativeCanonicalBigDecimals();
@@ -1982,14 +2072,19 @@ public class RandomProviderProperties extends TestProperties {
             simpleTest(rp, bds, bd -> bd.signum() == -1 && BigDecimalUtils.isCanonical(bd));
         }
 
-        for (RandomProvider rp : take(LIMIT, filterInfinite(x -> x.getScale() < 2, P.randomProviders()))) {
+        Iterable<RandomProvider> rpsFail = filterInfinite(
+                x -> x.getScale() < 2,
+                P.randomProvidersDefaultTertiaryScale()
+        );
+        for (RandomProvider rp : take(LIMIT, rpsFail)) {
             try {
                 rp.negativeCanonicalBigDecimals();
                 fail(rp);
             } catch (IllegalStateException ignored) {}
         }
 
-        for (RandomProvider rp : take(LIMIT, filterInfinite(x -> x.getSecondaryScale() < 1, P.randomProviders()))) {
+        rpsFail = filterInfinite(x -> x.getSecondaryScale() < 1, P.randomProvidersDefaultTertiaryScale());
+        for (RandomProvider rp : take(LIMIT, rpsFail)) {
             try {
                 rp.negativeCanonicalBigDecimals();
                 fail(rp);
@@ -2001,7 +2096,7 @@ public class RandomProviderProperties extends TestProperties {
         initialize("nonzeroCanonicalBigDecimals()");
         Iterable<RandomProvider> rps = filterInfinite(
                 x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
-                P.randomProviders()
+                P.randomProvidersDefaultTertiaryScale()
         );
         for (RandomProvider rp : take(LIMIT, rps)) {
             Iterable<BigDecimal> bds = rp.nonzeroCanonicalBigDecimals();
@@ -2009,14 +2104,19 @@ public class RandomProviderProperties extends TestProperties {
             simpleTest(rp, bds, bd -> ne(bd, BigDecimal.ZERO) && BigDecimalUtils.isCanonical(bd));
         }
 
-        for (RandomProvider rp : take(LIMIT, filterInfinite(x -> x.getScale() < 2, P.randomProviders()))) {
+        Iterable<RandomProvider> rpsFail = filterInfinite(
+                x -> x.getScale() < 2,
+                P.randomProvidersDefaultTertiaryScale()
+        );
+        for (RandomProvider rp : take(LIMIT, rpsFail)) {
             try {
                 rp.nonzeroCanonicalBigDecimals();
                 fail(rp);
             } catch (IllegalStateException ignored) {}
         }
 
-        for (RandomProvider rp : take(LIMIT, filterInfinite(x -> x.getSecondaryScale() < 1, P.randomProviders()))) {
+        rpsFail = filterInfinite(x -> x.getSecondaryScale() < 1, P.randomProvidersDefaultTertiaryScale());
+        for (RandomProvider rp : take(LIMIT, rpsFail)) {
             try {
                 rp.nonzeroCanonicalBigDecimals();
                 fail(rp);
@@ -2028,7 +2128,7 @@ public class RandomProviderProperties extends TestProperties {
         initialize("canonicalBigDecimals()");
         Iterable<RandomProvider> rps = filterInfinite(
                 x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
-                P.randomProviders()
+                P.randomProvidersDefaultTertiaryScale()
         );
         for (RandomProvider rp : take(LIMIT, rps)) {
             Iterable<BigDecimal> bds = rp.canonicalBigDecimals();
@@ -2036,14 +2136,19 @@ public class RandomProviderProperties extends TestProperties {
             simpleTest(rp, bds, BigDecimalUtils::isCanonical);
         }
 
-        for (RandomProvider rp : take(LIMIT, filterInfinite(x -> x.getScale() < 2, P.randomProviders()))) {
+        Iterable<RandomProvider> rpsFail = filterInfinite(
+                x -> x.getScale() < 2,
+                P.randomProvidersDefaultTertiaryScale()
+        );
+        for (RandomProvider rp : take(LIMIT, rpsFail)) {
             try {
                 rp.canonicalBigDecimals();
                 fail(rp);
             } catch (IllegalStateException ignored) {}
         }
 
-        for (RandomProvider rp : take(LIMIT, filterInfinite(x -> x.getSecondaryScale() < 1, P.randomProviders()))) {
+        filterInfinite(x -> x.getSecondaryScale() < 1, P.randomProvidersDefaultTertiaryScale());
+        for (RandomProvider rp : take(LIMIT, rpsFail)) {
             try {
                 rp.canonicalBigDecimals();
                 fail(rp);
@@ -2054,7 +2159,10 @@ public class RandomProviderProperties extends TestProperties {
     private void propertiesRangeUp_BigDecimal() {
         initialize("rangeUp(BigDecimal)");
         Iterable<Pair<RandomProvider, BigDecimal>> ps = P.pairs(
-                filterInfinite(x -> x.getScale() >= 2 && x.getSecondaryScale() > 0, P.randomProviders()),
+                filterInfinite(
+                        x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
+                        P.randomProvidersDefaultTertiaryScale()
+                ),
                 P.bigDecimals()
         );
         for (Pair<RandomProvider, BigDecimal> p : take(LIMIT, ps)) {
@@ -2063,7 +2171,7 @@ public class RandomProviderProperties extends TestProperties {
         }
 
         Iterable<Pair<RandomProvider, BigDecimal>> psFail = P.pairs(
-                filterInfinite(x -> x.getScale() < 2, P.randomProviders()),
+                filterInfinite(x -> x.getScale() < 2, P.randomProvidersDefaultTertiaryScale()),
                 P.bigDecimals()
         );
         for (Pair<RandomProvider, BigDecimal> p : take(LIMIT, psFail)) {
@@ -2073,7 +2181,10 @@ public class RandomProviderProperties extends TestProperties {
             } catch (IllegalStateException ignored) {}
         }
 
-        psFail = P.pairs(filterInfinite(x -> x.getSecondaryScale() < 1, P.randomProviders()), P.bigDecimals());
+        psFail = P.pairs(
+                filterInfinite(x -> x.getSecondaryScale() < 1, P.randomProvidersDefaultTertiaryScale()),
+                P.bigDecimals()
+        );
         for (Pair<RandomProvider, BigDecimal> p : take(LIMIT, psFail)) {
             try {
                 p.a.rangeUp(p.b);
@@ -2085,7 +2196,10 @@ public class RandomProviderProperties extends TestProperties {
     private void propertiesRangeDown_BigDecimal() {
         initialize("rangeDown(BigDecimal)");
         Iterable<Pair<RandomProvider, BigDecimal>> ps = P.pairs(
-                filterInfinite(x -> x.getScale() >= 2 && x.getSecondaryScale() > 0, P.randomProviders()),
+                filterInfinite(
+                        x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
+                        P.randomProvidersDefaultTertiaryScale()
+                ),
                 P.bigDecimals()
         );
         for (Pair<RandomProvider, BigDecimal> p : take(LIMIT, ps)) {
@@ -2094,7 +2208,7 @@ public class RandomProviderProperties extends TestProperties {
         }
 
         Iterable<Pair<RandomProvider, BigDecimal>> psFail = P.pairs(
-                filterInfinite(x -> x.getScale() < 2, P.randomProviders()),
+                filterInfinite(x -> x.getScale() < 2, P.randomProvidersDefaultTertiaryScale()),
                 P.bigDecimals()
         );
         for (Pair<RandomProvider, BigDecimal> p : take(LIMIT, psFail)) {
@@ -2104,7 +2218,10 @@ public class RandomProviderProperties extends TestProperties {
             } catch (IllegalStateException ignored) {}
         }
 
-        psFail = P.pairs(filterInfinite(x -> x.getSecondaryScale() < 1, P.randomProviders()), P.bigDecimals());
+        psFail = P.pairs(
+                filterInfinite(x -> x.getSecondaryScale() < 1, P.randomProvidersDefaultTertiaryScale()),
+                P.bigDecimals()
+        );
         for (Pair<RandomProvider, BigDecimal> p : take(LIMIT, psFail)) {
             try {
                 p.a.rangeDown(p.b);
@@ -2117,7 +2234,10 @@ public class RandomProviderProperties extends TestProperties {
         initialize("range(BigDecimal, BigDecimal)");
 
         Iterable<Triple<RandomProvider, BigDecimal, BigDecimal>> ts = P.triples(
-                filterInfinite(x -> x.getScale() > 0 && x.getSecondaryScale() > 0, P.randomProviders()),
+                filterInfinite(
+                        x -> x.getScale() > 0 && x.getSecondaryScale() > 0,
+                        P.randomProvidersDefaultTertiaryScale()
+                ),
                 P.bigDecimals(),
                 P.bigDecimals()
         );
@@ -2128,7 +2248,10 @@ public class RandomProviderProperties extends TestProperties {
         }
 
         Iterable<Pair<RandomProvider, BigDecimal>> ps = P.pairs(
-                filterInfinite(x -> x.getScale() > 0 && x.getSecondaryScale() > 0, P.randomProviders()),
+                filterInfinite(
+                        x -> x.getScale() > 0 && x.getSecondaryScale() > 0,
+                        P.randomProvidersDefaultTertiaryScale()
+                ),
                 P.bigDecimals()
         );
         for (Pair<RandomProvider, BigDecimal> p : take(LIMIT, ps)) {
@@ -2136,7 +2259,7 @@ public class RandomProviderProperties extends TestProperties {
         }
 
         Iterable<Triple<RandomProvider, BigDecimal, BigDecimal>> tsFail = P.triples(
-                filterInfinite(x -> x.getScale() < 1, P.randomProviders()),
+                filterInfinite(x -> x.getScale() < 1, P.randomProvidersDefaultTertiaryScale()),
                 P.bigDecimals(),
                 P.bigDecimals()
         );
@@ -2148,7 +2271,7 @@ public class RandomProviderProperties extends TestProperties {
         }
 
         tsFail = P.triples(
-                filterInfinite(x -> x.getSecondaryScale() < 1, P.randomProviders()),
+                filterInfinite(x -> x.getSecondaryScale() < 1, P.randomProvidersDefaultTertiaryScale()),
                 P.bigDecimals(),
                 P.bigDecimals()
         );
@@ -2163,7 +2286,10 @@ public class RandomProviderProperties extends TestProperties {
     private void propertiesRangeUpCanonical_BigDecimal() {
         initialize("rangeUpCanonical(BigDecimal)");
         Iterable<Pair<RandomProvider, BigDecimal>> ps = P.pairs(
-                filterInfinite(x -> x.getScale() >= 2 && x.getSecondaryScale() > 0, P.randomProviders()),
+                filterInfinite(
+                        x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
+                        P.randomProvidersDefaultTertiaryScale()
+                ),
                 P.bigDecimals()
         );
         for (Pair<RandomProvider, BigDecimal> p : take(LIMIT, ps)) {
@@ -2172,7 +2298,7 @@ public class RandomProviderProperties extends TestProperties {
         }
 
         Iterable<Pair<RandomProvider, BigDecimal>> psFail = P.pairs(
-                filterInfinite(x -> x.getScale() < 2, P.randomProviders()),
+                filterInfinite(x -> x.getScale() < 2, P.randomProvidersDefaultTertiaryScale()),
                 P.bigDecimals()
         );
         for (Pair<RandomProvider, BigDecimal> p : take(LIMIT, psFail)) {
@@ -2182,7 +2308,10 @@ public class RandomProviderProperties extends TestProperties {
             } catch (IllegalStateException ignored) {}
         }
 
-        psFail = P.pairs(filterInfinite(x -> x.getSecondaryScale() < 1, P.randomProviders()), P.bigDecimals());
+        psFail = P.pairs(
+                filterInfinite(x -> x.getSecondaryScale() < 1, P.randomProvidersDefaultTertiaryScale()),
+                P.bigDecimals()
+        );
         for (Pair<RandomProvider, BigDecimal> p : take(LIMIT, psFail)) {
             try {
                 p.a.rangeUpCanonical(p.b);
@@ -2194,7 +2323,10 @@ public class RandomProviderProperties extends TestProperties {
     private void propertiesRangeDownCanonical_BigDecimal() {
         initialize("rangeDownCanonical(BigDecimal)");
         Iterable<Pair<RandomProvider, BigDecimal>> ps = P.pairs(
-                filterInfinite(x -> x.getScale() >= 2 && x.getSecondaryScale() > 0, P.randomProviders()),
+                filterInfinite(
+                        x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
+                        P.randomProvidersDefaultTertiaryScale()
+                ),
                 P.bigDecimals()
         );
         for (Pair<RandomProvider, BigDecimal> p : take(LIMIT, ps)) {
@@ -2203,7 +2335,7 @@ public class RandomProviderProperties extends TestProperties {
         }
 
         Iterable<Pair<RandomProvider, BigDecimal>> psFail = P.pairs(
-                filterInfinite(x -> x.getScale() < 2, P.randomProviders()),
+                filterInfinite(x -> x.getScale() < 2, P.randomProvidersDefaultTertiaryScale()),
                 P.bigDecimals()
         );
         for (Pair<RandomProvider, BigDecimal> p : take(LIMIT, psFail)) {
@@ -2213,7 +2345,10 @@ public class RandomProviderProperties extends TestProperties {
             } catch (IllegalStateException ignored) {}
         }
 
-        psFail = P.pairs(filterInfinite(x -> x.getSecondaryScale() < 1, P.randomProviders()), P.bigDecimals());
+        psFail = P.pairs(
+                filterInfinite(x -> x.getSecondaryScale() < 1, P.randomProvidersDefaultTertiaryScale()),
+                P.bigDecimals()
+        );
         for (Pair<RandomProvider, BigDecimal> p : take(LIMIT, psFail)) {
             try {
                 p.a.rangeDownCanonical(p.b);
@@ -2226,7 +2361,10 @@ public class RandomProviderProperties extends TestProperties {
         initialize("rangeCanonical(BigDecimal, BigDecimal)");
 
         Iterable<Triple<RandomProvider, BigDecimal, BigDecimal>> ts = P.triples(
-                filterInfinite(x -> x.getScale() > 0 && x.getSecondaryScale() > 0, P.randomProviders()),
+                filterInfinite(
+                        x -> x.getScale() > 0 && x.getSecondaryScale() > 0,
+                        P.randomProvidersDefaultTertiaryScale()
+                ),
                 P.bigDecimals(),
                 P.bigDecimals()
         );
@@ -2237,7 +2375,10 @@ public class RandomProviderProperties extends TestProperties {
         }
 
         Iterable<Pair<RandomProvider, BigDecimal>> ps = P.pairs(
-                filterInfinite(x -> x.getScale() > 0 && x.getSecondaryScale() > 0, P.randomProviders()),
+                filterInfinite(
+                        x -> x.getScale() > 0 && x.getSecondaryScale() > 0,
+                        P.randomProvidersDefaultTertiaryScale()
+                ),
                 P.bigDecimals()
         );
         for (Pair<RandomProvider, BigDecimal> p : take(LIMIT, ps)) {
@@ -2245,7 +2386,7 @@ public class RandomProviderProperties extends TestProperties {
         }
 
         Iterable<Triple<RandomProvider, BigDecimal, BigDecimal>> tsFail = P.triples(
-                filterInfinite(x -> x.getScale() < 1, P.randomProviders()),
+                filterInfinite(x -> x.getScale() < 1, P.randomProvidersDefaultTertiaryScale()),
                 P.bigDecimals(),
                 P.bigDecimals()
         );
@@ -2257,7 +2398,7 @@ public class RandomProviderProperties extends TestProperties {
         }
 
         tsFail = P.triples(
-                filterInfinite(x -> x.getSecondaryScale() < 1, P.randomProviders()),
+                filterInfinite(x -> x.getSecondaryScale() < 1, P.randomProvidersDefaultTertiaryScale()),
                 P.bigDecimals(),
                 P.bigDecimals()
         );
@@ -2272,7 +2413,7 @@ public class RandomProviderProperties extends TestProperties {
     private void propertiesWithElement() {
         initialize("withElement(T, Iterable<T>)");
         Iterable<Triple<RandomProvider, Integer, Iterable<Integer>>> ts = P.triples(
-                filterInfinite(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale()),
+                filterInfinite(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryAndTertiaryScale()),
                 P.withNull(P.integersGeometric()),
                 P.prefixPermutations(EP.withNull(EP.naturalIntegers()))
         );
@@ -2288,7 +2429,7 @@ public class RandomProviderProperties extends TestProperties {
         }
 
         Iterable<Triple<RandomProvider, Integer, List<Integer>>> tsFail1 = P.triples(
-                filterInfinite(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale()),
+                filterInfinite(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryAndTertiaryScale()),
                 P.withNull(P.integersGeometric()),
                 P.withScale(4).lists(P.withNull(P.integersGeometric()))
         );
@@ -2300,7 +2441,7 @@ public class RandomProviderProperties extends TestProperties {
         }
 
         Iterable<Triple<RandomProvider, Integer, Iterable<Integer>>> tsFail2 = P.triples(
-                filterInfinite(x -> x.getScale() < 2, P.randomProvidersDefaultSecondaryScale()),
+                filterInfinite(x -> x.getScale() < 2, P.randomProvidersDefaultSecondaryAndTertiaryScale()),
                 P.withNull(P.integersGeometric()),
                 P.prefixPermutations(EP.withNull(EP.naturalIntegers()))
         );
@@ -2315,7 +2456,7 @@ public class RandomProviderProperties extends TestProperties {
     private void propertiesWithNull() {
         initialize("withNull(Iterable<T>)");
         Iterable<Pair<RandomProvider, Iterable<Integer>>> ps = P.pairs(
-                filterInfinite(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale()),
+                filterInfinite(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryAndTertiaryScale()),
                 P.prefixPermutations(EP.naturalIntegers())
         );
         for (Pair<RandomProvider, Iterable<Integer>> p : take(LIMIT, ps)) {
@@ -2326,7 +2467,7 @@ public class RandomProviderProperties extends TestProperties {
         }
 
         Iterable<Pair<RandomProvider, List<Integer>>> psFail1 = P.pairs(
-                filterInfinite(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale()),
+                filterInfinite(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryAndTertiaryScale()),
                 P.withScale(4).lists(P.integersGeometric())
         );
         for (Pair<RandomProvider, List<Integer>> p : take(LIMIT, psFail1)) {
@@ -2337,7 +2478,7 @@ public class RandomProviderProperties extends TestProperties {
         }
 
         Iterable<Pair<RandomProvider, Iterable<Integer>>> psFail2 = P.pairs(
-                filterInfinite(x -> x.getScale() < 2, P.randomProvidersDefaultSecondaryScale()),
+                filterInfinite(x -> x.getScale() < 2, P.randomProvidersDefaultSecondaryAndTertiaryScale()),
                 P.prefixPermutations(EP.integers())
         );
         for (Pair<RandomProvider, Iterable<Integer>> p : take(LIMIT, psFail2)) {
@@ -2351,7 +2492,7 @@ public class RandomProviderProperties extends TestProperties {
     private void propertiesOptionals() {
         initialize("optionals(Iterable<T>)");
         Iterable<Pair<RandomProvider, Iterable<Integer>>> ps = P.pairs(
-                filterInfinite(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale()),
+                filterInfinite(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryAndTertiaryScale()),
                 P.prefixPermutations(EP.naturalIntegers())
         );
         for (Pair<RandomProvider, Iterable<Integer>> p : take(LIMIT, ps)) {
@@ -2362,7 +2503,7 @@ public class RandomProviderProperties extends TestProperties {
         }
 
         Iterable<Pair<RandomProvider, List<Integer>>> psFail = P.pairs(
-                filterInfinite(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale()),
+                filterInfinite(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryAndTertiaryScale()),
                 P.withScale(4).lists(P.integersGeometric())
         );
         for (Pair<RandomProvider, List<Integer>> p : take(LIMIT, psFail)) {
@@ -2373,7 +2514,7 @@ public class RandomProviderProperties extends TestProperties {
         }
 
         Iterable<Pair<RandomProvider, Iterable<Integer>>> psFail2 = P.pairs(
-                filterInfinite(x -> x.getScale() < 2, P.randomProvidersDefaultSecondaryScale()),
+                filterInfinite(x -> x.getScale() < 2, P.randomProvidersDefaultSecondaryAndTertiaryScale()),
                 P.prefixPermutations(EP.integers())
         );
         for (Pair<RandomProvider, Iterable<Integer>> p : take(LIMIT, psFail2)) {
@@ -2384,7 +2525,7 @@ public class RandomProviderProperties extends TestProperties {
         }
 
         psFail2 = P.pairs(
-                filterInfinite(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale()),
+                filterInfinite(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryAndTertiaryScale()),
                 P.prefixPermutations(EP.withNull(EP.naturalIntegers()))
         );
         for (Pair<RandomProvider, Iterable<Integer>> p : take(LIMIT, psFail2)) {
@@ -2398,7 +2539,7 @@ public class RandomProviderProperties extends TestProperties {
     private void propertiesNullableOptionals() {
         initialize("nullableOptionals(Iterable<T>)");
         Iterable<Pair<RandomProvider, Iterable<Integer>>> ps = P.pairs(
-                filterInfinite(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale()),
+                filterInfinite(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryAndTertiaryScale()),
                 P.prefixPermutations(EP.withNull(EP.naturalIntegers()))
         );
         for (Pair<RandomProvider, Iterable<Integer>> p : take(LIMIT, ps)) {
@@ -2409,7 +2550,7 @@ public class RandomProviderProperties extends TestProperties {
         }
 
         Iterable<Pair<RandomProvider, List<Integer>>> psFail = P.pairs(
-                filterInfinite(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale()),
+                filterInfinite(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryAndTertiaryScale()),
                 P.withScale(4).lists(P.withNull(P.integersGeometric()))
         );
         for (Pair<RandomProvider, List<Integer>> p : take(LIMIT, psFail)) {
@@ -2420,7 +2561,7 @@ public class RandomProviderProperties extends TestProperties {
         }
 
         Iterable<Pair<RandomProvider, Iterable<Integer>>> psFail2 = P.pairs(
-                filterInfinite(x -> x.getScale() < 2, P.randomProvidersDefaultSecondaryScale()),
+                filterInfinite(x -> x.getScale() < 2, P.randomProvidersDefaultSecondaryAndTertiaryScale()),
                 P.prefixPermutations(EP.withNull(EP.naturalIntegers()))
         );
         for (Pair<RandomProvider, Iterable<Integer>> p : take(LIMIT, psFail2)) {
@@ -2584,7 +2725,7 @@ public class RandomProviderProperties extends TestProperties {
     private void propertiesPrefixPermutations() {
         initialize("prefixPermutations(Iterable<T>)");
         Iterable<Pair<RandomProvider, List<Integer>>> ps = P.pairs(
-                filterInfinite(rp -> rp.getScale() > 0, P.randomProvidersDefaultSecondaryScale()),
+                filterInfinite(rp -> rp.getScale() > 0, P.randomProvidersDefaultSecondaryAndTertiaryScale()),
                 P.withScale(4).lists(P.withNull(P.naturalIntegersGeometric()))
         );
         for (Pair<RandomProvider, List<Integer>> p : take(LIMIT, ps)) {
@@ -2595,7 +2736,7 @@ public class RandomProviderProperties extends TestProperties {
 
         Iterable<RandomProvider> rps = filterInfinite(
                 rp -> rp.getScale() > 0,
-                P.randomProvidersDefaultSecondaryScale()
+                P.randomProvidersDefaultSecondaryAndTertiaryScale()
         );
         for (RandomProvider rp : take(LIMIT, rps)) {
             List<Integer> xs = Collections.emptyList();
@@ -2603,7 +2744,7 @@ public class RandomProviderProperties extends TestProperties {
         }
 
         Iterable<Pair<RandomProvider, Integer>> ps2 = P.pairs(
-                filterInfinite(rp -> rp.getScale() > 0, P.randomProvidersDefaultSecondaryScale()),
+                filterInfinite(rp -> rp.getScale() > 0, P.randomProvidersDefaultSecondaryAndTertiaryScale()),
                 P.withNull(P.integersGeometric())
         );
         for (Pair<RandomProvider, Integer> p : take(LIMIT, ps2)) {
@@ -2612,7 +2753,7 @@ public class RandomProviderProperties extends TestProperties {
         }
 
         Iterable<Pair<RandomProvider, Iterable<Integer>>> ps3 = P.pairs(
-                filterInfinite(rp -> rp.getScale() > 0, P.randomProvidersDefaultSecondaryScale()),
+                filterInfinite(rp -> rp.getScale() > 0, P.randomProvidersDefaultSecondaryAndTertiaryScale()),
                 P.prefixPermutations(EP.withNull(EP.naturalIntegers()))
         );
         for (Pair<RandomProvider, Iterable<Integer>> p : take(LIMIT, ps3)) {
@@ -2623,7 +2764,7 @@ public class RandomProviderProperties extends TestProperties {
         }
 
         Iterable<Pair<RandomProvider, List<Integer>>> psFail = P.pairs(
-                filterInfinite(rp -> rp.getScale() < 1, P.randomProvidersDefaultSecondaryScale()),
+                filterInfinite(rp -> rp.getScale() < 1, P.randomProvidersDefaultSecondaryAndTertiaryScale()),
                 P.withScale(4).lists(P.withNull(P.naturalIntegersGeometric()))
         );
         for (Pair<RandomProvider, List<Integer>> p : take(LIMIT, psFail)) {
@@ -2712,7 +2853,10 @@ public class RandomProviderProperties extends TestProperties {
     private void propertiesLists() {
         initialize("lists(Iterable<T>)");
         Iterable<Pair<RandomProvider, Iterable<Integer>>> ps = P.pairs(
-                filterInfinite(rp -> rp.getScale() > 0, P.withScale(4).randomProvidersDefaultSecondaryScale()),
+                filterInfinite(
+                        rp -> rp.getScale() > 0,
+                        P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale()
+                ),
                 P.prefixPermutations(EP.withNull(EP.naturalIntegers()))
         );
         for (Pair<RandomProvider, Iterable<Integer>> p : take(LIMIT, ps)) {
@@ -2720,7 +2864,10 @@ public class RandomProviderProperties extends TestProperties {
         }
 
         Iterable<Pair<RandomProvider, List<Integer>>> ps2 = P.pairs(
-                filterInfinite(rp -> rp.getScale() > 0, P.withScale(4).randomProvidersDefaultSecondaryScale()),
+                filterInfinite(
+                        rp -> rp.getScale() > 0,
+                        P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale()
+                ),
                 P.withScale(4).listsAtLeast(1, P.withNull(P.withScale(4).integersGeometric()))
         );
         for (Pair<RandomProvider, List<Integer>> p : take(LIMIT, ps2)) {
@@ -2738,7 +2885,10 @@ public class RandomProviderProperties extends TestProperties {
     private void propertiesStrings_String() {
         initialize("strings(String)");
         Iterable<Pair<RandomProvider, String>> ps = P.pairs(
-                filterInfinite(rp -> rp.getScale() > 0, P.withScale(4).randomProvidersDefaultSecondaryScale()),
+                filterInfinite(
+                        rp -> rp.getScale() > 0,
+                        P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale()
+                ),
                 P.withScale(4).stringsAtLeast(1)
         );
         for (Pair<RandomProvider, String> p : take(LIMIT, ps)) {
@@ -2747,7 +2897,7 @@ public class RandomProviderProperties extends TestProperties {
 
         Iterable<RandomProvider> rpsFail = filterInfinite(
                 s -> s.getScale() > 0,
-                P.withScale(4).randomProvidersDefaultSecondaryScale()
+                P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale()
         );
         for (RandomProvider rp : take(LIMIT, rpsFail)) {
             try {
@@ -2761,7 +2911,7 @@ public class RandomProviderProperties extends TestProperties {
         initialize("strings()");
         Iterable<RandomProvider> rpsFail = filterInfinite(
                 s -> s.getScale() > 0,
-                P.withScale(4).randomProvidersDefaultSecondaryScale()
+                P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale()
         );
         for (RandomProvider rp : take(LIMIT, rpsFail)) {
             simpleTest(rp, rp.strings(), s -> true);
@@ -2773,7 +2923,7 @@ public class RandomProviderProperties extends TestProperties {
         Iterable<Triple<RandomProvider, Integer, Iterable<Integer>>> ts = filterInfinite(
                 t -> t.a.getScale() > t.b,
                 P.triples(
-                        P.withScale(4).randomProvidersDefaultSecondaryScale(),
+                        P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale(),
                         P.withScale(4).naturalIntegersGeometric(),
                         P.prefixPermutations(EP.withNull(EP.naturalIntegers()))
                 )
@@ -2785,7 +2935,7 @@ public class RandomProviderProperties extends TestProperties {
         Iterable<Triple<RandomProvider, Integer, List<Integer>>> ts2 = filterInfinite(
                 t -> t.a.getScale() > t.b,
                 P.triples(
-                        P.withScale(4).randomProvidersDefaultSecondaryScale(),
+                        P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale(),
                         P.withScale(4).naturalIntegersGeometric(),
                         P.withScale(4).listsAtLeast(1, P.withNull(P.withScale(4).integersGeometric()))
                 )
@@ -2804,7 +2954,7 @@ public class RandomProviderProperties extends TestProperties {
         Iterable<Triple<RandomProvider, Integer, Iterable<Integer>>> tsFail = filterInfinite(
                 t -> t.a.getScale() > t.b,
                 P.triples(
-                        P.withScale(4).randomProvidersDefaultSecondaryScale(),
+                        P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale(),
                         P.withScale(4).negativeIntegersGeometric(),
                         P.prefixPermutations(EP.withNull(EP.naturalIntegers()))
                 )
@@ -2819,7 +2969,7 @@ public class RandomProviderProperties extends TestProperties {
         tsFail = filterInfinite(
                 t -> t.a.getScale() <= t.b,
                 P.triples(
-                        P.withScale(4).randomProvidersDefaultSecondaryScale(),
+                        P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale(),
                         P.withScale(4).naturalIntegersGeometric(),
                         P.prefixPermutations(EP.withNull(EP.naturalIntegers()))
                 )
@@ -2837,7 +2987,7 @@ public class RandomProviderProperties extends TestProperties {
         Iterable<Triple<RandomProvider, Integer, String>> ts = filterInfinite(
                 t -> t.a.getScale() > t.b,
                 P.triples(
-                        P.withScale(4).randomProvidersDefaultSecondaryScale(),
+                        P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale(),
                         P.withScale(4).naturalIntegersGeometric(),
                         P.withScale(4).stringsAtLeast(1)
                 )
@@ -2849,7 +2999,7 @@ public class RandomProviderProperties extends TestProperties {
         Iterable<Pair<RandomProvider, Integer>> psFail = filterInfinite(
                 p -> p.a.getScale() > p.b,
                 P.pairs(
-                        P.withScale(4).randomProvidersDefaultSecondaryScale(),
+                        P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale(),
                         P.withScale(4).naturalIntegersGeometric()
                 )
         );
@@ -2863,7 +3013,7 @@ public class RandomProviderProperties extends TestProperties {
         Iterable<Triple<RandomProvider, Integer, String>> tsFail = filterInfinite(
                 t -> t.a.getScale() > t.b,
                 P.triples(
-                        P.withScale(4).randomProvidersDefaultSecondaryScale(),
+                        P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale(),
                         P.withScale(4).negativeIntegersGeometric(),
                         P.withScale(4).stringsAtLeast(1)
                 )
@@ -2878,7 +3028,7 @@ public class RandomProviderProperties extends TestProperties {
         tsFail = filterInfinite(
                 t -> t.a.getScale() <= t.b,
                 P.triples(
-                        P.withScale(4).randomProvidersDefaultSecondaryScale(),
+                        P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale(),
                         P.withScale(4).naturalIntegersGeometric(),
                         P.withScale(4).stringsAtLeast(1)
                 )
@@ -2896,7 +3046,7 @@ public class RandomProviderProperties extends TestProperties {
         Iterable<Pair<RandomProvider, Integer>> ps = filterInfinite(
                 p -> p.a.getScale() > p.b,
                 P.pairs(
-                        P.withScale(4).randomProvidersDefaultSecondaryScale(),
+                        P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale(),
                         P.withScale(4).naturalIntegersGeometric()
                 )
         );
@@ -2907,7 +3057,7 @@ public class RandomProviderProperties extends TestProperties {
         Iterable<Pair<RandomProvider, Integer>> psFail = filterInfinite(
                 p -> p.a.getScale() > p.b,
                 P.pairs(
-                        P.withScale(4).randomProvidersDefaultSecondaryScale(),
+                        P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale(),
                         P.withScale(4).negativeIntegersGeometric()
                 )
         );
@@ -2921,7 +3071,7 @@ public class RandomProviderProperties extends TestProperties {
         psFail = filterInfinite(
                 p -> p.a.getScale() <= p.b,
                 P.pairs(
-                        P.withScale(4).randomProvidersDefaultSecondaryScale(),
+                        P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale(),
                         P.withScale(4).naturalIntegersGeometric()
                 )
         );
@@ -2941,7 +3091,7 @@ public class RandomProviderProperties extends TestProperties {
                         filterInfinite(
                                 p -> p.a.getScale() > p.b,
                                 P.pairs(
-                                        P.withScale(4).randomProvidersDefaultSecondaryScale(),
+                                        P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale(),
                                         P.withScale(4).naturalIntegersGeometric()
                                 )
                         ),
@@ -2962,7 +3112,7 @@ public class RandomProviderProperties extends TestProperties {
         Iterable<Pair<RandomProvider, Integer>> psFail = filterInfinite(
                 p -> p.a.getScale() > p.b,
                 P.pairs(
-                        P.withScale(4).randomProvidersDefaultSecondaryScale(),
+                        P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale(),
                         P.withScale(4).naturalIntegersGeometric()
                 )
         );
@@ -2980,7 +3130,7 @@ public class RandomProviderProperties extends TestProperties {
                             filterInfinite(
                                     p -> p.a.getScale() > p.b,
                                     P.pairs(
-                                            P.withScale(4).randomProvidersDefaultSecondaryScale(),
+                                            P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale(),
                                             P.withScale(4).negativeIntegersGeometric()
                                     )
                             ),
@@ -3004,7 +3154,7 @@ public class RandomProviderProperties extends TestProperties {
         Iterable<Pair<RandomProvider, Integer>> ps = filterInfinite(
                 p -> p.a.getScale() > p.b,
                 P.pairs(
-                        P.withScale(4).randomProvidersDefaultSecondaryScale(),
+                        P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale(),
                         filterInfinite(i -> i <= (1 << 16), P.withScale(4).naturalIntegersGeometric())
                 )
         );
@@ -3015,7 +3165,7 @@ public class RandomProviderProperties extends TestProperties {
         Iterable<Pair<RandomProvider, Integer>> psFail = filterInfinite(
                 p -> p.a.getScale() > p.b,
                 P.pairs(
-                        P.withScale(4).randomProvidersDefaultSecondaryScale(),
+                        P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale(),
                         P.withScale(4).negativeIntegersGeometric()
                 )
         );
@@ -3030,7 +3180,10 @@ public class RandomProviderProperties extends TestProperties {
     private void propertiesDistinctLists() {
         initialize("distinctLists(Iterable<T>)");
         Iterable<Pair<RandomProvider, Iterable<Integer>>> ps = P.pairs(
-                filterInfinite(rp -> rp.getScale() > 0, P.withScale(4).randomProvidersDefaultSecondaryScale()),
+                filterInfinite(
+                        rp -> rp.getScale() > 0,
+                        P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale()
+                ),
                 P.withScale(4).repeatingIterables(P.withNull(P.naturalIntegers()))
         );
         for (Pair<RandomProvider, Iterable<Integer>> p : take(LIMIT, ps)) {
@@ -3038,7 +3191,10 @@ public class RandomProviderProperties extends TestProperties {
         }
 
         Iterable<Pair<RandomProvider, List<Integer>>> ps2 = P.pairs(
-                filterInfinite(rp -> rp.getScale() > 0, P.withScale(4).randomProvidersDefaultSecondaryScale()),
+                filterInfinite(
+                        rp -> rp.getScale() > 0,
+                        P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale()
+                ),
                 P.withScale(4).listsAtLeast(1, P.withNull(P.withScale(4).integersGeometric()))
         );
         for (Pair<RandomProvider, List<Integer>> p : take(LIMIT, ps2)) {
@@ -3056,14 +3212,20 @@ public class RandomProviderProperties extends TestProperties {
     private void propertiesDistinctStrings_String() {
         initialize("distinctStrings(String)");
         Iterable<Pair<RandomProvider, String>> ps = P.pairs(
-                filterInfinite(rp -> rp.getScale() > 0, P.withScale(4).randomProvidersDefaultSecondaryScale()),
+                filterInfinite(
+                        rp -> rp.getScale() > 0,
+                        P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale()
+                ),
                 P.withScale(4).stringsAtLeast(1)
         );
         for (Pair<RandomProvider, String> p : take(LIMIT, ps)) {
             simpleTest(p.a, p.a.distinctStrings(p.b), s -> isSubsetOf(s, p.b) && unique(s));
         }
 
-        Iterable<RandomProvider> rpsFail = filterInfinite(s -> s.getScale() > 0, P.withScale(4).randomProviders());
+        Iterable<RandomProvider> rpsFail = filterInfinite(
+                s -> s.getScale() > 0,
+                P.withScale(4).randomProvidersDefaultTertiaryScale()
+        );
         for (RandomProvider rp : take(LIMIT, rpsFail)) {
             try {
                 rp.distinctStrings("");
@@ -3076,7 +3238,7 @@ public class RandomProviderProperties extends TestProperties {
         initialize("distinctStrings()");
         Iterable<RandomProvider> rpsFail = filterInfinite(
                 s -> s.getScale() > 0,
-                P.withScale(4).randomProvidersDefaultSecondaryScale()
+                P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale()
         );
         for (RandomProvider rp : take(LIMIT, rpsFail)) {
             simpleTest(rp, rp.distinctStrings(), IterableUtils::unique);
@@ -3088,7 +3250,7 @@ public class RandomProviderProperties extends TestProperties {
         Iterable<Triple<RandomProvider, Integer, Iterable<Integer>>> ts = filterInfinite(
                 t -> t.a.getScale() > t.b,
                 P.triples(
-                        P.withScale(4).randomProvidersDefaultSecondaryScale(),
+                        P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale(),
                         P.withScale(4).naturalIntegersGeometric(),
                         P.prefixPermutations(EP.withNull(EP.naturalIntegers()))
                 )
@@ -3103,7 +3265,7 @@ public class RandomProviderProperties extends TestProperties {
                         filterInfinite(
                                 p -> p.a.getScale() > p.b,
                                 P.pairs(
-                                        P.withScale(4).randomProvidersDefaultSecondaryScale(),
+                                        P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale(),
                                         P.withScale(4).rangeUpGeometric(2)
                                 )
                         ),
@@ -3120,7 +3282,7 @@ public class RandomProviderProperties extends TestProperties {
         Iterable<Triple<RandomProvider, Integer, List<Integer>>> tsFail = filterInfinite(
                 t -> t.a.getScale() > t.b,
                 P.triples(
-                        P.withScale(4).randomProvidersDefaultSecondaryScale(),
+                        P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale(),
                         P.withScale(4).naturalIntegersGeometric(),
                         P.withScale(4).listsAtLeast(1, P.withNull(P.withScale(4).integersGeometric()))
                 )
@@ -3135,7 +3297,7 @@ public class RandomProviderProperties extends TestProperties {
         Iterable<Triple<RandomProvider, Integer, Iterable<Integer>>> tsFail2 = filterInfinite(
                 t -> t.a.getScale() > t.b,
                 P.triples(
-                        P.withScale(4).randomProvidersDefaultSecondaryScale(),
+                        P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale(),
                         P.withScale(4).negativeIntegersGeometric(),
                         P.prefixPermutations(EP.withNull(EP.naturalIntegers()))
                 )
@@ -3150,7 +3312,7 @@ public class RandomProviderProperties extends TestProperties {
         tsFail2 = filterInfinite(
                 t -> t.a.getScale() <= t.b,
                 P.triples(
-                        P.withScale(4).randomProvidersDefaultSecondaryScale(),
+                        P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale(),
                         P.withScale(4).naturalIntegersGeometric(),
                         P.prefixPermutations(EP.withNull(EP.naturalIntegers()))
                 )
@@ -3171,7 +3333,7 @@ public class RandomProviderProperties extends TestProperties {
                         filterInfinite(
                                 p -> p.a.getScale() > p.b,
                                 P.pairs(
-                                        P.withScale(4).randomProvidersDefaultSecondaryScale(),
+                                        P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale(),
                                         P.withScale(4).naturalIntegersGeometric()
                                 )
                         ),
@@ -3192,7 +3354,7 @@ public class RandomProviderProperties extends TestProperties {
         Iterable<Pair<RandomProvider, Integer>> psFail = filterInfinite(
                 p -> p.a.getScale() > p.b,
                 P.pairs(
-                        P.withScale(4).randomProvidersDefaultSecondaryScale(),
+                        P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale(),
                         P.withScale(4).naturalIntegersGeometric()
                 )
         );
@@ -3210,7 +3372,7 @@ public class RandomProviderProperties extends TestProperties {
                             filterInfinite(
                                     p -> p.a.getScale() > p.b,
                                     P.pairs(
-                                            P.withScale(4).randomProvidersDefaultSecondaryScale(),
+                                            P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale(),
                                             P.withScale(4).negativeIntegersGeometric()
                                     )
                             ),
@@ -3233,7 +3395,7 @@ public class RandomProviderProperties extends TestProperties {
                             filterInfinite(
                                     p -> p.a.getScale() <= p.b,
                                     P.pairs(
-                                            P.withScale(4).randomProvidersDefaultSecondaryScale(),
+                                            P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale(),
                                             P.withScale(4).naturalIntegersGeometric()
                                     )
                             ),
@@ -3257,7 +3419,7 @@ public class RandomProviderProperties extends TestProperties {
         Iterable<Pair<RandomProvider, Integer>> ps = filterInfinite(
                 p -> p.a.getScale() > p.b,
                 P.pairs(
-                        P.withScale(4).randomProvidersDefaultSecondaryScale(),
+                        P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale(),
                         P.withScale(4).naturalIntegersGeometric()
                 )
         );
@@ -3268,7 +3430,7 @@ public class RandomProviderProperties extends TestProperties {
         Iterable<Pair<RandomProvider, Integer>> psFail = filterInfinite(
                 p -> p.a.getScale() > p.b,
                 P.pairs(
-                        P.withScale(4).randomProvidersDefaultSecondaryScale(),
+                        P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale(),
                         P.withScale(4).negativeIntegersGeometric()
                 )
         );
@@ -3282,7 +3444,7 @@ public class RandomProviderProperties extends TestProperties {
         psFail = filterInfinite(
                 p -> p.a.getScale() <= p.b,
                 P.pairs(
-                        P.withScale(4).randomProvidersDefaultSecondaryScale(),
+                        P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale(),
                         P.withScale(4).naturalIntegersGeometric()
                 )
         );
@@ -3380,7 +3542,10 @@ public class RandomProviderProperties extends TestProperties {
     private void propertiesBags() {
         initialize("bags(Iterable<T>)");
         Iterable<Pair<RandomProvider, Iterable<Integer>>> ps = P.pairs(
-                filterInfinite(rp -> rp.getScale() > 0, P.withScale(4).randomProvidersDefaultSecondaryScale()),
+                filterInfinite(
+                        rp -> rp.getScale() > 0,
+                        P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale()
+                ),
                 P.prefixPermutations(EP.naturalIntegers())
         );
         for (Pair<RandomProvider, Iterable<Integer>> p : take(LIMIT, ps)) {
@@ -3388,7 +3553,10 @@ public class RandomProviderProperties extends TestProperties {
         }
 
         Iterable<Pair<RandomProvider, List<Integer>>> ps2 = P.pairs(
-                filterInfinite(rp -> rp.getScale() > 0, P.withScale(4).randomProvidersDefaultSecondaryScale()),
+                filterInfinite(
+                        rp -> rp.getScale() > 0,
+                        P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale()
+                ),
                 P.withScale(4).listsAtLeast(1, P.withScale(4).integersGeometric())
         );
         for (Pair<RandomProvider, List<Integer>> p : take(LIMIT, ps2)) {
@@ -3403,7 +3571,10 @@ public class RandomProviderProperties extends TestProperties {
         }
 
         Iterable<Pair<RandomProvider, Iterable<Integer>>> psFail = P.pairs(
-                filterInfinite(rp -> rp.getScale() > 0, P.withScale(4).randomProvidersDefaultSecondaryScale()),
+                filterInfinite(
+                        rp -> rp.getScale() > 0,
+                        P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale()
+                ),
                 P.prefixPermutations(P.withNull(EP.naturalIntegers()))
         );
         for (Pair<RandomProvider, Iterable<Integer>> p : take(LIMIT, psFail)) {
@@ -3417,7 +3588,10 @@ public class RandomProviderProperties extends TestProperties {
     private void propertiesStringBags_String() {
         initialize("stringBags(String)");
         Iterable<Pair<RandomProvider, String>> ps = P.pairs(
-                filterInfinite(rp -> rp.getScale() > 0, P.withScale(4).randomProvidersDefaultSecondaryScale()),
+                filterInfinite(
+                        rp -> rp.getScale() > 0,
+                        P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale()
+                ),
                 P.withScale(4).stringsAtLeast(1)
         );
         for (Pair<RandomProvider, String> p : take(LIMIT, ps)) {
@@ -3426,7 +3600,7 @@ public class RandomProviderProperties extends TestProperties {
 
         Iterable<RandomProvider> rpsFail = filterInfinite(
                 s -> s.getScale() > 0,
-                P.withScale(4).randomProvidersDefaultSecondaryScale()
+                P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale()
         );
         for (RandomProvider rp : take(LIMIT, rpsFail)) {
             try {
@@ -3440,7 +3614,7 @@ public class RandomProviderProperties extends TestProperties {
         initialize("stringBags()");
         Iterable<RandomProvider> rpsFail = filterInfinite(
                 s -> s.getScale() > 0,
-                P.withScale(4).randomProvidersDefaultSecondaryScale()
+                P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale()
         );
         for (RandomProvider rp : take(LIMIT, rpsFail)) {
             simpleTest(rp, rp.stringBags(), s -> weaklyIncreasing(toList(s)));
@@ -3452,7 +3626,7 @@ public class RandomProviderProperties extends TestProperties {
         Iterable<Triple<RandomProvider, Integer, Iterable<Integer>>> ts = filterInfinite(
                 t -> t.a.getScale() > t.b,
                 P.triples(
-                        P.withScale(4).randomProvidersDefaultSecondaryScale(),
+                        P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale(),
                         P.withScale(4).naturalIntegersGeometric(),
                         P.prefixPermutations(EP.naturalIntegers())
                 )
@@ -3464,7 +3638,7 @@ public class RandomProviderProperties extends TestProperties {
         Iterable<Triple<RandomProvider, Integer, List<Integer>>> ts2 = filterInfinite(
                 t -> t.a.getScale() > t.b,
                 P.triples(
-                        P.withScale(4).randomProvidersDefaultSecondaryScale(),
+                        P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale(),
                         P.withScale(4).naturalIntegersGeometric(),
                         P.withScale(4).listsAtLeast(1, P.withScale(4).integersGeometric())
                 )
@@ -3483,7 +3657,7 @@ public class RandomProviderProperties extends TestProperties {
         Iterable<Triple<RandomProvider, Integer, Iterable<Integer>>> tsFail = filterInfinite(
                 t -> t.a.getScale() > t.b,
                 P.triples(
-                        P.withScale(4).randomProvidersDefaultSecondaryScale(),
+                        P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale(),
                         P.withScale(4).negativeIntegersGeometric(),
                         P.prefixPermutations(EP.naturalIntegers())
                 )
@@ -3498,7 +3672,7 @@ public class RandomProviderProperties extends TestProperties {
         tsFail = filterInfinite(
                 t -> t.a.getScale() <= t.b,
                 P.triples(
-                        P.withScale(4).randomProvidersDefaultSecondaryScale(),
+                        P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale(),
                         P.withScale(4).naturalIntegersGeometric(),
                         P.prefixPermutations(EP.naturalIntegers())
                 )
@@ -3513,7 +3687,7 @@ public class RandomProviderProperties extends TestProperties {
         tsFail = filterInfinite(
                 t -> t.a.getScale() > t.b,
                 P.triples(
-                        P.withScale(4).randomProvidersDefaultSecondaryScale(),
+                        P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale(),
                         P.withScale(4).naturalIntegersGeometric(),
                         P.prefixPermutations(P.withNull(EP.naturalIntegers()))
                 )
@@ -3531,7 +3705,7 @@ public class RandomProviderProperties extends TestProperties {
         Iterable<Triple<RandomProvider, Integer, String>> ts = filterInfinite(
                 t -> t.a.getScale() > t.b,
                 P.triples(
-                        P.withScale(4).randomProvidersDefaultSecondaryScale(),
+                        P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale(),
                         P.withScale(4).naturalIntegersGeometric(),
                         P.withScale(4).stringsAtLeast(1)
                 )
@@ -3547,7 +3721,7 @@ public class RandomProviderProperties extends TestProperties {
         Iterable<Pair<RandomProvider, Integer>> psFail = filterInfinite(
                 p -> p.a.getScale() > p.b,
                 P.pairs(
-                        P.withScale(4).randomProvidersDefaultSecondaryScale(),
+                        P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale(),
                         P.withScale(4).naturalIntegersGeometric()
                 )
         );
@@ -3561,7 +3735,7 @@ public class RandomProviderProperties extends TestProperties {
         Iterable<Triple<RandomProvider, Integer, String>> tsFail = filterInfinite(
                 t -> t.a.getScale() > t.b,
                 P.triples(
-                        P.withScale(4).randomProvidersDefaultSecondaryScale(),
+                        P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale(),
                         P.withScale(4).negativeIntegersGeometric(),
                         P.withScale(4).stringsAtLeast(1)
                 )
@@ -3576,7 +3750,7 @@ public class RandomProviderProperties extends TestProperties {
         tsFail = filterInfinite(
                 t -> t.a.getScale() <= t.b,
                 P.triples(
-                        P.withScale(4).randomProvidersDefaultSecondaryScale(),
+                        P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale(),
                         P.withScale(4).naturalIntegersGeometric(),
                         P.withScale(4).stringsAtLeast(1)
                 )
@@ -3594,7 +3768,7 @@ public class RandomProviderProperties extends TestProperties {
         Iterable<Pair<RandomProvider, Integer>> ps = filterInfinite(
                 p -> p.a.getScale() > p.b,
                 P.pairs(
-                        P.withScale(4).randomProvidersDefaultSecondaryScale(),
+                        P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale(),
                         P.withScale(4).naturalIntegersGeometric()
                 )
         );
@@ -3609,7 +3783,7 @@ public class RandomProviderProperties extends TestProperties {
         Iterable<Pair<RandomProvider, Integer>> psFail = filterInfinite(
                 p -> p.a.getScale() > p.b,
                 P.pairs(
-                        P.withScale(4).randomProvidersDefaultSecondaryScale(),
+                        P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale(),
                         P.withScale(4).negativeIntegersGeometric()
                 )
         );
@@ -3623,7 +3797,7 @@ public class RandomProviderProperties extends TestProperties {
         psFail = filterInfinite(
                 p -> p.a.getScale() <= p.b,
                 P.pairs(
-                        P.withScale(4).randomProvidersDefaultSecondaryScale(),
+                        P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale(),
                         P.withScale(4).naturalIntegersGeometric()
                 )
         );
@@ -3643,7 +3817,7 @@ public class RandomProviderProperties extends TestProperties {
                         filterInfinite(
                                 p -> p.a.getScale() > p.b,
                                 P.pairs(
-                                        P.withScale(4).randomProvidersDefaultSecondaryScale(),
+                                        P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale(),
                                         P.withScale(4).naturalIntegersGeometric()
                                 )
                         ),
@@ -3664,7 +3838,7 @@ public class RandomProviderProperties extends TestProperties {
         Iterable<Pair<RandomProvider, Integer>> psFail = filterInfinite(
                 p -> p.a.getScale() > p.b,
                 P.pairs(
-                        P.withScale(4).randomProvidersDefaultSecondaryScale(),
+                        P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale(),
                         P.withScale(4).naturalIntegersGeometric()
                 )
         );
@@ -3682,7 +3856,7 @@ public class RandomProviderProperties extends TestProperties {
                             filterInfinite(
                                     p -> p.a.getScale() > p.b,
                                     P.pairs(
-                                            P.withScale(4).randomProvidersDefaultSecondaryScale(),
+                                            P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale(),
                                             P.withScale(4).negativeIntegersGeometric()
                                     )
                             ),
@@ -3706,7 +3880,7 @@ public class RandomProviderProperties extends TestProperties {
         Iterable<Pair<RandomProvider, Integer>> ps = filterInfinite(
                 p -> p.a.getScale() > p.b,
                 P.pairs(
-                        P.withScale(4).randomProvidersDefaultSecondaryScale(),
+                        P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale(),
                         filterInfinite(i -> i <= (1 << 16), P.withScale(4).naturalIntegersGeometric())
                 )
         );
@@ -3717,7 +3891,7 @@ public class RandomProviderProperties extends TestProperties {
         Iterable<Pair<RandomProvider, Integer>> psFail = filterInfinite(
                 p -> p.a.getScale() > p.b,
                 P.pairs(
-                        P.withScale(4).randomProvidersDefaultSecondaryScale(),
+                        P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale(),
                         P.withScale(4).negativeIntegersGeometric()
                 )
         );
@@ -3732,7 +3906,10 @@ public class RandomProviderProperties extends TestProperties {
     private void propertiesSubsets() {
         initialize("subsets(Iterable<T>)");
         Iterable<Pair<RandomProvider, Iterable<Integer>>> ps = P.pairs(
-                filterInfinite(rp -> rp.getScale() > 0, P.withScale(4).randomProvidersDefaultSecondaryScale()),
+                filterInfinite(
+                        rp -> rp.getScale() > 0,
+                        P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale()
+                ),
                 P.withScale(4).repeatingIterables(P.naturalIntegers())
         );
         for (Pair<RandomProvider, Iterable<Integer>> p : take(LIMIT, ps)) {
@@ -3740,7 +3917,10 @@ public class RandomProviderProperties extends TestProperties {
         }
 
         Iterable<Pair<RandomProvider, List<Integer>>> ps2 = P.pairs(
-                filterInfinite(rp -> rp.getScale() > 0, P.withScale(4).randomProvidersDefaultSecondaryScale()),
+                filterInfinite(
+                        rp -> rp.getScale() > 0,
+                        P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale()
+                ),
                 P.withScale(4).listsAtLeast(1, P.withScale(4).integersGeometric())
         );
         for (Pair<RandomProvider, List<Integer>> p : take(LIMIT, ps2)) {
@@ -3758,14 +3938,20 @@ public class RandomProviderProperties extends TestProperties {
     private void propertiesStringSubsets_String() {
         initialize("stringSubsets(String)");
         Iterable<Pair<RandomProvider, String>> ps = P.pairs(
-                filterInfinite(rp -> rp.getScale() > 0, P.withScale(4).randomProvidersDefaultSecondaryScale()),
+                filterInfinite(
+                        rp -> rp.getScale() > 0,
+                        P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale()
+                ),
                 P.withScale(4).stringsAtLeast(1)
         );
         for (Pair<RandomProvider, String> p : take(LIMIT, ps)) {
             simpleTest(p.a, p.a.stringSubsets(p.b), s -> isSubsetOf(s, p.b) && increasing(toList(s)));
         }
 
-        Iterable<RandomProvider> rpsFail = filterInfinite(s -> s.getScale() > 0, P.withScale(4).randomProviders());
+        Iterable<RandomProvider> rpsFail = filterInfinite(
+                s -> s.getScale() > 0,
+                P.withScale(4).randomProvidersDefaultTertiaryScale()
+        );
         for (RandomProvider rp : take(LIMIT, rpsFail)) {
             try {
                 rp.stringSubsets("");
@@ -3778,7 +3964,7 @@ public class RandomProviderProperties extends TestProperties {
         initialize("stringSubsets()");
         Iterable<RandomProvider> rpsFail = filterInfinite(
                 s -> s.getScale() > 0,
-                P.withScale(4).randomProvidersDefaultSecondaryScale()
+                P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale()
         );
         for (RandomProvider rp : take(LIMIT, rpsFail)) {
             simpleTest(rp, rp.stringSubsets(), s -> increasing(toList(s)));
@@ -3790,7 +3976,7 @@ public class RandomProviderProperties extends TestProperties {
         Iterable<Triple<RandomProvider, Integer, Iterable<Integer>>> ts = filterInfinite(
                 t -> t.a.getScale() > t.b,
                 P.triples(
-                        P.withScale(4).randomProvidersDefaultSecondaryScale(),
+                        P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale(),
                         P.withScale(4).naturalIntegersGeometric(),
                         P.prefixPermutations(EP.naturalIntegers())
                 )
@@ -3805,7 +3991,7 @@ public class RandomProviderProperties extends TestProperties {
                         filterInfinite(
                                 p -> p.a.getScale() > p.b,
                                 P.pairs(
-                                        P.withScale(4).randomProvidersDefaultSecondaryScale(),
+                                        P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale(),
                                         P.withScale(4).rangeUpGeometric(2)
                                 )
                         ),
@@ -3820,7 +4006,7 @@ public class RandomProviderProperties extends TestProperties {
         Iterable<Triple<RandomProvider, Integer, List<Integer>>> tsFail = filterInfinite(
                 t -> t.a.getScale() > t.b,
                 P.triples(
-                        P.withScale(4).randomProvidersDefaultSecondaryScale(),
+                        P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale(),
                         P.withScale(4).naturalIntegersGeometric(),
                         P.withScale(4).listsAtLeast(1, P.withScale(4).integersGeometric())
                 )
@@ -3835,7 +4021,7 @@ public class RandomProviderProperties extends TestProperties {
         Iterable<Triple<RandomProvider, Integer, Iterable<Integer>>> tsFail2 = filterInfinite(
                 t -> t.a.getScale() > t.b,
                 P.triples(
-                        P.withScale(4).randomProvidersDefaultSecondaryScale(),
+                        P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale(),
                         P.withScale(4).negativeIntegersGeometric(),
                         P.prefixPermutations(EP.naturalIntegers())
                 )
@@ -3850,7 +4036,7 @@ public class RandomProviderProperties extends TestProperties {
         tsFail2 = filterInfinite(
                 t -> t.a.getScale() <= t.b,
                 P.triples(
-                        P.withScale(4).randomProvidersDefaultSecondaryScale(),
+                        P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale(),
                         P.withScale(4).naturalIntegersGeometric(),
                         P.prefixPermutations(EP.withNull(EP.naturalIntegers()))
                 )
@@ -3871,7 +4057,7 @@ public class RandomProviderProperties extends TestProperties {
                         filterInfinite(
                                 p -> p.a.getScale() > p.b,
                                 P.pairs(
-                                        P.withScale(4).randomProvidersDefaultSecondaryScale(),
+                                        P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale(),
                                         P.withScale(4).naturalIntegersGeometric()
                                 )
                         ),
@@ -3892,7 +4078,7 @@ public class RandomProviderProperties extends TestProperties {
         Iterable<Pair<RandomProvider, Integer>> psFail = filterInfinite(
                 p -> p.a.getScale() > p.b,
                 P.pairs(
-                        P.withScale(4).randomProvidersDefaultSecondaryScale(),
+                        P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale(),
                         P.withScale(4).naturalIntegersGeometric()
                 )
         );
@@ -3910,7 +4096,7 @@ public class RandomProviderProperties extends TestProperties {
                             filterInfinite(
                                     p -> p.a.getScale() > p.b,
                                     P.pairs(
-                                            P.withScale(4).randomProvidersDefaultSecondaryScale(),
+                                            P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale(),
                                             P.withScale(4).negativeIntegersGeometric()
                                     )
                             ),
@@ -3933,7 +4119,7 @@ public class RandomProviderProperties extends TestProperties {
                             filterInfinite(
                                     p -> p.a.getScale() <= p.b,
                                     P.pairs(
-                                            P.withScale(4).randomProvidersDefaultSecondaryScale(),
+                                            P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale(),
                                             P.withScale(4).naturalIntegersGeometric()
                                     )
                             ),
@@ -3957,7 +4143,7 @@ public class RandomProviderProperties extends TestProperties {
         Iterable<Pair<RandomProvider, Integer>> ps = filterInfinite(
                 p -> p.a.getScale() > p.b,
                 P.pairs(
-                        P.withScale(4).randomProvidersDefaultSecondaryScale(),
+                        P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale(),
                         P.withScale(4).naturalIntegersGeometric()
                 )
         );
@@ -3968,7 +4154,7 @@ public class RandomProviderProperties extends TestProperties {
         Iterable<Pair<RandomProvider, Integer>> psFail = filterInfinite(
                 p -> p.a.getScale() > p.b,
                 P.pairs(
-                        P.withScale(4).randomProvidersDefaultSecondaryScale(),
+                        P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale(),
                         P.withScale(4).negativeIntegersGeometric()
                 )
         );
@@ -3982,7 +4168,7 @@ public class RandomProviderProperties extends TestProperties {
         psFail = filterInfinite(
                 p -> p.a.getScale() <= p.b,
                 P.pairs(
-                        P.withScale(4).randomProvidersDefaultSecondaryScale(),
+                        P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale(),
                         P.withScale(4).naturalIntegersGeometric()
                 )
         );
@@ -3997,7 +4183,7 @@ public class RandomProviderProperties extends TestProperties {
     private void propertiesEithers() {
         initialize("either(Iterable<A>, Iterable<B>)");
         Iterable<Triple<RandomProvider, Iterable<Integer>, Iterable<Integer>>> ts = P.triples(
-                filterInfinite(rp -> rp.getScale() > 0, P.randomProvidersDefaultSecondaryScale()),
+                filterInfinite(rp -> rp.getScale() > 0, P.randomProvidersDefaultSecondaryAndTertiaryScale()),
                 P.prefixPermutations(EP.naturalIntegers()),
                 P.prefixPermutations(EP.naturalIntegers())
         );
@@ -4006,7 +4192,7 @@ public class RandomProviderProperties extends TestProperties {
         }
 
         Iterable<Triple<RandomProvider, Iterable<Integer>, Iterable<Integer>>> tsFail = P.triples(
-                filterInfinite(rp -> rp.getScale() <= 0, P.randomProvidersDefaultSecondaryScale()),
+                filterInfinite(rp -> rp.getScale() <= 0, P.randomProvidersDefaultSecondaryAndTertiaryScale()),
                 P.prefixPermutations(EP.naturalIntegers()),
                 P.prefixPermutations(EP.naturalIntegers())
         );
@@ -4018,7 +4204,7 @@ public class RandomProviderProperties extends TestProperties {
         }
 
         tsFail = P.triples(
-                filterInfinite(rp -> rp.getScale() > 0, P.randomProvidersDefaultSecondaryScale()),
+                filterInfinite(rp -> rp.getScale() > 0, P.randomProvidersDefaultSecondaryAndTertiaryScale()),
                 map(xs -> ((Iterable<Integer>) xs), P.lists(P.integersGeometric())),
                 P.prefixPermutations(EP.naturalIntegers())
         );
@@ -4030,7 +4216,7 @@ public class RandomProviderProperties extends TestProperties {
         }
 
         tsFail = P.triples(
-                filterInfinite(rp -> rp.getScale() > 0, P.randomProvidersDefaultSecondaryScale()),
+                filterInfinite(rp -> rp.getScale() > 0, P.randomProvidersDefaultSecondaryAndTertiaryScale()),
                 P.prefixPermutations(EP.naturalIntegers()),
                 map(xs -> ((Iterable<Integer>) xs), P.lists(P.integersGeometric()))
         );
@@ -4045,7 +4231,7 @@ public class RandomProviderProperties extends TestProperties {
     private void propertiesChoose() {
         initialize("choose(Iterable<A>, Iterable<B>)");
         Iterable<Triple<RandomProvider, Iterable<Integer>, Iterable<Integer>>> ts = P.triples(
-                filterInfinite(rp -> rp.getScale() > 0, P.randomProvidersDefaultSecondaryScale()),
+                filterInfinite(rp -> rp.getScale() > 0, P.randomProvidersDefaultSecondaryAndTertiaryScale()),
                 P.prefixPermutations(EP.naturalIntegers()),
                 P.prefixPermutations(EP.naturalIntegers())
         );
@@ -4054,7 +4240,7 @@ public class RandomProviderProperties extends TestProperties {
         }
 
         Iterable<Triple<RandomProvider, Iterable<Integer>, Iterable<Integer>>> tsFail = P.triples(
-                filterInfinite(rp -> rp.getScale() <= 0, P.randomProvidersDefaultSecondaryScale()),
+                filterInfinite(rp -> rp.getScale() <= 0, P.randomProvidersDefaultSecondaryAndTertiaryScale()),
                 P.prefixPermutations(EP.naturalIntegers()),
                 P.prefixPermutations(EP.naturalIntegers())
         );
@@ -4066,7 +4252,7 @@ public class RandomProviderProperties extends TestProperties {
         }
 
         tsFail = P.triples(
-                filterInfinite(rp -> rp.getScale() > 0, P.randomProvidersDefaultSecondaryScale()),
+                filterInfinite(rp -> rp.getScale() > 0, P.randomProvidersDefaultSecondaryAndTertiaryScale()),
                 map(xs -> ((Iterable<Integer>) xs), P.lists(P.integersGeometric())),
                 P.prefixPermutations(EP.naturalIntegers())
         );
@@ -4078,7 +4264,7 @@ public class RandomProviderProperties extends TestProperties {
         }
 
         tsFail = P.triples(
-                filterInfinite(rp -> rp.getScale() > 0, P.randomProvidersDefaultSecondaryScale()),
+                filterInfinite(rp -> rp.getScale() > 0, P.randomProvidersDefaultSecondaryAndTertiaryScale()),
                 P.prefixPermutations(EP.naturalIntegers()),
                 map(xs -> ((Iterable<Integer>) xs), P.lists(P.integersGeometric()))
         );
@@ -4136,7 +4322,7 @@ public class RandomProviderProperties extends TestProperties {
     private void propertiesRepeatingIterables() {
         initialize("repeatingIterables(Iterable<T>)");
         Iterable<Pair<RandomProvider, Iterable<Integer>>> ps = P.pairs(
-                filterInfinite(rp -> rp.getScale() > 1, P.randomProvidersDefaultSecondaryScale()),
+                filterInfinite(rp -> rp.getScale() > 1, P.randomProvidersDefaultSecondaryAndTertiaryScale()),
                 P.prefixPermutations(EP.withNull(EP.naturalIntegers()))
         );
         for (Pair<RandomProvider, Iterable<Integer>> p : take(LIMIT, ps)) {
@@ -4155,7 +4341,7 @@ public class RandomProviderProperties extends TestProperties {
                 filterInfinite(
                         p -> p.a.getScale() > p.b.b,
                         P.pairs(
-                                P.randomProvidersDefaultSecondaryScale(),
+                                P.randomProvidersDefaultSecondaryAndTertiaryScale(),
                                 P.pairsLogarithmicOrder(
                                         P.prefixPermutations(EP.withNull(EP.naturalIntegers())),
                                         P.withScale(4).rangeUpGeometric(2)
@@ -4184,7 +4370,7 @@ public class RandomProviderProperties extends TestProperties {
                 filterInfinite(
                         p -> p.a.getScale() <= p.b.b,
                         P.pairs(
-                                P.randomProvidersDefaultSecondaryScale(),
+                                P.randomProvidersDefaultSecondaryAndTertiaryScale(),
                                 P.pairsLogarithmicOrder(
                                         P.prefixPermutations(EP.withNull(EP.naturalIntegers())),
                                         P.withScale(4).rangeUpGeometric(2)
@@ -4204,7 +4390,10 @@ public class RandomProviderProperties extends TestProperties {
                 filterInfinite(
                         p -> p.a.getScale() > p.b.b,
                         P.pairs(
-                                filterInfinite(rp -> rp.getScale() < 0, P.randomProvidersDefaultSecondaryScale()),
+                                filterInfinite(
+                                        rp -> rp.getScale() < 0,
+                                        P.randomProvidersDefaultSecondaryAndTertiaryScale()
+                                ),
                                 P.pairsLogarithmicOrder(
                                         P.prefixPermutations(EP.withNull(EP.naturalIntegers())),
                                         P.integers()
@@ -4242,7 +4431,10 @@ public class RandomProviderProperties extends TestProperties {
     private void propertiesListsWithElement() {
         initialize("listsWithElement(T, Iterable<T>)");
         Iterable<Triple<RandomProvider, Integer, Iterable<Integer>>> ts = P.triples(
-                filterInfinite(rp -> rp.getScale() >= 3, P.withScale(4).randomProvidersDefaultSecondaryScale()),
+                filterInfinite(
+                        rp -> rp.getScale() >= 3,
+                        P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale()
+                ),
                 P.withNull(P.integersGeometric()),
                 P.prefixPermutations(EP.withNull(EP.naturalIntegers()))
         );
@@ -4251,7 +4443,10 @@ public class RandomProviderProperties extends TestProperties {
         }
 
         Iterable<Triple<RandomProvider, Integer, Iterable<Integer>>> tsFail = P.triples(
-                filterInfinite(rp -> rp.getScale() < 3, P.withScale(4).randomProvidersDefaultSecondaryScale()),
+                filterInfinite(
+                        rp -> rp.getScale() < 3,
+                        P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale()
+                ),
                 P.withNull(P.integersGeometric()),
                 P.prefixPermutations(EP.withNull(EP.naturalIntegers()))
         );
@@ -4263,7 +4458,10 @@ public class RandomProviderProperties extends TestProperties {
         }
 
         Iterable<Triple<RandomProvider, Integer, List<Integer>>> tsFail2 = P.triples(
-                filterInfinite(rp -> rp.getScale() >= 3, P.withScale(4).randomProvidersDefaultSecondaryScale()),
+                filterInfinite(
+                        rp -> rp.getScale() >= 3,
+                        P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale()
+                ),
                 P.withNull(P.integersGeometric()),
                 P.lists(P.withNull(P.withScale(4).integersGeometric()))
         );
@@ -4282,7 +4480,7 @@ public class RandomProviderProperties extends TestProperties {
                 P.triples(
                         filterInfinite(
                                 rp -> rp.getScale() >= 3,
-                                P.withScale(4).randomProvidersDefaultSecondaryScale()
+                                P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale()
                         ),
                         P.characters(),
                         P.withScale(4).stringsAtLeast(1)
@@ -4298,7 +4496,7 @@ public class RandomProviderProperties extends TestProperties {
                 P.triples(
                         filterInfinite(
                                 rp -> rp.getScale() < 3,
-                                P.withScale(4).randomProvidersDefaultSecondaryScale()
+                                P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale()
                         ),
                         P.characters(),
                         P.withScale(4).stringsAtLeast(1)
@@ -4312,7 +4510,10 @@ public class RandomProviderProperties extends TestProperties {
         }
 
         Iterable<Pair<RandomProvider, Character>> psFail = P.pairs(
-                filterInfinite(rp -> rp.getScale() >= 3, P.withScale(4).randomProvidersDefaultSecondaryScale()),
+                filterInfinite(
+                        rp -> rp.getScale() >= 3,
+                        P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale()
+                ),
                 P.characters()
         );
         for (Pair<RandomProvider, Character> p : take(LIMIT, psFail)) {
@@ -4326,7 +4527,10 @@ public class RandomProviderProperties extends TestProperties {
     private void propertiesStringsWithChar_char() {
         initialize("stringsWithChar(char)");
         Iterable<Pair<RandomProvider, Character>> ps = P.pairs(
-                filterInfinite(rp -> rp.getScale() >= 3, P.withScale(4).randomProvidersDefaultSecondaryScale()),
+                filterInfinite(
+                        rp -> rp.getScale() >= 3,
+                        P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale()
+                ),
                 P.characters()
         );
         for (Pair<RandomProvider, Character> p : take(MEDIUM_LIMIT, ps)) {
@@ -4337,7 +4541,10 @@ public class RandomProviderProperties extends TestProperties {
     private void propertiesSubsetsWithElement() {
         initialize("subsetsWithElement(T, Iterable<T>)");
         Iterable<Triple<RandomProvider, Integer, Iterable<Integer>>> ts = P.triples(
-                filterInfinite(rp -> rp.getScale() >= 2, P.withScale(4).randomProvidersDefaultSecondaryScale()),
+                filterInfinite(
+                        rp -> rp.getScale() >= 2,
+                        P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale()
+                ),
                 P.integersGeometric(),
                 P.prefixPermutations(EP.naturalIntegers())
         );
@@ -4346,7 +4553,10 @@ public class RandomProviderProperties extends TestProperties {
         }
 
         Iterable<Triple<RandomProvider, Integer, Iterable<Integer>>> tsFail = P.triples(
-                filterInfinite(rp -> rp.getScale() < 2, P.withScale(4).randomProvidersDefaultSecondaryScale()),
+                filterInfinite(
+                        rp -> rp.getScale() < 2,
+                        P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale()
+                ),
                 P.integersGeometric(),
                 P.prefixPermutations(EP.naturalIntegers())
         );
@@ -4358,7 +4568,10 @@ public class RandomProviderProperties extends TestProperties {
         }
 
         Iterable<Triple<RandomProvider, Integer, List<Integer>>> tsFail2 = P.triples(
-                filterInfinite(rp -> rp.getScale() >= 2, P.withScale(4).randomProvidersDefaultSecondaryScale()),
+                filterInfinite(
+                        rp -> rp.getScale() >= 2,
+                        P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale()
+                ),
                 P.integersGeometric(),
                 P.lists(P.withScale(4).integersGeometric())
         );
@@ -4377,7 +4590,7 @@ public class RandomProviderProperties extends TestProperties {
                 P.triples(
                         filterInfinite(
                                 rp -> rp.getScale() >= 2,
-                                P.withScale(4).randomProvidersDefaultSecondaryScale()
+                                P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale()
                         ),
                         P.characters(),
                         P.withScale(4).stringsAtLeast(1)
@@ -4397,7 +4610,7 @@ public class RandomProviderProperties extends TestProperties {
                 P.triples(
                         filterInfinite(
                                 rp -> rp.getScale() < 2,
-                                P.withScale(4).randomProvidersDefaultSecondaryScale()
+                                P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale()
                         ),
                         P.characters(),
                         P.withScale(4).stringsAtLeast(1)
@@ -4411,7 +4624,10 @@ public class RandomProviderProperties extends TestProperties {
         }
 
         Iterable<Pair<RandomProvider, Character>> psFail = P.pairs(
-                filterInfinite(rp -> rp.getScale() >= 2, P.withScale(4).randomProvidersDefaultSecondaryScale()),
+                filterInfinite(
+                        rp -> rp.getScale() >= 2,
+                        P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale()
+                ),
                 P.characters()
         );
         for (Pair<RandomProvider, Character> p : take(LIMIT, psFail)) {
@@ -4425,7 +4641,10 @@ public class RandomProviderProperties extends TestProperties {
     private void propertiesStringSubsetsWithChar_char() {
         initialize("stringSubsetsWithChar(char)");
         Iterable<Pair<RandomProvider, Character>> ps = P.pairs(
-                filterInfinite(rp -> rp.getScale() >= 2, P.withScale(4).randomProvidersDefaultSecondaryScale()),
+                filterInfinite(
+                        rp -> rp.getScale() >= 2,
+                        P.withScale(4).randomProvidersDefaultSecondaryAndTertiaryScale()
+                ),
                 P.characters()
         );
         for (Pair<RandomProvider, Character> p : take(MEDIUM_LIMIT, ps)) {
@@ -4436,7 +4655,7 @@ public class RandomProviderProperties extends TestProperties {
     private void propertiesListsWithSublists() {
         initialize("listsWithSublists(Iterable<List<T>>, Iterable<T>)");
         Iterable<Triple<RandomProvider, Iterable<List<Integer>>, Iterable<Integer>>> ts = P.triples(
-                filterInfinite(rp -> rp.getScale() > 1, P.randomProvidersDefaultSecondaryScale()),
+                filterInfinite(rp -> rp.getScale() > 1, P.randomProvidersDefaultSecondaryAndTertiaryScale()),
                 P.prefixPermutations(EP.lists(EP.withNull(EP.naturalIntegers()))),
                 P.prefixPermutations(EP.withNull(EP.naturalIntegers()))
         );
@@ -4445,7 +4664,7 @@ public class RandomProviderProperties extends TestProperties {
         }
 
         Iterable<Triple<RandomProvider, Iterable<List<Integer>>, Iterable<Integer>>> tsFail = P.triples(
-                filterInfinite(rp -> rp.getScale() <= 1, P.randomProvidersDefaultSecondaryScale()),
+                filterInfinite(rp -> rp.getScale() <= 1, P.randomProvidersDefaultSecondaryAndTertiaryScale()),
                 P.prefixPermutations(EP.lists(EP.withNull(EP.naturalIntegers()))),
                 P.prefixPermutations(EP.withNull(EP.naturalIntegers()))
         );
@@ -4460,7 +4679,7 @@ public class RandomProviderProperties extends TestProperties {
     private void propertiesStringsWithSubstrings_Iterable_String_String() {
         initialize("stringsWithSubstrings(Iterable<String>, String)");
         Iterable<Triple<RandomProvider, Iterable<String>, String>> ts = P.triples(
-                filterInfinite(rp -> rp.getScale() > 1, P.randomProvidersDefaultSecondaryScale()),
+                filterInfinite(rp -> rp.getScale() > 1, P.randomProvidersDefaultSecondaryAndTertiaryScale()),
                 P.prefixPermutations(EP.strings()),
                 P.withScale(4).stringsAtLeast(1)
         );
@@ -4469,7 +4688,7 @@ public class RandomProviderProperties extends TestProperties {
         }
 
         Iterable<Triple<RandomProvider, Iterable<String>, String>> tsFail = P.triples(
-                filterInfinite(rp -> rp.getScale() <= 1, P.randomProvidersDefaultSecondaryScale()),
+                filterInfinite(rp -> rp.getScale() <= 1, P.randomProvidersDefaultSecondaryAndTertiaryScale()),
                 P.prefixPermutations(EP.strings()),
                 P.withScale(4).stringsAtLeast(1)
         );
@@ -4484,7 +4703,7 @@ public class RandomProviderProperties extends TestProperties {
     private void propertiesStringsWithSubstrings_Iterable_String() {
         initialize("stringsWithSubstrings(Iterable<String>)");
         Iterable<Pair<RandomProvider, Iterable<String>>> ps = P.pairs(
-                filterInfinite(rp -> rp.getScale() > 1, P.randomProvidersDefaultSecondaryScale()),
+                filterInfinite(rp -> rp.getScale() > 1, P.randomProvidersDefaultSecondaryAndTertiaryScale()),
                 P.prefixPermutations(EP.strings())
         );
         for (Pair<RandomProvider, Iterable<String>> p : take(LIMIT, ps)) {
@@ -4492,7 +4711,7 @@ public class RandomProviderProperties extends TestProperties {
         }
 
         Iterable<Pair<RandomProvider, Iterable<String>>> psFail = P.pairs(
-                filterInfinite(rp -> rp.getScale() <= 1, P.randomProvidersDefaultSecondaryScale()),
+                filterInfinite(rp -> rp.getScale() <= 1, P.randomProvidersDefaultSecondaryAndTertiaryScale()),
                 P.prefixPermutations(EP.strings())
         );
         for (Pair<RandomProvider, Iterable<String>> p : take(LIMIT, psFail)) {
@@ -4518,19 +4737,20 @@ public class RandomProviderProperties extends TestProperties {
     }
 
     private void propertiesRandomProvidersFixedScales() {
-        initialize("randomProvidersFixedScales(int, int)");
-        Iterable<Triple<RandomProvider, Integer, Integer>> ts = P.triples(
+        initialize("randomProvidersFixedScales(int, int, int)");
+        Iterable<Quadruple<RandomProvider, Integer, Integer, Integer>> ts = P.quadruples(
                 P.randomProvidersDefault(),
+                P.integersGeometric(),
                 P.integersGeometric(),
                 P.integersGeometric()
         );
-        for (Triple<RandomProvider, Integer, Integer> t : take(LIMIT, ts)) {
+        for (Quadruple<RandomProvider, Integer, Integer, Integer> q : take(LIMIT, ts)) {
             simpleTest(
-                    t.a,
-                    t.a.randomProvidersFixedScales(t.b, t.c),
-                    rp -> rp.getScale() == t.b && rp.getSecondaryScale() == t.c
+                    q.a,
+                    q.a.randomProvidersFixedScales(q.b, q.c, q.d),
+                    rp -> rp.getScale() == q.b && rp.getSecondaryScale() == q.c && rp.getTertiaryScale() == q.d
             );
-            for (RandomProvider rp : take(TINY_LIMIT, t.a.randomProvidersFixedScales(t.b, t.c))) {
+            for (RandomProvider rp : take(TINY_LIMIT, q.a.randomProvidersFixedScales(q.b, q.c, q.d))) {
                 rp.validate();
             }
         }
@@ -4539,33 +4759,66 @@ public class RandomProviderProperties extends TestProperties {
     private void propertiesRandomProvidersDefault() {
         initialize("randomProvidersDefault()");
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
-            simpleTest(rp, rp.randomProvidersDefault(), s -> s.getScale() == 32 && s.getSecondaryScale() == 8);
+            simpleTest(
+                    rp,
+                    rp.randomProvidersDefault(),
+                    s -> s.getScale() == 32 && s.getSecondaryScale() == 8 && s.getTertiaryScale() == 2
+            );
             for (RandomProvider s : take(TINY_LIMIT, rp.randomProvidersDefault())) {
                 s.validate();
             }
         }
     }
 
-    private void propertiesRandomProvidersDefaultSecondaryScale() {
-        initialize("randomProvidersSecondaryScale()");
+    private void propertiesRandomProvidersDefaultSecondaryAndTertiaryScale() {
+        initialize("randomProvidersDefaultSecondaryAndTertiaryScale()");
         Iterable<RandomProvider> rps = filterInfinite(
                 rp -> rp.getScale() > 0,
-                P.randomProvidersDefaultSecondaryScale()
+                P.randomProvidersDefaultSecondaryAndTertiaryScale()
         );
         for (RandomProvider rp : take(LIMIT, rps)) {
-            simpleTest(rp, rp.randomProvidersDefaultSecondaryScale(), s -> s.getSecondaryScale() == 8);
-            for (RandomProvider s : take(TINY_LIMIT, rp.randomProvidersDefaultSecondaryScale())) {
+            simpleTest(
+                    rp,
+                    rp.randomProvidersDefaultSecondaryAndTertiaryScale(),
+                    s -> s.getSecondaryScale() == 8 && s.getTertiaryScale() == 2
+            );
+            for (RandomProvider s : take(TINY_LIMIT, rp.randomProvidersDefaultSecondaryAndTertiaryScale())) {
                 s.validate();
             }
         }
 
         Iterable<RandomProvider> rpsFail = filterInfinite(
                 rp -> rp.getScale() <= 0,
-                P.randomProvidersDefaultSecondaryScale()
+                P.randomProvidersDefaultSecondaryAndTertiaryScale()
         );
         for (RandomProvider rp : take(LIMIT, rpsFail)) {
             try {
-                rp.randomProvidersDefaultSecondaryScale();
+                rp.randomProvidersDefaultSecondaryAndTertiaryScale();
+                fail(rp);
+            } catch (IllegalStateException ignored) {}
+        }
+    }
+
+    private void propertiesRandomProvidersDefaultTertiaryScale() {
+        initialize("randomProvidersDefaultTertiaryScale()");
+        Iterable<RandomProvider> rps = filterInfinite(
+                rp -> rp.getScale() > 0,
+                P.randomProvidersDefaultSecondaryAndTertiaryScale()
+        );
+        for (RandomProvider rp : take(LIMIT, rps)) {
+            simpleTest(rp, rp.randomProvidersDefaultTertiaryScale(), s -> s.getTertiaryScale() == 2);
+            for (RandomProvider s : take(TINY_LIMIT, rp.randomProvidersDefaultTertiaryScale())) {
+                s.validate();
+            }
+        }
+
+        Iterable<RandomProvider> rpsFail = filterInfinite(
+                rp -> rp.getScale() <= 0,
+                P.randomProvidersDefaultSecondaryAndTertiaryScale()
+        );
+        for (RandomProvider rp : take(LIMIT, rpsFail)) {
+            try {
+                rp.randomProvidersDefaultTertiaryScale();
                 fail(rp);
             } catch (IllegalStateException ignored) {}
         }
@@ -4575,7 +4828,7 @@ public class RandomProviderProperties extends TestProperties {
         initialize("randomProviders()");
         Iterable<RandomProvider> rps = filterInfinite(
                 rp -> rp.getScale() > 0,
-                P.randomProvidersDefaultSecondaryScale()
+                P.randomProvidersDefaultSecondaryAndTertiaryScale()
         );
         for (RandomProvider rp : take(LIMIT, rps)) {
             simpleTest(rp, rp.randomProviders(), s -> true);
@@ -4586,7 +4839,7 @@ public class RandomProviderProperties extends TestProperties {
 
         Iterable<RandomProvider> rpsFail = filterInfinite(
                 rp -> rp.getScale() <= 0,
-                P.randomProvidersDefaultSecondaryScale()
+                P.randomProvidersDefaultSecondaryAndTertiaryScale()
         );
         for (RandomProvider rp : take(LIMIT, rpsFail)) {
             try {

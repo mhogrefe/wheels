@@ -1,21 +1,19 @@
 package mho.wheels.numberUtils;
 
 import mho.wheels.io.Readers;
-import mho.wheels.iterables.ExhaustiveProvider;
-import mho.wheels.iterables.IterableUtils;
-import mho.wheels.iterables.NoRemoveIterator;
 import mho.wheels.structures.Pair;
+import mho.wheels.testing.Testing;
 import org.jetbrains.annotations.NotNull;
 
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.ordering.Ordering.*;
 
+/**
+ * Some utilities for dealing with integers.
+ */
 public class IntegerUtils {
     /**
      * –1
@@ -28,9 +26,14 @@ public class IntegerUtils {
     public static final @NotNull BigInteger TWO = BigInteger.valueOf(2);
 
     /**
-     * The default maximum number of elements to print when printing an {@code Iterable}.
+     * The number of alphanumeric characters, or 36.
      */
-    private static final int ITERABLE_PRINT_LIMIT = 20;
+    private static final @NotNull BigInteger ALPHANUMERIC_COUNT = BigInteger.valueOf(36);
+
+    /**
+     * Disallow instantiation
+     */
+    private IntegerUtils() {}
 
     /**
      * Determines whether {@code n} is a power of 2.
@@ -121,7 +124,7 @@ public class IntegerUtils {
             throw new ArithmeticException("n must be positive. Invalid n: " + n);
         }
         int bitLength = 64 - Long.numberOfLeadingZeros(n);
-        return (n & (n - 1)) == 0 ? bitLength - 1 : bitLength;
+        return (n & (n - 1)) == 0L ? bitLength - 1 : bitLength;
     }
 
     /**
@@ -159,25 +162,15 @@ public class IntegerUtils {
      * @param n a number
      * @return {@code n}'s bits in little-endian order
      */
-    public static @NotNull Iterable<Boolean> bits(int n) {
+    public static @NotNull List<Boolean> bits(int n) {
         if (n < 0) {
             throw new ArithmeticException("n cannot be negative. Invalid n: " + n);
         }
-        return () -> new NoRemoveIterator<Boolean>() {
-            private int remaining = n;
-
-            @Override
-            public boolean hasNext() {
-                return remaining != 0;
-            }
-
-            @Override
-            public Boolean next() {
-                boolean bit = (remaining & 1) == 1;
-                remaining >>= 1;
-                return bit;
-            }
-        };
+        List<Boolean> bits = new ArrayList<>();
+        for (int remaining = n; remaining != 0; remaining >>= 1) {
+            bits.add((remaining & 1) != 0);
+        }
+        return bits;
     }
 
     /**
@@ -196,11 +189,16 @@ public class IntegerUtils {
      * @param n a number
      * @return {@code n}'s bits in little-endian order
      */
-    public static @NotNull Iterable<Boolean> bits(@NotNull BigInteger n) {
+    public static @NotNull List<Boolean> bits(@NotNull BigInteger n) {
         if (n.signum() == -1) {
             throw new ArithmeticException("n cannot be negative. Invalid n: " + n);
         }
-        return take(n.bitLength(), map(n::testBit, rangeUp(0)));
+        List<Boolean> bits = new ArrayList<>();
+        int bitLength = n.bitLength();
+        for (int i = 0; i < bitLength; i++) {
+            bits.add(n.testBit(i));
+        }
+        return bits;
     }
 
     /**
@@ -220,11 +218,20 @@ public class IntegerUtils {
      * @param n a number
      * @return {@code n}'s bits in little-endian order
      */
-    public static @NotNull Iterable<Boolean> bitsPadded(int length, int n) {
+    public static @NotNull List<Boolean> bitsPadded(int length, int n) {
         if (length < 0) {
-            throw new ArithmeticException("length cannot be negative. Invalid length: " + length);
+            throw new IllegalArgumentException("length cannot be negative. Invalid length: " + length);
         }
-        return pad(false, length, bits(n));
+        if (n < 0) {
+            throw new ArithmeticException("n cannot be negative. Invalid n: " + n);
+        }
+        List<Boolean> bits = new ArrayList<>();
+        int remaining = n;
+        for (int i = 0; i < length; i++) {
+            bits.add((remaining & 1) != 0);
+            remaining >>= 1;
+        }
+        return bits;
     }
 
     /**
@@ -244,14 +251,18 @@ public class IntegerUtils {
      * @param n a number
      * @return {@code n}'s bits in little-endian order
      */
-    public static @NotNull Iterable<Boolean> bitsPadded(int length, @NotNull BigInteger n) {
+    public static @NotNull List<Boolean> bitsPadded(int length, @NotNull BigInteger n) {
         if (length < 0) {
-            throw new ArithmeticException("length cannot be negative. Invalid length: " + length);
+            throw new IllegalArgumentException("length cannot be negative. Invalid length: " + length);
         }
         if (n.signum() == -1) {
             throw new ArithmeticException("n cannot be negative. Invalid n: " + n);
         }
-        return take(length, map(n::testBit, rangeUp(0)));
+        List<Boolean> bits = new ArrayList<>();
+        for (int i = 0; i < length; i++) {
+            bits.add(n.testBit(i));
+        }
+        return bits;
     }
 
     /**
@@ -269,7 +280,14 @@ public class IntegerUtils {
      * @return {@code n}'s bits in big-endian order
      */
     public static @NotNull List<Boolean> bigEndianBits(int n) {
-        return reverse(bits(n));
+        if (n < 0) {
+            throw new ArithmeticException("n cannot be negative. Invalid n: " + n);
+        }
+        List<Boolean> bits = new ArrayList<>();
+        for (int mask = Integer.highestOneBit(n); mask != 0; mask >>= 1) {
+            bits.add((n & mask) != 0);
+        }
+        return bits;
     }
 
     /**
@@ -287,7 +305,14 @@ public class IntegerUtils {
      * @return {@code n}'s bits in big-endian order
      */
     public static @NotNull List<Boolean> bigEndianBits(@NotNull BigInteger n) {
-        return reverse(bits(n));
+        if (n.signum() == -1) {
+            throw new ArithmeticException("n cannot be negative. Invalid n: " + n);
+        }
+        List<Boolean> bits = new ArrayList<>();
+        for (int i = n.bitLength() - 1; i >= 0; i--) {
+            bits.add(n.testBit(i));
+        }
+        return bits;
     }
 
     /**
@@ -308,7 +333,21 @@ public class IntegerUtils {
      * @return {@code n}'s bits in big-endian order
      */
     public static @NotNull List<Boolean> bigEndianBitsPadded(int length, int n) {
-        return reverse(bitsPadded(length, n));
+        if (length < 0) {
+            throw new IllegalArgumentException("length cannot be negative. Invalid length: " + length);
+        }
+        if (n < 0) {
+            throw new ArithmeticException("n cannot be negative. Invalid n: " + n);
+        }
+        List<Boolean> bits = new ArrayList<>();
+        if (length == 0) return bits;
+        for (; length > 31; length--) {
+            bits.add(false);
+        }
+        for (int mask = 1 << (length - 1); mask != 0; mask >>= 1) {
+            bits.add((n & mask) != 0);
+        }
+        return bits;
     }
 
     /**
@@ -329,7 +368,17 @@ public class IntegerUtils {
      * @return {@code n}'s bits in big-endian order
      */
     public static @NotNull List<Boolean> bigEndianBitsPadded(int length, BigInteger n) {
-        return reverse(bitsPadded(length, n));
+        if (length < 0) {
+            throw new IllegalArgumentException("length cannot be negative. Invalid length: " + length);
+        }
+        if (n.signum() == -1) {
+            throw new ArithmeticException("n cannot be negative. Invalid n: " + n);
+        }
+        List<Boolean> bits = new ArrayList<>();
+        for (int i = length - 1; i >= 0; i--) {
+            bits.add(n.testBit(i));
+        }
+        return bits;
     }
 
     /**
@@ -345,11 +394,17 @@ public class IntegerUtils {
      * @return The {@code BigInteger} represented by {@code bits}
      */
     public static @NotNull BigInteger fromBits(@NotNull Iterable<Boolean> bits) {
-        BigInteger n = BigInteger.ZERO;
-        for (int i : select(bits, rangeUp(0))) {
-            n = n.setBit(i);
+        List<Boolean> bitsList = toList(bits);
+        byte[] bytes = new byte[bitsList.size() / 8 + 1]; // if bits.size() is a multiple of 8, we get an extra zero to
+        int byteIndex = bytes.length;                     // the left which ensures a positive sign
+        for (int i = 0; i < bitsList.size(); i++) {
+            int j = i % 8;
+            if (j == 0) byteIndex--;
+            if (bitsList.get(i)) {
+                bytes[byteIndex] |= 1 << j;
+            }
         }
-        return n;
+        return new BigInteger(bytes);
     }
 
     /**
@@ -365,7 +420,18 @@ public class IntegerUtils {
      * @return The {@code BigInteger} represented by {@code bits}
      */
     public static @NotNull BigInteger fromBigEndianBits(@NotNull Iterable<Boolean> bits) {
-        return fromBits(reverse(bits));
+        List<Boolean> bitsList = toList(bits);
+        byte[] bytes = new byte[bitsList.size() / 8 + 1]; // if bits.size() is a multiple of 8, we get an extra zero to
+        int byteIndex = bytes.length;                     // the left which ensures a positive sign
+        int limit = bitsList.size() - 1;
+        for (int i = 0; i < bitsList.size(); i++) {
+            int j = i % 8;
+            if (j == 0) byteIndex--;
+            if (bitsList.get(limit - i)) {
+                bytes[byteIndex] |= 1 << j;
+            }
+        }
+        return new BigInteger(bytes);
     }
 
     /**
@@ -386,28 +452,29 @@ public class IntegerUtils {
      * @param n a number
      * @return {@code n}'s digits in little-endian order
      */
-    public static @NotNull Iterable<Integer> digits(int base, int n) {
+    public static @NotNull List<Integer> digits(int base, int n) {
         if (base < 2) {
             throw new IllegalArgumentException("base must be at least 2. Invalid base: " + base);
         }
         if (n < 0) {
             throw new ArithmeticException("n cannot be negative. Invalid n: " + n);
         }
-        return () -> new NoRemoveIterator<Integer>() {
-            private int remaining = n;
-
-            @Override
-            public boolean hasNext() {
-                return remaining != 0;
+        List<Integer> digits = new ArrayList<>();
+        int log = ceilingLog2(base);
+        if (1 << log == base) {
+            int mask = base - 1;
+            while (n != 0) {
+                digits.add(n & mask);
+                n >>= log;
             }
-
-            @Override
-            public Integer next() {
-                int digit = remaining % base;
+        } else {
+            int remaining = n;
+            while (remaining != 0) {
+                digits.add(remaining % base);
                 remaining /= base;
-                return digit;
             }
-        };
+        }
+        return digits;
     }
 
     /**
@@ -428,28 +495,29 @@ public class IntegerUtils {
      * @param n a number
      * @return {@code n}'s digits in little-endian order
      */
-    public static @NotNull Iterable<BigInteger> digits(@NotNull BigInteger base, @NotNull final BigInteger n) {
+    public static @NotNull List<BigInteger> digits(@NotNull BigInteger base, @NotNull BigInteger n) {
         if (lt(base, TWO)) {
             throw new IllegalArgumentException("base must be at least 2. Invalid base: " + base);
         }
         if (n.signum() == -1) {
             throw new ArithmeticException("n cannot be negative. Invalid n: " + n);
         }
-        return () -> new NoRemoveIterator<BigInteger>() {
-            private BigInteger remaining = n;
-
-            @Override
-            public boolean hasNext() {
-                return !remaining.equals(BigInteger.ZERO);
+        List<BigInteger> digits = new ArrayList<>();
+        if (isPowerOfTwo(base)) {
+            int log = ceilingLog2(base);
+            BigInteger mask = base.subtract(BigInteger.ONE);
+            while (!n.equals(BigInteger.ZERO)) {
+                digits.add(n.and(mask));
+                n = n.shiftRight(log);
             }
-
-            @Override
-            public BigInteger next() {
-                BigInteger digit = remaining.mod(base);
+        } else {
+            BigInteger remaining = n;
+            while (!remaining.equals(BigInteger.ZERO)) {
+                digits.add(remaining.mod(base));
                 remaining = remaining.divide(base);
-                return digit;
             }
-        };
+        }
+        return digits;
     }
 
     /**
@@ -471,8 +539,32 @@ public class IntegerUtils {
      * @param n a number
      * @return {@code n}'s digits in little-endian order
      */
-    public static @NotNull Iterable<Integer> digitsPadded(int length, int base, int n) {
-        return pad(0, length, digits(base, n));
+    public static @NotNull List<Integer> digitsPadded(int length, int base, int n) {
+        if (length < 0) {
+            throw new IllegalArgumentException("length cannot be negative. Invalid length: " + length);
+        }
+        if (base < 2) {
+            throw new IllegalArgumentException("base must be at least 2. Invalid base: " + base);
+        }
+        if (n < 0) {
+            throw new ArithmeticException("n cannot be negative. Invalid n: " + n);
+        }
+        List<Integer> digits = new ArrayList<>();
+        int log = ceilingLog2(base);
+        if (1 << log == base) {
+            int mask = base - 1;
+            for (int i = 0; i < length; i++) {
+                digits.add(n & mask);
+                n >>= log;
+            }
+        } else {
+            int remaining = n;
+            for (int i = 0; i < length; i++) {
+                digits.add(remaining % base);
+                remaining /= base;
+            }
+        }
+        return digits;
     }
 
     /**
@@ -494,12 +586,32 @@ public class IntegerUtils {
      * @param n a number
      * @return {@code n}'s digits in little-endian order
      */
-    public static @NotNull Iterable<BigInteger> digitsPadded(
-            int length,
-            @NotNull BigInteger base,
-            @NotNull BigInteger n
-    ) {
-        return pad(BigInteger.ZERO, length, digits(base, n));
+    public static @NotNull List<BigInteger> digitsPadded(int length, @NotNull BigInteger base, @NotNull BigInteger n) {
+        if (length < 0) {
+            throw new IllegalArgumentException("length cannot be negative. Invalid length: " + length);
+        }
+        if (lt(base, TWO)) {
+            throw new IllegalArgumentException("base must be at least 2. Invalid base: " + base);
+        }
+        if (n.signum() == -1) {
+            throw new ArithmeticException("n cannot be negative. Invalid n: " + n);
+        }
+        List<BigInteger> digits = new ArrayList<>();
+        if (isPowerOfTwo(base)) {
+            int log = ceilingLog2(base);
+            BigInteger mask = base.subtract(BigInteger.ONE);
+            for (int i = 0; i < length; i++) {
+                digits.add(n.and(mask));
+                n = n.shiftRight(log);
+            }
+        } else {
+            BigInteger remaining = n;
+            for (int i = 0; i < length; i++) {
+                digits.add(remaining.mod(base));
+                remaining = remaining.divide(base);
+            }
+        }
+        return digits;
     }
 
     /**
@@ -519,7 +631,7 @@ public class IntegerUtils {
      * @param n a number
      * @return {@code n}'s digits in big-endian order
      */
-    public static @NotNull List<Integer> bigEndianDigits(int base, final int n) {
+    public static @NotNull List<Integer> bigEndianDigits(int base, int n) {
         return reverse(digits(base, n));
     }
 
@@ -540,7 +652,7 @@ public class IntegerUtils {
      * @param n a number
      * @return {@code n}'s digits in big-endian order
      */
-    public static @NotNull List<BigInteger> bigEndianDigits(@NotNull BigInteger base, final @NotNull BigInteger n) {
+    public static @NotNull List<BigInteger> bigEndianDigits(@NotNull BigInteger base, @NotNull BigInteger n) {
         return reverse(digits(base, n));
     }
 
@@ -564,7 +676,31 @@ public class IntegerUtils {
      * @return {@code n}'s digits in big-endian order
      */
     public static @NotNull List<Integer> bigEndianDigitsPadded(int length, int base, int n) {
-        return reverse(digitsPadded(length, base, n));
+        if (length < 0) {
+            throw new IllegalArgumentException("length cannot be negative. Invalid length: " + length);
+        }
+        if (base < 2) {
+            throw new IllegalArgumentException("base must be at least 2. Invalid base: " + base);
+        }
+        if (n < 0) {
+            throw new ArithmeticException("n cannot be negative. Invalid n: " + n);
+        }
+        List<Integer> digits = toList(replicate(length, 0));
+        int log = ceilingLog2(base);
+        if (1 << log == base) {
+            int mask = base - 1;
+            for (int i = length - 1; i >= 0; i--) {
+                digits.set(i, n & mask);
+                n >>= log;
+            }
+        } else {
+            int remaining = n;
+            for (int i = length - 1; i >= 0; i--) {
+                digits.set(i, remaining % base);
+                remaining /= base;
+            }
+        }
+        return digits;
     }
 
     /**
@@ -591,7 +727,31 @@ public class IntegerUtils {
             @NotNull BigInteger base,
             @NotNull BigInteger n
     ) {
-        return reverse(digitsPadded(length, base, n));
+        if (length < 0) {
+            throw new IllegalArgumentException("length cannot be negative. Invalid length: " + length);
+        }
+        if (lt(base, TWO)) {
+            throw new IllegalArgumentException("base must be at least 2. Invalid base: " + base);
+        }
+        if (n.signum() == -1) {
+            throw new ArithmeticException("n cannot be negative. Invalid n: " + n);
+        }
+        List<BigInteger> digits = toList(replicate(length, BigInteger.ZERO));
+        if (isPowerOfTwo(base)) {
+            int log = ceilingLog2(base);
+            BigInteger mask = base.subtract(BigInteger.ONE);
+            for (int i = length - 1; i >= 0; i--) {
+                digits.set(i, n.and(mask));
+                n = n.shiftRight(log);
+            }
+        } else {
+            BigInteger remaining = n;
+            for (int i = length - 1; i >= 0; i--) {
+                digits.set(i, remaining.mod(base));
+                remaining = remaining.divide(base);
+            }
+        }
+        return digits;
     }
 
     /**
@@ -654,11 +814,11 @@ public class IntegerUtils {
         BigInteger n = BigInteger.ZERO;
         for (int digit : digits) {
             if (digit < 0) {
-                String digitsString = IterableUtils.toString(ITERABLE_PRINT_LIMIT, digits);
+                String digitsString = Testing.its(digits);
                 throw new IllegalArgumentException("Each element of digits must be non-negative. Invalid digit: " +
                         digit + " in " + digitsString);
             } else if (digit >= base) {
-                String digitsString = IterableUtils.toString(ITERABLE_PRINT_LIMIT, digits);
+                String digitsString = Testing.its(digits);
                 throw new IllegalArgumentException("Each element of digits must be less than base, which is " + base +
                         ". Invalid digit: " + digit + " in " + digitsString);
             }
@@ -693,11 +853,11 @@ public class IntegerUtils {
             if (digit.signum() == -1 || ge(digit, base))
                 throw new IllegalArgumentException("every digit must be at least zero and less than the base");
             if (digit.signum() == -1) {
-                String digitsString = IterableUtils.toString(ITERABLE_PRINT_LIMIT, digits);
+                String digitsString = Testing.its(digits);
                 throw new IllegalArgumentException("Each element of digits must be non-negative. Invalid digit: " +
                         digit + " in " + digitsString);
             } else if (ge(digit, base)) {
-                String digitsString = IterableUtils.toString(ITERABLE_PRINT_LIMIT, digits);
+                String digitsString = Testing.its(digits);
                 throw new IllegalArgumentException("Each element of digits must be less than base, which is " + base +
                         ". Invalid digit: " + digit + " in " + digitsString);
             }
@@ -814,7 +974,7 @@ public class IntegerUtils {
         if (lt(base, TWO)) {
             throw new IllegalArgumentException("base must be at least 2. Invalid base: " + base);
         }
-        boolean bigBase = gt(base, BigInteger.valueOf(36));
+        boolean bigBase = gt(base, ALPHANUMERIC_COUNT);
         if (n.equals(BigInteger.ZERO)) {
             return bigBase ? "(0)" : "0";
         }
@@ -857,8 +1017,9 @@ public class IntegerUtils {
         if (base < 2) {
             throw new IllegalArgumentException("base must be at least 2. Invalid base: " + base);
         }
-        if (s.isEmpty())
+        if (s.isEmpty()) {
             return BigInteger.ZERO;
+        }
         boolean negative = false;
         if (head(s) == '-') {
             s = tail(s);
@@ -919,8 +1080,9 @@ public class IntegerUtils {
         if (lt(base, TWO)) {
             throw new IllegalArgumentException("base must be at least 2. Invalid base: " + base);
         }
-        if (s.isEmpty())
+        if (s.isEmpty()) {
             return BigInteger.ZERO;
+        }
         boolean negative = false;
         if (head(s) == '-') {
             s = tail(s);
@@ -930,7 +1092,7 @@ public class IntegerUtils {
             negative = true;
         }
         List<BigInteger> digits;
-        if (le(base, BigInteger.valueOf(36))) {
+        if (le(base, ALPHANUMERIC_COUNT)) {
             digits = toList(map(c -> BigInteger.valueOf(fromDigit(c)), fromString(s)));
         } else {
             if (head(s) != '(' || last(s) != ')' || s.contains("()")) {
@@ -993,8 +1155,7 @@ public class IntegerUtils {
      * @param n a {@code BigInteger}
      * @return a pair of {@code BigInteger}s generated bijectively from {@code n}
      */
-    public static @NotNull
-    Pair<BigInteger, BigInteger> logarithmicDemux(@NotNull BigInteger n) {
+    public static @NotNull Pair<BigInteger, BigInteger> logarithmicDemux(@NotNull BigInteger n) {
         if (n.signum() == -1) {
             throw new ArithmeticException("n cannot be negative. Invalid n: " + n);
         }
@@ -1020,12 +1181,35 @@ public class IntegerUtils {
      * @return a {@code BigInteger} generated bijectively from {@code x} and {@code y}
      */
     public static @NotNull BigInteger squareRootMux(@NotNull BigInteger x, @NotNull BigInteger y) {
-        List<Boolean> xBits = toList(bits(x));
-        List<Boolean> yBits = toList(bits(y));
-        int outputSize = max(xBits.size(), yBits.size()) * 3;
-        Iterable<Iterable<Boolean>> xChunks = map(w -> w, chunk(2, concat(xBits, repeat(false))));
-        Iterable<Iterable<Boolean>> yChunks = map(Arrays::asList, concat(yBits, repeat(false)));
-        return fromBits(take(outputSize, concat(ExhaustiveProvider.INSTANCE.choose(yChunks, xChunks))));
+        List<Boolean> xBits = bits(x);
+        List<Boolean> yBits = bits(y);
+        int xBitSize = xBits.size();
+        int yBitSize = yBits.size();
+        return fromBits(() -> new Iterator<Boolean>() {
+            private int ix = 0;
+            private int iy = 0;
+            private int counter = 0;
+
+            @Override
+            public boolean hasNext() {
+                return ix < xBitSize || iy < yBitSize;
+            }
+
+            @Override
+            public Boolean next() {
+                boolean bit;
+                if (counter == 0) {
+                    bit = iy < yBitSize ? yBits.get(iy) : false;
+                    iy++;
+                    counter = 2;
+                } else {
+                    bit = ix < xBitSize ? xBits.get(ix) : false;
+                    ix++;
+                    counter--;
+                }
+                return bit;
+            }
+        });
     }
 
     /**
@@ -1042,10 +1226,19 @@ public class IntegerUtils {
      * @return a pair of {@code BigInteger}s generated bijectively from {@code n}
      */
     public static @NotNull Pair<BigInteger, BigInteger> squareRootDemux(@NotNull BigInteger n) {
-        List<Boolean> bits = toList(bits(n));
-        Iterable<Boolean> xMask = cycle(Arrays.asList(false, true, true));
-        Iterable<Boolean> yMask = cycle(Arrays.asList(true, false, false));
-        return new Pair<>(fromBits(select(xMask, bits)), fromBits(select(yMask, bits)));
+        List<Boolean> xBits = new ArrayList<>();
+        List<Boolean> yBits = new ArrayList<>();
+        int counter = 0;
+        for (boolean bit : bits(n)) {
+            if (counter == 0) {
+                yBits.add(bit);
+                counter = 2;
+            } else {
+                xBits.add(bit);
+                counter--;
+            }
+        }
+        return new Pair<>(fromBits(xBits), fromBits(yBits));
     }
 
     /**
@@ -1056,7 +1249,7 @@ public class IntegerUtils {
      * {@link mho.wheels.numberUtils.IntegerUtils#demux}.
      *
      * <ul>
-     *  <li>Every element of {@code xs} cannot be negative.</li>
+     *  <li>No element of {@code xs} can be negative.</li>
      *  <li>The result is non-negative.</li>
      * </ul>
      *
@@ -1065,9 +1258,37 @@ public class IntegerUtils {
      */
     public static @NotNull BigInteger mux(@NotNull List<BigInteger> xs) {
         if (xs.isEmpty()) return BigInteger.ZERO;
-        Iterable<Boolean> muxedBits = IterableUtils.mux(toList(map(x -> concat(bits(x), repeat(false)), reverse(xs))));
-        int outputSize = maximum(map(BigInteger::bitLength, xs)) * xs.size();
-        return fromBits(take(outputSize, muxedBits));
+        int maxBitLength = 0;
+        for (BigInteger x : xs) {
+            if (x.signum() == -1) {
+                throw new ArithmeticException("No element of xs can be negative. Invalid xs: " + xs);
+            }
+            int bitLength = x.bitLength();
+            if (bitLength > maxBitLength) maxBitLength = bitLength;
+        }
+        int outputBitLength = maxBitLength * xs.size() + 1;
+        int byteLength = outputBitLength >> 3;
+        if (byteLength << 3 != outputBitLength) {
+            byteLength++;
+        }
+        byte[] bytes = new byte[byteLength];
+        int k = xs.size() - 1;
+        int j = 0;
+        for (int i = bytes.length - 1; i >= 0; i--) {
+            int b = 0;
+            for (int m = 1; m < 256; m <<= 1) {
+                if (xs.get(k).testBit(j)) {
+                    b |= m;
+                }
+                if (k == 0) {
+                    k = xs.size();
+                    j++;
+                }
+                k--;
+            }
+            bytes[i] = (byte) b;
+        }
+        return new BigInteger(bytes);
     }
 
     /**

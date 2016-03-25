@@ -869,7 +869,8 @@ public strictfp class BinaryFraction implements Comparable<BinaryFraction> {
     }
 
     /**
-     * Ensures that {@code this} is valid. Must return true for any {@code BinaryFraction} used outside this class.
+     * Ensures that {@code this} is valid. Must return without exceptions for any {@code BinaryFraction} used outside
+     * this class.
      */
     public void validate() {
         if (mantissa.equals(BigInteger.ZERO)) {

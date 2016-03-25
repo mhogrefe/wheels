@@ -12,6 +12,7 @@ Progress
 | Class                       | Methods | JavaDoc | Tests | Demos | Properties |
 |:--------------------------- |:-------:|:-------:|:-----:|:-----:|:----------:|
 | ConcurrencyUtils            | ✔       | ✘       | ✘     | ✘     | ✘          |
+| ResultCache                 | ✔       | ✘       | ✘     | ✘     | ✘          |
 | Readers                     | ✔       | ✘       | ✘     | ✘     | ✘          |
 | TextInput                   | ✔       | ✘       | ✘     | ✘     | ✘          |
 | TextOutput                  | ✔       | ✘       | ✘     | ✘     | ✘          |
@@ -27,7 +28,7 @@ Progress
 | MathUtils                   | ✔       | ✘       | ✘     | ✘     | ✘          |
 | BigDecimalUtils             | ✔       | ✔       | ✔     | ✔     | ✔          |
 | FloatingPointUtils          | ✔       | ✔       | ✔     | ✔     | ✔          |
-| IntegerUtils                | ✔       | ✘       | ✘     | ✘     | ✘          |
+| IntegerUtils                | ✔       | ✔       | ✔     | ✔     | ✔          |
 | LexComparator               | ✔       | ✔       | ✘     | ✘     | ✘          |
 | ListBasedComparator         | ✔       | ✘       | ✘     | ✘     | ✘          |
 | OptionalComparator          | ✔       | ✘       | ✘     | ✘     | ✘          |
@@ -45,6 +46,7 @@ Progress
 | Septuple                    | ✘       | ✘       | ✘     | ✘     | ✘          |
 | Sextuple                    | ✘       | ✘       | ✘     | ✘     | ✘          |
 | Triple                      | ✘       | ✘       | ✘     | ✘     | ✘          |
+| TwoDimensionalArray         | ✘       | ✘       | ✘     | ✘     | ✘          |
 | Demos                       | ✘       | ✘       | ✘     | ✘     | ✘          |
 | Testing                     | ✘       | ✘       | ✘     | ✘     | ✘          |
 | TestProperties              | ✘       | ✘       | ✘     | ✘     | ✘          |

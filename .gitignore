@@ -5,3 +5,5 @@ documentation/*
 *.jar
 
 target/*
+
+.DS_Store

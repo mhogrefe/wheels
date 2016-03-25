@@ -26,7 +26,7 @@ import static mho.wheels.testing.Testing.*;
  * value is generated. It may be reverted to its original state with {@link RandomProvider#reset}.</p>
  *
  * <p>{@code RandomProvider} uses the cryptographically-secure ISAAC pseudorandom number generator, implemented in
- * {@link mho.wheels.random.IsaacPRNG}. The source of its randomness is a {@code int[]} seed. It contains two scale
+ * {@link mho.wheels.random.IsaacPRNG}. The source of its randomness is a {@code int[]} seed. It contains three scale
  * parameters which some of the distributions depend on; the exact relationship between the parameters and the
  * distributions is specified in the distribution's documentation.</p>
  *
@@ -61,6 +61,11 @@ public final strictfp class RandomProvider extends IterableProvider {
     private static final int DEFAULT_SECONDARY_SCALE = 8;
 
     /**
+     * The default value of {@code tertiaryScale}.
+     */
+    private static final int DEFAULT_TERTIARY_SCALE = 2;
+
+    /**
      * A list of numbers which determines exactly which values will be deterministically output over the life of
      * {@code this}. It must have length {@link mho.wheels.random.IsaacPRNG#SIZE}.
      */
@@ -87,6 +92,11 @@ public final strictfp class RandomProvider extends IterableProvider {
      * Another parameter that determines the size of some of the generated objects.
      */
     private int secondaryScale = DEFAULT_SECONDARY_SCALE;
+
+    /**
+     * A third parameter that determines the size of some of the generated objects.
+     */
+    private int tertiaryScale = DEFAULT_TERTIARY_SCALE;
 
     /**
      * Constructs a {@code RandomProvider} with a seed generated from the current system time.
@@ -141,31 +151,45 @@ public final strictfp class RandomProvider extends IterableProvider {
     }
 
     /**
-     * Returns {@code this}'s scale parameter.
+     * Returns {@code this}'s first scale parameter.
      *
      * <ul>
      *  <li>{@code this} may be any {@code RandomProvider}.</li>
      *  <li>The result may be any {@code int}.</li>
      * </ul>
      *
-     * @return the scale parameter of {@code this}
+     * @return the first scale parameter of {@code this}
      */
     public int getScale() {
         return scale;
     }
 
     /**
-     * Returns {@code this}'s other scale parameter.
+     * Returns {@code this}'s second scale parameter.
      *
      * <ul>
      *  <li>{@code this} may be any {@code RandomProvider}.</li>
      *  <li>The result may be any {@code int}.</li>
      * </ul>
      *
-     * @return the other scale parameter of {@code this}
+     * @return the second scale parameter of {@code this}
      */
     public int getSecondaryScale() {
         return secondaryScale;
+    }
+
+    /**
+     * Returns {@code this}'s third scale parameter.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>The result may be any {@code int}.</li>
+     * </ul>
+     *
+     * @return the third scale parameter of {@code this}
+     */
+    public int getTertiaryScale() {
+        return tertiaryScale;
     }
 
     /**
@@ -196,6 +220,7 @@ public final strictfp class RandomProvider extends IterableProvider {
         RandomProvider copy = new RandomProvider(seed);
         copy.scale = scale;
         copy.secondaryScale = secondaryScale;
+        copy.tertiaryScale = tertiaryScale;
         copy.prng = prng;
         return copy;
     }
@@ -216,6 +241,7 @@ public final strictfp class RandomProvider extends IterableProvider {
         RandomProvider copy = new RandomProvider(seed);
         copy.scale = scale;
         copy.secondaryScale = secondaryScale;
+        copy.tertiaryScale = tertiaryScale;
         copy.prng = prng.copy();
         return copy;
     }
@@ -261,11 +287,31 @@ public final strictfp class RandomProvider extends IterableProvider {
     }
 
     /**
+     * A {@code RandomProvider} with the same fields as {@code this} except for a new tertiary scale.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>{@code tertiaryScale} mat be any {@code int}.</li>
+     *  <li>The result is not null.</li>
+     * </ul>
+     *
+     * @param tertiaryScale the new tertiary scale
+     * @return A copy of {@code this} with a new tertiary scale
+     */
+    @Override
+    public @NotNull RandomProvider withTertiaryScale(int tertiaryScale) {
+        RandomProvider scaled = copy();
+        scaled.tertiaryScale = tertiaryScale;
+        dependents.add(scaled);
+        return scaled;
+    }
+
+    /**
      * Put the {@code prng} back in its original state. Creating a {@code RandomProvider}, generating some values,
      * resetting, and generating the same types of values again will result in the same values. Any
-     * {@code RandomProvider}s created from {@code this} using {@link RandomProvider#withScale(int)} or
-     * {@link RandomProvider#withSecondaryScale(int)} (but not {@link RandomProvider#copy} or
-     * {@link RandomProvider#deepCopy()}) is also reset.
+     * {@code RandomProvider}s created from {@code this} using {@link RandomProvider#withScale(int)},
+     * {@link RandomProvider#withSecondaryScale(int)}, or {@link RandomProvider#withTertiaryScale(int)} (but not
+     * {@link RandomProvider#copy} or {@link RandomProvider#deepCopy()}) is also reset.
      *
      * <ul>
      *  <li>{@code this} may be any {@code RandomProvider}.</li>
@@ -4317,7 +4363,7 @@ public final strictfp class RandomProvider extends IterableProvider {
         if (this == that) return true;
         if (that == null || getClass() != that.getClass()) return false;
         RandomProvider rp = (RandomProvider) that;
-        return scale == rp.scale && secondaryScale == rp.secondaryScale &&
+        return scale == rp.scale && secondaryScale == rp.secondaryScale && tertiaryScale == rp.tertiaryScale &&
                 seed.equals(rp.seed) && prng.equals(rp.prng);
     }
 
@@ -4337,6 +4383,7 @@ public final strictfp class RandomProvider extends IterableProvider {
         result = 31 * result + prng.hashCode();
         result = 31 * result + scale;
         result = 31 * result + secondaryScale;
+        result = 31 * result + tertiaryScale;
         return result;
     }
 
@@ -4351,7 +4398,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      * @return a {@code String} representation of {@code this}
      */
     public String toString() {
-        return "RandomProvider[@" + getId() + ", " + scale + ", " + secondaryScale + "]";
+        return "RandomProvider[@" + getId() + ", " + scale + ", " + secondaryScale + ", " + tertiaryScale + "]";
     }
 
     /**
