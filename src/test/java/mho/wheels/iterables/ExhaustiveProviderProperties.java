@@ -8202,7 +8202,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
         for (Pair<List<Integer>, Integer> p : take(LIMIT, ps)) {
             Iterable<List<Integer>> lists = EP.subsetsLexAtLeast(p.b, p.a);
             testNoRemove(TINY_LIMIT, lists);
-            BigInteger listsLength = MathUtils.subsetCount(p.b, BigInteger.valueOf(p.a.size()));
+            BigInteger listsLength = MathUtils.subsetCount(p.b, p.a.size());
             if (lt(listsLength, BigInteger.valueOf(LIMIT))) {
                 List<List<Integer>> listsList = toList(lists);
                 if (!listsLength.equals(BigInteger.ZERO)) {
@@ -8221,7 +8221,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
                 P.withScale(4).naturalIntegersGeometric()
         );
         for (Pair<List<Integer>, Integer> p : take(LIMIT, ps)) {
-            BigInteger listsLength = MathUtils.subsetCount(p.b, BigInteger.valueOf(p.a.size()));
+            BigInteger listsLength = MathUtils.subsetCount(p.b, p.a.size());
             if (lt(listsLength, BigInteger.valueOf(LIMIT))) {
                 List<List<Integer>> listsList = toList(EP.subsetsLexAtLeast(p.b, p.a));
                 assertTrue(p, unique(listsList));
@@ -8267,7 +8267,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
         for (Pair<String, Integer> p : take(LIMIT, ps)) {
             Iterable<String> strings = EP.stringSubsetsLexAtLeast(p.b, p.a);
             testNoRemove(TINY_LIMIT, strings);
-            BigInteger stringsLength = MathUtils.subsetCount(p.b, BigInteger.valueOf(p.a.length()));
+            BigInteger stringsLength = MathUtils.subsetCount(p.b, p.a.length());
             if (lt(stringsLength, BigInteger.valueOf(LIMIT))) {
                 List<String> stringsList = toList(strings);
                 if (!stringsLength.equals(BigInteger.ZERO)) {
@@ -8283,7 +8283,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
 
         ps = P.pairsLogarithmicOrder(P.withScale(4).distinctStrings(), P.withScale(4).naturalIntegersGeometric());
         for (Pair<String, Integer> p : take(LIMIT, ps)) {
-            BigInteger stringsLength = MathUtils.subsetCount(p.b, BigInteger.valueOf(p.a.length()));
+            BigInteger stringsLength = MathUtils.subsetCount(p.b, p.a.length());
             if (lt(stringsLength, BigInteger.valueOf(LIMIT))) {
                 List<String> stringsList = toList(EP.stringSubsetsLexAtLeast(p.b, p.a));
                 assertTrue(p, unique(stringsList));
@@ -8383,7 +8383,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
         for (Pair<List<Integer>, Integer> p : take(LIMIT, ps)) {
             Iterable<List<Integer>> lists = EP.subsetsShortlexAtLeast(p.b, p.a);
             testNoRemove(TINY_LIMIT, lists);
-            BigInteger listsLength = MathUtils.subsetCount(p.b, BigInteger.valueOf(p.a.size()));
+            BigInteger listsLength = MathUtils.subsetCount(p.b, p.a.size());
             if (lt(listsLength, BigInteger.valueOf(LIMIT))) {
                 List<List<Integer>> listsList = toList(lists);
                 if (!listsLength.equals(BigInteger.ZERO)) {
@@ -8402,7 +8402,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
                 P.withScale(4).naturalIntegersGeometric()
         );
         for (Pair<List<Integer>, Integer> p : take(LIMIT, ps)) {
-            BigInteger listsLength = MathUtils.subsetCount(p.b, BigInteger.valueOf(p.a.size()));
+            BigInteger listsLength = MathUtils.subsetCount(p.b, p.a.size());
             if (lt(listsLength, BigInteger.valueOf(LIMIT))) {
                 List<List<Integer>> listsList = toList(EP.subsetsShortlexAtLeast(p.b, p.a));
                 assertTrue(p, unique(listsList));
@@ -8437,7 +8437,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
         for (Pair<String, Integer> p : take(LIMIT, ps)) {
             Iterable<String> strings = EP.stringSubsetsShortlexAtLeast(p.b, p.a);
             testNoRemove(TINY_LIMIT, strings);
-            BigInteger stringsLength = MathUtils.subsetCount(p.b, BigInteger.valueOf(p.a.length()));
+            BigInteger stringsLength = MathUtils.subsetCount(p.b, p.a.length());
             if (lt(stringsLength, BigInteger.valueOf(LIMIT))) {
                 List<String> stringsList = toList(strings);
                 if (!stringsLength.equals(BigInteger.ZERO)) {
@@ -8453,7 +8453,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
 
         ps = P.pairsLogarithmicOrder(P.withScale(4).distinctStrings(), P.withScale(4).naturalIntegersGeometric());
         for (Pair<String, Integer> p : take(LIMIT, ps)) {
-            BigInteger stringsLength = MathUtils.subsetCount(p.b, BigInteger.valueOf(p.a.length()));
+            BigInteger stringsLength = MathUtils.subsetCount(p.b, p.a.length());
             if (lt(stringsLength, BigInteger.valueOf(LIMIT))) {
                 List<String> stringsList = toList(EP.stringSubsetsShortlexAtLeast(p.b, p.a));
                 assertTrue(p, unique(stringsList));
@@ -9202,7 +9202,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
         for (Pair<List<Integer>, Integer> p : take(LIMIT, ps)) {
             Iterable<List<Integer>> lists = EP.subsetsAtLeast(p.b, p.a);
             testNoRemove(TINY_LIMIT, lists);
-            BigInteger listsLength = MathUtils.subsetCount(p.b, BigInteger.valueOf(p.a.size()));
+            BigInteger listsLength = MathUtils.subsetCount(p.b, p.a.size());
             if (lt(listsLength, BigInteger.valueOf(SMALL_LIMIT))) {
                 List<List<Integer>> listsList = toList(lists);
                 if (!listsLength.equals(BigInteger.ZERO)) {
@@ -9219,7 +9219,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
                 P.withScale(4).naturalIntegersGeometric()
         );
         for (Pair<List<Integer>, Integer> p : take(LIMIT, ps)) {
-            BigInteger listsLength = MathUtils.subsetCount(p.b, BigInteger.valueOf(p.a.size()));
+            BigInteger listsLength = MathUtils.subsetCount(p.b, p.a.size());
             if (lt(listsLength, BigInteger.valueOf(SMALL_LIMIT))) {
                 List<List<Integer>> listsList = toList(EP.subsetsAtLeast(p.b, p.a));
                 assertTrue(p, unique(listsList));
@@ -9269,7 +9269,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
         for (Pair<String, Integer> p : take(LIMIT, ps)) {
             Iterable<String> strings = EP.stringSubsetsAtLeast(p.b, p.a);
             testNoRemove(TINY_LIMIT, strings);
-            BigInteger stringsLength = MathUtils.subsetCount(p.b, BigInteger.valueOf(p.a.length()));
+            BigInteger stringsLength = MathUtils.subsetCount(p.b, p.a.length());
             if (lt(stringsLength, BigInteger.valueOf(SMALL_LIMIT))) {
                 List<String> stringsList = toList(strings);
                 if (!stringsLength.equals(BigInteger.ZERO)) {
@@ -9283,7 +9283,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
 
         ps = P.pairsLogarithmicOrder(P.withScale(4).distinctStrings(), P.withScale(4).naturalIntegersGeometric());
         for (Pair<String, Integer> p : take(LIMIT, ps)) {
-            BigInteger stringsLength = MathUtils.subsetCount(p.b, BigInteger.valueOf(p.a.length()));
+            BigInteger stringsLength = MathUtils.subsetCount(p.b, p.a.length());
             if (lt(stringsLength, BigInteger.valueOf(SMALL_LIMIT))) {
                 List<String> stringsList = toList(EP.stringSubsetsAtLeast(p.b, p.a));
                 assertTrue(p, unique(stringsList));

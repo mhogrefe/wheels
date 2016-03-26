@@ -400,6 +400,48 @@ public class MathUtilsTest {
         multisetCoefficient_fail_helper("0", -1);
     }
 
+    private static void subsetCount_helper(int minSize, int n, @NotNull String output) {
+        aeq(subsetCount(minSize, n), output);
+    }
+
+    private static void subsetCount_fail_helper(int minSize, int n) {
+        try {
+            subsetCount(minSize, n);
+            fail();
+        } catch (ArithmeticException ignored) {}
+    }
+
+    @Test
+    public void testSubsetCount() {
+        subsetCount_helper(0, 0, "1");
+        subsetCount_helper(1, 0, "0");
+        subsetCount_helper(2, 0, "0");
+        subsetCount_helper(0, 1, "2");
+        subsetCount_helper(1, 1, "1");
+        subsetCount_helper(2, 1, "0");
+        subsetCount_helper(0, 10, "1024");
+        subsetCount_helper(1, 10, "1023");
+        subsetCount_helper(2, 10, "1013");
+        subsetCount_helper(20, 100, "1267650600056921474829227703650");
+
+        subsetCount_fail_helper(-1, 0);
+        subsetCount_fail_helper(0, -1);
+    }
+
+    private static void permutationCount_helper(@NotNull String input, @NotNull String output) {
+        aeq(permutationCount(readBigIntegerList(input)), output);
+    }
+
+    @Test
+    public void testPermutationCount() {
+        permutationCount_helper("[]", "1");
+        permutationCount_helper("[1]", "1");
+        permutationCount_helper("[1, 2, 3]", "6");
+        permutationCount_helper("[1, 1, 1]", "1");
+        permutationCount_helper("[1, 2, 3, 4, 5, 6, 7, 8, 9]", "362880");
+        permutationCount_helper("[0, 1, 2, 2, 1, 2, 2, 1, 3, 3, 1]", "34650");
+    }
+
     private static void reversePermutationsSign_helper(int i, boolean output) {
         aeq(reversePermutationSign(i), output);
     }

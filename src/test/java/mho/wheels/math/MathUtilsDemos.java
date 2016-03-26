@@ -121,6 +121,19 @@ public class MathUtilsDemos extends Demos {
         }
     }
 
+    private void demoSubsetCount() {
+        for (Pair<Integer, Integer> p : take(LIMIT, P.pairs(P.naturalIntegersGeometric()))) {
+            System.out.println("subsetCount(" + p.a + ", " + p.b + ") = " + subsetCount(p.a, p.b));
+        }
+    }
+
+    private void demoPermutationCount() {
+        for (List<Integer> xs : take(LIMIT, P.lists(P.withNull(P.integersGeometric())))) {
+            String listString = tail(init(xs.toString()));
+            System.out.println("permutationCount(" + listString + ") = " + permutationCount(xs));
+        }
+    }
+
     private void demoReversePermutationSign() {
         for (int i : take(LIMIT, P.integers())) {
             System.out.println("reversePermutationSign(" + i + ") = " + reversePermutationSign(i));

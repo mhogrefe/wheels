@@ -49,6 +49,8 @@ public class MathUtilsProperties extends TestProperties {
         compareImplementationsNumberOfArrangementsOfASet_int_int();
         propertiesBinomialCoefficient();
         propertiesMultisetCoefficient();
+        propertiesSubsetCount();
+        propertiesPermutationCount();
         propertiesReversePermutationSign();
         compareImplementationsReversePermutationSign();
     }
@@ -631,6 +633,53 @@ public class MathUtilsProperties extends TestProperties {
                 multisetCoefficient(p.a, p.b);
                 fail(p);
             } catch (ArithmeticException ignored) {}
+        }
+    }
+
+    private void propertiesSubsetCount() {
+        initialize("subsetCount(int, int)");
+        for (Pair<Integer, Integer> p : take(LIMIT, P.pairs(P.naturalIntegersGeometric()))) {
+            BigInteger subsetCount = subsetCount(p.a, p.b);
+            assertNotEquals(p, subsetCount.signum(), -1);
+            assertTrue(p, ge(subsetCount(p.a, p.b + 1), subsetCount));
+        }
+
+        for (int i : take(SMALL_LIMIT, P.naturalIntegersGeometric())) {
+            assertEquals(i, subsetCount(0, i), BigInteger.ONE.shiftLeft(i));
+            assertEquals(i, subsetCount(i, i), BigInteger.ONE);
+        }
+
+        for (Pair<Integer, Integer> p : take(LIMIT, P.subsetPairs(P.naturalIntegersGeometric()))) {
+            assertEquals(p, subsetCount(p.b, p.a), BigInteger.ZERO);
+        }
+
+        for (Pair<Integer, Integer> p : take(LIMIT, P.pairs(P.negativeIntegers(), P.naturalIntegers()))) {
+            try {
+                subsetCount(p.a, p.b);
+                fail(p);
+            } catch (ArithmeticException ignored) {}
+        }
+
+        for (Pair<Integer, Integer> p : take(LIMIT, P.pairs(P.naturalIntegers(), P.negativeIntegers()))) {
+            try {
+                subsetCount(p.a, p.b);
+                fail(p);
+            } catch (ArithmeticException ignored) {}
+        }
+    }
+
+    private void propertiesPermutationCount() {
+        initialize("permutationCount(List<T>)");
+        for (List<Integer> xs : take(LIMIT, P.lists(P.withNull(P.integersGeometric())))) {
+            BigInteger permutationCount = permutationCount(xs);
+            assertEquals(xs, permutationCount.signum(), 1);
+            for (List<Integer> ys : take(TINY_LIMIT, P.permutationsFinite(xs))) {
+                assertEquals(xs, permutationCount(ys), permutationCount);
+            }
+        }
+
+        for (List<Integer> xs : take(LIMIT, P.distinctLists(P.withNull(P.integersGeometric())))) {
+            assertEquals(xs, permutationCount(xs), factorial(xs.size()));
         }
     }
 

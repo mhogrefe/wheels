@@ -425,12 +425,41 @@ public final class MathUtils {
         return binomialCoefficient(n.add(BigInteger.valueOf(k - 1)), k);
     }
 
-    public static @NotNull BigInteger subsetCount(int minSize, @NotNull BigInteger n) {
+    /**
+     * The number of unordered arrangements (of length at least {@code minSize}) of a set with {@code n} elements.
+     *
+     * <ul>
+     *  <li>{@code minSize} cannot be negative.</li>
+     *  <li>{@code n} cannot be negative.</li>
+     *  <li>The result is not negative.</li>
+     * </ul>
+     *
+     * @param minSize the minimum length of the arrangements
+     * @param n the number of elements in a set
+     * @return the number of different subsets that can be made by choosing at least {@code minSize} elements from the
+     * set
+     */
+    public static @NotNull BigInteger subsetCount(int minSize, int n) {
+        if (n < 0) {
+            throw new ArithmeticException("n cannot be negative. Invalid n: " + n);
+        }
         return sumBigInteger(
-                map(k -> binomialCoefficient(n, k.intValueExact()), range(BigInteger.valueOf(minSize), n))
+                map(k -> binomialCoefficient(BigInteger.valueOf(n), k), range(minSize, n))
         );
     }
 
+    /**
+     * The number of distinct permutations of a list, taking repeated elements into account.
+     *
+     * <ul>
+     *  <li>{@code xs} cannot be null.</li>
+     *  <li>The result is positive.</li>
+     * </ul>
+     *
+     * @param xs a {@code List} of elements
+     * @param <T> the type of elements in {@code xs}
+     * @return the number of permutations of {@code xs}
+     */
     public static @NotNull <T> BigInteger permutationCount(@NotNull List<T> xs) {
         BigInteger result = factorial(xs.size());
         for (BigInteger divisor : map(f -> factorial(f.b), frequencies(xs))) {

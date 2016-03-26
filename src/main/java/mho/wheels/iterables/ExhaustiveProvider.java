@@ -5307,7 +5307,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      * {@code elementCount}–1
      */
     private static @NotNull Iterable<List<Integer>> subsetIndicesAtLeast(int minSize, int elementCount) {
-        BigInteger outputSize = MathUtils.subsetCount(minSize, BigInteger.valueOf(elementCount));
+        BigInteger outputSize = MathUtils.subsetCount(minSize, elementCount);
         Iterable<Integer> range = IterableUtils.range(0, minSize - 1);
         int limit = elementCount - 1;
         int offset = elementCount - minSize;
@@ -5798,7 +5798,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
                 xs,
                 listsAtLeast(minSize, naturalIntegers()),
                 Optional.of(minSize),
-                n -> MathUtils.subsetCount(minSize, BigInteger.valueOf(n))
+                n -> MathUtils.subsetCount(minSize, n)
         );
     }
 
