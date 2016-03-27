@@ -135,7 +135,7 @@ public class MathUtilsDemos extends Demos {
     }
 
     private void demoReversePermutationSign() {
-        for (int i : take(LIMIT, P.integers())) {
+        for (int i : take(LIMIT, P.naturalIntegers())) {
             System.out.println("reversePermutationSign(" + i + ") = " + reversePermutationSign(i));
         }
     }

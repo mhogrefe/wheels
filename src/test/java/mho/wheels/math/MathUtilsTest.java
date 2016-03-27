@@ -446,6 +446,13 @@ public class MathUtilsTest {
         aeq(reversePermutationSign(i), output);
     }
 
+    private static void reversePermutationSign_fail_helper(int i) {
+        try {
+            reversePermutationSign(i);
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+    }
+
     @Test
     public void testReversePermutationSign() {
         reversePermutationsSign_helper(0, true);
@@ -454,11 +461,8 @@ public class MathUtilsTest {
         reversePermutationsSign_helper(3, false);
         reversePermutationsSign_helper(4, true);
         reversePermutationsSign_helper(5, true);
-        reversePermutationsSign_helper(-1, false);
-        reversePermutationsSign_helper(-2, false);
-        reversePermutationsSign_helper(-3, true);
-        reversePermutationsSign_helper(-4, true);
-        reversePermutationsSign_helper(-5, false);
+
+        reversePermutationSign_fail_helper(-1);
     }
 
     private static @NotNull List<BigInteger> readBigIntegerList(@NotNull String s) {

@@ -470,7 +470,22 @@ public final class MathUtils {
         return result;
     }
 
+    /**
+     * Returns the sign, or signature, of the reversal of a list of {@code i} elements, considered as a permutation.
+     * False means negative, true means positive.
+     *
+     * <ul>
+     *  <li>{@code i} cannot be negative.</li>
+     *  <li>The result may be either {@code boolean}.</li>
+     * </ul>
+     *
+     * @param i the number of elements of a list
+     * @return the parity (false is odd, true is even) of reversing the elements of the list with {@code i} elements
+     */
     public static boolean reversePermutationSign(int i) {
+        if (i < 0) {
+            throw new IllegalArgumentException("i cannot be negative. Invalid i: " + i);
+        }
         return (i & 2) == 0;
     }
 

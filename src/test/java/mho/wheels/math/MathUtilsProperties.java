@@ -684,15 +684,25 @@ public class MathUtilsProperties extends TestProperties {
     }
 
     private static boolean reversePermutationSign_alt(int i) {
+        if (i < 0) {
+            throw new IllegalArgumentException("i cannot be negative. Invalid i: " + i);
+        }
         return BigInteger.valueOf(i).multiply(BigInteger.valueOf(i - 1)).shiftRight(1).and(BigInteger.ONE)
                 .equals(BigInteger.ZERO);
     }
 
     private void propertiesReversePermutationSign() {
         initialize("reversePermutationSign()");
-        for (int i : take(LIMIT, P.integers())) {
+        for (int i : take(LIMIT, P.naturalIntegers())) {
             boolean reversePermutationSign = reversePermutationSign(i);
             assertEquals(i, reversePermutationSign, reversePermutationSign_alt(i));
+        }
+
+        for (int i : take(LIMIT, P.negativeIntegers())) {
+            try {
+                reversePermutationSign(i);
+                fail(i);
+            } catch (IllegalArgumentException ignored) {}
         }
     }
 
@@ -700,6 +710,6 @@ public class MathUtilsProperties extends TestProperties {
         Map<String, Function<Integer, Boolean>> functions = new LinkedHashMap<>();
         functions.put("alt", MathUtilsProperties::reversePermutationSign_alt);
         functions.put("standard", MathUtils::reversePermutationSign);
-        compareImplementations("reversePermutationSign()", take(LIMIT, P.integers()), functions);
+        compareImplementations("reversePermutationSign()", take(LIMIT, P.naturalIntegers()), functions);
     }
 }
