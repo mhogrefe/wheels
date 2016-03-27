@@ -822,15 +822,10 @@ public strictfp class CompoundTest {
         stringsAtLeast_int_fail_helper(4, 5);
     }
 
-    private static void distinctStrings_int_String_helper(
-            int size,
-            @NotNull String input,
-            @NotNull String output,
-            @NotNull String topSampleCount
-    ) {
+    private static void distinctStrings_int_String_helper(int size, @NotNull String input, @NotNull String output) {
         List<String> sample = toList(take(DEFAULT_SAMPLE_SIZE, P.distinctStrings(size, input)));
-        aeqitLimit(TINY_LIMIT, sample, output);
-        aeq(topSampleCount(DEFAULT_TOP_COUNT, sample), topSampleCount);
+        aeqitLimitLog(TINY_LIMIT, sample, output);
+        aeqMapLog(topSampleCount(DEFAULT_TOP_COUNT, sample), output);
         P.reset();
     }
 
@@ -846,103 +841,29 @@ public strictfp class CompoundTest {
 
     @Test
     public void testDistinctStrings_int_String() {
-        distinctStrings_int_String_helper(
-                0,
-                "a",
-                "[, , , , , , , , , , , , , , , , , , , , ...]",
-                "{=1000000}"
-        );
-        distinctStrings_int_String_helper(
-                1,
-                "a",
-                "[a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, ...]",
-                "{a=1000000}"
-        );
-        distinctStrings_int_String_helper(
-                0,
-                "abc",
-                "[, , , , , , , , , , , , , , , , , , , , ...]",
-                "{=1000000}"
-        );
-        distinctStrings_int_String_helper(
-                1,
-                "abc",
-                "[b, b, c, b, a, b, b, b, b, b, a, b, b, c, b, c, a, c, b, b, ...]",
-                "{c=333615, b=333313, a=333072}"
-        );
-        distinctStrings_int_String_helper(
-                2,
-                "abc",
-                "[bc, ba, ba, bc, bc, ac, bc, ac, ba, cb, cb, ac, ab, ca, ba, cb, ca, cb, ca, ba, ...]",
-                "{bc=167243, cb=166812, ba=166749, ca=166743, ab=166278, ac=166175}"
-        );
-        distinctStrings_int_String_helper(
-                3,
-                "abc",
-                "[bca, bac, bca, cba, cba, cba, acb, cab, acb, cab, cab, acb, abc, cba, bca, bac, cba, bca, acb," +
-                " cba, ...]",
-                "{cab=167288, bca=167242, cba=167051, abc=166598, acb=166062, bac=165759}"
-        );
-        distinctStrings_int_String_helper(
-                0,
-                "abbc",
-                "[, , , , , , , , , , , , , , , , , , , , ...]",
-                "{=1000000}"
-        );
-        distinctStrings_int_String_helper(
-                1,
-                "abbc",
-                "[b, b, c, b, b, c, a, b, b, c, c, b, c, b, c, b, a, b, b, b, ...]",
-                "{b=499640, c=250298, a=250062}"
-        );
-        distinctStrings_int_String_helper(
-                2,
-                "abbc",
-                "[bc, bc, ab, bc, cb, cb, cb, ab, bc, ba, cb, bc, ba, bc, ba, cb, cb, bc, ba, ab, ...]",
-                "{ba=249826, bc=249607, cb=167056, ab=166498, ca=83615, ac=83398}"
-        );
-        distinctStrings_int_String_helper(
-                3,
-                "abbc",
-                "[bca, bca, bca, cba, bca, cba, abc, abc, cba, bca, bac, bca, bca, bca, bca, cba, cba, bca, abc," +
-                " bca, ...]",
-                "{bca=250476, bac=249778, cba=166982, abc=166446, cab=83355, acb=82963}"
-        );
-        distinctStrings_int_String_helper(
-                0,
-                "Mississippi",
-                "[, , , , , , , , , , , , , , , , , , , , ...]",
-                "{=1000000}"
-        );
-        distinctStrings_int_String_helper(
-                1,
-                "Mississippi",
-                "[p, p, s, s, s, p, s, s, i, i, s, s, s, p, s, i, s, i, s, s, ...]",
-                "{s=363979, i=363703, p=181581, M=90737}"
-        );
-        distinctStrings_int_String_helper(
-                2,
-                "Mississippi",
-                "[ps, sp, si, is, sp, si, si, si, pi, is, si, pi, si, sM, si, si, si, pi, Mp, ip, ...]",
-                "{si=208293, is=207849, ip=103895, sp=103888, ps=81111, pi=79988, iM=52287, sM=51836, Mi=36458," +
-                " Ms=36215}"
-        );
-        distinctStrings_int_String_helper(
-                3,
-                "Mississippi",
-                "[psi, isp, sip, isp, isM, sip, iMp, ips, siM, psi, spM, spi, sip, psi, ips, iMs, pis, spi, isM," +
-                " sMi, ...]",
-                "{isp=138594, sip=138527, spi=83691, ips=82883, siM=69277, isM=69089, psi=64708, pis=64454," +
-                " iMs=35048, sMi=34639}"
-        );
+        distinctStrings_int_String_helper(0, "a", "RandomProvider_distinctStrings_int_String_i");
+        distinctStrings_int_String_helper(1, "a", "RandomProvider_distinctStrings_int_String_ii");
+        distinctStrings_int_String_helper(0, "abc", "RandomProvider_distinctStrings_int_String_iii");
+        distinctStrings_int_String_helper(1, "abc", "RandomProvider_distinctStrings_int_String_iv");
+        distinctStrings_int_String_helper(2, "abc", "RandomProvider_distinctStrings_int_String_v");
+        distinctStrings_int_String_helper(3, "abc", "RandomProvider_distinctStrings_int_String_vi");
+        distinctStrings_int_String_helper(0, "abbc", "RandomProvider_distinctStrings_int_String_vii");
+        distinctStrings_int_String_helper(1, "abbc", "RandomProvider_distinctStrings_int_String_viii");
+        distinctStrings_int_String_helper(2, "abbc", "RandomProvider_distinctStrings_int_String_ix");
+        distinctStrings_int_String_helper(3, "abbc", "RandomProvider_distinctStrings_int_String_x");
+        distinctStrings_int_String_helper(0, "Mississippi", "RandomProvider_distinctStrings_int_String_xi");
+        distinctStrings_int_String_helper(1, "Mississippi", "RandomProvider_distinctStrings_int_String_xii");
+        distinctStrings_int_String_helper(2, "Mississippi", "RandomProvider_distinctStrings_int_String_xiii");
+        distinctStrings_int_String_helper(3, "Mississippi", "RandomProvider_distinctStrings_int_String_xiv");
+
         distinctStrings_int_String_fail_helper(1, "");
         distinctStrings_int_String_fail_helper(-1, "abc");
     }
 
-    private static void distinctStrings_int_helper(int size, @NotNull String output, @NotNull String topSampleCount) {
+    private static void distinctStrings_int_helper(int size, @NotNull String output) {
         List<String> sample = toList(take(DEFAULT_SAMPLE_SIZE, P.distinctStrings(size)));
-        aeqitLimit(TINY_LIMIT, sample, output);
-        aeq(topSampleCount(DEFAULT_TOP_COUNT, sample), topSampleCount);
+        aeqitLimitLog(TINY_LIMIT, sample, output);
+        aeqMapLog(topSampleCount(DEFAULT_TOP_COUNT, sample), output);
         P.reset();
     }
 
@@ -958,32 +879,11 @@ public strictfp class CompoundTest {
 
     @Test
     public void testDistinctStrings_int() {
-        distinctStrings_int_helper(
-                0,
-                "[, , , , , , , , , , , , , , , , , , , , ...]",
-                "{=1000000}"
-        );
-        distinctStrings_int_helper(
-                1,
-                "[嘩, 퇉, 馃, \u2df2, ε, 䊿, \u2538, \u31e5, 髽, 肣, \uf6ff, ﳑ, 赧, \ue215, \u17f3, \udd75, 껸, \udd15," +
-                " 몱, ﲦ, ...]",
-                "{\uf1b2=36, 撢=35, આ=34, 퉃=34, \27=33, 韖=32, 㖒=32, 膗=31, 㗞=31, 䕦=31}"
-        );
-        distinctStrings_int_helper(
-                2,
-                "[嘩퇉, 馃\u2df2, ε䊿, \u2538\u31e5, 髽肣, \uf6ffﳑ, 赧\ue215, \u17f3\udd75, 껸\udd15, 몱ﲦ, 䯏ϡ," +
-                " 罖\u19dc, 刿ㄾ, 䲵箿, 偵恾, ᬜK, 㵏ꏹ, 缄㩷, ⴿ읾, 纫\ufe2d, ...]",
-                "{\u2bdbᴴ=2, \uf310틺=2, 㑰\uf5be=2, \uf480\u23c0=2, Ⳬ\ue4b6=2, ꢓ\ue5db=2, 백蝰=2, \ue13d굛=2," +
-                " \u2688瘷=2, ύ\u3099=2}"
-        );
-        distinctStrings_int_helper(
-                3,
-                "[嘩퇉馃, \u2df2ε䊿, \u2538\u31e5髽, 肣\uf6ffﳑ, 赧\ue215\u17f3, \udd75껸\udd15, 몱ﲦ䯏, ϡ罖\u19dc, 刿ㄾ䲵," +
-                " 箿偵恾, ᬜK㵏, ꏹ缄㩷, ⴿ읾纫, \ufe2d㗂䝲, \uf207갩힜, 坤琖\u2a43, 퉌\uea45\ue352, 蕤餥䉀, \u2b63\uf637鸂," +
-                " 鸅误輮, ...]",
-                "{嘩퇉馃=1, \u2df2ε䊿=1, \u2538\u31e5髽=1, 肣\uf6ffﳑ=1, 赧\ue215\u17f3=1, \udd75껸\udd15=1, 몱ﲦ䯏=1," +
-                " ϡ罖\u19dc=1, 刿ㄾ䲵=1, 箿偵恾=1}"
-        );
+        distinctStrings_int_helper(0, "RandomProvider_distinctStrings_int_i");
+        distinctStrings_int_helper(1, "RandomProvider_distinctStrings_int_ii");
+        distinctStrings_int_helper(2, "RandomProvider_distinctStrings_int_iii");
+        distinctStrings_int_helper(3, "RandomProvider_distinctStrings_int_iv");
+
         distinctStrings_int_fail_helper(-1);
     }
 
@@ -991,12 +891,11 @@ public strictfp class CompoundTest {
             int scale,
             @NotNull Iterable<Integer> input,
             @NotNull String output,
-            @NotNull String topSampleCount,
             double meanSize
     ) {
         List<List<Integer>> sample = toList(take(DEFAULT_SAMPLE_SIZE, P.withScale(scale).distinctLists(input)));
-        aeqitLimit(TINY_LIMIT, sample, output);
-        aeq(topSampleCount(DEFAULT_TOP_COUNT, sample), topSampleCount);
+        aeqitLimitLog(TINY_LIMIT, sample, output);
+        aeqMapLog(topSampleCount(DEFAULT_TOP_COUNT, sample), output);
         aeq(meanOfIntegers(toList(map(List::size, sample))), meanSize);
         P.reset();
     }
@@ -1005,14 +904,12 @@ public strictfp class CompoundTest {
             int scale,
             @NotNull String input,
             @NotNull String output,
-            @NotNull String topSampleCount,
             double meanSize
     ) {
         distinctLists_Iterable_helper(
                 scale,
                 P.uniformSample(readIntegerListWithNulls(input)),
                 output,
-                topSampleCount,
                 meanSize
         );
     }
@@ -1029,238 +926,149 @@ public strictfp class CompoundTest {
 
     @Test
     public void testDistinctLists_Iterable() {
-        distinctLists_Iterable_helper_uniform(
-                1,
-                "[5]",
-                "[[5], [5], [5], [5], [5], [], [5], [5], [], [], [5], [5], [5], [], [5], [], [], [5], [5], [], ...]",
-                "{[5]=500875, []=499125}",
-                0.5008749999935656
-        );
+        distinctLists_Iterable_helper_uniform(1, "[5]", "RandomProvider_distinctLists_Iterable_i", 0.5008749999935656);
         distinctLists_Iterable_helper_uniform(
                 2,
                 "[5]",
-                "[[5], [5], [5], [5], [5], [5], [], [5], [5], [5], [5], [5], [5], [5], [], [5], [], [5], [], [5]," +
-                " ...]",
-                "{[5]=666187, []=333813}",
+                "RandomProvider_distinctLists_Iterable_ii",
                 0.6661869999983192
         );
         distinctLists_Iterable_helper_uniform(
                 4,
                 "[5]",
-                "[[5], [5], [5], [5], [5], [], [5], [], [5], [5], [5], [5], [5], [5], [5], [5], [], [5], [5], [5]," +
-                " ...]",
-                "{[5]=799806, []=200194}",
+                "RandomProvider_distinctLists_Iterable_iii",
                 0.7998060000021615
         );
         distinctLists_Iterable_helper_uniform(
                 1,
                 "[1, 2, 3]",
-                "[[2, 1], [2, 3, 1], [1, 3], [3, 2], [], [], [1, 3], [2], [], [], [3], [1, 3], [3], [3], [], [3]," +
-                " [], [], [], [], ...]",
-                "{[]=499504, [2]=100253, [3]=100058, [1]=100023, [3, 2]=25123, [2, 3]=25037, [2, 1]=25028," +
-                " [3, 1]=25023, [1, 2]=24962, [1, 3]=24941}",
+                "RandomProvider_distinctLists_Iterable_iv",
                 0.7507059999970308
         );
         distinctLists_Iterable_helper_uniform(
                 2,
                 "[1, 2, 3]",
-                "[[2], [2], [3, 2], [], [3, 2], [1, 3], [2, 1], [3], [2, 1, 3], [1], [1], [1], [2, 1], [2, 3], []," +
-                " [2], [2, 3, 1], [], [], [], ...]",
-                "{[]=333247, [2]=95442, [3]=95325, [1]=94824, [1, 2]=38230, [3, 1]=38133, [3, 2]=38065," +
-                " [2, 3]=37941, [1, 3]=37932, [2, 1]=37897}",
+                "RandomProvider_distinctLists_Iterable_v",
                 1.2008789999923022
         );
         distinctLists_Iterable_helper_uniform(
                 4,
                 "[1, 2, 3]",
-                "[[2], [2], [3, 2, 1], [1], [3], [2, 1, 3], [2, 3], [2, 3, 1], [], [3, 1, 2], [1, 3], [3, 1]," +
-                " [3, 1, 2], [], [], [3, 1], [1], [3, 1], [], [1, 3], ...]",
-                "{[]=199912, [1]=72945, [2]=72868, [3]=72696, [1, 3, 2]=55894, [3, 1, 2]=55497, [2, 3, 1]=55427," +
-                " [3, 2, 1]=55389, [2, 1, 3]=55356, [1, 2, 3]=55293}",
+                "RandomProvider_distinctLists_Iterable_vi",
                 1.7145229999887661
         );
         distinctLists_Iterable_helper_uniform(
                 1,
                 "[1, null, 3]",
-                "[[null, 1], [null, 3, 1], [1, 3], [3, null], [], [], [1, 3], [null], [], [], [3], [1, 3], [3], [3]," +
-                " [], [3], [], [], [], [], ...]",
-                "{[]=499504, [null]=100253, [3]=100058, [1]=100023, [3, null]=25123, [null, 3]=25037," +
-                " [null, 1]=25028, [3, 1]=25023, [1, null]=24962, [1, 3]=24941}",
+                "RandomProvider_distinctLists_Iterable_vii",
                 0.7507059999970308
         );
         distinctLists_Iterable_helper_uniform(
                 2,
                 "[1, null, 3]",
-                "[[null], [null], [3, null], [], [3, null], [1, 3], [null, 1], [3], [null, 1, 3], [1], [1], [1]," +
-                " [null, 1], [null, 3], [], [null], [null, 3, 1], [], [], [], ...]",
-                "{[]=333247, [null]=95442, [3]=95325, [1]=94824, [1, null]=38230, [3, 1]=38133, [3, null]=38065," +
-                " [null, 3]=37941, [1, 3]=37932, [null, 1]=37897}",
+                "RandomProvider_distinctLists_Iterable_viii",
                 1.2008789999923022
         );
         distinctLists_Iterable_helper_uniform(
                 4,
                 "[1, null, 3]",
-                "[[null], [null], [3, null, 1], [1], [3], [null, 1, 3], [null, 3], [null, 3, 1], [], [3, 1, null]," +
-                " [1, 3], [3, 1], [3, 1, null], [], [], [3, 1], [1], [3, 1], [], [1, 3], ...]",
-                "{[]=199912, [1]=72945, [null]=72868, [3]=72696, [1, 3, null]=55894, [3, 1, null]=55497," +
-                " [null, 3, 1]=55427, [3, null, 1]=55389, [null, 1, 3]=55356, [1, null, 3]=55293}",
+                "RandomProvider_distinctLists_Iterable_ix",
                 1.7145229999887661
         );
         distinctLists_Iterable_helper_uniform(
                 1,
                 "[1, 2, 3, 4]",
-                "[[2, 4, 1], [2, 3, 4, 1], [1, 3, 4], [4], [4], [3], [1, 3], [2], [], [], [4], [2], [1], [], [3]," +
-                " [3], [], [3], [], [], ...]",
-                "{[]=499557, [3]=71710, [2]=71646, [1]=71506, [4]=71260, [4, 3]=12091, [1, 4]=12031, [2, 3]=12001," +
-                " [2, 1]=11981, [4, 2]=11919}",
+                "RandomProvider_distinctLists_Iterable_x",
                 0.8006769999971934
         );
         distinctLists_Iterable_helper_uniform(
                 2,
                 "[1, 2, 3, 4]",
-                "[[2, 4], [2, 3], [4, 3], [3, 4, 2], [], [1, 3, 4, 2], [2], [], [3, 4], [2, 1, 3], [], [], [1], [1]," +
-                " [2, 4], [], [2, 3, 4], [4], [4], [2, 3, 4, 1], ...]",
-                "{[]=333041, [2]=66872, [1]=66679, [3]=66527, [4]=66467, [3, 2]=16735, [2, 3]=16728, [3, 4]=16715," +
-                " [4, 3]=16691, [1, 2]=16689}",
+                "RandomProvider_distinctLists_Iterable_xi",
                 1.334835999990812
         );
         distinctLists_Iterable_helper_uniform(
                 4,
                 "[1, 2, 3, 4]",
-                "[[2, 4], [2], [4, 3, 2, 1], [1, 3], [], [], [3], [2, 4, 1], [2, 3, 4], [2, 3, 4, 1], [4, 3, 2]," +
-                " [3, 1, 4, 2], [1], [], [1, 3, 4], [3, 1], [3, 1, 2, 4], [3], [], [3, 4, 1], ...]",
-                "{[]=200010, [2]=50021, [4]=49847, [3]=49827, [1]=49823, [3, 2]=16860, [4, 1]=16803, [4, 3]=16773," +
-                " [2, 1]=16693, [3, 1]=16676}",
+                "RandomProvider_distinctLists_Iterable_xii",
                 2.001787999981212
         );
         distinctLists_Iterable_helper_uniform(
                 1,
                 "[1, 2, 2, 4]",
-                "[[2, 4, 1], [2, 4, 1], [1, 2, 4], [4], [4], [2], [1, 2], [2], [], [], [4], [2], [1], [], [2], [2]," +
-                " [], [2], [], [], ...]",
-                "{[]=499557, [2]=167198, [1]=71506, [4]=71260, [2, 1]=33256, [2, 4]=32979, [4, 2]=28785," +
-                " [1, 2]=28498, [1, 4]=12031, [4, 1]=11881}",
+                "RandomProvider_distinctLists_Iterable_xiii",
                 0.7339709999971153
         );
         distinctLists_Iterable_helper_uniform(
                 2,
                 "[1, 2, 2, 4]",
-                "[[2, 4], [2], [4, 2], [2, 4], [], [1, 2, 4], [2], [], [2, 4], [2, 1], [], [], [1], [1], [2, 4], []," +
-                " [2, 4], [4], [4], [2, 4, 1], ...]",
-                "{[]=333041, [2]=166862, [1]=66679, [4]=66467, [2, 4]=55507, [2, 1]=55502, [4, 2]=44714," +
-                " [1, 2]=44328, [2, 1, 4]=27856, [2, 4, 1]=27729}",
+                "RandomProvider_distinctLists_Iterable_xiv",
                 1.1676389999927037
         );
         distinctLists_Iterable_helper_uniform(
                 4,
                 "[1, 2, 2, 4]",
-                "[[2, 4], [2], [4, 2, 1], [1, 2], [], [], [2], [2, 4, 1], [2, 4], [2, 4, 1], [4, 2], [2, 1, 4], [1]," +
-                " [], [1, 2, 4], [2, 1], [2, 1, 4], [2], [], [2, 4, 1], ...]",
-                "{[]=200010, [2]=133338, [2, 4, 1]=66924, [2, 1]=66785, [2, 1, 4]=66587, [2, 4]=66567," +
-                " [1, 2, 4]=50238, [4, 2]=50135, [4, 2, 1]=50046, [4]=49847}",
+                "RandomProvider_distinctLists_Iterable_xv",
                 1.667697999989275
         );
         distinctLists_Iterable_helper_uniform(
                 1,
                 "[2, 2, 2, 2]",
-                "[[2], [2], [2], [2], [2], [2], [2], [2], [], [], [2], [2], [2], [], [2], [2], [], [2], [], [], ...]",
-                "{[2]=500443, []=499557}",
+                "RandomProvider_distinctLists_Iterable_xvi",
                 0.5004429999935531
         );
         distinctLists_Iterable_helper_uniform(
                 2,
                 "[2, 2, 2, 2]",
-                "[[2], [2], [2], [2], [], [2], [2], [], [2], [2], [], [], [2], [2], [2], [], [2], [2], [2], [2], ...]",
-                "{[2]=666959, []=333041}",
+                "RandomProvider_distinctLists_Iterable_xvii",
                 0.6669589999983414
         );
         distinctLists_Iterable_helper_uniform(
                 4,
                 "[2, 2, 2, 2]",
-                "[[2], [2], [2], [2], [], [], [2], [2], [2], [2], [2], [2], [2], [], [2], [2], [2], [2], [], [2]," +
-                " ...]",
-                "{[2]=799990, []=200010}",
+                "RandomProvider_distinctLists_Iterable_xviii",
                 0.7999900000021668
         );
         distinctLists_Iterable_helper_uniform(
                 1,
                 "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]",
-                "[[6, 9], [6, 2, 7, 10], [], [3], [5, 7], [6], [], [], [4], [6], [3], [7], [], [], [1], [], [], []," +
-                " [], [], ...]",
-                "{[]=500030, [10]=26710, [7]=26432, [4]=26418, [1]=26417, [6]=26409, [2]=26409, [5]=26279," +
-                " [8]=26268, [3]=26245}",
+                "RandomProvider_distinctLists_Iterable_xix",
                 0.9078379999975383
         );
         distinctLists_Iterable_helper_uniform(
                 2,
                 "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]",
-                "[[6, 4, 2, 8], [6, 2], [6, 10], [], [5, 7, 4, 6, 3], [], [4], [3, 4, 7], [1, 9], [9], [10, 6, 3]," +
-                " [6, 7, 4], [2, 4, 8], [10, 3, 8, 5, 9, 7], [], [], [], [4, 8, 3, 7, 5, 6], [2, 7], [], ...]",
-                "{[]=333018, [6]=23950, [10]=23943, [7]=23883, [2]=23862, [4]=23764, [1]=23753, [3]=23694," +
-                " [5]=23667, [8]=23610}",
+                "RandomProvider_distinctLists_Iterable_xx",
                 1.6697689999898184
         );
         distinctLists_Iterable_helper_uniform(
                 4,
                 "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]",
-                "[[6, 4, 2, 8], [6], [4, 8, 3, 6, 7, 9, 1, 5], [10, 6, 3], [6, 7], [10, 3, 8, 5, 9, 7, 1, 4], []," +
-                " [7, 1, 4, 5, 3, 8, 6], [3, 8], [7, 1, 10, 3], [3, 5, 2, 10], [1], [3, 9, 5, 6], [5], [3, 1, 9, 8]," +
-                " [], [], [1, 4], [6, 7], [4, 9, 6, 2], ...]",
-                "{[]=200177, [10]=17554, [8]=17510, [1]=17479, [6]=17445, [9]=17442, [5]=17440, [7]=17376," +
-                " [4]=17340, [2]=17337}",
+                "RandomProvider_distinctLists_Iterable_xxi",
                 2.8588639999882393
         );
         distinctLists_Iterable_helper(
                 1,
                 P.withScale(4).positiveIntegersGeometric(),
-                "[[3, 10, 7], [5], [], [10, 1], [], [3], [7], [], [5], [3], [], [], [], [], [], [], [], [], [5]," +
-                " [9, 15, 6, 12], ...]",
-                "{[]=499603, [1]=71387, [2]=51631, [3]=37715, [4]=27574, [5]=20807, [6]=15264, [7]=11330," +
-                " [1, 2]=8697, [8]=8526}",
+                "RandomProvider_distinctLists_Iterable_xxii",
                 0.8811449999975006
         );
         distinctLists_Iterable_helper(
                 2,
                 P.withScale(4).positiveIntegersGeometric(),
-                "[[10, 7, 4], [1, 3, 2, 7], [2, 3, 1], [], [5, 9, 15], [12], [1, 2], [], [9, 4, 7, 6, 2, 5, 1], []," +
-                " [], [], [3, 1, 5], [2], [1, 4, 5], [12], [2], [], [4, 1], [1], ...]",
-                "{[]=333149, [1]=66271, [2]=47475, [3]=34388, [4]=24997, [5]=18733, [6]=13708, [1, 2]=11823," +
-                " [2, 1]=11371, [7]=10160}",
+                "RandomProvider_distinctLists_Iterable_xxiii",
                 1.583489999990105
         );
         distinctLists_Iterable_helper(
                 4,
                 P.withScale(4).positiveIntegersGeometric(),
-                "[[10, 7, 4], [7, 8, 2, 3, 1], [15, 6, 12, 1, 2], [13], [2, 5, 1, 6, 10, 3, 4], []," +
-                " [2, 12, 1, 4, 3, 6], [], [], [], [1, 2, 3], [5, 4], [9], [4, 1, 6, 7, 5], [], [1, 2, 3]," +
-                " [13, 7, 10], [4, 19], [2, 4, 1, 22, 17, 3], [], ...]",
-                "{[]=199867, [1]=49790, [2]=35481, [3]=25159, [4]=18608, [5]=13362, [1, 2]=11519, [2, 1]=10965," +
-                " [6]=9910, [1, 3]=8009}",
+                "RandomProvider_distinctLists_Iterable_xxiv",
                 2.668782999988186
         );
-        distinctLists_Iterable_helper(
-                1,
-                repeat(1),
-                "[[1], [1], [1], [1], [1], [], [1], [1], [], [], [1], [1], [1], [], [1], [], [], [1], [1], [], ...]",
-                "{[1]=500875, []=499125}",
-                0.5008749999935656
-        );
-        distinctLists_Iterable_helper(
-                2,
-                repeat(1),
-                "[[1], [1], [1], [1], [1], [1], [], [1], [1], [1], [1], [1], [1], [1], [], [1], [], [1], [], [1]," +
-                " ...]",
-                "{[1]=666187, []=333813}",
-                0.6661869999983192
-        );
-        distinctLists_Iterable_helper(
-                4,
-                repeat(1),
-                "[[1], [1], [1], [1], [1], [], [1], [], [1], [1], [1], [1], [1], [1], [1], [1], [], [1], [1], [1]," +
-                " ...]",
-                "{[1]=799806, []=200194}",
-                0.7998060000021615
-        );
+        distinctLists_Iterable_helper(1, repeat(1), "RandomProvider_distinctLists_Iterable_xxv", 0.5008749999935656);
+        distinctLists_Iterable_helper(2, repeat(1), "RandomProvider_distinctLists_Iterable_xxvi", 0.6661869999983192);
+        distinctLists_Iterable_helper(4, repeat(1), "RandomProvider_distinctLists_Iterable_xxvii", 0.7998060000021615);
+
         distinctLists_Iterable_fail_helper(1, Collections.emptyList());
         distinctLists_Iterable_fail_helper(1, Arrays.asList(1, 2, 3));
         distinctLists_Iterable_fail_helper(0, P.integers());
@@ -1271,12 +1079,11 @@ public strictfp class CompoundTest {
             int scale,
             @NotNull String input,
             @NotNull String output,
-            @NotNull String topSampleCount,
             double meanSize
     ) {
         List<String> sample = toList(take(DEFAULT_SAMPLE_SIZE, P.withScale(scale).distinctStrings(input)));
-        aeqitLimit(TINY_LIMIT, sample, output);
-        aeq(topSampleCount(DEFAULT_TOP_COUNT, sample), topSampleCount);
+        aeqitLimitLog(TINY_LIMIT, sample, output);
+        aeqMapLog(topSampleCount(DEFAULT_TOP_COUNT, sample), output);
         aeq(meanOfIntegers(toList(map(String::length, sample))), meanSize);
         P.reset();
     }
@@ -1293,106 +1100,38 @@ public strictfp class CompoundTest {
 
     @Test
     public void testDistinctStrings_String() {
-        distinctStrings_String_helper(
-                1,
-                "a",
-                "[a, a, a, a, a, , a, a, , , a, a, a, , a, , , a, a, , ...]",
-                "{a=500875, =499125}",
-                0.5008749999935656
-        );
-        distinctStrings_String_helper(
-                2,
-                "a",
-                "[a, a, a, a, a, a, , a, a, a, a, a, a, a, , a, , a, , a, ...]",
-                "{a=666187, =333813}",
-                0.6661869999983192
-        );
-        distinctStrings_String_helper(
-                4,
-                "a",
-                "[a, a, a, a, a, , a, , a, a, a, a, a, a, a, a, , a, a, a, ...]",
-                "{a=799806, =200194}",
-                0.7998060000021615
-        );
-        distinctStrings_String_helper(
-                1,
-                "abc",
-                "[ba, bca, ac, cb, , , ac, b, , , c, ac, c, c, , c, , , , , ...]",
-                "{=499504, b=100253, c=100058, a=100023, cb=25123, bc=25037, ba=25028, ca=25023, ab=24962, ac=24941}",
-                0.7507059999970308
-        );
-        distinctStrings_String_helper(
-                2,
-                "abc",
-                "[b, b, cb, , cb, ac, ba, c, bac, a, a, a, ba, bc, , b, bca, , , , ...]",
-                "{=333247, b=95442, c=95325, a=94824, ab=38230, ca=38133, cb=38065, bc=37941, ac=37932, ba=37897}",
-                1.2008789999923022
-        );
-        distinctStrings_String_helper(
-                4,
-                "abc",
-                "[b, b, cba, a, c, bac, bc, bca, , cab, ac, ca, cab, , , ca, a, ca, , ac, ...]",
-                "{=199912, a=72945, b=72868, c=72696, acb=55894, cab=55497, bca=55427, cba=55389, bac=55356," +
-                " abc=55293}",
-                1.7145229999887661
-        );
-        distinctStrings_String_helper(
-                1,
-                "abbc",
-                "[bca, bca, abc, c, c, b, ab, b, , , c, b, a, , b, b, , b, , , ...]",
-                "{=499557, b=167198, a=71506, c=71260, ba=33256, bc=32979, cb=28785, ab=28498, ac=12031, ca=11881}",
-                0.7339709999971153
-        );
-        distinctStrings_String_helper(
-                2,
-                "abbc",
-                "[bc, b, cb, bc, , abc, b, , bc, ba, , , a, a, bc, , bc, c, c, bca, ...]",
-                "{=333041, b=166862, a=66679, c=66467, bc=55507, ba=55502, cb=44714, ab=44328, bac=27856, bca=27729}",
-                1.1676389999927037
-        );
-        distinctStrings_String_helper(
-                4,
-                "abbc",
-                "[bc, b, cba, ab, , , b, bca, bc, bca, cb, bac, a, , abc, ba, bac, b, , bca, ...]",
-                "{=200010, b=133338, bca=66924, ba=66785, bac=66587, bc=66567, abc=50238, cb=50135, cba=50046," +
-                " c=49847}",
-                1.667697999989275
-        );
-        distinctStrings_String_helper(
-                1,
-                "Mississippi",
-                "[sp, si, is, , is, s, , , s, s, s, i, i, , i, , , , , , ...]",
-                "{=499907, s=111371, i=111271, p=49940, si=31957, is=31807, M=23658, ip=13933, sp=13777, ps=12643}",
-                0.7700039999971866
-        );
+        distinctStrings_String_helper(1, "a", "RandomProvider_distinctStrings_String_i", 0.5008749999935656);
+        distinctStrings_String_helper(2, "a", "RandomProvider_distinctStrings_String_ii", 0.6661869999983192);
+        distinctStrings_String_helper(4, "a", "RandomProvider_distinctStrings_String_iii", 0.7998060000021615);
+        distinctStrings_String_helper(1, "abc", "RandomProvider_distinctStrings_String_iv", 0.7507059999970308);
+        distinctStrings_String_helper(2, "abc", "RandomProvider_distinctStrings_String_v", 1.2008789999923022);
+        distinctStrings_String_helper(4, "abc", "RandomProvider_distinctStrings_String_vi", 1.7145229999887661);
+        distinctStrings_String_helper(1, "abbc", "RandomProvider_distinctStrings_String_vii", 0.7339709999971153);
+        distinctStrings_String_helper(2, "abbc", "RandomProvider_distinctStrings_String_viii", 1.1676389999927037);
+        distinctStrings_String_helper(4, "abbc", "RandomProvider_distinctStrings_String_ix", 1.667697999989275);
+        distinctStrings_String_helper(1, "Mississippi", "RandomProvider_distinctStrings_String_x", 0.7700039999971866);
         distinctStrings_String_helper(
                 2,
                 "Mississippi",
-                "[si, si, si, i, is, , s, s, iMp, , , p, ps, s, is, psi, i, , si, , ...]",
-                "{=333528, s=106872, i=106248, si=50200, is=50121, p=45804, M=21506, sp=20350, ip=20293, pi=17481}",
+                "RandomProvider_distinctStrings_String_xi",
                 1.2632049999918284
         );
         distinctStrings_String_helper(
                 4,
                 "Mississippi",
-                "[si, s, sipM, s, ps, s, psiM, s, sMi, si, sMip, sipM, , spi, i, sMpi, , , Ms, s, ...]",
-                "{=199852, s=82176, i=81772, is=57102, si=57080, p=34200, sip=30455, isp=30209, spi=22840, ips=22800}",
+                "RandomProvider_distinctStrings_String_xii",
                 1.8740139999846195
         );
+
         distinctStrings_String_fail_helper(1, "");
         distinctStrings_String_fail_helper(0, "abc");
         distinctStrings_String_fail_helper(-1, "abc");
     }
 
-    private static void distinctStrings_helper(
-            int scale,
-            @NotNull String output,
-            @NotNull String topSampleCount,
-            double meanSize
-    ) {
+    private static void distinctStrings_helper(int scale, @NotNull String output, double meanSize) {
         List<String> sample = toList(take(DEFAULT_SAMPLE_SIZE, P.withScale(scale).distinctStrings()));
-        aeqitLimit(TINY_LIMIT, sample, output);
-        aeq(topSampleCount(DEFAULT_TOP_COUNT, sample), topSampleCount);
+        aeqitLimitLog(TINY_LIMIT, sample, output);
+        aeqMapLog(topSampleCount(DEFAULT_TOP_COUNT, sample), output);
         aeq(meanOfIntegers(toList(map(String::length, sample))), meanSize);
         P.reset();
     }
@@ -1409,29 +1148,10 @@ public strictfp class CompoundTest {
 
     @Test
     public void testDistinctStrings() {
-        distinctStrings_helper(
-                1,
-                "[ε䊿\u2538, \udd15몱ﲦ䯏ϡ罖\u19dc刿ㄾ, ᬜK㵏, 㩷, 纫, 䝲, 坤琖, \uea45, , , \u2b63, 鸅, \uee1c, , ᅺ, 䇺," +
-                " , 㖊, , , ...]",
-                "{=499557, \uf59a=15, 僵=14, \u12c7=14, 瘍=14, \ue0de=14, \ua838=13, 䃢=13, 喽=13, 瓫=13}",
-                1.0006239999976707
-        );
-        distinctStrings_helper(
-                2,
-                "[\u31e5髽肣\uf6ff, \udd15몱ﲦ, 刿ㄾ, K㵏ꏹ, , 坤琖\u2a43퉌\uea45, 餥, , \u33b2酓캆, \ue9fd\u2aec㖊짎, , ," +
-                " 䱸, \uf878, 尩굿\uecf5, , 瀵컦刓嗏\u3353\ue2d3\ud805, 䫯噋\uf36fꌻ, 홃, 壙\udd82픫鼧\u061a\u2e94穨, ...]",
-                "{=333041, 趤=15, 挗=13, \u2fae=13, 阤=12, \u0978=12, \ue2fe=12, \uab10=12, 䖸=12, \ue973=12}",
-                2.0036399999891383
-        );
-        distinctStrings_helper(
-                4,
-                "[\u31e5髽肣\uf6ff, \udd15몱, \u2b63\uf637鸂鸅误輮\uee1c\u33b2酓캆ᅺ됽煖䇺ᤘ\ue9fd, 全覚, , , ሮ," +
-                " 尩굿\uecf5ꪻ疜, 瀵컦刓, 壙\udd82픫鼧\u061a\u2e94穨㽖ﶼ䥔핀糦嗮\uf329ﻧ\udd42, ꯃ慚총\u0e77\uf36b," +
-                " 駆퉐庺\u2293\ued0d䴻ꎤ槔横靯ढ, 䃼, , 만ᑒ拷\ue68e, \u2506囀ͺ\u124eꪪ, 嶂췴䔾턞\uead1猂唯湑ﮍ蹙甧, \uab6e, ," +
-                " 滞\ue89bᖒ㿘, ...]",
-                "{=200010, \ued08=11, 듏=11, \ua495=11, 幱=10, 㚼=10, Ꙛ=10, 홣=10, ﺆ=10, \ua494=10}",
-                4.005472999991468
-        );
+        distinctStrings_helper(1, "RandomProvider_distinctStrings_i", 1.0006239999976707);
+        distinctStrings_helper(2, "RandomProvider_distinctStrings_ii", 2.0036399999891383);
+        distinctStrings_helper(4, "RandomProvider_distinctStrings_iii", 4.005472999991468);
+
         distinctStrings_fail_helper(0);
         distinctStrings_fail_helper(-1);
     }
