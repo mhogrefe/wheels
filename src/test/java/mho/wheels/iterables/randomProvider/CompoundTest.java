@@ -1161,14 +1161,13 @@ public strictfp class CompoundTest {
             int minSize,
             @NotNull Iterable<Integer> input,
             @NotNull String output,
-            @NotNull String topSampleCount,
             double meanSize
     ) {
         List<List<Integer>> sample = toList(
                 take(DEFAULT_SAMPLE_SIZE, P.withScale(scale).distinctListsAtLeast(minSize, input))
         );
-        aeqitLimit(TINY_LIMIT, sample, output);
-        aeq(topSampleCount(DEFAULT_TOP_COUNT, sample), topSampleCount);
+        aeqitLimitLog(TINY_LIMIT, sample, output);
+        aeqMapLog(topSampleCount(DEFAULT_TOP_COUNT, sample), output);
         aeq(meanOfIntegers(toList(map(List::size, sample))), meanSize);
         P.reset();
     }
@@ -1178,7 +1177,6 @@ public strictfp class CompoundTest {
             int minSize,
             @NotNull String input,
             @NotNull String output,
-            @NotNull String topSampleCount,
             double meanSize
     ) {
         distinctListsAtLeast_helper(
@@ -1186,7 +1184,6 @@ public strictfp class CompoundTest {
                 minSize,
                 P.uniformSample(readIntegerListWithNulls(input)),
                 output,
-                topSampleCount,
                 meanSize
         );
     }
@@ -1201,19 +1198,134 @@ public strictfp class CompoundTest {
         }
     }
 
+    @Test
+    public void testDistinctListsAtLeast() {
+        distinctListsAtLeast_helper_uniform(2, 1, "[5]", "RandomProvider_distinctListsAtLeast_i", 1.000000000007918);
+        distinctListsAtLeast_helper_uniform(
+                2,
+                1,
+                "[1, 2, 3]",
+                "RandomProvider_distinctListsAtLeast_ii",
+                1.50008299998526
+        );
+        distinctListsAtLeast_helper_uniform(
+                5,
+                3,
+                "[1, 2, 3]",
+                "RandomProvider_distinctListsAtLeast_iii",
+                2.9999999999775233
+        );
+        distinctListsAtLeast_helper_uniform(
+                2,
+                1,
+                "[1, null, 3]",
+                "RandomProvider_distinctListsAtLeast_iv",
+                1.50008299998526
+        );
+        distinctListsAtLeast_helper_uniform(
+                5,
+                3,
+                "[1, null, 3]",
+                "RandomProvider_distinctListsAtLeast_v",
+                2.9999999999775233
+        );
+        distinctListsAtLeast_helper_uniform(
+                2,
+                1,
+                "[1, 2, 3, 4]",
+                "RandomProvider_distinctListsAtLeast_vi",
+                1.5996069999831977
+        );
+        distinctListsAtLeast_helper_uniform(
+                5,
+                3,
+                "[1, 2, 3, 4]",
+                "RandomProvider_distinctListsAtLeast_vii",
+                3.3338519999899345
+        );
+        distinctListsAtLeast_helper_uniform(
+                2,
+                1,
+                "[1, 2, 2, 4]",
+                "RandomProvider_distinctListsAtLeast_viii",
+                1.466173999985577
+        );
+        distinctListsAtLeast_helper_uniform(
+                5,
+                3,
+                "[1, 2, 2, 4]",
+                "RandomProvider_distinctListsAtLeast_ix",
+                2.9999999999775233
+        );
+        distinctListsAtLeast_helper_uniform(
+                2,
+                1,
+                "[2, 2, 2, 2]",
+                "RandomProvider_distinctListsAtLeast_x",
+                1.000000000007918
+        );
+        distinctListsAtLeast_helper_uniform(
+                2,
+                1,
+                "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]",
+                "RandomProvider_distinctListsAtLeast_xi",
+                1.8170889999810345
+        );
+        distinctListsAtLeast_helper_uniform(
+                5,
+                3,
+                "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]",
+                "RandomProvider_distinctListsAtLeast_xii",
+                4.168420999985633
+        );
+        distinctListsAtLeast_helper_uniform(
+                32,
+                8,
+                "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]",
+                "RandomProvider_distinctListsAtLeast_xiii",
+                9.41189799992237
+        );
+        distinctListsAtLeast_helper(
+                2,
+                1,
+                P.withScale(4).positiveIntegersGeometric(),
+                "RandomProvider_distinctListsAtLeast_xiv",
+                1.7601419999815262
+        );
+        distinctListsAtLeast_helper(
+                5,
+                3,
+                P.withScale(4).positiveIntegersGeometric(),
+                "RandomProvider_distinctListsAtLeast_xv",
+                3.989958999983499
+        );
+        distinctListsAtLeast_helper(
+                32,
+                8,
+                P.withScale(4).positiveIntegersGeometric(),
+                "RandomProvider_distinctListsAtLeast_xvi",
+                10.378239999978224
+        );
+        distinctListsAtLeast_helper(2, 1, repeat(1), "RandomProvider_distinctListsAtLeast_xvii", 1.000000000007918);
+
+        distinctListsAtLeast_fail_helper(5, 3, Collections.emptyList());
+        distinctListsAtLeast_fail_helper(5, 3, Arrays.asList(1, 2, 3));
+        distinctListsAtLeast_fail_helper(5, 5, P.integers());
+        distinctListsAtLeast_fail_helper(4, 5, P.integers());
+    }
+
     private static void distinctStringsAtLeast_int_String_helper(
             int scale,
             int minSize,
             @NotNull String input,
             @NotNull String output,
-            @NotNull String topSampleCount,
             double meanSize
     ) {
         List<String> sample = toList(
                 take(DEFAULT_SAMPLE_SIZE, P.withScale(scale).distinctStringsAtLeast(minSize, input))
         );
-        aeqitLimit(TINY_LIMIT, sample, output);
-        aeq(topSampleCount(DEFAULT_TOP_COUNT, sample), topSampleCount);
+        aeqitLimitLog(TINY_LIMIT, sample, output);
+        aeqMapLog(topSampleCount(DEFAULT_TOP_COUNT, sample), output);
         aeq(meanOfIntegers(toList(map(String::length, sample))), meanSize);
         P.reset();
     }
@@ -1229,215 +1341,71 @@ public strictfp class CompoundTest {
     }
 
     @Test
-    public void testDistinctListsAtLeast() {
-        distinctListsAtLeast_helper_uniform(
+    public void testDistinctStringsAtLeast_int_String() {
+        distinctStringsAtLeast_int_String_helper(
                 2,
                 1,
-                "[5]",
-                "[[5], [5], [5], [5], [5], [5], [5], [5], [5], [5], [5], [5], [5], [5], [5], [5], [5], [5], [5]," +
-                " [5], ...]",
-                "{[5]=1000000}",
+                "a",
+                "RandomProvider_distinctStringsAtLeast_int_String_i",
                 1.000000000007918
         );
-        distinctListsAtLeast_helper_uniform(
+        distinctStringsAtLeast_int_String_helper(
                 2,
                 1,
-                "[1, 2, 3]",
-                "[[2, 1], [2, 3, 1], [1, 3, 2], [3], [3, 2, 1], [3], [2, 3], [2], [3], [1, 3], [2], [3], [2], [3]," +
-                " [1], [3], [1], [1], [3], [2, 1], ...]",
-                "{[2]=200397, [3]=200001, [1]=199719, [2, 3]=50590, [1, 3]=49968, [3, 2]=49927, [3, 1]=49752," +
-                " [2, 1]=49731, [1, 2]=49715, [2, 1, 3]=16871}",
+                "abc",
+                "RandomProvider_distinctStringsAtLeast_int_String_ii",
                 1.50008299998526
         );
-        distinctListsAtLeast_helper_uniform(
+        distinctStringsAtLeast_int_String_helper(
                 5,
                 3,
-                "[1, 2, 3]",
-                "[[2, 1, 3], [3, 2, 1], [1, 3, 2], [3, 2, 1], [2, 1, 3], [3, 1, 2], [2, 1, 3], [2, 3, 1], [2, 3, 1]," +
-                " [1, 3, 2], [3, 2, 1], [2, 3, 1], [1, 3, 2], [1, 3, 2], [3, 1, 2], [3, 2, 1], [3, 2, 1], [3, 2, 1]," +
-                " [3, 1, 2], [1, 2, 3], ...]",
-                "{[2, 3, 1]=167455, [1, 2, 3]=167096, [1, 3, 2]=166726, [3, 1, 2]=166462, [3, 2, 1]=166272," +
-                " [2, 1, 3]=165989}",
+                "abc",
+                "RandomProvider_distinctStringsAtLeast_int_String_iii",
                 2.9999999999775233
         );
-        distinctListsAtLeast_helper_uniform(
+        distinctStringsAtLeast_int_String_helper(
                 2,
                 1,
-                "[1, null, 3]",
-                "[[null, 1], [null, 3, 1], [1, 3, null], [3], [3, null, 1], [3], [null, 3], [null], [3], [1, 3]," +
-                " [null], [3], [null], [3], [1], [3], [1], [1], [3], [null, 1], ...]",
-                "{[null]=200397, [3]=200001, [1]=199719, [null, 3]=50590, [1, 3]=49968, [3, null]=49927," +
-                " [3, 1]=49752, [null, 1]=49731, [1, null]=49715, [null, 1, 3]=16871}",
-                1.50008299998526
-        );
-        distinctListsAtLeast_helper_uniform(
-                5,
-                3,
-                "[1, null, 3]",
-                "[[null, 1, 3], [3, null, 1], [1, 3, null], [3, null, 1], [null, 1, 3], [3, 1, null], [null, 1, 3]," +
-                " [null, 3, 1], [null, 3, 1], [1, 3, null], [3, null, 1], [null, 3, 1], [1, 3, null], [1, 3, null]," +
-                " [3, 1, null], [3, null, 1], [3, null, 1], [3, null, 1], [3, 1, null], [1, null, 3], ...]",
-                "{[null, 3, 1]=167455, [1, null, 3]=167096, [1, 3, null]=166726, [3, 1, null]=166462," +
-                " [3, null, 1]=166272, [null, 1, 3]=165989}",
-                2.9999999999775233
-        );
-        distinctListsAtLeast_helper_uniform(
-                2,
-                1,
-                "[1, 2, 3, 4]",
-                "[[2, 4, 1], [2, 3, 4, 1], [1, 3, 4, 2], [4], [4, 2], [3], [1, 3, 4], [2], [1], [4], [2], [1, 3]," +
-                " [3, 2], [3], [2], [3], [1], [3], [1], [1], ...]",
-                "{[2]=143315, [4]=143102, [1]=143064, [3]=142514, [2, 3]=24022, [4, 2]=23871, [1, 4]=23861," +
-                " [3, 4]=23858, [4, 1]=23855, [3, 1]=23805}",
-                1.5996069999831977
-        );
-        distinctListsAtLeast_helper_uniform(
-                5,
-                3,
-                "[1, 2, 3, 4]",
-                "[[2, 4, 1, 3], [4, 3, 2], [3, 4, 2, 1], [1, 3, 4, 2], [4, 3, 2], [3, 4, 2], [2, 1, 3], [1, 3, 4]," +
-                " [2, 4, 1, 3], [2, 3, 4], [4, 2, 1, 3], [2, 3, 4, 1], [1, 3, 2], [4, 3, 2], [3, 1, 2]," +
-                " [2, 3, 4, 1], [1, 3, 4], [1, 4, 3], [3, 1, 4], [4, 2, 1], ...]",
-                "{[1, 3, 2]=28020, [3, 2, 4]=27972, [4, 3, 1]=27942, [4, 2, 3]=27939, [2, 3, 4]=27910," +
-                " [4, 3, 2]=27893, [2, 1, 3]=27867, [4, 1, 2]=27856, [2, 3, 1]=27844, [3, 2, 1]=27827}",
-                3.3338519999899345
-        );
-        distinctListsAtLeast_helper_uniform(
-                2,
-                1,
-                "[1, 2, 2, 4]",
-                "[[2, 4, 1], [2, 4, 1], [1, 2, 4], [4], [4, 2], [2], [1, 2, 4], [2], [1], [4], [2], [1, 2], [2]," +
-                " [2], [2], [2], [1], [2], [1], [1], ...]",
-                "{[2]=333476, [4]=143102, [1]=143064, [2, 4]=66615, [2, 1]=66225, [4, 2]=57093, [1, 2]=56893," +
-                " [1, 4]=23861, [4, 1]=23855, [2, 4, 1]=16769}",
+                "abbc",
+                "RandomProvider_distinctStringsAtLeast_int_String_iv",
                 1.466173999985577
         );
-        distinctListsAtLeast_helper_uniform(
+        distinctStringsAtLeast_int_String_helper(
                 5,
                 3,
-                "[1, 2, 2, 4]",
-                "[[2, 4, 1], [4, 2, 1], [4, 2, 1], [2, 1, 4], [2, 4, 1], [1, 2, 4], [2, 4, 1], [2, 4, 1], [2, 4, 1]," +
-                " [4, 2, 1], [2, 4, 1], [1, 2, 4], [1, 4, 2], [2, 1, 4], [4, 2, 1], [2, 1, 4], [2, 1, 4], [1, 4, 2]," +
-                " [1, 2, 4], [1, 2, 4], ...]",
-                "{[2, 1, 4]=249877, [2, 4, 1]=249848, [4, 2, 1]=167153, [1, 2, 4]=167054, [4, 1, 2]=83176," +
-                " [1, 4, 2]=82892}",
+                "abbc",
+                "RandomProvider_distinctStringsAtLeast_int_String_v",
                 2.9999999999775233
         );
-        distinctListsAtLeast_helper_uniform(
+        distinctStringsAtLeast_int_String_helper(
                 2,
                 1,
-                "[2, 2, 2, 2]",
-                "[[2], [2], [2], [2], [2], [2], [2], [2], [2], [2], [2], [2], [2], [2], [2], [2], [2], [2], [2]," +
-                " [2], ...]",
-                "{[2]=1000000}",
-                1.000000000007918
+                "Mississippi",
+                "RandomProvider_distinctStringsAtLeast_int_String_vi",
+                1.5401079999842737
         );
-        distinctListsAtLeast_helper_uniform(
-                2,
-                1,
-                "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]",
-                "[[6, 9, 4], [6, 2, 7], [10], [8], [3], [5, 7, 4], [6], [5], [4, 8], [6], [3, 4], [7], [9], [1, 9]," +
-                " [9], [5], [4], [4], [10, 6, 3], [7], ...]",
-                "{[6]=53166, [5]=52878, [2]=52770, [4]=52720, [3]=52634, [1]=52615, [8]=52598, [9]=52572," +
-                " [10]=52566, [7]=52513}",
-                1.8170889999810345
-        );
-        distinctListsAtLeast_helper_uniform(
+        distinctStringsAtLeast_int_String_helper(
                 5,
                 3,
-                "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]",
-                "[[6, 4, 2, 8], [6, 2, 7], [6, 10, 5, 8, 3], [5, 7, 4, 6, 3], [6, 1, 4], [3, 4, 7, 9, 1], [9, 5, 4]," +
-                " [10, 6, 3, 7], [6, 7, 4], [2, 4, 8, 7, 3, 6], [10, 3, 8, 5], [7, 5, 1], [4, 8, 3, 7, 5, 6, 2, 1]," +
-                " [4, 5, 3, 8], [1, 7, 4], [7, 9, 3, 8, 4, 5], [7, 1, 10, 3], [3, 6, 10, 9], [2, 3, 10, 8]," +
-                " [1, 2, 5], ...]",
-                "{[2, 4, 5]=654, [4, 10, 3]=647, [4, 8, 5]=645, [10, 7, 4]=641, [7, 1, 6]=637, [9, 1, 5]=635," +
-                " [9, 2, 3]=635, [2, 3, 4]=634, [2, 5, 7]=633, [8, 4, 1]=633}",
-                4.168420999985633
+                "Mississippi",
+                "RandomProvider_distinctStringsAtLeast_int_String_vii",
+                3.2285219999851744
         );
-        distinctListsAtLeast_helper_uniform(
-                32,
-                8,
-                "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]",
-                "[[4, 8, 3, 6, 7, 9, 1, 5, 2, 10], [7, 10, 8, 3, 4, 9, 5, 6, 2, 1], [1, 7, 4, 6, 9, 3, 8, 5, 10, 2]," +
-                " [1, 2, 5, 6, 9, 3, 10, 7, 8, 4], [4, 9, 6, 2, 10, 1, 5, 8, 7], [5, 4, 7, 1, 8, 3, 6, 10, 2]," +
-                " [2, 10, 3, 6, 4, 8, 7, 1, 9, 5], [4, 2, 6, 5, 7, 10, 8, 1, 3, 9], [3, 5, 10, 1, 9, 7, 6, 4]," +
-                " [2, 8, 10, 3, 4, 9, 7, 5], [6, 8, 5, 9, 4, 2, 3, 10, 7, 1], [5, 6, 10, 7, 2, 4, 9, 1, 3, 8]," +
-                " [9, 10, 1, 7, 3, 2, 6, 8, 4, 5], [10, 8, 6, 3, 4, 7, 5, 9, 2, 1], [2, 9, 8, 10, 7, 4, 1, 5, 3]," +
-                " [8, 3, 10, 1, 2, 7, 6, 9, 4, 5], [1, 4, 5, 8, 9, 10, 3, 6, 7], [9, 1, 4, 3, 2, 10, 8, 7, 5, 6]," +
-                " [5, 6, 9, 7, 2, 10, 4, 3, 1], [5, 9, 1, 2, 7, 4, 8, 10, 3, 6], ...]",
-                "{[3, 5, 9, 6, 1, 10, 2, 8, 7, 4]=5, [7, 9, 3, 4, 2, 10, 8, 1, 6, 5]=4," +
-                " [6, 5, 1, 8, 10, 3, 7, 9, 4, 2]=4, [4, 8, 5, 1, 9, 10, 3, 2, 7, 6]=4," +
-                " [2, 4, 6, 8, 10, 1, 9, 3, 5, 7]=4, [3, 1, 5, 7, 4, 2, 10, 6, 9, 8]=4," +
-                " [2, 10, 7, 6, 5, 9, 8, 3, 4, 1]=4, [7, 2, 10, 8, 9, 5, 4, 1, 6, 3]=4," +
-                " [7, 10, 9, 5, 6, 1, 4, 8, 2, 3]=4, [10, 3, 8, 5, 6, 7, 9, 1, 4, 2]=4}",
-                9.41189799992237
-        );
-        distinctListsAtLeast_helper(
-                2,
-                1,
-                P.withScale(4).positiveIntegersGeometric(),
-                "[[3, 10, 7], [3], [7, 1, 3], [1, 2], [4, 8, 2], [2], [2], [2], [8], [9, 15, 6, 12], [2], [1], [12]," +
-                " [7, 4], [2, 6, 5, 1], [5], [1], [10], [2], [5], ...]",
-                "{[1]=142762, [2]=104119, [3]=75181, [4]=55392, [5]=41192, [6]=30272, [7]=22836, [1, 2]=17068," +
-                " [8]=16987, [2, 1]=16718}",
-                1.7601419999815262
-        );
-        distinctListsAtLeast_helper(
-                5,
-                3,
-                P.withScale(4).positiveIntegersGeometric(),
-                "[[10, 7, 4, 1, 3], [7, 8, 2, 3], [2, 1, 8], [9, 15, 6, 12], [2, 1, 13], [4, 7, 6, 2, 5, 1]," +
-                " [1, 10, 3, 5], [4, 2, 5], [4, 5, 2], [2, 1, 4, 3, 6], [5, 1, 2], [6, 5, 4], [9, 7, 4, 1, 6]," +
-                " [5, 1, 10, 2], [3, 2, 4], [7, 10, 3, 1, 4, 19, 5, 6, 2, 22], [2, 1, 3, 4, 7], [2, 1, 19]," +
-                " [7, 3, 14], [20, 4, 1, 2], ...]",
-                "{[1, 2, 3]=8420, [1, 3, 2]=7714, [2, 1, 3]=7625, [3, 1, 2]=6880, [2, 3, 1]=6446, [1, 2, 4]=6200," +
-                " [3, 2, 1]=6165, [2, 1, 4]=5577, [1, 4, 2]=5273, [2, 4, 1]=4541}",
-                3.989958999983499
-        );
-        distinctListsAtLeast_helper(
-                32,
-                8,
-                P.withScale(4).positiveIntegersGeometric(),
-                "[[7, 8, 2, 3, 1, 5, 9, 15, 6, 12, 13, 4, 10], [1, 6, 2, 3, 5, 4, 9, 7]," +
-                " [5, 1, 10, 2, 3, 4, 13, 7, 19, 6, 22], [2, 1, 3, 4, 7, 19, 14, 20, 5, 8, 13]," +
-                " [4, 3, 1, 5, 2, 10, 8, 6], [4, 1, 3, 6, 15, 2, 5, 11], [1, 2, 7, 4, 6, 9, 3, 5, 10]," +
-                " [3, 1, 2, 5, 13, 6, 8, 4, 10], [3, 8, 4, 1, 6, 2, 5, 15, 10, 7], [2, 1, 9, 3, 4, 5, 7, 6, 15]," +
-                " [3, 4, 9, 8, 6, 1, 2, 5, 17, 15, 12], [2, 8, 4, 1, 3, 5, 10, 14, 7, 13, 6]," +
-                " [2, 3, 5, 4, 15, 1, 6, 8, 7], [1, 2, 4, 3, 8, 7, 6, 10, 11, 5]," +
-                " [2, 5, 3, 1, 6, 8, 4, 13, 10, 7, 9], [7, 3, 12, 6, 2, 16, 8, 1, 9]," +
-                " [2, 3, 4, 5, 6, 1, 11, 7, 13, 14], [5, 4, 10, 8, 17, 1, 11, 2, 3, 7, 6]," +
-                " [1, 5, 3, 4, 2, 16, 7, 8, 11, 9], [5, 12, 4, 2, 1, 9, 6, 8, 3, 10], ...]",
-                "{[1, 3, 2, 5, 4, 6, 7, 8]=9, [4, 1, 2, 5, 3, 7, 6, 8]=8, [1, 2, 7, 3, 5, 4, 6, 8]=8," +
-                " [1, 5, 2, 4, 3, 6, 7, 9]=8, [1, 3, 4, 2, 8, 6, 7, 5]=8, [1, 2, 4, 3, 5, 7, 6, 9]=8," +
-                " [2, 1, 4, 6, 3, 5, 7, 8]=8, [1, 3, 2, 4, 6, 5, 7, 8]=8, [1, 2, 6, 4, 3, 5, 7, 8]=8," +
-                " [1, 3, 2, 4, 6, 5, 9, 7]=7}",
-                10.378239999978224
-        );
-        distinctListsAtLeast_helper(
-                2,
-                1,
-                repeat(1),
-                "[[1], [1], [1], [1], [1], [1], [1], [1], [1], [1], [1], [1], [1], [1], [1], [1], [1], [1], [1]," +
-                " [1], ...]",
-                "{[1]=1000000}",
-                1.000000000007918
-        );
-        distinctListsAtLeast_fail_helper(5, 3, Collections.emptyList());
-        distinctListsAtLeast_fail_helper(5, 3, Arrays.asList(1, 2, 3));
-        distinctListsAtLeast_fail_helper(5, 5, P.integers());
-        distinctListsAtLeast_fail_helper(4, 5, P.integers());
+
+        distinctStringsAtLeast_int_String_fail_helper(5, 3, "");
+        distinctStringsAtLeast_int_String_fail_helper(5, 5, "abc");
+        distinctStringsAtLeast_int_String_fail_helper(4, 5, "abc");
     }
 
     private static void distinctStringsAtLeast_int_helper(
             int scale,
             int minSize,
             @NotNull String output,
-            @NotNull String topSampleCount,
             double meanSize
     ) {
         List<String> sample = toList(take(DEFAULT_SAMPLE_SIZE, P.withScale(scale).distinctStringsAtLeast(minSize)));
-        aeqitLimit(TINY_LIMIT, sample, output);
-        aeq(topSampleCount(DEFAULT_TOP_COUNT, sample), topSampleCount);
+        aeqitLimitLog(TINY_LIMIT, sample, output);
+        aeqMapLog(topSampleCount(DEFAULT_TOP_COUNT, sample), output);
         aeq(meanOfIntegers(toList(map(String::length, sample))), meanSize);
         P.reset();
     }
@@ -1453,124 +1421,11 @@ public strictfp class CompoundTest {
     }
 
     @Test
-    public void testDistinctStringsAtLeast_int_String() {
-        distinctStringsAtLeast_int_String_helper(
-                2,
-                1,
-                "a",
-                "[a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, ...]",
-                "{a=1000000}",
-                1.000000000007918
-        );
-        distinctStringsAtLeast_int_String_helper(
-                2,
-                1,
-                "abc",
-                "[ba, bca, acb, c, cba, c, bc, b, c, ac, b, c, b, c, a, c, a, a, c, ba, ...]",
-                "{b=200397, c=200001, a=199719, bc=50590, ac=49968, cb=49927, ca=49752, ba=49731, ab=49715," +
-                " bac=16871}",
-                1.50008299998526
-        );
-        distinctStringsAtLeast_int_String_helper(
-                5,
-                3,
-                "abc",
-                "[bac, cba, acb, cba, bac, cab, bac, bca, bca, acb, cba, bca, acb, acb, cab, cba, cba, cba, cab," +
-                " abc, ...]",
-                "{bca=167455, abc=167096, acb=166726, cab=166462, cba=166272, bac=165989}",
-                2.9999999999775233
-        );
-        distinctStringsAtLeast_int_String_helper(
-                2,
-                1,
-                "abbc",
-                "[bca, bca, abc, c, cb, b, abc, b, a, c, b, ab, b, b, b, b, a, b, a, a, ...]",
-                "{b=333476, c=143102, a=143064, bc=66615, ba=66225, cb=57093, ab=56893, ac=23861, ca=23855," +
-                " bca=16769}",
-                1.466173999985577
-        );
-        distinctStringsAtLeast_int_String_helper(
-                5,
-                3,
-                "abbc",
-                "[bca, cba, cba, bac, bca, abc, bca, bca, bca, cba, bca, abc, acb, bac, cba, bac, bac, acb, abc," +
-                " abc, ...]",
-                "{bac=249877, bca=249848, cba=167153, abc=167054, cab=83176, acb=82892}",
-                2.9999999999775233
-        );
-        distinctStringsAtLeast_int_String_helper(
-                2,
-                1,
-                "Mississippi",
-                "[sp, si, i, is, is, s, i, si, s, s, i, ip, iM, i, p, i, s, s, ps, s, ...]",
-                "{i=222608, s=222220, p=100226, si=63759, is=63326, M=47546, sp=27944, ip=27659, pi=24950, ps=24913}",
-                1.5401079999842737
-        );
-        distinctStringsAtLeast_int_String_helper(
-                5,
-                3,
-                "Mississippi",
-                "[sip, sip, isM, iMp, psi, spi, sip, psiM, siM, isM, Msp, sip, ips, spi, Misp, psM, ipM, Mspi, sMpi," +
-                " isM, ...]",
-                "{sip=117359, isp=116982, spi=70509, ips=70019, pis=54744, psi=54548, siM=50854, isM=50725," +
-                " sMi=25245, iMs=25152}",
-                3.2285219999851744
-        );
-        distinctStringsAtLeast_int_String_fail_helper(5, 3, "");
-        distinctStringsAtLeast_int_String_fail_helper(5, 5, "abc");
-        distinctStringsAtLeast_int_String_fail_helper(4, 5, "abc");
-    }
-
-    @Test
     public void testDistinctStringsAtLeast_int() {
-        distinctStringsAtLeast_int_helper(
-                2,
-                1,
-                "[ε䊿\u2538\u31e5, \udd15몱ﲦ䯏ϡ罖\u19dc刿ㄾ, ᬜK㵏ꏹ, 㩷, 纫\ufe2d, 䝲, 坤琖\u2a43, \uea45, 蕤," +
-                " \u2b63\uf637, 鸅, \uee1c\u33b2, ᅺ됽, 䇺, \ue9fd, 㖊, \uaaf0, 覚, 䱸, \u2e24, ...]",
-                "{瓫=24, 簐=22, 듑=22, 瀯=21, \uf3e9=21, 䝞=21, 抷=20, 䒢=20, Ẑ=20, 텁=20}",
-                1.9995569999798375
-        );
-        distinctStringsAtLeast_int_helper(
-                5,
-                3,
-                "[\u31e5髽肣\uf6ffﳑ赧\ue215, \udd15몱ﲦ䯏, 刿ㄾ䲵箿偵, K㵏ꏹ缄, 坤琖\u2a43퉌\uea45\ue352蕤餥," +
-                " \u2b63\uf637鸂, \u33b2酓캆ᅺ됽, \ue9fd\u2aec㖊짎\uaaf0, 覚돘䱸, \uf878ሮܓ鄒, 尩굿\uecf5ꪻ, \ue8b2빮빅," +
-                " 瀵컦刓嗏\u3353\ue2d3\ud805, 䫯噋\uf36fꌻ躁\ue87c홃, 壙\udd82픫鼧\u061a\u2e94穨㽖ﶼ䥔, 糦嗮\uf329," +
-                " ꯃ慚총\u0e77\uf36bB㽿\u2a57, \udec6ꅪ\udcc6, \u337d萋\u0d5b, 쪡詪쀝\u1366\uf21bᵠ, ...]",
-                "{\u31e5髽肣\uf6ffﳑ赧\ue215=1, \udd15몱ﲦ䯏=1, 刿ㄾ䲵箿偵=1, K㵏ꏹ缄=1, 坤琖\u2a43퉌\uea45\ue352蕤餥=1," +
-                " \u2b63\uf637鸂=1, \u33b2酓캆ᅺ됽=1, \ue9fd\u2aec㖊짎\uaaf0=1, 覚돘䱸=1, \uf878ሮܓ鄒=1}",
-                5.00299199999616
-        );
-        distinctStringsAtLeast_int_helper(
-                32,
-                8,
-                "[\u2b63\uf637鸂鸅误輮\uee1c\u33b2酓캆ᅺ됽煖䇺ᤘ\ue9fd\u2aec㖊짎\uaaf0全覚돘䱸\u28de\u2e24\uf878" +
-                "ሮܓ鄒\uff03띯\ue5cb\ua7b1聆尩굿\uecf5ꪻ疜\ue8b2빮빅\ue2da䟆\ue78f㱉泦, 瀵컦刓嗏\u3353\ue2d3\ud805ឃ," +
-                " 糦嗮\uf329ﻧ\udd42䞂鎿鐳鰫묆颒錹睸ꯃ慚총\u0e77\uf36bB㽿\u2a57緜\udec6ꅪ\udcc6\u0964\u337d萋\u0d5b詵\ud8ca" +
-                "䍾徜쪡詪, 駆퉐庺\u2293\ued0d䴻ꎤ槔横, 䃼匀낛띆ﱓ㝏ᯖ\uea55\ue9c6儖䦣\u202c," +
-                " ͺ\u124eꪪ\u0a49䠬㲜\ue852ډұ\ue28c葒ලȞ蛕䮼ხ叙繲\uefc8嶂췴䔾턞, \uab6e䝀㥑\u2e64년믱젯䁅偘滞\ue89bᖒ㿘燔ꎿ趵," +
-                " 㙴ᶙ䁩聂ꃖꐲ\udc58\u26f2, 쳮陜阏顓\u2320쓎狙쟒㕯뚗\u32b0頵\u2606ꎚ궥婜쇻ᅒ댲, 旞\u2613\u19de\u0618戯韕똽\u25ad," +
-                " 죴\u0d47㚏帇퀯\uebc7晸犋鈖ꤥ쿕\u0f1b\u2eea\uf800ᓑ濙䢗瞁퓰," +
-                " 梏\u2684\ue40c\u2b83葆а팗풬궺쥶ꎠ뗢撻뵪\u21c0羾놂쒞沅," +
-                " 헑䈏닁\ue649គ姕\u1069\u2f0d듂狚\ue672団䅁悲枧\u1b56偰摡泈\u1a60㭍\u2af8운\u2026桶뼄ቾᶝ睗㥐厖剹ᥔ㻶\uf3a8춮茞" +
-                "\ue531칗ᳯ\u073d飰\ue480\ua6f4\u19b1\u1739箴\ued1a쀁\ua7af탰\u3243\u4df4\u2a33䨺\ud845㼰館㾸侒叵\uf351鳸" +
-                "뾁냥ꯈ\u1aba呼\u0b8c䦼鳙柿쥇顆乃\ude93쁳\u0aa9蕕챲閦\ue10d嬵\uecdaꜢஆ挑쑹窀糘, 甍뮣民皑\u291e秳ʵ솄" +
-                "퍆芦瀉벧\u2e50滎\u25a0爑\u1fce廏놿\u07aa\udde1頔臙ㆲ\uee84㢍䒉藟㗨詂ܒ嘟ᰁ謳䒁\u17cb\u0875멖\uecda㙿\ua837" +
-                "稔뇐\uee3aۮ\uf6cd\ue22c\u2fbe톋艸操샣墺貗\u1c47\uf2ff, 䌚\ufe3d춢후Ꜯ卩鳰阘细\ue9d5\ude3a显鏌㓆갭\uda6cᎳ" +
-                "\ua9f4쉙嘂\uf6a5䜐禎\u0529K쬋壵\ue61e쵕ᶑ\uf04f, ᬱ뭇昺玉뾂炣虹㨘, 씅潵겧\u0f24㺸則穣클䜜걓绡缂敉勪\ue498溯7" +
-                "익Ᏺ㥥㖃ど츪퇢㴯ᚅ\u1deb齞杁鱼欎䌕렔횋葑䎌쯹笨\udd06\ude35鲦頒Ϯ懜焣担戎몔\ue47a串\u0c00\ue59b聾ﶯ, \u2153" +
-                "\uf7cdꜰ耕詴茟\u0482쵕ꏠ\ud847\uef98쾭, 檌裤㻞椼憊ⴋ\u21ba\uec15檮滙\u0cec巶먛㺱\udbf4蠛玌疟ᒚⴓ\u2818\u2b5d" +
-                "\ud85cⲄ뤀\u0361ꚸ璎祍忢, 좲햽퐗僮眏겴\uf5e2霺ⱊȢ\ue41d\u2f43뜓軷, ...]",
-                "{\u2b63\uf637鸂鸅误輮\uee1c\u33b2酓캆ᅺ됽煖䇺ᤘ\ue9fd\u2aec㖊짎\uaaf0全覚돘䱸\u28de\u2e24\uf878ሮܓ鄒\uff03" +
-                "띯\ue5cb\ua7b1聆尩굿\uecf5ꪻ疜\ue8b2빮빅\ue2da䟆\ue78f㱉泦=1, 瀵컦刓嗏\u3353\ue2d3\ud805ឃ=1," +
-                " 糦嗮\uf329ﻧ\udd42䞂鎿鐳鰫묆颒錹睸ꯃ慚총\u0e77\uf36bB㽿\u2a57緜\udec6ꅪ\udcc6\u0964\u337d萋\u0d5b詵\ud8ca" +
-                "䍾徜쪡詪=1, 駆퉐庺\u2293\ued0d䴻ꎤ槔横=1, 䃼匀낛띆ﱓ㝏ᯖ\uea55\ue9c6儖䦣\u202c=1," +
-                " ͺ\u124eꪪ\u0a49䠬㲜\ue852ډұ\ue28c葒ලȞ蛕䮼ხ叙繲\uefc8嶂췴䔾턞=1," +
-                " \uab6e䝀㥑\u2e64년믱젯䁅偘滞\ue89bᖒ㿘燔ꎿ趵=1, 㙴ᶙ䁩聂ꃖꐲ\udc58\u26f2=1," +
-                " 쳮陜阏顓\u2320쓎狙쟒㕯뚗\u32b0頵\u2606ꎚ궥婜쇻ᅒ댲=1, 旞\u2613\u19de\u0618戯韕똽\u25ad=1}",
-                31.99690200002153
-        );
+        distinctStringsAtLeast_int_helper(2, 1, "RandomProvider_distinctStringsAtLeast_int_i", 1.9995569999798375);
+        distinctStringsAtLeast_int_helper(5, 3, "RandomProvider_distinctStringsAtLeast_int_ii", 5.00299199999616);
+        distinctStringsAtLeast_int_helper(32, 8, "RandomProvider_distinctStringsAtLeast_int_iii", 31.99690200002153);
+
         distinctStringsAtLeast_int_fail_helper(5, 5);
         distinctStringsAtLeast_int_fail_helper(4, 5);
     }
