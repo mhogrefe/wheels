@@ -1,11 +1,14 @@
 package mho.wheels.math;
 
+import mho.wheels.structures.FiniteDomainFunction;
 import mho.wheels.structures.Pair;
+import mho.wheels.structures.Quadruple;
 import mho.wheels.structures.Triple;
 import mho.wheels.testing.TestProperties;
 import org.jetbrains.annotations.NotNull;
 
 import java.math.BigInteger;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,35 +27,36 @@ public class MathUtilsProperties extends TestProperties {
 
     @Override
     protected void testBothModes() {
-        propertiesGcd_int_int();
-        compareImplementationsGcd_int_int();
-        propertiesGcd_long_long();
-        compareImplementationsGcd_long_long1();
-        compareImplementationsGcd_long_long2();
-        propertiesLcm_BigInteger_BigInteger();
-        compareImplementationsLcm_BigInteger_BigInteger();
-        propertiesGcd_List_BigInteger();
-        compareImplementationsGcd_List_BigInteger();
-        propertiesLcm_List_BigInteger();
-        compareImplementationsLcm_List_BigInteger();
-        propertiesFactorial_int();
-        compareImplementationsFactorial_int();
-        propertiesFactorial_BigInteger();
-        compareImplementationsFactorial_BigInteger();
-        propertiesSubfactorial_int();
-        compareImplementationsSubfactorial_int();
-        propertiesSubfactorial_BigInteger();
-        propertiesFallingFactorial();
-        propertiesNumberOfArrangementsOfASet_int();
-        compareImplementationsNumberOfArrangementsOfASet_int();
-        propertiesNumberOfArrangementsOfASet_int_int();
-        compareImplementationsNumberOfArrangementsOfASet_int_int();
-        propertiesBinomialCoefficient();
-        propertiesMultisetCoefficient();
-        propertiesSubsetCount();
-        propertiesPermutationCount();
-        propertiesReversePermutationSign();
-        compareImplementationsReversePermutationSign();
+//        propertiesGcd_int_int();
+//        compareImplementationsGcd_int_int();
+//        propertiesGcd_long_long();
+//        compareImplementationsGcd_long_long1();
+//        compareImplementationsGcd_long_long2();
+//        propertiesLcm_BigInteger_BigInteger();
+//        compareImplementationsLcm_BigInteger_BigInteger();
+//        propertiesGcd_List_BigInteger();
+//        compareImplementationsGcd_List_BigInteger();
+//        propertiesLcm_List_BigInteger();
+//        compareImplementationsLcm_List_BigInteger();
+//        propertiesFactorial_int();
+//        compareImplementationsFactorial_int();
+//        propertiesFactorial_BigInteger();
+//        compareImplementationsFactorial_BigInteger();
+//        propertiesSubfactorial_int();
+//        compareImplementationsSubfactorial_int();
+//        propertiesSubfactorial_BigInteger();
+//        propertiesFallingFactorial();
+//        propertiesNumberOfArrangementsOfASet_int();
+//        compareImplementationsNumberOfArrangementsOfASet_int();
+//        propertiesNumberOfArrangementsOfASet_int_int();
+//        compareImplementationsNumberOfArrangementsOfASet_int_int();
+//        propertiesBinomialCoefficient();
+//        propertiesMultisetCoefficient();
+//        propertiesSubsetCount();
+//        propertiesPermutationCount();
+//        propertiesReversePermutationSign();
+//        compareImplementationsReversePermutationSign();
+        propertiesFastGrowingCeilingInverse();
     }
 
     private static int gcd_int_int_simplest(int x, int y) {
@@ -711,5 +715,43 @@ public class MathUtilsProperties extends TestProperties {
         functions.put("alt", MathUtilsProperties::reversePermutationSign_alt);
         functions.put("standard", MathUtils::reversePermutationSign);
         compareImplementations("reversePermutationSign()", take(LIMIT, P.naturalIntegers()), functions);
+    }
+
+    private void propertiesFastGrowingCeilingInverse() {
+        initialize("fastGrowingCeilingInverse(Function<Integer, BigInteger>, int, int, BigInteger)");
+        Iterable<Pair<Integer, Integer>> ranges = P.bagPairs(P.integersGeometric());
+        //noinspection Convert2MethodRef,RedundantCast
+        Function<Pair<Integer, Integer>, Iterable<Function<Integer, BigInteger>>> fGenerator = range ->
+                map(
+                        is -> new FiniteDomainFunction<>(zip(range(range.a, range.b), is)),
+                        P.bags(
+                                range.b - range.a + 1,
+                                (Iterable<BigInteger>) map(i -> BigInteger.valueOf(i), P.integersGeometric())
+                        )
+                );
+        Iterable<Quadruple<Function<Integer, BigInteger>, Integer, Integer, BigInteger>> qs = map(
+                q -> new Quadruple<>(q.a.b, q.a.a.a, q.a.a.b, q.b),
+                P.dependentPairsInfinite(
+                        P.dependentPairsInfinite(ranges, fGenerator),
+                        p -> map(i -> p.b.apply(p.a.b).subtract(BigInteger.valueOf(i)), P.naturalIntegersGeometric())
+                )
+        );
+        for (Quadruple<Function<Integer, BigInteger>, Integer, Integer, BigInteger> q : take(LIMIT, qs)) {
+            int x = fastGrowingCeilingInverse(q.a, q.b, q.c, q.d);
+            assertTrue(q, ge(q.a.apply(x), q.d));
+            assertTrue(q, x == q.b || lt(q.a.apply(x - 1), q.d));
+        }
+
+        FiniteDomainFunction<Integer, BigInteger> emptyFunction = new FiniteDomainFunction<>(Collections.emptyMap());
+        Iterable<Quadruple<Function<Integer, BigInteger>, Integer, Integer, BigInteger>> qsFail = map(
+                p -> new Quadruple<>(emptyFunction, p.b.b, p.b.a, p.a),
+                P.pairs(P.bigIntegers(), P.subsetPairs(P.integers()))
+        );
+        for (Quadruple<Function<Integer, BigInteger>, Integer, Integer, BigInteger> q : take(LIMIT, qsFail)) {
+            try {
+                fastGrowingCeilingInverse(q.a, q.b, q.c, q.d);
+                fail(q);
+            } catch (IllegalArgumentException ignored) {}
+        }
     }
 }

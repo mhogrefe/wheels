@@ -1628,10 +1628,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
                 nub(
                         map(
                                 p -> BigDecimalUtils.canonicalize(
-                                        new BigDecimal(
-                                                p.a,
-                                                p.b + MathUtils.ceilingLog(BigInteger.TEN, p.a).intValueExact() - pow
-                                        )
+                                        new BigDecimal(p.a, p.b + MathUtils.ceilingLog(BigInteger.TEN, p.a) - pow)
                                 ),
                                 INSTANCE.pairsLogarithmicOrder(
                                         INSTANCE.positiveBigIntegers(),

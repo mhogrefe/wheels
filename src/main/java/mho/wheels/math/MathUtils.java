@@ -489,22 +489,61 @@ public final class MathUtils {
         return (i & 2) == 0;
     }
 
-    public static @NotNull BigInteger fastGrowingCeilingInverse(
-            @NotNull Function<BigInteger, BigInteger> f,
-            @NotNull BigInteger y,
-            @NotNull BigInteger min,
-            @NotNull BigInteger max
+    /**
+     * Given a weakly monotonically increasing function from {@code Integer} to {@code BigInteger} {@code f} over the
+     * inclusive range [{@code min}, {@code max}] and a value {@code y}, finds the smallest {@code int} x in
+     * [{@code min}, {@code max}] such that {@code f}(x)≥{@code y}. {@code f} should be fast-growing (exponential or
+     * better) for a quick result. Otherwise, use
+     * {@link MathUtils#ceilingInverse(Function, BigInteger, BigInteger, BigInteger)}.
+     *
+     * <ul>
+     *  <ul>{@code f} must terminate on all inputs in [{@code min}, {@code max}] with throwing an exception, and cannot
+     *  return null.</ul>
+     *  <li>{@code f} should be weakly monotonically increasing over [{@code min}, {@code max}], and {@code f}(x)
+     *  should be greater than or equal to {@code y} for some value of x in that range.</li>
+     *  <li>{@code min} may be any {@code int}.</li>
+     *  <li>{@code max} may be any {@code int}.</li>
+     *  <li>{@code min} must be less than or equal to {@code max}.</li>
+     *  <li>{@code y} cannot be null.</li>
+     *  <li>The result may be any {@code int}.</li>
+     * </ul>
+     *
+     * @param f a fast-growing function that is weakly monotonically increasing in [{@code min}, {@code max}].
+     * @param min the inclusive lower bound of the search interval
+     * @param max the inclusive upper bound of the search interval
+     * @param y a value
+     * @return ⌈{@code f}<sup>–1</sup>({@code y})⌉, where the inverse is defined over x∈[{@code min}, {@code max}]
+     */
+    public static int fastGrowingCeilingInverse(
+            @NotNull Function<Integer, BigInteger> f,
+            int min,
+            int max,
+            @NotNull BigInteger y
     ) {
-        for (BigInteger x : range(min, max)) {
-            BigInteger j = f.apply(x);
-            if (ge(j, y)) {
+        if (gt(min, max)) {
+            throw new IllegalArgumentException("min must be less than or equal to max. min: " + min + ", max: " + max);
+        }
+        BigInteger previous = null;
+        for (int x : range(min, max)) {
+            BigInteger i = f.apply(x);
+            if (previous != null && lt(i, previous)) {
+                throw new IllegalArgumentException("f must be weakly monotonically increasing over [min, max]. min: " +
+                        min + ", max: " + max + ", f(" + x + ") < f(" + (x - 1) + ")");
+            }
+            if (i == null) {
+                throw new IllegalArgumentException("f cannot return null for any value in [min, max]. min: " +
+                        min + ", max: " + max + ", f(" + x + ") = null");
+            }
+            if (ge(i, y)) {
                 return x;
             }
+            previous = i;
         }
-        throw new IllegalArgumentException("inverse not found in range");
+        throw new IllegalArgumentException("f(x) should be greater than or equal to y for some value of x in" +
+                " [min, max]. y: " + y + ", min: " + min + ", max: " + max + ", f(" + max + ") = " + f.apply(max));
     }
 
-    public static @NotNull BigInteger ceilingLog(@NotNull BigInteger base, @NotNull BigInteger x) {
+    public static int ceilingLog(@NotNull BigInteger base, @NotNull BigInteger x) {
         if (lt(base, IntegerUtils.TWO)) {
             throw new ArithmeticException("Base must be at least 2. Invalid base: " + base);
         }
@@ -512,7 +551,7 @@ public final class MathUtils {
             throw new ArithmeticException("x must be positive. Invalid x: " + x);
         }
         //noinspection SuspiciousNameCombination
-        return fastGrowingCeilingInverse(i -> base.pow(i.intValueExact()), x, BigInteger.ZERO, x); //very loose bound
+        return fastGrowingCeilingInverse(base::pow, 0, x.bitLength(), x); //very loose bound
     }
 
     public static @NotNull BigInteger ceilingInverse(

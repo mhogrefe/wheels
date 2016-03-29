@@ -45,7 +45,7 @@ public class BigDecimalUtils {
         if (bd.signum() != 1) {
             throw new ArithmeticException("bd must be positive. Invalid bd: " + bd);
         }
-        return MathUtils.ceilingLog(BigInteger.TEN, bd.unscaledValue()).intValueExact() - bd.scale();
+        return MathUtils.ceilingLog(BigInteger.TEN, bd.unscaledValue()) - bd.scale();
     }
 
     /**

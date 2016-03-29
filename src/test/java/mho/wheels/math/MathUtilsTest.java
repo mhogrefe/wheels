@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import java.math.BigInteger;
 import java.util.List;
+import java.util.function.Function;
 
 import static mho.wheels.math.MathUtils.*;
 import static mho.wheels.testing.Testing.aeq;
@@ -463,6 +464,41 @@ public class MathUtilsTest {
         reversePermutationsSign_helper(5, true);
 
         reversePermutationSign_fail_helper(-1);
+    }
+
+    private static void fastGrowingCeilingInverse_helper(
+            @NotNull Function<Integer, BigInteger> f,
+            int min,
+            int max,
+            @NotNull String y,
+            int output
+    ) {
+        aeq(fastGrowingCeilingInverse(f, min, max, Readers.readBigInteger(y).get()), output);
+    }
+
+    private static void fastGrowingCeilingInverse_fail_helper(
+            @NotNull Function<Integer, BigInteger> f,
+            int min,
+            int max,
+            @NotNull String y
+    ) {
+        try {
+            fastGrowingCeilingInverse(f, min, max, Readers.readBigInteger(y).get());
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+    }
+
+    @Test
+    public void testFastGrowingCeilingInverse() {
+        //noinspection Convert2MethodRef
+        fastGrowingCeilingInverse_helper(i -> BigInteger.valueOf(i), 0, 10, "3", 3);
+        fastGrowingCeilingInverse_helper(MathUtils::factorial, 0, 20, "1000000", 10);
+        fastGrowingCeilingInverse_helper(i -> BigInteger.valueOf(i).pow(2), 0, 10, "50", 8);
+
+        fastGrowingCeilingInverse_fail_helper(i -> { throw new IllegalArgumentException(); }, 0, 1, "1");
+        fastGrowingCeilingInverse_fail_helper(i -> null, 0, 1, "1");
+        fastGrowingCeilingInverse_fail_helper(i -> BigInteger.valueOf(i).pow(2), -2, 0, "10");
+        fastGrowingCeilingInverse_fail_helper(MathUtils::factorial, 0, 10, "1000000000");
     }
 
     private static @NotNull List<BigInteger> readBigIntegerList(@NotNull String s) {

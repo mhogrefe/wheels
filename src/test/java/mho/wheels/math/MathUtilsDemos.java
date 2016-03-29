@@ -1,10 +1,13 @@
 package mho.wheels.math;
 
+import mho.wheels.structures.FiniteDomainFunction;
 import mho.wheels.structures.Pair;
+import mho.wheels.structures.Quadruple;
 import mho.wheels.testing.Demos;
 
 import java.math.BigInteger;
 import java.util.List;
+import java.util.function.Function;
 
 import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.math.MathUtils.*;
@@ -137,6 +140,30 @@ public class MathUtilsDemos extends Demos {
     private void demoReversePermutationSign() {
         for (int i : take(LIMIT, P.naturalIntegers())) {
             System.out.println("reversePermutationSign(" + i + ") = " + reversePermutationSign(i));
+        }
+    }
+
+    private void demoFastGrowingCeilingInverse() {
+        Iterable<Pair<Integer, Integer>> ranges = P.bagPairs(P.withScale(2).integersGeometric());
+        //noinspection Convert2MethodRef,RedundantCast
+        Function<Pair<Integer, Integer>, Iterable<Function<Integer, BigInteger>>> fGenerator = range ->
+                map(
+                        is -> new FiniteDomainFunction<>(zip(range(range.a, range.b), is)),
+                        P.bags(
+                                range.b - range.a + 1,
+                                (Iterable<BigInteger>) map(i -> BigInteger.valueOf(i), P.integersGeometric())
+                        )
+                );
+        Iterable<Quadruple<Function<Integer, BigInteger>, Integer, Integer, BigInteger>> qs = map(
+                q -> new Quadruple<>(q.a.b, q.a.a.a, q.a.a.b, q.b),
+                P.dependentPairsInfinite(
+                        P.dependentPairsInfinite(ranges, fGenerator),
+                        p -> map(i -> p.b.apply(p.a.b).subtract(BigInteger.valueOf(i)), P.naturalIntegersGeometric())
+                )
+        );
+        for (Quadruple<Function<Integer, BigInteger>, Integer, Integer, BigInteger> q : take(LIMIT, qs)) {
+            System.out.println("fastGrowingCeilingInverse(" + q.a + ", " + q.b + ", " + q.c + ", " + q.d + ") = " +
+                    fastGrowingCeilingInverse(q.a, q.b, q.c, q.d));
         }
     }
 }
