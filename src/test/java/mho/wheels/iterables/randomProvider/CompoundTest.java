@@ -1430,15 +1430,10 @@ public strictfp class CompoundTest {
         distinctStringsAtLeast_int_fail_helper(4, 5);
     }
 
-    private static void stringBags_int_String_helper(
-            int size,
-            @NotNull String input,
-            @NotNull String output,
-            @NotNull String topSampleCount
-    ) {
+    private static void stringBags_int_String_helper(int size, @NotNull String input, @NotNull String output) {
         List<String> sample = toList(take(DEFAULT_SAMPLE_SIZE, P.stringBags(size, input)));
-        aeqitLimit(TINY_LIMIT, sample, output);
-        aeq(topSampleCount(DEFAULT_TOP_COUNT, sample), topSampleCount);
+        aeqitLimitLog(TINY_LIMIT, sample, output);
+        aeqMapLog(topSampleCount(DEFAULT_TOP_COUNT, sample), output);
         P.reset();
     }
 
@@ -1454,118 +1449,31 @@ public strictfp class CompoundTest {
 
     @Test
     public void testStringBags_int_String() {
-        stringBags_int_String_helper(
-                0,
-                "a",
-                "[, , , , , , , , , , , , , , , , , , , , ...]",
-                "{=1000000}"
-        );
-        stringBags_int_String_helper(
-                1,
-                "a",
-                "[a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, ...]",
-                "{a=1000000}"
-        );
-        stringBags_int_String_helper(
-                2,
-                "a",
-                "[aa, aa, aa, aa, aa, aa, aa, aa, aa, aa, aa, aa, aa, aa, aa, aa, aa, aa, aa, aa, ...]",
-                "{aa=1000000}"
-        );
-        stringBags_int_String_helper(
-                3,
-                "a",
-                "[aaa, aaa, aaa, aaa, aaa, aaa, aaa, aaa, aaa, aaa, aaa, aaa, aaa, aaa, aaa, aaa, aaa, aaa, aaa," +
-                " aaa, ...]",
-                "{aaa=1000000}"
-        );
-        stringBags_int_String_helper(
-                0,
-                "abc",
-                "[, , , , , , , , , , , , , , , , , , , , ...]",
-                "{=1000000}"
-        );
-        stringBags_int_String_helper(
-                1,
-                "abc",
-                "[b, b, c, b, a, b, b, b, b, b, a, b, b, c, b, c, a, c, b, b, ...]",
-                "{c=333615, b=333313, a=333072}"
-        );
-        stringBags_int_String_helper(
-                2,
-                "abc",
-                "[bb, bc, ab, bb, bb, ab, bc, bc, ac, bb, ac, bc, ac, bc, bc, aa, ac, bc, ab, ac, ...]",
-                "{bc=222712, ab=222100, ac=222096, aa=111121, cc=111028, bb=110943}"
-        );
-        stringBags_int_String_helper(
-                3,
-                "abc",
-                "[bbc, abb, bbb, abb, bbc, acc, bbc, abc, abc, bcc, aac, abc, aab, bcc, acc, bcc, abc, acc, aac," +
-                " aac, ...]",
-                "{abc=222554, acc=111661, bbc=111270, bcc=110898, aab=110745, abb=110451, aac=110411, aaa=37441," +
-                " bbb=37355, ccc=37214}"
-        );
-        stringBags_int_String_helper(
-                0,
-                "abbc",
-                "[, , , , , , , , , , , , , , , , , , , , ...]",
-                "{=1000000}"
-        );
-        stringBags_int_String_helper(
-                1,
-                "abbc",
-                "[b, b, c, b, b, c, a, b, b, c, c, b, c, b, c, b, a, b, b, b, ...]",
-                "{b=499640, c=250298, a=250062}"
-        );
-        stringBags_int_String_helper(
-                2,
-                "abbc",
-                "[bb, bc, bc, ab, bc, bc, bc, bc, ab, bb, bc, ab, bc, bc, bb, ab, bc, ac, bc, bc, ...]",
-                "{bb=250376, bc=249722, ab=249371, ac=125181, cc=62694, aa=62656}"
-        );
-        stringBags_int_String_helper(
-                3,
-                "abbc",
-                "[bbc, bbc, abb, bcc, bcc, abb, bbc, abb, bbc, bbc, abc, abc, bcc, bbb, abc, abc, abb, aab, bcc," +
-                " bbc, ...]",
-                "{bbc=187506, abb=187492, abc=187127, bbb=125202, bcc=93885, aab=93511, aac=46960, acc=46889," +
-                " ccc=15726, aaa=15702}"
-        );
-        stringBags_int_String_helper(
-                0,
-                "Mississippi",
-                "[, , , , , , , , , , , , , , , , , , , , ...]",
-                "{=1000000}"
-        );
-        stringBags_int_String_helper(
-                1,
-                "Mississippi",
-                "[p, p, s, s, s, p, s, s, i, i, s, s, s, p, s, i, s, i, s, s, ...]",
-                "{s=363979, i=363703, p=181581, M=90737}"
-        );
-        stringBags_int_String_helper(
-                2,
-                "Mississippi",
-                "[pp, ss, ps, ss, ii, ss, ps, is, is, ss, is, ip, is, is, ip, ss, ss, is, Ms, is, ...]",
-                "{is=264865, ss=132606, ps=132537, ii=131960, ip=131662, Mi=66206, Ms=65705, pp=33071, Mp=33023," +
-                " MM=8365}"
-        );
-        stringBags_int_String_helper(
-                3,
-                "Mississippi",
-                "[pps, pss, iss, iss, pss, iis, sss, iip, iss, iip, sss, iss, Mis, sss, iss, ips, Mip, ipp, ips," +
-                " iss, ...]",
-                "{iss=144520, ips=144458, iis=144124, pss=72346, iip=71867, Mis=71484, sss=48687, iii=48048," +
-                " Mii=36461, Mip=36170}"
-        );
+        stringBags_int_String_helper(0, "a", "RandomProvider_stringBags_int_String_i");
+        stringBags_int_String_helper(1, "a", "RandomProvider_stringBags_int_String_ii");
+        stringBags_int_String_helper(2, "a", "RandomProvider_stringBags_int_String_iii");
+        stringBags_int_String_helper(3, "a", "RandomProvider_stringBags_int_String_iv");
+        stringBags_int_String_helper(0, "abc", "RandomProvider_stringBags_int_String_v");
+        stringBags_int_String_helper(1, "abc", "RandomProvider_stringBags_int_String_vi");
+        stringBags_int_String_helper(2, "abc", "RandomProvider_stringBags_int_String_vii");
+        stringBags_int_String_helper(3, "abc", "RandomProvider_stringBags_int_String_viii");
+        stringBags_int_String_helper(0, "abbc", "RandomProvider_stringBags_int_String_ix");
+        stringBags_int_String_helper(1, "abbc", "RandomProvider_stringBags_int_String_x");
+        stringBags_int_String_helper(2, "abbc", "RandomProvider_stringBags_int_String_xi");
+        stringBags_int_String_helper(3, "abbc", "RandomProvider_stringBags_int_String_xii");
+        stringBags_int_String_helper(0, "Mississippi", "RandomProvider_stringBags_int_String_xiii");
+        stringBags_int_String_helper(1, "Mississippi", "RandomProvider_stringBags_int_String_xiv");
+        stringBags_int_String_helper(2, "Mississippi", "RandomProvider_stringBags_int_String_xv");
+        stringBags_int_String_helper(3, "Mississippi", "RandomProvider_stringBags_int_String_xvi");
+
         stringBags_int_String_fail_helper(1, "");
         stringBags_int_String_fail_helper(-1, "abc");
     }
 
-    private static void stringBags_int_helper(int size, @NotNull String output, @NotNull String topSampleCount) {
+    private static void stringBags_int_helper(int size, @NotNull String output) {
         List<String> sample = toList(take(DEFAULT_SAMPLE_SIZE, P.stringBags(size)));
-        aeqitLimit(TINY_LIMIT, sample, output);
-        aeq(topSampleCount(DEFAULT_TOP_COUNT, sample), topSampleCount);
+        aeqitLimitLog(TINY_LIMIT, sample, output);
+        aeqMapLog(topSampleCount(DEFAULT_TOP_COUNT, sample), output);
         P.reset();
     }
 
@@ -1581,32 +1489,11 @@ public strictfp class CompoundTest {
 
     @Test
     public void testStringBags_int() {
-        stringBags_int_helper(
-                0,
-                "[, , , , , , , , , , , , , , , , , , , , ...]",
-                "{=1000000}"
-        );
-        stringBags_int_helper(
-                1,
-                "[嘩, 퇉, 馃, \u2df2, ε, 䊿, \u2538, \u31e5, 髽, 肣, \uf6ff, ﳑ, 赧, \ue215, \u17f3, \udd75, 껸, \udd15," +
-                " 몱, ﲦ, ...]",
-                "{\uf1b2=36, 撢=35, આ=34, 퉃=34, \27=33, 韖=32, 㖒=32, 膗=31, 㗞=31, 䕦=31}"
-        );
-        stringBags_int_helper(
-                2,
-                "[嘩퇉, \u2df2馃, ε䊿, \u2538\u31e5, 肣髽, \uf6ffﳑ, 赧\ue215, \u17f3\udd75, 껸\udd15, 몱ﲦ, ϡ䯏," +
-                " \u19dc罖, ㄾ刿, 䲵箿, 偵恾, ᬜK, 㵏ꏹ, 㩷缄, ⴿ읾, 纫\ufe2d, ...]",
-                "{틺\uf310=2, 緑\ue709=2, 㑰\uf5be=2, 啺횄=2, 菧\ue429=2, 㧣㻜=2, \u23c0\uf480=2, Կ첵=2, 뻀\udf8a=2," +
-                " Ⳉ고=2}"
-        );
-        stringBags_int_helper(
-                3,
-                "[嘩馃퇉, ε\u2df2䊿, \u2538\u31e5髽, 肣\uf6ffﳑ, \u17f3赧\ue215, 껸\udd15\udd75, 䯏몱ﲦ, ϡ\u19dc罖, ㄾ䲵刿," +
-                " 偵恾箿, ᬜK㵏, 㩷缄ꏹ, ⴿ纫읾, 㗂䝲\ufe2d, 갩힜\uf207, \u2a43坤琖, 퉌\ue352\uea45, 䉀蕤餥, \u2b63鸂\uf637," +
-                " 误輮鸅, ...]",
-                "{嘩馃퇉=1, ε\u2df2䊿=1, \u2538\u31e5髽=1, 肣\uf6ffﳑ=1, \u17f3赧\ue215=1, 껸\udd15\udd75=1, 䯏몱ﲦ=1," +
-                " ϡ\u19dc罖=1, ㄾ䲵刿=1, 偵恾箿=1}"
-        );
+        stringBags_int_helper(0, "RandomProvider_stringBags_int_i");
+        stringBags_int_helper(1, "RandomProvider_stringBags_int_ii");
+        stringBags_int_helper(2, "RandomProvider_stringBags_int_iii");
+        stringBags_int_helper(3, "RandomProvider_stringBags_int_iv");
+
         stringBags_int_fail_helper(-1);
     }
 
@@ -1614,12 +1501,11 @@ public strictfp class CompoundTest {
             int scale,
             @NotNull Iterable<Integer> input,
             @NotNull String output,
-            @NotNull String topSampleCount,
             double meanSize
     ) {
         List<List<Integer>> sample = toList(take(DEFAULT_SAMPLE_SIZE, P.withScale(scale).bags(input)));
-        aeqitLimit(TINY_LIMIT, sample, output);
-        aeq(topSampleCount(DEFAULT_TOP_COUNT, sample), topSampleCount);
+        aeqitLimitLog(TINY_LIMIT, sample, output);
+        aeqMapLog(topSampleCount(DEFAULT_TOP_COUNT, sample), output);
         aeq(meanOfIntegers(toList(map(List::size, sample))), meanSize);
         P.reset();
     }
@@ -1628,16 +1514,9 @@ public strictfp class CompoundTest {
             int scale,
             @NotNull String input,
             @NotNull String output,
-            @NotNull String topSampleCount,
             double meanSize
     ) {
-        bags_Iterable_helper(
-                scale,
-                P.uniformSample(readIntegerListWithNulls(input)),
-                output,
-                topSampleCount,
-                meanSize
-        );
+        bags_Iterable_helper(scale, P.uniformSample(readIntegerListWithNulls(input)), output, meanSize);
     }
 
     private static void bags_Iterable_fail_helper(int scale, @NotNull Iterable<Integer> input) {
@@ -1652,254 +1531,61 @@ public strictfp class CompoundTest {
 
     @Test
     public void testBags_Iterable() {
-        bags_Iterable_helper_uniform(
-                1,
-                "[5]",
-                "[[5, 5, 5], [5, 5], [5, 5, 5, 5, 5, 5, 5, 5, 5], [5, 5], [5, 5], [], [5], [5, 5, 5], [], []," +
-                " [5, 5], [5, 5], [5, 5], [], [5, 5], [], [], [5], [5], [], ...]",
-                "{[]=499125, [5]=250897, [5, 5]=124849, [5, 5, 5]=62518, [5, 5, 5, 5]=31407, [5, 5, 5, 5, 5]=15634," +
-                " [5, 5, 5, 5, 5, 5]=7825, [5, 5, 5, 5, 5, 5, 5]=3926, [5, 5, 5, 5, 5, 5, 5, 5]=1896," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5]=956}",
-                1.0008359999977228
-        );
-        bags_Iterable_helper_uniform(
-                2,
-                "[5]",
-                "[[5, 5, 5, 5], [5, 5, 5, 5, 5], [5, 5, 5, 5, 5], [5, 5, 5, 5], [5, 5], [5, 5, 5, 5, 5], [], [5]," +
-                " [5, 5], [5], [5, 5, 5], [5, 5, 5, 5, 5, 5], [5], [5, 5], [], [5], [], [5], [], [5, 5, 5], ...]",
-                "{[]=333813, [5]=221150, [5, 5]=148025, [5, 5, 5]=98992, [5, 5, 5, 5]=66270, [5, 5, 5, 5, 5]=43747," +
-                " [5, 5, 5, 5, 5, 5]=29389, [5, 5, 5, 5, 5, 5, 5]=19567, [5, 5, 5, 5, 5, 5, 5, 5]=12958," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5]=8571}",
-                2.0020969999891216
-        );
-        bags_Iterable_helper_uniform(
-                4,
-                "[5]",
-                "[[5, 5, 5, 5], [5, 5, 5], [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5], [5, 5], [], [5], [], [5], [5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5], [5, 5, 5, 5, 5], [5, 5]," +
-                " [5, 5, 5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5], [], [5, 5, 5, 5, 5, 5, 5, 5]," +
-                " [5], [5, 5, 5, 5], ...]",
-                "{[]=200194, [5]=160489, [5, 5]=127708, [5, 5, 5]=101606, [5, 5, 5, 5]=82008, [5, 5, 5, 5, 5]=65900," +
-                " [5, 5, 5, 5, 5, 5]=52157, [5, 5, 5, 5, 5, 5, 5]=41827, [5, 5, 5, 5, 5, 5, 5, 5]=33413," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5]=26877}",
-                4.004359999991779
-        );
-        bags_Iterable_helper_uniform(
-                1,
-                "[1, 2, 3]",
-                "[[1, 2, 2], [1, 2, 2, 2, 2, 3, 3, 3], [1, 3], [2, 3], [], [], [1, 3], [2], [], [], [3], [1, 3]," +
-                " [3], [3], [], [3], [], [], [], [], ...]",
-                "{[]=499504, [2]=83540, [3]=83439, [1]=83275, [2, 3]=27912, [1, 2]=27761, [1, 3]=27505," +
-                " [1, 2, 3]=14040, [2, 2]=13964, [1, 1]=13961}",
-                1.00085799999768
-        );
-        bags_Iterable_helper_uniform(
-                2,
-                "[1, 2, 3]",
-                "[[2, 2, 2, 2], [2], [2, 2, 3, 3], [], [2, 3], [1, 1, 3], [1, 2], [3, 3, 3], [1, 2, 3], [1], [1]," +
-                " [1], [1, 2, 2], [2, 2, 2, 2, 3, 3, 3], [], [2], [1, 1, 2, 3, 3, 3], [], [], [], ...]",
-                "{[]=333247, [2]=74291, [3]=74037, [1]=73733, [1, 3]=32991, [1, 2]=32982, [2, 3]=32718," +
-                " [1, 2, 3]=22002, [3, 3]=16556, [2, 2]=16374}",
-                2.0023509999891522
-        );
-        bags_Iterable_helper_uniform(
-                4,
-                "[1, 2, 3]",
-                "[[2, 2, 2, 2], [2], [1, 1, 1, 1, 1, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3], [1], [3], [1, 2, 2, 3, 3]," +
-                " [2, 3], [1, 1, 1, 1, 1, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3], []," +
-                " [1, 1, 1, 1, 1, 1, 1, 2, 2, 3, 3, 3, 3, 3], [1, 3, 3], [1, 3, 3, 3, 3]," +
-                " [1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3], [], [], [1, 1, 3, 3], [1], [1, 1, 1, 3], [], [1, 1, 3], ...]",
-                "{[]=199912, [2]=53484, [1]=53481, [3]=53282, [2, 3]=28532, [1, 2]=28366, [1, 3]=28346," +
-                " [1, 2, 3]=22526, [1, 1]=14328, [2, 2]=14257}",
-                4.00516399999172
-        );
-        bags_Iterable_helper_uniform(
-                1,
-                "[1, 2, 3, 4]",
-                "[[1, 2, 4], [1, 2, 2, 2, 3, 3, 3, 4, 4], [1, 3, 4], [4], [4], [3], [1, 3], [2], [], [], [4], [2]," +
-                " [1], [], [3], [3], [], [3], [], [], ...]",
-                "{[]=499557, [3]=62855, [1]=62711, [2]=62536, [4]=62330, [1, 4]=15745, [3, 4]=15706, [2, 3]=15607," +
-                " [1, 2]=15576, [2, 4]=15495}",
-                1.0006389999976706
-        );
-        bags_Iterable_helper_uniform(
-                2,
-                "[1, 2, 3, 4]",
-                "[[2, 2, 4, 4], [2, 2, 3], [3, 4], [2, 3, 4], [], [1, 1, 2, 3, 4], [2], [], [3, 3, 4], [1, 2, 3, 3]," +
-                " [], [], [1], [1], [2, 2, 4], [], [2, 2, 3, 4, 4, 4, 4], [4, 4, 4, 4], [4], [1, 1, 2, 3, 3, 4, 4]," +
-                " ...]",
-                "{[]=333041, [1]=55655, [2]=55628, [4]=55498, [3]=55246, [3, 4]=18572, [1, 2]=18564, [2, 4]=18474," +
-                " [1, 4]=18473, [2, 3]=18429}",
-                2.0037019999891394
-        );
-        bags_Iterable_helper_uniform(
-                4,
-                "[1, 2, 3, 4]",
-                "[[2, 2, 4, 4], [2, 2], [1, 1, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4], [1, 3], [], [], [3]," +
-                " [1, 2, 2, 4, 4], [2, 3, 4], [1, 1, 1, 1, 1, 2, 2, 3, 3, 3, 3, 3, 3, 4, 4, 4], [2, 3, 4, 4, 4]," +
-                " [1, 1, 1, 2, 3, 3, 3, 3, 4, 4, 4], [1], [], [1, 3, 3, 4], [1, 3, 3, 3, 3]," +
-                " [1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4], [3], [], [1, 3, 3, 4], ...]",
-                "{[]=200010, [2]=40047, [4]=39960, [3]=39955, [1]=39861, [3, 4]=16116, [1, 4]=16111, [2, 3]=16084," +
-                " [2, 4]=16026, [1, 2]=15963}",
-                4.00571499999147
-        );
-        bags_Iterable_helper_uniform(
-                1,
-                "[1, 2, 2, 4]",
-                "[[1, 2, 4], [1, 2, 2, 2, 2, 2, 2, 4, 4], [1, 2, 4], [4], [4], [2], [1, 2], [2], [], [], [4], [2]," +
-                " [1], [], [2], [2], [], [2], [], [], ...]",
-                "{[]=499557, [2]=125391, [1]=62711, [4]=62330, [2, 2]=31328, [2, 4]=31201, [1, 2]=30980," +
-                " [1, 4]=15745, [1, 2, 4]=11930, [1, 2, 2]=11853}",
-                1.0006389999976706
-        );
-        bags_Iterable_helper_uniform(
-                2,
-                "[1, 2, 2, 4]",
-                "[[2, 2, 4, 4], [2, 2, 2], [2, 4], [2, 2, 4], [], [1, 1, 2, 2, 4], [2], [], [2, 2, 4], [1, 2, 2, 2]," +
-                " [], [], [1], [1], [2, 2, 4], [], [2, 2, 2, 4, 4, 4, 4], [4, 4, 4, 4], [4], [1, 1, 2, 2, 2, 4, 4]," +
-                " ...]",
-                "{[]=333041, [2]=110874, [1]=55655, [4]=55498, [2, 2]=37235, [2, 4]=37046, [1, 2]=36992," +
-                " [1, 2, 4]=18649, [2, 2, 4]=18508, [1, 4]=18473}",
-                2.0037019999891394
-        );
-        bags_Iterable_helper_uniform(
-                4,
-                "[1, 2, 2, 4]",
-                "[[2, 2, 4, 4], [2, 2], [1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 4, 4, 4, 4], [1, 2], [], [], [2]," +
-                " [1, 2, 2, 4, 4], [2, 2, 4], [1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 4, 4, 4], [2, 2, 4, 4, 4]," +
-                " [1, 1, 1, 2, 2, 2, 2, 2, 4, 4, 4], [1], [], [1, 2, 2, 4], [1, 2, 2, 2, 2]," +
-                " [1, 2, 2, 2, 2, 2, 2, 2, 2, 4, 4], [2], [], [1, 2, 2, 4], ...]",
-                "{[]=200010, [2]=80002, [4]=39960, [1]=39861, [2, 4]=32142, [2, 2]=32002, [1, 2]=31843," +
-                " [1, 2, 4]=19279, [1, 2, 2]=19212, [2, 2, 4]=18778}",
-                4.00571499999147
-        );
-        bags_Iterable_helper_uniform(
-                1,
-                "[2, 2, 2, 2]",
-                "[[2, 2, 2], [2, 2, 2, 2, 2, 2, 2, 2, 2], [2, 2, 2], [2], [2], [2], [2, 2], [2], [], [], [2], [2]," +
-                " [2], [], [2], [2], [], [2], [], [], ...]",
-                "{[]=499557, [2]=250432, [2, 2]=124756, [2, 2, 2]=62825, [2, 2, 2, 2]=31144, [2, 2, 2, 2, 2]=15656," +
-                " [2, 2, 2, 2, 2, 2]=7784, [2, 2, 2, 2, 2, 2, 2]=3987, [2, 2, 2, 2, 2, 2, 2, 2]=1945," +
-                " [2, 2, 2, 2, 2, 2, 2, 2, 2]=945}",
-                1.0006389999976706
-        );
-        bags_Iterable_helper_uniform(
-                2,
-                "[2, 2, 2, 2]",
-                "[[2, 2, 2, 2], [2, 2, 2], [2, 2], [2, 2, 2], [], [2, 2, 2, 2, 2], [2], [], [2, 2, 2], [2, 2, 2, 2]," +
-                " [], [], [2], [2], [2, 2, 2], [], [2, 2, 2, 2, 2, 2, 2], [2, 2, 2, 2], [2], [2, 2, 2, 2, 2, 2, 2]," +
-                " ...]",
-                "{[]=333041, [2]=222027, [2, 2]=148088, [2, 2, 2]=98825, [2, 2, 2, 2]=65746, [2, 2, 2, 2, 2]=44116," +
-                " [2, 2, 2, 2, 2, 2]=29303, [2, 2, 2, 2, 2, 2, 2]=19671, [2, 2, 2, 2, 2, 2, 2, 2]=13059," +
-                " [2, 2, 2, 2, 2, 2, 2, 2, 2]=8625}",
-                2.0037019999891394
-        );
-        bags_Iterable_helper_uniform(
-                4,
-                "[2, 2, 2, 2]",
-                "[[2, 2, 2, 2], [2, 2], [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2], [2, 2], [], [], [2]," +
-                " [2, 2, 2, 2, 2], [2, 2, 2], [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2], [2, 2, 2, 2, 2]," +
-                " [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2], [2], [], [2, 2, 2, 2], [2, 2, 2, 2, 2]," +
-                " [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2], [2], [], [2, 2, 2, 2], ...]",
-                "{[]=200010, [2]=159823, [2, 2]=128026, [2, 2, 2]=102068, [2, 2, 2, 2]=82001, [2, 2, 2, 2, 2]=65507," +
-                " [2, 2, 2, 2, 2, 2]=52528, [2, 2, 2, 2, 2, 2, 2]=41779, [2, 2, 2, 2, 2, 2, 2, 2]=33653," +
-                " [2, 2, 2, 2, 2, 2, 2, 2, 2]=26990}",
-                4.00571499999147
-        );
+        bags_Iterable_helper_uniform(1, "[5]", "RandomProvider_bags_Iterable_i", 1.0008359999977228);
+        bags_Iterable_helper_uniform(2, "[5]", "RandomProvider_bags_Iterable_ii", 2.0020969999891216);
+        bags_Iterable_helper_uniform(4, "[5]", "RandomProvider_bags_Iterable_iii", 4.004359999991779);
+        bags_Iterable_helper_uniform(1, "[1, 2, 3]", "RandomProvider_bags_Iterable_iv", 1.00085799999768);
+        bags_Iterable_helper_uniform(2, "[1, 2, 3]", "RandomProvider_bags_Iterable_v", 2.0023509999891522);
+        bags_Iterable_helper_uniform(4, "[1, 2, 3]", "RandomProvider_bags_Iterable_vi", 4.00516399999172);
+        bags_Iterable_helper_uniform(1, "[1, 2, 3, 4]", "RandomProvider_bags_Iterable_vii", 1.0006389999976706);
+        bags_Iterable_helper_uniform(2, "[1, 2, 3, 4]", "RandomProvider_bags_Iterable_viii", 2.0037019999891394);
+        bags_Iterable_helper_uniform(4, "[1, 2, 3, 4]", "RandomProvider_bags_Iterable_ix", 4.00571499999147);
+        bags_Iterable_helper_uniform(1, "[1, 2, 2, 4]", "RandomProvider_bags_Iterable_x", 1.0006389999976706);
+        bags_Iterable_helper_uniform(2, "[1, 2, 2, 4]", "RandomProvider_bags_Iterable_xi", 2.0037019999891394);
+        bags_Iterable_helper_uniform(4, "[1, 2, 2, 4]", "RandomProvider_bags_Iterable_xii", 4.00571499999147);
+        bags_Iterable_helper_uniform(1, "[2, 2, 2, 2]", "RandomProvider_bags_Iterable_xiii", 1.0006389999976706);
+        bags_Iterable_helper_uniform(2, "[2, 2, 2, 2]", "RandomProvider_bags_Iterable_xiv", 2.0037019999891394);
+        bags_Iterable_helper_uniform(4, "[2, 2, 2, 2]", "RandomProvider_bags_Iterable_xv", 4.00571499999147);
         bags_Iterable_helper_uniform(
                 1,
                 "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]",
-                "[[6, 6, 9], [2, 2, 6, 6, 6, 7, 7, 10], [], [3, 3], [5, 7], [6], [], [], [4], [6], [3], [7], [], []," +
-                " [1], [], [], [], [], [], ...]",
-                "{[]=500030, [10]=25344, [1]=25129, [4]=25128, [7]=25106, [2]=25093, [6]=25064, [8]=24996," +
-                " [3]=24945, [5]=24916}",
+                "RandomProvider_bags_Iterable_xvi",
                 0.998919999997707
         );
         bags_Iterable_helper_uniform(
                 2,
                 "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]",
-                "[[2, 4, 6, 8], [2, 6], [6, 6, 10], [], [3, 4, 5, 6, 7], [], [4], [3, 4, 7], [1, 9, 9, 9], [9]," +
-                " [3, 6, 10], [4, 4, 4, 6, 6, 7], [2, 2, 4, 8], [3, 5, 7, 8, 9, 10], [], [], []," +
-                " [3, 4, 5, 6, 7, 7, 8, 8], [2, 7], [], ...]",
-                "{[]=333018, [7]=22348, [10]=22330, [6]=22322, [2]=22312, [4]=22212, [1]=22163, [3]=22146," +
-                " [5]=22122, [8]=22019}",
+                "RandomProvider_bags_Iterable_xvii",
                 2.003595999989077
         );
         bags_Iterable_helper_uniform(
                 4,
                 "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]",
-                "[[2, 4, 6, 8], [6], [1, 3, 3, 3, 4, 4, 4, 5, 6, 7, 7, 8, 9, 9, 9, 9, 9], [3, 6, 10], [6, 7]," +
-                " [1, 3, 3, 3, 3, 4, 5, 5, 7, 7, 7, 8, 8, 9, 10, 10, 10], []," +
-                " [1, 1, 1, 3, 4, 4, 5, 5, 6, 7, 7, 7, 7, 8], [3, 8], [1, 3, 7, 10, 10], [2, 2, 3, 3, 5, 10], [1]," +
-                " [3, 5, 6, 9], [5], [1, 3, 8, 9], [], [], [1, 1, 4], [6, 7], [2, 4, 4, 6, 9], ...]",
-                "{[]=200177, [8]=16184, [10]=16147, [6]=16096, [1]=16095, [9]=16049, [5]=16043, [7]=15982," +
-                " [2]=15958, [3]=15950}",
+                "RandomProvider_bags_Iterable_xviii",
                 4.002965999991581
         );
         bags_Iterable_helper(
                 1,
                 P.withScale(4).positiveIntegersGeometric(),
-                "[[3, 7, 10], [5], [], [1, 10], [], [3], [7], [], [5], [3], [], [], [], [], [], [], [], [], [5]," +
-                " [6, 9, 12, 15], ...]",
-                "{[]=499603, [1]=62583, [2]=46821, [3]=35045, [4]=26163, [5]=20032, [6]=14805, [1, 2]=11972," +
-                " [7]=11067, [1, 3]=8779}",
+                "RandomProvider_bags_Iterable_xix",
                 1.0012699999976906
         );
         bags_Iterable_helper(
                 2,
                 P.withScale(4).positiveIntegersGeometric(),
-                "[[4, 7, 7, 10], [1, 2, 3, 3, 7], [1, 1, 2, 2, 2, 3], [], [5, 9, 15], [12], [1, 1, 2], []," +
-                " [1, 2, 4, 5, 6, 6, 7, 9], [], [], [], [1, 1, 1, 3, 5], [2], [1, 4, 4, 5], [12], [2], [], [1, 4]," +
-                " [1], ...]",
-                "{[]=333149, [1]=55129, [2]=41612, [3]=31155, [4]=23246, [5]=17762, [1, 2]=14040, [6]=13192," +
-                " [1, 3]=10373, [7]=9863}",
+                "RandomProvider_bags_Iterable_xx",
                 2.001994999989098
         );
         bags_Iterable_helper(
                 4,
                 P.withScale(4).positiveIntegersGeometric(),
-                "[[4, 7, 7, 10], [1, 1, 1, 2, 2, 2, 3, 7, 8, 8], [1, 2, 6, 6, 12, 15], [13]," +
-                " [1, 1, 1, 1, 1, 1, 1, 2, 3, 4, 5, 5, 6, 10], [], [1, 1, 1, 1, 2, 2, 2, 2, 3, 4, 4, 6, 12], [], []," +
-                " [], [1, 2, 3], [4, 5], [9], [1, 4, 5, 6, 7], [], [1, 1, 1, 2, 2, 3, 3], [7, 10, 13], [4, 19]," +
-                " [1, 1, 1, 2, 2, 2, 3, 3, 4, 4, 17, 22], [], ...]",
-                "{[]=199867, [1]=39597, [2]=30067, [3]=22409, [4]=16944, [5]=12477, [1, 2]=12007, [6]=9434," +
-                " [1, 3]=8793, [1, 1]=8183}",
+                "RandomProvider_bags_Iterable_xxi",
                 4.0083209999916205
         );
-        bags_Iterable_helper(
-                1,
-                repeat(1),
-                "[[1, 1, 1], [1, 1], [1, 1, 1, 1, 1, 1, 1, 1, 1], [1, 1], [1, 1], [], [1], [1, 1, 1], [], []," +
-                " [1, 1], [1, 1], [1, 1], [], [1, 1], [], [], [1], [1], [], ...]",
-                "{[]=499125, [1]=250897, [1, 1]=124849, [1, 1, 1]=62518, [1, 1, 1, 1]=31407, [1, 1, 1, 1, 1]=15634," +
-                " [1, 1, 1, 1, 1, 1]=7825, [1, 1, 1, 1, 1, 1, 1]=3926, [1, 1, 1, 1, 1, 1, 1, 1]=1896," +
-                " [1, 1, 1, 1, 1, 1, 1, 1, 1]=956}",
-                1.0008359999977228
-        );
-        bags_Iterable_helper(
-                2,
-                repeat(1),
-                "[[1, 1, 1, 1], [1, 1, 1, 1, 1], [1, 1, 1, 1, 1], [1, 1, 1, 1], [1, 1], [1, 1, 1, 1, 1], [], [1]," +
-                " [1, 1], [1], [1, 1, 1], [1, 1, 1, 1, 1, 1], [1], [1, 1], [], [1], [], [1], [], [1, 1, 1], ...]",
-                "{[]=333813, [1]=221150, [1, 1]=148025, [1, 1, 1]=98992, [1, 1, 1, 1]=66270, [1, 1, 1, 1, 1]=43747," +
-                " [1, 1, 1, 1, 1, 1]=29389, [1, 1, 1, 1, 1, 1, 1]=19567, [1, 1, 1, 1, 1, 1, 1, 1]=12958," +
-                " [1, 1, 1, 1, 1, 1, 1, 1, 1]=8571}",
-                2.0020969999891216
-        );
-        bags_Iterable_helper(
-                4,
-                repeat(1),
-                "[[1, 1, 1, 1], [1, 1, 1], [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]," +
-                " [1, 1, 1, 1, 1, 1, 1], [1, 1], [], [1], [], [1], [1, 1, 1, 1, 1], [1, 1, 1, 1, 1, 1]," +
-                " [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], [1, 1, 1, 1, 1], [1, 1]," +
-                " [1, 1, 1, 1, 1, 1, 1], [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], [], [1, 1, 1, 1, 1, 1, 1, 1]," +
-                " [1], [1, 1, 1, 1], ...]",
-                "{[]=200194, [1]=160489, [1, 1]=127708, [1, 1, 1]=101606, [1, 1, 1, 1]=82008, [1, 1, 1, 1, 1]=65900," +
-                " [1, 1, 1, 1, 1, 1]=52157, [1, 1, 1, 1, 1, 1, 1]=41827, [1, 1, 1, 1, 1, 1, 1, 1]=33413," +
-                " [1, 1, 1, 1, 1, 1, 1, 1, 1]=26877}",
-                4.004359999991779
-        );
+        bags_Iterable_helper(1, repeat(1), "RandomProvider_bags_Iterable_xxii", 1.0008359999977228);
+        bags_Iterable_helper(2, repeat(1), "RandomProvider_bags_Iterable_xxii", 2.0020969999891216);
+        bags_Iterable_helper(4, repeat(1), "RandomProvider_bags_Iterable_xxii", 4.004359999991779);
+
         bags_Iterable_fail_helper(1, Collections.emptyList());
         bags_Iterable_fail_helper(1, Arrays.asList(1, 2, 3));
         bags_Iterable_fail_helper(0, P.integers());
