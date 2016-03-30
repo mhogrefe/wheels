@@ -543,15 +543,28 @@ public final class MathUtils {
                 " [min, max]. y: " + y + ", min: " + min + ", max: " + max + ", f(" + max + ") = " + f.apply(max));
     }
 
+    /**
+     * Returns the ceiling of the logarithm of a number in some base.
+     *
+     * <ul>
+     *  <li>{@code base} must be at least 2.</li>
+     *  <li>{@code x} must be positive.</li>
+     *  <li>The result is not negative.</li>
+     * </ul>
+     *
+     * @param base the base of the logarithm
+     * @param x the argument of the logarithm
+     * @return ⌈log<sub>{@code base}</sub>({@code x})⌉
+     */
     public static int ceilingLog(@NotNull BigInteger base, @NotNull BigInteger x) {
         if (lt(base, IntegerUtils.TWO)) {
-            throw new ArithmeticException("Base must be at least 2. Invalid base: " + base);
+            throw new ArithmeticException("base must be at least 2. Invalid base: " + base);
         }
         if (x.signum() != 1) {
             throw new ArithmeticException("x must be positive. Invalid x: " + x);
         }
         //noinspection SuspiciousNameCombination
-        return fastGrowingCeilingInverse(base::pow, 0, x.bitLength(), x); //very loose bound
+        return fastGrowingCeilingInverse(base::pow, 0, x.bitLength(), x);
     }
 
     public static @NotNull BigInteger ceilingInverse(

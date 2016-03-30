@@ -1,5 +1,6 @@
 package mho.wheels.math;
 
+import mho.wheels.numberUtils.IntegerUtils;
 import mho.wheels.structures.FiniteDomainFunction;
 import mho.wheels.structures.Pair;
 import mho.wheels.structures.Quadruple;
@@ -164,6 +165,13 @@ public class MathUtilsDemos extends Demos {
         for (Quadruple<Function<Integer, BigInteger>, Integer, Integer, BigInteger> q : take(LIMIT, qs)) {
             System.out.println("fastGrowingCeilingInverse(" + q.a + ", " + q.b + ", " + q.c + ", " + q.d + ") = " +
                     fastGrowingCeilingInverse(q.a, q.b, q.c, q.d));
+        }
+    }
+
+    private void demoCeilingLog() {
+        Iterable<Pair<BigInteger, BigInteger>> ps = P.pairs(P.rangeUp(IntegerUtils.TWO), P.positiveBigIntegers());
+        for (Pair<BigInteger, BigInteger> p : take(LIMIT, ps)) {
+            System.out.println("ceilingLog(" + p.a + ", " + p.b + ") = " + ceilingLog(p.a, p.b));
         }
     }
 }

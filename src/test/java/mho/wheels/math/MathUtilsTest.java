@@ -501,6 +501,48 @@ public class MathUtilsTest {
         fastGrowingCeilingInverse_fail_helper(MathUtils::factorial, 0, 10, "1000000000");
     }
 
+    private static void ceilingLog_helper(@NotNull String base, @NotNull String x, @NotNull String output) {
+        aeq(ceilingLog(Readers.readBigInteger(base).get(), Readers.readBigInteger(x).get()), output);
+    }
+
+    private static void ceilingLog_fail_helper(@NotNull String base, @NotNull String x) {
+        try {
+            ceilingLog(Readers.readBigInteger(base).get(), Readers.readBigInteger(x).get());
+            fail();
+        } catch (ArithmeticException ignored) {}
+    }
+
+    @Test
+    public void testCeilingLog() {
+        ceilingLog_helper("2", "1", "0");
+        ceilingLog_helper("2", "2", "1");
+        ceilingLog_helper("2", "3", "2");
+        ceilingLog_helper("2", "4", "2");
+        ceilingLog_helper("2", "5", "3");
+        ceilingLog_helper("2", "6", "3");
+        ceilingLog_helper("2", "7", "3");
+        ceilingLog_helper("2", "8", "3");
+
+        ceilingLog_helper("3", "1", "0");
+        ceilingLog_helper("3", "2", "1");
+        ceilingLog_helper("3", "3", "1");
+        ceilingLog_helper("3", "4", "2");
+        ceilingLog_helper("3", "8", "2");
+        ceilingLog_helper("3", "9", "2");
+        ceilingLog_helper("3", "10", "3");
+
+        ceilingLog_helper("100", "1", "0");
+        ceilingLog_helper("100", "9999", "2");
+        ceilingLog_helper("100", "10000", "2");
+        ceilingLog_helper("100", "10001", "3");
+
+        ceilingLog_fail_helper("1", "1");
+        ceilingLog_fail_helper("0", "1");
+        ceilingLog_fail_helper("-1", "1");
+        ceilingLog_fail_helper("2", "0");
+        ceilingLog_fail_helper("2", "-1");
+    }
+
     private static @NotNull List<BigInteger> readBigIntegerList(@NotNull String s) {
         return Readers.readList(Readers::readBigInteger).apply(s).get();
     }
