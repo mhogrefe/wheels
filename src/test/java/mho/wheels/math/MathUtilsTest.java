@@ -543,6 +543,54 @@ public class MathUtilsTest {
         ceilingLog_fail_helper("2", "-1");
     }
 
+    private static void ceilingInverse_helper(
+            @NotNull Function<BigInteger, BigInteger> f,
+            @NotNull String min,
+            @NotNull String max,
+            @NotNull String y,
+            int output
+    ) {
+        aeq(
+                ceilingInverse(
+                        f,
+                        Readers.readBigInteger(min).get(),
+                        Readers.readBigInteger(max).get(),
+                        Readers.readBigInteger(y).get()
+                ),
+                output
+        );
+    }
+
+    private static void ceilingInverse_fail_helper(
+            @NotNull Function<BigInteger, BigInteger> f,
+            @NotNull String min,
+            @NotNull String max,
+            @NotNull String y
+    ) {
+        try {
+            ceilingInverse(
+                    f,
+                    Readers.readBigInteger(min).get(),
+                    Readers.readBigInteger(max).get(),
+                    Readers.readBigInteger(y).get()
+            );
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+    }
+
+    @Test
+    public void testCeilingInverse() {
+        //noinspection Convert2MethodRef
+        ceilingInverse_helper(Function.identity(), "0", "10", "3", 3);
+        ceilingInverse_helper(MathUtils::factorial, "0", "20", "1000000", 10);
+        ceilingInverse_helper(i -> i.pow(2), "0", "10", "50", 8);
+
+        ceilingInverse_fail_helper(i -> { throw new IllegalArgumentException(); }, "0", "1", "1");
+        ceilingInverse_fail_helper(i -> null, "0", "1", "1");
+        ceilingInverse_fail_helper(i -> i.pow(2), "-10", "0", "10");
+        ceilingInverse_fail_helper(MathUtils::factorial, "0", "10", "1000000000");
+    }
+
     private static @NotNull List<BigInteger> readBigIntegerList(@NotNull String s) {
         return Readers.readList(Readers::readBigInteger).apply(s).get();
     }

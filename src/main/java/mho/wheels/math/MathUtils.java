@@ -526,13 +526,13 @@ public final class MathUtils {
         BigInteger previous = null;
         for (int x : range(min, max)) {
             BigInteger i = f.apply(x);
-            if (previous != null && lt(i, previous)) {
-                throw new IllegalArgumentException("f must be weakly monotonically increasing over [min, max]. min: " +
-                        min + ", max: " + max + ", f(" + x + ") < f(" + (x - 1) + ")");
-            }
             if (i == null) {
                 throw new IllegalArgumentException("f cannot return null for any value in [min, max]. min: " +
                         min + ", max: " + max + ", f(" + x + ") = null");
+            }
+            if (previous != null && lt(i, previous)) {
+                throw new IllegalArgumentException("f must be weakly monotonically increasing over [min, max]. min: " +
+                        min + ", max: " + max + ", f(" + x + ") < f(" + (x - 1) + ")");
             }
             if (ge(i, y)) {
                 return x;
@@ -567,24 +567,87 @@ public final class MathUtils {
         return fastGrowingCeilingInverse(base::pow, 0, x.bitLength(), x);
     }
 
+    /**
+     * Given a weakly monotonically increasing function from {@code Integer} to {@code BigInteger} {@code f} over the
+     * inclusive range [{@code min}, {@code max}] and a value {@code y}, finds the smallest {@code int} x in
+     * [{@code min}, {@code max}] such that {@code f}(x)≥{@code y}.
+     *
+     * <ul>
+     *  <ul>{@code f} must terminate on all inputs in [{@code min}, {@code max}] with throwing an exception, and cannot
+     *  return null.</ul>
+     *  <li>{@code f} should be weakly monotonically increasing over [{@code min}, {@code max}], and {@code f}(x)
+     *  should be greater than or equal to {@code y} for some value of x in that range.</li>
+     *  <li>{@code min} may be any {@code int}.</li>
+     *  <li>{@code max} may be any {@code int}.</li>
+     *  <li>{@code min} must be less than or equal to {@code max}.</li>
+     *  <li>{@code y} cannot be null.</li>
+     *  <li>The result may be any {@code int}.</li>
+     * </ul>
+     *
+     * @param f a fast-growing function that is weakly monotonically increasing in [{@code min}, {@code max}].
+     * @param min the inclusive lower bound of the search interval
+     * @param max the inclusive upper bound of the search interval
+     * @param y a value
+     * @return ⌈{@code f}<sup>–1</sup>({@code y})⌉, where the inverse is defined over x∈[{@code min}, {@code max}]
+     */
     public static @NotNull BigInteger ceilingInverse(
             @NotNull Function<BigInteger, BigInteger> f,
-            @NotNull BigInteger y,
             @NotNull BigInteger min,
-            @NotNull BigInteger max
+            @NotNull BigInteger max,
+            @NotNull BigInteger y
     ) {
+        BigInteger originalMin = min;
+        BigInteger originalMax = max;
+        if (gt(min, max)) {
+            throw new IllegalArgumentException("min must be less than or equal to max. min: " + min + ", max: " + max);
+        }
+        BigInteger previous = null;
+        boolean previousWasLower = false;
         while (true) {
-            if (min.equals(max)) return max;
+            if (min.equals(max)) {
+                BigInteger fMax = f.apply(max);
+                if (ge(fMax, y)) {
+                    return max;
+                } else {
+                    throw new IllegalArgumentException("f(x) should be greater than or equal to y for some value in" +
+                            " [min, max]. y: " + y + ", min: " + originalMin + ", max: " + originalMax + ", f(" + max +
+                            ") = " + fMax);
+                }
+            }
             BigInteger mid = min.add(max).shiftRight(1);
             BigInteger fMid = f.apply(mid);
+            if (fMid == null) {
+                throw new IllegalArgumentException("f cannot return null for any value in [min, max]. min: " +
+                        min + ", max: " + max + ", f(" + mid + ") = null");
+            }
+            if (previous != null) {
+                if (previousWasLower) {
+                    if (lt(fMid, previous)) {
+                        throw new IllegalArgumentException("f must be weakly monotonically increasing over" +
+                                " [min, max]. min: " + min + ", max: " + max + ", f(" + fMid + ") < f(" + previous +
+                                ")");
+                    }
+                } else {
+                    if (gt(fMid, previous)) {
+                        throw new IllegalArgumentException("f must be weakly monotonically increasing over" +
+                                " [min, max]. min: " + min + ", max: " + max + ", f(" + previous + ") < f(" + fMid +
+                                ")");
+                    }
+                }
+            }
             switch (compare(fMid, y)) {
                 case GT:
-                    max = mid; break;
+                    max = mid;
+                    previousWasLower = false;
+                    break;
                 case LT:
-                    min = mid.add(BigInteger.ONE); break;
+                    min = mid.add(BigInteger.ONE);
+                    previousWasLower = true;
+                    break;
                 default:
                     return mid;
             }
+            previous = fMid;
         }
     }
 
@@ -595,9 +658,9 @@ public final class MathUtils {
         //noinspection SuspiciousNameCombination
         return ceilingInverse(
                 i -> i.pow(r.intValueExact()),
-                x,
                 BigInteger.ZERO,
-                x //very loose bound
+                x, //very loose bound
+                x
         );
     }
 
