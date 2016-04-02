@@ -76366,3 +76366,1248 @@ RandomProvider_stringSubsets_int_iv map 10
 1: \u5629\u9983\ud1c9
 1: \u80a3\uf6ff\ufcd1
 1: \uaef8\udd15\udd75
+
+RandomProvider_subsets_Iterable_i list 21
+[5]
+[5]
+[5]
+[5]
+[5]
+[]
+[5]
+[5]
+[]
+[]
+[5]
+[5]
+[5]
+[]
+[5]
+[]
+[]
+[5]
+[5]
+[]
+...
+
+RandomProvider_subsets_Iterable_i map 2
+500875: [5]
+499125: []
+
+RandomProvider_subsets_Iterable_ii list 21
+[5]
+[5]
+[5]
+[5]
+[5]
+[5]
+[]
+[5]
+[5]
+[5]
+[5]
+[5]
+[5]
+[5]
+[]
+[5]
+[]
+[5]
+[]
+[5]
+...
+
+RandomProvider_subsets_Iterable_ii map 2
+666187: [5]
+333813: []
+
+RandomProvider_subsets_Iterable_iii list 21
+[5]
+[5]
+[5]
+[5]
+[5]
+[]
+[5]
+[]
+[5]
+[5]
+[5]
+[5]
+[5]
+[5]
+[5]
+[5]
+[]
+[5]
+[5]
+[5]
+...
+
+RandomProvider_subsets_Iterable_iii map 2
+799806: [5]
+200194: []
+
+RandomProvider_subsets_Iterable_iv list 21
+[1, 2]
+[1, 2, 3]
+[1, 3]
+[2, 3]
+[]
+[]
+[1, 3]
+[2]
+[]
+[]
+[3]
+[1, 3]
+[3]
+[3]
+[]
+[3]
+[]
+[]
+[]
+[]
+...
+
+RandomProvider_subsets_Iterable_iv map 8
+499504: []
+100253: [2]
+100058: [3]
+100023: [1]
+50160: [2, 3]
+50048: [1, 2, 3]
+49990: [1, 2]
+49964: [1, 3]
+
+RandomProvider_subsets_Iterable_v list 21
+[2]
+[2]
+[2, 3]
+[]
+[2, 3]
+[1, 3]
+[1, 2]
+[3]
+[1, 2, 3]
+[1]
+[1]
+[1]
+[1, 2]
+[2, 3]
+[]
+[2]
+[1, 2, 3]
+[]
+[]
+[]
+...
+
+RandomProvider_subsets_Iterable_v map 8
+333247: []
+152964: [1, 2, 3]
+95442: [2]
+95325: [3]
+94824: [1]
+76127: [1, 2]
+76065: [1, 3]
+76006: [2, 3]
+
+RandomProvider_subsets_Iterable_vi list 21
+[2]
+[2]
+[1, 2, 3]
+[1]
+[3]
+[1, 2, 3]
+[2, 3]
+[1, 2, 3]
+[]
+[1, 2, 3]
+[1, 3]
+[1, 3]
+[1, 2, 3]
+[]
+[]
+[1, 3]
+[1]
+[1, 3]
+[]
+[1, 3]
+...
+
+RandomProvider_subsets_Iterable_vi map 8
+332856: [1, 2, 3]
+199912: []
+83497: [2, 3]
+82734: [1, 2]
+82492: [1, 3]
+72945: [1]
+72868: [2]
+72696: [3]
+
+RandomProvider_subsets_Iterable_vii list 21
+[1, 2, 4]
+[1, 2, 3, 4]
+[1, 3, 4]
+[4]
+[4]
+[3]
+[1, 3]
+[2]
+[]
+[]
+[4]
+[2]
+[1]
+[]
+[3]
+[3]
+[]
+[3]
+[]
+[]
+...
+
+RandomProvider_subsets_Iterable_vii map 10
+499557: []
+71710: [3]
+71646: [2]
+71506: [1]
+71260: [4]
+23960: [3, 4]
+23912: [1, 4]
+23865: [1, 2]
+23842: [2, 3]
+23669: [1, 3]
+
+RandomProvider_subsets_Iterable_viii list 21
+[2, 4]
+[2, 3]
+[3, 4]
+[2, 3, 4]
+[]
+[1, 2, 3, 4]
+[2]
+[]
+[3, 4]
+[1, 2, 3]
+[]
+[]
+[1]
+[1]
+[2, 4]
+[]
+[2, 3, 4]
+[4]
+[4]
+[1, 2, 3, 4]
+...
+
+RandomProvider_subsets_Iterable_viii map 10
+333041: []
+66872: [2]
+66813: [1, 2, 3, 4]
+66679: [1]
+66527: [3]
+66467: [4]
+33691: [1, 3, 4]
+33589: [2, 3, 4]
+33463: [2, 3]
+33406: [3, 4]
+
+RandomProvider_subsets_Iterable_ix list 21
+[2, 4]
+[2]
+[1, 2, 3, 4]
+[1, 3]
+[]
+[]
+[3]
+[1, 2, 4]
+[2, 3, 4]
+[1, 2, 3, 4]
+[2, 3, 4]
+[1, 2, 3, 4]
+[1]
+[]
+[1, 3, 4]
+[1, 3]
+[1, 2, 3, 4]
+[3]
+[]
+[1, 3, 4]
+...
+
+RandomProvider_subsets_Iterable_ix map 10
+200419: [1, 2, 3, 4]
+200010: []
+50393: [1, 3, 4]
+50288: [2, 3, 4]
+50021: [2]
+49914: [1, 2, 4]
+49893: [1, 2, 3]
+49847: [4]
+49827: [3]
+49823: [1]
+
+RandomProvider_subsets_Iterable_x list 21
+[1, 2, 4]
+[1, 2, 4]
+[1, 2, 4]
+[4]
+[4]
+[2]
+[1, 2]
+[2]
+[]
+[]
+[4]
+[2]
+[1]
+[]
+[2]
+[2]
+[]
+[2]
+[]
+[]
+...
+
+RandomProvider_subsets_Iterable_x map 8
+499557: []
+167198: [2]
+71506: [1]
+71260: [4]
+61764: [2, 4]
+61754: [1, 2]
+43049: [1, 2, 4]
+23912: [1, 4]
+
+RandomProvider_subsets_Iterable_xi list 21
+[2, 4]
+[2]
+[2, 4]
+[2, 4]
+[]
+[1, 2, 4]
+[2]
+[]
+[2, 4]
+[1, 2]
+[]
+[]
+[1]
+[1]
+[2, 4]
+[]
+[2, 4]
+[4]
+[4]
+[1, 2, 4]
+...
+
+RandomProvider_subsets_Iterable_xi map 8
+333041: []
+166862: [2]
+133729: [1, 2, 4]
+100221: [2, 4]
+99830: [1, 2]
+66679: [1]
+66467: [4]
+33171: [1, 4]
+
+RandomProvider_subsets_Iterable_xii list 21
+[2, 4]
+[2]
+[1, 2, 4]
+[1, 2]
+[]
+[]
+[2]
+[1, 2, 4]
+[2, 4]
+[1, 2, 4]
+[2, 4]
+[1, 2, 4]
+[1]
+[]
+[1, 2, 4]
+[1, 2]
+[1, 2, 4]
+[2]
+[]
+[1, 2, 4]
+...
+
+RandomProvider_subsets_Iterable_xii map 8
+300726: [1, 2, 4]
+200010: []
+133338: [2]
+116702: [2, 4]
+116234: [1, 2]
+49847: [4]
+49823: [1]
+33320: [1, 4]
+
+RandomProvider_subsets_Iterable_xiii list 21
+[2]
+[2]
+[2]
+[2]
+[2]
+[2]
+[2]
+[2]
+[]
+[]
+[2]
+[2]
+[2]
+[]
+[2]
+[2]
+[]
+[2]
+[]
+[]
+...
+
+RandomProvider_subsets_Iterable_xiii map 2
+500443: [2]
+499557: []
+
+RandomProvider_subsets_Iterable_xiv list 21
+[2]
+[2]
+[2]
+[2]
+[]
+[2]
+[2]
+[]
+[2]
+[2]
+[]
+[]
+[2]
+[2]
+[2]
+[]
+[2]
+[2]
+[2]
+[2]
+...
+
+RandomProvider_subsets_Iterable_xiv map 2
+666959: [2]
+333041: []
+
+RandomProvider_subsets_Iterable_xv list 21
+[2]
+[2]
+[2]
+[2]
+[]
+[]
+[2]
+[2]
+[2]
+[2]
+[2]
+[2]
+[2]
+[]
+[2]
+[2]
+[2]
+[2]
+[]
+[2]
+...
+
+RandomProvider_subsets_Iterable_xv map 2
+799990: [2]
+200010: []
+
+RandomProvider_subsets_Iterable_xvi list 21
+[6, 9]
+[2, 6, 7, 10]
+[]
+[3]
+[5, 7]
+[6]
+[]
+[]
+[4]
+[6]
+[3]
+[7]
+[]
+[]
+[1]
+[]
+[]
+[]
+[]
+[]
+...
+
+RandomProvider_subsets_Iterable_xvi map 10
+500030: []
+26710: [10]
+26432: [7]
+26418: [4]
+26417: [1]
+26409: [2]
+26409: [6]
+26279: [5]
+26268: [8]
+26245: [3]
+
+RandomProvider_subsets_Iterable_xvii list 21
+[2, 4, 6, 8]
+[2, 6]
+[6, 10]
+[]
+[3, 4, 5, 6, 7]
+[]
+[4]
+[3, 4, 7]
+[1, 9]
+[9]
+[3, 6, 10]
+[4, 6, 7]
+[2, 4, 8]
+[3, 5, 7, 8, 9, 10]
+[]
+[]
+[]
+[3, 4, 5, 6, 7, 8]
+[2, 7]
+[]
+...
+
+RandomProvider_subsets_Iterable_xvii map 10
+333018: []
+23950: [6]
+23943: [10]
+23883: [7]
+23862: [2]
+23764: [4]
+23753: [1]
+23694: [3]
+23667: [5]
+23610: [8]
+
+RandomProvider_subsets_Iterable_xviii list 21
+[2, 4, 6, 8]
+[6]
+[1, 3, 4, 5, 6, 7, 8, 9]
+[3, 6, 10]
+[6, 7]
+[1, 3, 4, 5, 7, 8, 9, 10]
+[]
+[1, 3, 4, 5, 6, 7, 8]
+[3, 8]
+[1, 3, 7, 10]
+[2, 3, 5, 10]
+[1]
+[3, 5, 6, 9]
+[5]
+[1, 3, 8, 9]
+[]
+[]
+[1, 4]
+[6, 7]
+[2, 4, 6, 9]
+...
+
+RandomProvider_subsets_Iterable_xviii map 10
+200177: []
+17554: [10]
+17510: [8]
+17479: [1]
+17445: [6]
+17442: [9]
+17440: [5]
+17376: [7]
+17340: [4]
+17337: [2]
+
+RandomProvider_subsets_Iterable_xix list 21
+[3, 7, 10]
+[5]
+[]
+[1, 10]
+[]
+[3]
+[7]
+[]
+[5]
+[3]
+[]
+[]
+[]
+[]
+[]
+[]
+[]
+[]
+[5]
+[6, 9, 12, 15]
+...
+
+RandomProvider_subsets_Iterable_xix map 10
+499603: []
+71387: [1]
+51631: [2]
+37715: [3]
+27574: [4]
+20807: [5]
+17158: [1, 2]
+15264: [6]
+12126: [1, 3]
+11330: [7]
+
+RandomProvider_subsets_Iterable_xx list 21
+[4, 7, 10]
+[1, 2, 3, 7]
+[1, 2, 3]
+[]
+[5, 9, 15]
+[12]
+[1, 2]
+[]
+[1, 2, 4, 5, 6, 7, 9]
+[]
+[]
+[]
+[1, 3, 5]
+[2]
+[1, 4, 5]
+[12]
+[2]
+[]
+[1, 4]
+[1]
+...
+
+RandomProvider_subsets_Iterable_xx map 10
+333149: []
+66271: [1]
+47475: [2]
+34388: [3]
+24997: [4]
+23194: [1, 2]
+18733: [5]
+16292: [1, 3]
+13708: [6]
+11818: [1, 4]
+
+RandomProvider_subsets_Iterable_xxi list 21
+[4, 7, 10]
+[1, 2, 3, 7, 8]
+[1, 2, 6, 12, 15]
+[13]
+[1, 2, 3, 4, 5, 6, 10]
+[]
+[1, 2, 3, 4, 6, 12]
+[]
+[]
+[]
+[1, 2, 3]
+[4, 5]
+[9]
+[1, 4, 5, 6, 7]
+[]
+[1, 2, 3]
+[7, 10, 13]
+[4, 19]
+[1, 2, 3, 4, 17, 22]
+[]
+...
+
+RandomProvider_subsets_Iterable_xxi map 10
+199867: []
+49790: [1]
+35481: [2]
+25159: [3]
+22484: [1, 2]
+18608: [4]
+15260: [1, 3]
+13362: [5]
+13054: [1, 2, 3]
+11055: [1, 4]
+
+RandomProvider_subsets_Iterable_xxii list 21
+[1]
+[1]
+[1]
+[1]
+[1]
+[]
+[1]
+[1]
+[]
+[]
+[1]
+[1]
+[1]
+[]
+[1]
+[]
+[]
+[1]
+[1]
+[]
+...
+
+RandomProvider_subsets_Iterable_xxii map 2
+500875: [1]
+499125: []
+
+RandomProvider_subsets_Iterable_xxiii list 21
+[1]
+[1]
+[1]
+[1]
+[1]
+[1]
+[]
+[1]
+[1]
+[1]
+[1]
+[1]
+[1]
+[1]
+[]
+[1]
+[]
+[1]
+[]
+[1]
+...
+
+RandomProvider_subsets_Iterable_xxiii map 2
+666187: [1]
+333813: []
+
+RandomProvider_subsets_Iterable_xxiv list 21
+[1]
+[1]
+[1]
+[1]
+[1]
+[]
+[1]
+[]
+[1]
+[1]
+[1]
+[1]
+[1]
+[1]
+[1]
+[1]
+[]
+[1]
+[1]
+[1]
+...
+
+RandomProvider_subsets_Iterable_xxiv map 2
+799806: [1]
+200194: []
+
+RandomProvider_stringSubsets_String_i list 21
+a
+a
+a
+a
+a
+
+a
+a
+
+
+a
+a
+a
+
+a
+
+
+a
+a
+
+...
+
+RandomProvider_stringSubsets_String_i map 2
+500875: a
+499125:
+
+RandomProvider_stringSubsets_String_ii list 21
+a
+a
+a
+a
+a
+a
+
+a
+a
+a
+a
+a
+a
+a
+
+a
+
+a
+
+a
+...
+
+RandomProvider_stringSubsets_String_ii map 2
+666187: a
+333813:
+
+RandomProvider_stringSubsets_String_iii list 21
+a
+a
+a
+a
+a
+
+a
+
+a
+a
+a
+a
+a
+a
+a
+a
+
+a
+a
+a
+...
+
+RandomProvider_stringSubsets_String_iii map 2
+799806: a
+200194:
+
+RandomProvider_stringSubsets_String_iv list 21
+ab
+abc
+ac
+bc
+
+
+ac
+b
+
+
+c
+ac
+c
+c
+
+c
+
+
+
+
+...
+
+RandomProvider_stringSubsets_String_iv map 8
+499504:
+100253: b
+100058: c
+100023: a
+50160: bc
+50048: abc
+49990: ab
+49964: ac
+
+RandomProvider_stringSubsets_String_v list 21
+b
+b
+bc
+
+bc
+ac
+ab
+c
+abc
+a
+a
+a
+ab
+bc
+
+b
+abc
+
+
+
+...
+
+RandomProvider_stringSubsets_String_v map 8
+333247:
+152964: abc
+95442: b
+95325: c
+94824: a
+76127: ab
+76065: ac
+76006: bc
+
+RandomProvider_stringSubsets_String_vi list 21
+b
+b
+abc
+a
+c
+abc
+bc
+abc
+
+abc
+ac
+ac
+abc
+
+
+ac
+a
+ac
+
+ac
+...
+
+RandomProvider_stringSubsets_String_vi map 8
+332856: abc
+199912:
+83497: bc
+82734: ab
+82492: ac
+72945: a
+72868: b
+72696: c
+
+RandomProvider_stringSubsets_String_vii list 21
+abc
+abc
+abc
+c
+c
+b
+ab
+b
+
+
+c
+b
+a
+
+b
+b
+
+b
+
+
+...
+
+RandomProvider_stringSubsets_String_vii map 8
+499557:
+167198: b
+71506: a
+71260: c
+61764: bc
+61754: ab
+43049: abc
+23912: ac
+
+RandomProvider_stringSubsets_String_viii list 21
+bc
+b
+bc
+bc
+
+abc
+b
+
+bc
+ab
+
+
+a
+a
+bc
+
+bc
+c
+c
+abc
+...
+
+RandomProvider_stringSubsets_String_viii map 8
+333041:
+166862: b
+133729: abc
+100221: bc
+99830: ab
+66679: a
+66467: c
+33171: ac
+
+RandomProvider_stringSubsets_String_ix list 21
+bc
+b
+abc
+ab
+
+
+b
+abc
+bc
+abc
+bc
+abc
+a
+
+abc
+ab
+abc
+b
+
+abc
+...
+
+RandomProvider_stringSubsets_String_ix map 8
+300726: abc
+200010:
+133338: b
+116702: bc
+116234: ab
+49847: c
+49823: a
+33320: ac
+
+RandomProvider_stringSubsets_String_x list 21
+ps
+is
+is
+
+is
+s
+
+
+s
+s
+s
+i
+i
+
+i
+
+
+
+
+
+...
+
+RandomProvider_stringSubsets_String_x map 10
+499907:
+111371: s
+111271: i
+63764: is
+49940: p
+27926: ips
+26420: ps
+26257: ip
+23658: M
+12412: Mis
+
+RandomProvider_stringSubsets_String_xi list 21
+is
+is
+is
+i
+is
+
+s
+s
+Mip
+
+
+p
+ps
+s
+is
+ips
+i
+
+is
+
+...
+
+RandomProvider_stringSubsets_String_xi map 10
+333528:
+106872: s
+106248: i
+100321: is
+77392: ips
+45804: p
+40546: Mips
+37802: ps
+37774: ip
+31686: Mis
+
+RandomProvider_stringSubsets_String_xii list 21
+is
+s
+Mips
+s
+ps
+s
+Mips
+s
+Mis
+is
+Mips
+Mips
+
+ips
+i
+Mips
+
+
+Ms
+s
+...
+
+RandomProvider_stringSubsets_String_xii map 10
+199852:
+143500: ips
+131826: Mips
+114182: is
+82176: s
+81772: i
+51875: Mis
+38564: ip
+38557: ps
+34200: p
+
+RandomProvider_stringSubsets_i list 21
+\u03b5\u2538\u42bf
+\u03e1\u19dc\u313e\u4bcf\u523f\u7f56\ubab1\udd15\ufca6
+\u1b1c\u212a\u3d4f
+\u3a77
+\u7eab
+\u4772
+\u5764\u7416
+\uea45
+
+
+\u2b63
+\u9e05
+\uee1c
+
+\u117a
+\u41fa
+
+\u358a
+
+
+...
+
+RandomProvider_stringSubsets_i map 10
+499557:
+15: \uf59a
+14: \u12c7
+14: \u50f5
+14: \u760d
+14: \ue0de
+13: \u40e2
+13: \u55bd
+13: \u74eb
+13: \ua838
+
+RandomProvider_stringSubsets_ii list 21
+\u31e5\u80a3\u9afd\uf6ff
+\ubab1\udd15\ufca6
+\u313e\u523f
+\u212a\u3d4f\ua3f9
+
+\u2a43\u5764\u7416\ud24c\uea45
+\u9925
+
+\u33b2\u9153\uce86
+\u2aec\u358a\uc9ce\ue9fd
+
+
+\u4c78
+\uf878
+\u5c29\uad7f\uecf5
+
+\u3353\u5213\u55cf\u7035\ucee6\ud805\ue2d3
+\u4aef\u564b\ua33b\uf36f
+\ud643
+\u061a\u2e94\u58d9\u7a68\u9f27\ud52b\udd82
+...
+
+RandomProvider_stringSubsets_ii map 10
+333041:
+15: \u8da4
+13: \u2fae
+13: \u6317
+12: \u0978
+12: \u45b8
+12: \u9624
+12: \uab10
+12: \ue2fe
+12: \ue973
+
+RandomProvider_stringSubsets_iii list 21
+\u31e5\u80a3\u9afd\uf6ff
+\ubab1\udd15
+\u117a\u1918\u2b63\u33b2\u41fa\u7156\u8bef\u8f2e\u9153\u9e02\u9e05\ub43d\uce86\ue9fd\uee1c\uf637
+\u5168\u899a
+
+
+\u122e
+\u5c29\u759c\uaabb\uad7f\uecf5
+\u5213\u7035\ucee6
+\u061a\u2e94\u3f56\u4954\u55ee\u58d9\u7a68\u7ce6\u9f27\ud52b\ud540\udd42\udd82\uf329\ufdbc\ufee7
+\u0e77\u615a\uabc3\ucd1d\uf36b
+\u0922\u2293\u4d3b\u5eba\u69d4\u6a2a\u976f\u99c6\ua3a4\ud250\ued0d
+\u40fc
+
+\u1452\u62f7\ub9cc\ue68e
+\u037a\u124e\u2506\u56c0\uaaaa
+\u453e\u552f\u5d82\u6e51\u7302\u7527\u8e59\ucdf4\ud11e\uead1\ufb8d
+\uab6e
+
+\u1592\u3fd8\u6ede\ue89b
+...
+
+RandomProvider_stringSubsets_iii map 10
+200010:
+11: \ua495
+11: \ub4cf
+11: \ued08
+10: \u36bc
+10: \u5e71
+10: \ua494
+10: \ua65a
+10: \ud663
+10: \ufe86
