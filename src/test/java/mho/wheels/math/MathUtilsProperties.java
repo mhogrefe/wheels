@@ -17,8 +17,7 @@ import java.util.function.Function;
 
 import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.math.MathUtils.*;
-import static mho.wheels.ordering.Ordering.ge;
-import static mho.wheels.ordering.Ordering.lt;
+import static mho.wheels.ordering.Ordering.*;
 import static mho.wheels.testing.Testing.*;
 
 public class MathUtilsProperties extends TestProperties {
@@ -59,6 +58,8 @@ public class MathUtilsProperties extends TestProperties {
         compareImplementationsReversePermutationSign();
         propertiesFastGrowingCeilingInverse();
         propertiesCeilingLog();
+        compareImplementationsCeilingLog();
+        propertiesCeilingInverse();
     }
 
     private static int gcd_int_int_simplest(int x, int y) {
@@ -741,7 +742,7 @@ public class MathUtilsProperties extends TestProperties {
         for (Quadruple<Function<Integer, BigInteger>, Integer, Integer, BigInteger> q : take(LIMIT, qs)) {
             int x = fastGrowingCeilingInverse(q.a, q.b, q.c, q.d);
             assertTrue(q, ge(q.a.apply(x), q.d));
-            assertTrue(q, x == q.b || lt(q.a.apply(x - 1), q.d));
+            assertTrue(q, x == q.b || le(q.a.apply(x - 1), q.d));
         }
 
         Iterable<Quadruple<Function<Integer, BigInteger>, Integer, Integer, BigInteger>> qsFail = map(
@@ -761,11 +762,18 @@ public class MathUtilsProperties extends TestProperties {
         }
     }
 
+    private static int ceilingLog_alt(@NotNull BigInteger base, @NotNull BigInteger x) {
+        //noinspection SuspiciousNameCombination
+        return ceilingInverse(i -> base.pow(i.intValueExact()), BigInteger.ZERO, BigInteger.valueOf(x.bitLength()), x)
+                .intValueExact();
+    }
+
     private void propertiesCeilingLog() {
         initialize("ceilingLog(BigInteger, BigInteger)");
         Iterable<Pair<BigInteger, BigInteger>> ps = P.pairs(P.rangeUp(IntegerUtils.TWO), P.positiveBigIntegers());
         for (Pair<BigInteger, BigInteger> p : take(LIMIT, ps)) {
             int ceilingLog = ceilingLog(p.a, p.b);
+            assertEquals(ps, ceilingLog, ceilingLog_alt(p.a, p.b));
             assertTrue(p, ceilingLog >= 0);
             assertTrue(p, ge(p.a.pow(ceilingLog), p.b));
             assertTrue(p, ceilingLog == 0 || lt(p.a.pow(ceilingLog - 1), p.b));
@@ -790,6 +798,59 @@ public class MathUtilsProperties extends TestProperties {
                 ceilingLog(p.a, p.b);
                 fail(p);
             } catch (ArithmeticException ignored) {}
+        }
+    }
+
+    private void compareImplementationsCeilingLog() {
+        Map<String, Function<Pair<BigInteger, BigInteger>, Integer>> functions = new LinkedHashMap<>();
+        functions.put("alt", p -> ceilingLog_alt(p.a, p.b));
+        functions.put("standard", p -> ceilingLog(p.a, p.b));
+        Iterable<Pair<BigInteger, BigInteger>> ps = P.pairs(P.rangeUp(IntegerUtils.TWO), P.positiveBigIntegers());
+        compareImplementations("ceilingLog(BigInteger, BigInteger)", take(LIMIT, ps), functions);
+    }
+
+    private void propertiesCeilingInverse() {
+        initialize("ceilingInverse(Function<BigInteger, BigInteger>, BigInteger, BigInteger, BigInteger)");
+        //noinspection Convert2MethodRef
+        Iterable<Pair<BigInteger, BigInteger>> ranges = P.bagPairs(
+                (Iterable<BigInteger>) map(i -> BigInteger.valueOf(i), P.integersGeometric())
+        );
+        //noinspection Convert2MethodRef,RedundantCast
+        Function<Pair<BigInteger, BigInteger>, Iterable<Function<BigInteger, BigInteger>>> fGenerator = range ->
+                map(
+                        is -> new FiniteDomainFunction<>(zip(range(range.a, range.b), is)),
+                        P.bags(
+                                range.b.intValueExact() - range.a.intValueExact() + 1,
+                                (Iterable<BigInteger>) map(i -> BigInteger.valueOf(i), P.integersGeometric())
+                        )
+                );
+        Iterable<Quadruple<Function<BigInteger, BigInteger>, BigInteger, BigInteger, BigInteger>> qs = map(
+                q -> new Quadruple<>(q.a.b, q.a.a.a, q.a.a.b, q.b),
+                P.dependentPairsInfinite(
+                        P.dependentPairsInfinite(ranges, fGenerator),
+                        p -> map(i -> p.b.apply(p.a.b).subtract(BigInteger.valueOf(i)), P.naturalIntegersGeometric())
+                )
+        );
+        for (Quadruple<Function<BigInteger, BigInteger>, BigInteger, BigInteger, BigInteger> q : take(LIMIT, qs)) {
+            BigInteger x = ceilingInverse(q.a, q.b, q.c, q.d);
+            assertTrue(q, ge(q.a.apply(x), q.d));
+            assertTrue(q, x.equals(q.b) || le(q.a.apply(x.subtract(BigInteger.ONE)), q.d));
+        }
+
+        Iterable<Quadruple<Function<BigInteger, BigInteger>, BigInteger, BigInteger, BigInteger>> qsFail = map(
+                p -> new Quadruple<>(
+                        new FiniteDomainFunction<>(Collections.singletonList(new Pair<>(BigInteger.ZERO, p.a))),
+                        p.b.b,
+                        p.b.a,
+                        p.a
+                ),
+                P.pairs(P.bigIntegers(), P.subsetPairs(P.bigIntegers()))
+        );
+        for (Quadruple<Function<BigInteger, BigInteger>, BigInteger, BigInteger, BigInteger> q : take(LIMIT, qsFail)) {
+            try {
+                ceilingInverse(q.a, q.b, q.c, q.d);
+                fail(q);
+            } catch (IllegalArgumentException ignored) {}
         }
     }
 }

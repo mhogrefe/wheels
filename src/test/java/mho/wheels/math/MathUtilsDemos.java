@@ -174,4 +174,31 @@ public class MathUtilsDemos extends Demos {
             System.out.println("ceilingLog(" + p.a + ", " + p.b + ") = " + ceilingLog(p.a, p.b));
         }
     }
+
+    private void demoCeilingInverse() {
+        //noinspection Convert2MethodRef,RedundantCast
+        Iterable<Pair<BigInteger, BigInteger>> ranges = P.bagPairs(
+                (Iterable<BigInteger>) map(i -> BigInteger.valueOf(i), P.withScale(2).integersGeometric())
+        );
+        //noinspection Convert2MethodRef,RedundantCast
+        Function<Pair<BigInteger, BigInteger>, Iterable<Function<BigInteger, BigInteger>>> fGenerator = range ->
+                map(
+                        is -> new FiniteDomainFunction<>(zip(range(range.a, range.b), is)),
+                        P.bags(
+                                range.b.intValueExact() - range.a.intValueExact() + 1,
+                                (Iterable<BigInteger>) map(i -> BigInteger.valueOf(i), P.integersGeometric())
+                        )
+                );
+        Iterable<Quadruple<Function<BigInteger, BigInteger>, BigInteger, BigInteger, BigInteger>> qs = map(
+                q -> new Quadruple<>(q.a.b, q.a.a.a, q.a.a.b, q.b),
+                P.dependentPairsInfinite(
+                        P.dependentPairsInfinite(ranges, fGenerator),
+                        p -> map(i -> p.b.apply(p.a.b).subtract(BigInteger.valueOf(i)), P.naturalIntegersGeometric())
+                )
+        );
+        for (Quadruple<Function<BigInteger, BigInteger>, BigInteger, BigInteger, BigInteger> q : take(LIMIT, qs)) {
+            System.out.println("ceilingInverse(" + q.a + ", " + q.b + ", " + q.c + ", " + q.d + ") = " +
+                    ceilingInverse(q.a, q.b, q.c, q.d));
+        }
+    }
 }
