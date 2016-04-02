@@ -811,7 +811,7 @@ public class MathUtilsProperties extends TestProperties {
 
     private void propertiesCeilingInverse() {
         initialize("ceilingInverse(Function<BigInteger, BigInteger>, BigInteger, BigInteger, BigInteger)");
-        //noinspection Convert2MethodRef
+        //noinspection Convert2MethodRef,RedundantCast
         Iterable<Pair<BigInteger, BigInteger>> ranges = P.bagPairs(
                 (Iterable<BigInteger>) map(i -> BigInteger.valueOf(i), P.integersGeometric())
         );
