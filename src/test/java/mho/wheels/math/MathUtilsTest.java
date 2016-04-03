@@ -591,6 +591,60 @@ public class MathUtilsTest {
         ceilingInverse_fail_helper(MathUtils::factorial, "0", "10", "1000000000");
     }
 
+    private static void ceilingRoot_helper(int r, @NotNull String x, @NotNull String output) {
+        aeq(ceilingRoot(r, Readers.readBigInteger(x).get()), output);
+    }
+
+    private static void ceilingRoot_fail_helper(int r, @NotNull String x) {
+        try {
+            ceilingRoot(r, Readers.readBigInteger(x).get());
+            fail();
+        } catch (ArithmeticException ignored) {}
+    }
+
+    @Test
+    public void testCeilingRoot() {
+        ceilingRoot_helper(1, "0", "0");
+        ceilingRoot_helper(1, "1", "1");
+        ceilingRoot_helper(1, "2", "2");
+        ceilingRoot_helper(1, "3", "3");
+
+        ceilingRoot_helper(2, "0", "0");
+        ceilingRoot_helper(2, "1", "1");
+        ceilingRoot_helper(2, "2", "2");
+        ceilingRoot_helper(2, "3", "2");
+        ceilingRoot_helper(2, "4", "2");
+        ceilingRoot_helper(2, "8", "3");
+        ceilingRoot_helper(2, "9", "3");
+        ceilingRoot_helper(2, "10", "4");
+        ceilingRoot_helper(2, "99", "10");
+        ceilingRoot_helper(2, "100", "10");
+        ceilingRoot_helper(2, "101", "11");
+
+        ceilingRoot_helper(3, "0", "0");
+        ceilingRoot_helper(3, "1", "1");
+        ceilingRoot_helper(3, "2", "2");
+        ceilingRoot_helper(3, "3", "2");
+        ceilingRoot_helper(3, "4", "2");
+        ceilingRoot_helper(3, "7", "2");
+        ceilingRoot_helper(3, "8", "2");
+        ceilingRoot_helper(3, "9", "3");
+        ceilingRoot_helper(3, "999", "10");
+        ceilingRoot_helper(3, "1000", "10");
+        ceilingRoot_helper(3, "1001", "11");
+
+        ceilingRoot_helper(1000, "0", "0");
+        ceilingRoot_helper(1000, "1", "1");
+        ceilingRoot_helper(1000, "2", "2");
+        ceilingRoot_helper(1000, "3", "2");
+        ceilingRoot_helper(1000, "4", "2");
+        ceilingRoot_helper(1000, "1000000000000000000", "2");
+
+        ceilingRoot_fail_helper(0, "2");
+        ceilingRoot_fail_helper(-1, "2");
+        ceilingRoot_fail_helper(2, "-1");
+    }
+
     private static @NotNull List<BigInteger> readBigIntegerList(@NotNull String s) {
         return Readers.readList(Readers::readBigInteger).apply(s).get();
     }

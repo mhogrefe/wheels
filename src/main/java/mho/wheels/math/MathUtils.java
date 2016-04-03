@@ -544,7 +544,7 @@ public final class MathUtils {
     }
 
     /**
-     * Returns the ceiling of the logarithm of a number in some base.
+     * Returns the ceiling of the base-{@code base} logarithm of {@code x}.
      *
      * <ul>
      *  <li>{@code base} must be at least 2.</li>
@@ -568,8 +568,8 @@ public final class MathUtils {
     }
 
     /**
-     * Given a weakly monotonically increasing function from {@code Integer} to {@code BigInteger} {@code f} over the
-     * inclusive range [{@code min}, {@code max}] and a value {@code y}, finds the smallest {@code int} x in
+     * Given a weakly monotonically increasing function from {@code BigInteger} to {@code BigInteger} {@code f} over
+     * the inclusive range [{@code min}, {@code max}] and a value {@code y}, finds the smallest {@code int} x in
      * [{@code min}, {@code max}] such that {@code f}(x)≥{@code y}.
      *
      * <ul>
@@ -651,17 +651,32 @@ public final class MathUtils {
         }
     }
 
-    public static @NotNull BigInteger ceilingRoot(@NotNull BigInteger r, @NotNull BigInteger x) {
-        if (x.signum() == -1) {
-            throw new ArithmeticException();
+    /**
+     * Returns the ceiling of the {@code r}th root of {@code x}.
+     *
+     * <ul>
+     *  <li>{@code r} must be positive.</li>
+     *  <li>{@code x} cannot be negative.</li>
+     *  <li>The result is not negative.</li>
+     * </ul>
+     *
+     * @param r the order of the root
+     * @param x the argument of the root
+     * @return ⌈{@code x}<sup>1/{@code r}</sup>⌉
+     */
+    public static @NotNull BigInteger ceilingRoot(int r, @NotNull BigInteger x) {
+        if (r < 1) {
+            throw new ArithmeticException("r must be positive. Invalid r: " + r);
         }
+        if (x.signum() == -1) {
+            throw new ArithmeticException("x cannot be negative. Invalid x: " + x);
+        }
+        if (x.equals(BigInteger.ZERO)) return BigInteger.ZERO;
+        if (r == 1) return x;
+        int bitLengthEstimate = x.bitLength();
+        bitLengthEstimate = (bitLengthEstimate & 1) == 0 ? bitLengthEstimate / 2 : bitLengthEstimate / 2 + 1;
         //noinspection SuspiciousNameCombination
-        return ceilingInverse(
-                i -> i.pow(r.intValueExact()),
-                BigInteger.ZERO,
-                x, //very loose bound
-                x
-        );
+        return ceilingInverse(i -> i.pow(r), BigInteger.ZERO, BigInteger.ONE.shiftLeft(bitLengthEstimate), x);
     }
 
     private static void ensurePrimeSieveInitialized() {
@@ -702,7 +717,7 @@ public final class MathUtils {
             if (gt(bi.pow(2), n)) return n;
             if (PRIME_SIEVE.get(i) && n.mod(bi).equals(BigInteger.ZERO)) return bi;
         }
-        BigInteger limit = ceilingRoot(IntegerUtils.TWO, n);
+        BigInteger limit = ceilingRoot(2, n);
         Iterable<BigInteger> candidates = concatMap(
                 i -> {
                     BigInteger sixI = i.multiply(BigInteger.valueOf(6));

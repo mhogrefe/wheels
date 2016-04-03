@@ -201,4 +201,14 @@ public class MathUtilsDemos extends Demos {
                     ceilingInverse(q.a, q.b, q.c, q.d));
         }
     }
+
+    private void demoCeilingRoot() {
+        Iterable<Pair<BigInteger, Integer>> ps = P.pairsLogarithmicOrder(
+                P.naturalBigIntegers(),
+                P.positiveIntegersGeometric()
+        );
+        for (Pair<BigInteger, Integer> p : take(LIMIT, ps)) {
+            System.out.println("ceilingRoot(" + p.b + ", " + p.a + ") = " + ceilingRoot(p.b, p.a));
+        }
+    }
 }

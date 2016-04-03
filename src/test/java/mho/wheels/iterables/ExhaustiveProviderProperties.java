@@ -1903,14 +1903,9 @@ public class ExhaustiveProviderProperties extends TestProperties {
             for (Pair<Integer, Pair<Integer, Integer>> p : take(LIMIT, ps3)) {
                 assertTrue(
                         p,
-                        p.b.a < MathUtils.ceilingRoot(BigInteger.valueOf(3), BigInteger.valueOf(p.a).pow(2))
-                                .intValueExact() * 2 + 1
+                        p.b.a < MathUtils.ceilingRoot(3, BigInteger.valueOf(p.a).pow(2)).intValueExact() * 2 + 1
                 );
-                assertTrue(
-                        p,
-                        p.b.b < MathUtils.ceilingRoot(BigInteger.valueOf(3), BigInteger.valueOf(p.a))
-                                .intValueExact() * 2 + 1
-                );
+                assertTrue(p, p.b.b < MathUtils.ceilingRoot(3, BigInteger.valueOf(p.a)).intValueExact() * 2 + 1);
             }
         }
     }
@@ -3271,7 +3266,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
                     EP.pairs(P.naturalIntegers())
             );
             for (Pair<Integer, Pair<Integer, Integer>> p : take(LIMIT, ps3)) {
-                int root = MathUtils.ceilingRoot(IntegerUtils.TWO, BigInteger.valueOf(p.a)).intValueExact() * 2 + 1;
+                int root = MathUtils.ceilingRoot(2, BigInteger.valueOf(p.a)).intValueExact() * 2 + 1;
                 assertTrue(p, p.b.a < root);
                 assertTrue(p, p.b.b < root);
             }
@@ -3394,8 +3389,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
                     EP.triples(P.naturalIntegers())
             );
             for (Pair<Integer, Triple<Integer, Integer, Integer>> t : take(LIMIT, ts)) {
-                int root = MathUtils.ceilingRoot(BigInteger.valueOf(3), BigInteger.valueOf(t.a))
-                        .intValueExact() * 2 + 1;
+                int root = MathUtils.ceilingRoot(3, BigInteger.valueOf(t.a)).intValueExact() * 2 + 1;
                 assertTrue(t, t.b.a < root);
                 assertTrue(t, t.b.b < root);
                 assertTrue(t, t.b.c < root);
@@ -3533,8 +3527,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
                     EP.quadruples(P.naturalIntegers())
             );
             for (Pair<Integer, Quadruple<Integer, Integer, Integer, Integer>> q : take(LIMIT, qs)) {
-                int root = MathUtils.ceilingRoot(BigInteger.valueOf(4), BigInteger.valueOf(q.a))
-                        .intValueExact() * 2 + 1;
+                int root = MathUtils.ceilingRoot(4, BigInteger.valueOf(q.a)).intValueExact() * 2 + 1;
                 assertTrue(q, q.b.a < root);
                 assertTrue(q, q.b.b < root);
                 assertTrue(q, q.b.c < root);
@@ -3727,8 +3720,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
                     EP.quintuples(P.naturalIntegers())
             );
             for (Pair<Integer, Quintuple<Integer, Integer, Integer, Integer, Integer>> q : take(LIMIT, qs)) {
-                int root = MathUtils.ceilingRoot(BigInteger.valueOf(5), BigInteger.valueOf(q.a))
-                        .intValueExact() * 2 + 1;
+                int root = MathUtils.ceilingRoot(5, BigInteger.valueOf(q.a)).intValueExact() * 2 + 1;
                 assertTrue(q, q.b.a < root);
                 assertTrue(q, q.b.b < root);
                 assertTrue(q, q.b.c < root);
@@ -3947,8 +3939,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
                     EP.sextuples(P.naturalIntegers())
             );
             for (Pair<Integer, Sextuple<Integer, Integer, Integer, Integer, Integer, Integer>> s : take(LIMIT, ss)) {
-                int root = MathUtils.ceilingRoot(BigInteger.valueOf(6), BigInteger.valueOf(s.a))
-                        .intValueExact() * 2 + 1;
+                int root = MathUtils.ceilingRoot(6, BigInteger.valueOf(s.a)).intValueExact() * 2 + 1;
                 assertTrue(s, s.b.a < root);
                 assertTrue(s, s.b.b < root);
                 assertTrue(s, s.b.c < root);
@@ -4198,8 +4189,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
                     Integer,
                     Septuple<Integer, Integer, Integer, Integer, Integer, Integer, Integer>>
             s : take(LIMIT, ss)) {
-                int root = MathUtils.ceilingRoot(BigInteger.valueOf(7), BigInteger.valueOf(s.a))
-                        .intValueExact() * 2 + 1;
+                int root = MathUtils.ceilingRoot(7, BigInteger.valueOf(s.a)).intValueExact() * 2 + 1;
                 assertTrue(s, s.b.a < root);
                 assertTrue(s, s.b.b < root);
                 assertTrue(s, s.b.c < root);

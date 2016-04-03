@@ -60,6 +60,8 @@ public class MathUtilsProperties extends TestProperties {
         propertiesCeilingLog();
         compareImplementationsCeilingLog();
         propertiesCeilingInverse();
+        propertiesCeilingRoot();
+        compareImplementationsCeilingRoot();
     }
 
     private static int gcd_int_int_simplest(int x, int y) {
@@ -852,5 +854,75 @@ public class MathUtilsProperties extends TestProperties {
                 fail(q);
             } catch (IllegalArgumentException ignored) {}
         }
+    }
+
+    private static @NotNull BigInteger ceilingRoot_alt(int r, @NotNull BigInteger x) {
+        if (r < 1) {
+            throw new ArithmeticException("r must be positive. Invalid r: " + r);
+        }
+        if (x.signum() == -1) {
+            throw new ArithmeticException("x cannot be negative. Invalid x: " + x);
+        }
+        if (x.equals(BigInteger.ZERO) || x.equals(BigInteger.ONE)) return x;
+        if (r == 1) return x;
+        //noinspection SuspiciousNameCombination
+        return ceilingInverse(i -> i.pow(r), BigInteger.ZERO, x, x);
+    }
+
+    private void propertiesCeilingRoot() {
+        initialize("ceilingRoot(int, BigInteger)");
+        Iterable<Pair<BigInteger, Integer>> ps = P.pairsLogarithmicOrder(
+                P.naturalBigIntegers(),
+                P.positiveIntegersGeometric()
+        );
+        for (Pair<BigInteger, Integer> p : take(LIMIT, ps)) {
+            BigInteger ceilingRoot = ceilingRoot(p.b, p.a);
+            assertEquals(ps, ceilingRoot, ceilingRoot_alt(p.b, p.a));
+            assertNotEquals(p, ceilingRoot.signum(), -1);
+            assertTrue(p, ge(ceilingRoot.pow(p.b), p.a));
+            assertTrue(
+                    p,
+                    ceilingRoot.equals(BigInteger.ZERO) || lt(ceilingRoot.subtract(BigInteger.ONE).pow(p.b), p.a)
+            );
+        }
+
+        for (BigInteger i : take(LIMIT, P.naturalBigIntegers())) {
+            assertEquals(i, ceilingRoot(1, i), i);
+        }
+
+        for (int i : take(LIMIT, P.positiveIntegersGeometric())) {
+            fixedPoint(j -> ceilingRoot(i, j), BigInteger.ZERO);
+            fixedPoint(j -> ceilingRoot(i, j), BigInteger.ONE);
+        }
+
+        Iterable<Pair<BigInteger, Integer>> psFail = P.pairsLogarithmicOrder(
+                P.negativeBigIntegers(),
+                P.positiveIntegersGeometric()
+        );
+        for (Pair<BigInteger, Integer> p : take(LIMIT, psFail)) {
+            try {
+                ceilingRoot(p.b, p.a);
+                fail(p);
+            } catch (ArithmeticException ignored) {}
+        }
+
+        psFail = P.pairsLogarithmicOrder(P.naturalBigIntegers(), P.withElement(0, P.negativeIntegersGeometric()));
+        for (Pair<BigInteger, Integer> p : take(LIMIT, psFail)) {
+            try {
+                ceilingRoot(p.b, p.a);
+                fail(p);
+            } catch (ArithmeticException ignored) {}
+        }
+    }
+
+    private void compareImplementationsCeilingRoot() {
+        Map<String, Function<Pair<BigInteger, Integer>, BigInteger>> functions = new LinkedHashMap<>();
+        functions.put("alt", p -> ceilingRoot_alt(p.b, p.a));
+        functions.put("standard", p -> ceilingRoot(p.b, p.a));
+        Iterable<Pair<BigInteger, Integer>> ps = P.pairsLogarithmicOrder(
+                P.naturalBigIntegers(),
+                P.positiveIntegersGeometric()
+        );
+        compareImplementations("ceilingRoot(int, BigInteger)", take(LIMIT, ps), functions);
     }
 }
