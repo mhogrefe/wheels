@@ -2162,14 +2162,13 @@ public strictfp class CompoundTest {
             int minSize,
             @NotNull Iterable<Integer> input,
             @NotNull String output,
-            @NotNull String topSampleCount,
             double meanSize
     ) {
         List<List<Integer>> sample = toList(
                 take(DEFAULT_SAMPLE_SIZE, P.withScale(scale).subsetsAtLeast(minSize, input))
         );
-        aeqitLimit(TINY_LIMIT, sample, output);
-        aeq(topSampleCount(DEFAULT_TOP_COUNT, sample), topSampleCount);
+        aeqitLimitLog(TINY_LIMIT, sample, output);
+        aeqMapLog(topSampleCount(DEFAULT_TOP_COUNT, sample), output);
         aeq(meanOfIntegers(toList(map(List::size, sample))), meanSize);
         P.reset();
     }
@@ -2179,17 +2178,9 @@ public strictfp class CompoundTest {
             int minSize,
             @NotNull String input,
             @NotNull String output,
-            @NotNull String topSampleCount,
             double meanSize
     ) {
-        subsetsAtLeast_helper(
-                scale,
-                minSize,
-                P.uniformSample(readIntegerListWithNulls(input)),
-                output,
-                topSampleCount,
-                meanSize
-        );
+        subsetsAtLeast_helper(scale, minSize, P.uniformSample(readIntegerListWithNulls(input)), output, meanSize);
     }
 
     private static void subsetsAtLeast_fail_helper(int scale, int minSize, @NotNull Iterable<Integer> input) {
@@ -2204,173 +2195,58 @@ public strictfp class CompoundTest {
 
     @Test
     public void testSubsetsAtLeast() {
-        subsetsAtLeast_helper_uniform(
-                2,
-                1,
-                "[5]",
-                "[[5], [5], [5], [5], [5], [5], [5], [5], [5], [5], [5], [5], [5], [5], [5], [5], [5], [5], [5]," +
-                " [5], ...]",
-                "{[5]=1000000}",
-                1.000000000007918
-        );
-        subsetsAtLeast_helper_uniform(
-                2,
-                1,
-                "[1, 2, 3]",
-                "[[1, 2], [1, 2, 3], [1, 2, 3], [3], [1, 2, 3], [3], [2, 3], [2], [3], [1, 3], [2], [3], [2], [3]," +
-                " [1], [3], [1], [1], [3], [1, 2], ...]",
-                "{[2]=200397, [3]=200001, [1]=199719, [2, 3]=100517, [1, 2, 3]=100200, [1, 3]=99720, [1, 2]=99446}",
-                1.50008299998526
-        );
-        subsetsAtLeast_helper_uniform(
-                5,
-                3,
-                "[1, 2, 3]",
-                "[[1, 2, 3], [1, 2, 3], [1, 2, 3], [1, 2, 3], [1, 2, 3], [1, 2, 3], [1, 2, 3], [1, 2, 3], [1, 2, 3]," +
-                " [1, 2, 3], [1, 2, 3], [1, 2, 3], [1, 2, 3], [1, 2, 3], [1, 2, 3], [1, 2, 3], [1, 2, 3], [1, 2, 3]," +
-                " [1, 2, 3], [1, 2, 3], ...]",
-                "{[1, 2, 3]=1000000}",
-                2.9999999999775233
-        );
-        subsetsAtLeast_helper_uniform(
-                2,
-                1,
-                "[1, 2, 3, 4]",
-                "[[1, 2, 4], [1, 2, 3, 4], [1, 2, 3, 4], [4], [2, 4], [3], [1, 3, 4], [2], [1], [4], [2], [1, 3]," +
-                " [2, 3], [3], [2], [3], [1], [3], [1], [1], ...]",
-                "{[2]=143315, [4]=143102, [1]=143064, [3]=142514, [1, 4]=47716, [2, 3]=47647, [2, 4]=47577," +
-                " [1, 3]=47540, [3, 4]=47519, [1, 2]=47049}",
-                1.5996069999831977
-        );
-        subsetsAtLeast_helper_uniform(
-                5,
-                3,
-                "[1, 2, 3, 4]",
-                "[[1, 2, 3, 4], [2, 3, 4], [1, 2, 3, 4], [1, 2, 3, 4], [2, 3, 4], [2, 3, 4], [1, 2, 3], [1, 3, 4]," +
-                " [1, 2, 3, 4], [2, 3, 4], [1, 2, 3, 4], [1, 2, 3, 4], [1, 2, 3], [2, 3, 4], [1, 2, 3]," +
-                " [1, 2, 3, 4], [1, 3, 4], [1, 3, 4], [1, 3, 4], [1, 2, 4], ...]",
-                "{[1, 2, 3, 4]=333852, [2, 3, 4]=167170, [1, 2, 3]=166847, [1, 2, 4]=166090, [1, 3, 4]=166041}",
-                3.3338519999899345
-        );
-        subsetsAtLeast_helper_uniform(
-                2,
-                1,
-                "[1, 2, 2, 4]",
-                "[[1, 2, 4], [1, 2, 4], [1, 2, 4], [4], [2, 4], [2], [1, 2, 4], [2], [1], [4], [2], [1, 2], [2]," +
-                " [2], [2], [2], [1], [2], [1], [1], ...]",
-                "{[2]=333476, [4]=143102, [1]=143064, [2, 4]=123708, [1, 2]=123118, [1, 2, 4]=85816, [1, 4]=47716}",
-                1.466173999985577
-        );
-        subsetsAtLeast_helper_uniform(
-                5,
-                3,
-                "[1, 2, 2, 4]",
-                "[[1, 2, 4], [1, 2, 4], [1, 2, 4], [1, 2, 4], [1, 2, 4], [1, 2, 4], [1, 2, 4], [1, 2, 4], [1, 2, 4]," +
-                " [1, 2, 4], [1, 2, 4], [1, 2, 4], [1, 2, 4], [1, 2, 4], [1, 2, 4], [1, 2, 4], [1, 2, 4], [1, 2, 4]," +
-                " [1, 2, 4], [1, 2, 4], ...]",
-                "{[1, 2, 4]=1000000}",
-                2.9999999999775233
-        );
-        subsetsAtLeast_helper_uniform(
-                2,
-                1,
-                "[2, 2, 2, 2]",
-                "[[2], [2], [2], [2], [2], [2], [2], [2], [2], [2], [2], [2], [2], [2], [2], [2], [2], [2], [2]," +
-                " [2], ...]",
-                "{[2]=1000000}",
-                1.000000000007918
-        );
+        subsetsAtLeast_helper_uniform(2, 1, "[5]", "RandomProvider_subsetsAtLeast_i", 1.000000000007918);
+        subsetsAtLeast_helper_uniform(2, 1, "[1, 2, 3]", "RandomProvider_subsetsAtLeast_ii", 1.50008299998526);
+        subsetsAtLeast_helper_uniform(5, 3, "[1, 2, 3]", "RandomProvider_subsetsAtLeast_iii", 2.9999999999775233);
+        subsetsAtLeast_helper_uniform(2, 1, "[1, 2, 3, 4]", "RandomProvider_subsetsAtLeast_iv", 1.5996069999831977);
+        subsetsAtLeast_helper_uniform(5, 3, "[1, 2, 3, 4]", "RandomProvider_subsetsAtLeast_v", 3.3338519999899345);
+        subsetsAtLeast_helper_uniform(2, 1, "[1, 2, 2, 4]", "RandomProvider_subsetsAtLeast_vi", 1.466173999985577);
+        subsetsAtLeast_helper_uniform(5, 3, "[1, 2, 2, 4]", "RandomProvider_subsetsAtLeast_vii", 2.9999999999775233);
+        subsetsAtLeast_helper_uniform(2, 1, "[2, 2, 2, 2]", "RandomProvider_subsetsAtLeast_viii", 1.000000000007918);
         subsetsAtLeast_helper_uniform(
                 2,
                 1,
                 "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]",
-                "[[4, 6, 9], [2, 6, 7], [10], [8], [3], [4, 5, 7], [6], [5], [4, 8], [6], [3, 4], [7], [9], [1, 9]," +
-                " [9], [5], [4], [4], [3, 6, 10], [7], ...]",
-                "{[6]=53166, [5]=52878, [2]=52770, [4]=52720, [3]=52634, [1]=52615, [8]=52598, [9]=52572," +
-                " [10]=52566, [7]=52513}",
+                "RandomProvider_subsetsAtLeast_ix",
                 1.8170889999810345
         );
         subsetsAtLeast_helper_uniform(
                 5,
                 3,
                 "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]",
-                "[[2, 4, 6, 8], [2, 6, 7], [3, 5, 6, 8, 10], [3, 4, 5, 6, 7], [1, 4, 6], [1, 3, 4, 7, 9], [4, 5, 9]," +
-                " [3, 6, 7, 10], [4, 6, 7], [2, 3, 4, 6, 7, 8], [3, 5, 8, 10], [1, 5, 7], [1, 2, 3, 4, 5, 6, 7, 8]," +
-                " [3, 4, 5, 8], [1, 4, 7], [3, 4, 5, 7, 8, 9], [1, 3, 7, 10], [3, 6, 9, 10], [2, 3, 8, 10]," +
-                " [1, 2, 5], ...]",
-                "{[1, 5, 8]=3625, [1, 5, 10]=3580, [1, 2, 10]=3575, [4, 5, 8]=3573, [2, 3, 6]=3570, [4, 7, 10]=3570," +
-                " [5, 6, 10]=3570, [4, 5, 10]=3564, [1, 6, 7]=3552, [2, 6, 10]=3551}",
+                "RandomProvider_subsetsAtLeast_x",
                 4.168420999985633
         );
         subsetsAtLeast_helper_uniform(
                 32,
                 8,
                 "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]",
-                "[[1, 2, 3, 4, 5, 6, 7, 8, 9, 10], [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]," +
-                " [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], [1, 2, 4, 5, 6, 7, 8, 9, 10], [1, 2, 3, 4, 5, 6, 7, 8, 10]," +
-                " [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], [1, 3, 4, 5, 6, 7, 9, 10]," +
-                " [2, 3, 4, 5, 7, 8, 9, 10], [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]," +
-                " [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], [1, 2, 3, 4, 5, 7, 8, 9, 10]," +
-                " [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], [1, 3, 4, 5, 6, 7, 8, 9, 10], [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]," +
-                " [1, 2, 3, 4, 5, 6, 7, 9, 10], [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], ...]",
-                "{[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]=584407, [2, 3, 4, 5, 6, 7, 8, 9, 10]=24560," +
-                " [1, 2, 3, 4, 5, 6, 7, 9, 10]=24496, [1, 2, 3, 4, 5, 7, 8, 9, 10]=24492," +
-                " [1, 2, 3, 4, 5, 6, 7, 8, 10]=24318, [1, 3, 4, 5, 6, 7, 8, 9, 10]=24296," +
-                " [1, 2, 3, 4, 5, 6, 8, 9, 10]=24254, [1, 2, 4, 5, 6, 7, 8, 9, 10]=24239," +
-                " [1, 2, 3, 5, 6, 7, 8, 9, 10]=24234, [1, 2, 3, 4, 6, 7, 8, 9, 10]=24138}",
+                "RandomProvider_subsetsAtLeast_xi",
                 9.41189799992237
         );
         subsetsAtLeast_helper(
                 2,
                 1,
                 P.withScale(4).positiveIntegersGeometric(),
-                "[[3, 7, 10], [3], [1, 3, 7], [1, 2], [2, 4, 8], [2], [2], [2], [8], [6, 9, 12, 15], [2], [1], [12]," +
-                " [4, 7], [1, 2, 5, 6], [5], [1], [10], [2], [5], ...]",
-                "{[1]=142762, [2]=104119, [3]=75181, [4]=55392, [5]=41192, [1, 2]=33786, [6]=30272, [1, 3]=24074," +
-                " [7]=22836, [1, 4]=17437}",
+                "RandomProvider_subsetsAtLeast_xii",
                 1.7601419999815262
         );
         subsetsAtLeast_helper(
                 5,
                 3,
                 P.withScale(4).positiveIntegersGeometric(),
-                "[[1, 3, 4, 7, 10], [2, 3, 7, 8], [1, 2, 8], [6, 9, 12, 15], [1, 2, 13], [1, 2, 4, 5, 6, 7]," +
-                " [1, 3, 5, 10], [2, 4, 5], [2, 4, 5], [1, 2, 3, 4, 6], [1, 2, 5], [4, 5, 6], [1, 4, 6, 7, 9]," +
-                " [1, 2, 5, 10], [2, 3, 4], [1, 2, 3, 4, 5, 6, 7, 10, 19, 22], [1, 2, 3, 4, 7], [1, 2, 19]," +
-                " [3, 7, 14], [1, 2, 4, 20], ...]",
-                "{[1, 2, 3]=43250, [1, 2, 4]=30077, [1, 2, 5]=21354, [1, 3, 4]=20186, [1, 2, 3, 4]=19240," +
-                " [1, 2, 6]=15287, [1, 3, 5]=14238, [1, 2, 3, 5]=13622, [2, 3, 4]=12731, [1, 2, 7]=11260}",
+                "RandomProvider_subsetsAtLeast_xiii",
                 3.989958999983499
         );
         subsetsAtLeast_helper(
                 32,
                 8,
                 P.withScale(4).positiveIntegersGeometric(),
-                "[[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 13, 15], [1, 2, 3, 4, 5, 6, 7, 9]," +
-                " [1, 2, 3, 4, 5, 6, 7, 10, 13, 19, 22], [1, 2, 3, 4, 5, 7, 8, 13, 14, 19, 20]," +
-                " [1, 2, 3, 4, 5, 6, 8, 10], [1, 2, 3, 4, 5, 6, 11, 15], [1, 2, 3, 4, 5, 6, 7, 9, 10]," +
-                " [1, 2, 3, 4, 5, 6, 8, 10, 13], [1, 2, 3, 4, 5, 6, 7, 8, 10, 15], [1, 2, 3, 4, 5, 6, 7, 9, 15]," +
-                " [1, 2, 3, 4, 5, 6, 8, 9, 12, 15, 17], [1, 2, 3, 4, 5, 6, 7, 8, 10, 13, 14]," +
-                " [1, 2, 3, 4, 5, 6, 7, 8, 15], [1, 2, 3, 4, 5, 6, 7, 8, 10, 11]," +
-                " [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 13], [1, 2, 3, 6, 7, 8, 9, 12, 16]," +
-                " [1, 2, 3, 4, 5, 6, 7, 11, 13, 14], [1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 17]," +
-                " [1, 2, 3, 4, 5, 7, 8, 9, 11, 16], [1, 2, 3, 4, 5, 6, 8, 9, 10, 12], ...]",
-                "{[1, 2, 3, 4, 5, 6, 7, 8]=15805, [1, 2, 3, 4, 5, 6, 7, 8, 9]=14490," +
-                " [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]=12306, [1, 2, 3, 4, 5, 6, 7, 9]=10542," +
-                " [1, 2, 3, 4, 5, 6, 7, 8, 10]=9481, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]=9410," +
-                " [1, 2, 3, 4, 5, 6, 7, 8, 9, 11]=8086, [1, 2, 3, 4, 5, 6, 7, 10]=7186," +
-                " [1, 2, 3, 4, 5, 6, 8, 9]=6698, [1, 2, 3, 4, 5, 6, 7, 8, 11]=6627}",
+                "RandomProvider_subsetsAtLeast_xiv",
                 10.378239999978224
         );
-        subsetsAtLeast_helper(
-                2,
-                1,
-                repeat(1),
-                "[[1], [1], [1], [1], [1], [1], [1], [1], [1], [1], [1], [1], [1], [1], [1], [1], [1], [1], [1]," +
-                " [1], ...]",
-                "{[1]=1000000}",
-                1.000000000007918
-        );
+        subsetsAtLeast_helper(2, 1, repeat(1), "RandomProvider_subsetsAtLeast_xv", 1.000000000007918);
+
         subsetsAtLeast_fail_helper(5, 3, Collections.emptyList());
         subsetsAtLeast_fail_helper(5, 3, Arrays.asList(1, 2, 3));
         subsetsAtLeast_fail_helper(5, 5, P.integers());
@@ -2384,14 +2260,13 @@ public strictfp class CompoundTest {
             int minSize,
             @NotNull String input,
             @NotNull String output,
-            @NotNull String topSampleCount,
             double meanSize
     ) {
         List<String> sample = toList(
                 take(DEFAULT_SAMPLE_SIZE, P.withScale(scale).stringSubsetsAtLeast(minSize, input))
         );
-        aeqitLimit(TINY_LIMIT, sample, output);
-        aeq(topSampleCount(DEFAULT_TOP_COUNT, sample), topSampleCount);
+        aeqitLimitLog(TINY_LIMIT, sample, output);
+        aeqMapLog(topSampleCount(DEFAULT_TOP_COUNT, sample), output);
         aeq(meanOfIntegers(toList(map(String::length, sample))), meanSize);
         P.reset();
     }
@@ -2412,62 +2287,52 @@ public strictfp class CompoundTest {
                 2,
                 1,
                 "a",
-                "[a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, ...]",
-                "{a=1000000}",
+                "RandomProvider_stringSubsetsAtLeast_int_String_i",
                 1.000000000007918
         );
         stringSubsetsAtLeast_int_String_helper(
                 2,
                 1,
                 "abc",
-                "[ab, abc, abc, c, abc, c, bc, b, c, ac, b, c, b, c, a, c, a, a, c, ab, ...]",
-                "{b=200397, c=200001, a=199719, bc=100517, abc=100200, ac=99720, ab=99446}",
+                "RandomProvider_stringSubsetsAtLeast_int_String_ii",
                 1.50008299998526
         );
         stringSubsetsAtLeast_int_String_helper(
                 5,
                 3,
                 "abc",
-                "[abc, abc, abc, abc, abc, abc, abc, abc, abc, abc, abc, abc, abc, abc, abc, abc, abc, abc, abc," +
-                " abc, ...]",
-                "{abc=1000000}",
+                "RandomProvider_stringSubsetsAtLeast_int_String_iii",
                 2.9999999999775233
         );
         stringSubsetsAtLeast_int_String_helper(
                 2,
                 1,
                 "abbc",
-                "[abc, abc, abc, c, bc, b, abc, b, a, c, b, ab, b, b, b, b, a, b, a, a, ...]",
-                "{b=333476, c=143102, a=143064, bc=123708, ab=123118, abc=85816, ac=47716}",
+                "RandomProvider_stringSubsetsAtLeast_int_String_iv",
                 1.466173999985577
         );
         stringSubsetsAtLeast_int_String_helper(
                 5,
                 3,
                 "abbc",
-                "[abc, abc, abc, abc, abc, abc, abc, abc, abc, abc, abc, abc, abc, abc, abc, abc, abc, abc, abc," +
-                " abc, ...]",
-                "{abc=1000000}",
+                "RandomProvider_stringSubsetsAtLeast_int_String_v",
                 2.9999999999775233
         );
         stringSubsetsAtLeast_int_String_helper(
                 2,
                 1,
                 "Mississippi",
-                "[ps, is, i, is, is, s, i, is, s, s, i, ip, Mi, i, p, i, s, s, ps, s, ...]",
-                "{i=222608, s=222220, is=127085, p=100226, ips=55787, ps=52857, ip=52609, M=47546, Mis=24765," +
-                " Mi=24457}",
+                "RandomProvider_stringSubsetsAtLeast_int_String_vi",
                 1.5401079999842737
         );
         stringSubsetsAtLeast_int_String_helper(
                 5,
                 3,
                 "Mississippi",
-                "[ips, ips, Mis, Mip, ips, ips, ips, Mips, Mis, Mis, Mps, ips, ips, ips, Mips, Mps, Mip, Mips, Mips," +
-                " Mis, ...]",
-                "{ips=484161, Mips=228522, Mis=187626, Mip=49852, Mps=49839}",
+                "RandomProvider_stringSubsetsAtLeast_int_String_vii",
                 3.2285219999851744
         );
+
         stringSubsetsAtLeast_int_String_fail_helper(5, 3, "");
         stringSubsetsAtLeast_int_String_fail_helper(5, 5, "abc");
         stringSubsetsAtLeast_int_String_fail_helper(4, 5, "abc");
@@ -2477,12 +2342,11 @@ public strictfp class CompoundTest {
             int scale,
             int minSize,
             @NotNull String output,
-            @NotNull String topSampleCount,
             double meanSize
     ) {
         List<String> sample = toList(take(DEFAULT_SAMPLE_SIZE, P.withScale(scale).stringSubsetsAtLeast(minSize)));
-        aeqitLimit(TINY_LIMIT, sample, output);
-        aeq(topSampleCount(DEFAULT_TOP_COUNT, sample), topSampleCount);
+        aeqitLimitLog(TINY_LIMIT, sample, output);
+        aeqMapLog(topSampleCount(DEFAULT_TOP_COUNT, sample), output);
         aeq(meanOfIntegers(toList(map(String::length, sample))), meanSize);
         P.reset();
     }
@@ -2499,57 +2363,10 @@ public strictfp class CompoundTest {
 
     @Test
     public void testStringSubsetsAtLeast_int() {
-        stringSubsetsAtLeast_int_helper(
-                2,
-                1,
-                "[ε\u2538\u31e5䊿, ϡ\u19dcㄾ䯏刿罖몱\udd15ﲦ, ᬜK㵏ꏹ, 㩷, 纫\ufe2d, 䝲, \u2a43坤琖, \uea45, 蕤," +
-                " \u2b63\uf637, 鸅, \u33b2\uee1c, ᅺ됽, 䇺, \ue9fd, 㖊, \uaaf0, 覚, 䱸, \u2e24, ...]",
-                "{瓫=24, 簐=22, 듑=22, 瀯=21, \uf3e9=21, 䝞=21, 抷=20, 䒢=20, Ẑ=20, 텁=20}",
-                1.9995569999798375
-        );
-        stringSubsetsAtLeast_int_helper(
-                5,
-                3,
-                "[\u31e5肣赧髽\ue215\uf6ffﳑ, 䯏몱\udd15ﲦ, ㄾ䲵偵刿箿, K㵏缄ꏹ, \u2a43坤琖蕤餥퉌\ue352\uea45," +
-                " \u2b63鸂\uf637, ᅺ\u33b2酓됽캆, \u2aec㖊\uaaf0짎\ue9fd, 䱸覚돘, ܓሮ鄒\uf878, 尩ꪻ굿\uecf5, 빅빮\ue8b2," +
-                " \u3353刓嗏瀵컦\ud805\ue2d3, 䫯噋躁ꌻ홃\ue87c\uf36f, \u061a\u2e94㽖䥔壙穨鼧픫\udd82ﶼ, 嗮糦\uf329," +
-                " B\u0e77\u2a57㽿慚ꯃ총\uf36b, ꅪ\udcc6\udec6, \u0d5b\u337d萋, \u1366ᵠ詪쀝쪡\uf21b, ...]",
-                "{\u31e5肣赧髽\ue215\uf6ffﳑ=1, 䯏몱\udd15ﲦ=1, ㄾ䲵偵刿箿=1, K㵏缄ꏹ=1, \u2a43坤琖蕤餥퉌\ue352\uea45=1," +
-                " \u2b63鸂\uf637=1, ᅺ\u33b2酓됽캆=1, \u2aec㖊\uaaf0짎\ue9fd=1, 䱸覚돘=1, ܓሮ鄒\uf878=1}",
-                5.00299199999616
-        );
-        stringSubsetsAtLeast_int_helper(
-                32,
-                8,
-                "[ܓᅺሮᤘ\u28de\u2aec\u2b63\u2e24\u33b2㖊㱉䇺䟆䱸全尩泦煖疜覚误輮鄒酓鸂鸅\ua7b1ꪻ\uaaf0굿돘됽띯빅빮짎캆\ue2da" +
-                "\ue5cb\ue78f\ue8b2\ue9fd\uecf5\uee1c\uf637\uf878聆\uff03, ឃ\u3353刓嗏瀵컦\ud805\ue2d3," +
-                " B\u0964\u0d5b\u0e77\u2a57\u337d㽿䍾䞂嗮徜慚睸糦緜萋詪詵錹鎿鐳颒鰫ꅪꯃ묆쪡총\ud8ca\udcc6\udd42\udec6\uf329" +
-                "\uf36bﻧ, \u2293䴻庺槔横駆ꎤ퉐\ued0d," +
-                " ᯖ\u202c㝏䃼䦣儖匀낛띆\ue9c6\uea55ﱓ, Ȟͺұډ\u0a49ලხ\u124e㲜䔾䠬䮼叙嶂繲葒蛕ꪪ췴턞\ue28c\ue852\uefc8," +
-                " ᖒ\u2e64㥑㿘䁅䝀偘滞燔趵ꎿ\uab6e년믱젯\ue89b, ᶙ\u26f2㙴䁩聂ꃖꐲ\udc58," +
-                " ᅒ\u2320\u2606\u32b0㕯婜狙阏陜頵顓ꎚ궥댲뚗쇻쓎쟒쳮, \u0618\u19de\u25ad\u2613戯旞韕똽," +
-                " \u0d47\u0f1bᓑ\u2eea㚏䢗帇晸濙犋瞁鈖ꤥ죴쿕퀯퓰\uebc7\uf800," +
-                " а\u21c0\u2684\u2b83撻梏沅羾葆ꎠ궺놂뗢뵪쒞쥶팗풬\ue40c," +
-                " \u073d\u0aa9ஆ\u0b8c\u1069ቾ\u1739គᥔ\u19b1\u1a60\u1aba\u1b56ᳯᶝ\u2026\u2a33\u2af8\u2f0d\u3243㥐㭍㻶㼰" +
-                "㾸䅁䈏䦼䨺\u4df4乃侒偰剹厖叵呼団姕嬵悲挑摡枧柿桶泈狚睗窀箴糘茞蕕閦顆飰館鳙鳸\ua6f4Ꜣ\ua7afꯈ냥닁듂뼄뾁쀁쁳쑹운쥇챲춮칗" +
-                "탰헑\ud845\ude93\ue10d\ue480\ue531\ue649\ue672\uecda\ued1a\uf351\uf3a8," +
-                " ʵۮܒ\u07aa\u0875\u17cbᰁ\u1c47\u1fce\u25a0\u291e\u2e50\u2fbeㆲ㗨㙿㢍䒁䒉嘟墺廏操民滎瀉爑甍皑秳稔臙艸芦藟詂" +
-                "謳貗頔\ua837놿뇐멖뮣벧샣솄톋퍆\udde1\ue22c\uecda\uee3a\uee84\uf2ff\uf6cd," +
-                " K\u0529Ꮃᶑ㓆䌚䜐卩嘂壵显禎细鏌阘鳰Ꜯ\ua9f4갭쉙쬋쵕춢후\uda6c\ude3a\ue61e\ue9d5\uf04f\uf6a5\ufe3d," +
-                " ᬱ㨘昺炣玉虹뭇뾂," +
-                " 7Ϯ\u0c00\u0f24Ᏺᚅ\u1debど㖃㥥㴯㺸䌕䎌䜜則勪懜戎担敉杁欎溯潵焣穣笨绡缂葑頒鱼鲦齞걓겧렔몔씅익쯹츪클퇢횋\udd06" +
-                "\ude35\ue47a\ue498\ue59b串聾ﶯ, \u0482\u2153耕茟詴ꏠꜰ쵕쾭\ud847\uef98\uf7cd," +
-                " \u0361\u0cecᒚ\u21ba\u2818\u2b5dⲄⴋⴓ㺱㻞巶忢憊椼檌檮滙玌璎疟祍蠛裤ꚸ뤀먛\ud85c\udbf4\uec15," +
-                " Ȣⱊ\u2f43僮眏軷霺겴뜓좲퐗햽\ue41d\uf5e2, ...]",
-                "{ܓᅺሮᤘ\u28de\u2aec\u2b63\u2e24\u33b2㖊㱉䇺䟆䱸全尩泦煖疜覚误輮鄒酓鸂鸅\ua7b1ꪻ\uaaf0굿돘됽띯빅빮짎캆\ue2da" +
-                "\ue5cb\ue78f\ue8b2\ue9fd\uecf5\uee1c\uf637\uf878聆\uff03=1, ឃ\u3353刓嗏瀵컦\ud805\ue2d3=1," +
-                " B\u0964\u0d5b\u0e77\u2a57\u337d㽿䍾䞂嗮徜慚睸糦緜萋詪詵錹鎿鐳颒鰫ꅪꯃ묆쪡총\ud8ca\udcc6\udd42\udec6\uf329" +
-                "\uf36bﻧ=1, \u2293䴻庺槔横駆ꎤ퉐\ued0d=1," +
-                " ᯖ\u202c㝏䃼䦣儖匀낛띆\ue9c6\uea55ﱓ=1, Ȟͺұډ\u0a49ලხ\u124e㲜䔾䠬䮼叙嶂繲葒蛕ꪪ췴턞\ue28c\ue852\uefc8=1," +
-                " ᖒ\u2e64㥑㿘䁅䝀偘滞燔趵ꎿ\uab6e년믱젯\ue89b=1, ᶙ\u26f2㙴䁩聂ꃖꐲ\udc58=1," +
-                " ᅒ\u2320\u2606\u32b0㕯婜狙阏陜頵顓ꎚ궥댲뚗쇻쓎쟒쳮=1, \u0618\u19de\u25ad\u2613戯旞韕똽=1}",
-                31.99690200002153
-        );
+        stringSubsetsAtLeast_int_helper(2, 1, "RandomProvider_stringSubsetsAtLeast_int_i", 1.9995569999798375);
+        stringSubsetsAtLeast_int_helper(5, 3, "RandomProvider_stringSubsetsAtLeast_int_ii", 5.00299199999616);
+        stringSubsetsAtLeast_int_helper(32, 8, "RandomProvider_stringSubsetsAtLeast_int_iii", 31.99690200002153);
+
         stringSubsetsAtLeast_int_fail_helper(5, 5);
         stringSubsetsAtLeast_int_fail_helper(4, 5);
     }
