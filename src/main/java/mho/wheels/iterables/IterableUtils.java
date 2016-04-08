@@ -221,7 +221,7 @@ public final strictfp class IterableUtils {
     public static @NotNull <A, B> Map<String, String> itsMap(@NotNull Map<A, B> map) {
         Map<String, String> out = new HashMap<>();
         for (Map.Entry<A, B> entry : map.entrySet()) {
-            out.put(entry.getKey().toString(), entry.getValue().toString());
+            out.put(Objects.toString(entry.getKey()), Objects.toString(entry.getValue()));
         }
         return out;
     }
