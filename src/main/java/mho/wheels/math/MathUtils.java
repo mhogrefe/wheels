@@ -679,6 +679,9 @@ public final class MathUtils {
         return ceilingInverse(i -> i.pow(r), BigInteger.ZERO, BigInteger.ONE.shiftLeft(bitLengthEstimate), x);
     }
 
+    /**
+     * Initializes the prime sieve, if it hasn't already been initialized.
+     */
     private static void ensurePrimeSieveInitialized() {
         if (PRIME_SIEVE != null) return;
         PRIME_SIEVE = new BitSet(PRIME_SIEVE_SIZE);
@@ -692,21 +695,47 @@ public final class MathUtils {
         }
     }
 
+    /**
+     * Returns the smallest prime factor of {@code n}.
+     *
+     * <ul>
+     *  <li>{@code n} must be at least 2.</li>
+     *  <li>The result is prime.</li>
+     * </ul>
+     *
+     * @param n a number
+     * @return the smallest prime factor of {@code n}
+     */
     public static int smallestPrimeFactor(int n) {
-        if (n < 2)
-            throw new IllegalArgumentException("argument must be at least 2");
+        if (n < 2) {
+            throw new IllegalArgumentException("n must be at least 2. Invalid n: " + n);
+        }
         if (n % 2 == 0) return 2;
         ensurePrimeSieveInitialized();
         if (n < PRIME_SIEVE_SIZE && PRIME_SIEVE.get(n)) return n;
-        for (int i = 3; ; i += 2) {
+        for (int i = 3; i < PRIME_SIEVE_SIZE; i += 2) {
             int square = i * i;
-            if (square > n || square < 0) break;
+            if (square > n) break;
             if (PRIME_SIEVE.get(i) && n % i == 0) return i;
         }
         return n;
     }
 
+    /**
+     * Returns the smallest prime factor of {@code n}.
+     *
+     * <ul>
+     *  <li>{@code n} must be at least 2.</li>
+     *  <li>The result is prime.</li>
+     * </ul>
+     *
+     * @param n a number
+     * @return the smallest prime factor of {@code n}
+     */
     public static @NotNull BigInteger smallestPrimeFactor(@NotNull BigInteger n) {
+        if (lt(n, IntegerUtils.TWO)) {
+            throw new IllegalArgumentException("n must be at least 2. Invalid n: " + n);
+        }
         if (le(n, BigInteger.valueOf(Integer.MAX_VALUE))) {
             return BigInteger.valueOf(smallestPrimeFactor(n.intValueExact()));
         }

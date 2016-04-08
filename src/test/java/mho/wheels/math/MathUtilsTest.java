@@ -645,6 +645,79 @@ public class MathUtilsTest {
         ceilingRoot_fail_helper(2, "-1");
     }
 
+    private static void smallestPrimeFactor_int_helper(int input, int output) {
+        aeq(smallestPrimeFactor(input), output);
+    }
+
+    private static void smallestPrimeFactor_int_fail_helper(int input) {
+        try {
+            smallestPrimeFactor(input);
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+    }
+
+    @Test
+    public void testSmallestPrimeFactor_int() {
+        smallestPrimeFactor_int_helper(2, 2);
+        smallestPrimeFactor_int_helper(3, 3);
+        smallestPrimeFactor_int_helper(4, 2);
+        smallestPrimeFactor_int_helper(5, 5);
+        smallestPrimeFactor_int_helper(6, 2);
+        smallestPrimeFactor_int_helper(7, 7);
+        smallestPrimeFactor_int_helper(8, 2);
+        smallestPrimeFactor_int_helper(9, 3);
+        smallestPrimeFactor_int_helper(10, 2);
+        smallestPrimeFactor_int_helper(1807, 13);
+        smallestPrimeFactor_int_helper(6221671, 6221671);
+        smallestPrimeFactor_int_helper(65533, 13);
+        smallestPrimeFactor_int_helper(2147483647, 2147483647);
+        smallestPrimeFactor_int_helper(2147483643, 3);
+        smallestPrimeFactor_int_helper(2147483641, 2699);
+
+        smallestPrimeFactor_int_fail_helper(1);
+        smallestPrimeFactor_int_fail_helper(0);
+        smallestPrimeFactor_int_fail_helper(-1);
+    }
+
+    private static void smallestPrimeFactor_BigInteger_helper(@NotNull String input, @NotNull String output) {
+        aeq(smallestPrimeFactor(Readers.readBigInteger(input).get()), output);
+    }
+
+    private static void smallestPrimeFactor_BigInteger_fail_helper(@NotNull String input) {
+        try {
+            smallestPrimeFactor(Readers.readBigInteger(input).get());
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+    }
+
+    @Test
+    public void testSmallestPrimeFactor_BigInteger() {
+        smallestPrimeFactor_BigInteger_helper("2", "2");
+        smallestPrimeFactor_BigInteger_helper("3", "3");
+        smallestPrimeFactor_BigInteger_helper("4", "2");
+        smallestPrimeFactor_BigInteger_helper("5", "5");
+        smallestPrimeFactor_BigInteger_helper("6", "2");
+        smallestPrimeFactor_BigInteger_helper("7", "7");
+        smallestPrimeFactor_BigInteger_helper("8", "2");
+        smallestPrimeFactor_BigInteger_helper("9", "3");
+        smallestPrimeFactor_BigInteger_helper("10", "2");
+        smallestPrimeFactor_BigInteger_helper("1807", "13");
+        smallestPrimeFactor_BigInteger_helper("6221671", "6221671");
+        smallestPrimeFactor_BigInteger_helper("65533", "13");
+        smallestPrimeFactor_BigInteger_helper("2147483647", "2147483647");
+        smallestPrimeFactor_BigInteger_helper("2147483643", "3");
+        smallestPrimeFactor_BigInteger_helper("2147483641", "2699");
+        smallestPrimeFactor_BigInteger_helper("2147483649", "3");
+        smallestPrimeFactor_BigInteger_helper("2147483659", "2147483659");
+        smallestPrimeFactor_BigInteger_helper("1000000000039", "1000000000039");
+        smallestPrimeFactor_BigInteger_helper("1000000000000037", "1000000000000037");
+        smallestPrimeFactor_BigInteger_helper("1000000000000039", "17");
+
+        smallestPrimeFactor_BigInteger_fail_helper("1");
+        smallestPrimeFactor_BigInteger_fail_helper("0");
+        smallestPrimeFactor_BigInteger_fail_helper("-1");
+    }
+
     private static @NotNull List<BigInteger> readBigIntegerList(@NotNull String s) {
         return Readers.readList(Readers::readBigInteger).apply(s).get();
     }

@@ -211,4 +211,16 @@ public class MathUtilsDemos extends Demos {
             System.out.println("ceilingRoot(" + p.b + ", " + p.a + ") = " + ceilingRoot(p.b, p.a));
         }
     }
+
+    private void demoSmallestPrimeFactor_int() {
+        for (int i : take(LIMIT, P.rangeUp(2))) {
+            System.out.println("smallestPrimeFactor(" + i + ") = " + smallestPrimeFactor(i));
+        }
+    }
+
+    private void demoSmallestPrimeFactor_BigInteger() {
+        for (BigInteger i : take(LIMIT, P.withScale(16).rangeUp(IntegerUtils.TWO))) {
+            System.out.println("smallestPrimeFactor(" + i + ") = " + smallestPrimeFactor(i));
+        }
+    }
 }

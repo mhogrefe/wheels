@@ -62,6 +62,9 @@ public class MathUtilsProperties extends TestProperties {
         propertiesCeilingInverse();
         propertiesCeilingRoot();
         compareImplementationsCeilingRoot();
+        propertiesSmallestPrimeFactor_int();
+        compareImplementationsSmallestPrimeFactor_int();
+        propertiesSmallestPrimeFactor_BigInteger();
     }
 
     private static int gcd_int_int_simplest(int x, int y) {
@@ -924,5 +927,69 @@ public class MathUtilsProperties extends TestProperties {
                 P.positiveIntegersGeometric()
         );
         compareImplementations("ceilingRoot(int, BigInteger)", take(LIMIT, ps), functions);
+    }
+
+    private static int smallestPrimeFactor_simplest(int n) {
+        if (n < 2) {
+            throw new IllegalArgumentException("n must be at least 2. Invalid n: " + n);
+        }
+        for (int i = 2; i <= n; i++) {
+            if (n % i == 0) return i;
+        }
+        throw new IllegalStateException("unreachable");
+    }
+
+    private void propertiesSmallestPrimeFactor_int() {
+        initialize("smallestPrimeFactor(int)");
+        for (int i : take(LIMIT, P.rangeUp(2))) {
+            int spf = smallestPrimeFactor(i);
+            assertTrue(i, isPrime(spf));
+            assertTrue(i, i % spf == 0);
+        }
+
+        for (int i : take(LIMIT, P.withScale(65536).rangeUpGeometric(2))) {
+            assertEquals(i, smallestPrimeFactor_simplest(i), smallestPrimeFactor(i));
+        }
+
+        for (int i : take(LIMIT, filterInfinite(MathUtils::isPrime, P.rangeUp(2)))) {
+            assertEquals(i, smallestPrimeFactor(i), i);
+        }
+
+        for (int i : take(LIMIT, P.rangeDown(-1))) {
+            try {
+                smallestPrimeFactor(i);
+                fail(i);
+            } catch (IllegalArgumentException ignored) {}
+        }
+    }
+
+    private void compareImplementationsSmallestPrimeFactor_int() {
+        smallestPrimeFactor(3); // force sieve initialization
+        Map<String, Function<Integer, Integer>> functions = new LinkedHashMap<>();
+        functions.put("simplest", MathUtilsProperties::smallestPrimeFactor_simplest);
+        functions.put("standard", MathUtils::smallestPrimeFactor);
+        Iterable<Integer> is = P.withScale(65536).rangeUpGeometric(2);
+        compareImplementations("smallestPrimeFactor(int)", take(LIMIT, is), functions);
+    }
+
+    private void propertiesSmallestPrimeFactor_BigInteger() {
+        initialize("smallestPrimeFactor(BigInteger)");
+        for (BigInteger i : take(LIMIT, P.withScale(16).rangeUp(IntegerUtils.TWO))) {
+            BigInteger spf = smallestPrimeFactor(i);
+            assertTrue(i, isPrime(spf));
+            assertTrue(i, i.mod(spf).equals(BigInteger.ZERO));
+        }
+
+        Iterable<BigInteger> is = filterInfinite(MathUtils::isPrime, P.withScale(8).rangeUp(IntegerUtils.TWO));
+        for (BigInteger i : take(LIMIT, is)) {
+            assertEquals(i, smallestPrimeFactor(i), i);
+        }
+
+        for (BigInteger i : take(LIMIT, P.rangeDown(IntegerUtils.NEGATIVE_ONE))) {
+            try {
+                smallestPrimeFactor(i);
+                fail(i);
+            } catch (IllegalArgumentException ignored) {}
+        }
     }
 }
