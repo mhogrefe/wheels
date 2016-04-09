@@ -79106,3 +79106,1235 @@ RandomProvider_repeatingIterablesDistinctAtLeast_iii list 21
 [351, 372, 363, 412, 441, 340, 429, 351, 372, 363, 412, 441, 340, 429, 351, 372, 363, 412, 441, 340, ...]
 [348, 365, 388, 506, 378, 392, 380, 381, 348, 365, 388, 506, 378, 392, 380, 381, 348, 365, 388, 506, ...]
 ...
+
+RandomProvider_sublists_i list 21
+[]
+[]
+[]
+[]
+[]
+[]
+[]
+[]
+[]
+[]
+[]
+[]
+[]
+[]
+[]
+[]
+[]
+[]
+[]
+[]
+...
+
+RandomProvider_sublists_i map 1
+1000000: []
+
+RandomProvider_sublists_ii list 21
+[2]
+[2, 3, 4]
+[]
+[]
+[]
+[4]
+[2]
+[1, 2]
+[]
+[2]
+[1, 2]
+[3]
+[3, 4]
+[1, 2, 3]
+[4]
+[]
+[]
+[3, 4]
+[1]
+[2, 3, 4]
+...
+
+RandomProvider_sublists_ii map 10
+332665: []
+67092: [4]
+67014: [2, 3]
+66993: [3, 4]
+66874: [1, 2]
+66850: [3]
+66738: [1, 2, 3, 4]
+66555: [2]
+66531: [1]
+66518: [2, 3, 4]
+
+RandomProvider_sublists_iii list 21
+[null]
+[null, 3, 4]
+[]
+[]
+[]
+[4]
+[null]
+[1, null]
+[]
+[null]
+[1, null]
+[3]
+[3, 4]
+[1, null, 3]
+[4]
+[]
+[]
+[3, 4]
+[1]
+[null, 3, 4]
+...
+
+RandomProvider_sublists_iii map 10
+332665: []
+67092: [4]
+67014: [null, 3]
+66993: [3, 4]
+66874: [1, null]
+66850: [3]
+66738: [1, null, 3, 4]
+66555: [null]
+66531: [1]
+66518: [null, 3, 4]
+
+RandomProvider_sublists_iv list 21
+[1]
+[1, 4, 1]
+[]
+[]
+[]
+[1]
+[1]
+[3, 1]
+[]
+[1]
+[3, 1]
+[4]
+[4, 1]
+[3, 1, 4]
+[1]
+[]
+[]
+[4, 1]
+[3]
+[1, 4, 1]
+...
+
+RandomProvider_sublists_iv map 10
+332665: []
+133647: [1]
+67014: [1, 4]
+66993: [4, 1]
+66874: [3, 1]
+66850: [4]
+66738: [3, 1, 4, 1]
+66531: [3]
+66518: [1, 4, 1]
+66170: [3, 1, 4]
+
+RandomProvider_sublists_v list 21
+[1]
+[1, 1, 1]
+[]
+[]
+[]
+[1]
+[1]
+[1, 1]
+[]
+[1]
+[1, 1]
+[1]
+[1, 1]
+[1, 1, 1]
+[1]
+[]
+[]
+[1, 1]
+[1]
+[1, 1, 1]
+...
+
+RandomProvider_sublists_v map 5
+332665: []
+267028: [1]
+200881: [1, 1]
+132688: [1, 1, 1]
+66738: [1, 1, 1, 1]
+
+RandomProvider_substrings_i list 21
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+...
+
+RandomProvider_substrings_i map 1
+1000000:
+
+RandomProvider_substrings_ii list 21
+b
+bcd
+
+
+
+d
+b
+ab
+
+b
+ab
+c
+cd
+abc
+d
+
+
+cd
+a
+bcd
+...
+
+RandomProvider_substrings_ii map 10
+332665:
+67092: d
+67014: bc
+66993: cd
+66874: ab
+66850: c
+66738: abcd
+66555: b
+66531: a
+66518: bcd
+
+RandomProvider_substrings_iii list 21
+a
+aaa
+
+
+
+a
+a
+aa
+
+a
+aa
+a
+aa
+aaa
+a
+
+
+aa
+a
+aaa
+...
+
+RandomProvider_substrings_iii map 5
+332665:
+267028: a
+200881: aa
+132688: aaa
+66738: aaaa
+
+RandomProvider_substrings_iv list 21
+issi
+
+si
+ssis
+
+Mississipp
+si
+ssissippi
+i
+ssiss
+is
+is
+pp
+sippi
+
+Mis
+ippi
+sis
+si
+ss
+...
+
+RandomProvider_substrings_iv map 10
+153654:
+51343: s
+50882: i
+26001: ss
+25767: is
+25756: p
+25753: si
+25718: ssi
+25591: iss
+25454: issi
+
+RandomProvider_listsWithElement_i list 21
+[2, 1, 2, 0, 2, 2, 3, 2, 3, 1, 3, 2]
+[1, 3, 0, 3, 2]
+[0]
+[1, 3, 0, 2]
+[0]
+[3, 0, 1, 3]
+[3, 0, 3]
+[0, 3]
+[0]
+[0]
+[0]
+[0]
+[0]
+[2, 0]
+[3, 3, 2, 3, 0]
+[1, 2, 0]
+[2, 3, 2, 1, 2, 1, 0, 3, 2, 3]
+[2, 3, 3, 0]
+[0]
+[0]
+...
+
+RandomProvider_listsWithElement_i map 10
+249571: [0]
+41857: [0, 2]
+41798: [3, 0]
+41752: [2, 0]
+41627: [0, 3]
+41496: [0, 1]
+41418: [1, 0]
+7145: [2, 2, 0]
+7142: [1, 2, 0]
+7079: [2, 0, 2]
+
+RandomProvider_listsWithElement_ii list 21
+[2, 2, 2, 2, -5, 2]
+[3, 2, 2, 3, -5]
+[3, 2, -5, 1, 3, 1]
+[2, 1, -5, 3, 3, 3]
+[2, 1, 3, -5, 1]
+[1, -5, 1]
+[2, 2, 1, -5, 2, 3, 2, 3, 2, 3, 2]
+[-5, 2]
+[2, 3, 3, 1, 1, 3, -5]
+[-5]
+[3, 2, 3, 1, 3, 3, 3, 1, -5, 2, 3, 2, 3]
+[-5, 3]
+[1, -5, 1, 1, 1]
+[3, 3, 1, 1, 3, -5, 1]
+[-5, 3]
+[-5, 1, 3, 2, 2]
+[-5, 3, 2, 3, 1]
+[3, -5, 3, 1, 2, 1, 1, 2, 2, 1]
+[1, 2, -5]
+[-5]
+...
+
+RandomProvider_listsWithElement_ii map 10
+111111: [-5]
+24723: [-5, 2]
+24630: [-5, 3]
+24513: [3, -5]
+24494: [-5, 1]
+24481: [1, -5]
+24476: [2, -5]
+5614: [1, -5, 3]
+5606: [-5, 3, 2]
+5589: [-5, 2, 2]
+
+RandomProvider_listsWithElement_iii list 21
+[3, 2, 3, 1, 3, 3, 3, 2, 3, 3, 1, 2, 1, 3, 3, 1, 1, 3, 1, 1, 3, 1, 1, 3, 3, 2, 1, 2, 2, 1, 3, 3, 2, 3, 3, 2, 3, 1, 2, 3, 2, 3, 2, 3, 2, 1, 2, 1, 2, 3, 3, 2, 3, null, 3, 3, 2, 3, 3]
+[3, 1, 3, 2, 1, 1, 3, 3, 2, 1, 1, 1, 1, 3, 3, 2, 3, 3, 1, 3, 3, 1, 1, 3, 3, 1, 1, 1, 2, 1, 3, 1, null, 3, 1, 2, 1, 1, 2, 2, 1, 3, 3, 1, 1, 2, 1, 1]
+[1, 1, 1, 3, 2, 3, 1, 1, null, 3, 2]
+[2, 3, 3, null, 3]
+[1, 1, 3, 2, 2, 3, 1, 2, 2, 2, 1, 1, 2, 3, 2, 3, 3, 1, 1, 1, 1, 1, null, 3, 3, 1, 3, 3]
+[3, 3, 2, 3, 3, 2, 1, 3, 2, 2, null, 2, 2, 2, 3, 2, 2, 2, 3, 3, 3, 2, 3, 3, 1, 2, 1, 1, 2, 1, 1, 3, 3, 1, 3, 2, 1, 3, 2, 1, 3, 1, 3, 3, 2, 2, 1, 1, 1, 2, 2, 1, 3, 2, 1, 1, 3, 2]
+[null, 1, 1, 1, 3, 2, 2, 1, 2, 2, 1, 3, 3, 3]
+[3, 2, 2, 3, 2, 3, 3, 3, 2, 2, 3, null, 2, 2, 2, 3, 2, 1, 3, 3, 2]
+[3, null]
+[3, 3, 2, 1, 3, 1, 2, 3, 1, 1, 2, 3, 2, 3, 2, 3, 1, 1, 1, 3, 2, 1, 2, 3, 3, 2, 1, null, 3]
+[1, 3, 2, 3, 3, null, 2, 3, 2, 3, 2, 1, 1, 3, 1, 2, 3, 1]
+[2, 1, 2, 1, 1, 3, 1, 2, 2, 1, 1, 1, 1, 2, 3, 2, 3, 1, 2, 3, 2, 2, 3, 3, 2, 3, 2, 1, 3, 2, 1, 2, 1, 2, 1, 3, 2, 3, 3, 3, 1, null, 2, 1, 2, 1]
+[2, 1, null, 1]
+[1, 1, 3, 1, 3, 3, 2, 3, 2, 1, 3, 2, 1, 1, 3, 1, 2, 1, 1, 1, 2, 1, 3, 2, 3, 2, 2, 1, 2, 1, 1, 3, 2, 3, 1, 3, null, 1, 3, 1, 1, 2]
+[1, 3, 1, null, 1, 1, 3, 1, 2, 1, 2, 2, 1, 3, 3, 2, 3, 2, 3, 3, 2, 2, 1, 2, 2, 1, 3, 3, 3, 3, 2, 1, 2, 3]
+[null, 3, 3, 1, 2, 2, 3, 3, 2, 1, 3, 3, 2, 1, 2, 1, 1, 1, 3, 2, 3, 2, 3, 1, 1, 1, 2, 2, 3]
+[2, 3, 2, 3, 3, 3, 2, 2, 2, 1, 2, 1, 2, null, 1, 1, 3, 3, 1, 3, 3, 2, 2, 3, 2]
+[2, 1, 1, null, 2, 2, 2, 1, 3, 1, 3, 1, 2]
+[3, 1, 3, 2, 1, 2, 1, 1, 2, 2, 2, 2, 3, 1, 3, 3, 3, 1, 2, 3, 3, 2, 2, 2, 3, 2, 2, 2, 3, 2, null, 3, 1, 2, 2, 3, 1, 2, 3, 2, 3, 2, 3, 3, 1, 1, 2, 2, 1, 3, 2, 3, 2, 1, 2, 3, 3, 3, 1]
+[1, 2, 3, 1, 2, 2, 3, 2, 3, 3, 2, 3, 2, 2, 1, 1, 2, null, 2, 1, 2, 3, 3, 2, 1, 2, 3, 3, 3, 3, 3, 1, 2, 3, 1, 1, 2, 1, 1, 1, 1, 1, 3, 1, 1, 3, 1, 1, 1]
+...
+
+RandomProvider_listsWithElement_iii map 10
+3618: [null]
+1196: [null, 3]
+1193: [2, null]
+1172: [null, 1]
+1168: [3, null]
+1135: [1, null]
+1089: [null, 2]
+412: [null, 1, 1]
+391: [null, 2, 2]
+390: [null, 3, 1]
+
+RandomProvider_listsWithElement_iv list 21
+[null, 1, null, 0, null, null, 3, null, 3, 1, 3, null]
+[1, 3, 0, 3, null]
+[0]
+[1, 3, 0, null]
+[0]
+[3, 0, 1, 3]
+[3, 0, 3]
+[0, 3]
+[0]
+[0]
+[0]
+[0]
+[0]
+[null, 0]
+[3, 3, null, 3, 0]
+[1, null, 0]
+[null, 3, null, 1, null, 1, 0, 3, null, 3]
+[null, 3, 3, 0]
+[0]
+[0]
+...
+
+RandomProvider_listsWithElement_iv map 10
+249571: [0]
+41857: [0, null]
+41798: [3, 0]
+41752: [null, 0]
+41627: [0, 3]
+41496: [0, 1]
+41418: [1, 0]
+7145: [null, null, 0]
+7142: [1, null, 0]
+7079: [null, 0, null]
+
+RandomProvider_listsWithElement_v list 21
+[null, null, null, null, -5, null]
+[3, null, null, 3, -5]
+[3, null, -5, 1, 3, 1]
+[null, 1, -5, 3, 3, 3]
+[null, 1, 3, -5, 1]
+[1, -5, 1]
+[null, null, 1, -5, null, 3, null, 3, null, 3, null]
+[-5, null]
+[null, 3, 3, 1, 1, 3, -5]
+[-5]
+[3, null, 3, 1, 3, 3, 3, 1, -5, null, 3, null, 3]
+[-5, 3]
+[1, -5, 1, 1, 1]
+[3, 3, 1, 1, 3, -5, 1]
+[-5, 3]
+[-5, 1, 3, null, null]
+[-5, 3, null, 3, 1]
+[3, -5, 3, 1, null, 1, 1, null, null, 1]
+[1, null, -5]
+[-5]
+...
+
+RandomProvider_listsWithElement_v map 10
+111111: [-5]
+24723: [-5, null]
+24630: [-5, 3]
+24513: [3, -5]
+24494: [-5, 1]
+24481: [1, -5]
+24476: [null, -5]
+5614: [1, -5, 3]
+5606: [-5, 3, null]
+5589: [-5, null, null]
+
+RandomProvider_listsWithElement_vi list 21
+[3, 3, 1, 3, 3, 3, 3, 3, 1, 1, 3, 3, 1, 1, 3, 1, 1, 3, 1, 1, 3, 3, 1, 1, 3, 3, 3, 3, 3, 1, 3, 3, 3, 1, 1, 3, 3, 3, 1, 3, 3, 1, 1, 3, 1, 1, 1, 3, 3, 3, 3, 3, 3, null, 3, 1, 3, null, 1, 1, 3, 3, null, 1, 1, 1]
+[null, 3, 3, 3, null, 1, 1, 3, null, null, 1, 3, null, 3, null, 1]
+[3, 1, 1, 1, 1, 3, 3, 1, 1, 1, 1, 1, 3, 3, 3, 1, 3, null, 3, 1, 1, 3, null, 3, 1, null]
+[3, 3, 1, 1, 1, 3, 1, null, null, null, null, 1, 1, null, 3, null]
+[1, 1, 3, 1, 1, 3, null]
+[3, 3, 3, null, null, null, null, 3, null, null, null, 3, 3, 3, null, 3, 3, 1, null, 1, 1, null, 1, 1, 3, 3, 1, 3, null, 1, 3, null, 1, 3, 1, 3, 3, null, null, 1, 1, 1, null, null, 1, 3, null, 1, 1, 3, null, 1, 1, 1, 3, null, null, 1, null, null, 1]
+[1, 1, 1, 3, 1, 1, 3, 3, 3, 3, 3, 1, 3, 1, 3, 3, 3, 3, 3, 3, 3, 1, null, null, null, null, 3, null, 1, 3, 3, null]
+[3, null]
+[3, 3, 1, 3, 1, 3, 1, 1, 3, 3, 3, 1, 1, 1, 3, 1, 3, 3, 1, 1, 3, 3, 1, 3, 3, 1, 3, null, null, 3, null, 3, null, 1, 1, 3, 1, null, 3, 1, 1, null, 3]
+[1, 1, 1, 3, 1, 1, 1, 1, 1, 3, 3, 1, 3, 3, 3, 3, 1, 3, 1, 1, 1, 3, 3, 3, 3, 1, 3, 1, 3, 1, 1, 1, 3, 3, 1, 1, 1, null, 1]
+[1, 1, 3, 1, 3, 3, 3, 1, 3, 1, 1, 3, 1, 1, 1, 1, 1, 3, 3, 1, 1, 1, 3, 3, 1, 3, 3, 3, 3, 1, 3, 1, 1, 3, 1, 1, null, 1, 1, 3, 1, null, 1, null, null, 1, 3, 3, null, 3, null, 3, 3, null, null, 1, null, null, 1, 3, 3, 3, 3, null, 1, null, 3, 1, 1, 3, 3, null, null]
+[1, null, 3, 3, 1, null, null, 3, 3, null, 1, 3, 3, null, 1, null, 1, 1, 1, 3, null, 3, null, 3]
+[3, 3, 3, 3, 1, 1, 3, 1, 1, 3, 1, 1, 3, 3, 3, 1, 1, 1, 3, 1, 1, null, null, 1, 1, null, null, null, 3, 3, null, 1]
+[1, 3, 1, 3, 1, 1, 3, 3, 1, null, 3, 1, null, null, 3, 1, null, 3, null, 3, null, 3, 3, 1, 1, null, null, 1, 3, null, 3, null, 1, null, 3, 3, 3, 1, 1, 3, null, 1, 3, 3, 1, 1, 3, 1, 1, null, 3, 1, 1, null, 3, 1, null, null, 3, null, 3, 3, null, 3, null, null, 1, 1, null, 1, 3, 3]
+[3, 3, 3, 1, 1, 3, 3, 1, 3, 3, 3, 3, 3, 1, 3, 1, 1, 1, 1, 1, 1, 1, 3, 1, 1, 3, 1, 1, 1, 1, 3, 3, 1, 3, 1, 3, 3, 3, 1, 1, 1, 1, 3, 1, 3, 3, 3, 1, 3, 1, 3, 1, 1, 3, 3, 1, 1, null, null, null, 1]
+[1, 1, null, 1, null, null, 1, 1, null, 3, null, 1, null, null, 3, 1, 1, null, null, 3, 1, null, null]
+[1, 1, 1, null, 1, null, 3, 1, 1, null, 3, null, 1, null, 3, 3, 1, 3, 3, null, 1, 3, 3]
+[3, 1, 3, 1, 1, 3, 3, 1, 1, 1, 1, 1, 1, 1, 1, null, 3, null, 1]
+[1, 3, 3, 3, 1, 3, 1, 1, 1, null, 1, 3, 3, null, null]
+[1, 1, 3, 1, 3, 1, 1, 3, 3, 3, 1, 3, 1, 1, 3, 1, 1, 3, 3, 3, 3, 1, 1, 3, null, 3, 1, 3, 1, null, null, null, 3, 1, null, null, 1, null, null, 1, 1]
+...
+
+RandomProvider_listsWithElement_vi map 10
+3619: [null]
+1781: [1, null]
+1730: [3, null]
+1195: [null, null]
+1123: [null, 1]
+1122: [null, 3]
+844: [3, 3, null]
+837: [1, 1, null]
+804: [1, 3, null]
+782: [3, 1, null]
+
+RandomProvider_listsWithElement_vii list 21
+[2, 4, 1, 0, 2, 2, 2, 4, 2, 2, 1, 4, 2]
+[1, 2, 4, 0, 4]
+[4, 0, 2]
+[1, 2, 0, 2]
+[0]
+[4, 0, 2]
+[1, 0]
+[2, 0, 2]
+[0, 2]
+[0]
+[0]
+[0]
+[0]
+[0]
+[4, 0, 2, 4, 2]
+[2, 0]
+[2, 0, 1, 2]
+[0, 2, 4, 4, 2, 2, 1]
+[4, 2, 4, 2, 4, 0]
+[2, 0, 2, 2]
+...
+
+RandomProvider_listsWithElement_vii map 10
+249337: [0]
+62653: [2, 0]
+62593: [0, 2]
+31457: [1, 0]
+31319: [0, 4]
+31317: [0, 1]
+31097: [4, 0]
+15872: [2, 0, 2]
+15686: [0, 2, 2]
+15367: [2, 2, 0]
+
+RandomProvider_listsWithElement_viii list 21
+[2, 2, 4, 4, -5, 2, 2, 2]
+[4, 2, -5, 2, 4, 2]
+[-5, 1, 2, 4, 1, 2]
+[2, -5]
+[2, 4, 2, -5, 2, 1, 2, 2]
+[-5]
+[1, -5, 1]
+[2, 4, 2, -5]
+[2, 2, 4, 4, 4, 4, 2, -5, 4, 4, 4, 4]
+[4, -5, 2, 2, 4, 4, 2, 1, 1]
+[1, -5]
+[4, 2, 2, 4, 4, 2, 4, 4, -5]
+[2, 4, 4, -5, 2, 2, 2]
+[2, -5]
+[1, 2, -5, 1, 1]
+[-5, 2, 2, 1, 1, 2]
+[1, -5]
+[2, -5]
+[1, 2, 2, 2, -5]
+[2, 2, 2, 1, -5, 2]
+...
+
+RandomProvider_listsWithElement_viii map 10
+111075: [-5]
+36857: [-5, 2]
+36751: [2, -5]
+18603: [-5, 4]
+18543: [1, -5]
+18329: [4, -5]
+18312: [-5, 1]
+12568: [-5, 2, 2]
+12426: [2, 2, -5]
+12267: [2, -5, 2]
+
+RandomProvider_listsWithElement_ix list 21
+[4, 4, 2, 2, 4, 2, 1, 2, 4, 2, 2, 2, 2, 2, 1, 2, 1, 2, 2, 1, 1, 2, 1, 1, 2, 1, 1, 2, 4, 2, 4, 4, 4, 2, 1, 2, 4, 2, 4, 1, 2, 2, 2, 2, 2, 4, 2, 2, 1, 2, 2, 4, 4, null, 2, 2, 2, 4, 2, 2, 4, 4, 4, 2, 2, 2, 1, 4, 2, 2]
+[2, 1, 2, 4, 2, 4, 1, 1, 2, 4, 2, 4, 2, 1, 1, 1, 1, 4, 2, 4, 4, 2, null, 2, 2, 2, 2, 1, 1, 2, 2, 2, 1, 2, 2, 2]
+[2, 1, 2, 1, 1, 2, 4, 2, 1, 2, 4, 2, 1, 1, 4, 2, 1, 1, 1, null, 2, 1, 4, 4, 1, 2, 2, 2, 4, 4]
+[null, 2, 4]
+[1, 4, 4, 4, 4, 4, 1, 4, 2, 2, 2, 4, 2, 1, 2, 2, 4, 2, 1, 1, 4, null, 4, 1, 1, 4, 2, 1, 4]
+[2, 4, 2, null]
+[2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, null, 2, 4, 2, 2, 2, 2, 2, 2, 2, 2, 2, 4, 2, 2, 4, 2, 1, 2, 1, 1, 2, 1, 1, 2, 2, 1, 2, 2, 4, 1, 2, 2, 1, 2, 1, 2, 2, 2, 4, 4, 2, 1, 1, 1, 2, 2]
+[4, 1, 4, 2, null, 1, 1, 4, 1, 2, 4, 2, 2, 4, 4, 1, 2, 2, 1, 4]
+[2, 2, 2, 2, 2, 2, 4, 2, 2, 4, 2, 4, 2, 2, null, 2, 4, 2, 2, 2, 4, 2, 1, 2]
+[2, 1, 2, null, 2, 2, 2, 1, 2, 2, 1, 1, 2, 2, 2, 2, 1, 2, 2, 1, 4, 1, 2, 2, 2, 1, 2, 2, 4, 4, 2, 2, 2, 2, 4]
+[null, 2, 2, 4, 1, 1, 4, 4, 1, 1, 4, 2, 2, 2, 2, 1, 4, 4, 2, 2, 2, 4, 2, 2, 2, 4, 2, 4, 2, 2, 1, 2, 2, 1, 4, 2, 1]
+[4, 2, 4, 4, 1, 2, 1, 2, 2, 1, 4, 2, 1, 2, null, 4]
+[1, 1, 2, 1, 2, 4, 2, 2, 2, 2, 1, 2, 4, 2, 1, 4, 1, 4, 2, 4, 1, 2, 1, 1, 1, 2, 1, 2, 2, 2, 2, 4, 2, 1, 2, 1, 1, null, 1, 2, 4, 1, 1, 4, 2, 4]
+[1, 4, null, 4, 4, 1, 1, 2, 1, 2, 1, 2, 2, 4, 4, 1, 2, 2, 2, 2, 2, 2, 2, 2, 4, 4, 2, 4, 1, 4, 4, 2, 2, 4]
+[1, 2, 2, 2, 4, 4, 2, 2, 1, 1, 1, 2, null, 2, 2, 1, 2, 2, 2, 2, 2, 4, 4, 1, 2, 2, 2, 1, 2, 4, 1, 4, 4]
+[null, 2, 4, 2, 2, 2, 4, 4, 4, 2, 2, 2, 2]
+[1, 4, 4, 4, 1, 4, 4, 2, 4, 2, 4, 1, 2, 2, 2, 2, 2, 2, 1, 2, 2, 1, 2, 1, 1, 4, 2, 2, 2, 2, 2, 2, 4, null, 4, 2, 4, 4, 2, 2]
+[2, 1, 4, 2, 2, 1, null, 4, 2, 1, 2, 2, 2, 1, 4, 2, 2, 2, 2, 2, 2, 2, 1, 4, 4, 1, 2, 2, 1, 4, 2, 4, 2, 4, 2, 2, 1, 2, 2, 2, 2, 4, 1, 1, 2, 2, 4, 1, 2, 4, 2, 1, 4, 1, 2, 1, 1, 2, 2, 4, 1, 1, 4, 2, 2, 4, 1, 2, 2]
+[2, 1, 2, 2, 2, 4, 2, 2, 4, 2, 1, 2, 1, 1, 2, null, 2, 1, 2, 2, 2, 2, 1, 2, 4, 2, 4, 2, 4, 2, 2, 4, 2, 4, 1, 4, 2, 2, 1, 4, 1, 2, 4]
+[4, null]
+...
+
+RandomProvider_listsWithElement_ix map 10
+3631: [null]
+1732: [null, 2]
+1688: [2, null]
+873: [2, null, 2]
+852: [4, null]
+849: [null, 1]
+843: [1, null]
+824: [null, 4]
+805: [2, 2, null]
+764: [null, 2, 2]
+
+RandomProvider_listsWithElement_x list 21
+[3, 10, 7, 0, 5]
+[0, 10, 1]
+[0, 3]
+[7, 0]
+[5, 0, 3]
+[0]
+[0]
+[0]
+[0]
+[5, 0, 9, 15, 6, 12]
+[4, 0]
+[0]
+[0]
+[0]
+[8, 9, 0]
+[0]
+[0, 2, 6, 2, 5]
+[0]
+[3, 0]
+[0]
+...
+
+RandomProvider_listsWithElement_x map 10
+250126: [0]
+31309: [1, 0]
+31288: [0, 1]
+23468: [2, 0]
+23259: [0, 2]
+17630: [0, 3]
+17611: [3, 0]
+13170: [4, 0]
+13054: [0, 4]
+9983: [5, 0]
+
+RandomProvider_listsWithElement_xi list 21
+[10, 7, 7, 4, -5, 1, 3, 3, 2, 7]
+[2, 3, 1, 2, 1, 2, -5]
+[5, 9, 15, -5, 12]
+[1, 2, 1, -5]
+[9, 4, 7, 6, 2, 5, 1, 6, -5]
+[-5]
+[3, 1, 5, 1, 1, -5, 2]
+[1, 4, 5, 4, -5, 12]
+[2, -5]
+[4, 1, -5, 1]
+[-5, 2, 1, 3, 1, 5]
+[-5, 3]
+[5, 4, 4, -5, 7, 4, 1, 6, 7]
+[1, 10, 1, -5]
+[-5]
+[-5, 2]
+[4, 13, -5, 10, 3, 1, 4, 19, 5]
+[6, 2, 4, 1, 22, 17, -5, 1]
+[1, -5, 4, 3]
+[7, -5]
+...
+
+RandomProvider_listsWithElement_xi map 10
+110706: [-5]
+18421: [1, -5]
+18318: [-5, 1]
+13979: [-5, 2]
+13741: [2, -5]
+10447: [-5, 3]
+10342: [3, -5]
+7772: [4, -5]
+7707: [-5, 4]
+5977: [5, -5]
+
+RandomProvider_listsWithElement_xii list 21
+[7, 8, 2, 3, 1, 2, 1, 2, 1, 8, 5, 9, 15, 6, 12, 6, 1, 2, 1, 1, 13, 9, 4, 7, 6, 2, 5, 1, 6, 1, 1, 1, 10, 3, 1, 5, 1, 1, 4, 2, 5, 1, 4, 5, 4, 2, 12, 2, 2, 1, 4, 4, 1, null]
+[1, 3, 1, 5, 1, 2, 3, 6, null, 4, 9]
+[1, 6, 7, 5, 1, 10, 1, 1, 1, 2, null, 4, 13, 7, 10, 3]
+[17, 2, 1, 2, 1, 3, 4, 3, 2, 7, 1, 1, 3, 4, 2, 4, 1, 1, 4, 3, 2, 1, 1, 19, 1, 1, 2, 7, 3, 14, 2, 20, 4, 1, 2, 5, 2, 8, 5, 2, 7, 3, 4, 13, 1, 4, 3, 7, 2, 7, 1, 1, 6, 5, 2, 4, 4, 3, 1, 5, 3, 2, 4, 10, 8, 1, 2, 6, 2, 5, null, 4, 1, 3, 1, 6, 15, 3, 3, 2, 6, 4, 3, 5, 2, 3, 3, 2, 4, 2, 6, 11, 2, 18, 1]
+[2, 7, 2, 1, 6, 9, 3, 1, 3, 1, 6, 1, 4, 5, 6, 6, 1, 1, 3, 2, 10, 2, 7, null, 3, 1, 2, 2, 5, 13, 6, 8, 4]
+[1, 1, 10, 4, 1, 5, 5, 1, null, 3, 8, 4, 3, 3, 1, 6, 2, 1]
+[15, 2, 4, 2, 3, 2, 10, 3, 2, 2, 1, 1, 4, 7, 7, 3, 2, null, 9, 2, 2, 2, 4, 2, 3, 1, 1]
+[4, 4, 2, 1, 7, 6, 15, 2, 2, 4, 4, 4, 1, 1, 7, 4, 6, 3, null, 3, 4, 9, 3, 3, 8]
+[1, 5, 17, 1, 2, 9, 2, 1, 2, 1, 2, 9, 5, 3, 8, 3, 15, 8, 2, 5, 12, 4, 2, null, 2, 1]
+[2, 8, 2, 4, 1, 4, 8, 2, 3, 2, 3, 5, 3, 4, 2, 3, 3, 2, 1, 1, 4, 3, null, 1, 4, 1, 5, 8, 2, 5, 7, 2, 2, 2, 10, 13, 6, 5, 3, 3, 4]
+[2, 3, null, 1, 1, 2, 1, 2, 2, 8, 1, 8, 1, 1, 7, 4, 2, 1, 3, 2, 8, 1, 7, 11, 6, 4, 3, 1]
+[3, 1, 8, 7, 3, null, 6]
+[1, 3, 11, 1, 2, 4, 2, 2, 8, 7, 4, null, 4, 2, 1, 3, 1, 3, 5, 1, 4, 2, 5, 3, 2, 5, 5, 3, 2, 1, 2]
+[8, 1, 1, 3, 6, 4, 13, 3, 8, 10, 3, 1, 2, 1, null, 6, 5, 9, 1, 8, 1]
+[7, 3, 12, 6, null, 1, 6, 6, 9, 6, 2, 10, 3, 2, 4, 3, 9, 2, 2, 3]
+[11, 2, 4, 7, 6, 1, 6, 3, 2, 2, 1, 2, 2, 1, 2, 1, 13, 2, 4, 5, 3, 1, 6, 1, 3, 14, 4, 1, null, 5, 4, 10, 5, 8, 17, 5, 1, 11, 1, 2, 4, 3, 1, 5, 7, 1]
+[4, 2, 6, 6, null, 2, 4, 4]
+[1, 6, 4, 1, 5, 3, null, 1, 5, 3, 3, 4, 2, 1, 16, 1, 4, 7, 4, 5, 4, 2, 5, 1, 2, 8, 2, 2, 8]
+[6, 8, 3, 2, 5, 12, 4, 2, 1, 2, 9, 6, 8, 2, 2, 3, 8, 1, 9, 4, 10, 2, 3, 1, 1, 6, 5, 6, 1, 2, 3, 11, 6, 4, 5, null]
+[1, 1, 5, 5, 1, 1, 1, 4, 6, 2, 1, 2, 8, 3, 9, 8, 8, null, 17, 1, 7, 2, 3, 7, 1]
+...
+
+RandomProvider_listsWithElement_xii map 10
+3674: [null]
+868: [1, null]
+845: [null, 1]
+682: [2, null]
+642: [null, 2]
+486: [3, null]
+478: [null, 3]
+386: [4, null]
+364: [null, 4]
+295: [5, null]
+
+RandomProvider_listsWithElement_xiii list 21
+[1, 1, 1, 0, 1, 1]
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1]
+[1, 1, 0]
+[1, 0, 1, 1, 1]
+[0]
+[1, 1, 0, 1, 1]
+[1, 1, 0]
+[1, 1, 0]
+[0, 1]
+[1, 0]
+[1, 0, 1, 1]
+[1, 1, 0]
+[0, 1]
+[0, 1]
+[0]
+[1, 0]
+[0]
+[0]
+[0]
+[0]
+...
+
+RandomProvider_listsWithElement_xiii map 10
+250050: [0]
+125653: [1, 0]
+124331: [0, 1]
+62471: [1, 1, 0]
+62445: [1, 0, 1]
+62377: [0, 1, 1]
+31539: [0, 1, 1, 1]
+31263: [1, 1, 0, 1]
+31206: [1, 0, 1, 1]
+31114: [1, 1, 1, 0]
+
+RandomProvider_listsWithElement_xiv list 21
+[1, 1, 1, 1, -5, 1, 1, 1, 1, 1]
+[1, 1, 1, 1, 1, -5, 1, 1, 1, 1]
+[1, 1, -5, 1, 1, 1, 1, 1]
+[-5, 1]
+[1, 1, -5, 1]
+[1, 1, 1, -5, 1, 1, 1, 1, 1, 1]
+[1, -5, 1, 1]
+[-5, 1]
+[-5, 1]
+[-5, 1, 1, 1]
+[1, 1, -5, 1, 1, 1, 1, 1, 1, 1]
+[1, 1, 1, 1, 1, 1, 1, -5, 1]
+[1, 1, 1, 1, 1, 1, 1, -5, 1, 1, 1]
+[-5, 1]
+[-5]
+[1, 1, 1, 1, 1, 1, 1, 1, -5, 1, 1, 1]
+[1, 1, 1, -5, 1, 1, 1, 1]
+[1, 1, 1, 1, -5, 1]
+[1, 1, -5]
+[1, 1, 1, -5]
+...
+
+RandomProvider_listsWithElement_xiv map 10
+111514: [-5]
+74118: [-5, 1]
+73884: [1, -5]
+49434: [-5, 1, 1]
+49139: [1, 1, -5]
+49064: [1, -5, 1]
+32992: [1, 1, 1, -5]
+32987: [1, -5, 1, 1]
+32911: [1, 1, -5, 1]
+32654: [-5, 1, 1, 1]
+
+RandomProvider_listsWithElement_xv list 21
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, null, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, null, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+[1, null, 1, 1, 1, 1, 1, 1]
+[1, null, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, null, 1]
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, null, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+[1, 1, 1, 1, null, 1, 1, 1, 1, 1]
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, null, 1, 1, 1, 1, 1, 1, 1, 1]
+[1, 1, 1, 1, null, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+[1, 1, 1, 1, 1, null, 1]
+[1, 1, 1, null, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, null, 1, 1]
+[1, 1, 1, 1, 1, 1, 1, 1, 1, null, 1, 1, 1, 1]
+[1, 1, 1, 1, 1, 1, 1, null, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, null, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, null, 1]
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, null, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+[1, 1, 1, 1, 1, 1, null, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, null, 1, 1]
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, null, 1, 1, 1]
+...
+
+RandomProvider_listsWithElement_xv map 10
+3569: [null]
+3438: [1, null]
+3407: [null, 1]
+3282: [1, null, 1]
+3212: [null, 1, 1]
+3188: [1, 1, null]
+3044: [1, null, 1, 1]
+3024: [1, 1, 1, null]
+2998: [null, 1, 1, 1]
+2972: [1, 1, null, 1]
+
+RandomProvider_stringsWithChar_char_String_i list 21
+dadbbbcdbc
+bb
+acbdd
+bcd
+ab
+cb
+dbb
+ab
+cbc
+bc
+b
+b
+b
+b
+b
+dbbdb
+cb
+cbab
+bbddcba
+ddcdcbb
+...
+
+RandomProvider_stringsWithChar_char_String_i map 10
+249549: b
+42139: db
+41763: cb
+41712: ab
+31351: ba
+31320: bb
+31249: bc
+30856: bd
+7056: cab
+7016: acb
+
+RandomProvider_stringsWithChar_char_String_ii list 21
+bbdd#bbc
+dc#cdb
+#acdab
+b#
+cdc#bacc
+#
+a#a
+bdb#
+bcddddb#dddd
+d#bcddcaa
+a#
+dcbddcdd#
+bdd#bcb
+c#
+ac#aa
+#ccaac
+a#
+c#
+acbb#
+cbca#c
+...
+
+RandomProvider_stringsWithChar_char_String_ii map 10
+111075: #
+18603: #d
+18543: a#
+18469: #b
+18429: b#
+18388: #c
+18329: d#
+18322: c#
+18312: #a
+3248: #bb
+
+RandomProvider_stringsWithChar_char_String_iii list 21 q
+'ddcbdcacdccbccabaccaacaacaacdcdddbabdbdaccbccdbcabcdd ccbdccdddccbadcb'
+'cacdbdaacdcdbaaaadcddc cccbaacbbacbc'
+'cabaabdbacdcaadbaaa caddacbcdd'
+' cd'
+'adddddadcbbdcabbdbaad daadcad'
+'cdc '
+'ccbccbacbbcb bdbbcbbbcccdbcdcabaabaaccacbdacbacaccbddbaaabb'
+'dadc aadacdbbddabbad'
+'cbbcbcdccdbdbc bdbbcdbac'
+'cab cbcacbaacbccacbadabcbacbddbcbbd'
+' bbdaaddaadbcbcaddbcbdbccdbdcbacbadba'
+'dbddabaccadbab d'
+'aacacdcbcbacdbadadcdabaaabacbcbdbabaa acdaadbd'
+'ad ddaacababbddaccbcbccbddbdaddbbd'
+'accbddbcaaab ccabbccbddaccbabdadd'
+' bdcbcdddccbb'
+'adddaddcdcdaccbbcbabcabaadbbbccbd dbddbb'
+'badcca dcabbcadbcbcbccaddabbadcdbdcbabcccdaacbdacdcadacaabcdaadbcdabb'
+'baccbdbbdcacaac babccbabdcdcdccdcdadbcadabd'
+'d '
+'...'
+
+RandomProvider_stringsWithChar_char_String_iii map 10 q
+3631: ' '
+880: ' b'
+858: 'b '
+852: ' c'
+852: 'd '
+849: ' a'
+843: 'a '
+830: 'c '
+824: ' d'
+229: ' dd'
+
+RandomProvider_stringsWithChar_char_String_iv list 21
+aaabaaaaaaaaa
+aaaba
+aba
+aaba
+b
+aba
+ab
+aba
+ba
+b
+b
+b
+b
+b
+abaaa
+ab
+abaa
+baaaaaa
+aaaaab
+abaa
+...
+
+RandomProvider_stringsWithChar_char_String_iv map 10
+249337: b
+125229: ba
+125207: ab
+62633: baa
+62599: aba
+62095: aab
+31559: aaab
+31254: baaa
+31075: aaba
+31033: abaa
+
+RandomProvider_stringsWithChar_char_String_v list 21
+aaaa#aaa
+aa#aaa
+#aaaaa
+a#
+aaa#aaaa
+#
+a#a
+aaa#
+aaaaaaa#aaaa
+a#aaaaaaa
+a#
+aaaaaaaa#
+aaa#aaa
+a#
+aa#aa
+#aaaaa
+a#
+a#
+aaaa#
+aaaa#a
+...
+
+RandomProvider_stringsWithChar_char_String_v map 10
+111075: #
+73772: #a
+73623: a#
+49634: aa#
+49416: #aa
+49351: a#a
+32949: a#aa
+32912: #aaa
+32899: aaa#
+32804: aa#a
+
+RandomProvider_stringsWithChar_char_String_vi list 21 q
+'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaa'
+'aaaaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaa'
+'aaaaaaaaaaaaaaaaaaa aaaaaaaaaa'
+' aa'
+'aaaaaaaaaaaaaaaaaaaaa aaaaaaa'
+'aaa '
+'aaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
+'aaaa aaaaaaaaaaaaaaa'
+'aaaaaaaaaaaaaa aaaaaaaaa'
+'aaa aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
+' aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
+'aaaaaaaaaaaaaa a'
+'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa aaaaaaaa'
+'aa aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
+'aaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaa'
+' aaaaaaaaaaaa'
+'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa aaaaaa'
+'aaaaaa aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
+'aaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaaaaaaaaa'
+'a '
+'...'
+
+RandomProvider_stringsWithChar_char_String_vi map 10 q
+3631: ' '
+3405: ' a'
+3383: 'a '
+3275: 'a a'
+3201: 'aa '
+3143: ' aa'
+3107: 'aaa '
+3030: 'a aa'
+3018: 'aa a'
+2965: 'aaa a'
+
+RandomProvider_stringsWithChar_char_String_vii list 21
+spsbsisisssi
+isb
+isbs
+b
+sbs
+sbi
+ib
+ib
+b
+b
+b
+b
+bs
+pssb
+sbMs
+bssspis
+isbs
+psbip
+b
+b
+...
+
+RandomProvider_stringsWithChar_char_String_vii map 10
+249684: b
+45808: bs
+45691: sb
+45560: ib
+45265: bi
+22818: pb
+22593: bp
+11495: Mb
+11394: bM
+8360: bii
+
+RandomProvider_stringsWithChar_char_String_viii list 21
+ssii#si
+ssi#i
+issss#
+s#sss
+iMpi#
+#p
+pss#ssssss
+isii#psiiip
+i#
+siisisis#
+iisM#i
+i#MMs
+ssps#i
+s#
+spis#psp
+i#Miiiis
+#is
+#
+#sMpip
+#MsM
+...
+
+RandomProvider_stringsWithChar_char_String_viii map 10
+111441: #
+26925: #i
+26908: s#
+26892: #s
+26543: i#
+13406: p#
+13247: #p
+6776: #M
+6711: M#
+6630: #is
+
+RandomProvider_stringsWithChar_char_String_ix list 21 q
+'sisssssisipiMpippipsssiMpsssispsMssssssssssspisiisiss spiss'
+'sMisiiisiMMssssssssspsisispsMiip MiiiispspisM'
+'pipMisss s'
+' spssi'
+'iiiipsssiMip issMiisMsiM'
+'sssspispsssi iipsspsissisisMipMpissiiMspispiiMMiipiiiMsis'
+'pp psisiisppiii'
+'pssiiispsssiss siississp'
+'M isipMpssissipssMpssiMiiipssppps'
+'spspsMssiipisisispipisssspissisiippssssssiisMsis s'
+'s i'
+'iiispsiiispiMipsiisiMsiisiisssipiiMMs pipppMspsisiisMispssiipspiMisisMpiiisi'
+'ssMsspisispissMpsisspipiisisiipip '
+'iisiisspispsiiisMipiipsiiippppsiiMiiispiMipss ispiMiissisMiMsiiisppsispisiiispippiiMMssiiiisispMsMsspipisppps'
+'ssssiMiMssiMiiiissspispiiMMMsiiipippiipi isspp'
+'isMisiisispipisisMpMs '
+'iispsissspiiisssii '
+'ispsissiipspisipspisssipspsiispp sM'
+'iisMisiMpMipMiisMsisiisipsssipMipspi Mssiipsip'
+'psipssMsspippspssMss ips'
+'...'
+
+RandomProvider_stringsWithChar_char_String_ix map 10 q
+3670: ' '
+1285: ' i'
+1285: 's '
+1282: ' s'
+1232: 'i '
+596: 'p '
+588: ' p'
+458: 's i'
+455: 'si '
+453: 'i s'
+
+RandomProvider_stringsWithChar_char_i list 21
+\u03b5\u42bf\u2538b\udd15\ubab1\ufca6\u4bcf\u03e1\u7f56\u19dc\u523f\u313e
+\u1b1c\u212a\u3d4fb\u3a77
+\u7eabb\u4772
+\u5764\u7416b\uea45
+b
+\u2b63b\u9e05
+\uee1cb
+\u117ab\u41fa
+b\u358a
+b
+b
+b
+b
+b
+\uff03b\u5c29\uad7f\uecf5
+\ue8b2b
+\u47c6b\u3b60\u7035
+b\uca85\u53f3\u498b\u2832\ufb59\ube5c
+\ud643\ufa51\ubab7\u08a6\ufdd7b
+\u0c55b\u58d9\udd82
+...
+
+RandomProvider_stringsWithChar_char_i map 10
+248975: b
+10: b\u0c18
+10: b\u3b50
+10: b\u8168
+10: \u3d43b
+10: \u55bdb
+10: \u570db
+10: \u8d8db
+10: \u937bb
+9: b\u18af
+
+RandomProvider_stringsWithChar_char_ii list 21
+\u31e5\u9afd\u80a3\uf6ff#\udd15\ubab1\ufca6
+\u523f\u313e#\u212a\u3d4f\ua3f9
+#\u5764\u7416\u2a43\ud24c\uea45
+\u9925#
+\u33b2\u9153\uce86#\ue9fd\u2aec\u358a\uc9ce
+#
+\u4c78#\uf878
+\u5c29\uad7f\uecf5#
+\u7035\ucee6\u5213\u55cf\u3353\ue2d3\ud805#\u4aef\u564b\uf36f\ua33b
+\ud643#\u58d9\udd82\ud52b\u9f27\u061a\u2e94\u7a68
+\u4954#
+\uabc3\u615a\ucd1d\u0e77\uf36bB\u3f7f\u2a57#
+\u337d\u840b\u0d5b#\ucaa1\u8a6a\uc01d
+\u99c6#
+\u69d4\u6a2a#\u6e00\u40fc
+#\u15f6\u1ad6\u4ec8\ub9cc\u1452
+\ud24c#
+\u2506#
+\u3c9c\ue852\u0689\u04b1#
+\u10ee\u53d9\u7e72\uefc8#\u453e
+...
+
+RandomProvider_stringsWithChar_char_ii map 10
+111130: #
+7: #\u0221
+7: #\u0817
+7: #\u0978
+7: #\u1d7b
+7: #\uff6b
+7: \u02d9#
+7: \u4bdf#
+7: \u58fc#
+7: \u9f49#
+
+RandomProvider_stringsWithChar_char_iii list 21 q
+'\u2b63\uf637\u9e02\u9e05\u8bef\u8f2e\uee1c\u33b2\u9153\uce86\u117a\ub43d\u7156\u41fa\u1918\ue9fd\u2aec\u358a\uc9ce\uaaf0\u5168\u899a\ub3d8\u4c78\u28de\u2e24\uf878\u122e\u0713\u9112\uff03\ub76f\ue5cb\ua7b1\uf9b0\u5c29\uad7f\uecf5\uaabb\u759c\ue8b2\ube6e\ube45\ue2da\u47c6\ue78f\u3c49\u6ce6\u3b60\u7035\ucee6\u5213\u55cf \u7ce6\u55ee\uf329\ufee7\udd42\u4782\u93bf\u9433\u9c2b\ubb06\u9892\u9339\u7778\uabc3\u615a\ucd1d'
+'\u99c6\ud250\u5eba\u2293\ued0d\u4d3b\ua3a4\u69d4\u6a2a\u976f\u0922\u0dd7\u0b7d\u88ac\u6e00\u40fc\u5300\ub09b\ub746\ufc53\u374f\u1bd6 \u037a\u124e\uaaaa\u0a49\u482c\u3c9c\ue852\u0689\u04b1\ue28c\u8452\u0dbd\u021e'
+'\uab6e\u4740\u3951\u2e64\ub144\ubbf1\uc82f\u4045\u5058\u6ede\ue89b\u1592\u3fd8\u71d4\ua3bf\u8db5\ua47c\ub500\u3674 \uccee\u965c\u960f\u9853\u2320\uc4ce\u72d9\uc7d2\u356f\ub697'
+' \u65de\u2613'
+'\uc8f4\u0d47\u368f\u5e07\ud02f\uebc7\u6678\u728b\u9216\ua925\ucfd5\u0f1b\u2eea\uf800\u14d1\u6fd9\u4897\u7781\ud4f0\u8be8\uac07 \u688f\u2684\ue40c\u2b83\u8446\u0430\ud317'
+'\ub5e2\u64bb\ubd6a '
+'\u6fc6\uc5f6\u4a75\u18de\ud992\u2f79\u6ed4\u83c6\ufe0d\u7829\udad6\u660d \ud5d1\u420f\ub2c1\ue649\u1782\u59d5\u1069\u2f0d\ub4c2\u72da\ue672\u56e3\u4141\u60b2\u67a7\u1b56\u5070\u6461\u6cc8\u1a60\u3b4d\u2af8\uc6b4\u2026\u6876\ubf04\u127e\u1d9d\u7757\u3950\u5396\u5279\u1954\u3ef6\uf3a8\ucdae\u831e\ue531\uce57\u1cef\u073d\u98f0\ue480\ua6f4\u19b1\u1739'
+'\u3243\u4df4\u2a33\u4a3a \u7cd8\ufc5c\u22a3\u4404\uad72\ufc77\u3291\uf28d\uc993\uf27f\u4768\u96e9\uecb1\u1844\ude17'
+'\u8a3e\ua279\uaa4d\u85c6\ue34d\uf5a2\ub407\ud9aa\u648a\ud673\u50f9\u2673\ud705\udee2 \u750d\ubba3\u6c11\u7691\u291e\u79f3\u02b5\uc184\ud346'
+'\u6ece\u25a0\u7211 \u431a\ufe3d\ucda2\ud6c4\ua72e\u5369\u9cf0\u9618\u7ec6\ue9d5\ude3a\u663e\u93cc\u34c6\uac2d\uda6c\u13b3\ua9f4\uc259\u5602\uf6a5\u4710\u798e\u0529K\ucb0b\u58f5\ue61e\ucd55\u1d91\uf04f'
+' \uc505\u6f75\uaca7\u0f24\u3eb8\u5247\u7a63\ud074\u471c\uac53\u7ee1\u7f02\u6549\u52ea\ue498\u6eaf7\uc775\u13f2\u3965\u3583\u3069\uce2a\ud1e2\u3d2f\u1685\u1deb\u9f5e\u6741\u9c7c\u6b0e\u4315\ub814\ud68b\u8451\u438c'
+'\ue59b\uf945\ufdaf\uddd7\u305c\uff35\u10dc\ue266\u8012\ub380\u2153\uf7cd\ua730\u8015 \ud847'
+'\u6a8c\u88e4\u3ede\u693c\u618a\u2d0b\u21ba\uec15\u6aae\u6ed9\u0cec\u5df6\uba1b\u3eb1\udbf4\u881b\u738c\u759f\u149a\u2d13\u2818\u2b5d\ud85c\u2c84\ub900\u0361\ua6b8\u748e\u794d\u5fe2\u17cd\uddcf\u6e91\u9cb4\u11e5\u3314\ufb80 \ufc00\u2572\ueea7\u4cf0\ubf34\u10a3\u8dc1\u6dab'
+'\uc194\u2fb7 \u55cf\ue7db\u699c\u15a8\u9bca\u2ac8\u9e2d\ue55c\ufe49\u8c59\u302b\u1a0b\u5940\ua08e\u60f6\u2669\u5592\u8c01\u1712\u08ca\uf1d1\u574f\u993b\u4315\ua2cb\u7930\ub617\u92b3\u9f2d\ue60d\u12ff'
+'\ufaf4\ua9e6\ud19e\uf7bd\uca77\uc90b\u98c5\u10ce\u9330\ufec8\ubcac\u0001 \u9e62\u1426\u76e0\u6445\u48f5\u66ce\ub62e\u68a9\ue387\u2513\u58bc\u148a\u3016\udae9\uf9fc\u306d\uaa0b\uf684\u6d13\u4603'
+' \u8bc9\u6c37\ue85a\u21a5\ud1e2\u9823\uec9b\ucb0b\u8d76\u7816\u651d\u68e9'
+'\u9154\ua4f7\u4163\u6777\ufda4\uf98f\u36f3\u7d2e\u6693\ub12e\u815b\u3278\u3b5a\u6ece\u1825\u4549\uf022\u6cf1\u8994\ubc01\uafb2\ua1c0\uea21\u9a18\u7ebc\u32c7\u0c81\uf05d\ucfd9\uef96\u633a\ue221\u6117 \u94df\u4661\u6f5b\uc17f\ud56d\uc081'
+'\u7971\ub248\u07bf\u63a2\u3dd6\u8f68 \u8aa7\ueb82\u988c\uf239\uc81d\u6efa\ueb60\ucc87\u6df1\u6ca2\u444d\uc366\u14a1\u58de\u6936\ue840\ue357\u1a5b\ue7e0\u2135\u504d\u009c\uc42f\u80da\u9517\ub8a1\u3b6f\u6f92\u9a59\u6c18\u47e5\u84ea\ucd1e\ue63e\uf8e3\u9b58\u4844\u9c46\u4991\uca2f\u0634\u105a\u746b\u92d2\ud5fc\ufb0f\u1d08\u4eea\u6f28\ud568\u4601\ua9ca\ucafb\ue3b0\u9e10\u94d3\uf155\udf3e\u2bdb\u1d34\ueae1\u437d'
+'\ub0e5\ud1d0\u2236\ud3b6\u07d9\ud1af\u7ab1\u1fed\u79bb\u50fe\ub0f8\u0a7a\ue95c\u144c\u6356 \u77f1\ub570\u53d5\uf942\u6d6a\ub76d\ud0c0\u5af1\ub5cf\uba0a\ubabf\u87ea\u791f\u826e\u016a\u1063\u6c36\u6ee3\u3e38\ue367\udfed\ua532\u9d48\ua687\uc8ec\u4b0d\ua99f'
+'\uc78b '
+'...'
+
+RandomProvider_stringsWithChar_char_iii map 10 q
+3631: ' '
+3: ' \uc7ff'
+3: ' \uc967'
+3: '\u5572 '
+3: '\u62db '
+2: ' \u2f1e'
+2: '\u07cf '
+2: '\u586c '
+2: '\u8b38 '
+2: '\ub1c3 '

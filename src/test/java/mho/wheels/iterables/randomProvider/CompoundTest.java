@@ -2553,83 +2553,35 @@ public strictfp class CompoundTest {
         repeatingIterablesDistinctAtLeast_fail_helper(1, -1, P.positiveIntegers());
     }
 
-    private static void sublists_helper(
-            @NotNull String input,
-            @NotNull String output,
-            @NotNull String topSampleCount
-    ) {
+    private static void sublists_helper(@NotNull String input, @NotNull String output) {
         List<List<Integer>> sample = toList(take(DEFAULT_SAMPLE_SIZE, P.sublists(readIntegerListWithNulls(input))));
-        aeqitLimit(TINY_LIMIT, sample, output);
-        aeq(topSampleCount(DEFAULT_TOP_COUNT, sample), topSampleCount);
+        aeqitLimitLog(TINY_LIMIT, sample, output);
+        aeqMapLog(topSampleCount(DEFAULT_TOP_COUNT, sample), output);
         P.reset();
     }
 
     @Test
     public void testSublists() {
-        sublists_helper(
-                "[]",
-                "[[], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], ...]",
-                "{[]=1000000}"
-        );
-        sublists_helper(
-                "[1, 2, 3, 4]",
-                "[[2], [2, 3, 4], [], [], [], [4], [2], [1, 2], [], [2], [1, 2], [3], [3, 4], [1, 2, 3], [4], []," +
-                " [], [3, 4], [1], [2, 3, 4], ...]",
-                "{[]=332665, [4]=67092, [2, 3]=67014, [3, 4]=66993, [1, 2]=66874, [3]=66850, [1, 2, 3, 4]=66738," +
-                " [2]=66555, [1]=66531, [2, 3, 4]=66518}"
-        );
-        sublists_helper(
-                "[1, null, 3, 4]",
-                "[[null], [null, 3, 4], [], [], [], [4], [null], [1, null], [], [null], [1, null], [3], [3, 4]," +
-                " [1, null, 3], [4], [], [], [3, 4], [1], [null, 3, 4], ...]",
-                "{[]=332665, [4]=67092, [null, 3]=67014, [3, 4]=66993, [1, null]=66874, [3]=66850," +
-                " [1, null, 3, 4]=66738, [null]=66555, [1]=66531, [null, 3, 4]=66518}"
-        );
-        sublists_helper(
-                "[3, 1, 4, 1]",
-                "[[1], [1, 4, 1], [], [], [], [1], [1], [3, 1], [], [1], [3, 1], [4], [4, 1], [3, 1, 4], [1], []," +
-                " [], [4, 1], [3], [1, 4, 1], ...]",
-                "{[]=332665, [1]=133647, [1, 4]=67014, [4, 1]=66993, [3, 1]=66874, [4]=66850, [3, 1, 4, 1]=66738," +
-                " [3]=66531, [1, 4, 1]=66518, [3, 1, 4]=66170}"
-        );
-        sublists_helper(
-                "[1, 1, 1, 1]",
-                "[[1], [1, 1, 1], [], [], [], [1], [1], [1, 1], [], [1], [1, 1], [1], [1, 1], [1, 1, 1], [1], []," +
-                " [], [1, 1], [1], [1, 1, 1], ...]",
-                "{[]=332665, [1]=267028, [1, 1]=200881, [1, 1, 1]=132688, [1, 1, 1, 1]=66738}"
-        );
+        sublists_helper("[]", "RandomProvider_sublists_i");
+        sublists_helper("[1, 2, 3, 4]", "RandomProvider_sublists_ii");
+        sublists_helper("[1, null, 3, 4]", "RandomProvider_sublists_iii");
+        sublists_helper("[3, 1, 4, 1]", "RandomProvider_sublists_iv");
+        sublists_helper("[1, 1, 1, 1]", "RandomProvider_sublists_v");
     }
 
-    private static void substrings_helper(
-            @NotNull String input,
-            @NotNull String output,
-            @NotNull String topSampleCount
-    ) {
+    private static void substrings_helper(@NotNull String input, @NotNull String output) {
         List<String> sample = toList(take(DEFAULT_SAMPLE_SIZE, P.substrings(input)));
-        aeqitLimit(TINY_LIMIT, sample, output);
-        aeq(topSampleCount(DEFAULT_TOP_COUNT, sample), topSampleCount);
+        aeqitLimitLog(TINY_LIMIT, sample, output);
+        aeqMapLog(topSampleCount(DEFAULT_TOP_COUNT, sample), output);
         P.reset();
     }
 
     @Test
     public void testSubstrings() {
-        substrings_helper("", "[, , , , , , , , , , , , , , , , , , , , ...]", "{=1000000}");
-        substrings_helper(
-                "abcd",
-                "[b, bcd, , , , d, b, ab, , b, ab, c, cd, abc, d, , , cd, a, bcd, ...]",
-                "{=332665, d=67092, bc=67014, cd=66993, ab=66874, c=66850, abcd=66738, b=66555, a=66531, bcd=66518}"
-        );
-        substrings_helper(
-                "aaaa",
-                "[a, aaa, , , , a, a, aa, , a, aa, a, aa, aaa, a, , , aa, a, aaa, ...]",
-                "{=332665, a=267028, aa=200881, aaa=132688, aaaa=66738}"
-        );
-        substrings_helper(
-                "Mississippi",
-                "[issi, , si, ssis, , Mississipp, si, ssissippi, i, ssiss, is, is, pp, sippi, , Mis, ippi, sis, si," +
-                " ss, ...]",
-                "{=153654, s=51343, i=50882, ss=26001, is=25767, p=25756, si=25753, ssi=25718, iss=25591, issi=25454}"
-        );
+        substrings_helper("", "RandomProvider_substrings_i");
+        substrings_helper("abcd", "RandomProvider_substrings_ii");
+        substrings_helper("aaaa", "RandomProvider_substrings_iii");
+        substrings_helper("Mississippi", "RandomProvider_substrings_iv");
     }
 
     private static void listsWithElement_helper(
@@ -2637,12 +2589,11 @@ public strictfp class CompoundTest {
             @Nullable Integer x,
             @NotNull Iterable<Integer> input,
             @NotNull String output,
-            @NotNull String topSampleCount,
             double meanSize
     ) {
         List<List<Integer>> sample = toList(take(DEFAULT_SAMPLE_SIZE, P.withScale(scale).listsWithElement(x, input)));
-        aeqitLimit(TINY_LIMIT, sample, output);
-        aeq(topSampleCount(DEFAULT_TOP_COUNT, sample), topSampleCount);
+        aeqitLimitLog(TINY_LIMIT, sample, output);
+        aeqMapLog(topSampleCount(DEFAULT_TOP_COUNT, sample), output);
         aeq(meanOfIntegers(toList(map(List::size, sample))), meanSize);
         P.reset();
     }
@@ -2652,7 +2603,6 @@ public strictfp class CompoundTest {
             @Nullable Integer x,
             @NotNull String input,
             @NotNull String output,
-            @NotNull String topSampleCount,
             double meanSize
     ) {
         listsWithElement_helper(
@@ -2660,7 +2610,6 @@ public strictfp class CompoundTest {
                 x,
                 P.uniformSample(readIntegerListWithNulls(input)),
                 output,
-                topSampleCount,
                 meanSize
         );
     }
@@ -2681,302 +2630,70 @@ public strictfp class CompoundTest {
 
     @Test
     public void testListsWithElement() {
-        listsWithElement_helper_uniform(
-                3,
-                0,
-                "[1, 2, 3]",
-                "[[2, 1, 2, 0, 2, 2, 3, 2, 3, 1, 3, 2], [1, 3, 0, 3, 2], [0], [1, 3, 0, 2], [0], [3, 0, 1, 3]," +
-                " [3, 0, 3], [0, 3], [0], [0], [0], [0], [0], [2, 0], [3, 3, 2, 3, 0], [1, 2, 0]," +
-                " [2, 3, 2, 1, 2, 1, 0, 3, 2, 3], [2, 3, 3, 0], [0], [0], ...]",
-                "{[0]=249571, [0, 2]=41857, [3, 0]=41798, [2, 0]=41752, [0, 3]=41627, [0, 1]=41496, [1, 0]=41418," +
-                " [2, 2, 0]=7145, [1, 2, 0]=7142, [2, 0, 2]=7079}",
-                3.001751999985313
-        );
-        listsWithElement_helper_uniform(
-                5,
-                -5,
-                "[1, 2, 3]",
-                "[[2, 2, 2, 2, -5, 2], [3, 2, 2, 3, -5], [3, 2, -5, 1, 3, 1], [2, 1, -5, 3, 3, 3], [2, 1, 3, -5, 1]," +
-                " [1, -5, 1], [2, 2, 1, -5, 2, 3, 2, 3, 2, 3, 2], [-5, 2], [2, 3, 3, 1, 1, 3, -5], [-5]," +
-                " [3, 2, 3, 1, 3, 3, 3, 1, -5, 2, 3, 2, 3], [-5, 3], [1, -5, 1, 1, 1], [3, 3, 1, 1, 3, -5, 1]," +
-                " [-5, 3], [-5, 1, 3, 2, 2], [-5, 3, 2, 3, 1], [3, -5, 3, 1, 2, 1, 1, 2, 2, 1], [1, 2, -5], [-5]," +
-                " ...]",
-                "{[-5]=111111, [-5, 2]=24723, [-5, 3]=24630, [3, -5]=24513, [-5, 1]=24494, [1, -5]=24481," +
-                " [2, -5]=24476, [1, -5, 3]=5614, [-5, 3, 2]=5606, [-5, 2, 2]=5589}",
-                5.007290999999437
-        );
+        listsWithElement_helper_uniform(3, 0, "[1, 2, 3]", "RandomProvider_listsWithElement_i", 3.001751999985313);
+        listsWithElement_helper_uniform(5, -5, "[1, 2, 3]", "RandomProvider_listsWithElement_ii", 5.007290999999437);
         listsWithElement_helper_uniform(
                 32,
                 null,
                 "[1, 2, 3]",
-                "[[3, 2, 3, 1, 3, 3, 3, 2, 3, 3, 1, 2, 1, 3, 3, 1, 1, 3, 1, 1, 3, 1, 1, 3, 3, 2, 1, 2, 2, 1, 3, 3, " +
-                "2, 3, 3, 2, 3, 1, 2, 3, 2, 3, 2, 3, 2, 1, 2, 1, 2, 3, 3, 2, 3, null, 3, 3, 2, 3, 3]," +
-                " [3, 1, 3, 2, 1, 1, 3, 3, 2, 1, 1, 1, 1, 3, 3, 2, 3, 3, 1, 3, 3, 1, 1, 3, 3, 1, 1, 1, 2, 1, 3, 1, " +
-                "null, 3, 1, 2, 1, 1, 2, 2, 1, 3, 3, 1, 1, 2, 1, 1], [1, 1, 1, 3, 2, 3, 1, 1, null, 3, 2]," +
-                " [2, 3, 3, null, 3]," +
-                " [1, 1, 3, 2, 2, 3, 1, 2, 2, 2, 1, 1, 2, 3, 2, 3, 3, 1, 1, 1, 1, 1, null, 3, 3, 1, 3, 3]," +
-                " [3, 3, 2, 3, 3, 2, 1, 3, 2, 2, null, 2, 2, 2, 3, 2, 2, 2, 3, 3, 3, 2, 3, 3, 1, 2, 1, 1, 2, 1, 1, " +
-                "3, 3, 1, 3, 2, 1, 3, 2, 1, 3, 1, 3, 3, 2, 2, 1, 1, 1, 2, 2, 1, 3, 2, 1, 1, 3, 2]," +
-                " [null, 1, 1, 1, 3, 2, 2, 1, 2, 2, 1, 3, 3, 3]," +
-                " [3, 2, 2, 3, 2, 3, 3, 3, 2, 2, 3, null, 2, 2, 2, 3, 2, 1, 3, 3, 2], [3, null]," +
-                " [3, 3, 2, 1, 3, 1, 2, 3, 1, 1, 2, 3, 2, 3, 2, 3, 1, 1, 1, 3, 2, 1, 2, 3, 3, 2, 1, null, 3]," +
-                " [1, 3, 2, 3, 3, null, 2, 3, 2, 3, 2, 1, 1, 3, 1, 2, 3, 1]," +
-                " [2, 1, 2, 1, 1, 3, 1, 2, 2, 1, 1, 1, 1, 2, 3, 2, 3, 1, 2, 3, 2, 2, 3, 3, 2, 3, 2, 1, 3, 2, 1, 2, " +
-                "1, 2, 1, 3, 2, 3, 3, 3, 1, null, 2, 1, 2, 1], [2, 1, null, 1]," +
-                " [1, 1, 3, 1, 3, 3, 2, 3, 2, 1, 3, 2, 1, 1, 3, 1, 2, 1, 1, 1, 2, 1, 3, 2, 3, 2, 2, 1, 2, 1, 1, 3, " +
-                "2, 3, 1, 3, null, 1, 3, 1, 1, 2]," +
-                " [1, 3, 1, null, 1, 1, 3, 1, 2, 1, 2, 2, 1, 3, 3, 2, 3, 2, 3, 3, 2, 2, 1, 2, 2, 1, 3, 3, 3, 3, 2, " +
-                "1, 2, 3]," +
-                " [null, 3, 3, 1, 2, 2, 3, 3, 2, 1, 3, 3, 2, 1, 2, 1, 1, 1, 3, 2, 3, 2, 3, 1, 1, 1, 2, 2, 3]," +
-                " [2, 3, 2, 3, 3, 3, 2, 2, 2, 1, 2, 1, 2, null, 1, 1, 3, 3, 1, 3, 3, 2, 2, 3, 2]," +
-                " [2, 1, 1, null, 2, 2, 2, 1, 3, 1, 3, 1, 2]," +
-                " [3, 1, 3, 2, 1, 2, 1, 1, 2, 2, 2, 2, 3, 1, 3, 3, 3, 1, 2, 3, 3, 2, 2, 2, 3, 2, 2, 2, 3, 2, null, " +
-                "3, 1, 2, 2, 3, 1, 2, 3, 2, 3, 2, 3, 3, 1, 1, 2, 2, 1, 3, 2, 3, 2, 1, 2, 3, 3, 3, 1]," +
-                " [1, 2, 3, 1, 2, 2, 3, 2, 3, 3, 2, 3, 2, 2, 1, 1, 2, null, 2, 1, 2, 3, 3, 2, 1, 2, 3, 3, 3, 3, 3, " +
-                "1, 2, 3, 1, 1, 2, 1, 1, 1, 1, 1, 3, 1, 1, 3, 1, 1, 1], ...]",
-                "{[null]=3618, [null, 3]=1196, [2, null]=1193, [null, 1]=1172, [3, null]=1168, [1, null]=1135," +
-                " [null, 2]=1089, [null, 1, 1]=412, [null, 2, 2]=391, [null, 3, 1]=390}",
+                "RandomProvider_listsWithElement_iii",
                 31.993837000022335
         );
-        listsWithElement_helper_uniform(
-                3,
-                0,
-                "[1, null, 3]",
-                "[[null, 1, null, 0, null, null, 3, null, 3, 1, 3, null], [1, 3, 0, 3, null], [0], [1, 3, 0, null]," +
-                " [0], [3, 0, 1, 3], [3, 0, 3], [0, 3], [0], [0], [0], [0], [0], [null, 0], [3, 3, null, 3, 0]," +
-                " [1, null, 0], [null, 3, null, 1, null, 1, 0, 3, null, 3], [null, 3, 3, 0], [0], [0], ...]",
-                "{[0]=249571, [0, null]=41857, [3, 0]=41798, [null, 0]=41752, [0, 3]=41627, [0, 1]=41496," +
-                " [1, 0]=41418, [null, null, 0]=7145, [1, null, 0]=7142, [null, 0, null]=7079}",
-                3.001751999985313
-        );
-        listsWithElement_helper_uniform(
-                5,
-                -5,
-                "[1, null, 3]",
-                "[[null, null, null, null, -5, null], [3, null, null, 3, -5], [3, null, -5, 1, 3, 1]," +
-                " [null, 1, -5, 3, 3, 3], [null, 1, 3, -5, 1], [1, -5, 1]," +
-                " [null, null, 1, -5, null, 3, null, 3, null, 3, null], [-5, null], [null, 3, 3, 1, 1, 3, -5], [-5]," +
-                " [3, null, 3, 1, 3, 3, 3, 1, -5, null, 3, null, 3], [-5, 3], [1, -5, 1, 1, 1]," +
-                " [3, 3, 1, 1, 3, -5, 1], [-5, 3], [-5, 1, 3, null, null], [-5, 3, null, 3, 1]," +
-                " [3, -5, 3, 1, null, 1, 1, null, null, 1], [1, null, -5], [-5], ...]",
-                "{[-5]=111111, [-5, null]=24723, [-5, 3]=24630, [3, -5]=24513, [-5, 1]=24494, [1, -5]=24481," +
-                " [null, -5]=24476, [1, -5, 3]=5614, [-5, 3, null]=5606, [-5, null, null]=5589}",
-                5.007290999999437
-        );
+        listsWithElement_helper_uniform(3, 0, "[1, null, 3]", "RandomProvider_listsWithElement_iv", 3.001751999985313);
+        listsWithElement_helper_uniform(5, -5, "[1, null, 3]", "RandomProvider_listsWithElement_v", 5.007290999999437);
         listsWithElement_helper_uniform(
                 32,
                 null,
                 "[1, null, 3]",
-                "[[3, 3, 1, 3, 3, 3, 3, 3, 1, 1, 3, 3, 1, 1, 3, 1, 1, 3, 1, 1, 3, 3, 1, 1, 3, 3, 3, 3, 3, 1, 3, 3, " +
-                "3, 1, 1, 3, 3, 3, 1, 3, 3, 1, 1, 3, 1, 1, 1, 3, 3, 3, 3, 3, 3, null, 3, 1, 3, null, 1, 1, 3, 3, nu" +
-                "ll, 1, 1, 1], [null, 3, 3, 3, null, 1, 1, 3, null, null, 1, 3, null, 3, null, 1]," +
-                " [3, 1, 1, 1, 1, 3, 3, 1, 1, 1, 1, 1, 3, 3, 3, 1, 3, null, 3, 1, 1, 3, null, 3, 1, null]," +
-                " [3, 3, 1, 1, 1, 3, 1, null, null, null, null, 1, 1, null, 3, null], [1, 1, 3, 1, 1, 3, null]," +
-                " [3, 3, 3, null, null, null, null, 3, null, null, null, 3, 3, 3, null, 3, 3, 1, null, 1, 1, null, " +
-                "1, 1, 3, 3, 1, 3, null, 1, 3, null, 1, 3, 1, 3, 3, null, null, 1, 1, 1, null, null, 1, 3, null, 1," +
-                " 1, 3, null, 1, 1, 1, 3, null, null, 1, null, null, 1]," +
-                " [1, 1, 1, 3, 1, 1, 3, 3, 3, 3, 3, 1, 3, 1, 3, 3, 3, 3, 3, 3, 3, 1, null, null, null, null, 3, nul" +
-                "l, 1, 3, 3, null], [3, null]," +
-                " [3, 3, 1, 3, 1, 3, 1, 1, 3, 3, 3, 1, 1, 1, 3, 1, 3, 3, 1, 1, 3, 3, 1, 3, 3, 1, 3, null, null, 3, " +
-                "null, 3, null, 1, 1, 3, 1, null, 3, 1, 1, null, 3]," +
-                " [1, 1, 1, 3, 1, 1, 1, 1, 1, 3, 3, 1, 3, 3, 3, 3, 1, 3, 1, 1, 1, 3, 3, 3, 3, 1, 3, 1, 3, 1, 1, 1, " +
-                "3, 3, 1, 1, 1, null, 1]," +
-                " [1, 1, 3, 1, 3, 3, 3, 1, 3, 1, 1, 3, 1, 1, 1, 1, 1, 3, 3, 1, 1, 1, 3, 3, 1, 3, 3, 3, 3, 1, 3, 1, " +
-                "1, 3, 1, 1, null, 1, 1, 3, 1, null, 1, null, null, 1, 3, 3, null, 3, null, 3, 3, null, null, 1, nu" +
-                "ll, null, 1, 3, 3, 3, 3, null, 1, null, 3, 1, 1, 3, 3, null, null]," +
-                " [1, null, 3, 3, 1, null, null, 3, 3, null, 1, 3, 3, null, 1, null, 1, 1, 1, 3, null, 3, null, 3]," +
-                " [3, 3, 3, 3, 1, 1, 3, 1, 1, 3, 1, 1, 3, 3, 3, 1, 1, 1, 3, 1, 1, null, null, 1, 1, null, null, nul" +
-                "l, 3, 3, null, 1]," +
-                " [1, 3, 1, 3, 1, 1, 3, 3, 1, null, 3, 1, null, null, 3, 1, null, 3, null, 3, null, 3, 3, 1, 1, nul" +
-                "l, null, 1, 3, null, 3, null, 1, null, 3, 3, 3, 1, 1, 3, null, 1, 3, 3, 1, 1, 3, 1, 1, null, 3, 1," +
-                " 1, null, 3, 1, null, null, 3, null, 3, 3, null, 3, null, null, 1, 1, null, 1, 3, 3]," +
-                " [3, 3, 3, 1, 1, 3, 3, 1, 3, 3, 3, 3, 3, 1, 3, 1, 1, 1, 1, 1, 1, 1, 3, 1, 1, 3, 1, 1, 1, 1, 3, 3, " +
-                "1, 3, 1, 3, 3, 3, 1, 1, 1, 1, 3, 1, 3, 3, 3, 1, 3, 1, 3, 1, 1, 3, 3, 1, 1, null, null, null, 1]," +
-                " [1, 1, null, 1, null, null, 1, 1, null, 3, null, 1, null, null, 3, 1, 1, null, null, 3, 1, null, " +
-                "null], [1, 1, 1, null, 1, null, 3, 1, 1, null, 3, null, 1, null, 3, 3, 1, 3, 3, null, 1, 3, 3]," +
-                " [3, 1, 3, 1, 1, 3, 3, 1, 1, 1, 1, 1, 1, 1, 1, null, 3, null, 1]," +
-                " [1, 3, 3, 3, 1, 3, 1, 1, 1, null, 1, 3, 3, null, null]," +
-                " [1, 1, 3, 1, 3, 1, 1, 3, 3, 3, 1, 3, 1, 1, 3, 1, 1, 3, 3, 3, 3, 1, 1, 3, null, 3, 1, 3, 1, null, " +
-                "null, null, 3, 1, null, null, 1, null, null, 1, 1], ...]",
-                "{[null]=3619, [1, null]=1781, [3, null]=1730, [null, null]=1195, [null, 1]=1123, [null, 3]=1122," +
-                " [3, 3, null]=844, [1, 1, null]=837, [1, 3, null]=804, [3, 1, null]=782}",
+                "RandomProvider_listsWithElement_vi",
                 32.00126100002188
         );
         listsWithElement_helper_uniform(
                 3,
                 0,
                 "[1, 2, 2, 4]",
-                "[[2, 4, 1, 0, 2, 2, 2, 4, 2, 2, 1, 4, 2], [1, 2, 4, 0, 4], [4, 0, 2], [1, 2, 0, 2], [0], [4, 0, 2]," +
-                " [1, 0], [2, 0, 2], [0, 2], [0], [0], [0], [0], [0], [4, 0, 2, 4, 2], [2, 0], [2, 0, 1, 2]," +
-                " [0, 2, 4, 4, 2, 2, 1], [4, 2, 4, 2, 4, 0], [2, 0, 2, 2], ...]",
-                "{[0]=249337, [2, 0]=62653, [0, 2]=62593, [1, 0]=31457, [0, 4]=31319, [0, 1]=31317, [4, 0]=31097," +
-                " [2, 0, 2]=15872, [0, 2, 2]=15686, [2, 2, 0]=15367}",
+                "RandomProvider_listsWithElement_vii",
                 3.0022749999853073
         );
         listsWithElement_helper_uniform(
                 5,
                 -5,
                 "[1, 2, 2, 4]",
-                "[[2, 2, 4, 4, -5, 2, 2, 2], [4, 2, -5, 2, 4, 2], [-5, 1, 2, 4, 1, 2], [2, -5]," +
-                " [2, 4, 2, -5, 2, 1, 2, 2], [-5], [1, -5, 1], [2, 4, 2, -5], [2, 2, 4, 4, 4, 4, 2, -5, 4, 4, 4, 4]," +
-                " [4, -5, 2, 2, 4, 4, 2, 1, 1], [1, -5], [4, 2, 2, 4, 4, 2, 4, 4, -5], [2, 4, 4, -5, 2, 2, 2]," +
-                " [2, -5], [1, 2, -5, 1, 1], [-5, 2, 2, 1, 1, 2], [1, -5], [2, -5], [1, 2, 2, 2, -5]," +
-                " [2, 2, 2, 1, -5, 2], ...]",
-                "{[-5]=111075, [-5, 2]=36857, [2, -5]=36751, [-5, 4]=18603, [1, -5]=18543, [4, -5]=18329," +
-                " [-5, 1]=18312, [-5, 2, 2]=12568, [2, 2, -5]=12426, [2, -5, 2]=12267}",
+                "RandomProvider_listsWithElement_viii",
                 5.005771999999611
         );
         listsWithElement_helper_uniform(
                 32,
                 null,
                 "[1, 2, 2, 4]",
-                "[[4, 4, 2, 2, 4, 2, 1, 2, 4, 2, 2, 2, 2, 2, 1, 2, 1, 2, 2, 1, 1, 2, 1, 1, 2, 1, 1, 2, 4, 2, 4, 4, " +
-                "4, 2, 1, 2, 4, 2, 4, 1, 2, 2, 2, 2, 2, 4, 2, 2, 1, 2, 2, 4, 4, null, 2, 2, 2, 4, 2, 2, 4, 4, 4, 2," +
-                " 2, 2, 1, 4, 2, 2]," +
-                " [2, 1, 2, 4, 2, 4, 1, 1, 2, 4, 2, 4, 2, 1, 1, 1, 1, 4, 2, 4, 4, 2, null, 2, 2, 2, 2, 1, 1, 2, 2, " +
-                "2, 1, 2, 2, 2]," +
-                " [2, 1, 2, 1, 1, 2, 4, 2, 1, 2, 4, 2, 1, 1, 4, 2, 1, 1, 1, null, 2, 1, 4, 4, 1, 2, 2, 2, 4, 4]," +
-                " [null, 2, 4]," +
-                " [1, 4, 4, 4, 4, 4, 1, 4, 2, 2, 2, 4, 2, 1, 2, 2, 4, 2, 1, 1, 4, null, 4, 1, 1, 4, 2, 1, 4]," +
-                " [2, 4, 2, null]," +
-                " [2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, null, 2, 4, 2, 2, 2, 2, 2, 2, 2, 2, 2, 4, 2, 2, 4, 2, 1, 2, " +
-                "1, 1, 2, 1, 1, 2, 2, 1, 2, 2, 4, 1, 2, 2, 1, 2, 1, 2, 2, 2, 4, 4, 2, 1, 1, 1, 2, 2]," +
-                " [4, 1, 4, 2, null, 1, 1, 4, 1, 2, 4, 2, 2, 4, 4, 1, 2, 2, 1, 4]," +
-                " [2, 2, 2, 2, 2, 2, 4, 2, 2, 4, 2, 4, 2, 2, null, 2, 4, 2, 2, 2, 4, 2, 1, 2]," +
-                " [2, 1, 2, null, 2, 2, 2, 1, 2, 2, 1, 1, 2, 2, 2, 2, 1, 2, 2, 1, 4, 1, 2, 2, 2, 1, 2, 2, 4, 4, 2, " +
-                "2, 2, 2, 4]," +
-                " [null, 2, 2, 4, 1, 1, 4, 4, 1, 1, 4, 2, 2, 2, 2, 1, 4, 4, 2, 2, 2, 4, 2, 2, 2, 4, 2, 4, 2, 2, 1, " +
-                "2, 2, 1, 4, 2, 1], [4, 2, 4, 4, 1, 2, 1, 2, 2, 1, 4, 2, 1, 2, null, 4]," +
-                " [1, 1, 2, 1, 2, 4, 2, 2, 2, 2, 1, 2, 4, 2, 1, 4, 1, 4, 2, 4, 1, 2, 1, 1, 1, 2, 1, 2, 2, 2, 2, 4, " +
-                "2, 1, 2, 1, 1, null, 1, 2, 4, 1, 1, 4, 2, 4]," +
-                " [1, 4, null, 4, 4, 1, 1, 2, 1, 2, 1, 2, 2, 4, 4, 1, 2, 2, 2, 2, 2, 2, 2, 2, 4, 4, 2, 4, 1, 4, 4, " +
-                "2, 2, 4]," +
-                " [1, 2, 2, 2, 4, 4, 2, 2, 1, 1, 1, 2, null, 2, 2, 1, 2, 2, 2, 2, 2, 4, 4, 1, 2, 2, 2, 1, 2, 4, 1, " +
-                "4, 4], [null, 2, 4, 2, 2, 2, 4, 4, 4, 2, 2, 2, 2]," +
-                " [1, 4, 4, 4, 1, 4, 4, 2, 4, 2, 4, 1, 2, 2, 2, 2, 2, 2, 1, 2, 2, 1, 2, 1, 1, 4, 2, 2, 2, 2, 2, 2, " +
-                "4, null, 4, 2, 4, 4, 2, 2]," +
-                " [2, 1, 4, 2, 2, 1, null, 4, 2, 1, 2, 2, 2, 1, 4, 2, 2, 2, 2, 2, 2, 2, 1, 4, 4, 1, 2, 2, 1, 4, 2, " +
-                "4, 2, 4, 2, 2, 1, 2, 2, 2, 2, 4, 1, 1, 2, 2, 4, 1, 2, 4, 2, 1, 4, 1, 2, 1, 1, 2, 2, 4, 1, 1, 4, 2," +
-                " 2, 4, 1, 2, 2]," +
-                " [2, 1, 2, 2, 2, 4, 2, 2, 4, 2, 1, 2, 1, 1, 2, null, 2, 1, 2, 2, 2, 2, 1, 2, 4, 2, 4, 2, 4, 2, 2, " +
-                "4, 2, 4, 1, 4, 2, 2, 1, 4, 1, 2, 4], [4, null], ...]",
-                "{[null]=3631, [null, 2]=1732, [2, null]=1688, [2, null, 2]=873, [4, null]=852, [null, 1]=849," +
-                " [1, null]=843, [null, 4]=824, [2, 2, null]=805, [null, 2, 2]=764}",
+                "RandomProvider_listsWithElement_ix",
                 32.023569000021205
         );
         listsWithElement_helper(
                 3,
                 0,
                 P.withScale(4).positiveIntegersGeometric(),
-                "[[3, 10, 7, 0, 5], [0, 10, 1], [0, 3], [7, 0], [5, 0, 3], [0], [0], [0], [0], [5, 0, 9, 15, 6, 12]," +
-                " [4, 0], [0], [0], [0], [8, 9, 0], [0], [0, 2, 6, 2, 5], [0], [3, 0], [0], ...]",
-                "{[0]=250126, [1, 0]=31309, [0, 1]=31288, [2, 0]=23468, [0, 2]=23259, [0, 3]=17630, [3, 0]=17611," +
-                " [4, 0]=13170, [0, 4]=13054, [5, 0]=9983}",
+                "RandomProvider_listsWithElement_x",
                 2.999244999985283
         );
         listsWithElement_helper(
                 5,
                 -5,
                 P.withScale(4).positiveIntegersGeometric(),
-                "[[10, 7, 7, 4, -5, 1, 3, 3, 2, 7], [2, 3, 1, 2, 1, 2, -5], [5, 9, 15, -5, 12], [1, 2, 1, -5]," +
-                " [9, 4, 7, 6, 2, 5, 1, 6, -5], [-5], [3, 1, 5, 1, 1, -5, 2], [1, 4, 5, 4, -5, 12], [2, -5]," +
-                " [4, 1, -5, 1], [-5, 2, 1, 3, 1, 5], [-5, 3], [5, 4, 4, -5, 7, 4, 1, 6, 7], [1, 10, 1, -5], [-5]," +
-                " [-5, 2], [4, 13, -5, 10, 3, 1, 4, 19, 5], [6, 2, 4, 1, 22, 17, -5, 1], [1, -5, 4, 3], [7, -5], ...]",
-                "{[-5]=110706, [1, -5]=18421, [-5, 1]=18318, [-5, 2]=13979, [2, -5]=13741, [-5, 3]=10447," +
-                " [3, -5]=10342, [4, -5]=7772, [-5, 4]=7707, [5, -5]=5977}",
+                "RandomProvider_listsWithElement_xi",
                 5.003905999999416
         );
         listsWithElement_helper(
                 32,
                 null,
                 P.withScale(4).positiveIntegersGeometric(),
-                "[[7, 8, 2, 3, 1, 2, 1, 2, 1, 8, 5, 9, 15, 6, 12, 6, 1, 2, 1, 1, 13, 9, 4, 7, 6, 2, 5, 1, 6, 1, 1, " +
-                "1, 10, 3, 1, 5, 1, 1, 4, 2, 5, 1, 4, 5, 4, 2, 12, 2, 2, 1, 4, 4, 1, null]," +
-                " [1, 3, 1, 5, 1, 2, 3, 6, null, 4, 9], [1, 6, 7, 5, 1, 10, 1, 1, 1, 2, null, 4, 13, 7, 10, 3]," +
-                " [17, 2, 1, 2, 1, 3, 4, 3, 2, 7, 1, 1, 3, 4, 2, 4, 1, 1, 4, 3, 2, 1, 1, 19, 1, 1, 2, 7, 3, 14, 2, " +
-                "20, 4, 1, 2, 5, 2, 8, 5, 2, 7, 3, 4, 13, 1, 4, 3, 7, 2, 7, 1, 1, 6, 5, 2, 4, 4, 3, 1, 5, 3, 2, 4, " +
-                "10, 8, 1, 2, 6, 2, 5, null, 4, 1, 3, 1, 6, 15, 3, 3, 2, 6, 4, 3, 5, 2, 3, 3, 2, 4, 2, 6, 11, 2, 18," +
-                " 1]," +
-                " [2, 7, 2, 1, 6, 9, 3, 1, 3, 1, 6, 1, 4, 5, 6, 6, 1, 1, 3, 2, 10, 2, 7, null, 3, 1, 2, 2, 5, 13, 6," +
-                " 8, 4], [1, 1, 10, 4, 1, 5, 5, 1, null, 3, 8, 4, 3, 3, 1, 6, 2, 1]," +
-                " [15, 2, 4, 2, 3, 2, 10, 3, 2, 2, 1, 1, 4, 7, 7, 3, 2, null, 9, 2, 2, 2, 4, 2, 3, 1, 1]," +
-                " [4, 4, 2, 1, 7, 6, 15, 2, 2, 4, 4, 4, 1, 1, 7, 4, 6, 3, null, 3, 4, 9, 3, 3, 8]," +
-                " [1, 5, 17, 1, 2, 9, 2, 1, 2, 1, 2, 9, 5, 3, 8, 3, 15, 8, 2, 5, 12, 4, 2, null, 2, 1]," +
-                " [2, 8, 2, 4, 1, 4, 8, 2, 3, 2, 3, 5, 3, 4, 2, 3, 3, 2, 1, 1, 4, 3, null, 1, 4, 1, 5, 8, 2, 5, 7, " +
-                "2, 2, 2, 10, 13, 6, 5, 3, 3, 4]," +
-                " [2, 3, null, 1, 1, 2, 1, 2, 2, 8, 1, 8, 1, 1, 7, 4, 2, 1, 3, 2, 8, 1, 7, 11, 6, 4, 3, 1]," +
-                " [3, 1, 8, 7, 3, null, 6]," +
-                " [1, 3, 11, 1, 2, 4, 2, 2, 8, 7, 4, null, 4, 2, 1, 3, 1, 3, 5, 1, 4, 2, 5, 3, 2, 5, 5, 3, 2, 1, 2]," +
-                " [8, 1, 1, 3, 6, 4, 13, 3, 8, 10, 3, 1, 2, 1, null, 6, 5, 9, 1, 8, 1]," +
-                " [7, 3, 12, 6, null, 1, 6, 6, 9, 6, 2, 10, 3, 2, 4, 3, 9, 2, 2, 3]," +
-                " [11, 2, 4, 7, 6, 1, 6, 3, 2, 2, 1, 2, 2, 1, 2, 1, 13, 2, 4, 5, 3, 1, 6, 1, 3, 14, 4, 1, null, 5, " +
-                "4, 10, 5, 8, 17, 5, 1, 11, 1, 2, 4, 3, 1, 5, 7, 1], [4, 2, 6, 6, null, 2, 4, 4]," +
-                " [1, 6, 4, 1, 5, 3, null, 1, 5, 3, 3, 4, 2, 1, 16, 1, 4, 7, 4, 5, 4, 2, 5, 1, 2, 8, 2, 2, 8]," +
-                " [6, 8, 3, 2, 5, 12, 4, 2, 1, 2, 9, 6, 8, 2, 2, 3, 8, 1, 9, 4, 10, 2, 3, 1, 1, 6, 5, 6, 1, 2, 3, 1" +
-                "1, 6, 4, 5, null], [1, 1, 5, 5, 1, 1, 1, 4, 6, 2, 1, 2, 8, 3, 9, 8, 8, null, 17, 1, 7, 2, 3, 7, 1]," +
-                " ...]",
-                "{[null]=3674, [1, null]=868, [null, 1]=845, [2, null]=682, [null, 2]=642, [3, null]=486," +
-                " [null, 3]=478, [4, null]=386, [null, 4]=364, [5, null]=295}",
+                "RandomProvider_listsWithElement_xii",
                 32.001327000020574
         );
-        listsWithElement_helper(
-                3,
-                0,
-                repeat(1),
-                "[[1, 1, 1, 0, 1, 1], [1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1], [1, 1, 0], [1, 0, 1, 1, 1], [0]," +
-                " [1, 1, 0, 1, 1], [1, 1, 0], [1, 1, 0], [0, 1], [1, 0], [1, 0, 1, 1], [1, 1, 0], [0, 1], [0, 1]," +
-                " [0], [1, 0], [0], [0], [0], [0], ...]",
-                "{[0]=250050, [1, 0]=125653, [0, 1]=124331, [1, 1, 0]=62471, [1, 0, 1]=62445, [0, 1, 1]=62377," +
-                " [0, 1, 1, 1]=31539, [1, 1, 0, 1]=31263, [1, 0, 1, 1]=31206, [1, 1, 1, 0]=31114}",
-                2.999981999985526
-        );
-        listsWithElement_helper(
-                5,
-                -5,
-                repeat(1),
-                "[[1, 1, 1, 1, -5, 1, 1, 1, 1, 1], [1, 1, 1, 1, 1, -5, 1, 1, 1, 1], [1, 1, -5, 1, 1, 1, 1, 1]," +
-                " [-5, 1], [1, 1, -5, 1], [1, 1, 1, -5, 1, 1, 1, 1, 1, 1], [1, -5, 1, 1], [-5, 1], [-5, 1]," +
-                " [-5, 1, 1, 1], [1, 1, -5, 1, 1, 1, 1, 1, 1, 1], [1, 1, 1, 1, 1, 1, 1, -5, 1]," +
-                " [1, 1, 1, 1, 1, 1, 1, -5, 1, 1, 1], [-5, 1], [-5], [1, 1, 1, 1, 1, 1, 1, 1, -5, 1, 1, 1]," +
-                " [1, 1, 1, -5, 1, 1, 1, 1], [1, 1, 1, 1, -5, 1], [1, 1, -5], [1, 1, 1, -5], ...]",
-                "{[-5]=111514, [-5, 1]=74118, [1, -5]=73884, [-5, 1, 1]=49434, [1, 1, -5]=49139, [1, -5, 1]=49064," +
-                " [1, 1, 1, -5]=32992, [1, -5, 1, 1]=32987, [1, 1, -5, 1]=32911, [-5, 1, 1, 1]=32654}",
-                5.0037189999994975
-        );
-        listsWithElement_helper(
-                32,
-                null,
-                repeat(1),
-                "[[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, " +
-                "1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, null, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1," +
-                " 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]," +
-                " [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, " +
-                "1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, null, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]," +
-                " [1, null, 1, 1, 1, 1, 1, 1], [1, null, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]," +
-                " [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, " +
-                "null, 1], [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, null, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]," +
-                " [1, 1, 1, 1, null, 1, 1, 1, 1, 1]," +
-                " [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, null, 1, 1, 1, 1, 1, 1, 1, " +
-                "1], [1, 1, 1, 1, null, 1, 1, 1, 1, 1, 1, 1, 1, 1], [1, 1, 1, 1, 1, null, 1]," +
-                " [1, 1, 1, null, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, " +
-                "1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]," +
-                " [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, null, 1, 1]," +
-                " [1, 1, 1, 1, 1, 1, 1, 1, 1, null, 1, 1, 1, 1]," +
-                " [1, 1, 1, 1, 1, 1, 1, null, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]," +
-                " [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, null, 1, " +
-                "1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, null, 1]," +
-                " [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, null, 1, 1, 1, " +
-                "1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]," +
-                " [1, 1, 1, 1, 1, 1, null, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]," +
-                " [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, " +
-                "1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, null, 1, 1]," +
-                " [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, " +
-                "1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, null, 1, 1, 1], ...]",
-                "{[null]=3569, [1, null]=3438, [null, 1]=3407, [1, null, 1]=3282, [null, 1, 1]=3212," +
-                " [1, 1, null]=3188, [1, null, 1, 1]=3044, [1, 1, 1, null]=3024, [null, 1, 1, 1]=2998," +
-                " [1, 1, null, 1]=2972}",
-                31.985562000021005
-        );
+        listsWithElement_helper(3, 0, repeat(1), "RandomProvider_listsWithElement_xiii", 2.999981999985526);
+        listsWithElement_helper(5, -5, repeat(1), "RandomProvider_listsWithElement_xiv", 5.0037189999994975);
+        listsWithElement_helper(32, null, repeat(1), "RandomProvider_listsWithElement_xv", 31.985562000021005);
+
         listsWithElement_fail_helper(5, null, Collections.emptyList());
         listsWithElement_fail_helper(5, null, Arrays.asList(1, 2, 3));
         listsWithElement_fail_helper(2, null, P.integers());
@@ -2987,12 +2704,11 @@ public strictfp class CompoundTest {
             char c,
             @NotNull String input,
             @NotNull String output,
-            @NotNull String topSampleCount,
             double meanSize
     ) {
         List<String> sample = toList(take(DEFAULT_SAMPLE_SIZE, P.withScale(scale).stringsWithChar(c, input)));
-        aeqitLimit(TINY_LIMIT, sample, output);
-        aeq(topSampleCount(DEFAULT_TOP_COUNT, sample), topSampleCount);
+        aeqitLimitLog(TINY_LIMIT, sample, output);
+        aeqMapLog(topSampleCount(DEFAULT_TOP_COUNT, sample), output);
         aeq(meanOfIntegers(toList(map(String::length, sample))), meanSize);
         P.reset();
     }
@@ -3013,122 +2729,73 @@ public strictfp class CompoundTest {
                 3,
                 'b',
                 "abcd",
-                "[dadbbbcdbc, bb, acbdd, bcd, ab, cb, dbb, ab, cbc, bc, b, b, b, b, b, dbbdb, cb, cbab, bbddcba," +
-                " ddcdcbb, ...]",
-                "{b=249549, db=42139, cb=41763, ab=41712, ba=31351, bb=31320, bc=31249, bd=30856, cab=7056, acb=7016}",
+                "RandomProvider_stringsWithChar_char_String_i",
                 3.0011149999852065
         );
         stringsWithChar_char_String_helper(
                 5,
                 '#',
                 "abcd",
-                "[bbdd#bbc, dc#cdb, #acdab, b#, cdc#bacc, #, a#a, bdb#, bcddddb#dddd, d#bcddcaa, a#, dcbddcdd#," +
-                " bdd#bcb, c#, ac#aa, #ccaac, a#, c#, acbb#, cbca#c, ...]",
-                "{#=111075, #d=18603, a#=18543, #b=18469, b#=18429, #c=18388, d#=18329, c#=18322, #a=18312, #bb=3248}",
+                "RandomProvider_stringsWithChar_char_String_ii",
                 5.005771999999611
         );
         stringsWithChar_char_String_helper(
                 32,
                 ' ',
                 "abcd",
-                "[ddcbdcacdccbccabaccaacaacaacdcdddbabdbdaccbccdbcabcdd ccbdccdddccbadcb," +
-                " cacdbdaacdcdbaaaadcddc cccbaacbbacbc, cabaabdbacdcaadbaaa caddacbcdd,  cd," +
-                " adddddadcbbdcabbdbaad daadcad, cdc , ccbccbacbbcb bdbbcbbbcccdbcdcabaabaaccacbdacbacaccbddbaaabb," +
-                " dadc aadacdbbddabbad, cbbcbcdccdbdbc bdbbcdbac, cab cbcacbaacbccacbadabcbacbddbcbbd," +
-                "  bbdaaddaadbcbcaddbcbdbccdbdcbacbadba, dbddabaccadbab d," +
-                " aacacdcbcbacdbadadcdabaaabacbcbdbabaa acdaadbd, ad ddaacababbddaccbcbccbddbdaddbbd," +
-                " accbddbcaaab ccabbccbddaccbabdadd,  bdcbcdddccbb, adddaddcdcdaccbbcbabcabaadbbbccbd dbddbb," +
-                " badcca dcabbcadbcbcbccaddabbadcdbdcbabcccdaacbdacdcadacaabcdaadbcdabb," +
-                " baccbdbbdcacaac babccbabdcdcdccdcdadbcadabd, d , ...]",
-                "{ =3631,  b=880, b =858, d =852,  c=852,  a=849, a =843, c =830,  d=824,  dd=229}",
+                "RandomProvider_stringsWithChar_char_String_iii",
                 32.023569000021205
         );
         stringsWithChar_char_String_helper(
                 3,
                 'b',
                 "aaaa",
-                "[aaabaaaaaaaaa, aaaba, aba, aaba, b, aba, ab, aba, ba, b, b, b, b, b, abaaa, ab, abaa, baaaaaa," +
-                " aaaaab, abaa, ...]",
-                "{b=249337, ba=125229, ab=125207, baa=62633, aba=62599, aab=62095, aaab=31559, baaa=31254," +
-                " aaba=31075, abaa=31033}",
+                "RandomProvider_stringsWithChar_char_String_iv",
                 3.0022749999853073
         );
         stringsWithChar_char_String_helper(
                 5,
                 '#',
                 "aaaa",
-                "[aaaa#aaa, aa#aaa, #aaaaa, a#, aaa#aaaa, #, a#a, aaa#, aaaaaaa#aaaa, a#aaaaaaa, a#, aaaaaaaa#," +
-                " aaa#aaa, a#, aa#aa, #aaaaa, a#, a#, aaaa#, aaaa#a, ...]",
-                "{#=111075, #a=73772, a#=73623, aa#=49634, #aa=49416, a#a=49351, a#aa=32949, #aaa=32912, aaa#=32899," +
-                " aa#a=32804}",
+                "RandomProvider_stringsWithChar_char_String_v",
                 5.005771999999611
         );
         stringsWithChar_char_String_helper(
                 32,
                 ' ',
                 "aaaa",
-                "[aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaa," +
-                " aaaaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaa, aaaaaaaaaaaaaaaaaaa aaaaaaaaaa,  aa," +
-                " aaaaaaaaaaaaaaaaaaaaa aaaaaaa, aaa , aaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa," +
-                " aaaa aaaaaaaaaaaaaaa, aaaaaaaaaaaaaa aaaaaaaaa, aaa aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa," +
-                "  aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa, aaaaaaaaaaaaaa a," +
-                " aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa aaaaaaaa, aa aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa," +
-                " aaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaa,  aaaaaaaaaaaa, aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa aaaaaa," +
-                " aaaaaa aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa," +
-                " aaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaaaaaaaaa, a , ...]",
-                "{ =3631,  a=3405, a =3383, a a=3275, aa =3201,  aa=3143, aaa =3107, a aa=3030, aa a=3018," +
-                " aaa a=2965}",
+                "RandomProvider_stringsWithChar_char_String_vi",
                 32.023569000021205
         );
         stringsWithChar_char_String_helper(
                 3,
                 'b',
                 "Mississippi",
-                "[spsbsisisssi, isb, isbs, b, sbs, sbi, ib, ib, b, b, b, b, bs, pssb, sbMs, bssspis, isbs, psbip, b," +
-                " b, ...]",
-                "{b=249684, bs=45808, sb=45691, ib=45560, bi=45265, pb=22818, bp=22593, Mb=11495, bM=11394, bii=8360}",
+                "RandomProvider_stringsWithChar_char_String_vii",
                 2.9995019999853154
         );
         stringsWithChar_char_String_helper(
                 5,
                 '#',
                 "Mississippi",
-                "[ssii#si, ssi#i, issss#, s#sss, iMpi#, #p, pss#ssssss, isii#psiiip, i#, siisisis#, iisM#i, i#MMs," +
-                " ssps#i, s#, spis#psp, i#Miiiis, #is, #, #sMpip, #MsM, ...]",
-                "{#=111441, #i=26925, s#=26908, #s=26892, i#=26543, p#=13406, #p=13247, #M=6776, M#=6711, #is=6630}",
+                "RandomProvider_stringsWithChar_char_String_viii",
                 5.0064659999996515
         );
         stringsWithChar_char_String_helper(
                 32,
                 ' ',
                 "Mississippi",
-                "[sisssssisipiMpippipsssiMpsssispsMssssssssssspisiisiss spiss," +
-                " sMisiiisiMMssssssssspsisispsMiip MiiiispspisM, pipMisss s,  spssi, iiiipsssiMip issMiisMsiM," +
-                " sssspispsssi iipsspsissisisMipMpissiiMspispiiMMiipiiiMsis, pp psisiisppiii," +
-                " pssiiispsssiss siississp, M isipMpssissipssMpssiMiiipssppps," +
-                " spspsMssiipisisispipisssspissisiippssssssiisMsis s, s i," +
-                " iiispsiiispiMipsiisiMsiisiisssipiiMMs pipppMspsisiisMispssiipspiMisisMpiiisi," +
-                " ssMsspisispissMpsisspipiisisiipip ," +
-                " iisiisspispsiiisMipiipsiiippppsiiMiiispiMipss ispiMiissisMiMsiiisppsispisiiispippiiMMssiiiisispMs" +
-                "Msspipisppps, ssssiMiMssiMiiiissspispiiMMMsiiipippiipi isspp, isMisiisispipisisMpMs ," +
-                " iispsissspiiisssii , ispsissiipspisipspisssipspsiispp sM," +
-                " iisMisiMpMipMiisMsisiisipsssipMipspi Mssiipsip, psipssMsspippspssMss ips, ...]",
-                "{ =3670,  i=1285, s =1285,  s=1282, i =1232, p =596,  p=588, s i=458, si =455, i s=453}",
+                "RandomProvider_stringsWithChar_char_String_ix",
                 31.994617000022732
         );
+
         stringsWithChar_char_String_fail_helper(2, ' ', "abc");
     }
 
-    private static void stringsWithChar_char_helper(
-            int scale,
-            char c,
-            @NotNull String output,
-            @NotNull String topSampleCount,
-            double meanSize
-    ) {
+    private static void stringsWithChar_char_helper(int scale, char c, @NotNull String output, double meanSize) {
         List<String> sample = toList(take(DEFAULT_SAMPLE_SIZE, P.withScale(scale).stringsWithChar(c)));
-        aeqitLimit(TINY_LIMIT, sample, output);
-        aeq(topSampleCount(DEFAULT_TOP_COUNT, sample), topSampleCount);
+        aeqitLimitLog(TINY_LIMIT, sample, output);
+        aeqMapLog(topSampleCount(DEFAULT_TOP_COUNT, sample), output);
         aeq(meanOfIntegers(toList(map(String::length, sample))), meanSize);
         P.reset();
     }
@@ -3145,52 +2812,10 @@ public strictfp class CompoundTest {
 
     @Test
     public void testStringsWithChar_char() {
-        stringsWithChar_char_helper(
-                3,
-                'b',
-                "[ε䊿\u2538b\udd15몱ﲦ䯏ϡ罖\u19dc刿ㄾ, ᬜK㵏b㩷, 纫b䝲, 坤琖b\uea45, b, \u2b63b鸅, \uee1cb, ᅺb䇺, b㖊, b," +
-                " b, b, b, b, \uff03b尩굿\uecf5, \ue8b2b, 䟆b㭠瀵, b쪅右䦋\u2832ﭙ빜, 홃祝몷ࢦ\ufdd7b, \u0c55b壙\udd82, ...]",
-                "{b=248975, 鍻b=10, 㵃b=10, bఘ=10, b腨=10, 喽b=10, 趍b=10, 圍b=10, b㭐=10, b\u18af=9}",
-                3.0022749999853757
-        );
-        stringsWithChar_char_helper(
-                5,
-                '#',
-                "[\u31e5髽肣\uf6ff#\udd15몱ﲦ, 刿ㄾ#K㵏ꏹ, #坤琖\u2a43퉌\uea45, 餥#, \u33b2酓캆#\ue9fd\u2aec㖊짎, #," +
-                " 䱸#\uf878, 尩굿\uecf5#, 瀵컦刓嗏\u3353\ue2d3\ud805#䫯噋\uf36fꌻ, 홃#壙\udd82픫鼧\u061a\u2e94穨, 䥔#," +
-                " ꯃ慚총\u0e77\uf36bB㽿\u2a57#, \u337d萋\u0d5b#쪡詪쀝, 駆#, 槔横#渀䃼, #ᗶ\u1ad6仈만ᑒ, 퉌#, \u2506#," +
-                " 㲜\ue852ډұ#, ხ叙繲\uefc8#䔾, ...]",
-                "{#=111130, #\u0978=7, #ᵻ=7, 齉#=7, 䯟#=7, \u02d9#=7, #ȡ=7, #\u0817=7, #ｫ=7, 壼#=7}",
-                5.005778999999451
-        );
-        stringsWithChar_char_helper(
-                32,
-                ' ',
-                "[\u2b63\uf637鸂鸅误輮\uee1c\u33b2酓캆ᅺ됽煖䇺ᤘ\ue9fd\u2aec㖊짎\uaaf0全覚돘䱸\u28de\u2e24\uf878ሮܓ鄒\uff03" +
-                "띯\ue5cb\ua7b1聆尩굿\uecf5ꪻ疜\ue8b2빮빅\ue2da䟆\ue78f㱉泦㭠瀵컦刓嗏 糦嗮\uf329ﻧ\udd42䞂鎿鐳鰫묆颒錹睸ꯃ慚총," +
-                " 駆퉐庺\u2293\ued0d䴻ꎤ槔横靯ढ\u0dd7\u0b7d袬渀䃼匀낛띆ﱓ㝏ᯖ ͺ\u124eꪪ\u0a49䠬㲜\ue852ډұ\ue28c葒ලȞ," +
-                " \uab6e䝀㥑\u2e64년믱젯䁅偘滞\ue89bᖒ㿘燔ꎿ趵ꑼ딀㙴 쳮陜阏顓\u2320쓎狙쟒㕯뚗,  旞\u2613," +
-                " 죴\u0d47㚏帇퀯\uebc7晸犋鈖ꤥ쿕\u0f1b\u2eea\uf800ᓑ濙䢗瞁퓰诨갇 梏\u2684\ue40c\u2b83葆а팗, 뗢撻뵪 ," +
-                " 濆엶䩵ᣞ\ud992\u2f79滔菆\ufe0d砩\udad6昍 헑䈏닁\ue649គ姕\u1069\u2f0d듂狚\ue672団䅁悲枧\u1b56偰摡泈\u1a60㭍" +
-                "\u2af8운\u2026桶뼄ቾᶝ睗㥐厖剹ᥔ㻶\uf3a8춮茞\ue531칗ᳯ\u073d飰\ue480\ua6f4\u19b1\u1739," +
-                " \u3243\u4df4\u2a33䨺 糘ﱜ\u22a3䐄굲ﱷ\u3291\uf28d즓\uf27f䝨雩\uecb1ᡄ\ude17," +
-                " 訾ꉹ\uaa4d藆\ue34d\uf5a2됇\ud9aa撊홳價\u2673휅\udee2 甍뮣民皑\u291e秳ʵ솄퍆," +
-                " 滎\u25a0爑 䌚\ufe3d춢후Ꜯ卩鳰阘细\ue9d5\ude3a显鏌㓆갭\uda6cᎳ\ua9f4쉙嘂\uf6a5䜐禎\u0529K쬋壵\ue61e쵕ᶑ" +
-                "\uf04f,  씅潵겧\u0f24㺸則穣클䜜걓绡缂敉勪\ue498溯7익Ᏺ㥥㖃ど츪퇢㴯ᚅ\u1deb齞杁鱼欎䌕렔횋葑䎌," +
-                " \ue59b聾ﶯ\uddd7ぜＵნ\ue266耒뎀\u2153\uf7cdꜰ耕 \ud847," +
-                " 檌裤㻞椼憊ⴋ\u21ba\uec15檮滙\u0cec巶먛㺱\udbf4蠛玌疟ᒚⴓ\u2818\u2b5d\ud85cⲄ뤀\u0361ꚸ璎祍忢\u17cd\uddcf溑鲴" +
-                "ᇥ\u3314ﮀ ﰀ\u2572\ueea7䳰뼴Ⴃ跁涫," +
-                " 솔\u2fb7 嗏\ue7db榜ᖨ鯊\u2ac8鸭\ue55c\ufe49豙\u302bᨋ奀ꂎ惶\u2669喒谁\u1712\u08ca\uf1d1坏餻䌕ꋋ礰똗銳鼭" +
-                "\ue60dዿ," +
-                " \ufaf4\ua9e6톞\uf7bd쩷줋飅\u10ce錰ﻈ벬\1 鹢ᐦ盠摅䣵曎똮梩\ue387\u2513墼ᒊ\u3016\udae9識ねꨋ\uf684洓䘃," +
-                "  诉氷\ue85a\u21a5퇢頣\uec9b쬋赶砖攝棩, 酔ꓷ䅣杷ﶤ憐㛳紮暓넮腛\u3278㭚滎ᠥ䕉\uf022泱覔밁꾲ꇀ\uea21騘纼\u32c7" +
-                "\u0c81\uf05d쿙\uef96挺\ue221愗 铟䙡潛셿항삁, 祱뉈\u07bf探㷖轨 誧\ueb82颌\uf239젝滺\ueb60첇深沢䑍썦ᒡ壞椶" +
-                "\ue840\ue357\u1a5b\ue7e0ℵ偍\u009c쐯胚锗뢡㭯澒驙氘䟥蓪촞\ue63e\uf8e3魘䡄鱆䦑쨯شၚ瑫鋒헼\ufb0fᴈ仪漨함䘁\ua9ca" +
-                "쫻\ue3b0鸐铓\uf155\udf3e\u2bdbᴴ\ueae1䍽, 냥퇐\u2236펶ߙ톯窱\u1fed离僾냸\u0a7a\ue95cᑌ捖 矱땰叕壟浪띭타嫱뗏먊몿" +
-                "蟪礟艮Ū\u1063氶滣㸸\ue367\udfedꔲ鵈ꚇ죬䬍ꦟ, 잋 , ...]",
-                "{ =3631, 啲 =3, 招 =3,  쟿=3,  쥧=3, 塬 =2, 謸 =2, 뇃 =2, ߏ =2,  \u2f1e=2}",
-                32.02361800002122
-        );
+        stringsWithChar_char_helper(3, 'b', "RandomProvider_stringsWithChar_char_i", 3.0022749999853757);
+        stringsWithChar_char_helper(5, '#', "RandomProvider_stringsWithChar_char_ii", 5.005778999999451);
+        stringsWithChar_char_helper(32, ' ', "RandomProvider_stringsWithChar_char_iii", 32.02361800002122);
+
         stringsWithChar_char_fail_helper(2, ' ');
     }
 
