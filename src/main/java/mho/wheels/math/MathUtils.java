@@ -760,10 +760,32 @@ public final class MathUtils {
         return n;
     }
 
+    /**
+     * Determines whether a number is prime. 1 is not prime (it has zero prime factors).
+     *
+     * <ul>
+     *  <li>{@code n} must be positive.</li>
+     *  <li>The result may be either {@code boolean}.</li>
+     * </ul>
+     *
+     * @param n a number
+     * @return whether {@code n} is prime
+     */
     public static boolean isPrime(int n) {
         return n != 1 && smallestPrimeFactor(n) == n;
     }
 
+    /**
+     * Determines whether a number is prime. 1 is not prime (it has zero prime factors).
+     *
+     * <ul>
+     *  <li>{@code n} must be positive.</li>
+     *  <li>The result may be either {@code boolean}.</li>
+     * </ul>
+     *
+     * @param n a number
+     * @return whether {@code n} is prime
+     */
     public static boolean isPrime(@NotNull BigInteger n) {
         return !n.equals(BigInteger.ONE) && smallestPrimeFactor(n).equals(n);
     }

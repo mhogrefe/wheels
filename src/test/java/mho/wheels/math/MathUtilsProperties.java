@@ -65,6 +65,9 @@ public class MathUtilsProperties extends TestProperties {
         propertiesSmallestPrimeFactor_int();
         compareImplementationsSmallestPrimeFactor_int();
         propertiesSmallestPrimeFactor_BigInteger();
+        propertiesIsPrime_int();
+        compareImplementationsIsPrime_int();
+        propertiesIsPrime_BigInteger();
     }
 
     private static int gcd_int_int_simplest(int x, int y) {
@@ -929,7 +932,7 @@ public class MathUtilsProperties extends TestProperties {
         compareImplementations("ceilingRoot(int, BigInteger)", take(LIMIT, ps), functions);
     }
 
-    private static int smallestPrimeFactor_simplest(int n) {
+    private static int smallestPrimeFactor_int_simplest(int n) {
         if (n < 2) {
             throw new IllegalArgumentException("n must be at least 2. Invalid n: " + n);
         }
@@ -937,6 +940,27 @@ public class MathUtilsProperties extends TestProperties {
             if (n % i == 0) return i;
         }
         throw new IllegalStateException("unreachable");
+    }
+
+    private static int smallestPrimeFactor_int_alt1(int n) {
+        if (n < 2) {
+            throw new IllegalArgumentException("n must be at least 2. Invalid n: " + n);
+        }
+        int limit = Math.min(n - 1, ceilingRoot(2, BigInteger.valueOf(n)).intValueExact());
+        for (int i = 2; i <= limit; i++) {
+            if (n % i == 0) return i;
+        }
+        return n;
+    }
+
+    private static int smallestPrimeFactor_int_alt2(int n) {
+        if (n < 2) {
+            throw new IllegalArgumentException("n must be at least 2. Invalid n: " + n);
+        }
+        for (int i = 2; i * i <= n; i++) {
+            if (n % i == 0) return i;
+        }
+        return n;
     }
 
     private void propertiesSmallestPrimeFactor_int() {
@@ -948,7 +972,10 @@ public class MathUtilsProperties extends TestProperties {
         }
 
         for (int i : take(LIMIT, P.withScale(65536).rangeUpGeometric(2))) {
-            assertEquals(i, smallestPrimeFactor_simplest(i), smallestPrimeFactor(i));
+            int spf = smallestPrimeFactor(i);
+            assertEquals(i, smallestPrimeFactor_int_simplest(i), spf);
+            assertEquals(i, smallestPrimeFactor_int_alt1(i), spf);
+            assertEquals(i, smallestPrimeFactor_int_alt2(i), spf);
         }
 
         for (int i : take(LIMIT, filterInfinite(MathUtils::isPrime, P.rangeUp(2)))) {
@@ -966,7 +993,9 @@ public class MathUtilsProperties extends TestProperties {
     private void compareImplementationsSmallestPrimeFactor_int() {
         smallestPrimeFactor(3); // force sieve initialization
         Map<String, Function<Integer, Integer>> functions = new LinkedHashMap<>();
-        functions.put("simplest", MathUtilsProperties::smallestPrimeFactor_simplest);
+        functions.put("simplest", MathUtilsProperties::smallestPrimeFactor_int_simplest);
+        functions.put("alt1", MathUtilsProperties::smallestPrimeFactor_int_alt1);
+        functions.put("alt2", MathUtilsProperties::smallestPrimeFactor_int_alt2);
         functions.put("standard", MathUtils::smallestPrimeFactor);
         Iterable<Integer> is = P.withScale(65536).rangeUpGeometric(2);
         compareImplementations("smallestPrimeFactor(int)", take(LIMIT, is), functions);
@@ -988,6 +1017,85 @@ public class MathUtilsProperties extends TestProperties {
         for (BigInteger i : take(LIMIT, P.rangeDown(IntegerUtils.NEGATIVE_ONE))) {
             try {
                 smallestPrimeFactor(i);
+                fail(i);
+            } catch (IllegalArgumentException ignored) {}
+        }
+    }
+
+    private static boolean isPrime_int_simplest(int n) {
+        if (n < 1) {
+            throw new IllegalArgumentException("n must be positive. Invalid n: " + n);
+        }
+        if (n == 1) return false;
+        for (int i = 2; i < n; i++) {
+            if (n % i == 0) return false;
+        }
+        return true;
+    }
+
+    private static boolean isPrime_int_alt1(int n) {
+        if (n < 1) {
+            throw new IllegalArgumentException("n must be positive. Invalid n: " + n);
+        }
+        if (n == 1) return false;
+        int limit = Math.min(n - 1, ceilingRoot(2, BigInteger.valueOf(n)).intValueExact());
+        for (int i = 2; i <= limit; i++) {
+            if (n % i == 0) return false;
+        }
+        return true;
+    }
+
+    private static boolean isPrime_int_alt2(int n) {
+        if (n < 1) {
+            throw new IllegalArgumentException("n must be positive. Invalid n: " + n);
+        }
+        if (n == 1) return false;
+        for (int i = 2; i * i <= n; i++) {
+            if (n % i == 0) return false;
+        }
+        return true;
+    }
+
+    private void propertiesIsPrime_int() {
+        initialize("isPrime(int)");
+        for (int i : take(LIMIT, P.positiveIntegers())) {
+            isPrime(i);
+        }
+
+        for (int i : take(LIMIT, P.withScale(65536).rangeUpGeometric(2))) {
+            boolean isPrime = isPrime(i);
+            assertEquals(i, isPrime_int_simplest(i), isPrime);
+            assertEquals(i, isPrime_int_alt1(i), isPrime);
+            assertEquals(i, isPrime_int_alt2(i), isPrime);
+        }
+
+        for (int i : take(LIMIT, P.withElement(0, P.negativeIntegers()))) {
+            try {
+                isPrime(i);
+                fail(i);
+            } catch (IllegalArgumentException ignored) {}
+        }
+    }
+
+    private void compareImplementationsIsPrime_int() {
+        smallestPrimeFactor(3); // force sieve initialization
+        Map<String, Function<Integer, Boolean>> functions = new LinkedHashMap<>();
+        functions.put("simplest", MathUtilsProperties::isPrime_int_simplest);
+        functions.put("alt1", MathUtilsProperties::isPrime_int_alt1);
+        functions.put("alt2", MathUtilsProperties::isPrime_int_alt2);
+        functions.put("standard", MathUtils::isPrime);
+        compareImplementations("isPrime(int)", take(LIMIT, P.withScale(65536).positiveIntegersGeometric()), functions);
+    }
+
+    private void propertiesIsPrime_BigInteger() {
+        initialize("isPrime(BigInteger)");
+        for (BigInteger i : take(LIMIT, P.withScale(16).rangeUp(IntegerUtils.TWO))) {
+            isPrime(i);
+        }
+
+        for (BigInteger i : take(LIMIT, P.withElement(BigInteger.ZERO, P.negativeBigIntegers()))) {
+            try {
+                isPrime(i);
                 fail(i);
             } catch (IllegalArgumentException ignored) {}
         }

@@ -223,4 +223,16 @@ public class MathUtilsDemos extends Demos {
             System.out.println("smallestPrimeFactor(" + i + ") = " + smallestPrimeFactor(i));
         }
     }
+
+    private void demoIsPrime_int() {
+        for (int i : take(LIMIT, P.positiveIntegers())) {
+            System.out.println(i + " is " + (isPrime(i) ? "" : "not ") + "prime");
+        }
+    }
+
+    private void demoIsPrime_BigInteger() {
+        for (BigInteger i : take(LIMIT, P.withScale(12).positiveBigIntegers())) {
+            System.out.println(i + " is " + (isPrime(i) ? "" : "not ") + "prime");
+        }
+    }
 }

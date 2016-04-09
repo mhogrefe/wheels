@@ -718,6 +718,79 @@ public class MathUtilsTest {
         smallestPrimeFactor_BigInteger_fail_helper("-1");
     }
 
+    private static void isPrime_int_helper(int input, boolean output) {
+        aeq(isPrime(input), output);
+    }
+
+    private static void isPrime_int_fail_helper(int input) {
+        try {
+            isPrime(input);
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+    }
+
+    @Test
+    public void testIsPrime_int() {
+        isPrime_int_helper(1, false);
+        isPrime_int_helper(2, true);
+        isPrime_int_helper(3, true);
+        isPrime_int_helper(4, false);
+        isPrime_int_helper(5, true);
+        isPrime_int_helper(6, false);
+        isPrime_int_helper(7, true);
+        isPrime_int_helper(8, false);
+        isPrime_int_helper(9, false);
+        isPrime_int_helper(10, false);
+        isPrime_int_helper(1807, false);
+        isPrime_int_helper(6221671, true);
+        isPrime_int_helper(65533, false);
+        isPrime_int_helper(2147483647, true);
+        isPrime_int_helper(2147483643, false);
+        isPrime_int_helper(2147483641, false);
+
+        isPrime_int_fail_helper(0);
+        isPrime_int_fail_helper(-1);
+    }
+
+    private static void isPrime_BigInteger_helper(@NotNull String input, boolean output) {
+        aeq(isPrime(Readers.readBigInteger(input).get()), output);
+    }
+
+    private static void isPrime_BigInteger_fail_helper(@NotNull String input) {
+        try {
+            isPrime(Readers.readBigInteger(input).get());
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+    }
+
+    @Test
+    public void testIsPrime_BigInteger() {
+        isPrime_BigInteger_helper("1", false);
+        isPrime_BigInteger_helper("2", true);
+        isPrime_BigInteger_helper("3", true);
+        isPrime_BigInteger_helper("4", false);
+        isPrime_BigInteger_helper("5", true);
+        isPrime_BigInteger_helper("6", false);
+        isPrime_BigInteger_helper("7", true);
+        isPrime_BigInteger_helper("8", false);
+        isPrime_BigInteger_helper("9", false);
+        isPrime_BigInteger_helper("10", false);
+        isPrime_BigInteger_helper("1807", false);
+        isPrime_BigInteger_helper("6221671", true);
+        isPrime_BigInteger_helper("65533", false);
+        isPrime_BigInteger_helper("2147483647", true);
+        isPrime_BigInteger_helper("2147483643", false);
+        isPrime_BigInteger_helper("2147483641", false);
+        isPrime_BigInteger_helper("2147483649", false);
+        isPrime_BigInteger_helper("2147483659", true);
+        isPrime_BigInteger_helper("1000000000039", true);
+        isPrime_BigInteger_helper("1000000000000037", true);
+        isPrime_BigInteger_helper("1000000000000039", false);
+
+        isPrime_BigInteger_fail_helper("0");
+        isPrime_BigInteger_fail_helper("-1");
+    }
+
     private static @NotNull List<BigInteger> readBigIntegerList(@NotNull String s) {
         return Readers.readList(Readers::readBigInteger).apply(s).get();
     }
