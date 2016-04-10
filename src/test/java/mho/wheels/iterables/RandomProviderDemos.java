@@ -1,4 +1,4 @@
-package mho.wheels.iterables.randomProvider;
+package mho.wheels.iterables;
 
 import mho.wheels.iterables.IterableProvider;
 import mho.wheels.iterables.IterableUtils;

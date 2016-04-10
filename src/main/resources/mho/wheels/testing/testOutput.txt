@@ -80338,3 +80338,1476 @@ RandomProvider_stringsWithChar_char_iii map 10 q
 2: '\u586c '
 2: '\u8b38 '
 2: '\ub1c3 '
+
+RandomProvider_subsetsWithElement_i list 21
+[0, 2]
+[0, 1, 2, 3]
+[0]
+[0]
+[0]
+[0, 2, 3]
+[0]
+[0]
+[0, 1, 2]
+[0, 3]
+[0]
+[0]
+[0, 2]
+[0, 1, 3]
+[0, 3]
+[0, 3]
+[0]
+[0, 3]
+[0]
+[0]
+...
+
+RandomProvider_subsetsWithElement_i map 8
+499507: [0]
+100200: [0, 3]
+100121: [0, 1]
+99865: [0, 2]
+50269: [0, 2, 3]
+50235: [0, 1, 2, 3]
+50160: [0, 1, 2]
+49643: [0, 1, 3]
+
+RandomProvider_subsetsWithElement_ii list 21
+[-5, 2]
+[-5, 2]
+[-5, 1, 2, 3]
+[-5, 1]
+[-5, 1]
+[-5, 1, 2, 3]
+[-5, 2, 3]
+[-5, 1, 2, 3]
+[-5]
+[-5, 1, 2, 3]
+[-5, 1, 3]
+[-5, 1, 3]
+[-5, 1, 2, 3]
+[-5]
+[-5]
+[-5, 1, 3]
+[-5, 1]
+[-5, 1, 3]
+[-5]
+[-5, 1, 3]
+...
+
+RandomProvider_subsetsWithElement_ii map 8
+332308: [-5, 1, 2, 3]
+199912: [-5]
+83429: [-5, 2, 3]
+82869: [-5, 1, 3]
+82865: [-5, 1, 2]
+72904: [-5, 3]
+72875: [-5, 1]
+72838: [-5, 2]
+
+RandomProvider_subsetsWithElement_iii list 21
+[1, 2, 3]
+[1, 2, 3]
+[1, 2, 3]
+[1, 2, 3]
+[1, 2, 3]
+[1, 2, 3]
+[1, 2, 3]
+[3]
+[1, 2, 3]
+[1, 2, 3]
+[2, 3]
+[1, 2, 3]
+[1, 2, 3]
+[1, 2, 3]
+[1, 2, 3]
+[1, 2, 3]
+[1, 2, 3]
+[1, 2, 3]
+[1, 2, 3]
+[1, 2, 3]
+...
+
+RandomProvider_subsetsWithElement_iii map 4
+909921: [1, 2, 3]
+31389: [3]
+29542: [1, 3]
+29148: [2, 3]
+
+RandomProvider_subsetsWithElement_iv list 21
+[0, 2]
+[0]
+[0, 1, 2, 4]
+[0, 1, 2]
+[0, 4]
+[0, 4]
+[0, 4]
+[0, 1, 2]
+[0, 2]
+[0]
+[0]
+[0, 2]
+[0, 4]
+[0, 2]
+[0]
+[0, 1]
+[0, 2]
+[0]
+[0, 2]
+[0]
+...
+
+RandomProvider_subsetsWithElement_iv map 8
+499557: [0]
+167319: [0, 2]
+71464: [0, 4]
+71430: [0, 1]
+61773: [0, 1, 2]
+61661: [0, 2, 4]
+42991: [0, 1, 2, 4]
+23805: [0, 1, 4]
+
+RandomProvider_subsetsWithElement_v list 21
+[-5, 2]
+[-5, 2, 4]
+[-5, 1, 2, 4]
+[-5, 1, 2]
+[-5]
+[-5]
+[-5, 2]
+[-5, 2, 4]
+[-5, 1, 2]
+[-5, 1, 2, 4]
+[-5, 2, 4]
+[-5, 1, 2, 4]
+[-5, 2]
+[-5]
+[-5, 1, 2, 4]
+[-5, 1, 2]
+[-5, 1, 2, 4]
+[-5, 4]
+[-5]
+[-5, 2, 4]
+...
+
+RandomProvider_subsetsWithElement_v map 8
+300718: [-5, 1, 2, 4]
+200010: [-5]
+133219: [-5, 2]
+116740: [-5, 2, 4]
+116152: [-5, 1, 2]
+49925: [-5, 1]
+49800: [-5, 4]
+33436: [-5, 1, 4]
+
+RandomProvider_subsetsWithElement_vi list 21
+[1, 2, 3, 4]
+[1, 2, 3, 4]
+[1, 2, 3, 4]
+[1, 2, 3]
+[1, 2, 3, 4]
+[3]
+[1, 2, 3, 4]
+[3]
+[1, 2, 3, 4]
+[1, 2, 3, 4]
+[2, 3]
+[2, 3]
+[1, 2, 3, 4]
+[1, 2, 3, 4]
+[1, 2, 3, 4]
+[1, 2, 3, 4]
+[1, 2, 3, 4]
+[1, 2, 3, 4]
+[2, 3]
+[1, 2, 3, 4]
+...
+
+RandomProvider_subsetsWithElement_vi map 8
+823110: [1, 2, 3, 4]
+43609: [1, 2, 3]
+43361: [2, 3, 4]
+31317: [3]
+29307: [2, 3]
+10032: [1, 3]
+9935: [3, 4]
+9329: [1, 3, 4]
+
+RandomProvider_subsetsWithElement_vii list 21
+[0, 1, 2, 3, 4, 7, 10]
+[0]
+[0, 7]
+[0, 5]
+[0]
+[0]
+[0]
+[0]
+[0]
+[0]
+[0]
+[0]
+[0, 3]
+[0, 5, 6, 9, 15]
+[0, 12]
+[0]
+[0]
+[0]
+[0]
+[0]
+...
+
+RandomProvider_subsetsWithElement_vii map 10
+499603: [0]
+71342: [0, 1]
+51658: [0, 2]
+37660: [0, 3]
+27749: [0, 4]
+20802: [0, 5]
+16906: [0, 1, 2]
+15214: [0, 6]
+12259: [0, 1, 3]
+11373: [0, 7]
+
+RandomProvider_subsetsWithElement_viii list 21
+[-5, 7]
+[-5, 1, 2, 3, 4, 7, 8]
+[-5, 1, 6, 8, 12, 15]
+[-5, 2]
+[-5, 1, 2, 3, 5, 6, 10, 13]
+[-5]
+[-5, 1, 2, 3, 4, 6, 12]
+[-5]
+[-5]
+[-5]
+[-5, 1, 2]
+[-5, 3, 5]
+[-5, 4]
+[-5, 1, 4, 6, 7, 9]
+[-5]
+[-5, 1, 2, 3, 5]
+[-5, 3, 7, 13]
+[-5, 4, 10]
+[-5, 1, 2, 3, 4, 17, 19, 22]
+[-5]
+...
+
+RandomProvider_subsetsWithElement_viii map 10
+199867: [-5]
+49980: [-5, 1]
+35180: [-5, 2]
+25191: [-5, 3]
+22543: [-5, 1, 2]
+18409: [-5, 4]
+15351: [-5, 1, 3]
+13445: [-5, 5]
+13147: [-5, 1, 2, 3]
+11025: [-5, 1, 4]
+
+RandomProvider_subsetsWithElement_ix list 21
+[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 13, 15]
+[1, 2, 3, 4, 5, 6, 7, 9]
+[1, 2, 3, 4, 5, 7, 10, 13]
+[1, 2, 3, 4, 5, 6, 7, 8, 10, 13, 14, 17, 19, 20]
+[1, 2, 3, 4, 5, 6, 7, 9, 10, 11, 18]
+[1, 2, 3, 4, 5, 8, 10, 13]
+[1, 2, 3, 4, 7, 9, 10, 15]
+[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 13, 14, 15, 17]
+[1, 2, 3, 4, 6, 7, 11]
+[1, 2, 3, 8]
+[1, 2, 3, 6, 7, 10, 11]
+[1, 2, 3, 7, 8]
+[1, 2, 3, 4, 5, 6, 8, 10, 13]
+[1, 2, 3, 5, 6, 7, 8, 9, 12, 16]
+[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14, 15]
+[1, 2, 3, 4, 5, 6, 7, 8, 10, 16, 17]
+[1, 2, 3, 4, 5, 8, 11]
+[1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12]
+[1, 2, 3, 4, 16]
+[1, 2, 3, 4, 5, 6]
+...
+
+RandomProvider_subsetsWithElement_ix map 10
+31419: [3]
+12349: [1, 3]
+9638: [1, 2, 3]
+8232: [2, 3]
+7495: [1, 2, 3, 4, 5, 6, 7, 8, 9]
+7409: [1, 2, 3, 4]
+7163: [1, 2, 3, 4, 5, 6, 7, 8]
+6981: [1, 2, 3, 4, 5, 6, 7]
+6925: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+6673: [1, 2, 3, 4, 5]
+
+RandomProvider_subsetsWithElement_x list 21
+[0, 1]
+[0, 1]
+[0, 1]
+[0, 1]
+[0, 1]
+[0]
+[0, 1]
+[0, 1]
+[0]
+[0]
+[0, 1]
+[0, 1]
+[0, 1]
+[0]
+[0, 1]
+[0]
+[0]
+[0, 1]
+[0, 1]
+[0]
+...
+
+RandomProvider_subsetsWithElement_x map 2
+500875: [0, 1]
+499125: [0]
+
+RandomProvider_subsetsWithElement_xi list 21
+[-5, 1]
+[-5, 1]
+[-5, 1]
+[-5, 1]
+[-5, 1]
+[-5]
+[-5, 1]
+[-5]
+[-5, 1]
+[-5, 1]
+[-5, 1]
+[-5, 1]
+[-5, 1]
+[-5, 1]
+[-5, 1]
+[-5, 1]
+[-5]
+[-5, 1]
+[-5, 1]
+[-5, 1]
+...
+
+RandomProvider_subsetsWithElement_xi map 2
+799806: [-5, 1]
+200194: [-5]
+
+RandomProvider_subsetsWithElement_xii list 21
+[1, 3]
+[1, 3]
+[1, 3]
+[1, 3]
+[1, 3]
+[1, 3]
+[1, 3]
+[1, 3]
+[1, 3]
+[1, 3]
+[1, 3]
+[1, 3]
+[1, 3]
+[1, 3]
+[1, 3]
+[1, 3]
+[1, 3]
+[1, 3]
+[1, 3]
+[1, 3]
+...
+
+RandomProvider_subsetsWithElement_xii map 2
+968801: [1, 3]
+31199: [3]
+
+RandomProvider_subsetsWithChar_char_String_i list 21
+b
+bd
+abcd
+b
+abcd
+bd
+bd
+bd
+abc
+bc
+b
+bc
+bd
+b
+b
+b
+bd
+bc
+b
+bc
+...
+
+RandomProvider_subsetsWithChar_char_String_i map 8
+499234: b
+100943: bc
+100118: ab
+99936: bd
+50039: abcd
+49991: abc
+49945: abd
+49794: bcd
+
+RandomProvider_subsetsWithChar_char_String_ii list 21
+#b
+#bd
+#abcd
+#ab
+#
+#
+#c
+#bcd
+#abc
+#abcd
+#bcd
+#abcd
+#c
+#
+#acd
+#ac
+#abcd
+#d
+#
+#cd
+...
+
+RandomProvider_subsetsWithChar_char_String_ii map 10
+200356: #abcd
+200010: #
+50436: #acd
+50299: #bcd
+50105: #c
+49926: #abd
+49925: #a
+49902: #b
+49828: #abc
+49800: #d
+
+RandomProvider_subsetsWithChar_char_String_iii list 21 q
+' abcd'
+' abcd'
+' abcd'
+' abc'
+' abcd'
+' '
+' abcd'
+' '
+' abcd'
+' acd'
+' c'
+' c'
+' abcd'
+' abcd'
+' abcd'
+' abcd'
+' abcd'
+' abcd'
+' bc'
+' abcd'
+'...'
+
+RandomProvider_subsetsWithChar_char_String_iii map 10 q
+773484: ' abcd'
+31317: ' '
+25051: ' abc'
+24894: ' abd'
+24763: ' bcd'
+24732: ' acd'
+10032: ' a'
+9969: ' b'
+9935: ' d'
+9893: ' c'
+
+RandomProvider_subsetsWithChar_char_String_iv list 21
+ab
+b
+ab
+ab
+ab
+ab
+ab
+ab
+ab
+b
+b
+ab
+ab
+ab
+b
+ab
+ab
+b
+ab
+b
+...
+
+RandomProvider_subsetsWithChar_char_String_iv map 2
+500443: ab
+499557: b
+
+RandomProvider_subsetsWithChar_char_String_v list 21
+#a
+#a
+#a
+#a
+#
+#
+#a
+#a
+#a
+#a
+#a
+#a
+#a
+#
+#a
+#a
+#a
+#a
+#
+#a
+...
+
+RandomProvider_subsetsWithChar_char_String_v map 2
+799990: #a
+200010: #
+
+RandomProvider_subsetsWithChar_char_String_vi list 21 q
+' a'
+' a'
+' a'
+' a'
+' a'
+' '
+' a'
+' '
+' a'
+' a'
+' a'
+' a'
+' a'
+' a'
+' a'
+' a'
+' a'
+' a'
+' a'
+' a'
+'...'
+
+RandomProvider_subsetsWithChar_char_String_vi map 2 q
+968683: ' a'
+31317: ' '
+
+RandomProvider_subsetsWithChar_char_String_vii list 21
+bps
+bips
+b
+bps
+bis
+bs
+b
+b
+bs
+bs
+bs
+bs
+bi
+b
+bi
+b
+b
+b
+b
+b
+...
+
+RandomProvider_subsetsWithChar_char_String_vii map 10
+499907: b
+111412: bs
+111205: bi
+63811: bis
+49643: bp
+28080: bips
+26542: bps
+26154: bip
+24053: Mb
+12372: Mbis
+
+RandomProvider_subsetsWithChar_char_String_viii list 21
+#ps
+#i
+#Mips
+#p
+#ps
+#s
+#Mips
+#s
+#Mis
+#s
+#Mis
+#ips
+#
+#Mips
+#s
+#Mips
+#
+#
+#Mis
+#Ms
+...
+
+RandomProvider_subsetsWithChar_char_String_viii map 10
+199852: #
+143859: #ips
+132111: #Mips
+113744: #is
+82185: #s
+81806: #i
+51927: #Mis
+38829: #ps
+38579: #ip
+33990: #p
+
+RandomProvider_subsetsWithChar_char_String_ix list 21 q
+' Mips'
+' ips'
+' Mis'
+' ips'
+' '
+' s'
+' Mips'
+' Mips'
+' ips'
+' i'
+' Mips'
+' is'
+' Mis'
+' Mips'
+' Mips'
+' Mips'
+' ips'
+' is'
+' s'
+' ips'
+'...'
+
+RandomProvider_subsetsWithChar_char_String_ix map 10 q
+679742: ' Mips'
+126854: ' ips'
+40560: ' is'
+32736: ' Mis'
+31294: ' '
+16993: ' s'
+16988: ' i'
+11342: ' ip'
+11221: ' ps'
+6667: ' p'
+
+RandomProvider_subsetsWithChar_char_i list 21
+b\u03b5\u5629
+b
+b\u03e1\u19dc\u42bf\u4bcf\u523f\u7f56\ubab1\udd15\ufca6
+b\u1b1c\u212a\u313e
+b\u3d4f
+b\u3a77
+b\u7eab
+b\u4772\u5764
+b\u7416
+b
+b
+b\uea45
+b\u2b63
+b\u9e05
+b
+b\uee1c
+b\u117a
+b
+b\u41fa
+b
+...
+
+RandomProvider_subsetsWithChar_char_i map 10
+499556: b
+15: b\uf59a
+14: b\u0f5b
+14: b\u5314
+14: b\u56b7
+14: b\u91c1
+13: b\u20b5
+13: b\u34ec
+13: b\u50f5
+13: b\u7e16
+
+RandomProvider_subsetsWithChar_char_ii list 21
+#\u31e5\u5629\u9afd
+#\u80a3\udd15
+#\u117a\u1918\u2b63\u33b2\u41fa\u7156\u8bef\u8f2e\u9153\u9e02\u9e05\ub43d\ubab1\uce86\uee1c\uf637
+#\u5168\ue9fd
+#
+#
+#\u899a
+#\u122e\u5c29\uaabb\uad7f\uecf5
+#\u7035\u759c\ucee6
+#\u061a\u2e94\u3f56\u4954\u5213\u55ee\u58d9\u7a68\u7ce6\u9f27\ud52b\ud540\udd82\uf329\ufdbc\ufee7
+#\u0e77\u615a\uabc3\ucd1d\udd42
+#\u2293\u4d3b\u5eba\u69d4\u6a2a\u976f\u99c6\ua3a4\ud250\ued0d\uf36b
+#\u0922
+#
+#\u1452\u40fc\u62f7\ub9cc
+#\u037a\u124e\u2506\u56c0\ue68e
+#\u453e\u552f\u5d82\u6e51\u7302\u8e59\uaaaa\ucdf4\ud11e\uead1\ufb8d
+#\u7527
+#
+#\u1592\u6ede\uab6e\ue89b
+...
+
+RandomProvider_subsetsWithChar_char_ii map 10
+200002: #
+12: #\u68e6
+11: #\u2043
+11: #\u519c
+10: #\u32a0
+10: #\u3f5a
+10: #\ub3e7
+10: #\ub3f9
+10: #\ucf13
+10: #\ue373
+
+RandomProvider_subsetsWithChar_char_iii list 21 q
+' \u0713\u117a\u122e\u1918\u28de\u2aec\u2b63\u2e24\u33b2\u358a\u3b60\u3c49\u41fa\u47c6\u4c78\u5168\u5629\u5c29\u6ce6\u7035\u7156\u759c\u899a\u8bef\u8f2e\u9112\u9153\u9e02\u9e05\ua7b1\uaabb\uaaf0\uad7f\ub3d8\ub43d\ub76f\ube45\ube6e\uc9ce\uce86\ucee6\ue2da\ue5cb\ue78f\ue8b2\ue9fd\uecf5\uee1c\uf637\uf878\uf9b0\uff03'
+' B\u0964\u0d5b\u0e77\u1366\u1d60\u2a57\u337d\u3f7f\u437e\u4782\u5213\u55ee\u5f9c\u615a\u7778\u7ce6\u7ddc\u840b\u8a6a\u8a75\u9339\u93bf\u9433\u9892\u9c2b\ua16a\uabc3\ubb06\uc01d\ucaa1\ucd1d\ud8ca\udcc6\udd42\udec6\uf21b\uf329\uf36b\ufee7'
+' \u1bd6\u202c\u374f\u40fc\u49a3\u5116\u5300\u99c6\ub09b\ub746\ue9c6\uea55\ufc53'
+' \u021e\u037a\u04b1\u0689\u0a49\u0dbd\u124e\u15f6\u3c9c\u482c\u8452\u86d5\uaaaa\ue28c\ue852'
+' \u1592\u2e64\u3951\u3fd8\u4045\u4740\u4bbc\u5058\u6ede\u71d4\u8db5\ua3bf\uab6e\ub144\ubbf1\uc82f\ue89b'
+' '
+' \u1152\u2320\u2606\u32b0\u356f\u5a5c\u72d9\u960f\u965c\u9835\u9853\ua39a\ua47c\uada5\ub697\uc1fb\uc4ce\uc7d2\uccee'
+' '
+' \u0d47\u0f1b\u14d1\u2eea\u368f\u4897\u5e07\u6678\u6fd9\u728b\u7781\u8be8\u9216\ua925\uac07\ub332\uc8f4\ucfd5\ud02f\ud4f0\uebc7\uede9\uf800'
+' \u0430\u2684\u2b83\u688f\u8446\ua482\ud317\ud4ac\ue40c'
+' \uadba'
+' \u7fbe\ub5e2'
+' \u073d\u0aa9\u0b86\u0b8c\u1069\u127e\u1739\u1782\u1954\u19b1\u1a60\u1aba\u1b56\u1cef\u1d9d\u2026\u22a3\u2a33\u2af8\u2f0d\u3243\u3291\u3950\u3b4d\u3ef6\u3f30\u3fb8\u4141\u420f\u4404\u4768\u49bc\u4a3a\u4df4\u4e43\u4f92\u5070\u5279\u5396\u53f5\u547c\u56e3\u59d5\u5b35\u60b2\u6311\u6461\u67a7\u67ff\u6876\u6cc8\u72da\u7757\u7a80\u7bb4\u7cd8\u831e\u8555\u95a6\u9846\u98f0\u9928\u9cd9\u9cf8\ua6f4\ua722\ua7af\uabc8\uad72\ub0e5\ub182\ub2c1\ub4c2\ubf04\ubf81\uc001\uc073\uc479\uc6b4\uc947\uc993\ucc72\ucdae\uce57\ud0f0\ud5d1\ud845\ude93\ue10d\ue480\ue531\ue649\ue672\uecda\ued1a\uf27f\uf28d\uf351\uf3a8\ufc5c\ufc77'
+' \u02b5\u06ee\u0712\u07aa\u0875\u17cb\u1c01\u1fce\u25a0\u291e\u2e50\u2fbe\u31b2\u35e8\u367f\u388d\u4481\u4489\u561f\u5ecf\u6c11\u6ece\u7009\u7211\u750d\u7691\u79f3\u7a14\u81d9\u8278\u82a6\u85df\u8a42\u8b33\u96e9\u9814\ua837\ub1bf\ub1d0\uba56\ubba3\ubca7\uc184\ud18b\ud346\udde1\ue22c\uecda\uee3a\uee84\uf6cd'
+' K\u0529\u13b3\u1d91\u34c6\u431a\u4710\u5369\u5602\u58f5\u64cd\u663e\u798e\u7ec6\u93cc\u9618\u9cf0\ua72e\ua9f4\uac2d\ub100\uc259\ucb0b\ucd55\ucda2\ud6c4\uda6c\ude3a\ue61e\ue9d5\uf04f\uf6a5\ufe3d'
+' 7\u03ee\u0c00\u0f24\u10dc\u13f2\u1685\u1b31\u1deb\u2153\u305c\u3069\u3583\u3965\u3d2f\u3eb8\u4315\u438c\u471c\u5247\u52ea\u61dc\u620e\u62c5\u6549\u6741\u6b0e\u6eaf\u6f75\u7123\u7a63\u7b28\u7ee1\u7f02\u8012\u8451\u9812\u9c7c\u9ca6\u9f5e\uac53\uaca7\ub380\ub814\uba94\uc505\uc775\ucbf9\uce2a\ud074\ud1e2\ud68b\udd06\uddd7\ude35\ue266\ue47a\ue498\ue59b\uf7cd\uf905\uf945\ufdaf\uff35'
+' \u4f3a\ua730\ucfad\ud847\uef98'
+' \u0361\u0cec\u149a\u17cd\u21ba\u2818\u2b5d\u2c84\u2d0b\u2d13\u3eb1\u3ede\u5df6\u5fe2\u618a\u693c\u6a8c\u6aae\u6ed9\u738c\u748e\u759f\u794d\u881b\u88e4\u8d32\ua6b8\ub900\uba1b\ud85c\udbf4\uddcf\uec15'
+' \u6e91\uc8b2\ud5bd'
+' \u10a3\u2572\u2fb7\u4cf0\u5b10\u6dab\u8dc1\ubf34\uc194\ud115\ud417\ue103\ueea7\ufc00'
+'...'
+
+RandomProvider_subsetsWithChar_char_iii map 10 q
+31331: ' '
+6: ' \u1d05'
+5: ' \u0f52'
+5: ' \u1770'
+5: ' \u29fb'
+5: ' \ub67a'
+4: ' \u52e1'
+4: ' \u7b5e'
+4: ' \ue3dd'
+4: ' \ufff9'
+
+RandomProvider_listsWithSublists_i list 21
+[5, 4, 5, 5, 5, 6, 5, 6, 4, 6, 5]
+[4, 6, 6, 5]
+[]
+[4, 6, 5]
+[]
+[6, 4, 6]
+[6, 6]
+[6]
+[]
+[]
+[]
+[]
+[]
+[5]
+[6, 6, 5, 6]
+[4, 5]
+[5, 6, 5, 4, 5, 4, 6, 5, 6]
+[5, 6, 6]
+[]
+[]
+...
+
+RandomProvider_listsWithSublists_i map 10
+249571: []
+83609: [5]
+83425: [6]
+82914: [4]
+21160: [5, 5]
+20988: [4, 5]
+20910: [4, 4]
+20897: [6, 4]
+20876: [5, 4]
+20855: [6, 5]
+
+RandomProvider_listsWithSublists_ii list 21
+[6, 5, 6, 4, 6, 6, 6, 5, 6, 6, 4, 5, 4, 6, 6, 4, 4, 6, 4, 4, 6, 4, 4, 6, 6, 5, 4, 5, 5, 4, 6, 5, 6, 5]
+[6, 6, 5, 6, 6, 6, 6, 5, 4, 6, 5, 6, 4, 6, 6, 6, 4, 5, 5, 6, 6, 4, 5, 6]
+[4, 4, 6, 6, 5]
+[6, 6, 6, 5, 4, 4, 6, 5, 5, 4, 6, 5, 6, 6, 4, 5, 4, 4, 5, 5, 4, 6, 6]
+[4, 5, 5, 4, 4, 4, 6, 5]
+[4, 6, 6]
+[5, 6, 6, 6, 4]
+[4, 4, 6, 5, 5, 6, 4, 5, 4, 5]
+[4, 4, 6, 4, 4, 6]
+[6, 6, 5, 6, 6, 5, 4]
+[5, 5, 5, 6, 5, 5, 5, 6, 6, 6, 5, 6, 6, 4, 5, 4, 4, 5, 4, 4, 6, 6, 4, 6, 5, 4, 6, 5, 4, 6, 4, 6, 6, 5, 5, 4, 4, 4, 5, 5, 4, 6, 5]
+[4, 4, 6, 5, 4, 4, 4, 6, 5, 5, 4, 5, 5, 4, 6, 6, 6, 6, 5, 6, 5]
+[6, 5, 5, 6, 5, 4, 5, 5, 5, 6, 5, 4, 6, 6, 5, 4, 6, 4, 5]
+[6, 6, 5, 4, 6, 4, 5, 6, 4, 4, 5, 6, 5, 6, 6, 5, 6, 4, 6, 5, 4, 4, 6, 5, 6, 6]
+[6, 5, 5, 6, 5, 5]
+[5, 4, 5, 4, 4, 6, 4, 5, 5, 4, 4, 4, 4, 5, 6, 5, 6, 4, 5, 6, 5, 5, 6, 6, 5, 6, 5, 4, 6, 5, 4, 5, 4, 6, 6, 4, 5, 4, 5, 4, 6]
+[4, 4, 4, 6, 4, 6, 6, 5, 6, 5, 4, 6]
+[5, 4, 6, 5, 6, 6, 5, 6, 4]
+[4, 6, 4, 4, 5, 5, 4, 5, 6, 5, 5, 4, 4]
+[4, 5, 5, 6, 5, 6, 5, 4, 4, 4, 4, 6, 4]
+...
+
+RandomProvider_listsWithSublists_ii map 10
+12333: []
+7348: [6]
+7330: [5]
+7320: [4]
+3371: [5, 6]
+3309: [4, 6]
+3282: [6, 4]
+3267: [5, 4]
+3247: [5, 5]
+3245: [4, 4]
+
+RandomProvider_listsWithSublists_iii list 21
+[5, 4, 5, 1, 2, 3, 5, 5, 6, 5, 6, 4, 6, 5]
+[4, 6, 1, 2, 3, 6, 5]
+[1, 2, 3]
+[4, 6, 1, 2, 3, 5]
+[1, 2, 3]
+[6, 1, 2, 3, 4, 6]
+[6, 1, 2, 3, 6]
+[1, 2, 3, 6]
+[1, 2, 3]
+[1, 2, 3]
+[1, 2, 3]
+[1, 2, 3]
+[1, 2, 3]
+[5, 1, 2, 3]
+[6, 6, 5, 6, 1, 2, 3]
+[4, 5, 1, 2, 3]
+[5, 6, 5, 4, 5, 4, 1, 2, 3, 6, 5, 6]
+[5, 6, 6, 1, 2, 3]
+[1, 2, 3]
+[1, 2, 3]
+...
+
+RandomProvider_listsWithSublists_iii map 10
+249571: [1, 2, 3]
+41857: [1, 2, 3, 5]
+41798: [6, 1, 2, 3]
+41752: [5, 1, 2, 3]
+41627: [1, 2, 3, 6]
+41496: [1, 2, 3, 4]
+41418: [4, 1, 2, 3]
+7145: [5, 5, 1, 2, 3]
+7142: [4, 5, 1, 2, 3]
+7079: [5, 1, 2, 3, 5]
+
+RandomProvider_listsWithSublists_iv list 21
+[6, 5, 6, 4, 6, 6, 6, 5, 6, 6, 4, 5, 4, 6, 6, 4, 4, 6, 4, 4, 6, 4, 4, 6, 6, 5, 4, 5, 5, 4, 6, 1, 2, 3, 5, 6, 5]
+[6, 6, 5, 6, 6, 6, 6, 5, 4, 6, 5, 6, 4, 6, 6, 6, 4, 5, 5, 6, 6, 4, 5, 1, 2, 3, 6]
+[1, 2, 3, 4, 4, 6, 6, 5]
+[6, 6, 6, 5, 4, 4, 6, 5, 5, 4, 6, 5, 6, 1, 2, 3, 6, 4, 5, 4, 4, 5, 5, 4, 6, 6]
+[4, 5, 5, 1, 2, 3, 4, 4, 4, 6, 5]
+[4, 6, 1, 2, 3, 6]
+[5, 6, 1, 2, 3, 6, 6, 4]
+[4, 4, 6, 5, 5, 6, 4, 5, 1, 2, 3, 4, 5]
+[4, 4, 6, 4, 4, 1, 2, 3, 6]
+[1, 2, 3, 6, 6, 5, 6, 6, 5, 4]
+[5, 5, 5, 6, 5, 5, 5, 6, 6, 6, 5, 6, 6, 4, 5, 4, 4, 5, 4, 4, 6, 6, 4, 6, 5, 4, 6, 5, 4, 6, 4, 6, 6, 5, 5, 4, 4, 4, 5, 5, 4, 6, 5, 1, 2, 3]
+[4, 4, 6, 5, 1, 2, 3, 4, 4, 4, 6, 5, 5, 4, 5, 5, 4, 6, 6, 6, 6, 5, 6, 5]
+[6, 5, 5, 6, 1, 2, 3, 5, 4, 5, 5, 5, 6, 5, 4, 6, 6, 5, 4, 6, 4, 5]
+[6, 6, 5, 4, 6, 4, 5, 6, 4, 4, 5, 6, 5, 6, 1, 2, 3, 6, 5, 6, 4, 6, 5, 4, 4, 6, 5, 6, 6]
+[6, 5, 5, 6, 5, 1, 2, 3, 5]
+[5, 4, 5, 4, 4, 6, 4, 5, 5, 4, 4, 4, 4, 5, 6, 5, 6, 4, 5, 6, 5, 5, 6, 6, 5, 6, 5, 4, 6, 1, 2, 3, 5, 4, 5, 4, 6, 6, 4, 5, 4, 5, 4, 6]
+[4, 1, 2, 3, 4, 4, 6, 4, 6, 6, 5, 6, 5, 4, 6]
+[5, 4, 6, 5, 6, 1, 2, 3, 6, 5, 6, 4]
+[4, 6, 4, 4, 5, 5, 4, 1, 2, 3, 5, 6, 5, 5, 4, 4]
+[4, 5, 5, 6, 5, 6, 5, 4, 4, 4, 4, 6, 4, 1, 2, 3]
+...
+
+RandomProvider_listsWithSublists_iv map 10
+12333: [1, 2, 3]
+3709: [1, 2, 3, 6]
+3694: [4, 1, 2, 3]
+3682: [5, 1, 2, 3]
+3648: [1, 2, 3, 5]
+3639: [6, 1, 2, 3]
+3626: [1, 2, 3, 4]
+1151: [5, 1, 2, 3, 6]
+1147: [4, 1, 2, 3, 5]
+1140: [4, 1, 2, 3, 6]
+
+RandomProvider_listsWithSublists_v list 21
+[17, 47, 25, 0, 0, 17]
+[21, 21, 8]
+[13, 13]
+[11, 11]
+[17, 10, 10, 5]
+[77, 77]
+[19, 70, 17, 17, 52, 6]
+[22, 16, 6, 6]
+[8, 0, 41, 41, 6, 15]
+[20, 20]
+[23, 23, 22, 9]
+[83, 32, 32, 27]
+[2, 41, 41]
+[1, 12, 12, 20]
+[45, 45, 33]
+[25, 14, 12, 2, 24, 24, 37, 37, 2, 15, 15]
+[118, 49, 46, 54, 54]
+[15, 15, 0, 90, 31, 31]
+[18, 18]
+[28, 19, 36, 36]
+...
+
+RandomProvider_listsWithSublists_v map 10
+7655: [0, 0]
+7389: [1, 1]
+6970: [2, 2]
+6785: [3, 3]
+6667: [4, 4]
+6585: [5, 5]
+6124: [6, 6]
+6065: [7, 7]
+5847: [8, 8]
+5823: [9, 9]
+
+RandomProvider_listsWithSublists_vi list 21
+[47, 25, 0, 19, 21, 9, 13, 12, 20, 10, 7, 77, 19, 70, 17, 53, 6, 24, 16, 6, 9, 0, 41, 9, 15, 20, 23, 24, 9, 84, 32, 28, 28, 2]
+[32, 3, 12, 21, 45, 34, 28, 14, 12, 2, 24, 24, 37, 37, 2, 15]
+[3, 118, 49, 46, 54, 19, 15, 0, 90, 31, 19, 31, 19, 36, 44, 43, 168, 18, 7, 3, 3, 22, 13, 33, 49, 61, 50, 14, 0, 8, 121, 23, 122, 19, 75, 14, 6, 16, 51, 10, 7, 31, 9, 18, 12, 17, 1, 73, 9]
+[10, 21, 3, 55, 16, 35, 10, 64, 12, 48, 24, 170, 60, 21, 32, 22, 34, 0, 29, 91, 34, 21, 23, 100, 100, 0, 126, 0, 11, 16, 0, 29, 7]
+[13, 22, 120, 2, 30, 36, 11, 11, 29, 10]
+[2, 33, 33, 10, 14, 18]
+[34, 33, 33, 52, 29, 43, 4]
+[37, 25, 43, 89, 20, 30, 41, 41, 24, 15, 7, 18]
+[14, 21, 106, 0, 62, 94, 16, 8, 1, 5, 5, 40, 4, 17, 3, 25]
+[26, 25, 27, 80, 53, 53, 21, 25, 40, 44]
+[5, 11, 11, 4, 47, 28, 33]
+[46, 7, 68, 68, 59, 35]
+[19, 19, 67, 21, 47, 7, 7, 45, 4, 37, 20, 17, 12, 19]
+[1, 1, 38]
+[43, 43]
+[1, 33, 24, 33, 17, 6, 5, 9, 11, 31, 40, 42, 35, 0, 14, 27, 4, 6, 6, 27, 28, 34, 2, 50]
+[9, 4, 32, 11, 37, 18, 31, 28, 84, 44, 8, 30, 57, 19, 27, 25, 23, 12, 4, 7, 60, 76, 3, 39, 23, 3, 11, 26, 33, 15, 20, 2, 7, 102, 8, 41, 89, 45, 42, 42, 31, 64]
+[43, 11, 0, 0, 12, 2, 28, 12]
+[23, 117, 4, 96, 96, 22, 5, 6, 18, 1, 74, 6, 136, 55, 31, 17, 14, 18, 30, 38, 19, 4]
+[2, 30, 32, 32, 46, 112, 44, 24, 7, 19, 50]
+...
+
+RandomProvider_listsWithSublists_vi map 10
+377: [0, 0]
+367: [1, 1]
+350: [2, 2]
+331: [4, 4]
+319: [5, 5]
+300: [9, 9]
+297: [6, 6]
+297: [7, 7]
+296: [3, 3]
+286: [11, 11]
+
+RandomProvider_stringsWithSubstrings_Iterable_String_String_i list 21
+vyfvrgpbwvv
+
+xl
+sew
+f
+d
+fs
+w
+k
+
+
+
+
+
+djvs
+g
+av
+ftlszpdrxg
+f
+zclu
+...
+
+RandomProvider_stringsWithSubstrings_Iterable_String_String_i map 10
+249881:
+9816: q
+9774: f
+9750: u
+9732: t
+9712: j
+9696: d
+9692: w
+9691: i
+9668: p
+
+RandomProvider_stringsWithSubstrings_Iterable_String_String_ii list 21
+dxcfpostgwymkoqiyyeyotsdplrqjvsvgt
+gojhcctlgszydxlcxgkgelvkbkg
+agtpw
+okjmsjrmsvozsioareerp
+uzjcwsyx
+kaop
+ovg
+typuhphphyl
+rzxi
+pemdgqck
+gwvszug
+rpbjcvjncsdbshwqbianyugwexqwzuwiorxpqaurzud
+iysydesxrntijrexskkgb
+zngnchfandrrtveggjh
+
+onmlyndxhytyrwjceojqygvmgnm
+ojllrhj
+vyvigafvheyhdutbcjkypxvsfdjkfpxvgsatnqvucva
+meklvozmwrumtby
+sxopuashqudb
+...
+
+RandomProvider_stringsWithSubstrings_Iterable_String_String_ii map 10
+12409:
+907: j
+904: b
+885: o
+884: q
+877: x
+874: e
+867: z
+866: d
+864: g
+
+RandomProvider_stringsWithSubstrings_Iterable_String_String_iii list 21
+vyfcatvrgpbwvv
+cat
+catxl
+scatew
+fcat
+catd
+fcats
+wcat
+catk
+cat
+cat
+cat
+cat
+cat
+dcatjvs
+catg
+avcat
+ftlszpcatdrxg
+fcat
+zclcatu
+...
+
+RandomProvider_stringsWithSubstrings_Iterable_String_String_iii map 10
+249881: cat
+4961: tcat
+4949: catw
+4919: fcat
+4918: qcat
+4900: catb
+4899: catr
+4898: catq
+4897: icat
+4895: caty
+
+RandomProvider_stringsWithSubstrings_Iterable_String_String_iv list 21
+dxcfpostgwymkoqiyyeyotsdplrqjvscatvgt
+gojhcctlgszydxlcxgkgelvkbkcatg
+catagtpw
+okjmsjrmsvozsicatoareerp
+uzjcwscatyx
+kcataop
+ocatvg
+typcatuhphphyl
+rzxcati
+pemdgqcatck
+catgwvszug
+rpbjcvjncsdbshwqbianyugwexqwzuwiorxpqaurzucatd
+iyscatydesxrntijrexskkgb
+zngnchcatfandrrtveggjh
+cat
+onmlyndxhytyrwjcatceojqygvmgnm
+ojllcatrhj
+vyvigafvheyhdutbcjkypxvsfdjkcatfpxvgsatnqvucva
+meklvozmwrumtcatby
+sxopucatashqudb
+...
+
+RandomProvider_stringsWithSubstrings_Iterable_String_String_iv map 10
+12409: cat
+469: xcat
+463: jcat
+459: cato
+455: qcat
+453: bcat
+452: catz
+452: dcat
+451: catb
+445: ecat
+
+RandomProvider_stringsWithSubstrings_Iterable_String_String_v list 21
+585-8.745077E295161655
+-3.8562423E-20
+72-5.418378E2546
+5-3.31379009E12
+31.36775321E17
+23-2.763534E-21
+8-57.728504
+-3.87529152E8
+1.2088307E-37
+5.0185977E28
+3.8192072E-283
+9528.22823E-356
+056.5493657E-7532913
+725.2670996E7
+9273.655872E36
+-9.5261086E-35
+-2.3683897E32
+15.7468652
+298-2.1571468E-19
+76652.009171606
+...
+
+RandomProvider_stringsWithSubstrings_Iterable_String_String_v map 10
+2: -1.1123897E-17
+2: -1.5117249E-35
+2: -1.99528348E18
+2: -4080635.8
+2: -6.4474385E-16
+2: 1.6368128E27
+2: 2.6752413E20
+2: 3.703E-5
+2: 4.523417E27
+2: 4.695226
+
+RandomProvider_stringsWithSubstrings_Iterable_String_String_vi list 21
+37252366808884832310952569605631.0719636E1669722362983727664516060344
+06-2.56170422E14929125928241219
+01-4.4911137E-3049926282
+4.0917575E-1153
+07.3894236E-319
+564.5286633E30385
+4777865-4.2354097E-23
+8793.1971366E-284360
+20-3.07368407E176652946
+119259223127601808466470694681700419410343-9.547804E-48
+83427138914726172535-5.7034625E-149
+50311354669700114.3459432E21837783816994
+249086563492.68999117E99
+179-8.955546E37585860557487343129875253925
+57562030542507.82684E-21459614384018
+27422-1.5677651E3802704
+4769-1.1446778E-4153
+7196164088990692-3.8460768E28738
+467508-4.4292383E-31260559736943308616284817
+9752366342.789954737433859214120
+...
+
+RandomProvider_stringsWithSubstrings_Iterable_String_String_vi map 10
+1: 01-4.4911137E-3049926282
+1: 06-2.56170422E14929125928241219
+1: 07.3894236E-319
+1: 119259223127601808466470694681700419410343-9.547804E-48
+1: 20-3.07368407E176652946
+1: 37252366808884832310952569605631.0719636E1669722362983727664516060344
+1: 4.0917575E-1153
+1: 4777865-4.2354097E-23
+1: 564.5286633E30385
+1: 8793.1971366E-284360
+
+RandomProvider_stringsWithSubstrings_Iterable_String_i list 21
+\u03b5\u42bf\u2538\udd15\ubab1\ufca6\u4bcf\u03e1\u7f56\u19dc\u523f\u313e
+\u1b1c\u212a\u3d4f\u3a77
+\u7eab\u4772
+\u5764\u7416\uea45
+
+\u2b63\u9e05
+\uee1c
+\u117a\u41fa
+\u358a
+
+
+
+
+
+\uff03\u5c29\uad7f\uecf5
+\ue8b2
+\u47c6\u3b60\u7035
+\uca85\u53f3\u498b\u2832\ufb59\ube5c
+\ud643\ufa51\ubab7\u08a6\ufdd7
+\u0c55\u58d9\udd82
+...
+
+RandomProvider_stringsWithSubstrings_Iterable_String_i map 10
+249337:
+14: \u14c8
+14: \u1fa5
+14: \u760d
+13: \u340f
+13: \u4b0b
+13: \u653b
+13: \u7b9a
+13: \u7e1e
+13: \u9926
+
+RandomProvider_stringsWithSubstrings_Iterable_String_ii list 21
+\u2b63\uf637\u9e02\u9e05\u8bef\u8f2e\uee1c\u33b2\u9153\uce86\u117a\ub43d\u7156\u41fa\u1918\ue9fd\u2aec\u358a\uc9ce\uaaf0\u5168\u899a\ub3d8\u4c78\u28de\u2e24\uf878\u122e\u0713\u9112\uff03\u5c29
+\u7035\ucee6\u5213\u55cf\u3353\u7ce6\u55ee\uf329\ufee7\udd42\u4782\u93bf\u9433\u9c2b\ubb06\u9892\u9339\u7778\uabc3\u615a\ucd1d\u0e77\uf36bB\u3f7f\u2a57\u7ddc\udec6\ua16a\udcc6
+\u99c6\ud250\u5eba\u2293\u40fc\u5300\ub09b\ub746
+\u037a\u124e\uaaaa\u0a49\u482c\u3c9c\ue852\u0689\u04b1\ue28c\u8452\u0dbd\u021e\u86d5\u4bbc\u10ee\uab6e\u4740\u3951\u2e64\ub144\ubbf1\uc82f\u4045\u5058
+\u3674\u1d99\u4069\u8042\uf518\ue2d7\u528f\u5628
+\ud6c0\uccee\u965c
+\uc4ce\u9835\u2606
+\u65de\u2613\u19de\uc8f4\u0d47\u368f\u5e07\ud02f\uebc7\u6678\u728b\u9216
+\u14d1\u6fd9\u8be8\uac07
+\u688f\u2684\ue40c\u2b83\u8446
+\ub5e2\u64bb
+\u6fc6\uc5f6\u4a75\u18de\ud992\u2f79\u6ed4\ud5d1\u420f\ub2c1\ue649\u1782\u59d5\u1069\u2f0d\ub4c2\u72da\ue672\u56e3\u4141\u60b2\u67a7\u1b56\u5070\u6461\u6cc8\u1a60\u3b4d\u2af8\uc6b4\u2026\u6876\ubf04\u127e\u1d9d\u7757\u3950\u5396\u5279\u1954\u3ef6\uf3a8\ucdae\u831e\ue531\uce57\u1cef\u073d\u98f0\ue480
+\u3243\u4df4\u2a33\u4a3a\u9928
+\u7cd8\ufc5c\u22a3\u4404\uad72\ufc77\u3291\uf28d\uc993\uf27f\u4768\u96e9\uecb1\u1844\ude17\u14b2\u856a\u900a\u5146\ubb21\u8a3e\ua279\uaa4d\u85c6\ue34d\uf5a2
+\ue2c5\u54e0\u750d\ubba3\u6c11\u7691\u291e\u79f3\u02b5\uc184\ud346\u82a6\u7009\ubca7
+\uee3a\u06ee\uf6cd\ue22c\u2fbe\ud18b\u8278\u64cd\uc0e3\u58ba\u8c97\u1c47\uf2ff\u31b8\u2c73
+\u431a\ufe3d\ucda2\ud6c4\ua72e\u5369\u9cf0\u9618\u7ec6\ue9d5\ude3a\u663e\u93cc\u34c6\uac2d\u798e\u0529K\ucb0b
+\u1b31\ubb47\u663a\ud515\u23b8\u11b5\u4a28\ueb1c\u0966\u5120\uc505\u6f75\uaca7\u0f24\u3eb8\u5247\u7a63\ud074\u471c\uac53\u7ee1\u7f02\u6549\u52ea\ue498\u6eaf7\uc775\u13f2\u3965\u3583
+\ue59b\uf945\ufdaf\uddd7\u305c\uff35\u10dc\ue266\u8012\ub380\u2153\uf7cd\ua730\u8015\u8a74\ud847\uef98
+\u6a8c\u88e4\u3ede\u693c\u618a\u2d0b\u21ba\uec15\u6aae\u6ed9\u0cec\u0361\ua6b8\u748e\u794d\u5fe2\u17cd
+...
+
+RandomProvider_stringsWithSubstrings_Iterable_String_ii map 10
+12385:
+5: \u24cb
+5: \u6ff8
+5: \uef01
+4: \u197d
+4: \u7194
+4: \u7aec
+4: \u9ee2
+4: \uc043
+4: \uc846
+
+RandomProvider_stringsWithSubstrings_Iterable_String_iii list 21
+\u03b5\u42bf\u2538cat\udd15\ubab1\ufca6\u4bcf\u03e1\u7f56\u19dc\u523f\u313e
+\u1b1c\u212a\u3d4fcat\u3a77
+\u7eabcat\u4772
+\u5764\u7416cat\uea45
+cat
+\u2b63cat\u9e05
+\uee1ccat
+\u117acat\u41fa
+cat\u358a
+cat
+cat
+cat
+cat
+cat
+\uff03cat\u5c29\uad7f\uecf5
+\ue8b2cat
+\u47c6cat\u3b60\u7035
+cat\uca85\u53f3\u498b\u2832\ufb59\ube5c
+\ud643\ufa51\ubab7\u08a6\ufdd7cat
+\u0c55cat\u58d9\udd82
+...
+
+RandomProvider_stringsWithSubstrings_Iterable_String_iii map 10
+249337: cat
+10: cat\u9bd6
+10: cat\ud735
+10: \u2863cat
+10: \u5084cat
+10: \uf84acat
+9: cat\u9926
+9: cat\ub1bc
+9: \u14c8cat
+9: \u340fcat
+
+RandomProvider_stringsWithSubstrings_Iterable_String_iv list 21
+\u2b63\uf637\u9e02\u9e05\u8bef\u8f2e\uee1c\u33b2\u9153\uce86\u117a\ub43d\u7156\u41fa\u1918\ue9fd\u2aec\u358a\uc9ce\uaaf0\u5168\u899a\ub3d8\u4c78\u28de\u2e24\uf878\u122e\u0713\u9112\uff03cat\u5c29
+\u7035\ucee6\u5213\u55cf\u3353cat\u7ce6\u55ee\uf329\ufee7\udd42\u4782\u93bf\u9433\u9c2b\ubb06\u9892\u9339\u7778\uabc3\u615a\ucd1d\u0e77\uf36bB\u3f7f\u2a57\u7ddc\udec6\ua16a\udcc6
+\u99c6\ud250\u5eba\u2293cat\u40fc\u5300\ub09b\ub746
+\u037a\u124e\uaaaa\u0a49\u482c\u3c9c\ue852\u0689\u04b1\ue28c\u8452\u0dbd\u021e\u86d5\u4bbc\u10eecat\uab6e\u4740\u3951\u2e64\ub144\ubbf1\uc82f\u4045\u5058
+\u3674\u1d99\u4069\u8042cat\uf518\ue2d7\u528f\u5628
+cat\ud6c0\uccee\u965c
+\uc4cecat\u9835\u2606
+\u65de\u2613\u19decat\uc8f4\u0d47\u368f\u5e07\ud02f\uebc7\u6678\u728b\u9216
+\u14d1\u6fd9cat\u8be8\uac07
+\u688f\u2684\ue40c\u2b83\u8446cat
+\ub5e2\u64bbcat
+\u6fc6\uc5f6\u4a75\u18de\ud992\u2f79\u6ed4cat\ud5d1\u420f\ub2c1\ue649\u1782\u59d5\u1069\u2f0d\ub4c2\u72da\ue672\u56e3\u4141\u60b2\u67a7\u1b56\u5070\u6461\u6cc8\u1a60\u3b4d\u2af8\uc6b4\u2026\u6876\ubf04\u127e\u1d9d\u7757\u3950\u5396\u5279\u1954\u3ef6\uf3a8\ucdae\u831e\ue531\uce57\u1cef\u073d\u98f0\ue480
+\u3243\u4df4\u2a33\u4a3acat\u9928
+\u7cd8\ufc5c\u22a3\u4404\uad72\ufc77\u3291\uf28d\uc993\uf27f\u4768\u96e9\uecb1\u1844\ude17\u14b2\u856a\u900a\u5146\ubb21cat\u8a3e\ua279\uaa4d\u85c6\ue34d\uf5a2
+\ue2c5\u54e0\u750d\ubba3\u6c11\u7691\u291e\u79f3\u02b5\uc184\ud346\u82a6\u7009\ubca7cat
+cat\uee3a\u06ee\uf6cd\ue22c\u2fbe\ud18b\u8278\u64cd\uc0e3\u58ba\u8c97\u1c47\uf2ff\u31b8\u2c73
+\u431a\ufe3d\ucda2\ud6c4\ua72e\u5369\u9cf0\u9618\u7ec6\ue9d5\ude3a\u663e\u93cc\u34c6\uac2dcat\u798e\u0529K\ucb0b
+\u1b31\ubb47\u663acat\ud515\u23b8\u11b5\u4a28\ueb1c\u0966\u5120\uc505\u6f75\uaca7\u0f24\u3eb8\u5247\u7a63\ud074\u471c\uac53\u7ee1\u7f02\u6549\u52ea\ue498\u6eaf7\uc775\u13f2\u3965\u3583
+\ue59b\uf945\ufdaf\uddd7\u305c\uff35\u10dc\ue266\u8012\ub380\u2153\uf7cd\ua730\u8015\u8a74cat\ud847\uef98
+\u6a8c\u88e4\u3ede\u693c\u618a\u2d0b\u21ba\uec15\u6aae\u6ed9\u0ceccat\u0361\ua6b8\u748e\u794d\u5fe2\u17cd
+...
+
+RandomProvider_stringsWithSubstrings_Iterable_String_iv map 10
+12385: cat
+4: cat\u7aec
+4: \u0914cat
+4: \u24cbcat
+4: \ud5e3cat
+3: cat\u13d1
+3: \u3493cat
+3: \u4dffcat
+3: \u7e01cat
+3: \u9ee2cat
+
+RandomProvider_stringsWithSubstrings_Iterable_String_v list 21
+\u03b5\u42bf\u2538-4.730412E-34\udd15\ubab1\ufca6\u4bcf\u03e1\u7f56\u19dc\u523f
+-3.041954E25\u1b1c\u212a
+\u3a77\u2d3f2.0586195E-32\u4772\uf207
+\u57641.841686E31\uea45
+1.5387214E38\u2b63
+\u9e051.1917704
+0.016748283\u117a
+\u41fa2.681261E36\u358a
+7.741398E-26
+-1.467987E37
+-2.81001E34
+7.645123E-18
+\u5c29\uad7f\uecf5\uaabb-1.7399366E-8
+143097.08
+1.6778092E-13\u3b60
+\u52131.0719636E16\uca85\u53f3\u498b\u2832
+\u4aef-1.7012438E-6\ud643\ufa51\ubab7
+-6.0346965E28
+\u0c554.3328808E-37\u58d9
+63701.168\u2e94
+...
+
+RandomProvider_stringsWithSubstrings_Iterable_String_v map 10
+2: -10.269147
+2: -170.97168
+2: -4.16071123E11
+2: -5.751692E-14
+2: 3.3475204E22
+2: 3.37845E-11
+2: 4.523417E27
+1: -3.041954E25\u1b1c\u212a
+1: \u03b5\u42bf\u2538-4.730412E-34\udd15\ubab1\ufca6\u4bcf\u03e1\u7f56\u19dc\u523f
+1: \u3a77\u2d3f2.0586195E-32\u4772\uf207
+
+RandomProvider_stringsWithSubstrings_Iterable_String_vi list 21
+\u2b63\uf637\u9e02\u9e05\u8bef\u8f2e\uee1c\u33b2\u9153\uce86\u117a\ub43d\u7156\u41fa\u1918\ue9fd\u2aec\u358a\uc9ce\uaaf0\u5168\u899a\ub3d8\u4c78\u28de\u2e24\uf878\u122e\u0713\u9112\uff03-2.5324939E30\u5c29
+\u7035\ucee6\u5213\u55cf\u33532.8102187E-19\u7ce6\u55ee\uf329\ufee7\udd42\u4782\u93bf\u9433\u9c2b\ubb06\u9892\u9339\u7778\uabc3\u615a\ucd1d\u0e77\uf36bB\u3f7f\u2a57\u7ddc\udec6\ua16a
+\u99c6\ud250\u5eba\u2293\ued0d6.2105025E-19\u40fc\u5300\ub09b\ub746
+\u037a\u124e\uaaaa\u0a49\u482c\u3c9c\ue852\u0689\u04b1\ue28c\u8452\u0dbd\u021e\u86d5\u4bbc\u10ee-7.5414853\uab6e\u4740\u3951\u2e64\ub144\ubbf1\uc82f\u4045\u5058
+\u3674\u1d99\u4069\u80423.5566916\uf518\ue2d7\u528f
+\ue54a-0.009772067\ud6c0\uccee
+\uc4ce-3.06893264E15\u9835\u2606
+\u65de\u2613\u19de1.5354367E-16\uc8f4\u0d47\u368f\u5e07\ud02f\uebc7\u6678\u728b
+\u14d1\u6fd9\u4897-1.8859948E34
+\u688f\u2684\ue40c\u2b83\u8446\u0430\ud3174.1738653E-4\ub5e2
+-3.07368407E17\u6fc6\uc5f6\u4a75\u18de\ud992\u2f79\u6ed4
+\ud5d1\u420f\ub2c1\ue649\u1782\u59d5\u1069\u2f0d\ub4c2\u72da\ue672\u56e3\u4141\u60b2\u67a7\u1b56\u5070\u6461\u6cc8\u1a60\u3b4d\u2af8\uc6b4\u2026\u6876\ubf04\u127e\u1d9d\u7757\u3950\u5396\u5279\u1954\u3ef6\uf3a8\ucdae\u831e\ue531\uce57\u1cef\u073d\u98f0\ue4804.01656349E14\u3243\u4df4\u2a33
+\u99281.0064398E30\u7cd8\ufc5c\u22a3\u4404\uad72\ufc77\u3291\uf28d\uc993\uf27f\u4768\u96e9\uecb1\u1844\ude17\u14b2\u856a\u900a\u5146
+\u8a3e\ua279\uaa4d\u85c6\ue34d\uf5a2\ub4073733098.5\ue2c5\u54e0\u750d\ubba3\u6c11\u7691\u291e\u79f3\u02b5\uc184\ud346\u82a6\u7009
+\u6ece-6.043743E10\uee3a\u06ee\uf6cd\ue22c\u2fbe\ud18b\u8278\u64cd\uc0e3\u58ba\u8c97\u1c47\uf2ff\u31b8\u2c73
+\u431a\ufe3d\ucda2\ud6c4\ua72e\u5369\u9cf0\u9618\u7ec6\ue9d5\ude3a\u663e\u93cc\u34c6\uac2d-6.3691853E8\u798e\u0529K\ucb0b
+\u1b31\ubb47\u663a1.7043144E24\ud515\u23b8\u11b5\u4a28\ueb1c\u0966\u5120\uc505\u6f75\uaca7\u0f24\u3eb8\u5247\u7a63\ud074\u471c\uac53\u7ee1\u7f02\u6549\u52ea\ue498\u6eaf7\uc775\u13f2\u3965\u3583
+\ue59b\uf945\ufdaf\uddd7\u305c\uff35\u10dc\ue266\u8012\ub380\u2153\uf7cd\ua730\u8015\u8a746.117129E-31\ud847\uef98
+\u6a8c\u88e4\u3ede\u693c\u618a\u2d0b\u21ba\uec15\u6aae\u6ed9\u0cec-1.7406041E25\u0361\ua6b8\u748e\u794d\u5fe2
+\uc8b2\ud5bd\ud417\u50ee-3.7339023E-30\ufc00\u2572\ueea7\u4cf0\ubf34\u10a3\u8dc1\u6dab
+...
+
+RandomProvider_stringsWithSubstrings_Iterable_String_vi map 10
+1: \u037a\u124e\uaaaa\u0a49\u482c\u3c9c\ue852\u0689\u04b1\ue28c\u8452\u0dbd\u021e\u86d5\u4bbc\u10ee-7.5414853\uab6e\u4740\u3951\u2e64\ub144\ubbf1\uc82f\u4045\u5058
+1: \u14d1\u6fd9\u4897-1.8859948E34
+1: \u2b63\uf637\u9e02\u9e05\u8bef\u8f2e\uee1c\u33b2\u9153\uce86\u117a\ub43d\u7156\u41fa\u1918\ue9fd\u2aec\u358a\uc9ce\uaaf0\u5168\u899a\ub3d8\u4c78\u28de\u2e24\uf878\u122e\u0713\u9112\uff03-2.5324939E30\u5c29
+1: \u3674\u1d99\u4069\u80423.5566916\uf518\ue2d7\u528f
+1: \u65de\u2613\u19de1.5354367E-16\uc8f4\u0d47\u368f\u5e07\ud02f\uebc7\u6678\u728b
+1: \u688f\u2684\ue40c\u2b83\u8446\u0430\ud3174.1738653E-4\ub5e2
+1: \u7035\ucee6\u5213\u55cf\u33532.8102187E-19\u7ce6\u55ee\uf329\ufee7\udd42\u4782\u93bf\u9433\u9c2b\ubb06\u9892\u9339\u7778\uabc3\u615a\ucd1d\u0e77\uf36bB\u3f7f\u2a57\u7ddc\udec6\ua16a
+1: \u99c6\ud250\u5eba\u2293\ued0d6.2105025E-19\u40fc\u5300\ub09b\ub746
+1: \uc4ce-3.06893264E15\u9835\u2606
+1: \ue54a-0.009772067\ud6c0\uccee
+
+RandomProvider_maps_i list 21
+{5=19}
+{5=47}
+{5=25}
+{5=0}
+{5=19}
+{5=21}
+{5=9}
+{5=13}
+{5=12}
+{5=20}
+{5=10}
+{5=7}
+{5=77}
+{5=19}
+{5=70}
+{5=17}
+{5=53}
+{5=6}
+{5=24}
+{5=16}
+...
+
+RandomProvider_maps_ii list 21
+{1=19, 2=47, 3=25}
+{1=0, 2=19, 3=21}
+{1=9, 2=13, 3=12}
+{1=20, 2=10, 3=7}
+{1=77, 2=19, 3=70}
+{1=17, 2=53, 3=6}
+{1=24, 2=16, 3=6}
+{1=9, 2=0, 3=41}
+{1=9, 2=15, 3=20}
+{1=23, 2=24, 3=9}
+{1=84, 2=32, 3=28}
+{1=2, 2=41, 3=3}
+{1=12, 2=21, 3=45}
+{1=34, 2=28, 3=14}
+{1=12, 2=2, 3=24}
+{1=40, 2=37, 3=2}
+{1=15, 2=15, 3=118}
+{1=49, 2=46, 3=54}
+{1=19, 2=15, 3=0}
+{1=90, 2=31, 3=19}
+...
+
+RandomProvider_maps_iii list 21
+{null=47, 1=19, 3=25}
+{null=19, 1=0, 3=21}
+{null=13, 1=9, 3=12}
+{null=10, 1=20, 3=7}
+{null=19, 1=77, 3=70}
+{null=53, 1=17, 3=6}
+{null=16, 1=24, 3=6}
+{null=0, 1=9, 3=41}
+{null=15, 1=9, 3=20}
+{null=24, 1=23, 3=9}
+{null=32, 1=84, 3=28}
+{null=41, 1=2, 3=3}
+{null=21, 1=12, 3=45}
+{null=28, 1=34, 3=14}
+{null=2, 1=12, 3=24}
+{null=37, 1=40, 3=2}
+{null=15, 1=15, 3=118}
+{null=46, 1=49, 3=54}
+{null=15, 1=19, 3=0}
+{null=31, 1=90, 3=19}
+...
