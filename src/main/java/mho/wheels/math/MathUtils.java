@@ -790,6 +790,17 @@ public final class MathUtils {
         return !n.equals(BigInteger.ONE) && smallestPrimeFactor(n).equals(n);
     }
 
+    /**
+     * Returns the prime factors of a number, including multiplicities.
+     *
+     * <ul>
+     *  <li>{@code n} must be positive.</li>
+     *  <li>The result is a finite {@code Iterable} of primes in weakly ascending order.</li>
+     * </ul>
+     *
+     * @param n a number
+     * @return the prime factors of {@code n}
+     */
     public static @NotNull Iterable<Integer> primeFactors(int n) {
         return unfoldr(
                 i -> {
@@ -801,6 +812,17 @@ public final class MathUtils {
         );
     }
 
+    /**
+     * Returns the prime factors of a number, including multiplicities.
+     *
+     * <ul>
+     *  <li>{@code n} must be positive.</li>
+     *  <li>The result is a finite {@code Iterable} of primes in weakly ascending order.</li>
+     * </ul>
+     *
+     * @param n a number
+     * @return the prime factors of {@code n}
+     */
     public static @NotNull Iterable<BigInteger> primeFactors(@NotNull BigInteger n) {
         return unfoldr(
                 i -> {

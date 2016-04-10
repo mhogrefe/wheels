@@ -235,4 +235,16 @@ public class MathUtilsDemos extends Demos {
             System.out.println(i + " is " + (isPrime(i) ? "" : "not ") + "prime");
         }
     }
+
+    private void demoPrimeFactors_int() {
+        for (int i : take(LIMIT, P.positiveIntegers())) {
+            System.out.println("primeFactors(" + i + ") = " + toList(primeFactors(i)));
+        }
+    }
+
+    private void demoPrimeFactors_BigInteger() {
+        for (BigInteger i : take(LIMIT, P.withScale(12).positiveBigIntegers())) {
+            System.out.println("primeFactors(" + i + ") = " + toList(primeFactors(i)));
+        }
+    }
 }

@@ -1,6 +1,7 @@
 package mho.wheels.math;
 
 import mho.wheels.io.Readers;
+import mho.wheels.testing.Testing;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
 
@@ -8,6 +9,7 @@ import java.math.BigInteger;
 import java.util.List;
 import java.util.function.Function;
 
+import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.math.MathUtils.*;
 import static mho.wheels.testing.Testing.aeq;
 import static org.junit.Assert.fail;
@@ -789,6 +791,79 @@ public class MathUtilsTest {
 
         isPrime_BigInteger_fail_helper("0");
         isPrime_BigInteger_fail_helper("-1");
+    }
+
+    private static void primeFactors_int_helper(int input, @NotNull String output) {
+        Testing.aeqit(primeFactors(input), output);
+    }
+
+    private static void primeFactors_int_fail_helper(int input) {
+        try {
+            toList(primeFactors(input));
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+    }
+
+    @Test
+    public void testPrimeFactors_int() {
+        primeFactors_int_helper(1, "[]");
+        primeFactors_int_helper(2, "[2]");
+        primeFactors_int_helper(3, "[3]");
+        primeFactors_int_helper(4, "[2, 2]");
+        primeFactors_int_helper(5, "[5]");
+        primeFactors_int_helper(6, "[2, 3]");
+        primeFactors_int_helper(7, "[7]");
+        primeFactors_int_helper(8, "[2, 2, 2]");
+        primeFactors_int_helper(9, "[3, 3]");
+        primeFactors_int_helper(10, "[2, 5]");
+        primeFactors_int_helper(1807, "[13, 139]");
+        primeFactors_int_helper(6221671, "[6221671]");
+        primeFactors_int_helper(65533, "[13, 71, 71]");
+        primeFactors_int_helper(2147483647, "[2147483647]");
+        primeFactors_int_helper(2147483643, "[3, 715827881]");
+        primeFactors_int_helper(2147483641, "[2699, 795659]");
+
+        primeFactors_int_fail_helper(0);
+        primeFactors_int_fail_helper(-1);
+    }
+
+    private static void primeFactors_BigInteger_helper(@NotNull String input, @NotNull String output) {
+        Testing.aeqit(primeFactors(Readers.readBigInteger(input).get()), output);
+    }
+
+    private static void primeFactors_BigInteger_fail_helper(@NotNull String input) {
+        try {
+            toList(primeFactors(Readers.readBigInteger(input).get()));
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+    }
+
+    @Test
+    public void testPrimeFactors_BigInteger() {
+        primeFactors_BigInteger_helper("1", "[]");
+        primeFactors_BigInteger_helper("2", "[2]");
+        primeFactors_BigInteger_helper("3", "[3]");
+        primeFactors_BigInteger_helper("4", "[2, 2]");
+        primeFactors_BigInteger_helper("5", "[5]");
+        primeFactors_BigInteger_helper("6", "[2, 3]");
+        primeFactors_BigInteger_helper("7", "[7]");
+        primeFactors_BigInteger_helper("8", "[2, 2, 2]");
+        primeFactors_BigInteger_helper("9", "[3, 3]");
+        primeFactors_BigInteger_helper("10", "[2, 5]");
+        primeFactors_BigInteger_helper("1807", "[13, 139]");
+        primeFactors_BigInteger_helper("6221671", "[6221671]");
+        primeFactors_BigInteger_helper("65533", "[13, 71, 71]");
+        primeFactors_BigInteger_helper("2147483647", "[2147483647]");
+        primeFactors_BigInteger_helper("2147483643", "[3, 715827881]");
+        primeFactors_BigInteger_helper("2147483641", "[2699, 795659]");
+        primeFactors_BigInteger_helper("2147483649", "[3, 715827883]");
+        primeFactors_BigInteger_helper("2147483659", "[2147483659]");
+        primeFactors_BigInteger_helper("1000000000039", "[1000000000039]");
+        primeFactors_BigInteger_helper("1000000000000037", "[1000000000000037]");
+        primeFactors_BigInteger_helper("1000000000000039", "[17, 29, 686669, 2953967]");
+
+        primeFactors_BigInteger_fail_helper("0");
+        primeFactors_BigInteger_fail_helper("-1");
     }
 
     private static @NotNull List<BigInteger> readBigIntegerList(@NotNull String s) {

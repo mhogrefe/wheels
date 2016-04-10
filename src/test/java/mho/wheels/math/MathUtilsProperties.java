@@ -68,6 +68,8 @@ public class MathUtilsProperties extends TestProperties {
         propertiesIsPrime_int();
         compareImplementationsIsPrime_int();
         propertiesIsPrime_BigInteger();
+        propertiesPrimeFactors_int();
+        propertiesPrimeFactors_BigInteger();
     }
 
     private static int gcd_int_int_simplest(int x, int y) {
@@ -217,10 +219,7 @@ public class MathUtilsProperties extends TestProperties {
             associative(MathUtils::lcm, t);
         }
 
-        Iterable<Pair<BigInteger, BigInteger>> psFail = P.pairs(
-                P.withElement(BigInteger.ZERO, P.negativeBigIntegers()),
-                P.positiveBigIntegers()
-        );
+        Iterable<Pair<BigInteger, BigInteger>> psFail = P.pairs(P.rangeDown(BigInteger.ZERO), P.positiveBigIntegers());
         for (Pair<BigInteger, BigInteger> p : take(LIMIT, psFail)) {
             try {
                 lcm(p.a, p.b);
@@ -800,7 +799,7 @@ public class MathUtilsProperties extends TestProperties {
             } catch (ArithmeticException ignored) {}
         }
 
-        psFail = P.pairs(P.rangeUp(IntegerUtils.TWO), P.withElement(BigInteger.ZERO, P.negativeBigIntegers()));
+        psFail = P.pairs(P.rangeUp(IntegerUtils.TWO), P.rangeDown(BigInteger.ZERO));
         for (Pair<BigInteger, BigInteger> p : take(LIMIT, psFail)) {
             try {
                 ceilingLog(p.a, p.b);
@@ -912,7 +911,7 @@ public class MathUtilsProperties extends TestProperties {
             } catch (ArithmeticException ignored) {}
         }
 
-        psFail = P.pairsLogarithmicOrder(P.naturalBigIntegers(), P.withElement(0, P.negativeIntegersGeometric()));
+        psFail = P.pairsLogarithmicOrder(P.naturalBigIntegers(), P.rangeDown(0));
         for (Pair<BigInteger, Integer> p : take(LIMIT, psFail)) {
             try {
                 ceilingRoot(p.b, p.a);
@@ -982,7 +981,7 @@ public class MathUtilsProperties extends TestProperties {
             assertEquals(i, smallestPrimeFactor(i), i);
         }
 
-        for (int i : take(LIMIT, P.rangeDown(-1))) {
+        for (int i : take(LIMIT, P.rangeDown(0))) {
             try {
                 smallestPrimeFactor(i);
                 fail(i);
@@ -1014,7 +1013,7 @@ public class MathUtilsProperties extends TestProperties {
             assertEquals(i, smallestPrimeFactor(i), i);
         }
 
-        for (BigInteger i : take(LIMIT, P.rangeDown(IntegerUtils.NEGATIVE_ONE))) {
+        for (BigInteger i : take(LIMIT, P.rangeDown(BigInteger.ZERO))) {
             try {
                 smallestPrimeFactor(i);
                 fail(i);
@@ -1069,7 +1068,7 @@ public class MathUtilsProperties extends TestProperties {
             assertEquals(i, isPrime_int_alt2(i), isPrime);
         }
 
-        for (int i : take(LIMIT, P.withElement(0, P.negativeIntegers()))) {
+        for (int i : take(LIMIT, P.rangeDown(0))) {
             try {
                 isPrime(i);
                 fail(i);
@@ -1093,9 +1092,51 @@ public class MathUtilsProperties extends TestProperties {
             isPrime(i);
         }
 
-        for (BigInteger i : take(LIMIT, P.withElement(BigInteger.ZERO, P.negativeBigIntegers()))) {
+        for (BigInteger i : take(LIMIT, P.rangeDown(BigInteger.ZERO))) {
             try {
                 isPrime(i);
+                fail(i);
+            } catch (IllegalArgumentException ignored) {}
+        }
+    }
+
+    private void propertiesPrimeFactors_int() {
+        initialize("primeFactors(int)");
+        for (int i : take(LIMIT, P.positiveIntegers())) {
+            List<Integer> primeFactors = toList(primeFactors(i));
+            assertEquals(i, toList(map(BigInteger::intValueExact, primeFactors(BigInteger.valueOf(i)))), primeFactors);
+            assertTrue(i, weaklyIncreasing(primeFactors));
+            assertTrue(i, all(MathUtils::isPrime, primeFactors));
+        }
+
+        for (int i : take(LIMIT, filterInfinite(MathUtils::isPrime, P.rangeUp(2)))) {
+            assertEquals(i, length(primeFactors(i)), 1);
+        }
+
+        for (int i : take(LIMIT, P.rangeDown(0))) {
+            try {
+                toList(primeFactors(i));
+                fail(i);
+            } catch (IllegalArgumentException ignored) {}
+        }
+    }
+
+    private void propertiesPrimeFactors_BigInteger() {
+        initialize("primeFactors(BigInteger)");
+        for (BigInteger i : take(LIMIT, P.withScale(12).positiveBigIntegers())) {
+            List<BigInteger> primeFactors = toList(primeFactors(i));
+            assertTrue(i, weaklyIncreasing(primeFactors));
+            assertTrue(i, all(MathUtils::isPrime, primeFactors));
+        }
+
+        Iterable<BigInteger> is = filterInfinite(MathUtils::isPrime, P.withScale(8).rangeUp(IntegerUtils.TWO));
+        for (BigInteger i : take(LIMIT, is)) {
+            assertEquals(i, length(primeFactors(i)), 1);
+        }
+
+        for (BigInteger i : take(LIMIT, P.rangeDown(BigInteger.ZERO))) {
+            try {
+                toList(primeFactors(i));
                 fail(i);
             } catch (IllegalArgumentException ignored) {}
         }
