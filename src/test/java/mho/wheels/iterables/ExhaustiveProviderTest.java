@@ -9,7 +9,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.junit.Test;
 
-import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -44,19 +43,15 @@ public strictfp class ExhaustiveProviderTest {
         simpleProviderHelper(EP.orderings(), "ExhaustiveProvider_orderings");
     }
 
-    private static void uniformSample_Iterable_helper_1(@NotNull String xs, @NotNull String output) {
-        aeqitLog(EP.uniformSample(readIntegerList(xs)), output);
-    }
-
-    private static void uniformSample_Iterable_helper_2(@NotNull String xs, @NotNull String output) {
+    private static void uniformSample_Iterable_helper(@NotNull String xs, @NotNull String output) {
         aeqitLog(EP.uniformSample(readIntegerListWithNulls(xs)), output);
     }
 
     @Test
     public void testUniformSample_Iterable() {
-        uniformSample_Iterable_helper_1("[3, 1, 4, 1]", "ExhaustiveProvider_uniformSample_Iterable_i");
-        uniformSample_Iterable_helper_1("[]", "ExhaustiveProvider_uniformSample_Iterable_ii");
-        uniformSample_Iterable_helper_2("[3, 1, null, 1]", "ExhaustiveProvider_uniformSample_Iterable_iii");
+        uniformSample_Iterable_helper("[3, 1, 4, 1]", "ExhaustiveProvider_uniformSample_Iterable_i");
+        uniformSample_Iterable_helper("[]", "ExhaustiveProvider_uniformSample_Iterable_ii");
+        uniformSample_Iterable_helper("[3, 1, null, 1]", "ExhaustiveProvider_uniformSample_Iterable_iii");
     }
 
     private static void uniformSample_String_helper(@NotNull String s, @NotNull String output) {
@@ -314,15 +309,15 @@ public strictfp class ExhaustiveProviderTest {
         rangeUp_long_helper(Long.MIN_VALUE, "ExhaustiveProvider_rangeUp_long_v");
     }
 
-    private static void rangeUp_BigInteger_helper(int a, @NotNull String output) {
-        simpleProviderHelper(EP.rangeUp(BigInteger.valueOf(a)), output);
+    private static void rangeUp_BigInteger_helper(@NotNull String a, @NotNull String output) {
+        simpleProviderHelper(EP.rangeUp(Readers.readBigInteger(a).get()), output);
     }
 
     @Test
     public void testRangeUp_BigInteger() {
-        rangeUp_BigInteger_helper(0, "ExhaustiveProvider_rangeUp_BigInteger_i");
-        rangeUp_BigInteger_helper(5, "ExhaustiveProvider_rangeUp_BigInteger_ii");
-        rangeUp_BigInteger_helper(-5, "ExhaustiveProvider_rangeUp_BigInteger_iii");
+        rangeUp_BigInteger_helper("0", "ExhaustiveProvider_rangeUp_BigInteger_i");
+        rangeUp_BigInteger_helper("5", "ExhaustiveProvider_rangeUp_BigInteger_ii");
+        rangeUp_BigInteger_helper("-5", "ExhaustiveProvider_rangeUp_BigInteger_iii");
     }
 
     private static void rangeUp_char_helper(char a, @NotNull String output) {
@@ -389,15 +384,15 @@ public strictfp class ExhaustiveProviderTest {
         rangeDown_long_helper(Long.MIN_VALUE, "ExhaustiveProvider_rangeDown_long_v");
     }
 
-    private static void rangeDown_BigInteger_helper(int a, @NotNull String output) {
-        simpleProviderHelper(EP.rangeDown(BigInteger.valueOf(a)), output);
+    private static void rangeDown_BigInteger_helper(@NotNull String a, @NotNull String output) {
+        simpleProviderHelper(EP.rangeDown(Readers.readBigInteger(a).get()), output);
     }
 
     @Test
     public void testRangeDown_BigInteger() {
-        rangeDown_BigInteger_helper(0, "ExhaustiveProvider_rangeDown_BigInteger_i");
-        rangeDown_BigInteger_helper(5, "ExhaustiveProvider_rangeDown_BigInteger_ii");
-        rangeDown_BigInteger_helper(-5, "ExhaustiveProvider_rangeDown_BigInteger_iii");
+        rangeDown_BigInteger_helper("0", "ExhaustiveProvider_rangeDown_BigInteger_i");
+        rangeDown_BigInteger_helper("5", "ExhaustiveProvider_rangeDown_BigInteger_ii");
+        rangeDown_BigInteger_helper("-5", "ExhaustiveProvider_rangeDown_BigInteger_iii");
     }
 
     private static void rangeDown_char_helper(char a, @NotNull String output) {
@@ -492,24 +487,28 @@ public strictfp class ExhaustiveProviderTest {
         range_long_long_helper(5L, -10L, "ExhaustiveProvider_range_long_long_xii");
     }
 
-    private static void range_BigInteger_BigInteger_helper(int a, int b, @NotNull String output) {
-        aeqitLog(EP.range(BigInteger.valueOf(a), BigInteger.valueOf(b)), output);
+    private static void range_BigInteger_BigInteger_helper(
+            @NotNull String a,
+            @NotNull String b,
+            @NotNull String output
+    ) {
+        aeqitLog(EP.range(Readers.readBigInteger(a).get(), Readers.readBigInteger(b).get()), output);
     }
 
     @Test
     public void testRange_BigInteger_BigInteger() {
-        range_BigInteger_BigInteger_helper(10, 20, "ExhaustiveProvider_range_BigInteger_BigInteger_i");
-        range_BigInteger_BigInteger_helper(10, 10, "ExhaustiveProvider_range_BigInteger_BigInteger_ii");
-        range_BigInteger_BigInteger_helper(10, 9, "ExhaustiveProvider_range_BigInteger_BigInteger_iii");
-        range_BigInteger_BigInteger_helper(-20, -10, "ExhaustiveProvider_range_BigInteger_BigInteger_iv");
-        range_BigInteger_BigInteger_helper(-20, -20, "ExhaustiveProvider_range_BigInteger_BigInteger_v");
-        range_BigInteger_BigInteger_helper(-20, -21, "ExhaustiveProvider_range_BigInteger_BigInteger_vi");
-        range_BigInteger_BigInteger_helper(0, 0, "ExhaustiveProvider_range_BigInteger_BigInteger_vii");
-        range_BigInteger_BigInteger_helper(0, 10, "ExhaustiveProvider_range_BigInteger_BigInteger_viii");
-        range_BigInteger_BigInteger_helper(-5, 0, "ExhaustiveProvider_range_BigInteger_BigInteger_ix");
-        range_BigInteger_BigInteger_helper(-5, 10, "ExhaustiveProvider_range_BigInteger_BigInteger_x");
-        range_BigInteger_BigInteger_helper(-10, 5, "ExhaustiveProvider_range_BigInteger_BigInteger_xi");
-        range_BigInteger_BigInteger_helper(5, -10, "ExhaustiveProvider_range_BigInteger_BigInteger_xii");
+        range_BigInteger_BigInteger_helper("10", "20", "ExhaustiveProvider_range_BigInteger_BigInteger_i");
+        range_BigInteger_BigInteger_helper("10", "10", "ExhaustiveProvider_range_BigInteger_BigInteger_ii");
+        range_BigInteger_BigInteger_helper("10", "9", "ExhaustiveProvider_range_BigInteger_BigInteger_iii");
+        range_BigInteger_BigInteger_helper("-20", "-10", "ExhaustiveProvider_range_BigInteger_BigInteger_iv");
+        range_BigInteger_BigInteger_helper("-20", "-20", "ExhaustiveProvider_range_BigInteger_BigInteger_v");
+        range_BigInteger_BigInteger_helper("-20", "-21", "ExhaustiveProvider_range_BigInteger_BigInteger_vi");
+        range_BigInteger_BigInteger_helper("0", "0", "ExhaustiveProvider_range_BigInteger_BigInteger_vii");
+        range_BigInteger_BigInteger_helper("0", "10", "ExhaustiveProvider_range_BigInteger_BigInteger_viii");
+        range_BigInteger_BigInteger_helper("-5", "0", "ExhaustiveProvider_range_BigInteger_BigInteger_ix");
+        range_BigInteger_BigInteger_helper("-5", "10", "ExhaustiveProvider_range_BigInteger_BigInteger_x");
+        range_BigInteger_BigInteger_helper("-10", "5", "ExhaustiveProvider_range_BigInteger_BigInteger_xi");
+        range_BigInteger_BigInteger_helper("5", "-10", "ExhaustiveProvider_range_BigInteger_BigInteger_xii");
     }
 
     private static void range_char_char_helper(char a, char b, @NotNull String output) {
@@ -685,6 +684,7 @@ public strictfp class ExhaustiveProviderTest {
         rangeUp_float_helper(-Float.MAX_VALUE, "ExhaustiveProvider_rangeUp_float_xvi");
         rangeUp_float_helper(Float.POSITIVE_INFINITY, "ExhaustiveProvider_rangeUp_float_xvii");
         rangeUp_float_helper(Float.NEGATIVE_INFINITY, "ExhaustiveProvider_rangeUp_float_xviii");
+
         rangeUp_float_fail_helper(Float.NaN);
     }
 
@@ -719,6 +719,7 @@ public strictfp class ExhaustiveProviderTest {
         rangeDown_float_helper(-Float.MAX_VALUE, "ExhaustiveProvider_rangeDown_float_xvi");
         rangeDown_float_helper(Float.POSITIVE_INFINITY, "ExhaustiveProvider_rangeDown_float_xvii");
         rangeDown_float_helper(Float.NEGATIVE_INFINITY, "ExhaustiveProvider_rangeDown_float_xviii");
+
         rangeDown_float_fail_helper(Float.NaN);
     }
 
@@ -773,6 +774,7 @@ public strictfp class ExhaustiveProviderTest {
                 "ExhaustiveProvider_range_float_float_xxviii");
         range_float_float_helper(1.0f, Float.NEGATIVE_INFINITY,
                 "ExhaustiveProvider_range_float_float_xxix");
+
         range_float_float_fail_helper(Float.NaN, 1.0f);
         range_float_float_fail_helper(Float.NaN, Float.POSITIVE_INFINITY);
         range_float_float_fail_helper(Float.NaN, Float.NEGATIVE_INFINITY);
@@ -813,6 +815,7 @@ public strictfp class ExhaustiveProviderTest {
         rangeUp_double_helper(-Double.MAX_VALUE, "ExhaustiveProvider_rangeUp_double_xvi");
         rangeUp_double_helper(Double.POSITIVE_INFINITY, "ExhaustiveProvider_rangeUp_double_xvii");
         rangeUp_double_helper(Double.NEGATIVE_INFINITY, "ExhaustiveProvider_rangeUp_double_xviii");
+
         rangeUp_double_fail_helper(Double.NaN);
     }
 
@@ -847,6 +850,7 @@ public strictfp class ExhaustiveProviderTest {
         rangeDown_double_helper(-Double.MAX_VALUE, "ExhaustiveProvider_rangeDown_double_xvi");
         rangeDown_double_helper(Double.POSITIVE_INFINITY, "ExhaustiveProvider_rangeDown_double_xvii");
         rangeDown_double_helper(Double.NEGATIVE_INFINITY, "ExhaustiveProvider_rangeDown_double_xviii");
+
         rangeDown_double_fail_helper(Double.NaN);
     }
 
@@ -901,6 +905,7 @@ public strictfp class ExhaustiveProviderTest {
                 "ExhaustiveProvider_range_double_double_xxviii");
         range_double_double_helper(1.0f, Double.NEGATIVE_INFINITY,
                 "ExhaustiveProvider_range_double_double_xxix");
+
         range_double_double_fail_helper(Double.NaN, 1.0);
         range_double_double_fail_helper(Double.NaN, Double.POSITIVE_INFINITY);
         range_double_double_fail_helper(Double.NaN, Double.NEGATIVE_INFINITY);
@@ -1172,17 +1177,32 @@ public strictfp class ExhaustiveProviderTest {
         withNull_cyclic_helper("[1, null, 3]", "ExhaustiveProvider_withNull_v");
     }
 
-    @Test
-    public void testNonEmptyOptionals() {
-        simpleProviderHelper(EP.nonEmptyOptionals(EP.integers()), "ExhaustiveProvider_nonEmptyOptionals_i");
-        simpleProviderHelper(EP.nonEmptyOptionals(EP.strings()), "ExhaustiveProvider_nonEmptyOptionals_ii");
-        aeqitLog(EP.nonEmptyOptionals(Arrays.asList(1, 2, 3)), "ExhaustiveProvider_nonEmptyOptionals_iii");
-        aeqitLog(EP.nonEmptyOptionals(Collections.emptyList()), "ExhaustiveProvider_nonEmptyOptionals_iv");
+    private static <T> void nonEmptyOptionals_helper(@NotNull Iterable<T> input, @NotNull String output) {
+        simpleProviderHelper(EP.nonEmptyOptionals(input), output);
+    }
+
+    private static void nonEmptyOptionals_helper(@NotNull String input, @NotNull String output) {
+        nonEmptyOptionals_helper(readIntegerList(input), output);
+    }
+
+    private static void nonEmptyOptionals_fail_helper(@NotNull String input) {
         try {
-            toList(take(TINY_LIMIT, EP.nonEmptyOptionals(EP.withNull(EP.integers()))));
+            toList(EP.nonEmptyOptionals(readIntegerListWithNulls(input)));
             fail();
         } catch (NullPointerException ignored) {}
     }
+
+    @Test
+    public void testNonEmptyOptionals() {
+        nonEmptyOptionals_helper(EP.integers(), "ExhaustiveProvider_nonEmptyOptionals_i");
+        nonEmptyOptionals_helper(EP.strings(), "ExhaustiveProvider_nonEmptyOptionals_ii");
+        nonEmptyOptionals_helper("[1, 2, 3]", "ExhaustiveProvider_nonEmptyOptionals_iii");
+        nonEmptyOptionals_helper("[]", "ExhaustiveProvider_nonEmptyOptionals_iv");
+
+        nonEmptyOptionals_fail_helper("[1, null, 3]");
+    }
+
+    //todo continue cleanup
 
     @Test
     public void testOptionals() {

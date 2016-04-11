@@ -1251,7 +1251,6 @@ public class RandomProviderProperties extends TestProperties {
         for (RandomProvider rp : take(LIMIT, rps)) {
             Iterable<BinaryFraction> bfs = rp.positiveBinaryFractions();
             rp.reset();
-            take(TINY_LIMIT, bfs).forEach(BinaryFraction::validate);
             simpleTest(rp, bfs, bf -> bf.signum() == 1);
         }
 
@@ -1284,7 +1283,6 @@ public class RandomProviderProperties extends TestProperties {
         for (RandomProvider rp : take(LIMIT, rps)) {
             Iterable<BinaryFraction> bfs = rp.negativeBinaryFractions();
             rp.reset();
-            take(TINY_LIMIT, bfs).forEach(BinaryFraction::validate);
             simpleTest(rp, bfs, bf -> bf.signum() == -1);
         }
 
@@ -1317,7 +1315,6 @@ public class RandomProviderProperties extends TestProperties {
         for (RandomProvider rp : take(LIMIT, rps)) {
             Iterable<BinaryFraction> bfs = rp.nonzeroBinaryFractions();
             rp.reset();
-            take(TINY_LIMIT, bfs).forEach(BinaryFraction::validate);
             simpleTest(rp, bfs, bf -> bf != BinaryFraction.ZERO);
         }
 
@@ -1350,7 +1347,6 @@ public class RandomProviderProperties extends TestProperties {
         for (RandomProvider rp : take(LIMIT, rps)) {
             Iterable<BinaryFraction> bfs = rp.binaryFractions();
             rp.reset();
-            take(TINY_LIMIT, bfs).forEach(BinaryFraction::validate);
             simpleTest(rp, bfs, bf -> true);
         }
 
@@ -1463,7 +1459,6 @@ public class RandomProviderProperties extends TestProperties {
             Iterable<BinaryFraction> bfs = t.a.range(t.b, t.c);
             simpleTest(t.a, bfs, bf -> ge(bf, t.b) && le(bf, t.c));
             assertEquals(t, gt(t.b, t.c), isEmpty(bfs));
-            take(TINY_LIMIT, bfs).forEach(BinaryFraction::validate);
         }
 
         Iterable<Pair<RandomProvider, BinaryFraction>> ps = P.pairs(P.randomProvidersDefault(), P.binaryFractions());
