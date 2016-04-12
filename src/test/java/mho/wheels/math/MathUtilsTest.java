@@ -866,6 +866,79 @@ public class MathUtilsTest {
         primeFactors_BigInteger_fail_helper("-1");
     }
 
+    private static void compactPrimeFactors_int_helper(int input, @NotNull String output) {
+        Testing.aeqit(compactPrimeFactors(input), output);
+    }
+
+    private static void compactPrimeFactors_int_fail_helper(int input) {
+        try {
+            toList(compactPrimeFactors(input));
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+    }
+
+    @Test
+    public void testCompactPrimeFactors_int() {
+        compactPrimeFactors_int_helper(1, "[]");
+        compactPrimeFactors_int_helper(2, "[(2, 1)]");
+        compactPrimeFactors_int_helper(3, "[(3, 1)]");
+        compactPrimeFactors_int_helper(4, "[(2, 2)]");
+        compactPrimeFactors_int_helper(5, "[(5, 1)]");
+        compactPrimeFactors_int_helper(6, "[(2, 1), (3, 1)]");
+        compactPrimeFactors_int_helper(7, "[(7, 1)]");
+        compactPrimeFactors_int_helper(8, "[(2, 3)]");
+        compactPrimeFactors_int_helper(9, "[(3, 2)]");
+        compactPrimeFactors_int_helper(10, "[(2, 1), (5, 1)]");
+        compactPrimeFactors_int_helper(1807, "[(13, 1), (139, 1)]");
+        compactPrimeFactors_int_helper(6221671, "[(6221671, 1)]");
+        compactPrimeFactors_int_helper(65533, "[(13, 1), (71, 2)]");
+        compactPrimeFactors_int_helper(2147483647, "[(2147483647, 1)]");
+        compactPrimeFactors_int_helper(2147483643, "[(3, 1), (715827881, 1)]");
+        compactPrimeFactors_int_helper(2147483641, "[(2699, 1), (795659, 1)]");
+
+        compactPrimeFactors_int_fail_helper(0);
+        compactPrimeFactors_int_fail_helper(-1);
+    }
+
+    private static void compactPrimeFactors_BigInteger_helper(@NotNull String input, @NotNull String output) {
+        Testing.aeqit(compactPrimeFactors(Readers.readBigInteger(input).get()), output);
+    }
+
+    private static void compactPrimeFactors_BigInteger_fail_helper(@NotNull String input) {
+        try {
+            toList(compactPrimeFactors(Readers.readBigInteger(input).get()));
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+    }
+
+    @Test
+    public void testCompactPrimeFactors_BigInteger() {
+        compactPrimeFactors_BigInteger_helper("1", "[]");
+        compactPrimeFactors_BigInteger_helper("2", "[(2, 1)]");
+        compactPrimeFactors_BigInteger_helper("3", "[(3, 1)]");
+        compactPrimeFactors_BigInteger_helper("4", "[(2, 2)]");
+        compactPrimeFactors_BigInteger_helper("5", "[(5, 1)]");
+        compactPrimeFactors_BigInteger_helper("6", "[(2, 1), (3, 1)]");
+        compactPrimeFactors_BigInteger_helper("7", "[(7, 1)]");
+        compactPrimeFactors_BigInteger_helper("8", "[(2, 3)]");
+        compactPrimeFactors_BigInteger_helper("9", "[(3, 2)]");
+        compactPrimeFactors_BigInteger_helper("10", "[(2, 1), (5, 1)]");
+        compactPrimeFactors_BigInteger_helper("1807", "[(13, 1), (139, 1)]");
+        compactPrimeFactors_BigInteger_helper("6221671", "[(6221671, 1)]");
+        compactPrimeFactors_BigInteger_helper("65533", "[(13, 1), (71, 2)]");
+        compactPrimeFactors_BigInteger_helper("2147483647", "[(2147483647, 1)]");
+        compactPrimeFactors_BigInteger_helper("2147483643", "[(3, 1), (715827881, 1)]");
+        compactPrimeFactors_BigInteger_helper("2147483641", "[(2699, 1), (795659, 1)]");
+        compactPrimeFactors_BigInteger_helper("2147483649", "[(3, 1), (715827883, 1)]");
+        compactPrimeFactors_BigInteger_helper("2147483659", "[(2147483659, 1)]");
+        compactPrimeFactors_BigInteger_helper("1000000000039", "[(1000000000039, 1)]");
+        compactPrimeFactors_BigInteger_helper("1000000000000037", "[(1000000000000037, 1)]");
+        compactPrimeFactors_BigInteger_helper("1000000000000039", "[(17, 1), (29, 1), (686669, 1), (2953967, 1)]");
+
+        compactPrimeFactors_BigInteger_fail_helper("0");
+        compactPrimeFactors_BigInteger_fail_helper("-1");
+    }
+
     private static @NotNull List<BigInteger> readBigIntegerList(@NotNull String s) {
         return Readers.readList(Readers::readBigInteger).apply(s).get();
     }

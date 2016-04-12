@@ -70,6 +70,8 @@ public class MathUtilsProperties extends TestProperties {
         propertiesIsPrime_BigInteger();
         propertiesPrimeFactors_int();
         propertiesPrimeFactors_BigInteger();
+        propertiesCompactPrimeFactors_int();
+        propertiesCompactPrimeFactors_BigInteger();
     }
 
     private static int gcd_int_int_simplest(int x, int y) {
@@ -1137,6 +1139,56 @@ public class MathUtilsProperties extends TestProperties {
         for (BigInteger i : take(LIMIT, P.rangeDown(BigInteger.ZERO))) {
             try {
                 toList(primeFactors(i));
+                fail(i);
+            } catch (IllegalArgumentException ignored) {}
+        }
+    }
+
+    private void propertiesCompactPrimeFactors_int() {
+        initialize("compactPrimeFactors(int)");
+        for (int i : take(LIMIT, P.positiveIntegers())) {
+            List<Pair<Integer, Integer>> primeFactors = toList(compactPrimeFactors(i));
+            assertEquals(
+                    i,
+                    toList(map(p -> new Pair<>(p.a.intValueExact(), p.b), compactPrimeFactors(BigInteger.valueOf(i)))),
+                    primeFactors
+            );
+            //noinspection RedundantCast
+            assertTrue(i, weaklyIncreasing((Iterable<Integer>) map(p -> p.a, primeFactors)));
+            assertTrue(i, all(MathUtils::isPrime, map(p -> p.a, primeFactors)));
+            assertTrue(i, all(e -> e > 0, map(p -> p.b, primeFactors)));
+        }
+
+        for (int i : take(LIMIT, filterInfinite(MathUtils::isPrime, P.rangeUp(2)))) {
+            assertEquals(i, length(compactPrimeFactors(i)), 1);
+        }
+
+        for (int i : take(LIMIT, P.rangeDown(0))) {
+            try {
+                toList(compactPrimeFactors(i));
+                fail(i);
+            } catch (IllegalArgumentException ignored) {}
+        }
+    }
+
+    private void propertiesCompactPrimeFactors_BigInteger() {
+        initialize("compactPrimeFactors(BigInteger)");
+        for (BigInteger i : take(LIMIT, P.withScale(12).positiveBigIntegers())) {
+            List<Pair<BigInteger, Integer>> primeFactors = toList(compactPrimeFactors(i));
+            //noinspection RedundantCast
+            assertTrue(i, weaklyIncreasing((Iterable<BigInteger>) map(p -> p.a, primeFactors)));
+            assertTrue(i, all(MathUtils::isPrime, map(p -> p.a, primeFactors)));
+            assertTrue(i, all(e -> e > 0, map(p -> p.b, primeFactors)));
+        }
+
+        Iterable<BigInteger> is = filterInfinite(MathUtils::isPrime, P.withScale(8).rangeUp(IntegerUtils.TWO));
+        for (BigInteger i : take(LIMIT, is)) {
+            assertEquals(i, length(compactPrimeFactors(i)), 1);
+        }
+
+        for (BigInteger i : take(LIMIT, P.rangeDown(BigInteger.ZERO))) {
+            try {
+                toList(compactPrimeFactors(i));
                 fail(i);
             } catch (IllegalArgumentException ignored) {}
         }

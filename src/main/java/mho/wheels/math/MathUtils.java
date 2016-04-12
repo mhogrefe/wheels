@@ -834,10 +834,38 @@ public final class MathUtils {
         );
     }
 
+    /**
+     * Returns the prime factors of number. The output format is a list of pairs, where the first elements are the
+     * primes and the second elements are the powers that the corresponding primes are raised to.
+     *
+     * <ul>
+     *  <li>{@code n} must be positive.</li>
+     *  <li>The result is a finite {@code Iterable} of pairs, where the first elements are distinct primes in
+     *  increasing order and the second elements are all positive.</li>
+     * </ul>
+     *
+     * @param n a number
+     * @return [p<sub>1</sub>, e<sub>1</sub>, p<sub>2</sub>, e<sub>2</sub>, ..., p<sub>n</sub>, e<sub>n</sub>], where
+     * p are distinct primes in ascending order and {@code n}=Πp<sub>i</sub><sup>e<sub>i</sub></sup>
+     */
     public static @NotNull Iterable<Pair<Integer, Integer>> compactPrimeFactors(int n) {
         return countAdjacent(primeFactors(n));
     }
 
+    /**
+     * Returns the prime factors of number. The output format is a list of pairs, where the first elements are the
+     * primes and the second elements are the powers that the corresponding primes are raised to.
+     *
+     * <ul>
+     *  <li>{@code n} must be positive.</li>
+     *  <li>The result is a finite {@code Iterable} of pairs, where the first elements are distinct primes in
+     *  increasing order and the second elements are all positive.</li>
+     * </ul>
+     *
+     * @param n a number
+     * @return [p<sub>1</sub>, e<sub>1</sub>, p<sub>2</sub>, e<sub>2</sub>, ..., p<sub>n</sub>, e<sub>n</sub>], where
+     * p are distinct primes in ascending order and {@code n}=Πp<sub>i</sub><sup>e<sub>i</sub></sup>
+     */
     public static @NotNull Iterable<Pair<BigInteger, Integer>> compactPrimeFactors(@NotNull BigInteger n) {
         return countAdjacent(primeFactors(n));
     }
