@@ -939,6 +939,81 @@ public class MathUtilsTest {
         compactPrimeFactors_BigInteger_fail_helper("-1");
     }
 
+    private static void factors_int_helper(int input, @NotNull String output) {
+        Testing.aeqit(factors(input), output);
+    }
+
+    private static void factors_int_fail_helper(int input) {
+        try {
+            toList(factors(input));
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+    }
+
+    @Test
+    public void testFactors_int() {
+        factors_int_helper(1, "[1]");
+        factors_int_helper(2, "[1, 2]");
+        factors_int_helper(3, "[1, 3]");
+        factors_int_helper(4, "[1, 2, 4]");
+        factors_int_helper(5, "[1, 5]");
+        factors_int_helper(6, "[1, 2, 3, 6]");
+        factors_int_helper(7, "[1, 7]");
+        factors_int_helper(8, "[1, 2, 4, 8]");
+        factors_int_helper(9, "[1, 3, 9]");
+        factors_int_helper(10, "[1, 2, 5, 10]");
+        factors_int_helper(1807, "[1, 13, 139, 1807]");
+        factors_int_helper(6221671, "[1, 6221671]");
+        factors_int_helper(65533, "[1, 13, 71, 923, 5041, 65533]");
+        factors_int_helper(2147483647, "[1, 2147483647]");
+        factors_int_helper(2147483643, "[1, 3, 715827881, 2147483643]");
+        factors_int_helper(2147483641, "[1, 2699, 795659, 2147483641]");
+
+        factors_int_fail_helper(0);
+        factors_int_fail_helper(-1);
+    }
+
+    private static void factors_BigInteger_helper(@NotNull String input, @NotNull String output) {
+        Testing.aeqit(factors(Readers.readBigInteger(input).get()), output);
+    }
+
+    private static void factors_BigInteger_fail_helper(@NotNull String input) {
+        try {
+            toList(factors(Readers.readBigInteger(input).get()));
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+    }
+
+    @Test
+    public void testFactors_BigInteger() {
+        factors_BigInteger_helper("1", "[1]");
+        factors_BigInteger_helper("2", "[1, 2]");
+        factors_BigInteger_helper("3", "[1, 3]");
+        factors_BigInteger_helper("4", "[1, 2, 4]");
+        factors_BigInteger_helper("5", "[1, 5]");
+        factors_BigInteger_helper("6", "[1, 2, 3, 6]");
+        factors_BigInteger_helper("7", "[1, 7]");
+        factors_BigInteger_helper("8", "[1, 2, 4, 8]");
+        factors_BigInteger_helper("9", "[1, 3, 9]");
+        factors_BigInteger_helper("10", "[1, 2, 5, 10]");
+        factors_BigInteger_helper("1807", "[1, 13, 139, 1807]");
+        factors_BigInteger_helper("6221671", "[1, 6221671]");
+        factors_BigInteger_helper("65533", "[1, 13, 71, 923, 5041, 65533]");
+        factors_BigInteger_helper("2147483647", "[1, 2147483647]");
+        factors_BigInteger_helper("2147483643", "[1, 3, 715827881, 2147483643]");
+        factors_BigInteger_helper("2147483641", "[1, 2699, 795659, 2147483641]");
+        factors_BigInteger_helper("2147483649", "[1, 3, 715827883, 2147483649]");
+        factors_BigInteger_helper("2147483659", "[1, 2147483659]");
+        factors_BigInteger_helper("1000000000039", "[1, 1000000000039]");
+        factors_BigInteger_helper("1000000000000037", "[1, 1000000000000037]");
+        factors_BigInteger_helper("1000000000000039",
+                "[1, 17, 29, 493, 686669, 2953967, 11673373, 19913401, 50217439, 85665043, 338527817, 1456305731," +
+                " 2028397565923, 34482758620691, 58823529411767, 1000000000000039]");
+
+        factors_BigInteger_fail_helper("0");
+        factors_BigInteger_fail_helper("-1");
+    }
+
     private static @NotNull List<BigInteger> readBigIntegerList(@NotNull String s) {
         return Readers.readList(Readers::readBigInteger).apply(s).get();
     }

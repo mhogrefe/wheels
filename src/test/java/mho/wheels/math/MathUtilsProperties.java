@@ -1,5 +1,6 @@
 package mho.wheels.math;
 
+import mho.wheels.iterables.IterableUtils;
 import mho.wheels.numberUtils.IntegerUtils;
 import mho.wheels.structures.FiniteDomainFunction;
 import mho.wheels.structures.Pair;
@@ -72,6 +73,8 @@ public class MathUtilsProperties extends TestProperties {
         propertiesPrimeFactors_BigInteger();
         propertiesCompactPrimeFactors_int();
         propertiesCompactPrimeFactors_BigInteger();
+        propertiesFactors_int();
+        propertiesFactors_BigInteger();
     }
 
     private static int gcd_int_int_simplest(int x, int y) {
@@ -1107,6 +1110,7 @@ public class MathUtilsProperties extends TestProperties {
         for (int i : take(LIMIT, P.positiveIntegers())) {
             List<Integer> primeFactors = toList(primeFactors(i));
             assertEquals(i, toList(map(BigInteger::intValueExact, primeFactors(BigInteger.valueOf(i)))), primeFactors);
+            inverse(MathUtils::primeFactors, IterableUtils::productInteger, i);
             assertTrue(i, weaklyIncreasing(primeFactors));
             assertTrue(i, all(MathUtils::isPrime, primeFactors));
         }
@@ -1127,6 +1131,7 @@ public class MathUtilsProperties extends TestProperties {
         initialize("primeFactors(BigInteger)");
         for (BigInteger i : take(LIMIT, P.withScale(12).positiveBigIntegers())) {
             List<BigInteger> primeFactors = toList(primeFactors(i));
+            inverse(MathUtils::primeFactors, IterableUtils::productBigInteger, i);
             assertTrue(i, weaklyIncreasing(primeFactors));
             assertTrue(i, all(MathUtils::isPrime, primeFactors));
         }
@@ -1153,6 +1158,13 @@ public class MathUtilsProperties extends TestProperties {
                     toList(map(p -> new Pair<>(p.a.intValueExact(), p.b), compactPrimeFactors(BigInteger.valueOf(i)))),
                     primeFactors
             );
+            inverse(
+                    MathUtils::compactPrimeFactors,
+                    (Iterable<Pair<Integer, Integer>> fs) -> productInteger(
+                            map(p -> BigInteger.valueOf(p.a).pow(p.b).intValueExact(), fs)
+                    ),
+                    i
+            );
             //noinspection RedundantCast
             assertTrue(i, weaklyIncreasing((Iterable<Integer>) map(p -> p.a, primeFactors)));
             assertTrue(i, all(MathUtils::isPrime, map(p -> p.a, primeFactors)));
@@ -1175,6 +1187,11 @@ public class MathUtilsProperties extends TestProperties {
         initialize("compactPrimeFactors(BigInteger)");
         for (BigInteger i : take(LIMIT, P.withScale(12).positiveBigIntegers())) {
             List<Pair<BigInteger, Integer>> primeFactors = toList(compactPrimeFactors(i));
+            inverse(
+                    MathUtils::compactPrimeFactors,
+                    (Iterable<Pair<BigInteger, Integer>> fs) -> productBigInteger(map(p -> p.a.pow(p.b), fs)),
+                    i
+            );
             //noinspection RedundantCast
             assertTrue(i, weaklyIncreasing((Iterable<BigInteger>) map(p -> p.a, primeFactors)));
             assertTrue(i, all(MathUtils::isPrime, map(p -> p.a, primeFactors)));
@@ -1189,6 +1206,52 @@ public class MathUtilsProperties extends TestProperties {
         for (BigInteger i : take(LIMIT, P.rangeDown(BigInteger.ZERO))) {
             try {
                 toList(compactPrimeFactors(i));
+                fail(i);
+            } catch (IllegalArgumentException ignored) {}
+        }
+    }
+
+    private void propertiesFactors_int() {
+        initialize("factors(int)");
+        for (int i : take(LIMIT, P.positiveIntegers())) {
+            List<Integer> factors = factors(i);
+            assertEquals(i, toList(map(BigInteger::intValueExact, factors(BigInteger.valueOf(i)))), factors);
+            assertTrue(i, increasing(factors));
+            assertEquals(i, head(factors), 1);
+            assertEquals(i, last(factors), i);
+            assertTrue(i, all(f -> f > 0 && i % f == 0, factors));
+        }
+
+        for (int i : take(LIMIT, filterInfinite(MathUtils::isPrime, P.rangeUp(2)))) {
+            assertEquals(i, length(factors(i)), 2);
+        }
+
+        for (int i : take(LIMIT, P.rangeDown(0))) {
+            try {
+                factors(i);
+                fail(i);
+            } catch (IllegalArgumentException ignored) {}
+        }
+    }
+
+    private void propertiesFactors_BigInteger() {
+        initialize("factors(BigInteger)");
+        for (BigInteger i : take(LIMIT, P.withScale(12).positiveBigIntegers())) {
+            List<BigInteger> factors = factors(i);
+            assertTrue(i, increasing(factors));
+            assertEquals(i, head(factors), BigInteger.ONE);
+            assertEquals(i, last(factors), i);
+            assertTrue(i, all(f -> f.signum() == 1 && i.mod(f).equals(BigInteger.ZERO), factors));
+        }
+
+        Iterable<BigInteger> is = filterInfinite(MathUtils::isPrime, P.withScale(8).rangeUp(IntegerUtils.TWO));
+        for (BigInteger i : take(LIMIT, is)) {
+            assertEquals(i, length(factors(i)), 2);
+        }
+
+        for (BigInteger i : take(LIMIT, P.rangeDown(BigInteger.ZERO))) {
+            try {
+                factors(i);
                 fail(i);
             } catch (IllegalArgumentException ignored) {}
         }

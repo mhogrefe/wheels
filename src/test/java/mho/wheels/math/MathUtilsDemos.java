@@ -259,4 +259,16 @@ public class MathUtilsDemos extends Demos {
             System.out.println("compactPrimeFactors(" + i + ") = " + toList(compactPrimeFactors(i)));
         }
     }
+
+    private void demoFactors_int() {
+        for (int i : take(LIMIT, P.positiveIntegers())) {
+            System.out.println("factors(" + i + ") = " + factors(i));
+        }
+    }
+
+    private void demoFactors_BigInteger() {
+        for (BigInteger i : take(LIMIT, P.withScale(12).positiveBigIntegers())) {
+            System.out.println("factors(" + i + ") = " + factors(i));
+        }
+    }
 }

@@ -870,24 +870,46 @@ public final class MathUtils {
         return countAdjacent(primeFactors(n));
     }
 
+    /**
+     * Returns the factors of a number in ascending order.
+     *
+     * <ul>
+     *  <li>{@code n} must be positive.</li>
+     *  <li>The result is a finite {@code List} of {@code int}s in ascending order.</li>
+     * </ul>
+     *
+     * @param n a number
+     * @return the factors of {@code n}
+     */
     public static @NotNull List<Integer> factors(int n) {
-        List<Pair<Integer, Integer>> cpf = toList(compactPrimeFactors(n));
+        List<Pair<Integer, Integer>> primeFactors = toList(compactPrimeFactors(n));
         Iterable<List<Integer>> possibleExponents = ExhaustiveProvider.INSTANCE.cartesianProduct(
-                toList(map(p -> toList(range(0, p.b)), cpf))
+                toList(map(p -> toList(range(0, p.b)), primeFactors))
         );
         Function<List<Integer>, Integer> f = exponents -> productInteger(
-                zipWith((x, y) -> BigInteger.valueOf(x).pow(y).intValueExact(), map(q -> q.a, cpf), exponents)
+                zipWith((x, y) -> BigInteger.valueOf(x).pow(y).intValueExact(), map(q -> q.a, primeFactors), exponents)
         );
         return sort(map(f, possibleExponents));
     }
 
+    /**
+     * Returns the factors of a number in ascending order.
+     *
+     * <ul>
+     *  <li>{@code n} must be positive.</li>
+     *  <li>The result is a finite {@code List} of {@code BigInteger}s in ascending order.</li>
+     * </ul>
+     *
+     * @param n a number
+     * @return the factors of {@code n}
+     */
     public static @NotNull List<BigInteger> factors(@NotNull BigInteger n) {
-        List<Pair<BigInteger, Integer>> cpf = toList(compactPrimeFactors(n));
+        List<Pair<BigInteger, Integer>> primeFactors = toList(compactPrimeFactors(n));
         Iterable<List<Integer>> possibleExponents = ExhaustiveProvider.INSTANCE.cartesianProduct(
-                toList(map(p -> toList(range(0, p.b)), cpf))
+                toList(map(p -> toList(range(0, p.b)), primeFactors))
         );
         Function<List<Integer>, BigInteger> f = exponents -> productBigInteger(
-                zipWith(BigInteger::pow, map(q -> q.a, cpf), exponents)
+                zipWith(BigInteger::pow, map(q -> q.a, primeFactors), exponents)
         );
         return sort(map(f, possibleExponents));
     }
