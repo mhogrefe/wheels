@@ -1292,13 +1292,31 @@ public strictfp class ExhaustiveProviderTest {
         dependentPairs_fail_helper("[3, 1, 2, 0]", i -> null);
     }
 
-    //todo continue cleanup
+    private static <A, B> void dependentPairsInfinite_helper(
+            @NotNull Iterable<A> xs,
+            @NotNull Function<A, Iterable<B>> f,
+            @NotNull String output
+    ) {
+        simpleProviderHelper(EP.dependentPairsInfinite(xs, f), output);
+    }
+
+    private static <A, B> void dependentPairsInfinite_fail_helper(
+            @NotNull Iterable<A> xs,
+            @NotNull Function<A, Iterable<B>> f
+    ) {
+        try {
+            toList(EP.dependentPairsInfinite(xs, f));
+            fail();
+        } catch (NullPointerException | IllegalArgumentException | NoSuchElementException ignored) {}
+    }
 
     @Test
     public void testDependentPairsInfinite() {
-        simpleProviderHelper(EP.dependentPairsInfinite(EP.naturalBigIntegers(), i -> EP.naturalBigIntegers()),
-                "ExhaustiveProvider_dependentPairsInfinite_i");
-
+        dependentPairsInfinite_helper(
+                EP.naturalBigIntegers(),
+                i -> EP.naturalBigIntegers(),
+                "ExhaustiveProvider_dependentPairsInfinite_i"
+        );
         Function<Integer, Iterable<String>> f = i -> {
             switch (i) {
                 case 0: return repeat("beep");
@@ -1306,32 +1324,38 @@ public strictfp class ExhaustiveProviderTest {
             }
             throw new IllegalArgumentException();
         };
-        simpleProviderHelper(EP.dependentPairsInfinite(cycle(Arrays.asList(1, 0)), f),
-                "ExhaustiveProvider_dependentPairsInfinite_ii");
+        dependentPairsInfinite_helper(cycle(Arrays.asList(1, 0)), f, "ExhaustiveProvider_dependentPairsInfinite_ii");
 
-        try {
-            toList(EP.dependentPairsInfinite(cycle(Arrays.asList(1, 0)), i -> null));
-            fail();
-        } catch (NullPointerException | IllegalArgumentException ignored) {}
+        dependentPairsInfinite_fail_helper(cycle(Arrays.asList(1, 0)), i -> null);
+        dependentPairsInfinite_fail_helper(Arrays.asList(0, 1), f);
+        dependentPairsInfinite_fail_helper(cycle(Arrays.asList(1, 0)), i -> Collections.singletonList("a"));
+    }
 
-        try {
-            toList(EP.dependentPairsInfinite(Arrays.asList(0, 1), f));
-            fail();
-        } catch (NoSuchElementException ignored) {}
+    private static <A, B> void dependentPairsInfiniteLogarithmicOrder_helper(
+            @NotNull Iterable<A> xs,
+            @NotNull Function<A, Iterable<B>> f,
+            @NotNull String output
+    ) {
+        simpleProviderHelper(EP.dependentPairsInfiniteLogarithmicOrder(xs, f), output);
+    }
 
+    private static <A, B> void dependentPairsInfiniteLogarithmicOrder_fail_helper(
+            @NotNull Iterable<A> xs,
+            @NotNull Function<A, Iterable<B>> f
+    ) {
         try {
-            toList(EP.dependentPairsInfinite(cycle(Arrays.asList(1, 0)), i -> Collections.singletonList("a")));
+            toList(EP.dependentPairsInfiniteLogarithmicOrder(xs, f));
             fail();
-        } catch (NoSuchElementException ignored) {}
+        } catch (NullPointerException | IllegalArgumentException | NoSuchElementException ignored) {}
     }
 
     @Test
     public void testDependentPairsInfiniteLogarithmicOrder() {
-        simpleProviderHelper(
-                EP.dependentPairsInfiniteLogarithmicOrder(EP.naturalBigIntegers(), i -> EP.naturalBigIntegers()),
+        dependentPairsInfiniteLogarithmicOrder_helper(
+                EP.naturalBigIntegers(),
+                i -> EP.naturalBigIntegers(),
                 "ExhaustiveProvider_dependentPairsInfiniteLogarithmicOrder_i"
         );
-
         Function<Integer, Iterable<String>> f = i -> {
             switch (i) {
                 case 0: return repeat("beep");
@@ -1339,37 +1363,45 @@ public strictfp class ExhaustiveProviderTest {
             }
             throw new IllegalArgumentException();
         };
-        simpleProviderHelper(EP.dependentPairsInfiniteLogarithmicOrder(cycle(Arrays.asList(1, 0)), f),
-                "ExhaustiveProvider_dependentPairsInfiniteLogarithmicOrder_ii");
+        dependentPairsInfiniteLogarithmicOrder_helper(
+                cycle(Arrays.asList(1, 0)),
+                f,
+                "ExhaustiveProvider_dependentPairsInfiniteLogarithmicOrder_ii"
+        );
 
-        try {
-            toList(EP.dependentPairsInfiniteLogarithmicOrder(cycle(Arrays.asList(1, 0)), i -> null));
-            fail();
-        } catch (NullPointerException | IllegalArgumentException ignored) {}
+        dependentPairsInfiniteLogarithmicOrder_fail_helper(cycle(Arrays.asList(1, 0)), i -> null);
+        dependentPairsInfiniteLogarithmicOrder_fail_helper(Arrays.asList(0, 1), f);
+        dependentPairsInfiniteLogarithmicOrder_fail_helper(
+                cycle(Arrays.asList(1, 0)),
+                i -> Collections.singletonList("a")
+        );
+    }
 
-        try {
-            toList(EP.dependentPairsInfiniteLogarithmicOrder(Arrays.asList(0, 1), f));
-            fail();
-        } catch (NoSuchElementException ignored) {}
+    private static <A, B> void dependentPairsInfiniteSquareRootOrder_helper(
+            @NotNull Iterable<A> xs,
+            @NotNull Function<A, Iterable<B>> f,
+            @NotNull String output
+    ) {
+        simpleProviderHelper(EP.dependentPairsInfiniteSquareRootOrder(xs, f), output);
+    }
 
+    private static <A, B> void dependentPairsInfiniteSquareRootOrder_fail_helper(
+            @NotNull Iterable<A> xs,
+            @NotNull Function<A, Iterable<B>> f
+    ) {
         try {
-            toList(
-                    EP.dependentPairsInfiniteLogarithmicOrder(
-                            cycle(Arrays.asList(1, 0)),
-                            i -> Collections.singletonList("a")
-                    )
-            );
+            toList(EP.dependentPairsInfiniteSquareRootOrder(xs, f));
             fail();
-        } catch (NoSuchElementException ignored) {}
+        } catch (NullPointerException | IllegalArgumentException | NoSuchElementException ignored) {}
     }
 
     @Test
     public void testDependentPairsInfiniteSquareRootOrder() {
-        simpleProviderHelper(
-                EP.dependentPairsInfiniteSquareRootOrder(EP.naturalBigIntegers(), i -> EP.naturalBigIntegers()),
+        dependentPairsInfiniteSquareRootOrder_helper(
+                EP.naturalBigIntegers(),
+                i -> EP.naturalBigIntegers(),
                 "ExhaustiveProvider_dependentPairsInfiniteSquareRootOrder_i"
         );
-
         Function<Integer, Iterable<String>> f = i -> {
             switch (i) {
                 case 0: return repeat("beep");
@@ -1377,29 +1409,21 @@ public strictfp class ExhaustiveProviderTest {
             }
             throw new IllegalArgumentException();
         };
-        simpleProviderHelper(EP.dependentPairsInfiniteSquareRootOrder(cycle(Arrays.asList(1, 0)), f),
-                "ExhaustiveProvider_dependentPairsInfiniteSquareRootOrder_ii");
+        dependentPairsInfiniteSquareRootOrder_helper(
+                cycle(Arrays.asList(1, 0)),
+                f,
+                "ExhaustiveProvider_dependentPairsInfiniteSquareRootOrder_ii"
+        );
 
-        try {
-            toList(EP.dependentPairsInfiniteSquareRootOrder(cycle(Arrays.asList(1, 0)), i -> null));
-            fail();
-        } catch (NullPointerException | IllegalArgumentException ignored) {}
-
-        try {
-            toList(EP.dependentPairsInfiniteSquareRootOrder(Arrays.asList(0, 1), f));
-            fail();
-        } catch (NoSuchElementException ignored) {}
-
-        try {
-            toList(
-                    EP.dependentPairsInfiniteSquareRootOrder(
-                            cycle(Arrays.asList(1, 0)),
-                            i -> Collections.singletonList("a")
-                    )
-            );
-            fail();
-        } catch (NoSuchElementException ignored) {}
+        dependentPairsInfiniteSquareRootOrder_fail_helper(cycle(Arrays.asList(1, 0)), i -> null);
+        dependentPairsInfiniteSquareRootOrder_fail_helper(Arrays.asList(0, 1), f);
+        dependentPairsInfiniteSquareRootOrder_fail_helper(
+                cycle(Arrays.asList(1, 0)),
+                i -> Collections.singletonList("a")
+        );
     }
+
+    //todo continue cleanup
 
     @Test
     public void testPairsLogarithmicOrder_Iterable_Iterable() {
