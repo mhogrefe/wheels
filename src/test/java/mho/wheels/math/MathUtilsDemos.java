@@ -12,6 +12,7 @@ import java.util.function.Function;
 
 import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.math.MathUtils.*;
+import static mho.wheels.testing.Testing.LARGE_LIMIT;
 import static mho.wheels.testing.Testing.MEDIUM_LIMIT;
 import static mho.wheels.testing.Testing.SMALL_LIMIT;
 
@@ -269,6 +270,18 @@ public class MathUtilsDemos extends Demos {
     private void demoFactors_BigInteger() {
         for (BigInteger i : take(LIMIT, P.withScale(12).positiveBigIntegers())) {
             System.out.println("factors(" + i + ") = " + factors(i));
+        }
+    }
+
+    private void demoIntPrimes() {
+        for (int p : take(LARGE_LIMIT, intPrimes())) {
+            System.out.println(p);
+        }
+    }
+
+    private void demoPrimes() {
+        for (BigInteger p : take(LARGE_LIMIT, primes())) {
+            System.out.println(p);
         }
     }
 }

@@ -27,6 +27,12 @@ public class MathUtilsProperties extends TestProperties {
     }
 
     @Override
+    protected void testConstant() {
+        propertiesIntPrimes();
+        propertiesPrimes();
+    }
+
+    @Override
     protected void testBothModes() {
         propertiesGcd_int_int();
         compareImplementationsGcd_int_int();
@@ -1254,6 +1260,20 @@ public class MathUtilsProperties extends TestProperties {
                 factors(i);
                 fail(i);
             } catch (IllegalArgumentException ignored) {}
+        }
+    }
+
+    private void propertiesIntPrimes() {
+        initializeConstant("intPrimes()");
+        for (int p : take(LARGE_LIMIT, intPrimes())) {
+            assertTrue(p, isPrime(p));
+        }
+    }
+
+    private void propertiesPrimes() {
+        initializeConstant("primes()");
+        for (BigInteger p : take(LARGE_LIMIT, primes())) {
+            assertTrue(p, isPrime(p));
         }
     }
 }

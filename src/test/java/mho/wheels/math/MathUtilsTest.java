@@ -11,7 +11,8 @@ import java.util.function.Function;
 
 import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.math.MathUtils.*;
-import static mho.wheels.testing.Testing.aeq;
+import static mho.wheels.testing.Testing.*;
+import static mho.wheels.testing.Testing.testNoRemove;
 import static org.junit.Assert.fail;
 
 public class MathUtilsTest {
@@ -1012,6 +1013,30 @@ public class MathUtilsTest {
 
         factors_BigInteger_fail_helper("0");
         factors_BigInteger_fail_helper("-1");
+    }
+
+    @Test
+    public void testIntPrimes() {
+        Iterable<Integer> ps = intPrimes();
+        Testing.aeqitLimit(SMALL_LIMIT, ps,
+                "[2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97," +
+                " 101, 103, 107, 109, 113, 127, 131, 137, 139, 149, 151, 157, 163, 167, 173, 179, 181, 191, 193," +
+                " 197, 199, 211, 223, 227, 229, 233, 239, 241, 251, 257, 263, 269, 271, 277, 281, 283, 293, 307," +
+                " 311, 313, 317, 331, 337, 347, 349, 353, 359, 367, 373, 379, 383, 389, 397, 401, 409, 419, 421," +
+                " 431, 433, 439, 443, 449, 457, 461, 463, 467, 479, 487, 491, 499, 503, 509, 521, 523, 541, ...]");
+        testNoRemove(SMALL_LIMIT, ps);
+    }
+
+    @Test
+    public void testPrimes() {
+        Iterable<BigInteger> ps = primes();
+        Testing.aeqitLimit(SMALL_LIMIT, ps,
+                "[2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97," +
+                " 101, 103, 107, 109, 113, 127, 131, 137, 139, 149, 151, 157, 163, 167, 173, 179, 181, 191, 193," +
+                " 197, 199, 211, 223, 227, 229, 233, 239, 241, 251, 257, 263, 269, 271, 277, 281, 283, 293, 307," +
+                " 311, 313, 317, 331, 337, 347, 349, 353, 359, 367, 373, 379, 383, 389, 397, 401, 409, 419, 421," +
+                " 431, 433, 439, 443, 449, 457, 461, 463, 467, 479, 487, 491, 499, 503, 509, 521, 523, 541, ...]");
+        testNoRemove(SMALL_LIMIT, ps);
     }
 
     private static @NotNull List<BigInteger> readBigIntegerList(@NotNull String s) {

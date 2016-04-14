@@ -914,6 +914,11 @@ public final class MathUtils {
         return sort(map(f, possibleExponents));
     }
 
+    /**
+     * Returns all prime {@code int}s in ascending order.
+     *
+     * @return prime {@code int}s
+     */
     public static @NotNull Iterable<Integer> intPrimes() {
         @SuppressWarnings("ConstantConditions")
         int start = (PRIME_SIEVE_SIZE & 1) == 0 ? PRIME_SIEVE_SIZE + 1 : PRIME_SIEVE_SIZE;
@@ -924,6 +929,13 @@ public final class MathUtils {
         );
     }
 
+    /**
+     * Returns all prime {@code BigInteger}s in ascending order.
+     *
+     * Length is infinite
+     *
+     * @return prime {@code BigInteger}s
+     */
     public static @NotNull Iterable<BigInteger> primes() {
         Iterable<BigInteger> candidates = concatMap(
                 i -> {
