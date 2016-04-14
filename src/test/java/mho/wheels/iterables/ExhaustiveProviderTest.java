@@ -1202,40 +1202,76 @@ public strictfp class ExhaustiveProviderTest {
         nonEmptyOptionals_fail_helper("[1, null, 3]");
     }
 
-    //todo continue cleanup
+    private static <T> void optionals_helper(@NotNull Iterable<T> input, @NotNull String output) {
+        simpleProviderHelper(EP.optionals(input), output);
+    }
 
-    @Test
-    public void testOptionals() {
-        simpleProviderHelper(EP.optionals(EP.integers()), "ExhaustiveProvider_nonOptionals_i");
-        simpleProviderHelper(EP.optionals(EP.strings()), "ExhaustiveProvider_nonOptionals_ii");
-        aeqitLog(EP.optionals(Arrays.asList(1, 2, 3)), "ExhaustiveProvider_nonOptionals_iii");
-        aeqitLog(EP.optionals(Collections.emptyList()), "ExhaustiveProvider_nonOptionals_iv");
+    private static void optionals_helper(@NotNull String input, @NotNull String output) {
+        optionals_helper(readIntegerList(input), output);
+    }
+
+    private static void optionals_fail_helper(@NotNull String input) {
         try {
-            toList(take(TINY_LIMIT, EP.optionals(EP.withNull(EP.integers()))));
+            toList(EP.optionals(readIntegerListWithNulls(input)));
             fail();
         } catch (NullPointerException ignored) {}
     }
 
     @Test
+    public void testOptionals() {
+        optionals_helper(EP.integers(), "ExhaustiveProvider_nonOptionals_i");
+        optionals_helper(EP.strings(), "ExhaustiveProvider_nonOptionals_ii");
+        optionals_helper("[1, 2, 3]", "ExhaustiveProvider_nonOptionals_iii");
+        optionals_helper("[]", "ExhaustiveProvider_nonOptionals_iv");
+
+        optionals_fail_helper("[1, null, 3]");
+    }
+
+    private static <T> void nonEmptyNullableOptionals_helper(@NotNull Iterable<T> input, @NotNull String output) {
+        simpleProviderHelper(EP.nonEmptyNullableOptionals(input), output);
+    }
+
+    private static void nonEmptyNullableOptionals_helper(@NotNull String input, @NotNull String output) {
+        nonEmptyNullableOptionals_helper(readIntegerListWithNulls(input), output);
+    }
+
+    @Test
     public void testNonEmptyNullableOptionals() {
-        simpleProviderHelper(EP.nonEmptyNullableOptionals(EP.withNull(EP.integers())),
-                "ExhaustiveProvider_nonEmptyNullableOptionals_i");
-        simpleProviderHelper(EP.nonEmptyNullableOptionals(EP.withNull(EP.strings())),
-                "ExhaustiveProvider_nonEmptyNullableOptionals_ii");
-        aeqitLog(EP.nonEmptyNullableOptionals(Arrays.asList(1, 2, 3)),
-                "ExhaustiveProvider_nonEmptyNullableOptionals_iii");
-        aeqitLog(EP.nonEmptyNullableOptionals(Collections.emptyList()),
-                "ExhaustiveProvider_nonEmptyNullableOptionals_iv");
+        nonEmptyNullableOptionals_helper(EP.withNull(EP.integers()), "ExhaustiveProvider_nonEmptyNullableOptionals_i");
+        nonEmptyNullableOptionals_helper(EP.withNull(EP.strings()), "ExhaustiveProvider_nonEmptyNullableOptionals_ii");
+        nonEmptyNullableOptionals_helper("[1, 2, 3]", "ExhaustiveProvider_nonEmptyNullableOptionals_iii");
+        nonEmptyNullableOptionals_helper("[]", "ExhaustiveProvider_nonEmptyNullableOptionals_iv");
+    }
+
+    private static <T> void nullableOptionals_helper(@NotNull Iterable<T> input, @NotNull String output) {
+        simpleProviderHelper(EP.nullableOptionals(input), output);
+    }
+
+    private static void nullableOptionals_helper(@NotNull String input, @NotNull String output) {
+        nullableOptionals_helper(readIntegerListWithNulls(input), output);
     }
 
     @Test
     public void testNullableOptionals() {
-        simpleProviderHelper(EP.nullableOptionals(EP.withNull(EP.integers())),
-                "ExhaustiveProvider_nullableOptionals_i");
-        simpleProviderHelper(EP.nullableOptionals(EP.withNull(EP.strings())),
-                "ExhaustiveProvider_nullableOptionals_ii");
-        aeqitLog(EP.nullableOptionals(Arrays.asList(1, 2, 3)), "ExhaustiveProvider_nullableOptionals_iii");
-        aeqitLog(EP.nullableOptionals(Collections.emptyList()), "ExhaustiveProvider_nullableOptionals_iv");
+        nullableOptionals_helper(EP.withNull(EP.integers()), "ExhaustiveProvider_nullableOptionals_i");
+        nullableOptionals_helper(EP.withNull(EP.strings()), "ExhaustiveProvider_nullableOptionals_ii");
+        nullableOptionals_helper("[1, 2, 3]", "ExhaustiveProvider_nullableOptionals_iii");
+        nullableOptionals_helper("[]", "ExhaustiveProvider_nullableOptionals_iv");
+    }
+
+    private static <T> void dependentPairs_helper(
+            @NotNull String xs,
+            @NotNull Function<Integer, Iterable<T>> f,
+            @NotNull String output
+    ) {
+        simpleProviderHelper(EP.dependentPairs(readIntegerList(xs), f), output);
+    }
+
+    private static <T> void dependentPairs_fail_helper(@NotNull String xs, @NotNull Function<Integer, Iterable<T>> f) {
+        try {
+            toList(EP.dependentPairs(readIntegerList(xs), f));
+            fail();
+        } catch (NullPointerException | IllegalArgumentException ignored) {}
     }
 
     @Test
@@ -1249,18 +1285,14 @@ public strictfp class ExhaustiveProviderTest {
             }
             throw new IllegalArgumentException();
         };
-        simpleProviderHelper(EP.dependentPairs(Arrays.asList(3, 1, 2, 0), f), "ExhaustiveProvider_dependentPairs_i");
+        dependentPairs_helper("[3, 1, 2, 0]", f, "ExhaustiveProvider_dependentPairs_i");
+        dependentPairs_helper("[]", f, "ExhaustiveProvider_dependentPairs_ii");
+        dependentPairs_helper("[3, 1, 2, 0]", i -> Collections.emptyList(), "ExhaustiveProvider_dependentPairs_iii");
 
-        aeqitLog(EP.dependentPairs(Collections.emptyList(), f), "ExhaustiveProvider_dependentPairs_ii");
-
-        simpleProviderHelper(EP.dependentPairs(Arrays.asList(3, 1, 2, 0), i -> Collections.emptyList()),
-                "ExhaustiveProvider_dependentPairs_iii");
-
-        try {
-            toList(EP.dependentPairs(Arrays.asList(3, 1, 2, 0), i -> null));
-            fail();
-        } catch (NullPointerException | IllegalArgumentException ignored) {}
+        dependentPairs_fail_helper("[3, 1, 2, 0]", i -> null);
     }
+
+    //todo continue cleanup
 
     @Test
     public void testDependentPairsInfinite() {
