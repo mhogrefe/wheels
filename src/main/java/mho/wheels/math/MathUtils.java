@@ -948,7 +948,26 @@ public final class MathUtils {
         return concat(map(i -> BigInteger.valueOf(i), intPrimes()), filterInfinite(MathUtils::isPrime, candidates));
     }
 
+    /**
+     * Returns the largest number that, when raised to the {@code p}th power, divides {@code n}.
+     *
+     * <ul>
+     *  <li>{@code p} must be positive.</li>
+     *  <li>{@code n} must be positive.</li>
+     *  <li>The result is positive.</li>
+     * </ul>
+     *
+     * @param p a power
+     * @param n a number
+     * @return the largest m such that m<sup>{@code p}</sup>|{@code n}
+     */
     public static @NotNull BigInteger largestPerfectPowerFactor(int p, @NotNull BigInteger n) {
-        return productBigInteger(map(q -> q.a.pow(q.b / p), compactPrimeFactors(n)));
+        if (p < 1) {
+            throw new IllegalArgumentException("p must be positive. Invalid p: " + p);
+        }
+        if (n.signum() != 1) {
+            throw new IllegalArgumentException("n must be positive. Invalid n: " + n);
+        }
+        return p == 1 ? n : productBigInteger(map(q -> q.a.pow(q.b / p), compactPrimeFactors(n)));
     }
 }

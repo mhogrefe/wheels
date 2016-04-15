@@ -1039,6 +1039,43 @@ public class MathUtilsTest {
         testNoRemove(SMALL_LIMIT, ps);
     }
 
+    private static void largestPerfectPowerFactor_helper(int p, @NotNull String n, @NotNull String output) {
+        aeq(largestPerfectPowerFactor(p, Readers.readBigInteger(n).get()), output);
+    }
+
+    private static void largestPerfectPowerFactor_fail_helper(int p, @NotNull String n) {
+        try {
+            largestPerfectPowerFactor(p, Readers.readBigInteger(n).get());
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+    }
+
+    @Test
+    public void testLargestPerfectPowerFactor() {
+        largestPerfectPowerFactor_helper(1, "1", "1");
+        largestPerfectPowerFactor_helper(1, "2", "2");
+        largestPerfectPowerFactor_helper(1, "3", "3");
+        largestPerfectPowerFactor_helper(1, "4", "4");
+        largestPerfectPowerFactor_helper(1, "100", "100");
+
+        largestPerfectPowerFactor_helper(2, "1", "1");
+        largestPerfectPowerFactor_helper(2, "2", "1");
+        largestPerfectPowerFactor_helper(2, "3", "1");
+        largestPerfectPowerFactor_helper(2, "4", "2");
+        largestPerfectPowerFactor_helper(2, "12", "2");
+        largestPerfectPowerFactor_helper(2, "75", "5");
+        largestPerfectPowerFactor_helper(2, "100", "10");
+
+        largestPerfectPowerFactor_helper(10, "1024", "2");
+        largestPerfectPowerFactor_helper(10, "10240", "2");
+        largestPerfectPowerFactor_helper(10, "10000000000", "10");
+
+        largestPerfectPowerFactor_fail_helper(0, "1");
+        largestPerfectPowerFactor_fail_helper(-1, "1");
+        largestPerfectPowerFactor_fail_helper(1, "0");
+        largestPerfectPowerFactor_fail_helper(1, "-1");
+    }
+
     private static @NotNull List<BigInteger> readBigIntegerList(@NotNull String s) {
         return Readers.readList(Readers::readBigInteger).apply(s).get();
     }

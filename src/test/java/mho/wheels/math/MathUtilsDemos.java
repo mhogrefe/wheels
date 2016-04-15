@@ -284,4 +284,15 @@ public class MathUtilsDemos extends Demos {
             System.out.println(p);
         }
     }
+
+    private void demoLargestPerfectPowerFactor() {
+        Iterable<Pair<BigInteger, Integer>> ps = P.pairsLogarithmicOrder(
+                P.withScale(8).positiveBigIntegers(),
+                P.positiveIntegersGeometric()
+        );
+        for (Pair<BigInteger, Integer> p : take(LIMIT, ps)) {
+            System.out.println("largestPerfectPowerFactor(" + p.b + ", " + p.a + ") = " +
+                    largestPerfectPowerFactor(p.b, p.a));
+        }
+    }
 }

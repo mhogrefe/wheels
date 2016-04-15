@@ -81,6 +81,7 @@ public class MathUtilsProperties extends TestProperties {
         propertiesCompactPrimeFactors_BigInteger();
         propertiesFactors_int();
         propertiesFactors_BigInteger();
+        propertiesLargestPerfectPowerFactor();
     }
 
     private static int gcd_int_int_simplest(int x, int y) {
@@ -1274,6 +1275,41 @@ public class MathUtilsProperties extends TestProperties {
         initializeConstant("primes()");
         for (BigInteger p : take(LARGE_LIMIT, primes())) {
             assertTrue(p, isPrime(p));
+        }
+    }
+
+    private void propertiesLargestPerfectPowerFactor() {
+        initialize("largestPerfectPowerFactor(int, BigInteger)");
+        Iterable<Pair<BigInteger, Integer>> ps = P.pairsLogarithmicOrder(
+                P.withScale(8).positiveBigIntegers(),
+                P.positiveIntegersGeometric()
+        );
+        for (Pair<BigInteger, Integer> p : take(LIMIT, ps)) {
+            BigInteger lppf = largestPerfectPowerFactor(p.b, p.a);
+            assertEquals(p, lppf.signum(), 1);
+            assertTrue(p, p.a.mod(lppf.pow(p.b)).equals(BigInteger.ZERO));
+        }
+
+        for (BigInteger i : take(LIMIT, P.positiveBigIntegers())) {
+            assertEquals(i, largestPerfectPowerFactor(1, i), i);
+        }
+
+        for (int i : take(LIMIT, P.positiveIntegers())) {
+            assertEquals(i, largestPerfectPowerFactor(i, BigInteger.ONE), BigInteger.ONE);
+        }
+
+        for (Pair<Integer, BigInteger> p : take(LIMIT, P.pairs(P.rangeDown(0), P.positiveBigIntegers()))) {
+            try {
+                largestPerfectPowerFactor(p.a, p.b);
+                fail(p);
+            } catch (IllegalArgumentException ignored) {}
+        }
+
+        for (Pair<Integer, BigInteger> p : take(LIMIT, P.pairs(P.positiveIntegers(), P.rangeDown(BigInteger.ZERO)))) {
+            try {
+                largestPerfectPowerFactor(p.a, p.b);
+                fail(p);
+            } catch (IllegalArgumentException ignored) {}
         }
     }
 }
