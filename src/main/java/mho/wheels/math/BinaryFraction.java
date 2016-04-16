@@ -803,50 +803,31 @@ public strictfp class BinaryFraction implements Comparable<BinaryFraction> {
                 t -> {
                     int leftShiftIndex = s.indexOf(" << ");
                     if (leftShiftIndex != -1) {
-                        Optional<BigInteger> oMantissa = Readers.readBigInteger(s.substring(0, leftShiftIndex));
+                        Optional<BigInteger> oMantissa = Readers.readBigIntegerStrict(s.substring(0, leftShiftIndex));
                         if (!oMantissa.isPresent()) return null;
-                        Optional<Integer> oExponent = Readers.readInteger(s.substring(leftShiftIndex + 4));
+                        Optional<Integer> oExponent = Readers.readIntegerStrict(s.substring(leftShiftIndex + 4));
                         if (!oExponent.isPresent()) return null;
                         return of(oMantissa.get(), oExponent.get());
                     }
                     int rightShiftIndex = s.indexOf(" >> ");
                     if (rightShiftIndex != -1) {
-                        Optional<BigInteger> oMantissa = Readers.readBigInteger(s.substring(0, rightShiftIndex));
+                        Optional<BigInteger> oMantissa = Readers.readBigIntegerStrict(s.substring(0, rightShiftIndex));
                         if (!oMantissa.isPresent()) return null;
                         String exponentSubstring = s.substring(rightShiftIndex + 4);
                         int exponent;
                         if (exponentSubstring.equals(NEGATIVE_MIN_INTEGER)) {
                             exponent = Integer.MIN_VALUE;
                         } else {
-                            Optional<Integer> oExponent = Readers.readInteger(exponentSubstring);
+                            Optional<Integer> oExponent = Readers.readIntegerStrict(exponentSubstring);
                             if (!oExponent.isPresent()) return null;
                             exponent = -oExponent.get();
                         }
                         return of(oMantissa.get(), exponent);
                     }
-                    Optional<BigInteger> oMantissa = Readers.readBigInteger(s);
+                    Optional<BigInteger> oMantissa = Readers.readBigIntegerStrict(s);
                     return oMantissa.isPresent() ? of(oMantissa.get()) : null;
                 }
         ).apply(s);
-    }
-
-    /**
-     * Finds the first occurrence of a {@code BinaryFraction} in a {@code String}. Returns the {@code BinaryFraction}
-     * and the index at which it was found. Returns an empty {@code Optional} if no {@code BinaryFraction} is found.
-     * Only {@code String}s which could have been emitted by {@link BinaryFraction#toString} are recognized. The
-     * longest possible {@code BinaryFraction} is parsed.
-     *
-     * <ul>
-     *  <li>{@code s} must be non-null.</li>
-     *  <li>The result is non-null. If it is non-empty, then neither of the {@code Pair}'s components is null, and the
-     *  second component is non-negative.</li>
-     * </ul>
-     *
-     * @param s the input {@code String}
-     * @return the first {@code BinaryFraction} found in {@code s}, and the index at which it was found
-     */
-    public static @NotNull Optional<Pair<BinaryFraction, Integer>> findIn(@NotNull String s) {
-        return Readers.genericFindIn(BinaryFraction::read, " -0123456789<>").apply(s);
     }
 
     /**

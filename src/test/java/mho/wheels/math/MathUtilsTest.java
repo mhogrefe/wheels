@@ -133,12 +133,12 @@ public class MathUtilsTest {
             @NotNull String y,
             @NotNull String output
     ) {
-        aeq(lcm(Readers.readBigInteger(x).get(), Readers.readBigInteger(y).get()), output);
+        aeq(lcm(Readers.readBigIntegerStrict(x).get(), Readers.readBigIntegerStrict(y).get()), output);
     }
 
     private static void lcm_BigInteger_BigInteger_fail_helper(@NotNull String x, @NotNull String y) {
         try {
-            lcm(Readers.readBigInteger(x).get(), Readers.readBigInteger(y).get());
+            lcm(Readers.readBigIntegerStrict(x).get(), Readers.readBigIntegerStrict(y).get());
             fail();
         } catch (ArithmeticException ignored) {}
     }
@@ -245,12 +245,12 @@ public class MathUtilsTest {
     }
 
     private static void factorial_BigInteger_helper(@NotNull String input, @NotNull String output) {
-        aeq(factorial(Readers.readBigInteger(input).get()), output);
+        aeq(factorial(Readers.readBigIntegerStrict(input).get()), output);
     }
 
     private static void factorial_BigInteger_fail_helper(@NotNull String input) {
         try {
-            factorial(Readers.readBigInteger(input).get());
+            factorial(Readers.readBigIntegerStrict(input).get());
             fail();
         } catch (ArithmeticException ignored) {}
     }
@@ -301,12 +301,12 @@ public class MathUtilsTest {
     }
 
     private static void subfactorial_BigInteger_helper(@NotNull String input, @NotNull String output) {
-        aeq(subfactorial(Readers.readBigInteger(input).get()), output);
+        aeq(subfactorial(Readers.readBigIntegerStrict(input).get()), output);
     }
 
     private static void subfactorial_BigInteger_fail_helper(@NotNull String input) {
         try {
-            subfactorial(Readers.readBigInteger(input).get());
+            subfactorial(Readers.readBigIntegerStrict(input).get());
             fail();
         } catch (ArithmeticException ignored) {}
     }
@@ -329,12 +329,12 @@ public class MathUtilsTest {
     }
 
     private static void fallingFactorial_helper(@NotNull String x, int n, @NotNull String output) {
-        aeq(fallingFactorial(Readers.readBigInteger(x).get(), n), output);
+        aeq(fallingFactorial(Readers.readBigIntegerStrict(x).get(), n), output);
     }
 
     private static void fallingFactorial_fail_helper(@NotNull String x, int n) {
         try {
-            fallingFactorial(Readers.readBigInteger(x).get(), n);
+            fallingFactorial(Readers.readBigIntegerStrict(x).get(), n);
             fail();
         } catch (ArithmeticException ignored) {}
     }
@@ -415,12 +415,12 @@ public class MathUtilsTest {
     }
 
     private static void binomialCoefficient_helper(@NotNull String n, int k, @NotNull String output) {
-        aeq(binomialCoefficient(Readers.readBigInteger(n).get(), k), output);
+        aeq(binomialCoefficient(Readers.readBigIntegerStrict(n).get(), k), output);
     }
 
     private static void binomialCoefficient_fail_helper(@NotNull String n, int k) {
         try {
-            binomialCoefficient(Readers.readBigInteger(n).get(), k);
+            binomialCoefficient(Readers.readBigIntegerStrict(n).get(), k);
             fail();
         } catch (ArithmeticException ignored) {}
     }
@@ -446,12 +446,12 @@ public class MathUtilsTest {
     }
 
     private static void multisetCoefficient_helper(@NotNull String n, int k, @NotNull String output) {
-        aeq(multisetCoefficient(Readers.readBigInteger(n).get(), k), output);
+        aeq(multisetCoefficient(Readers.readBigIntegerStrict(n).get(), k), output);
     }
 
     private static void multisetCoefficient_fail_helper(@NotNull String n, int k) {
         try {
-            multisetCoefficient(Readers.readBigInteger(n).get(), k);
+            multisetCoefficient(Readers.readBigIntegerStrict(n).get(), k);
             fail();
         } catch (ArithmeticException ignored) {}
     }
@@ -548,7 +548,7 @@ public class MathUtilsTest {
             @NotNull String y,
             int output
     ) {
-        aeq(fastGrowingCeilingInverse(f, min, max, Readers.readBigInteger(y).get()), output);
+        aeq(fastGrowingCeilingInverse(f, min, max, Readers.readBigIntegerStrict(y).get()), output);
     }
 
     private static void fastGrowingCeilingInverse_fail_helper(
@@ -558,7 +558,7 @@ public class MathUtilsTest {
             @NotNull String y
     ) {
         try {
-            fastGrowingCeilingInverse(f, min, max, Readers.readBigInteger(y).get());
+            fastGrowingCeilingInverse(f, min, max, Readers.readBigIntegerStrict(y).get());
             fail();
         } catch (IllegalArgumentException ignored) {}
     }
@@ -577,12 +577,12 @@ public class MathUtilsTest {
     }
 
     private static void ceilingLog_helper(@NotNull String base, @NotNull String x, @NotNull String output) {
-        aeq(ceilingLog(Readers.readBigInteger(base).get(), Readers.readBigInteger(x).get()), output);
+        aeq(ceilingLog(Readers.readBigIntegerStrict(base).get(), Readers.readBigIntegerStrict(x).get()), output);
     }
 
     private static void ceilingLog_fail_helper(@NotNull String base, @NotNull String x) {
         try {
-            ceilingLog(Readers.readBigInteger(base).get(), Readers.readBigInteger(x).get());
+            ceilingLog(Readers.readBigIntegerStrict(base).get(), Readers.readBigIntegerStrict(x).get());
             fail();
         } catch (ArithmeticException ignored) {}
     }
@@ -628,9 +628,9 @@ public class MathUtilsTest {
         aeq(
                 ceilingInverse(
                         f,
-                        Readers.readBigInteger(min).get(),
-                        Readers.readBigInteger(max).get(),
-                        Readers.readBigInteger(y).get()
+                        Readers.readBigIntegerStrict(min).get(),
+                        Readers.readBigIntegerStrict(max).get(),
+                        Readers.readBigIntegerStrict(y).get()
                 ),
                 output
         );
@@ -645,9 +645,9 @@ public class MathUtilsTest {
         try {
             ceilingInverse(
                     f,
-                    Readers.readBigInteger(min).get(),
-                    Readers.readBigInteger(max).get(),
-                    Readers.readBigInteger(y).get()
+                    Readers.readBigIntegerStrict(min).get(),
+                    Readers.readBigIntegerStrict(max).get(),
+                    Readers.readBigIntegerStrict(y).get()
             );
             fail();
         } catch (IllegalArgumentException ignored) {}
@@ -667,12 +667,12 @@ public class MathUtilsTest {
     }
 
     private static void ceilingRoot_helper(int r, @NotNull String x, @NotNull String output) {
-        aeq(ceilingRoot(r, Readers.readBigInteger(x).get()), output);
+        aeq(ceilingRoot(r, Readers.readBigIntegerStrict(x).get()), output);
     }
 
     private static void ceilingRoot_fail_helper(int r, @NotNull String x) {
         try {
-            ceilingRoot(r, Readers.readBigInteger(x).get());
+            ceilingRoot(r, Readers.readBigIntegerStrict(x).get());
             fail();
         } catch (ArithmeticException ignored) {}
     }
@@ -755,12 +755,12 @@ public class MathUtilsTest {
     }
 
     private static void smallestPrimeFactor_BigInteger_helper(@NotNull String input, @NotNull String output) {
-        aeq(smallestPrimeFactor(Readers.readBigInteger(input).get()), output);
+        aeq(smallestPrimeFactor(Readers.readBigIntegerStrict(input).get()), output);
     }
 
     private static void smallestPrimeFactor_BigInteger_fail_helper(@NotNull String input) {
         try {
-            smallestPrimeFactor(Readers.readBigInteger(input).get());
+            smallestPrimeFactor(Readers.readBigIntegerStrict(input).get());
             fail();
         } catch (IllegalArgumentException ignored) {}
     }
@@ -828,12 +828,12 @@ public class MathUtilsTest {
     }
 
     private static void isPrime_BigInteger_helper(@NotNull String input, boolean output) {
-        aeq(isPrime(Readers.readBigInteger(input).get()), output);
+        aeq(isPrime(Readers.readBigIntegerStrict(input).get()), output);
     }
 
     private static void isPrime_BigInteger_fail_helper(@NotNull String input) {
         try {
-            isPrime(Readers.readBigInteger(input).get());
+            isPrime(Readers.readBigIntegerStrict(input).get());
             fail();
         } catch (IllegalArgumentException ignored) {}
     }
@@ -901,12 +901,12 @@ public class MathUtilsTest {
     }
 
     private static void primeFactors_BigInteger_helper(@NotNull String input, @NotNull String output) {
-        Testing.aeqit(primeFactors(Readers.readBigInteger(input).get()), output);
+        Testing.aeqit(primeFactors(Readers.readBigIntegerStrict(input).get()), output);
     }
 
     private static void primeFactors_BigInteger_fail_helper(@NotNull String input) {
         try {
-            toList(primeFactors(Readers.readBigInteger(input).get()));
+            toList(primeFactors(Readers.readBigIntegerStrict(input).get()));
             fail();
         } catch (IllegalArgumentException ignored) {}
     }
@@ -974,12 +974,12 @@ public class MathUtilsTest {
     }
 
     private static void compactPrimeFactors_BigInteger_helper(@NotNull String input, @NotNull String output) {
-        Testing.aeqit(compactPrimeFactors(Readers.readBigInteger(input).get()), output);
+        Testing.aeqit(compactPrimeFactors(Readers.readBigIntegerStrict(input).get()), output);
     }
 
     private static void compactPrimeFactors_BigInteger_fail_helper(@NotNull String input) {
         try {
-            toList(compactPrimeFactors(Readers.readBigInteger(input).get()));
+            toList(compactPrimeFactors(Readers.readBigIntegerStrict(input).get()));
             fail();
         } catch (IllegalArgumentException ignored) {}
     }
@@ -1047,12 +1047,12 @@ public class MathUtilsTest {
     }
 
     private static void factors_BigInteger_helper(@NotNull String input, @NotNull String output) {
-        Testing.aeqit(factors(Readers.readBigInteger(input).get()), output);
+        Testing.aeqit(factors(Readers.readBigIntegerStrict(input).get()), output);
     }
 
     private static void factors_BigInteger_fail_helper(@NotNull String input) {
         try {
-            toList(factors(Readers.readBigInteger(input).get()));
+            toList(factors(Readers.readBigIntegerStrict(input).get()));
             fail();
         } catch (IllegalArgumentException ignored) {}
     }
@@ -1152,12 +1152,12 @@ public class MathUtilsTest {
             @NotNull String n,
             @NotNull String output
     ) {
-        aeq(largestPerfectPowerFactor(p, Readers.readBigInteger(n).get()), output);
+        aeq(largestPerfectPowerFactor(p, Readers.readBigIntegerStrict(n).get()), output);
     }
 
     private static void largestPerfectPowerFactor_int_BigInteger_fail_helper(int p, @NotNull String n) {
         try {
-            largestPerfectPowerFactor(p, Readers.readBigInteger(n).get());
+            largestPerfectPowerFactor(p, Readers.readBigIntegerStrict(n).get());
             fail();
         } catch (IllegalArgumentException ignored) {}
     }
@@ -1189,10 +1189,10 @@ public class MathUtilsTest {
     }
 
     private static @NotNull List<BigInteger> readBigIntegerList(@NotNull String s) {
-        return Readers.readList(Readers::readBigInteger).apply(s).get();
+        return Readers.readListStrict(Readers::readBigIntegerStrict).apply(s).get();
     }
 
     private static @NotNull List<BigInteger> readBigIntegerListWithNulls(@NotNull String s) {
-        return Readers.readListWithNulls(Readers::readBigInteger).apply(s).get();
+        return Readers.readListWithNullsStrict(Readers::readBigIntegerStrict).apply(s).get();
     }
 }

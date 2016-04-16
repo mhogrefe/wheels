@@ -1,14 +1,11 @@
 package mho.wheels.io;
 
 import mho.wheels.structures.NullableOptional;
-import mho.wheels.structures.Pair;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.junit.Test;
 
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
@@ -93,443 +90,203 @@ public class ReadersTest {
     }
 
     @Test
-    public void testGenericFindIn_List_T() {
-        aeq(genericFindIn(Arrays.asList(1, 12, 3)).apply("there are 3 numbers").get(), "(3, 10)");
-        aeq(genericFindIn(Arrays.asList(1, 12, 3)).apply("there are 12 numbers").get(), "(12, 10)");
-        aeq(genericFindIn(Arrays.asList(1, 12, 3)).apply("there is 1 number").get(), "(1, 9)");
-        assertFalse(genericFindIn(Arrays.asList(1, 12, 3)).apply("there are no numbers").isPresent());
-        assertFalse(genericFindIn(Arrays.asList(1, 12, 3)).apply("").isPresent());
-        try {
-            genericFindIn(Arrays.asList(1, null, 3));
-            fail();
-        } catch (NullPointerException ignored) {}
-        try {
-            genericFindIn(Arrays.asList(1, 1, 3));
-        } catch (IllegalArgumentException ignored) {}
-
-        List<WordyIntegerWithNullToString> xs = new ArrayList<>();
-        xs.add(new WordyIntegerWithNullToString(1));
-        xs.add(new WordyIntegerWithNullToString(2));
-        xs.add(new WordyIntegerWithNullToString(3));
-        xs.add(new WordyIntegerWithNullToString(4));
-        try {
-            genericFindIn(xs).apply("there are 3 numbers");
-            fail();
-        } catch (NullPointerException ignored) {}
+    public void testReadBooleanStrict() {
+        aeq(readBooleanStrict("false").get(), "false");
+        aeq(readBooleanStrict("true").get(), "true");
+        assertFalse(readBooleanStrict(" true").isPresent());
+        assertFalse(readBooleanStrict("TRUE").isPresent());
+        assertFalse(readBooleanStrict("true ").isPresent());
+        assertFalse(readBooleanStrict("").isPresent());
+        assertFalse(readBooleanStrict("dsfsdfgd").isPresent());
     }
 
     @Test
-    public void testGenericFindIn_Function_String_Optional_T() {
-        Function<String, Optional<Pair<WordyInteger, Integer>>> f = genericFindIn(s -> {
-            if (s.equals("one")) return Optional.of(new WordyInteger(1));
-            if (s.equals("two")) return Optional.of(new WordyInteger(2));
-            if (s.equals("three")) return Optional.of(new WordyInteger(3));
-            if (s.equals("one hundred")) return Optional.of(new WordyInteger(100));
-            return Optional.empty();
-        });
-        aeq(f.apply("vdfsmvlefqvehthreefdsz"), "Optional[(three, 13)]");
-        aeq(f.apply("vdfsmvldfonevfdsz"), "Optional[(one, 9)]");
-        aeq(f.apply("vdfsmvldfone hundredvfdsz"), "Optional[(many, 9)]");
-        aeq(f.apply("vdfsmvldfvfdsz"), "Optional.empty");
-        try {
-            genericFindIn(s -> null).apply("vdfsmvlefqvehthreefdsz");
-            fail();
-        } catch (NullPointerException ignored) {}
+    public void testReadOrderingStrict() {
+        aeq(readOrderingStrict("LT").get(), "LT");
+        aeq(readOrderingStrict("EQ").get(), "EQ");
+        aeq(readOrderingStrict("GT").get(), "GT");
+        assertFalse(readOrderingStrict(" LT").isPresent());
+        assertFalse(readOrderingStrict("eq").isPresent());
+        assertFalse(readOrderingStrict("gt ").isPresent());
+        assertFalse(readOrderingStrict("").isPresent());
+        assertFalse(readOrderingStrict("dsfsdfgd").isPresent());
     }
 
     @Test
-    public void testGenericFindIn_Function_String_Optional_T_String() {
-        Function<String, Optional<Pair<WordyInteger, Integer>>> f = genericFindIn(s -> {
-            if (s.equals("one")) return Optional.of(new WordyInteger(1));
-            if (s.equals("two")) return Optional.of(new WordyInteger(2));
-            if (s.equals("three")) return Optional.of(new WordyInteger(3));
-            if (s.equals("one hundred")) return Optional.of(new WordyInteger(100));
-            return Optional.empty();
-        }, " dehnortuw");
-        aeq(f.apply("vdfsmvlefqvehthreefdsz"), "Optional[(three, 13)]");
-        aeq(f.apply("vdfsmvldfonevfdsz"), "Optional[(one, 9)]");
-        aeq(f.apply("vdfsmvldfone hundredvfdsz"), "Optional[(many, 9)]");
-        aeq(f.apply("vdfsmvldfvfdsz"), "Optional.empty");
-
-        //exclude "one hundred" chars
-        f = genericFindIn(s -> {
-            if (s.equals("one")) return Optional.of(new WordyInteger(1));
-            if (s.equals("two")) return Optional.of(new WordyInteger(2));
-            if (s.equals("three")) return Optional.of(new WordyInteger(3));
-            if (s.equals("one hundred")) return Optional.of(new WordyInteger(100));
-            return Optional.empty();
-        }, "ehnortw");
-        aeq(f.apply("vdfsmvldfone hundredvfdsz"), "Optional[(one, 9)]");
-
-        try {
-            genericFindIn(s -> null, " dehnortuw").apply("vdfsmvlefqvehthreefdsz");
-            fail();
-        } catch (NullPointerException ignored) {}
+    public void testReadRoundingModeStrict() {
+        aeq(readRoundingModeStrict("UP").get(), "UP");
+        aeq(readRoundingModeStrict("UNNECESSARY").get(), "UNNECESSARY");
+        aeq(readRoundingModeStrict("HALF_EVEN").get(), "HALF_EVEN");
+        assertFalse(readRoundingModeStrict(" DOWN").isPresent());
+        assertFalse(readRoundingModeStrict("HALF-EVEN").isPresent());
+        assertFalse(readRoundingModeStrict("FLOOR ").isPresent());
+        assertFalse(readRoundingModeStrict("").isPresent());
+        assertFalse(readRoundingModeStrict("dsfsdfgd").isPresent());
     }
 
     @Test
-    public void testReadBoolean() {
-        aeq(readBoolean("false").get(), "false");
-        aeq(readBoolean("true").get(), "true");
-        assertFalse(readBoolean(" true").isPresent());
-        assertFalse(readBoolean("TRUE").isPresent());
-        assertFalse(readBoolean("true ").isPresent());
-        assertFalse(readBoolean("").isPresent());
-        assertFalse(readBoolean("dsfsdfgd").isPresent());
+    public void testReadBigIntegerStrict() {
+        aeq(readBigIntegerStrict("0").get(), "0");
+        aeq(readBigIntegerStrict("5").get(), "5");
+        aeq(readBigIntegerStrict("314159265358").get(), "314159265358");
+        aeq(readBigIntegerStrict("-314159265358").get(), "-314159265358");
+        assertFalse(readBigIntegerStrict(" 1").isPresent());
+        assertFalse(readBigIntegerStrict("00").isPresent());
+        assertFalse(readBigIntegerStrict("-0").isPresent());
+        assertFalse(readBigIntegerStrict("0xff").isPresent());
+        assertFalse(readBigIntegerStrict("2 ").isPresent());
+        assertFalse(readBigIntegerStrict("--1").isPresent());
+        assertFalse(readBigIntegerStrict("1-2").isPresent());
+        assertFalse(readBigIntegerStrict("+4").isPresent());
     }
 
     @Test
-    public void testFindBooleanIn() {
-        aeq(findBooleanIn("true").get(), "(true, 0)");
-        aeq(findBooleanIn("false").get(), "(false, 0)");
-        aeq(findBooleanIn("xxtruefalsexx").get(), "(true, 2)");
-        aeq(findBooleanIn("xxfalsetruexx").get(), "(false, 2)");
-        assertFalse(findOrderingIn("hello").isPresent());
-        assertFalse(findOrderingIn("").isPresent());
+    public void testReadByteStrict() {
+        aeq(readByteStrict("0").get(), "0");
+        aeq(readByteStrict("5").get(), "5");
+        aeq(readByteStrict("-100").get(), "-100");
+        aeq(readByteStrict(Integer.toString(Byte.MAX_VALUE)).get(), "127");
+        aeq(readByteStrict(Integer.toString(Byte.MIN_VALUE)).get(), "-128");
+        assertFalse(readByteStrict(Integer.toString(Byte.MAX_VALUE + 1)).isPresent());
+        assertFalse(readByteStrict(Integer.toString(Byte.MIN_VALUE - 1)).isPresent());
+        assertFalse(readByteStrict(" 1").isPresent());
+        assertFalse(readByteStrict("00").isPresent());
+        assertFalse(readByteStrict("-0").isPresent());
+        assertFalse(readByteStrict("0xff").isPresent());
+        assertFalse(readByteStrict("0xff").isPresent());
+        assertFalse(readByteStrict("2 ").isPresent());
+        assertFalse(readByteStrict("--1").isPresent());
+        assertFalse(readByteStrict("1-2").isPresent());
+        assertFalse(readByteStrict("+4").isPresent());
     }
 
     @Test
-    public void testReadOrdering() {
-        aeq(readOrdering("LT").get(), "LT");
-        aeq(readOrdering("EQ").get(), "EQ");
-        aeq(readOrdering("GT").get(), "GT");
-        assertFalse(readOrdering(" LT").isPresent());
-        assertFalse(readOrdering("eq").isPresent());
-        assertFalse(readOrdering("gt ").isPresent());
-        assertFalse(readOrdering("").isPresent());
-        assertFalse(readOrdering("dsfsdfgd").isPresent());
+    public void testReadShortStrict() {
+        aeq(readShortStrict("0").get(), "0");
+        aeq(readShortStrict("5").get(), "5");
+        aeq(readShortStrict("-100").get(), "-100");
+        aeq(readShortStrict(Integer.toString(Short.MAX_VALUE)).get(), "32767");
+        aeq(readShortStrict(Integer.toString(Short.MIN_VALUE)).get(), "-32768");
+        assertFalse(readShortStrict(Integer.toString(Short.MAX_VALUE + 1)).isPresent());
+        assertFalse(readShortStrict(Integer.toString(Short.MIN_VALUE - 1)).isPresent());
+        assertFalse(readShortStrict(" 1").isPresent());
+        assertFalse(readShortStrict("00").isPresent());
+        assertFalse(readShortStrict("-0").isPresent());
+        assertFalse(readShortStrict("0xff").isPresent());
+        assertFalse(readShortStrict("0xff").isPresent());
+        assertFalse(readShortStrict("2 ").isPresent());
+        assertFalse(readShortStrict("--1").isPresent());
+        assertFalse(readShortStrict("1-2").isPresent());
+        assertFalse(readShortStrict("+4").isPresent());
     }
 
     @Test
-    public void testFindOrderingIn() {
-        aeq(findOrderingIn("EQ").get(), "(EQ, 0)");
-        aeq(findOrderingIn("LT").get(), "(LT, 0)");
-        aeq(findOrderingIn("BELT").get(), "(LT, 2)");
-        aeq(findOrderingIn("EGGTOWER").get(), "(GT, 2)");
-        assertFalse(findOrderingIn("hello").isPresent());
-        assertFalse(findOrderingIn("").isPresent());
+    public void testReadIntegerStrict() {
+        aeq(readIntegerStrict("0").get(), "0");
+        aeq(readIntegerStrict("5").get(), "5");
+        aeq(readIntegerStrict("-100").get(), "-100");
+        aeq(readIntegerStrict(Integer.toString(Integer.MAX_VALUE)).get(), "2147483647");
+        aeq(readIntegerStrict(Integer.toString(Integer.MIN_VALUE)).get(), "-2147483648");
+        assertFalse(readIntegerStrict(Long.toString((long) Integer.MAX_VALUE + 1)).isPresent());
+        assertFalse(readIntegerStrict(Long.toString((long) Integer.MIN_VALUE - 1)).isPresent());
+        assertFalse(readIntegerStrict(" 1").isPresent());
+        assertFalse(readIntegerStrict("00").isPresent());
+        assertFalse(readIntegerStrict("-0").isPresent());
+        assertFalse(readIntegerStrict("0xff").isPresent());
+        assertFalse(readIntegerStrict("0xff").isPresent());
+        assertFalse(readIntegerStrict("2 ").isPresent());
+        assertFalse(readIntegerStrict("--1").isPresent());
+        assertFalse(readIntegerStrict("1-2").isPresent());
+        assertFalse(readIntegerStrict("+4").isPresent());
     }
 
     @Test
-    public void testReadRoundingMode() {
-        aeq(readRoundingMode("UP").get(), "UP");
-        aeq(readRoundingMode("UNNECESSARY").get(), "UNNECESSARY");
-        aeq(readRoundingMode("HALF_EVEN").get(), "HALF_EVEN");
-        assertFalse(readRoundingMode(" DOWN").isPresent());
-        assertFalse(readRoundingMode("HALF-EVEN").isPresent());
-        assertFalse(readRoundingMode("FLOOR ").isPresent());
-        assertFalse(readRoundingMode("").isPresent());
-        assertFalse(readRoundingMode("dsfsdfgd").isPresent());
-    }
-
-    @Test
-    public void testFindRoundingModeIn() {
-        aeq(findRoundingModeIn("HALF_UP").get(), "(HALF_UP, 0)");
-        aeq(findRoundingModeIn("CEILING").get(), "(CEILING, 0)");
-        aeq(findRoundingModeIn("UPSIDE-DOWN").get(), "(UP, 0)");
-        aeq(findRoundingModeIn("JLNUIDOWNJLNILN").get(), "(DOWN, 5)");
-        assertFalse(findRoundingModeIn("hello").isPresent());
-        assertFalse(findRoundingModeIn("").isPresent());
-    }
-
-    @Test
-    public void testReadBigInteger() {
-        aeq(readBigInteger("0").get(), "0");
-        aeq(readBigInteger("5").get(), "5");
-        aeq(readBigInteger("314159265358").get(), "314159265358");
-        aeq(readBigInteger("-314159265358").get(), "-314159265358");
-        assertFalse(readBigInteger(" 1").isPresent());
-        assertFalse(readBigInteger("00").isPresent());
-        assertFalse(readBigInteger("-0").isPresent());
-        assertFalse(readBigInteger("0xff").isPresent());
-        assertFalse(readBigInteger("2 ").isPresent());
-        assertFalse(readBigInteger("--1").isPresent());
-        assertFalse(readBigInteger("1-2").isPresent());
-        assertFalse(readBigInteger("+4").isPresent());
-    }
-
-    @Test
-    public void testFindBigIntegerIn() {
-        aeq(findBigIntegerIn("abcd1234xyz").get(), "(1234, 4)");
-        aeq(findBigIntegerIn("0123").get(), "(0, 0)");
-        aeq(findBigIntegerIn("a-23").get(), "(-23, 1)");
-        aeq(findBigIntegerIn("---34--4").get(), "(-34, 2)");
-        aeq(findBigIntegerIn(" 20.1 ").get(), "(20, 1)");
-        assertFalse(findBigIntegerIn("").isPresent());
-        assertFalse(findBigIntegerIn("hello").isPresent());
-        assertFalse(findBigIntegerIn("vdfsvfbf").isPresent());
-    }
-
-    @Test
-    public void testReadByte() {
-        aeq(readByte("0").get(), "0");
-        aeq(readByte("5").get(), "5");
-        aeq(readByte("-100").get(), "-100");
-        aeq(readByte(Integer.toString(Byte.MAX_VALUE)).get(), "127");
-        aeq(readByte(Integer.toString(Byte.MIN_VALUE)).get(), "-128");
-        assertFalse(readByte(Integer.toString(Byte.MAX_VALUE + 1)).isPresent());
-        assertFalse(readByte(Integer.toString(Byte.MIN_VALUE - 1)).isPresent());
-        assertFalse(readByte(" 1").isPresent());
-        assertFalse(readByte("00").isPresent());
-        assertFalse(readByte("-0").isPresent());
-        assertFalse(readByte("0xff").isPresent());
-        assertFalse(readByte("0xff").isPresent());
-        assertFalse(readByte("2 ").isPresent());
-        assertFalse(readByte("--1").isPresent());
-        assertFalse(readByte("1-2").isPresent());
-        assertFalse(readByte("+4").isPresent());
-    }
-
-    @Test
-    public void testFindByteIn() {
-        aeq(findByteIn("abcd1234xyz").get(), "(123, 4)");
-        aeq(findByteIn("abcd8234xyz").get(), "(82, 4)");
-        aeq(findByteIn("0123").get(), "(0, 0)");
-        aeq(findByteIn("a-23").get(), "(-23, 1)");
-        aeq(findByteIn("---34--4").get(), "(-34, 2)");
-        aeq(findByteIn(" 20.1 ").get(), "(20, 1)");
-        aeq(findByteIn("abcd" + Byte.MAX_VALUE + "xyz").get(), "(127, 4)");
-        aeq(findByteIn("abcd" + Byte.MIN_VALUE + "xyz").get(), "(-128, 4)");
-        aeq(findByteIn("abcd" + (Byte.MAX_VALUE + 1) + "xyz").get(), "(12, 4)");
-        aeq(findByteIn("abcd" + (Byte.MIN_VALUE - 1) + "xyz").get(), "(-12, 4)");
-        assertFalse(findByteIn("").isPresent());
-        assertFalse(findByteIn("hello").isPresent());
-        assertFalse(findByteIn("vdfsvfbf").isPresent());
-    }
-
-    @Test
-    public void testReadShort() {
-        aeq(readShort("0").get(), "0");
-        aeq(readShort("5").get(), "5");
-        aeq(readShort("-100").get(), "-100");
-        aeq(readShort(Integer.toString(Short.MAX_VALUE)).get(), "32767");
-        aeq(readShort(Integer.toString(Short.MIN_VALUE)).get(), "-32768");
-        assertFalse(readShort(Integer.toString(Short.MAX_VALUE + 1)).isPresent());
-        assertFalse(readShort(Integer.toString(Short.MIN_VALUE - 1)).isPresent());
-        assertFalse(readShort(" 1").isPresent());
-        assertFalse(readShort("00").isPresent());
-        assertFalse(readShort("-0").isPresent());
-        assertFalse(readShort("0xff").isPresent());
-        assertFalse(readShort("0xff").isPresent());
-        assertFalse(readShort("2 ").isPresent());
-        assertFalse(readShort("--1").isPresent());
-        assertFalse(readShort("1-2").isPresent());
-        assertFalse(readShort("+4").isPresent());
-    }
-
-    @Test
-    public void testFindShortIn() {
-        aeq(findShortIn("abcd1234xyz").get(), "(1234, 4)");
-        aeq(findShortIn("abcd8234xyz").get(), "(8234, 4)");
-        aeq(findShortIn("0123").get(), "(0, 0)");
-        aeq(findShortIn("a-23").get(), "(-23, 1)");
-        aeq(findShortIn("---34--4").get(), "(-34, 2)");
-        aeq(findShortIn(" 20.1 ").get(), "(20, 1)");
-        aeq(findShortIn("abcd" + Short.MAX_VALUE + "xyz").get(), "(32767, 4)");
-        aeq(findShortIn("abcd" + Short.MIN_VALUE + "xyz").get(), "(-32768, 4)");
-        aeq(findShortIn("abcd" + (Short.MAX_VALUE + 1) + "xyz").get(), "(3276, 4)");
-        aeq(findShortIn("abcd" + (Short.MIN_VALUE - 1) + "xyz").get(), "(-3276, 4)");
-        assertFalse(findShortIn("").isPresent());
-        assertFalse(findShortIn("hello").isPresent());
-        assertFalse(findShortIn("vdfsvfbf").isPresent());
-    }
-
-    @Test
-    public void testReadInteger() {
-        aeq(readInteger("0").get(), "0");
-        aeq(readInteger("5").get(), "5");
-        aeq(readInteger("-100").get(), "-100");
-        aeq(readInteger(Integer.toString(Integer.MAX_VALUE)).get(), "2147483647");
-        aeq(readInteger(Integer.toString(Integer.MIN_VALUE)).get(), "-2147483648");
-        assertFalse(readInteger(Long.toString((long) Integer.MAX_VALUE + 1)).isPresent());
-        assertFalse(readInteger(Long.toString((long) Integer.MIN_VALUE - 1)).isPresent());
-        assertFalse(readInteger(" 1").isPresent());
-        assertFalse(readInteger("00").isPresent());
-        assertFalse(readInteger("-0").isPresent());
-        assertFalse(readInteger("0xff").isPresent());
-        assertFalse(readInteger("0xff").isPresent());
-        assertFalse(readInteger("2 ").isPresent());
-        assertFalse(readInteger("--1").isPresent());
-        assertFalse(readInteger("1-2").isPresent());
-        assertFalse(readInteger("+4").isPresent());
-    }
-
-    @Test
-    public void testFindIntegerIn() {
-        aeq(findIntegerIn("abcd1234xyz").get(), "(1234, 4)");
-        aeq(findIntegerIn("abcd8234xyz").get(), "(8234, 4)");
-        aeq(findIntegerIn("0123").get(), "(0, 0)");
-        aeq(findIntegerIn("a-23").get(), "(-23, 1)");
-        aeq(findIntegerIn("---34--4").get(), "(-34, 2)");
-        aeq(findIntegerIn(" 20.1 ").get(), "(20, 1)");
-        aeq(findIntegerIn("abcd" + Integer.MAX_VALUE + "xyz").get(), "(2147483647, 4)");
-        aeq(findIntegerIn("abcd" + Integer.MIN_VALUE + "xyz").get(), "(-2147483648, 4)");
-        aeq(findIntegerIn("abcd" + ((long) Integer.MAX_VALUE + 1) + "xyz").get(), "(214748364, 4)");
-        aeq(findIntegerIn("abcd" + ((long) Integer.MIN_VALUE - 1) + "xyz").get(), "(-214748364, 4)");
-        assertFalse(findIntegerIn("").isPresent());
-        assertFalse(findIntegerIn("hello").isPresent());
-        assertFalse(findIntegerIn("vdfsvfbf").isPresent());
-    }
-
-    @Test
-    public void testReadLong() {
-        aeq(readLong("0").get(), "0");
-        aeq(readLong("5").get(), "5");
-        aeq(readLong("-100").get(), "-100");
-        aeq(readLong(Long.toString(Long.MAX_VALUE)).get(), "9223372036854775807");
-        aeq(readLong(Long.toString(Long.MIN_VALUE)).get(), "-9223372036854775808");
-        assertFalse(readLong(BigInteger.valueOf(Long.MAX_VALUE).add(BigInteger.ONE).toString()).isPresent());
-        assertFalse(readLong(BigInteger.valueOf(Long.MIN_VALUE).subtract(BigInteger.ONE).toString()).isPresent());
-        assertFalse(readLong(" 1").isPresent());
-        assertFalse(readLong("00").isPresent());
-        assertFalse(readLong("-0").isPresent());
-        assertFalse(readLong("0xff").isPresent());
-        assertFalse(readLong("0xff").isPresent());
-        assertFalse(readLong("2 ").isPresent());
-        assertFalse(readLong("--1").isPresent());
-        assertFalse(readLong("1-2").isPresent());
-        assertFalse(readLong("+4").isPresent());
-    }
-
-    @Test
-    public void testFindLongIn() {
-        aeq(findLongIn("abcd1234xyz").get(), "(1234, 4)");
-        aeq(findLongIn("abcd8234xyz").get(), "(8234, 4)");
-        aeq(findLongIn("0123").get(), "(0, 0)");
-        aeq(findLongIn("a-23").get(), "(-23, 1)");
-        aeq(findLongIn("---34--4").get(), "(-34, 2)");
-        aeq(findLongIn(" 20.1 ").get(), "(20, 1)");
-        aeq(findLongIn("abcd" + Long.MAX_VALUE + "xyz").get(), "(9223372036854775807, 4)");
-        aeq(findLongIn("abcd" + Long.MIN_VALUE + "xyz").get(), "(-9223372036854775808, 4)");
-        aeq(
-                findLongIn("abcd" + BigInteger.valueOf(Long.MAX_VALUE).add(BigInteger.ONE) + "xyz").get(),
-                "(922337203685477580, 4)"
+    public void testReadLongStrict() {
+        aeq(readLongStrict("0").get(), "0");
+        aeq(readLongStrict("5").get(), "5");
+        aeq(readLongStrict("-100").get(), "-100");
+        aeq(readLongStrict(Long.toString(Long.MAX_VALUE)).get(), "9223372036854775807");
+        aeq(readLongStrict(Long.toString(Long.MIN_VALUE)).get(), "-9223372036854775808");
+        assertFalse(readLongStrict(BigInteger.valueOf(Long.MAX_VALUE).add(BigInteger.ONE).toString()).isPresent());
+        assertFalse(
+                readLongStrict(BigInteger.valueOf(Long.MIN_VALUE).subtract(BigInteger.ONE).toString()).isPresent()
         );
-        aeq(
-                findLongIn("abcd" + BigInteger.valueOf(Long.MIN_VALUE).subtract(BigInteger.ONE) + "xyz").get(),
-                "(-922337203685477580, 4)"
-        );
-        assertFalse(findLongIn("").isPresent());
-        assertFalse(findLongIn("hello").isPresent());
-        assertFalse(findLongIn("vdfsvfbf").isPresent());
+        assertFalse(readLongStrict(" 1").isPresent());
+        assertFalse(readLongStrict("00").isPresent());
+        assertFalse(readLongStrict("-0").isPresent());
+        assertFalse(readLongStrict("0xff").isPresent());
+        assertFalse(readLongStrict("0xff").isPresent());
+        assertFalse(readLongStrict("2 ").isPresent());
+        assertFalse(readLongStrict("--1").isPresent());
+        assertFalse(readLongStrict("1-2").isPresent());
+        assertFalse(readLongStrict("+4").isPresent());
     }
 
     @Test
-    public void testReadFloat() {
-        aeq(readFloat("0.0").get(), "0.0");
-        aeq(readFloat("-0.0").get(), "-0.0");
-        aeq(readFloat("5.0").get(), "5.0");
-        aeq(readFloat("-100.0").get(), "-100.0");
-        aeq(readFloat("1.0E10").get(), "1.0E10");
-        aeq(readFloat("1.0E-10").get(), "1.0E-10");
-        aeq(readFloat("1.234").get(), "1.234");
-        aeq(readFloat("1.111111").get(), "1.111111");
-        aeq(readFloat("NaN").get(), "NaN");
-        aeq(readFloat("Infinity").get(), "Infinity");
-        aeq(readFloat("-Infinity").get(), "-Infinity");
-        assertFalse(readFloat("1.1111111").isPresent());
-        assertFalse(readFloat("1.0e10").isPresent());
-        assertFalse(readFloat("1.0e-10").isPresent());
-        assertFalse(readFloat(".").isPresent());
-        assertFalse(readFloat("0.").isPresent());
-        assertFalse(readFloat(".0").isPresent());
-        assertFalse(readFloat(" 1.0").isPresent());
-        assertFalse(readFloat("--1.0").isPresent());
+    public void testReadFloatStrict() {
+        aeq(readFloatStrict("0.0").get(), "0.0");
+        aeq(readFloatStrict("-0.0").get(), "-0.0");
+        aeq(readFloatStrict("5.0").get(), "5.0");
+        aeq(readFloatStrict("-100.0").get(), "-100.0");
+        aeq(readFloatStrict("1.0E10").get(), "1.0E10");
+        aeq(readFloatStrict("1.0E-10").get(), "1.0E-10");
+        aeq(readFloatStrict("1.234").get(), "1.234");
+        aeq(readFloatStrict("1.111111").get(), "1.111111");
+        aeq(readFloatStrict("NaN").get(), "NaN");
+        aeq(readFloatStrict("Infinity").get(), "Infinity");
+        aeq(readFloatStrict("-Infinity").get(), "-Infinity");
+        assertFalse(readFloatStrict("1.1111111").isPresent());
+        assertFalse(readFloatStrict("1.0e10").isPresent());
+        assertFalse(readFloatStrict("1.0e-10").isPresent());
+        assertFalse(readFloatStrict(".").isPresent());
+        assertFalse(readFloatStrict("0.").isPresent());
+        assertFalse(readFloatStrict(".0").isPresent());
+        assertFalse(readFloatStrict(" 1.0").isPresent());
+        assertFalse(readFloatStrict("--1.0").isPresent());
     }
 
     @Test
-    public void testFindFloatIn() {
-        aeq(findFloatIn("abcd1234.0xyz").get(), "(1234.0, 4)");
-        aeq(findFloatIn("abcd823.4xyz").get(), "(823.4, 4)");
-        aeq(findFloatIn("0.0.123").get(), "(0.0, 0)");
-        aeq(findFloatIn("a-2.3E8z").get(), "(-2.3E8, 1)");
-        aeq(findFloatIn("a-2.3E10z").get(), "(-2.3, 1)");
-        aeq(findFloatIn("---34.4-").get(), "(-34.4, 2)");
-        aeq(findFloatIn(" 20.1 ").get(), "(20.1, 1)");
-        aeq(findFloatIn("AnAnANaNAN").get(), "(NaN, 5)");
-        aeq(findFloatIn("1.1111111111111111111").get(), "(1.111111, 0)");
-        assertFalse(findFloatIn("").isPresent());
-        assertFalse(findFloatIn("3").isPresent());
-        assertFalse(findFloatIn("hello").isPresent());
-        assertFalse(findFloatIn("vdfsvfbf").isPresent());
+    public void testReadDoubleStrict() {
+        aeq(readDoubleStrict("0.0").get(), "0.0");
+        aeq(readDoubleStrict("-0.0").get(), "-0.0");
+        aeq(readDoubleStrict("5.0").get(), "5.0");
+        aeq(readDoubleStrict("-100.0").get(), "-100.0");
+        aeq(readDoubleStrict("1.0E10").get(), "1.0E10");
+        aeq(readDoubleStrict("1.0E-10").get(), "1.0E-10");
+        aeq(readDoubleStrict("1.234").get(), "1.234");
+        aeq(readDoubleStrict("1.111111111111111").get(), "1.111111111111111");
+        aeq(readDoubleStrict("NaN").get(), "NaN");
+        aeq(readDoubleStrict("Infinity").get(), "Infinity");
+        aeq(readDoubleStrict("-Infinity").get(), "-Infinity");
+        assertFalse(readDoubleStrict("1.1111111111111111").isPresent());
+        assertFalse(readDoubleStrict("1.0e10").isPresent());
+        assertFalse(readDoubleStrict("1.0e-10").isPresent());
+        assertFalse(readDoubleStrict(".").isPresent());
+        assertFalse(readDoubleStrict("0.").isPresent());
+        assertFalse(readDoubleStrict(".0").isPresent());
+        assertFalse(readDoubleStrict(" 1.0").isPresent());
+        assertFalse(readDoubleStrict("--1.0").isPresent());
     }
 
     @Test
-    public void testReadDouble() {
-        aeq(readDouble("0.0").get(), "0.0");
-        aeq(readDouble("-0.0").get(), "-0.0");
-        aeq(readDouble("5.0").get(), "5.0");
-        aeq(readDouble("-100.0").get(), "-100.0");
-        aeq(readDouble("1.0E10").get(), "1.0E10");
-        aeq(readDouble("1.0E-10").get(), "1.0E-10");
-        aeq(readDouble("1.234").get(), "1.234");
-        aeq(readDouble("1.111111111111111").get(), "1.111111111111111");
-        aeq(readDouble("NaN").get(), "NaN");
-        aeq(readDouble("Infinity").get(), "Infinity");
-        aeq(readDouble("-Infinity").get(), "-Infinity");
-        assertFalse(readDouble("1.1111111111111111").isPresent());
-        assertFalse(readDouble("1.0e10").isPresent());
-        assertFalse(readDouble("1.0e-10").isPresent());
-        assertFalse(readDouble(".").isPresent());
-        assertFalse(readDouble("0.").isPresent());
-        assertFalse(readDouble(".0").isPresent());
-        assertFalse(readDouble(" 1.0").isPresent());
-        assertFalse(readDouble("--1.0").isPresent());
-    }
-
-    @Test
-    public void testFindDoubleIn() {
-        aeq(findDoubleIn("abcd1234.0xyz").get(), "(1234.0, 4)");
-        aeq(findDoubleIn("abcd823.4xyz").get(), "(823.4, 4)");
-        aeq(findDoubleIn("0.0.123").get(), "(0.0, 0)");
-        aeq(findDoubleIn("a-2.3E8z").get(), "(-2.3E8, 1)");
-        aeq(findDoubleIn("a-2.3E1000z").get(), "(-2.3E100, 1)");
-        aeq(findDoubleIn("---34.4-").get(), "(-34.4, 2)");
-        aeq(findDoubleIn(" 20.1 ").get(), "(20.1, 1)");
-        aeq(findDoubleIn("AnAnANaNAN").get(), "(NaN, 5)");
-        aeq(findDoubleIn("1.1111111111111111111").get(), "(1.111111111111111, 0)");
-        assertFalse(findDoubleIn("").isPresent());
-        assertFalse(findDoubleIn("3").isPresent());
-        assertFalse(findDoubleIn("hello").isPresent());
-        assertFalse(findDoubleIn("vdfsvfbf").isPresent());
-    }
-
-    @Test
-    public void testReadBigDecimal() {
-        aeq(readBigDecimal("0.0").get(), "0.0");
-        aeq(readBigDecimal("5.0").get(), "5.0");
-        aeq(readBigDecimal("-100.0").get(), "-100.0");
-        aeq(readBigDecimal("1.0E+10").get(), "1.0E+10");
-        aeq(readBigDecimal("1.0E-10").get(), "1.0E-10");
-        aeq(readBigDecimal("1.234").get(), "1.234");
-        aeq(readBigDecimal("1.111111111111111").get(), "1.111111111111111");
-        assertFalse(readBigDecimal("1.0e10").isPresent());
-        assertFalse(readBigDecimal("1.0e-10").isPresent());
-        assertFalse(readBigDecimal(".").isPresent());
-        assertFalse(readBigDecimal("0.").isPresent());
-        assertFalse(readBigDecimal(".0").isPresent());
-        assertFalse(readBigDecimal(" 1.0").isPresent());
-        assertFalse(readBigDecimal("--1.0").isPresent());
-        assertFalse(readBigDecimal("-0.0").isPresent());
-        assertFalse(readBigDecimal("NaN").isPresent());
-        assertFalse(readBigDecimal("Infinity").isPresent());
-    }
-
-    @Test
-    public void testFindBigDecimalIn() {
-        aeq(findBigDecimalIn("abcd1234.0xyz").get(), "(1234.0, 4)");
-        aeq(findBigDecimalIn("abcd823.4xyz").get(), "(823.4, 4)");
-        aeq(findBigDecimalIn("3").get(), "(3, 0)");
-        aeq(findBigDecimalIn("00").get(), "(0, 0)");
-        aeq(findBigDecimalIn("0.0.123").get(), "(0.0, 0)");
-        aeq(findBigDecimalIn("a-2.3E+8z").get(), "(-2.3E+8, 1)");
-        aeq(findBigDecimalIn("a-2.3E+1000z").get(), "(-2.3E+1000, 1)");
-        aeq(findBigDecimalIn("---34.4-").get(), "(-34.4, 2)");
-        aeq(findBigDecimalIn(" 20.1 ").get(), "(20.1, 1)");
-        aeq(findBigDecimalIn("1.1111111111111111111").get(), "(1.1111111111111111111, 0)");
-        assertFalse(findBigDecimalIn("").isPresent());
-        assertFalse(findBigDecimalIn("hello").isPresent());
-        assertFalse(findBigDecimalIn("vdfsvfbf").isPresent());
+    public void testReadBigDecimalStrict() {
+        aeq(readBigDecimalStrict("0.0").get(), "0.0");
+        aeq(readBigDecimalStrict("5.0").get(), "5.0");
+        aeq(readBigDecimalStrict("-100.0").get(), "-100.0");
+        aeq(readBigDecimalStrict("1.0E+10").get(), "1.0E+10");
+        aeq(readBigDecimalStrict("1.0E-10").get(), "1.0E-10");
+        aeq(readBigDecimalStrict("1.234").get(), "1.234");
+        aeq(readBigDecimalStrict("1.111111111111111").get(), "1.111111111111111");
+        assertFalse(readBigDecimalStrict("1.0e10").isPresent());
+        assertFalse(readBigDecimalStrict("1.0e-10").isPresent());
+        assertFalse(readBigDecimalStrict(".").isPresent());
+        assertFalse(readBigDecimalStrict("0.").isPresent());
+        assertFalse(readBigDecimalStrict(".0").isPresent());
+        assertFalse(readBigDecimalStrict(" 1.0").isPresent());
+        assertFalse(readBigDecimalStrict("--1.0").isPresent());
+        assertFalse(readBigDecimalStrict("-0.0").isPresent());
+        assertFalse(readBigDecimalStrict("NaN").isPresent());
+        assertFalse(readBigDecimalStrict("Infinity").isPresent());
     }
 
     @Test
@@ -541,13 +298,6 @@ public class ReadersTest {
     }
 
     @Test
-    public void testFindCharacterIn() {
-        aeq(findCharacterIn("Hello").get(), "(H, 0)");
-        aeq(findCharacterIn("ø").get(), "(ø, 0)");
-        assertFalse(findCharacterIn("").isPresent());
-    }
-
-    @Test
     public void testReadString() {
         aeq(readString("Hello").get(), "Hello");
         aeq(readString("ø").get(), "ø");
@@ -555,131 +305,54 @@ public class ReadersTest {
     }
 
     @Test
-    public void testFindStringIn() {
-        aeq(findStringIn("Hello"), "Optional[(Hello, 0)]");
-        aeq(findStringIn("ø"), "Optional[(ø, 0)]");
-        aeq(findStringIn(""), "Optional[(, 0)]");
-    }
-
-    @Test
-    public void testReadWithNulls() {
-        aeq(readWithNulls(Readers::readInteger).apply("23").get(), "23");
-        aeq(readWithNulls(Readers::readInteger).apply("-500").get(), "-500");
-        assertNull(readWithNulls(Readers::readInteger).apply("null").get());
-        aeq(readWithNulls(Readers::readString).apply("hello").get(), "hello");
-        aeq(readWithNulls(Readers::readString).apply("bye").get(), "bye");
-        aeq(readWithNulls(Readers::readString).apply("nullification").get(), "nullification");
-        aeq(readWithNulls(Readers::readString).apply("").get(), "");
-        assertNull(readWithNulls(Readers::readString).apply("null").get());
-        assertFalse(readWithNulls(Readers::readInteger).apply("annull").isPresent());
-        assertFalse(readWithNulls(Readers::readInteger).apply("--").isPresent());
-        assertFalse(readWithNulls(Readers::readInteger).apply("").isPresent());
+    public void testReadWithNullsStrict() {
+        aeq(readWithNullsStrict(Readers::readIntegerStrict).apply("23").get(), "23");
+        aeq(readWithNullsStrict(Readers::readIntegerStrict).apply("-500").get(), "-500");
+        assertNull(readWithNullsStrict(Readers::readIntegerStrict).apply("null").get());
+        aeq(readWithNullsStrict(Readers::readString).apply("hello").get(), "hello");
+        aeq(readWithNullsStrict(Readers::readString).apply("bye").get(), "bye");
+        aeq(readWithNullsStrict(Readers::readString).apply("nullification").get(), "nullification");
+        aeq(readWithNullsStrict(Readers::readString).apply("").get(), "");
+        assertNull(readWithNullsStrict(Readers::readString).apply("null").get());
+        assertFalse(readWithNullsStrict(Readers::readIntegerStrict).apply("annull").isPresent());
+        assertFalse(readWithNullsStrict(Readers::readIntegerStrict).apply("--").isPresent());
+        assertFalse(readWithNullsStrict(Readers::readIntegerStrict).apply("").isPresent());
         try {
-            readWithNulls(s -> null).apply("hello");
+            readWithNullsStrict(s -> null).apply("hello");
         } catch (NullPointerException | IllegalArgumentException ignored) {}
     }
 
     @Test
-    public void testFindInWithNulls() {
-        aeq(findInWithNulls(Readers::findIntegerIn).apply("xyz123xyz").get(), "(123, 3)");
-        aeq(findInWithNulls(Readers::findIntegerIn).apply("123null").get(), "(123, 0)");
-        assertNull(findInWithNulls(Readers::findIntegerIn).apply("null123").get().a);
-        aeq(findInWithNulls(Readers::findIntegerIn).apply("--500").get(), "(-500, 1)");
-        assertNull(findInWithNulls(Readers::findIntegerIn).apply("thisisnull").get().a);
-        aeq(findInWithNulls(Readers::findBooleanIn).apply("falsenull").get(), "(false, 0)");
-        assertNull(findInWithNulls(Readers::findBooleanIn).apply("nullfalse").get().a);
-        assertFalse(findInWithNulls(Readers::findIntegerIn).apply("xyz").isPresent());
-        assertFalse(findInWithNulls(Readers::findIntegerIn).apply("--").isPresent());
-        assertFalse(findInWithNulls(Readers::findIntegerIn).apply("").isPresent());
-        try {
-            findInWithNulls(s -> null).apply("hello");
-        } catch (NullPointerException ignored) {}
-        try {
-            findInWithNulls(s -> Optional.of(new Pair<>('a', null))).apply("hello");
-            fail();
-        } catch (NullPointerException ignored) {}
-        try {
-            findInWithNulls(s -> Optional.of(new Pair<>(null, 3))).apply("hello");
-            fail();
-        } catch (NullPointerException ignored) {}
-        try {
-            findInWithNulls(s -> Optional.of(new Pair<>(null, null))).apply("hello");
-            fail();
-        } catch (NullPointerException ignored) {}
-        try {
-            findInWithNulls(s -> Optional.of(new Pair<>('a', -1))).apply("hello");
-            fail();
-        } catch (IllegalArgumentException ignored) {}
-    }
-
-    @Test
-    public void testReadOptional() {
-        aeq(readOptional(Readers::readInteger).apply("Optional[23]").get(), "Optional[23]");
-        aeq(readOptional(Readers::readInteger).apply("Optional[0]").get(), "Optional[0]");
-        aeq(readOptional(Readers::readInteger).apply("Optional[-5]").get(), "Optional[-5]");
-        aeq(readOptional(Readers::readInteger).apply("Optional.empty").get(), "Optional.empty");
-        aeq(readOptional(Readers::readBoolean).apply("Optional[false]").get(), "Optional[false]");
-        aeq(readOptional(Readers::readBoolean).apply("Optional[true]").get(), "Optional[true]");
-        aeq(readOptional(Readers::readBoolean).apply("Optional.empty").get(), "Optional.empty");
-        assertFalse(readOptional(Readers::readInteger).apply("Optional[10000000000000000000]").isPresent());
-        assertFalse(readOptional(Readers::readInteger).apply("Optional[xyz]").isPresent());
-        assertFalse(readOptional(Readers::readInteger).apply("Optional[null]").isPresent());
-        assertFalse(readOptional(Readers::readInteger).apply("Optional[10").isPresent());
-        assertFalse(readOptional(Readers::readInteger).apply("Optional").isPresent());
-        assertFalse(readOptional(Readers::readInteger).apply("xyz").isPresent());
-        assertFalse(readOptional(Readers::readInteger).apply("").isPresent());
-        assertFalse(readOptional(Readers::readBoolean).apply("Optional[12]").isPresent());
-        try {
-            readOptional(s -> null).apply("Optional[hello]");
-        } catch (NullPointerException ignored) {}
-    }
-
-    @Test
-    public void testFindOptionalIn() {
-        aeq(findOptionalIn(Readers::findIntegerIn).apply("xyzOptional[23]xyz"), "Optional[(Optional[23], 3)]");
-        aeq(findOptionalIn(Readers::findIntegerIn).apply("xyzOptional[0]xyz"), "Optional[(Optional[0], 3)]");
-        aeq(findOptionalIn(Readers::findIntegerIn).apply("xyzOptional[-5]xyz"), "Optional[(Optional[-5], 3)]");
-        aeq(findOptionalIn(Readers::findIntegerIn).apply("Optional[]Optional[-5]xyz"), "Optional[(Optional[-5], 2)]");
-        aeq(
-                findOptionalIn(Readers::findIntegerIn).apply("vdsfvOptional[1000000000000000000]Optional[-5]xyz"),
-                "Optional[(Optional[-5], 10)]"
+    public void testReadOptionalStrict() {
+        aeq(readOptionalStrict(Readers::readIntegerStrict).apply("Optional[23]").get(), "Optional[23]");
+        aeq(readOptionalStrict(Readers::readIntegerStrict).apply("Optional[0]").get(), "Optional[0]");
+        aeq(readOptionalStrict(Readers::readIntegerStrict).apply("Optional[-5]").get(), "Optional[-5]");
+        aeq(readOptionalStrict(Readers::readIntegerStrict).apply("Optional.empty").get(), "Optional.empty");
+        aeq(readOptionalStrict(Readers::readBooleanStrict).apply("Optional[false]").get(), "Optional[false]");
+        aeq(readOptionalStrict(Readers::readBooleanStrict).apply("Optional[true]").get(), "Optional[true]");
+        aeq(readOptionalStrict(Readers::readBooleanStrict).apply("Optional.empty").get(), "Optional.empty");
+        assertFalse(
+                readOptionalStrict(Readers::readIntegerStrict).apply("Optional[10000000000000000000]").isPresent()
         );
-        aeq(findOptionalIn(Readers::findIntegerIn).apply("Optional[3]Optional[-5]xyz"), "Optional[(Optional[3], 0)]");
-        aeq(findOptionalIn(Readers::findIntegerIn).apply("xyzOptional.emptyxyz"), "Optional[(Optional.empty, 3)]");
-        assertFalse(findOptionalIn(Readers::findIntegerIn).apply("xyz").isPresent());
-        assertFalse(findOptionalIn(Readers::findIntegerIn).apply("").isPresent());
-        assertFalse(findOptionalIn(Readers::findIntegerIn).apply("vdsfvOptional[1000000000000000000]xyz").isPresent());
-        assertFalse(findOptionalIn(Readers::findIntegerIn).apply("vdsfvOptional[null]xyz").isPresent());
-        assertFalse(findOptionalIn(Readers::findIntegerIn).apply("vdsfvOptinal[3]xyz").isPresent());
+        assertFalse(readOptionalStrict(Readers::readIntegerStrict).apply("Optional[xyz]").isPresent());
+        assertFalse(readOptionalStrict(Readers::readIntegerStrict).apply("Optional[null]").isPresent());
+        assertFalse(readOptionalStrict(Readers::readIntegerStrict).apply("Optional[10").isPresent());
+        assertFalse(readOptionalStrict(Readers::readIntegerStrict).apply("Optional").isPresent());
+        assertFalse(readOptionalStrict(Readers::readIntegerStrict).apply("xyz").isPresent());
+        assertFalse(readOptionalStrict(Readers::readIntegerStrict).apply("").isPresent());
+        assertFalse(readOptionalStrict(Readers::readBooleanStrict).apply("Optional[12]").isPresent());
         try {
-            findOptionalIn(s -> null).apply("Optional[hello]");
-            fail();
+            readOptionalStrict(s -> null).apply("Optional[hello]");
         } catch (NullPointerException ignored) {}
-        try {
-            findOptionalIn(s -> Optional.of(new Pair<>('a', null))).apply("Optional[hello]");
-            fail();
-        } catch (NullPointerException ignored) {}
-        try {
-            findOptionalIn(s -> Optional.of(new Pair<>(null, 3))).apply("Optional[hello]");
-            fail();
-        } catch (NullPointerException ignored) {}
-        try {
-            findOptionalIn(s -> Optional.of(new Pair<>(null, null))).apply("Optional[hello]");
-            fail();
-        } catch (NullPointerException ignored) {}
-        try {
-            findOptionalIn(s -> Optional.of(new Pair<>('a', -1))).apply("Optional[hello]");
-            fail();
-        } catch (IllegalArgumentException ignored) {}
     }
 
     @Test
-    public void testReadNullableOptional() {
-        Function<String, Optional<NullableOptional<Integer>>> fi = readNullableOptional(
-                readWithNulls(Readers::readInteger)
+    public void testReadNullableOptionalStrict() {
+        Function<String, Optional<NullableOptional<Integer>>> fi = readNullableOptionalStrict(
+                readWithNullsStrict(Readers::readIntegerStrict)
         );
-        Function<String, Optional<NullableOptional<Boolean>>> fb = readNullableOptional(
-                readWithNulls(Readers::readBoolean)
+        Function<String, Optional<NullableOptional<Boolean>>> fb = readNullableOptionalStrict(
+                readWithNullsStrict(Readers::readBooleanStrict)
         );
         aeq(fi.apply("NullableOptional[23]").get(), "NullableOptional[23]");
         aeq(fi.apply("NullableOptional[0]").get(), "NullableOptional[0]");
@@ -699,72 +372,32 @@ public class ReadersTest {
         assertFalse(fi.apply("").isPresent());
         assertFalse(fb.apply("NullableOptional[12]").isPresent());
         try {
-            readNullableOptional(s -> null).apply("NullableOptional[hello]");
+            readNullableOptionalStrict(s -> null).apply("NullableOptional[hello]");
         } catch (NullPointerException ignored) {}
     }
 
     @Test
-    public void testFindNullableOptionalIn() {
-        Function<String, Optional<Pair<NullableOptional<Integer>, Integer>>> fi =
-                findNullableOptionalIn(Readers.findInWithNulls(Readers::findIntegerIn));
-        aeq(fi.apply("xyzNullableOptional[23]xyz"), "Optional[(NullableOptional[23], 3)]");
-        aeq(fi.apply("xyzNullableOptional[0]xyz"), "Optional[(NullableOptional[0], 3)]");
-        aeq(fi.apply("xyzNullableOptional[-5]xyz"), "Optional[(NullableOptional[-5], 3)]");
-        aeq(fi.apply("xyzNullableOptional[null]xyz"), "Optional[(NullableOptional[null], 3)]");
-        aeq(fi.apply("NullableOptional[]NullableOptional[-5]xyz"), "Optional[(NullableOptional[-5], 2)]");
-        aeq(
-                fi.apply("vdsfvNullableOptional[1000000000000000000]NullableOptional[-5]xyz"),
-                "Optional[(NullableOptional[-5], 10)]"
-        );
-        aeq(fi.apply("NullableOptional[3]NullableOptional[-5]xyz"), "Optional[(NullableOptional[3], 0)]");
-        aeq(fi.apply("xyzNullableOptional.emptyxyz"), "Optional[(NullableOptional.empty, 3)]");
-        assertFalse(fi.apply("xyz").isPresent());
-        assertFalse(fi.apply("").isPresent());
-        assertFalse(fi.apply("vdsfvOptional[23]xyz").isPresent());
-        assertFalse(fi.apply("vdsfvNullableOptional[1000000000000000000]xyz").isPresent());
-        assertFalse(fi.apply("vdsfvNullableOptinal[3]xyz").isPresent());
-        fi = findNullableOptionalIn(Readers::findIntegerIn);
-        assertFalse(fi.apply("vdsfvNullableOptional[null]xyz").isPresent());
-        try {
-            findNullableOptionalIn(s -> null).apply("NullableOptional[hello]");
-            fail();
-        } catch (NullPointerException ignored) {}
-        try {
-            findNullableOptionalIn(s -> Optional.of(new Pair<>('a', null))).apply("NullableOptional[hello]");
-            fail();
-        } catch (NullPointerException ignored) {}
-        try {
-            findNullableOptionalIn(s -> Optional.of(new Pair<>(null, null))).apply("NullableOptional[hello]");
-            fail();
-        } catch (NullPointerException ignored) {}
-        try {
-            findNullableOptionalIn(s -> Optional.of(new Pair<>('a', -1))).apply("NullableOptional[hello]");
-            fail();
-        } catch (IllegalArgumentException ignored) {}
-    }
-
-    @Test
-    public void testReadList() {
-        aeq(readList(Readers::readInteger).apply("[]").get(), "[]");
-        aeq(readList(Readers::readInteger).apply("[1]").get(), "[1]");
-        aeq(readList(Readers::readInteger).apply("[1, 2, -3]").get(), "[1, 2, -3]");
-        assertFalse(readList(Readers::readInteger).apply("[1000000000000000]").isPresent());
-        assertFalse(readList(Readers::readInteger).apply("[null]").isPresent());
-        assertFalse(readList(Readers::readInteger).apply("[1, 2").isPresent());
-        assertFalse(readList(Readers::readInteger).apply("1, 2").isPresent());
-        assertFalse(readList(Readers::readInteger).apply("[a]").isPresent());
-        assertFalse(readList(Readers::readInteger).apply("[00]").isPresent());
+    public void testReadListStrict() {
+        aeq(readListStrict(Readers::readIntegerStrict).apply("[]").get(), "[]");
+        aeq(readListStrict(Readers::readIntegerStrict).apply("[1]").get(), "[1]");
+        aeq(readListStrict(Readers::readIntegerStrict).apply("[1, 2, -3]").get(), "[1, 2, -3]");
+        assertFalse(readListStrict(Readers::readIntegerStrict).apply("[1000000000000000]").isPresent());
+        assertFalse(readListStrict(Readers::readIntegerStrict).apply("[null]").isPresent());
+        assertFalse(readListStrict(Readers::readIntegerStrict).apply("[1, 2").isPresent());
+        assertFalse(readListStrict(Readers::readIntegerStrict).apply("1, 2").isPresent());
+        assertFalse(readListStrict(Readers::readIntegerStrict).apply("[a]").isPresent());
+        assertFalse(readListStrict(Readers::readIntegerStrict).apply("[00]").isPresent());
         Optional<List<String>> ss;
 
-        ss = readList(Readers::readString).apply("[hello]");
+        ss = readListStrict(Readers::readString).apply("[hello]");
         aeq(ss.get(), "[hello]");
         aeq(ss.get().size(), 1);
 
-        ss = readList(Readers::readString).apply("[hello, bye]");
+        ss = readListStrict(Readers::readString).apply("[hello, bye]");
         aeq(ss.get(), "[hello, bye]");
         aeq(ss.get().size(), 2);
 
-        ss = readList(Readers::readString).apply("[a, b, c]");
+        ss = readListStrict(Readers::readString).apply("[a, b, c]");
         aeq(ss.get(), "[a, b, c]");
         aeq(ss.get().size(), 3);
     }

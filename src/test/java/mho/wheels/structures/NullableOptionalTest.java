@@ -148,15 +148,17 @@ public class NullableOptionalTest {
     }
 
     private static @NotNull Optional<Integer> readOptionalInteger(@NotNull String s) {
-        return Readers.readOptional(Readers::readInteger).apply(s).get();
+        return Readers.readOptionalStrict(Readers::readIntegerStrict).apply(s).get();
     }
 
     private static @NotNull NullableOptional<Integer> readNullableOptionalInteger(@NotNull String s) {
-        return Readers.readNullableOptional(Readers.readWithNulls(Readers::readInteger)).apply(s).get();
+        return Readers.readNullableOptionalStrict(Readers.readWithNullsStrict(Readers::readIntegerStrict))
+                .apply(s).get();
     }
 
     private static @NotNull List<NullableOptional<Integer>> readNullableOptionalIntegerList(@NotNull String s) {
-        return Readers.readList(Readers.readNullableOptional(Readers.readWithNulls(Readers::readInteger)))
-                .apply(s).get();
+        return Readers.readListStrict(
+                Readers.readNullableOptionalStrict(Readers.readWithNullsStrict(Readers::readIntegerStrict))
+        ).apply(s).get();
     }
 }

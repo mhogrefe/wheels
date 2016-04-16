@@ -310,7 +310,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void rangeUp_BigInteger_helper(@NotNull String a, @NotNull String output) {
-        simpleProviderHelper(EP.rangeUp(Readers.readBigInteger(a).get()), output);
+        simpleProviderHelper(EP.rangeUp(Readers.readBigIntegerStrict(a).get()), output);
     }
 
     @Test
@@ -385,7 +385,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void rangeDown_BigInteger_helper(@NotNull String a, @NotNull String output) {
-        simpleProviderHelper(EP.rangeDown(Readers.readBigInteger(a).get()), output);
+        simpleProviderHelper(EP.rangeDown(Readers.readBigIntegerStrict(a).get()), output);
     }
 
     @Test
@@ -492,7 +492,7 @@ public strictfp class ExhaustiveProviderTest {
             @NotNull String b,
             @NotNull String output
     ) {
-        aeqitLog(EP.range(Readers.readBigInteger(a).get(), Readers.readBigInteger(b).get()), output);
+        aeqitLog(EP.range(Readers.readBigIntegerStrict(a).get(), Readers.readBigIntegerStrict(b).get()), output);
     }
 
     @Test
@@ -959,7 +959,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void rangeUp_BigDecimal_helper(@NotNull String a, @NotNull String output) {
-        simpleProviderHelper(EP.rangeUp(Readers.readBigDecimal(a).get()), output);
+        simpleProviderHelper(EP.rangeUp(Readers.readBigDecimalStrict(a).get()), output);
     }
 
     @Test
@@ -987,7 +987,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void rangeDown_BigDecimal_helper(@NotNull String a, @NotNull String output) {
-        simpleProviderHelper(EP.rangeDown(Readers.readBigDecimal(a).get()), output);
+        simpleProviderHelper(EP.rangeDown(Readers.readBigDecimalStrict(a).get()), output);
     }
 
     @Test
@@ -1019,7 +1019,10 @@ public strictfp class ExhaustiveProviderTest {
             @NotNull String b,
             @NotNull String output
     ) {
-        simpleProviderHelper(EP.range(Readers.readBigDecimal(a).get(), Readers.readBigDecimal(b).get()), output);
+        simpleProviderHelper(
+                EP.range(Readers.readBigDecimalStrict(a).get(), Readers.readBigDecimalStrict(b).get()),
+                output
+        );
     }
 
     @Test
@@ -1048,7 +1051,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void rangeUpCanonical_BigDecimal_helper(@NotNull String a, @NotNull String output) {
-        simpleProviderHelper(EP.rangeUpCanonical(Readers.readBigDecimal(a).get()), output);
+        simpleProviderHelper(EP.rangeUpCanonical(Readers.readBigDecimalStrict(a).get()), output);
     }
 
     @Test
@@ -1076,7 +1079,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void rangeDownCanonical_BigDecimal_helper(@NotNull String a, @NotNull String output) {
-        simpleProviderHelper(EP.rangeDownCanonical(Readers.readBigDecimal(a).get()), output);
+        simpleProviderHelper(EP.rangeDownCanonical(Readers.readBigDecimalStrict(a).get()), output);
     }
 
     @Test
@@ -1109,7 +1112,7 @@ public strictfp class ExhaustiveProviderTest {
             @NotNull String output
     ) {
         simpleProviderHelper(
-                EP.rangeCanonical(Readers.readBigDecimal(a).get(), Readers.readBigDecimal(b).get()),
+                EP.rangeCanonical(Readers.readBigDecimalStrict(a).get(), Readers.readBigDecimalStrict(b).get()),
                 output
         );
     }
@@ -5988,19 +5991,20 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static @NotNull List<Integer> readIntegerList(@NotNull String s) {
-        return Readers.readList(Readers::readInteger).apply(s).get();
+        return Readers.readListStrict(Readers::readIntegerStrict).apply(s).get();
     }
 
     private static @NotNull List<Integer> readIntegerListWithNulls(@NotNull String s) {
-        return Readers.readListWithNulls(Readers::readInteger).apply(s).get();
+        return Readers.readListWithNullsStrict(Readers::readIntegerStrict).apply(s).get();
     }
 
     private static @NotNull List<List<Integer>> readIntegerListWithNullsLists(@NotNull String s) {
-        return Readers.readList(Readers.readListWithNulls(Readers::readInteger)).apply(s).get();
+        return Readers.readListStrict(Readers.readListWithNullsStrict(Readers::readIntegerStrict)).apply(s).get();
     }
 
     private static @NotNull List<List<Integer>> readIntegerListWithNullsListsWithNulls(@NotNull String s) {
-        return Readers.readListWithNulls(Readers.readListWithNulls(Readers::readInteger)).apply(s).get();
+        return Readers.readListWithNullsStrict(Readers.readListWithNullsStrict(Readers::readIntegerStrict))
+                .apply(s).get();
     }
 }
 // @formatter:on

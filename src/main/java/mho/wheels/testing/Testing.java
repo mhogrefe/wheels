@@ -903,34 +903,6 @@ public strictfp class Testing {
         }
     }
 
-    public static <T> void propertiesFindInHelper(
-            int limit,
-            @NotNull IterableProvider P,
-            @NotNull Iterable<T> xs,
-            @NotNull Function<String, Optional<T>> read,
-            @NotNull Function<String, Optional<Pair<T, Integer>>> findIn,
-            @NotNull Consumer<T> validate
-    ) {
-        for (String s : take(limit, P.strings())) {
-            findIn.apply(s);
-        }
-
-        for (String s : take(limit, P.stringsWithSubstrings(map(Object::toString, xs)))) {
-            Optional<Pair<T, Integer>> op = findIn.apply(s);
-            Pair<T, Integer> p = op.get();
-            assertNotNull(s, p.a);
-            assertNotNull(s, p.b);
-            validate.accept(p.a);
-            assertTrue(s, p.b >= 0 && p.b < s.length());
-            String before = take(p.b, s);
-            assertFalse(s, findIn.apply(before).isPresent());
-            String during = p.a.toString();
-            assertTrue(s, s.substring(p.b).startsWith(during));
-            String after = drop(p.b + during.length(), s);
-            assertTrue(s, after.isEmpty() || !read.apply(during + head(after)).isPresent());
-        }
-    }
-
     public static <T> void propertiesToStringHelper(
             int limit,
             @NotNull String usedChars,

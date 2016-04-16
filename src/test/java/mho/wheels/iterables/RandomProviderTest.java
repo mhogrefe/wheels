@@ -3927,7 +3927,7 @@ public strictfp class RandomProviderTest {
             double scaleMean
     ) {
         bigDecimalHelper(
-                P.withScale(scale).withSecondaryScale(secondaryScale).rangeUp(Readers.readBigDecimal(a).get()),
+                P.withScale(scale).withSecondaryScale(secondaryScale).rangeUp(Readers.readBigDecimalStrict(a).get()),
                 output,
                 sampleMean,
                 unscaledBitSizeMean,
@@ -3942,7 +3942,7 @@ public strictfp class RandomProviderTest {
             @NotNull String a
     ) {
         try {
-            P.withScale(scale).withSecondaryScale(secondaryScale).rangeUp(Readers.readBigDecimal(a).get());
+            P.withScale(scale).withSecondaryScale(secondaryScale).rangeUp(Readers.readBigDecimalStrict(a).get());
             fail();
         } catch (IllegalStateException ignored) {}
         finally {
@@ -4506,7 +4506,7 @@ public strictfp class RandomProviderTest {
             double scaleMean
     ) {
         bigDecimalHelper(
-                P.withScale(scale).withSecondaryScale(secondaryScale).rangeDown(Readers.readBigDecimal(a).get()),
+                P.withScale(scale).withSecondaryScale(secondaryScale).rangeDown(Readers.readBigDecimalStrict(a).get()),
                 output,
                 sampleMean,
                 unscaledBitSizeMean,
@@ -4521,7 +4521,7 @@ public strictfp class RandomProviderTest {
             @NotNull String a
     ) {
         try {
-            P.withScale(scale).withSecondaryScale(secondaryScale).rangeDown(Readers.readBigDecimal(a).get());
+            P.withScale(scale).withSecondaryScale(secondaryScale).rangeDown(Readers.readBigDecimalStrict(a).get());
             fail();
         } catch (IllegalStateException ignored) {}
         finally {
@@ -5087,7 +5087,7 @@ public strictfp class RandomProviderTest {
     ) {
         bigDecimalHelper(
                 P.withScale(scale).withSecondaryScale(secondaryScale)
-                        .range(Readers.readBigDecimal(a).get(), Readers.readBigDecimal(b).get()),
+                        .range(Readers.readBigDecimalStrict(a).get(), Readers.readBigDecimalStrict(b).get()),
                 output,
                 sampleMean,
                 mantissaBitSizeMean,
@@ -5104,7 +5104,7 @@ public strictfp class RandomProviderTest {
     ) {
         try {
             P.withScale(scale).withSecondaryScale(secondaryScale)
-                    .range(Readers.readBigDecimal(a).get(), Readers.readBigDecimal(b).get());
+                    .range(Readers.readBigDecimalStrict(a).get(), Readers.readBigDecimalStrict(b).get());
             fail();
         } catch (IllegalStateException ignored) {}
         finally {
@@ -5759,7 +5759,7 @@ public strictfp class RandomProviderTest {
     ) {
         bigDecimalHelper(
                 P.withScale(scale).withSecondaryScale(secondaryScale)
-                        .rangeUpCanonical(Readers.readBigDecimal(a).get()),
+                        .rangeUpCanonical(Readers.readBigDecimalStrict(a).get()),
                 output,
                 sampleMean,
                 unscaledBitSizeMean,
@@ -5774,7 +5774,8 @@ public strictfp class RandomProviderTest {
             @NotNull String a
     ) {
         try {
-            P.withScale(scale).withSecondaryScale(secondaryScale).rangeUpCanonical(Readers.readBigDecimal(a).get());
+            P.withScale(scale).withSecondaryScale(secondaryScale)
+                    .rangeUpCanonical(Readers.readBigDecimalStrict(a).get());
             fail();
         } catch (IllegalStateException ignored) {}
         finally {
@@ -6339,7 +6340,7 @@ public strictfp class RandomProviderTest {
     ) {
         bigDecimalHelper(
                 P.withScale(scale).withSecondaryScale(secondaryScale)
-                        .rangeDownCanonical(Readers.readBigDecimal(a).get()),
+                        .rangeDownCanonical(Readers.readBigDecimalStrict(a).get()),
                 output,
                 sampleMean,
                 unscaledBitSizeMean,
@@ -6354,7 +6355,8 @@ public strictfp class RandomProviderTest {
             @NotNull String a
     ) {
         try {
-            P.withScale(scale).withSecondaryScale(secondaryScale).rangeDownCanonical(Readers.readBigDecimal(a).get());
+            P.withScale(scale).withSecondaryScale(secondaryScale)
+                    .rangeDownCanonical(Readers.readBigDecimalStrict(a).get());
             fail();
         } catch (IllegalStateException ignored) {}
         finally {
@@ -6920,7 +6922,7 @@ public strictfp class RandomProviderTest {
     ) {
         bigDecimalHelper(
                 P.withScale(scale).withSecondaryScale(secondaryScale)
-                        .rangeCanonical(Readers.readBigDecimal(a).get(), Readers.readBigDecimal(b).get()),
+                        .rangeCanonical(Readers.readBigDecimalStrict(a).get(), Readers.readBigDecimalStrict(b).get()),
                 output,
                 sampleMean,
                 mantissaBitSizeMean,
@@ -6937,7 +6939,7 @@ public strictfp class RandomProviderTest {
     ) {
         try {
             P.withScale(scale).withSecondaryScale(secondaryScale)
-                    .rangeCanonical(Readers.readBigDecimal(a).get(), Readers.readBigDecimal(b).get());
+                    .rangeCanonical(Readers.readBigDecimalStrict(a).get(), Readers.readBigDecimalStrict(b).get());
             fail();
         } catch (IllegalStateException ignored) {}
         finally {
@@ -10999,11 +11001,12 @@ public strictfp class RandomProviderTest {
     }
 
     private static @NotNull List<Integer> readIntegerListWithNulls(@NotNull String s) {
-        return Readers.readListWithNulls(Readers::readInteger).apply(s).get();
+        return Readers.readListWithNullsStrict(Readers::readIntegerStrict).apply(s).get();
     }
 
     private static @NotNull List<List<Integer>> readIntegerListWithNullsListsWithNulls(@NotNull String s) {
-        return Readers.readListWithNulls(Readers.readListWithNulls(Readers::readInteger)).apply(s).get();
+        return Readers.readListWithNullsStrict(Readers.readListWithNullsStrict(Readers::readIntegerStrict))
+                .apply(s).get();
     }
 
     private static double meanOfBinaryFractions(@NotNull List<BinaryFraction> xs) {
