@@ -33,6 +33,45 @@ public final class MathUtils {
     private MathUtils() {}
 
     /**
+     * Returns an {@code int} raised to the power of another {@code int}. Throws an exception on overflow.
+     * 0<sup>0</sup> is 1.
+     *
+     * <ul>
+     *  <li>{@code n} may be any {@code int}.</li>
+     *  <li>{@code p} cannot be negative.</li>
+     *  <li>{@code p}<sup>{@code n}</sup> must be greater than or equal to –2<sup>31</sup> and less than
+     *  2<sup>31</sup>.</li>
+     * </ul>
+     *
+     * @param n a number
+     * @param p the power {@code n} is raised to
+     * @return {@code n}<sup>{@code p}</sup>
+     */
+    public static int pow(int n, int p) {
+        if (p < 0) {
+            throw new ArithmeticException("p cannot be negative. Invalid p: " + p);
+        }
+        if (p == 0) return 1;
+        if (n == 0) return 0;
+        if (n == 1) return 1;
+        if (n == 2) {
+            if (p > 30) {
+                throw new ArithmeticException("n^p must be less than 2^31. n: " + n + ", p: " + p);
+            }
+            return 1 << p;
+        }
+        if (n < 0) {
+            if (n == -2 && p == 31) return Integer.MIN_VALUE;
+            return (p & 1) == 0 ? pow(-n, p) : -pow(-n, p);
+        }
+        int result = 1;
+        for (int i = 0; i < p; i++) {
+            result = Math.multiplyExact(result, n);
+        }
+        return result;
+    }
+
+    /**
      * The greatest common divisor of two {@link int}s. If both {@code x} and {@code y} are zero, the result is zero.
      * Otherwise, the result is positive.
      *
@@ -887,7 +926,7 @@ public final class MathUtils {
                 toList(map(p -> toList(range(0, p.b)), primeFactors))
         );
         Function<List<Integer>, Integer> f = exponents -> productInteger(
-                zipWith((x, y) -> BigInteger.valueOf(x).pow(y).intValueExact(), map(q -> q.a, primeFactors), exponents)
+                zipWith(MathUtils::pow, map(q -> q.a, primeFactors), exponents)
         );
         return sort(map(f, possibleExponents));
     }
@@ -916,6 +955,8 @@ public final class MathUtils {
 
     /**
      * Returns all prime {@code int}s in ascending order.
+     *
+     * Length is 105,097,565
      *
      * @return prime {@code int}s
      */
@@ -946,6 +987,29 @@ public final class MathUtils {
         );
         //noinspection Convert2MethodRef
         return concat(map(i -> BigInteger.valueOf(i), intPrimes()), filterInfinite(MathUtils::isPrime, candidates));
+    }
+
+    /**
+     * Returns the largest number that, when raised to the {@code p}th power, divides {@code n}.
+     *
+     * <ul>
+     *  <li>{@code p} must be positive.</li>
+     *  <li>{@code n} must be positive.</li>
+     *  <li>The result is positive.</li>
+     * </ul>
+     *
+     * @param p a power
+     * @param n a number
+     * @return the largest m such that m<sup>{@code p}</sup>|{@code n}
+     */
+    public static int largestPerfectPowerFactor(int p, int n) {
+        if (p < 1) {
+            throw new IllegalArgumentException("p must be positive. Invalid p: " + p);
+        }
+        if (n < 1) {
+            throw new IllegalArgumentException("n must be positive. Invalid n: " + n);
+        }
+        return p == 1 ? n : productInteger(map(q -> pow(q.a, q.b / p), compactPrimeFactors(n)));
     }
 
     /**

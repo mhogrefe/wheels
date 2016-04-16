@@ -16,6 +16,78 @@ import static mho.wheels.testing.Testing.testNoRemove;
 import static org.junit.Assert.fail;
 
 public class MathUtilsTest {
+    private static void pow_helper(int n, int p, int output) {
+        aeq(pow(n, p), output);
+    }
+
+    private static void pow_fail_helper(int n, int p) {
+        try {
+            pow(n, p);
+            fail();
+        } catch (ArithmeticException ignored) {}
+    }
+
+    @Test
+    public void testPow() {
+        pow_helper(0, 0, 1);
+        pow_helper(0, 1, 0);
+        pow_helper(0, 2, 0);
+        pow_helper(0, 3, 0);
+
+        pow_helper(1, 0, 1);
+        pow_helper(1, 1, 1);
+        pow_helper(1, 2, 1);
+        pow_helper(1, 3, 1);
+
+        pow_helper(-1, 0, 1);
+        pow_helper(-1, 1, -1);
+        pow_helper(-1, 2, 1);
+        pow_helper(-1, 3, -1);
+
+        pow_helper(2, 0, 1);
+        pow_helper(2, 1, 2);
+        pow_helper(2, 2, 4);
+        pow_helper(2, 3, 8);
+        pow_helper(2, 10, 1024);
+        pow_helper(2, 30, 1073741824);
+
+        pow_helper(-2, 0, 1);
+        pow_helper(-2, 1, -2);
+        pow_helper(-2, 2, 4);
+        pow_helper(-2, 3, -8);
+        pow_helper(-2, 10, 1024);
+        pow_helper(-2, 30, 1073741824);
+        pow_helper(-2, 31, -2147483648);
+
+        pow_helper(3, 0, 1);
+        pow_helper(3, 1, 3);
+        pow_helper(3, 2, 9);
+        pow_helper(3, 3, 27);
+
+        pow_helper(-3, 0, 1);
+        pow_helper(-3, 1, -3);
+        pow_helper(-3, 2, 9);
+        pow_helper(-3, 3, -27);
+
+        pow_helper(10, 0, 1);
+        pow_helper(10, 1, 10);
+        pow_helper(10, 2, 100);
+        pow_helper(10, 3, 1000);
+        pow_helper(10, 9, 1000000000);
+
+        pow_fail_helper(0, -1);
+        pow_fail_helper(1, -1);
+        pow_fail_helper(-1, -1);
+        pow_fail_helper(2, -1);
+        pow_fail_helper(-2, -1);
+        pow_fail_helper(3, -1);
+        pow_fail_helper(-3, -1);
+        pow_fail_helper(2, 31);
+        pow_fail_helper(-2, 32);
+        pow_fail_helper(10, 10);
+        pow_fail_helper(-10, 10);
+    }
+
     private static void gcd_int_int_helper(int x, int y, int output) {
         aeq(gcd(x, y), output);
     }
@@ -1039,11 +1111,51 @@ public class MathUtilsTest {
         testNoRemove(SMALL_LIMIT, ps);
     }
 
-    private static void largestPerfectPowerFactor_helper(int p, @NotNull String n, @NotNull String output) {
+    private static void largestPerfectPowerFactor_int_int_helper(int p, int n, @NotNull String output) {
+        aeq(largestPerfectPowerFactor(p, n), output);
+    }
+
+    private static void largestPerfectPowerFactor_int_int_fail_helper(int p, int n) {
+        try {
+            largestPerfectPowerFactor(p, n);
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+    }
+
+    @Test
+    public void testLargestPerfectPowerFactor_int_int() {
+        largestPerfectPowerFactor_int_int_helper(1, 1, "1");
+        largestPerfectPowerFactor_int_int_helper(1, 2, "2");
+        largestPerfectPowerFactor_int_int_helper(1, 3, "3");
+        largestPerfectPowerFactor_int_int_helper(1, 4, "4");
+        largestPerfectPowerFactor_int_int_helper(1, 100, "100");
+
+        largestPerfectPowerFactor_int_int_helper(2, 1, "1");
+        largestPerfectPowerFactor_int_int_helper(2, 2, "1");
+        largestPerfectPowerFactor_int_int_helper(2, 3, "1");
+        largestPerfectPowerFactor_int_int_helper(2, 4, "2");
+        largestPerfectPowerFactor_int_int_helper(2, 12, "2");
+        largestPerfectPowerFactor_int_int_helper(2, 75, "5");
+        largestPerfectPowerFactor_int_int_helper(2, 100, "10");
+
+        largestPerfectPowerFactor_int_int_helper(10, 1024, "2");
+        largestPerfectPowerFactor_int_int_helper(10, 10240, "2");
+
+        largestPerfectPowerFactor_int_int_fail_helper(0, 1);
+        largestPerfectPowerFactor_int_int_fail_helper(-1, 1);
+        largestPerfectPowerFactor_int_int_fail_helper(1, 0);
+        largestPerfectPowerFactor_int_int_fail_helper(1, -1);
+    }
+
+    private static void largestPerfectPowerFactor_int_BigInteger_helper(
+            int p,
+            @NotNull String n,
+            @NotNull String output
+    ) {
         aeq(largestPerfectPowerFactor(p, Readers.readBigInteger(n).get()), output);
     }
 
-    private static void largestPerfectPowerFactor_fail_helper(int p, @NotNull String n) {
+    private static void largestPerfectPowerFactor_int_BigInteger_fail_helper(int p, @NotNull String n) {
         try {
             largestPerfectPowerFactor(p, Readers.readBigInteger(n).get());
             fail();
@@ -1051,29 +1163,29 @@ public class MathUtilsTest {
     }
 
     @Test
-    public void testLargestPerfectPowerFactor() {
-        largestPerfectPowerFactor_helper(1, "1", "1");
-        largestPerfectPowerFactor_helper(1, "2", "2");
-        largestPerfectPowerFactor_helper(1, "3", "3");
-        largestPerfectPowerFactor_helper(1, "4", "4");
-        largestPerfectPowerFactor_helper(1, "100", "100");
+    public void testLargestPerfectPowerFactor_int_BigInteger() {
+        largestPerfectPowerFactor_int_BigInteger_helper(1, "1", "1");
+        largestPerfectPowerFactor_int_BigInteger_helper(1, "2", "2");
+        largestPerfectPowerFactor_int_BigInteger_helper(1, "3", "3");
+        largestPerfectPowerFactor_int_BigInteger_helper(1, "4", "4");
+        largestPerfectPowerFactor_int_BigInteger_helper(1, "100", "100");
 
-        largestPerfectPowerFactor_helper(2, "1", "1");
-        largestPerfectPowerFactor_helper(2, "2", "1");
-        largestPerfectPowerFactor_helper(2, "3", "1");
-        largestPerfectPowerFactor_helper(2, "4", "2");
-        largestPerfectPowerFactor_helper(2, "12", "2");
-        largestPerfectPowerFactor_helper(2, "75", "5");
-        largestPerfectPowerFactor_helper(2, "100", "10");
+        largestPerfectPowerFactor_int_BigInteger_helper(2, "1", "1");
+        largestPerfectPowerFactor_int_BigInteger_helper(2, "2", "1");
+        largestPerfectPowerFactor_int_BigInteger_helper(2, "3", "1");
+        largestPerfectPowerFactor_int_BigInteger_helper(2, "4", "2");
+        largestPerfectPowerFactor_int_BigInteger_helper(2, "12", "2");
+        largestPerfectPowerFactor_int_BigInteger_helper(2, "75", "5");
+        largestPerfectPowerFactor_int_BigInteger_helper(2, "100", "10");
 
-        largestPerfectPowerFactor_helper(10, "1024", "2");
-        largestPerfectPowerFactor_helper(10, "10240", "2");
-        largestPerfectPowerFactor_helper(10, "10000000000", "10");
+        largestPerfectPowerFactor_int_BigInteger_helper(10, "1024", "2");
+        largestPerfectPowerFactor_int_BigInteger_helper(10, "10240", "2");
+        largestPerfectPowerFactor_int_BigInteger_helper(10, "10000000000", "10");
 
-        largestPerfectPowerFactor_fail_helper(0, "1");
-        largestPerfectPowerFactor_fail_helper(-1, "1");
-        largestPerfectPowerFactor_fail_helper(1, "0");
-        largestPerfectPowerFactor_fail_helper(1, "-1");
+        largestPerfectPowerFactor_int_BigInteger_fail_helper(0, "1");
+        largestPerfectPowerFactor_int_BigInteger_fail_helper(-1, "1");
+        largestPerfectPowerFactor_int_BigInteger_fail_helper(1, "0");
+        largestPerfectPowerFactor_int_BigInteger_fail_helper(1, "-1");
     }
 
     private static @NotNull List<BigInteger> readBigIntegerList(@NotNull String s) {

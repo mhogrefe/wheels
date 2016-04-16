@@ -34,6 +34,8 @@ public class MathUtilsProperties extends TestProperties {
 
     @Override
     protected void testBothModes() {
+        propertiesPow();
+        compareImplementationsPow();
         propertiesGcd_int_int();
         compareImplementationsGcd_int_int();
         propertiesGcd_long_long();
@@ -81,7 +83,102 @@ public class MathUtilsProperties extends TestProperties {
         propertiesCompactPrimeFactors_BigInteger();
         propertiesFactors_int();
         propertiesFactors_BigInteger();
-        propertiesLargestPerfectPowerFactor();
+        propertiesLargestPerfectPowerFactor_int_int();
+        propertiesLargestPerfectPowerFactor_int_BigInteger();
+    }
+
+    private static int pow_simplest(int n, int p) {
+        return BigInteger.valueOf(n).pow(p).intValueExact();
+    }
+
+    private static int pow_alt(int n, int p) {
+        if (p < 0) {
+            throw new ArithmeticException("p cannot be negative. Invalid p: " + p);
+        }
+        if (p == 0) return 1;
+        if (n == 0) return 0;
+        if (n == 1) return 1;
+        if (n == 2) {
+            if (p > 30) {
+                throw new ArithmeticException("n^p must be less than 2^31. n: " + n + ", p: " + p);
+            }
+            return 1 << p;
+        }
+        if (n < 0) {
+            if (n == -2 && p == 31) return Integer.MIN_VALUE;
+            return (p & 1) == 0 ? pow(-n, p) : -pow(-n, p);
+        }
+        int result = 1;
+        for (boolean b : IntegerUtils.bigEndianBits(p)) {
+            result = Math.multiplyExact(result, result);
+            if (b) result = Math.multiplyExact(result, n);
+        }
+        return result;
+    }
+
+    private void propertiesPow() {
+        initialize("pow(int, int)");
+        BigInteger lowerLimit = BigInteger.valueOf(Integer.MIN_VALUE);
+        BigInteger upperLimit = BigInteger.valueOf(Integer.MAX_VALUE);
+        Iterable<Pair<Integer, Integer>> ps = filterInfinite(
+                p -> {
+                    BigInteger result = BigInteger.valueOf(p.a).pow(p.b);
+                    return ge(result, lowerLimit) && le(result, upperLimit);
+                },
+                P.pairsLogarithmicOrder(P.integersGeometric(), P.naturalIntegersGeometric())
+        );
+        for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
+            int power = pow(p.a, p.b);
+            assertEquals(p, pow_simplest(p.a, p.b), power);
+            assertEquals(p, pow_alt(p.a, p.b), power);
+        }
+
+        for (int i : take(LIMIT, P.integers())) {
+            assertEquals(i,  pow(i, 0), 1);
+            assertEquals(i,  pow(i, 1), i);
+        }
+
+        for (int i : take(LIMIT, P.naturalIntegers())) {
+            assertEquals(i,  pow(1, i), 1);
+        }
+
+        for (Pair<Integer, Integer> p : take(LIMIT, P.pairs(P.integers(), P.negativeIntegers()))) {
+            try {
+                pow(p.a, p.b);
+                fail(p);
+            } catch (ArithmeticException ignored) {}
+        }
+
+        Iterable<Pair<Integer, Integer>> psFail = filterInfinite(
+                p -> {
+                    BigInteger result = BigInteger.valueOf(p.a).pow(p.b);
+                    return lt(result, lowerLimit) || gt(result, upperLimit);
+                },
+                P.pairsLogarithmicOrder(P.integersGeometric(), P.naturalIntegersGeometric())
+        );
+        for (Pair<Integer, Integer> p : take(LIMIT, psFail)) {
+            try {
+                pow(p.a, p.b);
+                fail(p);
+            } catch (ArithmeticException ignored) {}
+        }
+    }
+
+    private void compareImplementationsPow() {
+        Map<String, Function<Pair<Integer, Integer>, Integer>> functions = new LinkedHashMap<>();
+        functions.put("simplest", p -> pow_simplest(p.a, p.b));
+        functions.put("alt", p -> pow_alt(p.a, p.b));
+        functions.put("standard", p -> pow(p.a, p.b));
+        BigInteger lowerLimit = BigInteger.valueOf(Integer.MIN_VALUE);
+        BigInteger upperLimit = BigInteger.valueOf(Integer.MAX_VALUE);
+        Iterable<Pair<Integer, Integer>> ps = filterInfinite(
+                p -> {
+                    BigInteger result = BigInteger.valueOf(p.a).pow(p.b);
+                    return ge(result, lowerLimit) && le(result, upperLimit);
+                },
+                P.pairsLogarithmicOrder(P.integersGeometric(), P.naturalIntegersGeometric())
+        );
+        compareImplementations("pow(int, int)", take(100000, ps), functions);
     }
 
     private static int gcd_int_int_simplest(int x, int y) {
@@ -1168,7 +1265,7 @@ public class MathUtilsProperties extends TestProperties {
             inverse(
                     MathUtils::compactPrimeFactors,
                     (Iterable<Pair<Integer, Integer>> fs) -> productInteger(
-                            map(p -> BigInteger.valueOf(p.a).pow(p.b).intValueExact(), fs)
+                            map(p -> pow(p.a, p.b), fs)
                     ),
                     i
             );
@@ -1278,7 +1375,42 @@ public class MathUtilsProperties extends TestProperties {
         }
     }
 
-    private void propertiesLargestPerfectPowerFactor() {
+    private void propertiesLargestPerfectPowerFactor_int_int() {
+        initialize("largestPerfectPowerFactor(int, int)");
+        Iterable<Pair<Integer, Integer>> ps = P.pairsLogarithmicOrder(
+                P.positiveIntegers(),
+                P.positiveIntegersGeometric()
+        );
+        for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
+            int lppf = largestPerfectPowerFactor(p.b, p.a);
+            assertTrue(p, lppf > 0);
+            assertEquals(p, p.a % pow(lppf, p.b), 0);
+        }
+
+        for (int i : take(LIMIT, P.positiveIntegers())) {
+            assertEquals(i, largestPerfectPowerFactor(1, i), i);
+        }
+
+        for (int i : take(LIMIT, P.positiveIntegers())) {
+            assertEquals(i, largestPerfectPowerFactor(i, 1), 1);
+        }
+
+        for (Pair<Integer, Integer> p : take(LIMIT, P.pairs(P.rangeDown(0), P.positiveIntegers()))) {
+            try {
+                largestPerfectPowerFactor(p.a, p.b);
+                fail(p);
+            } catch (IllegalArgumentException ignored) {}
+        }
+
+        for (Pair<Integer, Integer> p : take(LIMIT, P.pairs(P.positiveIntegers(), P.rangeDown(0)))) {
+            try {
+                largestPerfectPowerFactor(p.a, p.b);
+                fail(p);
+            } catch (IllegalArgumentException ignored) {}
+        }
+    }
+
+    private void propertiesLargestPerfectPowerFactor_int_BigInteger() {
         initialize("largestPerfectPowerFactor(int, BigInteger)");
         Iterable<Pair<BigInteger, Integer>> ps = P.pairsLogarithmicOrder(
                 P.withScale(8).positiveBigIntegers(),
@@ -1287,7 +1419,7 @@ public class MathUtilsProperties extends TestProperties {
         for (Pair<BigInteger, Integer> p : take(LIMIT, ps)) {
             BigInteger lppf = largestPerfectPowerFactor(p.b, p.a);
             assertEquals(p, lppf.signum(), 1);
-            assertTrue(p, p.a.mod(lppf.pow(p.b)).equals(BigInteger.ZERO));
+            assertEquals(p, p.a.mod(lppf.pow(p.b)), BigInteger.ZERO);
         }
 
         for (BigInteger i : take(LIMIT, P.positiveBigIntegers())) {

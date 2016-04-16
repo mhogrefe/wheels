@@ -12,6 +12,7 @@ import java.util.function.Function;
 
 import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.math.MathUtils.*;
+import static mho.wheels.ordering.Ordering.*;
 import static mho.wheels.testing.Testing.LARGE_LIMIT;
 import static mho.wheels.testing.Testing.MEDIUM_LIMIT;
 import static mho.wheels.testing.Testing.SMALL_LIMIT;
@@ -20,6 +21,21 @@ import static mho.wheels.testing.Testing.SMALL_LIMIT;
 public class MathUtilsDemos extends Demos {
     public MathUtilsDemos(boolean useRandom) {
         super(useRandom);
+    }
+
+    private void demoPow() {
+        BigInteger lowerLimit = BigInteger.valueOf(Integer.MIN_VALUE);
+        BigInteger upperLimit = BigInteger.valueOf(Integer.MAX_VALUE);
+        Iterable<Pair<Integer, Integer>> ps = filterInfinite(
+                p -> {
+                    BigInteger result = BigInteger.valueOf(p.a).pow(p.b);
+                    return ge(result, lowerLimit) && le(result, upperLimit);
+                },
+                P.pairsLogarithmicOrder(P.integersGeometric(), P.naturalIntegersGeometric())
+        );
+        for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
+            System.out.println("pow(" + p.a + ", " + p.b + ") = " + pow(p.a, p.b));
+        }
     }
 
     private void demoGcd_int_int() {
@@ -285,7 +301,18 @@ public class MathUtilsDemos extends Demos {
         }
     }
 
-    private void demoLargestPerfectPowerFactor() {
+    private void demoLargestPerfectPowerFactor_int_int() {
+        Iterable<Pair<Integer, Integer>> ps = P.pairsLogarithmicOrder(
+                P.positiveIntegers(),
+                P.positiveIntegersGeometric()
+        );
+        for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
+            System.out.println("largestPerfectPowerFactor(" + p.b + ", " + p.a + ") = " +
+                    largestPerfectPowerFactor(p.b, p.a));
+        }
+    }
+
+    private void demoLargestPerfectPowerFactor_int_BigInteger() {
         Iterable<Pair<BigInteger, Integer>> ps = P.pairsLogarithmicOrder(
                 P.withScale(8).positiveBigIntegers(),
                 P.positiveIntegersGeometric()
