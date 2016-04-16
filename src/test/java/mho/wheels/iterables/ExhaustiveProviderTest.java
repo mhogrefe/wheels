@@ -1426,142 +1426,166 @@ public strictfp class ExhaustiveProviderTest {
         );
     }
 
-    //todo continue cleanup
+    private static <A, B> void pairsLogarithmicOrder_Iterable_Iterable_helper(
+            @NotNull Iterable<A> as,
+            @NotNull Iterable<B> bs,
+            @NotNull String output
+    ) {
+        simpleProviderHelper(EP.pairsLogarithmicOrder(as, bs), output);
+    }
 
     @Test
     public void testPairsLogarithmicOrder_Iterable_Iterable() {
-        aeqitLog(
-                EP.pairsLogarithmicOrder(Arrays.asList(1, 2, 3, 4), fromString("abcd")),
+        pairsLogarithmicOrder_Iterable_Iterable_helper(
+                Arrays.asList(1, 2, 3, 4),
+                fromString("abcd"),
                 "ExhaustiveProvider_pairsLogarithmicOrder_Iterable_Iterable_i"
         );
-        aeqitLog(
-                EP.pairsLogarithmicOrder(Arrays.asList(1, 2, 2, 4), fromString("abcd")),
+        pairsLogarithmicOrder_Iterable_Iterable_helper(
+                Arrays.asList(1, 2, 2, 4),
+                fromString("abcd"),
                 "ExhaustiveProvider_pairsLogarithmicOrder_Iterable_Iterable_ii"
         );
-        aeqitLog(
-                EP.pairsLogarithmicOrder(Arrays.asList(1, 2, null, 4), fromString("abcd")),
+        pairsLogarithmicOrder_Iterable_Iterable_helper(
+                Arrays.asList(1, 2, null, 4),
+                fromString("abcd"),
                 "ExhaustiveProvider_pairsLogarithmicOrder_Iterable_Iterable_iii"
         );
-        aeqitLog(
-                EP.pairsLogarithmicOrder(Collections.emptyList(), fromString("abcd")),
+        pairsLogarithmicOrder_Iterable_Iterable_helper(
+                Collections.emptyList(),
+                fromString("abcd"),
                 "ExhaustiveProvider_pairsLogarithmicOrder_Iterable_Iterable_iv"
         );
-        aeqitLog(
-                EP.pairsLogarithmicOrder(Collections.emptyList(), Collections.emptyList()),
+        pairsLogarithmicOrder_Iterable_Iterable_helper(
+                Collections.emptyList(),
+                Collections.emptyList(),
                 "ExhaustiveProvider_pairsLogarithmicOrder_Iterable_Iterable_v"
         );
-        simpleProviderHelper(
-                EP.pairsLogarithmicOrder(EP.naturalBigIntegers(), fromString("abcd")),
+        pairsLogarithmicOrder_Iterable_Iterable_helper(
+                EP.naturalBigIntegers(),
+                fromString("abcd"),
                 "ExhaustiveProvider_pairsLogarithmicOrder_Iterable_Iterable_vi"
         );
-        simpleProviderHelper(
-                EP.pairsLogarithmicOrder(fromString("abcd"), EP.naturalBigIntegers()),
+        pairsLogarithmicOrder_Iterable_Iterable_helper(
+                fromString("abcd"),
+                EP.naturalBigIntegers(),
                 "ExhaustiveProvider_pairsLogarithmicOrder_Iterable_Iterable_vii"
         );
-        simpleProviderHelper(
-                EP.pairsLogarithmicOrder(EP.positiveBigIntegers(), EP.negativeBigIntegers()),
+        pairsLogarithmicOrder_Iterable_Iterable_helper(
+                EP.positiveBigIntegers(),
+                EP.negativeBigIntegers(),
                 "ExhaustiveProvider_pairsLogarithmicOrder_Iterable_Iterable_viii"
         );
     }
 
+    private static <T> void pairsLogarithmicOrder_Iterable_helper(@NotNull Iterable<T> xs, @NotNull String output) {
+        simpleProviderHelper(EP.pairsLogarithmicOrder(xs), output);
+    }
+
+    private static void pairsLogarithmicOrder_Iterable_helper(@NotNull String xs, @NotNull String output) {
+        pairsLogarithmicOrder_Iterable_helper(readIntegerListWithNulls(xs), output);
+    }
+
     @Test
     public void testPairsLogarithmicOrder_Iterable() {
-        aeqitLog(
-                EP.pairsLogarithmicOrder(Arrays.asList(1, 2, 3, 4)),
-                "ExhaustiveProvider_pairsLogarithmicOrder_Iterable_i"
-        );
-        aeqitLog(
-                EP.pairsLogarithmicOrder(Arrays.asList(1, 2, 2, 4)),
-                "ExhaustiveProvider_pairsLogarithmicOrder_Iterable_ii"
-        );
-        aeqitLog(
-                EP.pairsLogarithmicOrder(Arrays.asList(1, 2, null, 4)),
+        pairsLogarithmicOrder_Iterable_helper("[1, 2, 3, 4]", "ExhaustiveProvider_pairsLogarithmicOrder_Iterable_i");
+        pairsLogarithmicOrder_Iterable_helper("[1, 2, 2, 4]", "ExhaustiveProvider_pairsLogarithmicOrder_Iterable_ii");
+        pairsLogarithmicOrder_Iterable_helper(
+                "[1, 2, null, 4]",
                 "ExhaustiveProvider_pairsLogarithmicOrder_Iterable_iii"
         );
-        aeqitLog(
-                EP.pairsLogarithmicOrder(Collections.emptyList()),
-                "ExhaustiveProvider_pairsLogarithmicOrder_Iterable_iv"
-        );
-        simpleProviderHelper(
-                EP.pairsLogarithmicOrder(EP.naturalBigIntegers()),
+        pairsLogarithmicOrder_Iterable_helper("[]", "ExhaustiveProvider_pairsLogarithmicOrder_Iterable_iv");
+        pairsLogarithmicOrder_Iterable_helper(
+                EP.naturalBigIntegers(),
                 "ExhaustiveProvider_pairsLogarithmicOrder_Iterable_v"
         );
-        simpleProviderHelper(
-                EP.pairsLogarithmicOrder(cons(null, EP.naturalBigIntegers())),
+        pairsLogarithmicOrder_Iterable_helper(
+                cons(null, EP.naturalBigIntegers()),
                 "ExhaustiveProvider_pairsLogarithmicOrder_Iterable_vi"
         );
     }
 
+    private static <A, B> void pairsSquareRootOrder_Iterable_Iterable_helper(
+            @NotNull Iterable<A> as,
+            @NotNull Iterable<B> bs,
+            @NotNull String output
+    ) {
+        simpleProviderHelper(EP.pairsSquareRootOrder(as, bs), output);
+    }
+
     @Test
     public void testPairsSquareRootOrder_Iterable_Iterable() {
-        aeqitLog(
-                EP.pairsSquareRootOrder(Arrays.asList(1, 2, 3, 4), fromString("abcd")),
+        pairsSquareRootOrder_Iterable_Iterable_helper(
+                Arrays.asList(1, 2, 3, 4),
+                fromString("abcd"),
                 "ExhaustiveProvider_pairsSquareRootOrder_Iterable_Iterable_i"
         );
-        aeqitLog(
-                EP.pairsSquareRootOrder(Arrays.asList(1, 2, 2, 4), fromString("abcd")),
+        pairsSquareRootOrder_Iterable_Iterable_helper(
+                Arrays.asList(1, 2, 2, 4),
+                fromString("abcd"),
                 "ExhaustiveProvider_pairsSquareRootOrder_Iterable_Iterable_ii"
         );
-        aeqitLog(
-                EP.pairsSquareRootOrder(Arrays.asList(1, 2, null, 4), fromString("abcd")),
+        pairsSquareRootOrder_Iterable_Iterable_helper(
+                Arrays.asList(1, 2, null, 4),
+                fromString("abcd"),
                 "ExhaustiveProvider_pairsSquareRootOrder_Iterable_Iterable_iii"
         );
-        aeqitLog(
-                EP.pairsSquareRootOrder(Collections.emptyList(), fromString("abcd")),
+        pairsSquareRootOrder_Iterable_Iterable_helper(
+                Collections.emptyList(),
+                fromString("abcd"),
                 "ExhaustiveProvider_pairsSquareRootOrder_Iterable_Iterable_iv"
         );
-        aeqitLog(
-                EP.pairsSquareRootOrder(Collections.emptyList(), Collections.emptyList()),
+        pairsSquareRootOrder_Iterable_Iterable_helper(
+                Collections.emptyList(),
+                Collections.emptyList(),
                 "ExhaustiveProvider_pairsSquareRootOrder_Iterable_Iterable_v"
         );
-        simpleProviderHelper(
-                EP.pairsSquareRootOrder(EP.naturalBigIntegers(), fromString("abcd")),
+        pairsSquareRootOrder_Iterable_Iterable_helper(
+                EP.naturalBigIntegers(),
+                fromString("abcd"),
                 "ExhaustiveProvider_pairsSquareRootOrder_Iterable_Iterable_vi"
         );
-        simpleProviderHelper(
-                EP.pairsSquareRootOrder(fromString("abcd"), EP.naturalBigIntegers()),
+        pairsSquareRootOrder_Iterable_Iterable_helper(
+                fromString("abcd"),
+                EP.naturalBigIntegers(),
                 "ExhaustiveProvider_pairsSquareRootOrder_Iterable_Iterable_vii"
         );
-        simpleProviderHelper(
-                EP.pairsSquareRootOrder(EP.positiveBigIntegers(), EP.negativeBigIntegers()),
+        pairsSquareRootOrder_Iterable_Iterable_helper(
+                EP.positiveBigIntegers(),
+                EP.negativeBigIntegers(),
                 "ExhaustiveProvider_pairsSquareRootOrder_Iterable_Iterable_viii"
         );
     }
 
+    private static <T> void pairsSquareRootOrder_Iterable_helper(@NotNull Iterable<T> xs, @NotNull String output) {
+        simpleProviderHelper(EP.pairsSquareRootOrder(xs), output);
+    }
+
+    private static void pairsSquareRootOrder_Iterable_helper(@NotNull String xs, @NotNull String output) {
+        pairsSquareRootOrder_Iterable_helper(readIntegerListWithNulls(xs), output);
+    }
+
     @Test
     public void testPairsSquareRootOrder_Iterable() {
-        aeqitLog(
-                EP.pairsSquareRootOrder(Arrays.asList(1, 2, 3, 4)),
-                "ExhaustiveProvider_pairsSquareRootOrder_Iterable_i"
-        );
-        aeqitLog(
-                EP.pairsSquareRootOrder(Arrays.asList(1, 2, 2, 4)),
-                "ExhaustiveProvider_pairsSquareRootOrder_Iterable_ii"
-        );
-        aeqitLog(
-                EP.pairsSquareRootOrder(Arrays.asList(1, 2, null, 4)),
+        pairsSquareRootOrder_Iterable_helper("[1, 2, 3, 4]", "ExhaustiveProvider_pairsSquareRootOrder_Iterable_i");
+        pairsSquareRootOrder_Iterable_helper("[1, 2, 2, 4]", "ExhaustiveProvider_pairsSquareRootOrder_Iterable_ii");
+        pairsSquareRootOrder_Iterable_helper(
+                "[1, 2, null, 4]",
                 "ExhaustiveProvider_pairsSquareRootOrder_Iterable_iii"
         );
-        aeqitLog(
-                EP.pairsSquareRootOrder(Collections.emptyList()),
-                "ExhaustiveProvider_pairsSquareRootOrder_Iterable_iv"
-        );
-        simpleProviderHelper(
-                EP.pairsSquareRootOrder(EP.naturalBigIntegers()),
+        pairsSquareRootOrder_Iterable_helper("[]", "ExhaustiveProvider_pairsSquareRootOrder_Iterable_iv");
+        pairsSquareRootOrder_Iterable_helper(
+                EP.naturalBigIntegers(),
                 "ExhaustiveProvider_pairsSquareRootOrder_Iterable_v"
         );
-        simpleProviderHelper(
-                EP.pairsSquareRootOrder(cons(null, EP.naturalBigIntegers())),
+        pairsSquareRootOrder_Iterable_helper(
+                cons(null, EP.naturalBigIntegers()),
                 "ExhaustiveProvider_pairsSquareRootOrder_Iterable_vi"
         );
     }
 
     private static void permutationsFiniteHelper(@NotNull String input, @NotNull String output) {
-        aeqitLog(map(Testing::its, EP.permutationsFinite(readIntegerListWithNulls(input))), output);
-    }
-
-    private static void permutationsFiniteHelper(@NotNull List<Integer> input, @NotNull String output) {
-        simpleProviderHelper(map(Testing::its, EP.permutationsFinite(input)), output);
+        simpleProviderHelper(map(Testing::its, EP.permutationsFinite(readIntegerListWithNulls(input))), output);
     }
 
     @Test
@@ -1575,8 +1599,10 @@ public strictfp class ExhaustiveProviderTest {
         permutationsFiniteHelper("[2, 2, 2, 2]", "ExhaustiveProvider_permutationsFinite_vii");
         permutationsFiniteHelper("[3, 1, 4, 1]", "ExhaustiveProvider_permutationsFinite_viii");
         permutationsFiniteHelper("[3, 1, null, 1]", "ExhaustiveProvider_permutationsFinite_ix");
-        permutationsFiniteHelper(toList(IterableUtils.range(1, 10)), "ExhaustiveProvider_permutationsFinite_x");
+        permutationsFiniteHelper("[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]", "ExhaustiveProvider_permutationsFinite_x");
     }
+
+    //todo continue cleanup
 
     @Test
     public void testStringPermutations() {
