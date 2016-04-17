@@ -799,7 +799,7 @@ public strictfp class BinaryFraction implements Comparable<BinaryFraction> {
     public static @NotNull Optional<BinaryFraction> read(@NotNull String s) {
         if (s.equals("0")) return Optional.of(ZERO);
         if (s.equals("1")) return Optional.of(ONE);
-        return Readers.genericRead(
+        return Readers.genericReadStrict(
                 t -> {
                     int leftShiftIndex = s.indexOf(" << ");
                     if (leftShiftIndex != -1) {

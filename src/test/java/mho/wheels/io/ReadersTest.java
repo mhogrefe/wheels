@@ -2,7 +2,6 @@ package mho.wheels.io;
 
 import mho.wheels.structures.NullableOptional;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.junit.Test;
 
 import java.math.BigInteger;
@@ -12,6 +11,7 @@ import java.util.function.Function;
 
 import static mho.wheels.io.Readers.*;
 import static org.junit.Assert.*;
+import static mho.wheels.testing.Testing.*;
 
 public class ReadersTest {
     @Test
@@ -39,54 +39,48 @@ public class ReadersTest {
         }
     }
 
-    private static class WordyIntegerWithNullToString {
-        private final int i;
-
-        public WordyIntegerWithNullToString(int i) {
-            this.i = i;
-        }
-
-        public @Nullable String toString() {
-            switch (i) {
-                case 1: return "one";
-                case 2: return "two";
-                case 3: return "three";
-                default: return null;
-            }
-        }
+    private static void genericReadStrict_helper(
+            @NotNull Function<String, WordyInteger> f,
+            @NotNull String input,
+            @NotNull String output
+    ) {
+        aeq(genericReadStrict(f).apply(input), output);
     }
 
     @Test
-    public void testGenericRead() {
-        Function<String, Optional<WordyInteger>> f = genericRead(s -> {
+    public void testGenericReadStrict() {
+        Function<String, WordyInteger> f = s -> {
             if (s.equals("one")) return new WordyInteger(1);
             if (s.equals("two")) return new WordyInteger(2);
             if (s.equals("three")) return new WordyInteger(3);
             throw new ArithmeticException();
-        });
-        aeq(f.apply("one").get(), "one");
-        aeq(f.apply("two").get(), "two");
-        aeq(f.apply("three").get(), "three");
-        assertFalse(f.apply("four").isPresent());
-        assertFalse(f.apply("").isPresent());
-        assertFalse(f.apply(" ").isPresent());
-        assertFalse(f.apply("null").isPresent());
+        };
+        genericReadStrict_helper(f, "one", "Optional[one]");
+        genericReadStrict_helper(f, "two", "Optional[two]");
+        genericReadStrict_helper(f, "three", "Optional[three]");
 
-        f = genericRead(s -> {
+        genericReadStrict_helper(f, "four", "Optional.empty");
+        genericReadStrict_helper(f, "", "Optional.empty");
+        genericReadStrict_helper(f, " ", "Optional.empty");
+        genericReadStrict_helper(f, "null", "Optional.empty");
+
+        f = s -> {
             if (s.equals("one")) return new WordyInteger(1);
             if (s.equals("two")) return new WordyInteger(2);
             if (s.equals("three")) return new WordyInteger(3);
             return new WordyInteger(10);
-        });
-        aeq(f.apply("one").get(), "one");
-        aeq(f.apply("two").get(), "two");
-        aeq(f.apply("three").get(), "three");
-        aeq(f.apply("many").get(), "many");
-        assertFalse(f.apply("four").isPresent());
-        assertFalse(f.apply("").isPresent());
-        assertFalse(f.apply(" ").isPresent());
-        assertFalse(f.apply("null").isPresent());
-        assertFalse(genericRead(s -> null).apply("four").isPresent());
+        };
+        genericReadStrict_helper(f, "one", "Optional[one]");
+        genericReadStrict_helper(f, "two", "Optional[two]");
+        genericReadStrict_helper(f, "three", "Optional[three]");
+        genericReadStrict_helper(f, "many", "Optional[many]");
+
+        genericReadStrict_helper(f, "four", "Optional.empty");
+        genericReadStrict_helper(f, "", "Optional.empty");
+        genericReadStrict_helper(f, " ", "Optional.empty");
+        genericReadStrict_helper(f, "null", "Optional.empty");
+
+        genericReadStrict_helper(s -> null, "four", "Optional.empty");
     }
 
     @Test
@@ -415,9 +409,5 @@ public class ReadersTest {
     @Test
     public void testFindListWithNullsIn() {
         //todo
-    }
-
-    private static void aeq(Object a, Object b) {
-        assertEquals(a.toString(), b.toString());
     }
 }

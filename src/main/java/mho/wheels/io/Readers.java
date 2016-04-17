@@ -63,7 +63,7 @@ public class Readers {
      * that can be returned by {@code T}'s {@code toString} method
      */
     @SuppressWarnings("JavaDoc")
-    public static @NotNull <T> Function<String, Optional<T>> genericRead(@NotNull Function<String, T> read) {
+    public static @NotNull <T> Function<String, Optional<T>> genericReadStrict(@NotNull Function<String, T> read) {
         return s -> {
             T x;
             try {
@@ -89,7 +89,7 @@ public class Readers {
      * a {@code boolean}
      */
     public static @NotNull Optional<Boolean> readBooleanStrict(@NotNull String s) {
-        return genericRead(Boolean::parseBoolean).apply(s);
+        return genericReadStrict(Boolean::parseBoolean).apply(s);
     }
 
     /**
@@ -166,7 +166,7 @@ public class Readers {
      * represent a {@code BigInteger}
      */
     public static @NotNull Optional<BigInteger> readBigIntegerStrict(@NotNull String s) {
-        return genericRead(BigInteger::new).apply(s);
+        return genericReadStrict(BigInteger::new).apply(s);
     }
 
     /**
@@ -182,7 +182,7 @@ public class Readers {
      * {@code Byte}
      */
     public static @NotNull Optional<Byte> readByteStrict(@NotNull String s) {
-        return genericRead(Byte::parseByte).apply(s);
+        return genericReadStrict(Byte::parseByte).apply(s);
     }
 
     /**
@@ -198,7 +198,7 @@ public class Readers {
      * {@code Short}
      */
     public static @NotNull Optional<Short> readShortStrict(@NotNull String s) {
-        return genericRead(Short::parseShort).apply(s);
+        return genericReadStrict(Short::parseShort).apply(s);
     }
 
     /**
@@ -214,7 +214,7 @@ public class Readers {
      * an {@code Integer}
      */
     public static @NotNull Optional<Integer> readIntegerStrict(@NotNull String s) {
-        return genericRead(Integer::parseInt).apply(s);
+        return genericReadStrict(Integer::parseInt).apply(s);
     }
 
     /**
@@ -230,7 +230,7 @@ public class Readers {
      * {@code Long}
      */
     public static @NotNull Optional<Long> readLongStrict(@NotNull String s) {
-        return genericRead(Long::parseLong).apply(s);
+        return genericReadStrict(Long::parseLong).apply(s);
     }
 
     /**
@@ -247,7 +247,7 @@ public class Readers {
      * {@code Float}
      */
     public static @NotNull Optional<Float> readFloatStrict(@NotNull String s) {
-        return genericRead(Float::parseFloat).apply(s);
+        return genericReadStrict(Float::parseFloat).apply(s);
     }
 
     /**
@@ -264,7 +264,7 @@ public class Readers {
      * {@code Double}
      */
     public static @NotNull Optional<Double> readDoubleStrict(@NotNull String s) {
-        return genericRead(Double::parseDouble).apply(s);
+        return genericReadStrict(Double::parseDouble).apply(s);
     }
 
     /**
@@ -281,7 +281,7 @@ public class Readers {
      * represent a {@code BigDecimal}
      */
     public static @NotNull Optional<BigDecimal> readBigDecimalStrict(@NotNull String s) {
-        return genericRead(BigDecimal::new).apply(s);
+        return genericReadStrict(BigDecimal::new).apply(s);
     }
 
     /**

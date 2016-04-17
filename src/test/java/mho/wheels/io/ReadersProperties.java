@@ -26,7 +26,7 @@ public strictfp class ReadersProperties extends TestProperties {
 
     @Override
     protected void testBothModes() {
-        propertiesGenericRead();
+        propertiesGenericReadStrict();
         propertiesReadBooleanStrict();
         propertiesReadOrderingStrict();
         propertiesReadRoundingModeStrict();
@@ -42,20 +42,20 @@ public strictfp class ReadersProperties extends TestProperties {
         propertiesReadString();
     }
 
-    private void propertiesGenericRead() {
-        initialize("genericRead(Function<String, T>)");
+    private void propertiesGenericReadStrict() {
+        initialize("genericReadStrict(Function<String, T>)");
         Iterable<Pair<Function<String, Integer>, String>> ps = map(
                 p -> new Pair<>(new FiniteDomainFunction<>(Collections.singletonList(p)), p.a),
                 P.pairs(P.strings(INTEGRAL_CHARS), P.withNull(P.integers()))
         );
         for (Pair<Function<String, Integer>, String> p : take(LIMIT, ps)) {
-            genericRead(p.a).apply(p.b);
+            genericReadStrict(p.a).apply(p.b);
         }
 
         for (int i : take(LIMIT, P.integers())) {
             String s = Integer.toString(i);
             Function<String, Integer> f = new FiniteDomainFunction<>(Collections.singletonList(new Pair<>(s, i)));
-            assertEquals(i, genericRead(f).apply(s).get(), i);
+            assertEquals(i, genericReadStrict(f).apply(s).get(), i);
         }
     }
 

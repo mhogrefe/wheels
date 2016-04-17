@@ -24,13 +24,14 @@ public class ReadersDemos extends Demos {
         super(useRandom);
     }
 
-    private void demoGenericRead() {
+    private void demoGenericReadStrict() {
         Iterable<Pair<Function<String, Integer>, String>> ps = map(
                 p -> new Pair<>(new FiniteDomainFunction<>(Collections.singletonList(p)), p.a),
                 P.pairs(P.strings(INTEGRAL_CHARS), P.withNull(P.integers()))
         );
         for (Pair<Function<String, Integer>, String> p : take(LIMIT, ps)) {
-            System.out.println("genericRead(" + p.a + ").apply(" + p.b + ") = " + genericRead(p.a).apply(p.b));
+            System.out.println("genericReadStrict(" + p.a + ").apply(" + p.b + ") = " +
+                    genericReadStrict(p.a).apply(p.b));
         }
     }
 
