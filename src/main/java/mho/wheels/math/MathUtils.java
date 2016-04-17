@@ -60,9 +60,13 @@ public final class MathUtils {
             }
             return 1 << p;
         }
-        if (n < 0) {
-            if (n == -2 && p == 31) return Integer.MIN_VALUE;
-            return (p & 1) == 0 ? pow(-n, p) : -pow(-n, p);
+        if (n == -2) {
+            if (p == 31) return Integer.MIN_VALUE;
+            if (p > 31) {
+                throw new ArithmeticException("n^p must be greater than or equal to -2^31. n: " + n + ", p: " + p);
+            }
+            int result = 1 << p;
+            return (p & 1) == 0 ? result : -result;
         }
         int result = 1;
         for (int i = 0; i < p; i++) {
@@ -1033,5 +1037,41 @@ public final class MathUtils {
             throw new IllegalArgumentException("n must be positive. Invalid n: " + n);
         }
         return p == 1 ? n : productBigInteger(map(q -> q.a.pow(q.b / p), compactPrimeFactors(n)));
+    }
+
+    /**
+     * Returns Euler's totient function of {@code n}, or the number of positive integers less than or equal to
+     * {@code n} that are relatively prime to {@code n}.
+     *
+     * <ul>
+     *  <li>{@code n} must be positive.</li>
+     *  <li>The result is positive.</li>
+     * </ul>
+     *
+     * @param n a number
+     * @return φ({@code n}
+     */
+    @SuppressWarnings("JavaDoc")
+    public static int totient(int n) {
+        return productInteger(map(p -> pow(p.a, p.b - 1) * (p.a - 1), compactPrimeFactors(n)));
+    }
+
+    /**
+     * Returns Euler's totient function of {@code n}, or the number of positive integers less than or equal to
+     * {@code n} that are relatively prime to {@code n}.
+     *
+     * <ul>
+     *  <li>{@code n} must be positive.</li>
+     *  <li>The result is positive.</li>
+     * </ul>
+     *
+     * @param n a number
+     * @return φ({@code n}
+     */
+    @SuppressWarnings("JavaDoc")
+    public static @NotNull BigInteger totient(@NotNull BigInteger n) {
+        return productBigInteger(
+                map(p -> p.a.pow(p.b - 1).multiply(p.a.subtract(BigInteger.ONE)), compactPrimeFactors(n))
+        );
     }
 }

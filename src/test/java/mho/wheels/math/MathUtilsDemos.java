@@ -322,4 +322,16 @@ public class MathUtilsDemos extends Demos {
                     largestPerfectPowerFactor(p.b, p.a));
         }
     }
+
+    private void demoTotient_int() {
+        for (int i : take(LIMIT, P.positiveIntegers())) {
+            System.out.println("φ(" + i + ") = " + totient(i));
+        }
+    }
+
+    private void demoTotient_BigInteger() {
+        for (BigInteger i : take(LIMIT, P.withScale(12).positiveBigIntegers())) {
+            System.out.println("φ(" + i + ") = " + totient(i));
+        }
+    }
 }

@@ -1188,6 +1188,79 @@ public class MathUtilsTest {
         largestPerfectPowerFactor_int_BigInteger_fail_helper(1, "-1");
     }
 
+    private static void totient_int_helper(int input, int output) {
+        aeq(totient(input), output);
+    }
+
+    private static void totient_int_fail_helper(int input) {
+        try {
+            totient(input);
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+    }
+
+    @Test
+    public void testTotient_int() {
+        totient_int_helper(1, 1);
+        totient_int_helper(2, 1);
+        totient_int_helper(3, 2);
+        totient_int_helper(4, 2);
+        totient_int_helper(5, 4);
+        totient_int_helper(6, 2);
+        totient_int_helper(7, 6);
+        totient_int_helper(8, 4);
+        totient_int_helper(9, 6);
+        totient_int_helper(10, 4);
+        totient_int_helper(1807, 1656);
+        totient_int_helper(6221671, 6221670);
+        totient_int_helper(65533, 59640);
+        totient_int_helper(2147483647, 2147483646);
+        totient_int_helper(2147483643, 1431655760);
+        totient_int_helper(2147483641, 2146685284);
+
+        totient_int_fail_helper(0);
+        totient_int_fail_helper(-1);
+    }
+
+    private static void totient_BigInteger_helper(@NotNull String input, @NotNull String output) {
+        aeq(totient(Readers.readBigIntegerStrict(input).get()), output);
+    }
+
+    private static void totient_BigInteger_fail_helper(@NotNull String input) {
+        try {
+            totient(Readers.readBigIntegerStrict(input).get());
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+    }
+
+    @Test
+    public void testTotient_BigInteger() {
+        totient_BigInteger_helper("1", "1");
+        totient_BigInteger_helper("2", "1");
+        totient_BigInteger_helper("3", "2");
+        totient_BigInteger_helper("4", "2");
+        totient_BigInteger_helper("5", "4");
+        totient_BigInteger_helper("6", "2");
+        totient_BigInteger_helper("7", "6");
+        totient_BigInteger_helper("8", "4");
+        totient_BigInteger_helper("9", "6");
+        totient_BigInteger_helper("10", "4");
+        totient_BigInteger_helper("1807", "1656");
+        totient_BigInteger_helper("6221671", "6221670");
+        totient_BigInteger_helper("65533", "59640");
+        totient_BigInteger_helper("2147483647", "2147483646");
+        totient_BigInteger_helper("2147483643", "1431655760");
+        totient_BigInteger_helper("2147483641", "2146685284");
+        totient_BigInteger_helper("2147483649", "1431655764");
+        totient_BigInteger_helper("2147483659", "2147483658");
+        totient_BigInteger_helper("1000000000039", "1000000000038");
+        totient_BigInteger_helper("1000000000000037", "1000000000000036");
+        totient_BigInteger_helper("1000000000000039", "908720478529024");
+
+        totient_BigInteger_fail_helper("0");
+        totient_BigInteger_fail_helper("-1");
+    }
+
     private static @NotNull List<BigInteger> readBigIntegerList(@NotNull String s) {
         return Readers.readListStrict(Readers::readBigIntegerStrict).apply(s).get();
     }

@@ -85,6 +85,9 @@ public class MathUtilsProperties extends TestProperties {
         propertiesFactors_BigInteger();
         propertiesLargestPerfectPowerFactor_int_int();
         propertiesLargestPerfectPowerFactor_int_BigInteger();
+        propertiesTotient_int();
+        compareImplementationsTotient_int();
+        propertiesTotient_BigInteger();
     }
 
     private static int pow_simplest(int n, int p) {
@@ -104,9 +107,13 @@ public class MathUtilsProperties extends TestProperties {
             }
             return 1 << p;
         }
-        if (n < 0) {
-            if (n == -2 && p == 31) return Integer.MIN_VALUE;
-            return (p & 1) == 0 ? pow(-n, p) : -pow(-n, p);
+        if (n == -2) {
+            if (p == 31) return Integer.MIN_VALUE;
+            if (p > 31) {
+                throw new ArithmeticException("n^p must be greater than or equal to -2^31. n: " + n + ", p: " + p);
+            }
+            int result = 1 << p;
+            return (p & 1) == 0 ? result : -result;
         }
         int result = 1;
         for (boolean b : IntegerUtils.bigEndianBits(p)) {
@@ -1441,6 +1448,73 @@ public class MathUtilsProperties extends TestProperties {
             try {
                 largestPerfectPowerFactor(p.a, p.b);
                 fail(p);
+            } catch (IllegalArgumentException ignored) {}
+        }
+    }
+
+    private static int totient_int_simplest(int n) {
+        if (n < 0) {
+            throw new ArithmeticException("n cannot be negative. Invalid n: " + n);
+        }
+        int totient = 1;
+        for (int i = 2; i <= n; i++) {
+            if (gcd(i, n) == 1) totient++;
+        }
+        return totient;
+    }
+
+    private void propertiesTotient_int() {
+        initialize("totient(int)");
+        for (int i : take(LIMIT, P.positiveIntegers())) {
+            int totient = totient(i);
+            assertTrue(i, totient > 0);
+            assertTrue(i, totient <= i);
+            assertEquals(i, totient, totient(BigInteger.valueOf(i)).intValueExact());
+        }
+
+        for (int i : take(LIMIT, P.withScale(65536).rangeUpGeometric(2))) {
+            int totient = totient(i);
+            assertEquals(i, totient, totient_int_simplest(i));
+        }
+
+        for (int i : take(LIMIT, filterInfinite(MathUtils::isPrime, P.rangeUp(2)))) {
+            assertEquals(i, totient(i), i - 1);
+        }
+
+        for (int i : take(LIMIT, P.rangeDown(0))) {
+            try {
+                totient(i);
+                fail(i);
+            } catch (IllegalArgumentException ignored) {}
+        }
+    }
+
+    private void compareImplementationsTotient_int() {
+        smallestPrimeFactor(3); // force sieve initialization
+        Map<String, Function<Integer, Integer>> functions = new LinkedHashMap<>();
+        functions.put("simplest", MathUtilsProperties::totient_int_simplest);
+        functions.put("standard", MathUtils::totient);
+        Iterable<Integer> is = P.withScale(65536).rangeUpGeometric(2);
+        compareImplementations("totient(int)", take(LIMIT, is), functions);
+    }
+
+    private void propertiesTotient_BigInteger() {
+        initialize("totient(BigInteger)");
+        for (BigInteger i : take(LIMIT, P.withScale(12).positiveBigIntegers())) {
+            BigInteger totient = totient(i);
+            assertEquals(i, totient.signum(), 1);
+            assertTrue(i, le(totient, i));
+        }
+
+        Iterable<BigInteger> is = filterInfinite(MathUtils::isPrime, P.withScale(8).rangeUp(IntegerUtils.TWO));
+        for (BigInteger i : take(LIMIT, is)) {
+            assertEquals(i, totient(i), i.subtract(BigInteger.ONE));
+        }
+
+        for (BigInteger i : take(LIMIT, P.rangeDown(BigInteger.ZERO))) {
+            try {
+                totient(i);
+                fail(i);
             } catch (IllegalArgumentException ignored) {}
         }
     }
