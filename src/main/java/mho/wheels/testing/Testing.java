@@ -882,17 +882,20 @@ public strictfp class Testing {
             @NotNull Iterable<T> xs,
             @NotNull Function<String, Optional<T>> read,
             @NotNull Consumer<T> validate,
-            boolean denseInUsedCharString
+            boolean denseInUsedCharString,
+            boolean strict
     ) {
         for (String s : take(limit, P.strings())) {
             read.apply(s);
         }
 
-        for (T x : take(limit, xs)) {
-            Optional<T> ox = read.apply(x.toString());
-            T y = ox.get();
-            validate.accept(y);
-            assertEquals(x, y, x);
+        if (strict) {
+            for (T x : take(limit, xs)) {
+                Optional<T> ox = read.apply(x.toString());
+                T y = ox.get();
+                validate.accept(y);
+                assertEquals(x, y, x);
+            }
         }
 
         if (denseInUsedCharString) {

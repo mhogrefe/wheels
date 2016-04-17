@@ -18,6 +18,8 @@ import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.testing.Testing.*;
 
 public strictfp class ReadersProperties extends TestProperties {
+    private static final @NotNull String STRICT_BOOLEAN_CHARS = "aeflrstu";
+    private static final @NotNull String BOOLEAN_CHARS = " 01AEFLRSTUaeflrstu";
     private static final @NotNull String INTEGRAL_CHARS = "-0123456789";
 
     public ReadersProperties() {
@@ -26,20 +28,21 @@ public strictfp class ReadersProperties extends TestProperties {
 
     @Override
     protected void testBothModes() {
-        propertiesGenericReadStrict();
+//        propertiesGenericReadStrict();
         propertiesReadBooleanStrict();
-        propertiesReadOrderingStrict();
-        propertiesReadRoundingModeStrict();
-        propertiesReadBigIntegerStrict();
-        propertiesReadByteStrict();
-        propertiesReadShortStrict();
-        propertiesReadIntegerStrict();
-        propertiesReadLongStrict();
-        propertiesReadFloatStrict();
-        propertiesReadDoubleStrict();
-        propertiesReadBigDecimalStrict();
-        propertiesReadCharacter();
-        propertiesReadString();
+        propertiesReadBoolean();
+//        propertiesReadOrderingStrict();
+//        propertiesReadRoundingModeStrict();
+//        propertiesReadBigIntegerStrict();
+//        propertiesReadByteStrict();
+//        propertiesReadShortStrict();
+//        propertiesReadIntegerStrict();
+//        propertiesReadLongStrict();
+//        propertiesReadFloatStrict();
+//        propertiesReadDoubleStrict();
+//        propertiesReadBigDecimalStrict();
+//        propertiesReadCharacter();
+//        propertiesReadString();
     }
 
     private void propertiesGenericReadStrict() {
@@ -61,14 +64,30 @@ public strictfp class ReadersProperties extends TestProperties {
 
     private void propertiesReadBooleanStrict() {
         initialize("readBooleanStrict(String)");
-        for (String s : take(LIMIT, P.strings())) {
-            readBooleanStrict(s);
-        }
+        propertiesReadHelper(
+                LIMIT,
+                P,
+                STRICT_BOOLEAN_CHARS,
+                P.booleans(),
+                Readers::readBooleanStrict,
+                b -> {},
+                false,
+                true
+        );
+    }
 
-        for (boolean b : take(LIMIT, P.booleans())) {
-            Optional<Boolean> ob = readBooleanStrict(Boolean.toString(b));
-            assertEquals(b, ob.get(), b);
-        }
+    private void propertiesReadBoolean() {
+        initialize("readBoolean(String)");
+        propertiesReadHelper(
+                LIMIT,
+                P,
+                BOOLEAN_CHARS,
+                P.booleans(),
+                Readers::readBoolean,
+                b -> {},
+                false,
+                false
+        );
     }
 
     private void propertiesReadOrderingStrict() {

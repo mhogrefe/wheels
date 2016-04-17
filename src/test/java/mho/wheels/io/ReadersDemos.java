@@ -10,10 +10,12 @@ import java.util.function.Function;
 
 import static mho.wheels.io.Readers.*;
 import static mho.wheels.iterables.IterableUtils.*;
+import static mho.wheels.testing.Testing.*;
 
 @SuppressWarnings("UnusedDeclaration")
 public class ReadersDemos extends Demos {
-    private static final @NotNull String BOOLEAN_CHARS = "aeflrstu";
+    private static final @NotNull String STRICT_BOOLEAN_CHARS = "aeflrstu";
+    private static final @NotNull String BOOLEAN_CHARS = " 01AEFLRSTUaeflrstu";
     private static final @NotNull String ORDERING_CHARS = "EGLQT";
     private static final @NotNull String ROUNDING_MODE_CHARS = "ACDEFGHILNOPRSUVWY_";
     private static final @NotNull String INTEGRAL_CHARS = "-0123456789";
@@ -37,13 +39,25 @@ public class ReadersDemos extends Demos {
 
     private void demoReadBooleanStrict() {
         for (String s : take(LIMIT, P.strings())) {
-            System.out.println("readBooleanStrict(" + s + ") = " + readBooleanStrict(s));
+            System.out.println("readBooleanStrict(" + nicePrint(s) + ") = " + readBooleanStrict(s));
         }
     }
 
     private void demoReadBooleanStrict_targeted() {
-        for (String s : take(LIMIT, P.strings(BOOLEAN_CHARS))) {
+        for (String s : take(LIMIT, P.strings(STRICT_BOOLEAN_CHARS))) {
             System.out.println("readBooleanStrict(" + s + ") = " + readBooleanStrict(s));
+        }
+    }
+
+    private void demoReadBoolean() {
+        for (String s : take(LIMIT, P.strings())) {
+            System.out.println("readBoolean(" + nicePrint(s) + ") = " + readBoolean(s));
+        }
+    }
+
+    private void demoReadBoolean_targeted() {
+        for (String s : take(LIMIT, P.strings(BOOLEAN_CHARS))) {
+            System.out.println("readBoolean(" + s + ") = " + readBoolean(s));
         }
     }
 

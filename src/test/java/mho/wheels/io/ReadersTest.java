@@ -83,15 +83,48 @@ public class ReadersTest {
         genericReadStrict_helper(s -> null, "four", "Optional.empty");
     }
 
+    private void readBooleanStrict_helper(@NotNull String input, @NotNull String output) {
+        aeq(readBooleanStrict(input), output);
+    }
+
     @Test
     public void testReadBooleanStrict() {
-        aeq(readBooleanStrict("false").get(), "false");
-        aeq(readBooleanStrict("true").get(), "true");
-        assertFalse(readBooleanStrict(" true").isPresent());
-        assertFalse(readBooleanStrict("TRUE").isPresent());
-        assertFalse(readBooleanStrict("true ").isPresent());
-        assertFalse(readBooleanStrict("").isPresent());
-        assertFalse(readBooleanStrict("dsfsdfgd").isPresent());
+        readBooleanStrict_helper("false", "Optional[false]");
+        readBooleanStrict_helper("true", "Optional[true]");
+
+        readBooleanStrict_helper(" true", "Optional.empty");
+        readBooleanStrict_helper("TRUE", "Optional.empty");
+        readBooleanStrict_helper("true ", "Optional.empty");
+        readBooleanStrict_helper("", "Optional.empty");
+        readBooleanStrict_helper("dsfsdfgd", "Optional.empty");
+        readBooleanStrict_helper("T", "Optional.empty");
+        readBooleanStrict_helper("F", "Optional.empty");
+        readBooleanStrict_helper("1", "Optional.empty");
+        readBooleanStrict_helper("0", "Optional.empty");
+    }
+
+    private void readBoolean_helper(@NotNull String input, @NotNull String output) {
+        aeq(readBoolean(input), output);
+    }
+
+    @Test
+    public void testReadBoolean() {
+        readBoolean_helper("false", "Optional[false]");
+        readBoolean_helper("true", "Optional[true]");
+        readBoolean_helper("FALSE", "Optional[false]");
+        readBoolean_helper("TRUE", "Optional[true]");
+        readBoolean_helper("f", "Optional[false]");
+        readBoolean_helper("t", "Optional[true]");
+        readBoolean_helper("F", "Optional[false]");
+        readBoolean_helper("T", "Optional[true]");
+        readBoolean_helper("1", "Optional[true]");
+        readBoolean_helper("0", "Optional[false]");
+        readBoolean_helper("  0   ", "Optional[false]");
+        readBoolean_helper(" False  ", "Optional[false]");
+        readBoolean_helper("\n trUE\t", "Optional[true]");
+
+        readBoolean_helper("", "Optional.empty");
+        readBoolean_helper("dsfsdfgd", "Optional.empty");
     }
 
     @Test

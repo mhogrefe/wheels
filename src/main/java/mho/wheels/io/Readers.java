@@ -77,7 +77,7 @@ public class Readers {
     }
 
     /**
-     * Reads a {@code boolean} from a {@code String}.
+     * Reads a {@code boolean} from a {@code String}. Only accepts the {@code String}s "true" and "false".
      *
      * <ul>
      *  <li>{@code s} must be non-null.</li>
@@ -90,6 +90,34 @@ public class Readers {
      */
     public static @NotNull Optional<Boolean> readBooleanStrict(@NotNull String s) {
         return genericReadStrict(Boolean::parseBoolean).apply(s);
+    }
+
+    /**
+     * Reads a {@code boolean} from a {@code String}. Accepts the {@code String}s "true", "false", "t", "f", "1", and
+     * "0". Is case insensitive and allows leading and trailing spaces.
+     *
+     * <ul>
+     *  <li>{@code s} must be non-null.</li>
+     *  <li>The result is non-null.</li>
+     * </ul>
+     *
+     * @param s the input {@code String}
+     * @return the {@code boolean} represented by {@code s}, or {@code Optional.empty} if {@code s} does not represent
+     * a {@code boolean}
+     */
+    public static @NotNull Optional<Boolean> readBoolean(@NotNull String s) {
+        switch (s.trim().toLowerCase()) {
+            case "true":
+            case "t":
+            case "1":
+                return Optional.of(true);
+            case "false":
+            case "f":
+            case "0":
+                return Optional.of(false);
+            default:
+                return Optional.empty();
+        }
     }
 
     /**

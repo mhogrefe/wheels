@@ -742,6 +742,7 @@ public strictfp class BinaryFractionProperties extends TestProperties {
                 P.binaryFractions(),
                 BinaryFraction::read,
                 BinaryFraction::validate,
+                true,
                 true
         );
     }
