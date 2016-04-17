@@ -1049,7 +1049,7 @@ public final class MathUtils {
      * </ul>
      *
      * @param n a number
-     * @return φ({@code n}
+     * @return φ({@code n})
      */
     @SuppressWarnings("JavaDoc")
     public static int totient(int n) {
@@ -1066,12 +1066,119 @@ public final class MathUtils {
      * </ul>
      *
      * @param n a number
-     * @return φ({@code n}
+     * @return φ({@code n})
      */
     @SuppressWarnings("JavaDoc")
     public static @NotNull BigInteger totient(@NotNull BigInteger n) {
         return productBigInteger(
                 map(p -> p.a.pow(p.b - 1).multiply(p.a.subtract(BigInteger.ONE)), compactPrimeFactors(n))
         );
+    }
+
+    /**
+     * Returns the inverse of Euler's totient function, or every number whose totient is a given number.
+     *
+     * <ul>
+     *  <li>{@code n} must be positive.</li>
+     *  <li>The result is a {@code List} of distinct positive {@code BigInteger}s in ascending order.</li>
+     * </ul>
+     *
+     * @param n a totient
+     * @return φ<sup>–1</sup>({@code n})
+     */
+    public static @NotNull List<BigInteger> inverseTotient(@NotNull BigInteger n) {
+        if (n.signum() != 1) {
+            throw new IllegalArgumentException();
+        }
+        return sort(inverseTotientHelper(n, new HashMap<>(), new HashMap<>()));
+    }
+
+    /**
+     * A helper function for {@link MathUtils#inverseTotient(BigInteger)}. Since the inverse totient algorithm involves
+     * several recursive calls to itself and several calls to {@link MathUtils#smallestPrimeFactor(BigInteger)}, we get
+     * a considerable speedup by memoizing these calls.
+     *
+     * <ul>
+     *  <li>{@code n} must be positive.</li>
+     *  <li>Every entry in {@code cache} must be of the form n -> φ<sup>–1</sup>({@code n}).</li>
+     *  <li>Every entry in {@code spfCache} must be of the form n -> smallest prime factor of n.</li>
+     *  <li>The result is a {@code List} of distinct positive {@code BigInteger}s in ascending order.</li>
+     * </ul>
+     *
+     * @param n a totient
+     * @param cache a cache of inverse totient results
+     * @param spfCache a cache of smallest prime factor results
+     * @return φ<sup>–1</sup>({@code n})
+     */
+    private static @NotNull List<BigInteger> inverseTotientHelper(
+            @NotNull BigInteger n,
+            @NotNull Map<BigInteger, List<BigInteger>> cache,
+            @NotNull Map<BigInteger, BigInteger> spfCache
+    ) {
+        List<BigInteger> result = cache.get(n);
+        if (result != null) return result;
+        if (n.equals(BigInteger.ONE)) {
+            result = Arrays.asList(BigInteger.ONE, IntegerUtils.TWO);
+            cache.put(n, result);
+            return result;
+        }
+        if (n.and(BigInteger.ONE).equals(BigInteger.ONE)) {
+            result = Collections.emptyList();
+            cache.put(n, result);
+            return result;
+        }
+
+        ArrayList<BigInteger> elements = new ArrayList<>();
+        for (BigInteger factor : factors(n)) {
+            if (factor.equals(BigInteger.ONE)) continue;
+            BigInteger p = factor.add(BigInteger.ONE);
+            if (isPrime(p)) {
+                BigInteger pPower = p;
+                BigInteger x = n.divide(factor);
+                boolean first = true;
+                while (first || x.mod(p).equals(BigInteger.ZERO)) {
+                    if (first) {
+                        first = false;
+                    } else {
+                        x = x.divide(p);
+                    }
+                    if (x.equals(BigInteger.ONE) || x.and(BigInteger.ONE).equals(BigInteger.ZERO)) {
+                        for (BigInteger y : inverseTotientHelper(x, cache, spfCache)) {
+                            if (y.equals(BigInteger.ONE)) {
+                                elements.add(pPower);
+                            } else {
+                                BigInteger spf = spfCache.get(y);
+                                if (spf == null) {
+                                    spf = smallestPrimeFactor(y);
+                                    spfCache.put(y, spf);
+                                }
+                                if (gt(spf, p)) {
+                                    elements.add(y.multiply(pPower));
+                                }
+                            }
+                        }
+                    }
+                    pPower = pPower.multiply(p);
+                }
+            }
+        }
+
+        List<BigInteger> doubles = toList(map(e -> e.shiftLeft(1), elements));
+        elements.addAll(doubles);
+
+        BigInteger x = n;
+        int limit = n.getLowestSetBit();
+        for (int d = 0; d < limit; d++) {
+            x = x.shiftRight(1);
+            if (x.equals(BigInteger.ONE) || x.and(BigInteger.ONE).equals(BigInteger.ZERO)) {
+                for (BigInteger y : inverseTotientHelper(x, cache, spfCache)) {
+                    if (y.and(BigInteger.ONE).equals(BigInteger.ONE)) {
+                        elements.add(y.shiftLeft(d + 2));
+                    }
+                }
+            }
+        }
+        cache.put(n, elements);
+        return elements;
     }
 }

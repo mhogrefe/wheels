@@ -334,4 +334,10 @@ public class MathUtilsDemos extends Demos {
             System.out.println("φ(" + i + ") = " + totient(i));
         }
     }
+
+    private void demoInverseTotient() {
+        for (BigInteger i : take(LIMIT, P.withScale(8).positiveBigIntegers())) {
+            System.out.println("inverseTotient(" + i + ") = " + inverseTotient(i));
+        }
+    }
 }

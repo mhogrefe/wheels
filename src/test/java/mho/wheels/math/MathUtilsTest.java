@@ -1261,6 +1261,52 @@ public class MathUtilsTest {
         totient_BigInteger_fail_helper("-1");
     }
 
+    private static void inverseTotient_helper(@NotNull String input, @NotNull String output) {
+        aeq(inverseTotient(Readers.readBigIntegerStrict(input).get()), output);
+    }
+
+    private static void inverseTotient_fail_helper(@NotNull String input) {
+        try {
+            inverseTotient(Readers.readBigIntegerStrict(input).get());
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+    }
+
+    @Test
+    public void testInverseTotient() {
+        inverseTotient_helper("1", "[1, 2]");
+        inverseTotient_helper("2", "[3, 4, 6]");
+        inverseTotient_helper("3", "[]");
+        inverseTotient_helper("4", "[5, 8, 10, 12]");
+        inverseTotient_helper("5", "[]");
+        inverseTotient_helper("6", "[7, 9, 14, 18]");
+        inverseTotient_helper("7", "[]");
+        inverseTotient_helper("8", "[15, 16, 20, 24, 30]");
+        inverseTotient_helper("9", "[]");
+        inverseTotient_helper("10", "[11, 22]");
+        inverseTotient_helper("1656",
+                "[1657, 1739, 1807, 1939, 2487, 2493, 2679, 2919, 2961, 3314, 3316, 3478, 3572, 3614, 3878, 3892," +
+                " 4974, 4986, 5004, 5076, 5358, 5838, 5922]");
+        inverseTotient_helper("6221670", "[6221671, 12443342]");
+        inverseTotient_helper("59640",
+                "[60563, 61799, 65533, 69587, 89469, 105861, 121126, 123598, 131066, 139174, 141148, 178938, 181476," +
+                " 211722]");
+        inverseTotient_helper("2147483646", "[2147483647, 4294967294]");
+        inverseTotient_helper("1431655760",
+                "[1820425825, 2147483643, 2159969529, 2189665761, 2402962089, 2863311524, 2879959372, 2919554348," +
+                " 3203949452, 3640851650, 4294967286, 4319939058, 4379331522, 4805924178]");
+        inverseTotient_helper("2146685284", "[2147483641, 4294967282]");
+        inverseTotient_helper("1431655764",
+                "[1431772649, 1433755649, 1465742849, 1670265107, 2147483649, 2863311532, 2863545298, 2867511298," +
+                " 2931485698, 3340530214, 4294967298]");
+        inverseTotient_helper("2147483658", "[2147483659, 4294967318]");
+        inverseTotient_helper("1000000000038", "[1000000000039, 2000000000078]");
+        inverseTotient_helper("1000000000000036", "[1000000000000037, 2000000000000074]");
+
+        inverseTotient_fail_helper("0");
+        inverseTotient_fail_helper("-1");
+    }
+
     private static @NotNull List<BigInteger> readBigIntegerList(@NotNull String s) {
         return Readers.readListStrict(Readers::readBigIntegerStrict).apply(s).get();
     }

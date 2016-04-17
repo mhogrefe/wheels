@@ -88,6 +88,7 @@ public class MathUtilsProperties extends TestProperties {
         propertiesTotient_int();
         compareImplementationsTotient_int();
         propertiesTotient_BigInteger();
+        propertiesInverseTotient();
     }
 
     private static int pow_simplest(int n, int p) {
@@ -1470,6 +1471,7 @@ public class MathUtilsProperties extends TestProperties {
             assertTrue(i, totient > 0);
             assertTrue(i, totient <= i);
             assertEquals(i, totient, totient(BigInteger.valueOf(i)).intValueExact());
+            assertTrue(i, inverseTotient(BigInteger.valueOf(totient)).contains(BigInteger.valueOf(i)));
         }
 
         for (int i : take(LIMIT, P.withScale(65536).rangeUpGeometric(2))) {
@@ -1506,6 +1508,10 @@ public class MathUtilsProperties extends TestProperties {
             assertTrue(i, le(totient, i));
         }
 
+        for (BigInteger i : take(LIMIT, P.withScale(8).positiveBigIntegers())) {
+            assertTrue(i, inverseTotient(totient(i)).contains(i));
+        }
+
         Iterable<BigInteger> is = filterInfinite(MathUtils::isPrime, P.withScale(8).rangeUp(IntegerUtils.TWO));
         for (BigInteger i : take(LIMIT, is)) {
             assertEquals(i, totient(i), i.subtract(BigInteger.ONE));
@@ -1514,6 +1520,24 @@ public class MathUtilsProperties extends TestProperties {
         for (BigInteger i : take(LIMIT, P.rangeDown(BigInteger.ZERO))) {
             try {
                 totient(i);
+                fail(i);
+            } catch (IllegalArgumentException ignored) {}
+        }
+    }
+
+    private void propertiesInverseTotient() {
+        initialize("inverseTotient(BigInteger)");
+        for (BigInteger i : take(LIMIT, P.withScale(8).positiveBigIntegers())) {
+            List<BigInteger> inverseTotient = inverseTotient(i);
+            assertTrue(i, increasing(inverseTotient));
+            assertTrue(i, inverseTotient.isEmpty() || head(inverseTotient).signum() == 1);
+            assertTrue(i, all(it -> totient(it).equals(i), inverseTotient));
+            assertTrue(i, inverseTotient(i.shiftLeft(1).add(BigInteger.ONE)).isEmpty());
+        }
+
+        for (BigInteger i : take(LIMIT, P.rangeDown(BigInteger.ZERO))) {
+            try {
+                inverseTotient(i);
                 fail(i);
             } catch (IllegalArgumentException ignored) {}
         }
