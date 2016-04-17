@@ -1602,48 +1602,61 @@ public strictfp class ExhaustiveProviderTest {
         permutationsFiniteHelper("[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]", "ExhaustiveProvider_permutationsFinite_x");
     }
 
-    //todo continue cleanup
+    private static void stringPermutations_helper(@NotNull String input, @NotNull String output) {
+        aeqitLog(EP.stringPermutations(input), output);
+    }
+
+    private static void stringPermutations_limit_helper(@NotNull String input, @NotNull String output) {
+        simpleProviderHelper(EP.stringPermutations(input), output);
+    }
 
     @Test
     public void testStringPermutations() {
-        aeqitLog(EP.stringPermutations(""), "ExhaustiveProvider_stringPermutations_i");
-        aeqitLog(EP.stringPermutations("a"), "ExhaustiveProvider_stringPermutations_ii");
-        aeqitLog(EP.stringPermutations("abc"), "ExhaustiveProvider_stringPermutations_iii");
-        aeqitLog(EP.stringPermutations("foo"), "ExhaustiveProvider_stringPermutations_iv");
-        aeqitLog(EP.stringPermutations("hello"), "ExhaustiveProvider_stringPermutations_v");
-        simpleProviderHelper(EP.stringPermutations("Mississippi"), "ExhaustiveProvider_stringPermutations_vi");
+        stringPermutations_helper("", "ExhaustiveProvider_stringPermutations_i");
+        stringPermutations_helper("a", "ExhaustiveProvider_stringPermutations_ii");
+        stringPermutations_helper("abc", "ExhaustiveProvider_stringPermutations_iii");
+        stringPermutations_helper("foo", "ExhaustiveProvider_stringPermutations_iv");
+        stringPermutations_helper("hello", "ExhaustiveProvider_stringPermutations_v");
+        stringPermutations_limit_helper("Mississippi", "ExhaustiveProvider_stringPermutations_vi");
     }
 
-    private static void prefixPermutationsHelper(@NotNull String input, @NotNull String output) {
-        aeqitLog(map(Testing::its, EP.prefixPermutations(readIntegerList(input))), output);
-    }
-
-    private static void prefixPermutationsHelper(@NotNull Iterable<Integer> input, @NotNull String output) {
+    private static void prefixPermutations_helper(@NotNull Iterable<Integer> input, @NotNull String output) {
         aeqitLog(map(Testing::its, EP.prefixPermutations(input)), output);
     }
 
-    private static void prefixPermutationsLimitHelper(@NotNull Iterable<Integer> input, @NotNull String output) {
+    private static void prefixPermutations_helper(@NotNull String input, @NotNull String output) {
+        prefixPermutations_helper(readIntegerListWithNulls(input), output);
+    }
+
+    private static void prefixPermutations_limit_helper(@NotNull Iterable<Integer> input, @NotNull String output) {
         simpleProviderHelper(map(Testing::its, EP.prefixPermutations(input)), output);
     }
 
     @Test
     public void testPrefixPermutations() {
-        prefixPermutationsHelper("[]", "ExhaustiveProvider_prefixPermutations_i");
-        prefixPermutationsHelper("[5]", "ExhaustiveProvider_prefixPermutations_ii");
-        prefixPermutationsHelper("[1, 2]", "ExhaustiveProvider_prefixPermutations_iii");
-        prefixPermutationsHelper("[1, 2, 3]", "ExhaustiveProvider_prefixPermutations_iv");
-        prefixPermutationsHelper("[1, 2, 3, 4]", "ExhaustiveProvider_prefixPermutations_v");
-        prefixPermutationsHelper("[1, 2, 2, 4]", "ExhaustiveProvider_prefixPermutations_vi");
-        prefixPermutationsHelper("[2, 2, 2, 2]", "ExhaustiveProvider_prefixPermutations_vii");
-        prefixPermutationsHelper("[3, 1, 4, 1]", "ExhaustiveProvider_prefixPermutations_viii");
-        prefixPermutationsHelper(Arrays.asList(3, 1, null, 1), "ExhaustiveProvider_prefixPermutations_ix");
-        prefixPermutationsLimitHelper(IterableUtils.range(1, 10), "ExhaustiveProvider_prefixPermutations_x");
-        prefixPermutationsLimitHelper(EP.positiveIntegers(), "ExhaustiveProvider_prefixPermutations_xi");
-        prefixPermutationsLimitHelper(repeat(1), "ExhaustiveProvider_prefixPermutations_xii");
+        prefixPermutations_helper("[]", "ExhaustiveProvider_prefixPermutations_i");
+        prefixPermutations_helper("[5]", "ExhaustiveProvider_prefixPermutations_ii");
+        prefixPermutations_helper("[1, 2]", "ExhaustiveProvider_prefixPermutations_iii");
+        prefixPermutations_helper("[1, 2, 3]", "ExhaustiveProvider_prefixPermutations_iv");
+        prefixPermutations_helper("[1, 2, 3, 4]", "ExhaustiveProvider_prefixPermutations_v");
+        prefixPermutations_helper("[1, 2, 2, 4]", "ExhaustiveProvider_prefixPermutations_vi");
+        prefixPermutations_helper("[2, 2, 2, 2]", "ExhaustiveProvider_prefixPermutations_vii");
+        prefixPermutations_helper("[3, 1, 4, 1]", "ExhaustiveProvider_prefixPermutations_viii");
+        prefixPermutations_helper("[3, 1, null, 1]", "ExhaustiveProvider_prefixPermutations_ix");
+        prefixPermutations_limit_helper(IterableUtils.range(1, 10), "ExhaustiveProvider_prefixPermutations_x");
+        prefixPermutations_limit_helper(EP.positiveIntegers(), "ExhaustiveProvider_prefixPermutations_xi");
+        prefixPermutations_limit_helper(repeat(1), "ExhaustiveProvider_prefixPermutations_xii");
     }
 
     private static void listsLex_int_List_helper(int size, @NotNull String input, @NotNull String output) {
         aeqitLog(EP.listsLex(size, readIntegerListWithNulls(input)), output);
+    }
+
+    private static void listsLex_int_List_fail_helper(int size, @NotNull String input) {
+        try {
+            EP.listsLex(size, readIntegerListWithNulls(input));
+            fail();
+        } catch (IllegalArgumentException ignored) {}
     }
 
     @Test
@@ -1669,14 +1682,9 @@ public strictfp class ExhaustiveProviderTest {
         listsLex_int_List_helper(1, "[]", "ExhaustiveProvider_listsLex_int_List_xix");
         listsLex_int_List_helper(2, "[]", "ExhaustiveProvider_listsLex_int_List_xx");
         listsLex_int_List_helper(3, "[]", "ExhaustiveProvider_listsLex_int_List_xxi");
-        try {
-            EP.listsLex(-1, Collections.emptyList());
-            fail();
-        } catch (IllegalArgumentException ignored) {}
-        try {
-            EP.listsLex(-1, Arrays.asList(1, 2, 3));
-            fail();
-        } catch (IllegalArgumentException ignored) {}
+
+        listsLex_int_List_fail_helper(-1, "[]");
+        listsLex_int_List_fail_helper(-1, "[1, 2, 3]");
     }
 
     private static <A, B> void pairsLex_helper(
@@ -1687,7 +1695,7 @@ public strictfp class ExhaustiveProviderTest {
         aeqitLog(EP.pairsLex(as, toList(bs)), output);
     }
 
-    private static <A, B> void pairsLex_helper_limit(
+    private static <A, B> void pairsLex_limit_helper(
             @NotNull Iterable<A> as,
             @NotNull Iterable<B> bs,
             @NotNull String output
@@ -1699,7 +1707,7 @@ public strictfp class ExhaustiveProviderTest {
     public void testPairsLex() {
         pairsLex_helper(Arrays.asList(1, 2, 3), fromString("abc"), "ExhaustiveProvider_pairsLex_i");
         pairsLex_helper(Arrays.asList(1, null, 3), fromString("abc"), "ExhaustiveProvider_pairsLex_ii");
-        pairsLex_helper_limit(EP.naturalBigIntegers(), fromString("abc"), "ExhaustiveProvider_pairsLex_iii");
+        pairsLex_limit_helper(EP.naturalBigIntegers(), fromString("abc"), "ExhaustiveProvider_pairsLex_iii");
         pairsLex_helper(EP.naturalBigIntegers(), Collections.emptyList(), "ExhaustiveProvider_pairsLex_iv");
         pairsLex_helper(Collections.emptyList(), fromString("abc"), "ExhaustiveProvider_pairsLex_v");
         pairsLex_helper(Collections.emptyList(), Collections.emptyList(), "ExhaustiveProvider_pairsLex_vi");
@@ -1714,7 +1722,7 @@ public strictfp class ExhaustiveProviderTest {
         aeqitLog(EP.triplesLex(as, toList(bs), toList(cs)), output);
     }
 
-    private static <A, B, C> void triplesLex_helper_limit(
+    private static <A, B, C> void triplesLex_limit_helper(
             @NotNull Iterable<A> as,
             @NotNull Iterable<B> bs,
             @NotNull Iterable<C> cs,
@@ -1728,7 +1736,7 @@ public strictfp class ExhaustiveProviderTest {
         triplesLex_helper(Arrays.asList(1, 2, 3), fromString("abc"), EP.booleans(), "ExhaustiveProvider_triplesLex_i");
         triplesLex_helper(Arrays.asList(1, null, 3), fromString("abc"), EP.booleans(),
                 "ExhaustiveProvider_triplesLex_ii");
-        triplesLex_helper_limit(EP.naturalBigIntegers(), fromString("abc"), EP.booleans(),
+        triplesLex_limit_helper(EP.naturalBigIntegers(), fromString("abc"), EP.booleans(),
                 "ExhaustiveProvider_triplesLex_iii");
         triplesLex_helper(EP.naturalBigIntegers(), fromString("abc"), Collections.emptyList(),
                 "ExhaustiveProvider_triplesLex_iv");
@@ -1748,7 +1756,7 @@ public strictfp class ExhaustiveProviderTest {
         aeqitLog(EP.quadruplesLex(as, toList(bs), toList(cs), toList(ds)), output);
     }
 
-    private static <A, B, C, D> void quadruplesLex_helper_limit(
+    private static <A, B, C, D> void quadruplesLex_limit_helper(
             @NotNull Iterable<A> as,
             @NotNull Iterable<B> bs,
             @NotNull Iterable<C> cs,
@@ -1764,7 +1772,7 @@ public strictfp class ExhaustiveProviderTest {
                 "ExhaustiveProvider_quadruplesLex_i");
         quadruplesLex_helper(Arrays.asList(1, null, 3), fromString("abc"), EP.booleans(), EP.orderings(),
                 "ExhaustiveProvider_quadruplesLex_ii");
-        quadruplesLex_helper_limit(EP.naturalBigIntegers(), fromString("abc"), EP.booleans(), EP.orderings(),
+        quadruplesLex_limit_helper(EP.naturalBigIntegers(), fromString("abc"), EP.booleans(), EP.orderings(),
                 "ExhaustiveProvider_quadruplesLex_iii");
         quadruplesLex_helper(EP.naturalBigIntegers(), fromString("abc"), EP.booleans(), Collections.emptyList(),
                 "ExhaustiveProvider_quadruplesLex_iv");
@@ -1790,7 +1798,7 @@ public strictfp class ExhaustiveProviderTest {
         aeqitLog(EP.quintuplesLex(as, toList(bs), toList(cs), toList(ds), toList(es)), output);
     }
 
-    private static <A, B, C, D, E> void quintuplesLex_helper_limit(
+    private static <A, B, C, D, E> void quintuplesLex_limit_helper(
             @NotNull Iterable<A> as,
             @NotNull Iterable<B> bs,
             @NotNull Iterable<C> cs,
@@ -1817,7 +1825,7 @@ public strictfp class ExhaustiveProviderTest {
                 EP.orderings(),
                 Arrays.asList("yes", "no"),
                 "ExhaustiveProvider_quintuplesLex_ii");
-        quintuplesLex_helper_limit(
+        quintuplesLex_limit_helper(
                 EP.naturalBigIntegers(),
                 fromString("abc"),
                 EP.booleans(),
@@ -1862,7 +1870,7 @@ public strictfp class ExhaustiveProviderTest {
         aeqitLog(EP.sextuplesLex(as, toList(bs), toList(cs), toList(ds), toList(es), toList(fs)), output);
     }
 
-    private static <A, B, C, D, E, F> void sextuplesLex_helper_limit(
+    private static <A, B, C, D, E, F> void sextuplesLex_limit_helper(
             @NotNull Iterable<A> as,
             @NotNull Iterable<B> bs,
             @NotNull Iterable<C> cs,
@@ -1892,7 +1900,7 @@ public strictfp class ExhaustiveProviderTest {
                 Arrays.asList("yes", "no"),
                 Arrays.asList(Float.POSITIVE_INFINITY, Float.NaN),
                 "ExhaustiveProvider_sextuplesLex_ii");
-        sextuplesLex_helper_limit(
+        sextuplesLex_limit_helper(
                 EP.naturalBigIntegers(),
                 fromString("abc"),
                 EP.booleans(),
@@ -1942,7 +1950,7 @@ public strictfp class ExhaustiveProviderTest {
         aeqitLog(EP.septuplesLex(as, toList(bs), toList(cs), toList(ds), toList(es), toList(fs), toList(gs)), output);
     }
 
-    private static <A, B, C, D, E, F, G> void septuplesLex_helper_limit(
+    private static <A, B, C, D, E, F, G> void septuplesLex_limit_helper(
             @NotNull Iterable<A> as,
             @NotNull Iterable<B> bs,
             @NotNull Iterable<C> cs,
@@ -1980,7 +1988,7 @@ public strictfp class ExhaustiveProviderTest {
                 Arrays.asList(Float.POSITIVE_INFINITY, Float.NaN),
                 Arrays.asList(x, y),
                 "ExhaustiveProvider_septuplesLex_ii");
-        septuplesLex_helper_limit(
+        septuplesLex_limit_helper(
                 EP.naturalBigIntegers(),
                 fromString("abc"),
                 EP.booleans(),
@@ -2025,8 +2033,15 @@ public strictfp class ExhaustiveProviderTest {
         aeqitLog(EP.stringsLex(size, input), output);
     }
 
-    private static void stringsLex_int_String_helper_limit(int size, @NotNull String input, @NotNull String output) {
+    private static void stringsLex_int_String_limit_helper(int size, @NotNull String input, @NotNull String output) {
         simpleProviderHelper(EP.stringsLex(size, input), output);
+    }
+
+    private static void stringLex_int_String_fail_helper(int size, @NotNull String input) {
+        try {
+            EP.stringsLex(size, input);
+            fail();
+        } catch (IllegalArgumentException ignored) {}
     }
 
     @Test
@@ -2051,18 +2066,13 @@ public strictfp class ExhaustiveProviderTest {
         stringsLex_int_String_helper(2, "abbc", "ExhaustiveProvider_stringsLex_int_String_xv");
         stringsLex_int_String_helper(3, "abbc", "ExhaustiveProvider_stringsLex_int_String_xvi");
 
-        stringsLex_int_String_helper_limit(0, "Mississippi", "ExhaustiveProvider_stringsLex_int_String_xvii");
-        stringsLex_int_String_helper_limit(1, "Mississippi", "ExhaustiveProvider_stringsLex_int_String_xviii");
-        stringsLex_int_String_helper_limit(2, "Mississippi", "ExhaustiveProvider_stringsLex_int_String_xix");
-        stringsLex_int_String_helper_limit(3, "Mississippi", "ExhaustiveProvider_stringsLex_int_String_xx");
-        try {
-            EP.stringsLex(-1, "");
-            fail();
-        } catch (IllegalArgumentException ignored) {}
-        try {
-            EP.stringsLex(-1, "abc");
-            fail();
-        } catch (IllegalArgumentException ignored) {}
+        stringsLex_int_String_limit_helper(0, "Mississippi", "ExhaustiveProvider_stringsLex_int_String_xvii");
+        stringsLex_int_String_limit_helper(1, "Mississippi", "ExhaustiveProvider_stringsLex_int_String_xviii");
+        stringsLex_int_String_limit_helper(2, "Mississippi", "ExhaustiveProvider_stringsLex_int_String_xix");
+        stringsLex_int_String_limit_helper(3, "Mississippi", "ExhaustiveProvider_stringsLex_int_String_xx");
+
+        stringLex_int_String_fail_helper(-1, "");
+        stringLex_int_String_fail_helper(-1, "abc");
     }
 
     private static void listsShortlex_helper(@NotNull String input, @NotNull String output) {
@@ -2093,6 +2103,8 @@ public strictfp class ExhaustiveProviderTest {
     private static void listsShortlexAtLeast_helper(int minSize, @NotNull String input, @NotNull String output) {
         simpleProviderHelper(EP.listsShortlexAtLeast(minSize, readIntegerListWithNulls(input)), output);
     }
+
+    //todo continue cleanup
 
     @Test
     public void testListsShortlexAtLeast() {
