@@ -1,5 +1,6 @@
 package mho.wheels.io;
 
+import mho.wheels.math.MathUtils;
 import mho.wheels.ordering.Ordering;
 import mho.wheels.structures.Either;
 import mho.wheels.structures.NullableOptional;
@@ -486,7 +487,7 @@ public class Readers {
         if (s.isEmpty() || head(s) != '(' || last(s) != ')') {
             return Either.ofB("");
         }
-        boolean levelReachedZero = false;
+        boolean parensReachZero = false;
         int parenLevel = 1;
         for (int i = 1; i < s.length() - 1; i++) {
             switch (s.charAt(i)) {
@@ -496,12 +497,12 @@ public class Readers {
                     if (parenLevel < 0) {
                         return Either.ofB("parenthesis error: " + s);
                     } else if (parenLevel == 0) {
-                        levelReachedZero = true;
+                        parensReachZero = true;
                         break;
                     }
             }
         }
-        if (levelReachedZero) {
+        if (parensReachZero) {
             return Either.ofB("");
         } else {
             return parser.apply(s.substring(1, s.length() - 1));
@@ -839,6 +840,57 @@ public class Readers {
         );
     }
 
+    public static @NotNull <A, B> Either<B, String> tryApplyUnaryFunction(
+            @NotNull Function<A, B> function,
+            @NotNull String name,
+            @NotNull Function<String, Either<A, String>> argParser,
+            @NotNull String s
+    ) {
+        if (!s.startsWith(name + "(") || last(s) != ')') {
+            return Either.ofB("");
+        }
+        int parenLevel = 0;
+        boolean parensReachZero = false;
+        for (int i = name.length(); i < s.length(); i++) {
+            switch (s.charAt(i)) {
+                case '(': parenLevel++; break;
+                case ')': parenLevel--; break;
+                default:
+                    if (parenLevel == 0) {
+                        parensReachZero = true;
+                        break;
+                    }
+            }
+        }
+        if (parensReachZero) {
+            return Either.ofB("");
+        }
+        String argString = s.substring(name.length() + 1, s.length() - 1);
+        Either<A, String> sub = argParser.apply(argString);
+        if (sub.whichSlot() == Either.Slot.B) {
+            return Either.ofB("Failed to parse argument to " + name + ": " + argString);
+        } else {
+            try {
+                return Either.ofA(function.apply(sub.a()));
+            } catch (Exception e) {
+                return Either.ofB(e.getMessage());
+            }
+        }
+    }
+
+    public static @NotNull Either<BigInteger, String> tryFactorial(@NotNull String s) {
+        return tryApplyUnaryFunction(MathUtils::factorial, "factorial", Readers::readInteger, s);
+    }
+
+    public static @NotNull Either<BigInteger, String> trySmallestPrimeFactor(@NotNull String s) {
+        return tryApplyUnaryFunction(
+                MathUtils::smallestPrimeFactor,
+                "smallestPrimeFactor",
+                Readers::readBigInteger,
+                s
+        );
+    }
+
     public static @NotNull Either<BigInteger, String> tryParseBigInteger(@NotNull String s) {
         try {
             return Either.ofA(new BigInteger(s));
@@ -902,6 +954,14 @@ public class Readers {
             return result;
         }
         result = tryBigIntegerNot(s);
+        if (result.whichSlot() == Either.Slot.A || !result.b().isEmpty()) {
+            return result;
+        }
+        result = tryFactorial(s);
+        if (result.whichSlot() == Either.Slot.A || !result.b().isEmpty()) {
+            return result;
+        }
+        result = trySmallestPrimeFactor(s);
         if (result.whichSlot() == Either.Slot.A || !result.b().isEmpty()) {
             return result;
         }
