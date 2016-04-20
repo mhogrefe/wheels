@@ -49,18 +49,6 @@ public class ReadersDemos extends Demos {
         }
     }
 
-    private void demoReadBoolean() {
-        for (String s : take(LIMIT, P.strings())) {
-            System.out.println("readBoolean(" + nicePrint(s) + ") = " + readBoolean(s));
-        }
-    }
-
-    private void demoReadBoolean_targeted() {
-        for (String s : take(LIMIT, P.strings(BOOLEAN_CHARS))) {
-            System.out.println("readBoolean(" + s + ") = " + readBoolean(s));
-        }
-    }
-
     private void demoReadOrderingStrict() {
         for (String s : take(LIMIT, P.strings())) {
             System.out.println("readOrderingStrict(" + s + ") = " + readOrderingStrict(s));

@@ -103,30 +103,6 @@ public class ReadersTest {
         readBooleanStrict_helper("0", "Optional.empty");
     }
 
-    private void readBoolean_helper(@NotNull String input, @NotNull String output) {
-        aeq(readBoolean(input), output);
-    }
-
-    @Test
-    public void testReadBoolean() {
-        readBoolean_helper("false", "Optional[false]");
-        readBoolean_helper("true", "Optional[true]");
-        readBoolean_helper("FALSE", "Optional[false]");
-        readBoolean_helper("TRUE", "Optional[true]");
-        readBoolean_helper("f", "Optional[false]");
-        readBoolean_helper("t", "Optional[true]");
-        readBoolean_helper("F", "Optional[false]");
-        readBoolean_helper("T", "Optional[true]");
-        readBoolean_helper("1", "Optional[true]");
-        readBoolean_helper("0", "Optional[false]");
-        readBoolean_helper("  0   ", "Optional[false]");
-        readBoolean_helper(" False  ", "Optional[false]");
-        readBoolean_helper("\n trUE\t", "Optional[true]");
-
-        readBoolean_helper("", "Optional.empty");
-        readBoolean_helper("dsfsdfgd", "Optional.empty");
-    }
-
     @Test
     public void testReadOrderingStrict() {
         aeq(readOrderingStrict("LT").get(), "LT");

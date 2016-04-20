@@ -28,21 +28,20 @@ public strictfp class ReadersProperties extends TestProperties {
 
     @Override
     protected void testBothModes() {
-//        propertiesGenericReadStrict();
+        propertiesGenericReadStrict();
         propertiesReadBooleanStrict();
-        propertiesReadBoolean();
-//        propertiesReadOrderingStrict();
-//        propertiesReadRoundingModeStrict();
-//        propertiesReadBigIntegerStrict();
-//        propertiesReadByteStrict();
-//        propertiesReadShortStrict();
-//        propertiesReadIntegerStrict();
-//        propertiesReadLongStrict();
-//        propertiesReadFloatStrict();
-//        propertiesReadDoubleStrict();
-//        propertiesReadBigDecimalStrict();
-//        propertiesReadCharacter();
-//        propertiesReadString();
+        propertiesReadOrderingStrict();
+        propertiesReadRoundingModeStrict();
+        propertiesReadBigIntegerStrict();
+        propertiesReadByteStrict();
+        propertiesReadShortStrict();
+        propertiesReadIntegerStrict();
+        propertiesReadLongStrict();
+        propertiesReadFloatStrict();
+        propertiesReadDoubleStrict();
+        propertiesReadBigDecimalStrict();
+        propertiesReadCharacter();
+        propertiesReadString();
     }
 
     private void propertiesGenericReadStrict() {
@@ -73,20 +72,6 @@ public strictfp class ReadersProperties extends TestProperties {
                 b -> {},
                 false,
                 true
-        );
-    }
-
-    private void propertiesReadBoolean() {
-        initialize("readBoolean(String)");
-        propertiesReadHelper(
-                LIMIT,
-                P,
-                BOOLEAN_CHARS,
-                P.booleans(),
-                Readers::readBoolean,
-                b -> {},
-                false,
-                false
         );
     }
 

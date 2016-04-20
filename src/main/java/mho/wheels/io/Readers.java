@@ -97,34 +97,6 @@ public class Readers {
     }
 
     /**
-     * Reads a {@code boolean} from a {@code String}. Accepts the {@code String}s "true", "false", "t", "f", "1", and
-     * "0". Is case insensitive and allows leading and trailing spaces.
-     *
-     * <ul>
-     *  <li>{@code s} must be non-null.</li>
-     *  <li>The result is non-null.</li>
-     * </ul>
-     *
-     * @param s the input {@code String}
-     * @return the {@code boolean} represented by {@code s}, or {@code Optional.empty} if {@code s} does not represent
-     * a {@code boolean}
-     */
-    public static @NotNull Optional<Boolean> readBoolean(@NotNull String s) {
-        switch (s.trim().toLowerCase()) {
-            case "true":
-            case "t":
-            case "1":
-                return Optional.of(true);
-            case "false":
-            case "f":
-            case "0":
-                return Optional.of(false);
-            default:
-                return Optional.empty();
-        }
-    }
-
-    /**
      * Reads an {@link Ordering} from a {@code String}.
      *
      * <ul>
@@ -851,18 +823,45 @@ public class Readers {
         }
     }
 
+    public static @NotNull Either<Boolean, String> tryParseBoolean(@NotNull String s) {
+        switch (s) {
+            case "true": return Either.ofA(true);
+            case "false": return Either.ofA(false);
+            default: return Either.ofB("Could not parse boolean: " + s);
+        }
+    }
+
+    public static @NotNull Either<Boolean, String> readBoolean(@NotNull String s) {
+        s = s.trim();
+        return tryParseBoolean(s);
+    }
+
+    public static @NotNull String interpret(@NotNull String s) {
+        Either<BigInteger, String> bigIntegerResult = readBigInteger(s);
+        if (bigIntegerResult.whichSlot() == Either.Slot.A) {
+            return bigIntegerResult.a().toString();
+        }
+        Either<Boolean, String> booleanResult = readBoolean(s);
+        if (booleanResult.whichSlot() == Either.Slot.A) {
+            return booleanResult.a().toString();
+        }
+
+        if (!bigIntegerResult.b().isEmpty()) {
+            return "Error: " + bigIntegerResult.b();
+        } else if (!booleanResult.b().isEmpty()) {
+            return "Error: " + booleanResult.b();
+        } else {
+            return "Mysterious error";
+        }
+    }
+
     public static void main(String[] args) throws IOException {
         BufferedReader lineReader = new BufferedReader(new InputStreamReader(System.in));
         //noinspection InfiniteLoopStatement
         while (true) {
             System.out.print("> ");
             String line = lineReader.readLine();
-            Either<BigInteger, String> result = readBigInteger(line);
-            if (result.whichSlot() == Either.Slot.B) {
-                System.out.println("Error: " + result.b());
-            } else {
-                System.out.println(result.a());
-            }
+            System.out.println(interpret(line));
         }
     }
 }
