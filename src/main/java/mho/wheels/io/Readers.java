@@ -536,6 +536,10 @@ public class Readers {
         return tryApplyUnaryOperation(BigInteger::not, "~", Readers::readBigInteger, s);
     }
 
+    public static @NotNull Either<Boolean, String> tryBooleanNot(@NotNull String s) {
+        return tryApplyUnaryOperation(b -> !b, "!", Readers::readBoolean, s);
+    }
+
     public static @NotNull <A, B, C> Either<C, String> tryApplyLeftAssociativeBinaryOperation(
             @NotNull BiFunction<A, B, C> operation,
             @NotNull String representation,
@@ -742,6 +746,99 @@ public class Readers {
         );
     }
 
+    public static @NotNull Either<Boolean, String> tryBooleanAnd(@NotNull String s) {
+        return tryApplyLeftAssociativeBinaryOperation(
+                (a, b) -> a && b,
+                "&&",
+                Readers::readBoolean,
+                Readers::readBoolean,
+                false,
+                s
+        );
+    }
+
+    public static @NotNull Either<Boolean, String> tryBooleanOr(@NotNull String s) {
+        return tryApplyLeftAssociativeBinaryOperation(
+                (a, b) -> a || b,
+                "||",
+                Readers::readBoolean,
+                Readers::readBoolean,
+                false,
+                s
+        );
+    }
+
+    public static @NotNull Either<Boolean, String> tryBigIntegerLessThan(@NotNull String s) {
+        //noinspection Convert2MethodRef
+        return tryApplyLeftAssociativeBinaryOperation(
+                (a, b) -> Ordering.lt(a, b),
+                "<",
+                Readers::readBigInteger,
+                Readers::readBigInteger,
+                false,
+                s
+        );
+    }
+
+    public static @NotNull Either<Boolean, String> tryBigIntegerGreaterThan(@NotNull String s) {
+        //noinspection Convert2MethodRef
+        return tryApplyLeftAssociativeBinaryOperation(
+                (a, b) -> Ordering.gt(a, b),
+                ">",
+                Readers::readBigInteger,
+                Readers::readBigInteger,
+                false,
+                s
+        );
+    }
+
+    public static @NotNull Either<Boolean, String> tryBigIntegerLessThanOrEqualTo(@NotNull String s) {
+        //noinspection Convert2MethodRef
+        return tryApplyLeftAssociativeBinaryOperation(
+                (a, b) -> Ordering.le(a, b),
+                "<=",
+                Readers::readBigInteger,
+                Readers::readBigInteger,
+                false,
+                s
+        );
+    }
+
+    public static @NotNull Either<Boolean, String> tryBigIntegerGreaterThanOrEqualTo(@NotNull String s) {
+        //noinspection Convert2MethodRef
+        return tryApplyLeftAssociativeBinaryOperation(
+                (a, b) -> Ordering.ge(a, b),
+                ">=",
+                Readers::readBigInteger,
+                Readers::readBigInteger,
+                false,
+                s
+        );
+    }
+
+    public static @NotNull Either<Boolean, String> tryBigIntegerEqual(@NotNull String s) {
+        //noinspection Convert2MethodRef
+        return tryApplyLeftAssociativeBinaryOperation(
+                (a, b) -> a.equals(b),
+                "==",
+                Readers::readBigInteger,
+                Readers::readBigInteger,
+                false,
+                s
+        );
+    }
+
+    public static @NotNull Either<Boolean, String> tryBigIntegerNotEqual(@NotNull String s) {
+        return tryApplyLeftAssociativeBinaryOperation(
+                (a, b) -> !a.equals(b),
+                "!=",
+                Readers::readBigInteger,
+                Readers::readBigInteger,
+                false,
+                s
+        );
+    }
+
     public static @NotNull Either<BigInteger, String> tryParseBigInteger(@NotNull String s) {
         try {
             return Either.ofA(new BigInteger(s));
@@ -833,6 +930,42 @@ public class Readers {
 
     public static @NotNull Either<Boolean, String> readBoolean(@NotNull String s) {
         s = s.trim();
+        Either<Boolean, String> result = tryBooleanOr(s);
+        if (result.whichSlot() == Either.Slot.A || !result.b().isEmpty()) {
+            return result;
+        }
+        result = tryBooleanAnd(s);
+        if (result.whichSlot() == Either.Slot.A || !result.b().isEmpty()) {
+            return result;
+        }
+        result = tryBigIntegerLessThanOrEqualTo(s);
+        if (result.whichSlot() == Either.Slot.A || !result.b().isEmpty()) {
+            return result;
+        }
+        result = tryBigIntegerGreaterThanOrEqualTo(s);
+        if (result.whichSlot() == Either.Slot.A || !result.b().isEmpty()) {
+            return result;
+        }
+        result = tryBigIntegerLessThan(s);
+        if (result.whichSlot() == Either.Slot.A || !result.b().isEmpty()) {
+            return result;
+        }
+        result = tryBigIntegerGreaterThan(s);
+        if (result.whichSlot() == Either.Slot.A || !result.b().isEmpty()) {
+            return result;
+        }
+        result = tryBigIntegerEqual(s);
+        if (result.whichSlot() == Either.Slot.A || !result.b().isEmpty()) {
+            return result;
+        }
+        result = tryBigIntegerNotEqual(s);
+        if (result.whichSlot() == Either.Slot.A || !result.b().isEmpty()) {
+            return result;
+        }
+        result = tryBooleanNot(s);
+        if (result.whichSlot() == Either.Slot.A || !result.b().isEmpty()) {
+            return result;
+        }
         return tryParseBoolean(s);
     }
 
