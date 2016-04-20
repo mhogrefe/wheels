@@ -1,8 +1,8 @@
 package mho.wheels.io;
 
 import mho.wheels.ordering.Ordering;
+import mho.wheels.structures.Either;
 import mho.wheels.structures.NullableOptional;
-import mho.wheels.structures.Pair;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.BufferedReader;
@@ -46,21 +46,6 @@ public class Readers {
      * Disallow instantiation
      */
     private Readers() {}
-
-    public static void main(String[] args) throws IOException {
-        BufferedReader lineReader = new BufferedReader(new InputStreamReader(System.in));
-        //noinspection InfiniteLoopStatement
-        while (true) {
-            System.out.print("> ");
-            String line = lineReader.readLine();
-            Optional<BigInteger> oi = readBigInteger(line);
-            if (!oi.isPresent()) {
-                System.out.println("Invalid input :(");
-            } else {
-                System.out.println(oi.get());
-            }
-        }
-    }
 
     /**
      * Turns a function {@code read} from {@code String} to {@code T} into a function from {@code String} to
@@ -214,309 +199,6 @@ public class Readers {
      */
     public static @NotNull Optional<BigInteger> readBigIntegerStrict(@NotNull String s) {
         return genericReadStrict(BigInteger::new).apply(s);
-    }
-
-    private static abstract class BigIntegerOperation implements BiFunction<BigInteger, BigInteger, Optional<BigInteger>> {
-        public abstract @NotNull String string();
-        public abstract @NotNull Optional<BigInteger> apply(@NotNull BigInteger a, @NotNull BigInteger b);
-    }
-
-    private static class Exponentiation extends BigIntegerOperation {
-        @Override
-        public @NotNull String string() {
-            return "^";
-        }
-
-        @Override
-        public @NotNull Optional<BigInteger> apply(@NotNull BigInteger a, @NotNull BigInteger b) {
-            try {
-                return Optional.of(a.pow(b.intValueExact()));
-            } catch (ArithmeticException e) {
-                return Optional.empty();
-            }
-        }
-    }
-
-    private static class Multiplication extends BigIntegerOperation {
-        @Override
-        public @NotNull String string() {
-            return "*";
-        }
-
-        @Override
-        public @NotNull Optional<BigInteger> apply(@NotNull BigInteger a, @NotNull BigInteger b) {
-            try {
-                return Optional.of(a.multiply(b));
-            } catch (ArithmeticException e) {
-                return Optional.empty();
-            }
-        }
-    }
-
-    private static class IntegerDivision extends BigIntegerOperation {
-        @Override
-        public @NotNull String string() {
-            return "//";
-        }
-
-        @Override
-        public @NotNull Optional<BigInteger> apply(@NotNull BigInteger a, @NotNull BigInteger b) {
-            try {
-                return Optional.of(a.divide(b));
-            } catch (ArithmeticException e) {
-                return Optional.empty();
-            }
-        }
-    }
-
-    private static class Mod extends BigIntegerOperation {
-        @Override
-        public @NotNull String string() {
-            return "%";
-        }
-
-        @Override
-        public @NotNull Optional<BigInteger> apply(@NotNull BigInteger a, @NotNull BigInteger b) {
-            try {
-                return Optional.of(a.mod(b));
-            } catch (ArithmeticException e) {
-                return Optional.empty();
-            }
-        }
-    }
-
-    private static class Addition extends BigIntegerOperation {
-        @Override
-        public @NotNull String string() {
-            return "+";
-        }
-
-        @Override
-        public @NotNull Optional<BigInteger> apply(@NotNull BigInteger a, @NotNull BigInteger b) {
-            try {
-                return Optional.of(a.add(b));
-            } catch (ArithmeticException e) {
-                return Optional.empty();
-            }
-        }
-    }
-
-    private static class Subtraction extends BigIntegerOperation {
-        @Override
-        public @NotNull String string() {
-            return "-";
-        }
-
-        @Override
-        public @NotNull Optional<BigInteger> apply(@NotNull BigInteger a, @NotNull BigInteger b) {
-            try {
-                return Optional.of(a.subtract(b));
-            } catch (ArithmeticException e) {
-                return Optional.empty();
-            }
-        }
-    }
-
-    private static class ShiftLeft extends BigIntegerOperation {
-        @Override
-        public @NotNull String string() {
-            return "<<";
-        }
-
-        @Override
-        public @NotNull Optional<BigInteger> apply(@NotNull BigInteger a, @NotNull BigInteger b) {
-            try {
-                return Optional.of(a.shiftLeft(b.intValueExact()));
-            } catch (ArithmeticException e) {
-                return Optional.empty();
-            }
-        }
-    }
-
-    private static class ShiftRight extends BigIntegerOperation {
-        @Override
-        public @NotNull String string() {
-            return ">>";
-        }
-
-        @Override
-        public @NotNull Optional<BigInteger> apply(@NotNull BigInteger a, @NotNull BigInteger b) {
-            try {
-                return Optional.of(a.shiftRight(b.intValueExact()));
-            } catch (ArithmeticException e) {
-                return Optional.empty();
-            }
-        }
-    }
-
-    private static class BitwiseAnd extends BigIntegerOperation {
-        @Override
-        public @NotNull String string() {
-            return "&";
-        }
-
-        @Override
-        public @NotNull Optional<BigInteger> apply(@NotNull BigInteger a, @NotNull BigInteger b) {
-            try {
-                return Optional.of(a.and(b));
-            } catch (ArithmeticException e) {
-                return Optional.empty();
-            }
-        }
-    }
-
-    private static class BitwiseXor extends BigIntegerOperation {
-        @Override
-        public @NotNull String string() {
-            return "^";
-        }
-
-        @Override
-        public @NotNull Optional<BigInteger> apply(@NotNull BigInteger a, @NotNull BigInteger b) {
-            try {
-                return Optional.of(a.xor(b));
-            } catch (ArithmeticException e) {
-                return Optional.empty();
-            }
-        }
-    }
-
-    private static class BitwiseOr extends BigIntegerOperation {
-        @Override
-        public @NotNull String string() {
-            return "|";
-        }
-
-        @Override
-        public @NotNull Optional<BigInteger> apply(@NotNull BigInteger a, @NotNull BigInteger b) {
-            try {
-                return Optional.of(a.or(b));
-            } catch (ArithmeticException e) {
-                return Optional.empty();
-            }
-        }
-    }
-
-    private static @NotNull Pair<Boolean, Optional<BigInteger>> evaluateBinaryOperation(
-            @NotNull List<BigIntegerOperation> operations,
-            boolean leftToRightAssociativity,
-            @NotNull String s
-    ) {
-        int parenthesisLevel = 0;
-        if (leftToRightAssociativity) {
-            for (int i = s.length() - 1; i >= 0; i--) {
-                switch (s.charAt(i)) {
-                    case ')':
-                        parenthesisLevel++;
-                        break;
-                    case '(':
-                        parenthesisLevel--;
-                        break;
-                    default:
-                        if (parenthesisLevel == 0) {
-                            for (BigIntegerOperation operation : operations) {
-                                String os = operation.string();
-                                if (s.startsWith(os, i)) {
-                                    Optional<BigInteger> leftValue = readBigInteger(s.substring(0, i));
-                                    if (!leftValue.isPresent()) {
-                                        return new Pair<>(true, Optional.empty());
-                                    }
-                                    Optional<BigInteger> rightValue = readBigInteger(s.substring(i + os.length()));
-                                    if (!rightValue.isPresent()) {
-                                        return new Pair<>(true, Optional.empty());
-                                    }
-                                    return new Pair<>(true, operation.apply(leftValue.get(), rightValue.get()));
-                                }
-                            }
-                        }
-                }
-            }
-        } else {
-            for (int i = 0; i < s.length(); i++) {
-                switch (s.charAt(i)) {
-                    case '(':
-                        parenthesisLevel++;
-                        break;
-                    case ')':
-                        parenthesisLevel--;
-                        break;
-                    default:
-                        if (parenthesisLevel == 0) {
-                            for (BigIntegerOperation operation : operations) {
-                                String os = operation.string();
-                                if (s.startsWith(os, i)) {
-                                    Optional<BigInteger> leftValue = readBigInteger(s.substring(0, i));
-                                    if (!leftValue.isPresent()) {
-                                        return new Pair<>(true, Optional.empty());
-                                    }
-                                    Optional<BigInteger> rightValue = readBigInteger(s.substring(i + os.length()));
-                                    if (!rightValue.isPresent()) {
-                                        return new Pair<>(true, Optional.empty());
-                                    }
-                                    return new Pair<>(true, operation.apply(leftValue.get(), rightValue.get()));
-                                }
-                            }
-                        }
-                }
-            }
-        }
-        return new Pair<>(false, Optional.empty());
-    }
-
-    public static @NotNull Optional<BigInteger> readBigInteger(@NotNull String s) {
-        s = s.trim();
-        if (s.isEmpty()) return Optional.empty();
-        if (head(s) == '(' && last(s) == ')') {
-            boolean surroundedByParentheses = true;
-            int parenthesisLevel = 1;
-            for (int i = 1; i < s.length() - 1; i++) {
-                switch (s.charAt(i)) {
-                    case '(':
-                        parenthesisLevel++;
-                        break;
-                    case ')':
-                        parenthesisLevel--;
-                        break;
-                }
-                if (parenthesisLevel == 0) {
-                    surroundedByParentheses = false;
-                    break;
-                }
-            }
-            if (surroundedByParentheses) {
-                return readBigInteger(s.substring(1, s.length() - 1));
-            }
-        }
-
-        Pair<Boolean, Optional<BigInteger>> result = evaluateBinaryOperation(
-                Collections.singletonList(new Exponentiation()),
-                false,
-                s
-        );
-        if (result.a) return result.b;
-        result = evaluateBinaryOperation(
-                Arrays.asList(new Multiplication(), new IntegerDivision(), new Mod()),
-                true,
-                s
-        );
-        if (result.a) return result.b;
-        result = evaluateBinaryOperation(Arrays.asList(new Addition(), new Subtraction()), true, s);
-        if (result.a) return result.b;
-        result = evaluateBinaryOperation(Arrays.asList(new ShiftLeft(), new ShiftRight()), true, s);
-        if (result.a) return result.b;
-        result = evaluateBinaryOperation(Collections.singletonList(new BitwiseAnd()), true, s);
-        if (result.a) return result.b;
-        result = evaluateBinaryOperation(Collections.singletonList(new BitwiseXor()), true, s);
-        if (result.a) return result.b;
-        result = evaluateBinaryOperation(Collections.singletonList(new BitwiseOr()), true, s);
-        if (result.a) return result.b;
-        if (head(s) == '-') return readBigInteger(tail(s)).map(BigInteger::negate);
-        if (head(s) == '~') return readBigInteger(tail(s)).map(BigInteger::not);
-        try {
-            return Optional.of(new BigInteger(s));
-        } catch (NumberFormatException e) {
-            return Optional.empty();
-        }
     }
 
     /**
@@ -823,5 +505,364 @@ public class Readers {
                     return false;
                 }
         );
+    }
+
+    public static @NotNull <T> Either<T, String> tryUnwrapParens(
+            @NotNull Function<String, Either<T, String>> parser,
+            @NotNull String s
+    ) {
+        if (s.isEmpty() || head(s) != '(' || last(s) != ')') {
+            return Either.ofB("");
+        }
+        boolean levelReachedZero = false;
+        int parenLevel = 1;
+        for (int i = 1; i < s.length() - 1; i++) {
+            switch (s.charAt(i)) {
+                case '(': parenLevel++; break;
+                case ')': parenLevel--; break;
+                default:
+                    if (parenLevel < 0) {
+                        return Either.ofB("parenthesis error: " + s);
+                    } else if (parenLevel == 0) {
+                        levelReachedZero = true;
+                        break;
+                    }
+            }
+        }
+        if (levelReachedZero) {
+            return Either.ofB("");
+        } else {
+            return parser.apply(s.substring(1, s.length() - 1));
+        }
+    }
+
+    public static @NotNull <A, B> Either<B, String> tryApplyUnaryOperation(
+            @NotNull Function<A, B> operation,
+            @NotNull String representation,
+            @NotNull Function<String, Either<A, String>> parser,
+            @NotNull String s) {
+        if (!s.startsWith(representation)) {
+            return Either.ofB("");
+        }
+        Either<A, String> sub = parser.apply(s.substring(representation.length()));
+        if (sub.whichSlot() == Either.Slot.A) {
+            try {
+                return Either.ofA(operation.apply(sub.a()));
+            } catch (Exception e) {
+                return Either.ofB(e.getMessage());
+            }
+        } else {
+            return Either.ofB(sub.b());
+        }
+    }
+
+    public static @NotNull Either<BigInteger, String> tryBigIntegerNegate(@NotNull String s) {
+        return tryApplyUnaryOperation(BigInteger::negate, "-", Readers::readBigInteger, s);
+    }
+
+    public static @NotNull Either<BigInteger, String> tryBigIntegerNot(@NotNull String s) {
+        return tryApplyUnaryOperation(BigInteger::not, "~", Readers::readBigInteger, s);
+    }
+
+    public static @NotNull <A, B, C> Either<C, String> tryApplyLeftAssociativeBinaryOperation(
+            @NotNull BiFunction<A, B, C> operation,
+            @NotNull String representation,
+            @NotNull Function<String, Either<A, String>> leftParser,
+            @NotNull Function<String, Either<B, String>> rightParser,
+            boolean tryAfterFailure,
+            @NotNull String s
+    ) {
+        int parenLevel = 0;
+        for (int i = s.length() - 1; i > 0; i--) { // skip first char to avoid confusion with unary operations
+            switch (s.charAt(i)) {
+                case ')': parenLevel++; break;
+                case '(': parenLevel--; break;
+                default:
+                    if (parenLevel == 0 && s.startsWith(representation, i)) {
+                        Either<A, String> leftSub = leftParser.apply(s.substring(0, i));
+                        if (leftSub.whichSlot() == Either.Slot.B) {
+                            if (tryAfterFailure) {
+                                continue;
+                            } else {
+                                return Either.ofB(leftSub.b());
+                            }
+                        }
+                        Either<B, String> rightSub = rightParser.apply(s.substring(i + representation.length()));
+                        if (rightSub.whichSlot() == Either.Slot.B) {
+                            if (tryAfterFailure) {
+                                continue;
+                            } else {
+                                return Either.ofB(rightSub.b());
+                            }
+                        }
+                        try {
+                            return Either.ofA(operation.apply(leftSub.a(), rightSub.a()));
+                        } catch (Exception e) {
+                            return Either.ofB(e.getMessage());
+                        }
+                    }
+            }
+        }
+        return Either.ofB("");
+    }
+
+    public static @NotNull <A, B, C> Either<C, String> tryApplyRightAssociativeBinaryOperation(
+            @NotNull BiFunction<A, B, C> operation,
+            @NotNull String representation,
+            @NotNull Function<String, Either<A, String>> leftParser,
+            @NotNull Function<String, Either<B, String>> rightParser,
+            boolean tryAfterFailure,
+            @NotNull String s
+    ) {
+        int parenLevel = 0;
+        for (int i = 0; i < s.length(); i++) {
+            switch (s.charAt(i)) {
+                case '(': parenLevel++; break;
+                case ')': parenLevel--; break;
+                default:
+                    if (parenLevel == 0 && s.startsWith(representation, i)) {
+                        Either<A, String> leftSub = leftParser.apply(s.substring(0, i));
+                        if (leftSub.whichSlot() == Either.Slot.B) {
+                            if (tryAfterFailure) {
+                                continue;
+                            } else {
+                                return Either.ofB(leftSub.b());
+                            }
+                        }
+                        Either<B, String> rightSub =
+                                rightParser.apply(s.substring(i + representation.length()));
+                        if (rightSub.whichSlot() == Either.Slot.B) {
+                            if (tryAfterFailure) {
+                                continue;
+                            } else {
+                                return Either.ofB(rightSub.b());
+                            }
+                        }
+                        try {
+                            return Either.ofA(operation.apply(leftSub.a(), rightSub.a()));
+                        } catch (Exception e) {
+                            return Either.ofB(e.getMessage());
+                        }
+                    }
+            }
+        }
+        return Either.ofB("");
+    }
+
+    public static @NotNull Either<BigInteger, String> tryBigIntegerPow(@NotNull String s) {
+        return tryApplyRightAssociativeBinaryOperation(
+                BigInteger::pow,
+                "^",
+                Readers::readBigInteger,
+                Readers::readInteger,
+                false,
+                s
+        );
+    }
+
+    public static @NotNull Either<BigInteger, String> tryBigIntegerMultiply(@NotNull String s) {
+        return tryApplyLeftAssociativeBinaryOperation(
+                BigInteger::multiply,
+                "*",
+                Readers::readBigInteger,
+                Readers::readBigInteger,
+                false,
+                s
+        );
+    }
+
+    public static @NotNull Either<BigInteger, String> tryBigIntegerIntegerDivide(@NotNull String s) {
+        return tryApplyLeftAssociativeBinaryOperation(
+                BigInteger::divide,
+                "//",
+                Readers::readBigInteger,
+                Readers::readBigInteger,
+                false,
+                s
+        );
+    }
+
+    public static @NotNull Either<BigInteger, String> tryBigIntegerMod(@NotNull String s) {
+        return tryApplyLeftAssociativeBinaryOperation(
+                BigInteger::mod,
+                "%",
+                Readers::readBigInteger,
+                Readers::readBigInteger,
+                false,
+                s
+        );
+    }
+
+    public static @NotNull Either<BigInteger, String> tryBigIntegerAdd(@NotNull String s) {
+        return tryApplyLeftAssociativeBinaryOperation(
+                BigInteger::add,
+                "+",
+                Readers::readBigInteger,
+                Readers::readBigInteger,
+                false,
+                s
+        );
+    }
+
+    public static @NotNull Either<BigInteger, String> tryBigIntegerSubtract(@NotNull String s) {
+        return tryApplyLeftAssociativeBinaryOperation(
+                BigInteger::subtract,
+                "-",
+                Readers::readBigInteger,
+                Readers::readBigInteger,
+                true,
+                s
+        );
+    }
+
+    public static @NotNull Either<BigInteger, String> tryBigIntegerShiftLeft(@NotNull String s) {
+        return tryApplyLeftAssociativeBinaryOperation(
+                BigInteger::shiftLeft,
+                "<<",
+                Readers::readBigInteger,
+                Readers::readInteger,
+                false,
+                s
+        );
+    }
+
+    public static @NotNull Either<BigInteger, String> tryBigIntegerShiftRight(@NotNull String s) {
+        return tryApplyLeftAssociativeBinaryOperation(
+                BigInteger::shiftRight,
+                ">>",
+                Readers::readBigInteger,
+                Readers::readInteger,
+                false,
+                s
+        );
+    }
+
+    public static @NotNull Either<BigInteger, String> tryBigIntegerBitwiseAnd(@NotNull String s) {
+        return tryApplyLeftAssociativeBinaryOperation(
+                BigInteger::and,
+                ".&.",
+                Readers::readBigInteger,
+                Readers::readBigInteger,
+                false,
+                s
+        );
+    }
+
+    public static @NotNull Either<BigInteger, String> tryBigIntegerBitwiseXor(@NotNull String s) {
+        return tryApplyLeftAssociativeBinaryOperation(
+                BigInteger::xor,
+                ".^.",
+                Readers::readBigInteger,
+                Readers::readBigInteger,
+                false,
+                s
+        );
+    }
+
+    public static @NotNull Either<BigInteger, String> tryBigIntegerBitwiseOr(@NotNull String s) {
+        return tryApplyLeftAssociativeBinaryOperation(
+                BigInteger::or,
+                ".|.",
+                Readers::readBigInteger,
+                Readers::readBigInteger,
+                false,
+                s
+        );
+    }
+
+    public static @NotNull Either<BigInteger, String> tryParseBigInteger(@NotNull String s) {
+        try {
+            return Either.ofA(new BigInteger(s));
+        } catch (Exception e) {
+            return Either.ofB(e.getMessage());
+        }
+    }
+
+    public static @NotNull Either<BigInteger, String> readBigInteger(@NotNull String s) {
+        s = s.trim();
+        Either<BigInteger, String> result = tryUnwrapParens(Readers::readBigInteger, s);
+        if (result.whichSlot() == Either.Slot.A || !result.b().isEmpty()) {
+            return result;
+        }
+        result = tryBigIntegerBitwiseAnd(s);
+        if (result.whichSlot() == Either.Slot.A || !result.b().isEmpty()) {
+            return result;
+        }
+        result = tryBigIntegerBitwiseXor(s);
+        if (result.whichSlot() == Either.Slot.A || !result.b().isEmpty()) {
+            return result;
+        }
+        result = tryBigIntegerBitwiseOr(s);
+        if (result.whichSlot() == Either.Slot.A || !result.b().isEmpty()) {
+            return result;
+        }
+        result = tryBigIntegerShiftLeft(s);
+        if (result.whichSlot() == Either.Slot.A || !result.b().isEmpty()) {
+            return result;
+        }
+        result = tryBigIntegerShiftRight(s);
+        if (result.whichSlot() == Either.Slot.A || !result.b().isEmpty()) {
+            return result;
+        }
+        result = tryBigIntegerAdd(s);
+        if (result.whichSlot() == Either.Slot.A || !result.b().isEmpty()) {
+            return result;
+        }
+        result = tryBigIntegerSubtract(s);
+        if (result.whichSlot() == Either.Slot.A || !result.b().isEmpty()) {
+            return result;
+        }
+        result = tryBigIntegerMultiply(s);
+        if (result.whichSlot() == Either.Slot.A || !result.b().isEmpty()) {
+            return result;
+        }
+        result = tryBigIntegerIntegerDivide(s);
+        if (result.whichSlot() == Either.Slot.A || !result.b().isEmpty()) {
+            return result;
+        }
+        result = tryBigIntegerMod(s);
+        if (result.whichSlot() == Either.Slot.A || !result.b().isEmpty()) {
+            return result;
+        }
+        result = tryBigIntegerPow(s);
+        if (result.whichSlot() == Either.Slot.A || !result.b().isEmpty()) {
+            return result;
+        }
+        result = tryBigIntegerNegate(s);
+        if (result.whichSlot() == Either.Slot.A || !result.b().isEmpty()) {
+            return result;
+        }
+        result = tryBigIntegerNot(s);
+        if (result.whichSlot() == Either.Slot.A || !result.b().isEmpty()) {
+            return result;
+        }
+        return tryParseBigInteger(s);
+    }
+
+    public static @NotNull Either<Integer, String> readInteger(@NotNull String s) {
+        Either<BigInteger, String> bi = readBigInteger(s);
+        if (bi.whichSlot() == Either.Slot.B) {
+            return Either.ofB(bi.b());
+        }
+        try {
+            return Either.ofA(bi.a().intValueExact());
+        } catch (ArithmeticException e) {
+            return Either.ofB(e.getMessage());
+        }
+    }
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader lineReader = new BufferedReader(new InputStreamReader(System.in));
+        //noinspection InfiniteLoopStatement
+        while (true) {
+            System.out.print("> ");
+            String line = lineReader.readLine();
+            Either<BigInteger, String> result = readBigInteger(line);
+            if (result.whichSlot() == Either.Slot.B) {
+                System.out.println("Error: " + result.b());
+            } else {
+                System.out.println(result.a());
+            }
+        }
     }
 }
