@@ -13,6 +13,7 @@ Progress
 |:--------------------------- |:-------:|:-------:|:-----:|:-----:|:----------:|
 | ConcurrencyUtils            | ✔       | ✘       | ✘     | ✘     | ✘          |
 | ResultCache                 | ✔       | ✘       | ✘     | ✘     | ✘          |
+| Interpreter                 | ✘       | ✘       | ✘     | ✘     | ✘          |
 | Readers                     | ✔       | ✘       | ✘     | ✘     | ✘          |
 | TextInput                   | ✔       | ✘       | ✘     | ✘     | ✘          |
 | TextOutput                  | ✔       | ✘       | ✘     | ✘     | ✘          |
