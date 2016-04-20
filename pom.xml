@@ -30,7 +30,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>mho.wheels.io.Readers</mainClass>
+                            <mainClass>mho.wheels.io.Interpreter</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
