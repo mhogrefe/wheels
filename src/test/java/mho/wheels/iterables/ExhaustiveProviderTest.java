@@ -2104,7 +2104,12 @@ public strictfp class ExhaustiveProviderTest {
         simpleProviderHelper(EP.listsShortlexAtLeast(minSize, readIntegerListWithNulls(input)), output);
     }
 
-    //todo continue cleanup
+    private static void listsShortlexAtLeast_fail_helper(int minSize, @NotNull String input) {
+        try {
+            EP.listsShortlexAtLeast(minSize, readIntegerListWithNulls(input));
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+    }
 
     @Test
     public void testListsShortlexAtLeast() {
@@ -2127,18 +2132,20 @@ public strictfp class ExhaustiveProviderTest {
         listsShortlexAtLeast_helper(1, "[1, null, 3]", "ExhaustiveProvider_listsShortlexAtLeast_xiv");
         listsShortlexAtLeast_helper(2, "[1, null, 3]", "ExhaustiveProvider_listsShortlexAtLeast_xv");
         listsShortlexAtLeast_helper(3, "[1, null, 3]", "ExhaustiveProvider_listsShortlexAtLeast_xvi");
-        try {
-            EP.listsShortlexAtLeast(-1, Collections.emptyList());
-            fail();
-        } catch (IllegalArgumentException ignored) {}
-        try {
-            EP.listsShortlexAtLeast(-1, Arrays.asList(1, 2, 3));
-            fail();
-        } catch (IllegalArgumentException ignored) {}
+
+        listsShortlexAtLeast_fail_helper(-1, "[]");
+        listsShortlexAtLeast_fail_helper(-1, "[1, 2, 3]");
     }
 
     private static void stringsShortlexAtLeast_helper(int minSize, @NotNull String input, @NotNull String output) {
         simpleProviderHelper(EP.stringsShortlexAtLeast(minSize, input), output);
+    }
+
+    private static void stringsShortlexAtLeast_fail_helper(int minSize, @NotNull String input) {
+        try {
+            EP.stringsShortlexAtLeast(minSize, input);
+            fail();
+        } catch (IllegalArgumentException ignored) {}
     }
 
     @Test
@@ -2167,14 +2174,9 @@ public strictfp class ExhaustiveProviderTest {
         stringsShortlexAtLeast_helper(1, "Mississippi", "ExhaustiveProvider_stringsShortlexAtLeast_xviii");
         stringsShortlexAtLeast_helper(2, "Mississippi", "ExhaustiveProvider_stringsShortlexAtLeast_xix");
         stringsShortlexAtLeast_helper(3, "Mississippi", "ExhaustiveProvider_stringsShortlexAtLeast_xx");
-        try {
-            EP.stringsShortlexAtLeast(-1, "");
-            fail();
-        } catch (IllegalArgumentException ignored) {}
-        try {
-            EP.stringsShortlexAtLeast(-1, "abc");
-            fail();
-        } catch (IllegalArgumentException ignored) {}
+
+        stringsShortlexAtLeast_fail_helper(-1, "");
+        stringsShortlexAtLeast_fail_helper(-1, "abc");
     }
 
     private static void lists_int_Iterable_helper(int size, @NotNull String input, @NotNull String output) {
@@ -2183,6 +2185,13 @@ public strictfp class ExhaustiveProviderTest {
 
     private static void lists_int_Iterable_helper(int size, @NotNull Iterable<Integer> input, @NotNull String output) {
         simpleProviderHelper(EP.lists(size, input), output);
+    }
+
+    private static void lists_int_Iterable_fail_helper(int size, @NotNull String input) {
+        try {
+            EP.lists(size, readIntegerListWithNulls(input));
+            fail();
+        } catch (IllegalArgumentException ignored) {}
     }
 
     @Test
@@ -2222,14 +2231,8 @@ public strictfp class ExhaustiveProviderTest {
         lists_int_Iterable_helper(2, repeat(1), "ExhaustiveProvider_lists_int_Iterable_xxvii");
         lists_int_Iterable_helper(3, repeat(1), "ExhaustiveProvider_lists_int_Iterable_xxviii");
 
-        try {
-            EP.lists(-1, Collections.emptyList());
-            fail();
-        } catch (IllegalArgumentException ignored) {}
-        try {
-            EP.lists(-1, Arrays.asList(1, 2, 3));
-            fail();
-        } catch (IllegalArgumentException ignored) {}
+        lists_int_Iterable_fail_helper(-1, "[]");
+        lists_int_Iterable_fail_helper(-1, "[1, 2, 3]");
     }
 
     private static <A, B> void pairs_Iterable_Iterable_helper(
@@ -2237,9 +2240,15 @@ public strictfp class ExhaustiveProviderTest {
             @NotNull Iterable<B> bs,
             @NotNull String output
     ) {
-        Iterable<Pair<A, B>> ps = EP.pairs(as, bs);
-        aeqitLog(ps, output);
-        testNoRemove(ps);
+        aeqitLog(EP.pairs(as, bs), output);
+    }
+
+    private static <A, B> void pairs_Iterable_Iterable_limit_helper(
+            @NotNull Iterable<A> as,
+            @NotNull Iterable<B> bs,
+            @NotNull String output
+    ) {
+        simpleProviderHelper(EP.pairs(as, bs), output);
     }
 
     @Test
@@ -2252,11 +2261,12 @@ public strictfp class ExhaustiveProviderTest {
                 "ExhaustiveProvider_pairs_Iterable_Iterable_iii");
         pairs_Iterable_Iterable_helper(Collections.emptyList(), Collections.emptyList(),
                 "ExhaustiveProvider_pairs_Iterable_Iterable_iv");
-        simpleProviderHelper(EP.pairs(EP.naturalBigIntegers(), fromString("abcd")),
+
+        pairs_Iterable_Iterable_limit_helper(EP.naturalBigIntegers(), fromString("abcd"),
                 "ExhaustiveProvider_pairs_Iterable_Iterable_v");
-        simpleProviderHelper(EP.pairs(fromString("abcd"), EP.naturalBigIntegers()),
+        pairs_Iterable_Iterable_limit_helper(fromString("abcd"), EP.naturalBigIntegers(),
                 "ExhaustiveProvider_pairs_Iterable_Iterable_vi");
-        simpleProviderHelper(EP.pairs(EP.positiveBigIntegers(), EP.negativeBigIntegers()),
+        pairs_Iterable_Iterable_limit_helper(EP.positiveBigIntegers(), EP.negativeBigIntegers(),
                 "ExhaustiveProvider_pairs_Iterable_Iterable_vii");
     }
 
@@ -2285,9 +2295,16 @@ public strictfp class ExhaustiveProviderTest {
             @NotNull Iterable<C> cs,
             @NotNull String output
     ) {
-        Iterable<Triple<A, B, C>> ts = EP.triples(as, bs, cs);
-        aeqitLog(ts, output);
-        testNoRemove(ts);
+        aeqitLog(EP.triples(as, bs, cs), output);
+    }
+
+    private static <A, B, C> void triples_Iterable_Iterable_Iterable_limit_helper(
+            @NotNull Iterable<A> as,
+            @NotNull Iterable<B> bs,
+            @NotNull Iterable<C> cs,
+            @NotNull String output
+    ) {
+        simpleProviderHelper(EP.triples(as, bs, cs), output);
     }
 
     @Test
@@ -2303,12 +2320,17 @@ public strictfp class ExhaustiveProviderTest {
                 Collections.emptyList(),
                 "ExhaustiveProvider_triples_Iterable_Iterable_Iterable_iii"
         );
-        simpleProviderHelper(EP.triples(EP.naturalBigIntegers(), fromString("abcd"), EP.booleans()),
+
+        triples_Iterable_Iterable_Iterable_limit_helper(EP.naturalBigIntegers(), fromString("abcd"), EP.booleans(),
                 "ExhaustiveProvider_triples_Iterable_Iterable_Iterable_iv");
-        simpleProviderHelper(EP.triples(fromString("abcd"), EP.booleans(), EP.naturalBigIntegers()),
+        triples_Iterable_Iterable_Iterable_limit_helper(fromString("abcd"), EP.booleans(), EP.naturalBigIntegers(),
                 "ExhaustiveProvider_triples_Iterable_Iterable_Iterable_v");
-        simpleProviderHelper(EP.triples(EP.positiveBigIntegers(), EP.negativeBigIntegers(), EP.characters()),
-                "ExhaustiveProvider_triples_Iterable_Iterable_Iterable_vi");
+        triples_Iterable_Iterable_Iterable_limit_helper(
+                EP.positiveBigIntegers(),
+                EP.negativeBigIntegers(),
+                EP.characters(),
+                "ExhaustiveProvider_triples_Iterable_Iterable_Iterable_vi"
+        );
     }
 
     private static void triples_Iterable_helper(@NotNull String input, @NotNull String output) {
@@ -2337,9 +2359,17 @@ public strictfp class ExhaustiveProviderTest {
             @NotNull Iterable<D> ds,
             @NotNull String output
     ) {
-        Iterable<Quadruple<A, B, C, D>> qs = EP.quadruples(as, bs, cs, ds);
-        aeqitLog(qs, output);
-        testNoRemove(qs);
+        aeqitLog(EP.quadruples(as, bs, cs, ds), output);
+    }
+
+    private static <A, B, C, D> void quadruples_Iterable_Iterable_Iterable_Iterable_limit_helper(
+            @NotNull Iterable<A> as,
+            @NotNull Iterable<B> bs,
+            @NotNull Iterable<C> cs,
+            @NotNull Iterable<D> ds,
+            @NotNull String output
+    ) {
+        simpleProviderHelper(EP.quadruples(as, bs, cs, ds), output);
     }
 
     @Test
@@ -2372,13 +2402,28 @@ public strictfp class ExhaustiveProviderTest {
                 Collections.emptyList(),
                 "ExhaustiveProvider_quadruples_Iterable_Iterable_Iterable_Iterable_iv"
         );
-        simpleProviderHelper(EP.quadruples(EP.naturalBigIntegers(), fromString("abcd"), EP.booleans(), EP.orderings()),
-                "ExhaustiveProvider_quadruples_Iterable_Iterable_Iterable_Iterable_v");
-        simpleProviderHelper(EP.quadruples(fromString("abcd"), EP.booleans(), EP.naturalBigIntegers(), EP.orderings()),
-                "ExhaustiveProvider_quadruples_Iterable_Iterable_Iterable_Iterable_vi");
-        simpleProviderHelper(
-                EP.quadruples(EP.positiveBigIntegers(), EP.negativeBigIntegers(), EP.characters(), EP.strings()),
-                "ExhaustiveProvider_quadruples_Iterable_Iterable_Iterable_Iterable_vii");
+
+        quadruples_Iterable_Iterable_Iterable_Iterable_limit_helper(
+                EP.naturalBigIntegers(),
+                fromString("abcd"),
+                EP.booleans(),
+                EP.orderings(),
+                "ExhaustiveProvider_quadruples_Iterable_Iterable_Iterable_Iterable_v"
+        );
+        quadruples_Iterable_Iterable_Iterable_Iterable_limit_helper(
+                fromString("abcd"),
+                EP.booleans(),
+                EP.naturalBigIntegers(),
+                EP.orderings(),
+                "ExhaustiveProvider_quadruples_Iterable_Iterable_Iterable_Iterable_vi"
+        );
+        quadruples_Iterable_Iterable_Iterable_Iterable_limit_helper(
+                EP.positiveBigIntegers(),
+                EP.negativeBigIntegers(),
+                EP.characters(),
+                EP.strings(),
+                "ExhaustiveProvider_quadruples_Iterable_Iterable_Iterable_Iterable_vii"
+        );
     }
 
     private static void quadruples_Iterable_helper(@NotNull String input, @NotNull String output) {
@@ -2408,9 +2453,18 @@ public strictfp class ExhaustiveProviderTest {
             @NotNull Iterable<E> es,
             @NotNull String output
     ) {
-        Iterable<Quintuple<A, B, C, D, E>> qs = EP.quintuples(as, bs, cs, ds, es);
-        aeqitLog(qs, output);
-        testNoRemove(qs);
+        aeqitLog(EP.quintuples(as, bs, cs, ds, es), output);
+    }
+
+    private static <A, B, C, D, E> void quintuples_Iterable_Iterable_Iterable_Iterable_Iterable_limit_helper(
+            @NotNull Iterable<A> as,
+            @NotNull Iterable<B> bs,
+            @NotNull Iterable<C> cs,
+            @NotNull Iterable<D> ds,
+            @NotNull Iterable<E> es,
+            @NotNull String output
+    ) {
+        simpleProviderHelper(EP.quintuples(as, bs, cs, ds, es), output);
     }
 
     @Test
@@ -2447,34 +2501,29 @@ public strictfp class ExhaustiveProviderTest {
                 Collections.emptyList(),
                 "ExhaustiveProvider_quintuples_Iterable_Iterable_Iterable_Iterable_Iterable_iv"
         );
-        simpleProviderHelper(
-                EP.quintuples(
-                        EP.naturalBigIntegers(),
-                        fromString("abcd"),
-                        EP.booleans(),
-                        EP.orderings(),
-                        Arrays.asList("yes", "no")
-                ),
+
+        quintuples_Iterable_Iterable_Iterable_Iterable_Iterable_limit_helper(
+                EP.naturalBigIntegers(),
+                fromString("abcd"),
+                EP.booleans(),
+                EP.orderings(),
+                Arrays.asList("yes", "no"),
                 "ExhaustiveProvider_quintuples_Iterable_Iterable_Iterable_Iterable_Iterable_v"
         );
-        simpleProviderHelper(
-                EP.quintuples(
-                        fromString("abcd"),
-                        EP.booleans(),
-                        EP.naturalBigIntegers(),
-                        EP.orderings(),
-                        Arrays.asList("yes", "no")
-                ),
+        quintuples_Iterable_Iterable_Iterable_Iterable_Iterable_limit_helper(
+                fromString("abcd"),
+                EP.booleans(),
+                EP.naturalBigIntegers(),
+                EP.orderings(),
+                Arrays.asList("yes", "no"),
                 "ExhaustiveProvider_quintuples_Iterable_Iterable_Iterable_Iterable_Iterable_vi"
         );
-        simpleProviderHelper(
-                EP.quintuples(
-                        EP.positiveBigIntegers(),
-                        EP.negativeBigIntegers(),
-                        EP.characters(),
-                        EP.strings(),
-                        EP.floats()
-                ),
+        quintuples_Iterable_Iterable_Iterable_Iterable_Iterable_limit_helper(
+                EP.positiveBigIntegers(),
+                EP.negativeBigIntegers(),
+                EP.characters(),
+                EP.strings(),
+                EP.floats(),
                 "ExhaustiveProvider_quintuples_Iterable_Iterable_Iterable_Iterable_Iterable_vii"
         );
     }
@@ -2507,9 +2556,20 @@ public strictfp class ExhaustiveProviderTest {
             @NotNull Iterable<F> fs,
             @NotNull String output
     ) {
-        Iterable<Sextuple<A, B, C, D, E, F>> ss = EP.sextuples(as, bs, cs, ds, es, fs);
-        aeqitLog(ss, output);
-        testNoRemove(ss);
+        aeqitLog(EP.sextuples(as, bs, cs, ds, es, fs), output);
+    }
+
+    private static <A, B, C, D, E, F> void
+            sextuples_Iterable_Iterable_Iterable_Iterable_Iterable_Iterable_limit_helper(
+            @NotNull Iterable<A> as,
+            @NotNull Iterable<B> bs,
+            @NotNull Iterable<C> cs,
+            @NotNull Iterable<D> ds,
+            @NotNull Iterable<E> es,
+            @NotNull Iterable<F> fs,
+            @NotNull String output
+    ) {
+        simpleProviderHelper(EP.sextuples(as, bs, cs, ds, es, fs), output);
     }
 
     @Test
@@ -2550,37 +2610,32 @@ public strictfp class ExhaustiveProviderTest {
                 Collections.emptyList(),
                 "ExhaustiveProvider_sextuples_Iterable_Iterable_Iterable_Iterable_Iterable_Iterable_iv"
         );
-        simpleProviderHelper(
-                EP.sextuples(
-                        EP.naturalBigIntegers(),
-                        fromString("abcd"),
-                        EP.booleans(),
-                        EP.orderings(),
-                        Arrays.asList("yes", "no"),
-                        Arrays.asList(Float.POSITIVE_INFINITY, Float.NaN)
-                ),
+
+        sextuples_Iterable_Iterable_Iterable_Iterable_Iterable_Iterable_limit_helper(
+                EP.naturalBigIntegers(),
+                fromString("abcd"),
+                EP.booleans(),
+                EP.orderings(),
+                Arrays.asList("yes", "no"),
+                Arrays.asList(Float.POSITIVE_INFINITY, Float.NaN),
                 "ExhaustiveProvider_sextuples_Iterable_Iterable_Iterable_Iterable_Iterable_Iterable_v"
         );
-        simpleProviderHelper(
-                EP.sextuples(
-                        fromString("abcd"),
-                        EP.booleans(),
-                        EP.naturalBigIntegers(),
-                        EP.orderings(),
-                        Arrays.asList("yes", "no"),
-                        Arrays.asList(Float.POSITIVE_INFINITY, Float.NaN)
-                ),
+        sextuples_Iterable_Iterable_Iterable_Iterable_Iterable_Iterable_limit_helper(
+                fromString("abcd"),
+                EP.booleans(),
+                EP.naturalBigIntegers(),
+                EP.orderings(),
+                Arrays.asList("yes", "no"),
+                Arrays.asList(Float.POSITIVE_INFINITY, Float.NaN),
                 "ExhaustiveProvider_sextuples_Iterable_Iterable_Iterable_Iterable_Iterable_Iterable_vi"
         );
-        simpleProviderHelper(
-                EP.sextuples(
-                        EP.positiveBigIntegers(),
-                        EP.negativeBigIntegers(),
-                        EP.characters(),
-                        EP.strings(),
-                        EP.floats(),
-                        EP.lists(EP.integers())
-                ),
+        sextuples_Iterable_Iterable_Iterable_Iterable_Iterable_Iterable_limit_helper(
+                EP.positiveBigIntegers(),
+                EP.negativeBigIntegers(),
+                EP.characters(),
+                EP.strings(),
+                EP.floats(),
+                EP.lists(EP.integers()),
                 "ExhaustiveProvider_sextuples_Iterable_Iterable_Iterable_Iterable_Iterable_Iterable_vii"
         );
     }
@@ -2615,9 +2670,21 @@ public strictfp class ExhaustiveProviderTest {
             @NotNull Iterable<G> gs,
             @NotNull String output
     ) {
-        Iterable<Septuple<A, B, C, D, E, F, G>> ss = EP.septuples(as, bs, cs, ds, es, fs, gs);
-        aeqitLog(ss, output);
-        testNoRemove(ss);
+        aeqitLog(EP.septuples(as, bs, cs, ds, es, fs, gs), output);
+    }
+
+    private static <A, B, C, D, E, F, G> void
+        septuples_Iterable_Iterable_Iterable_Iterable_Iterable_Iterable_Iterable_limit_helper(
+            @NotNull Iterable<A> as,
+            @NotNull Iterable<B> bs,
+            @NotNull Iterable<C> cs,
+            @NotNull Iterable<D> ds,
+            @NotNull Iterable<E> es,
+            @NotNull Iterable<F> fs,
+            @NotNull Iterable<G> gs,
+            @NotNull String output
+    ) {
+        simpleProviderHelper(EP.septuples(as, bs, cs, ds, es, fs, gs), output);
     }
 
     @Test
@@ -2664,40 +2731,35 @@ public strictfp class ExhaustiveProviderTest {
                 Collections.emptyList(),
                 "ExhaustiveProvider_septuples_Iterable_Iterable_Iterable_Iterable_Iterable_Iterable_Iterable_iv"
         );
-        simpleProviderHelper(
-                EP.septuples(
-                        EP.naturalBigIntegers(),
-                        fromString("abcd"),
-                        EP.booleans(),
-                        EP.orderings(),
-                        Arrays.asList("yes", "no"),
-                        Arrays.asList(Float.POSITIVE_INFINITY, Float.NaN),
-                        Arrays.asList(x, y)
-                ),
+
+        septuples_Iterable_Iterable_Iterable_Iterable_Iterable_Iterable_Iterable_limit_helper(
+                EP.naturalBigIntegers(),
+                fromString("abcd"),
+                EP.booleans(),
+                EP.orderings(),
+                Arrays.asList("yes", "no"),
+                Arrays.asList(Float.POSITIVE_INFINITY, Float.NaN),
+                Arrays.asList(x, y),
                 "ExhaustiveProvider_septuples_Iterable_Iterable_Iterable_Iterable_Iterable_Iterable_Iterable_v"
         );
-        simpleProviderHelper(
-                EP.septuples(
-                        fromString("abcd"),
-                        EP.booleans(),
-                        EP.naturalBigIntegers(),
-                        EP.orderings(),
-                        Arrays.asList("yes", "no"),
-                        Arrays.asList(Float.POSITIVE_INFINITY, Float.NaN),
-                        Arrays.asList(x, y)
-                ),
+        septuples_Iterable_Iterable_Iterable_Iterable_Iterable_Iterable_Iterable_limit_helper(
+                fromString("abcd"),
+                EP.booleans(),
+                EP.naturalBigIntegers(),
+                EP.orderings(),
+                Arrays.asList("yes", "no"),
+                Arrays.asList(Float.POSITIVE_INFINITY, Float.NaN),
+                Arrays.asList(x, y),
                 "ExhaustiveProvider_septuples_Iterable_Iterable_Iterable_Iterable_Iterable_Iterable_Iterable_vi"
         );
-        simpleProviderHelper(
-                EP.septuples(
-                        EP.positiveBigIntegers(),
-                        EP.negativeBigIntegers(),
-                        EP.characters(),
-                        EP.strings(),
-                        EP.floats(),
-                        EP.lists(EP.integers()),
-                        EP.bigDecimals()
-                ),
+        septuples_Iterable_Iterable_Iterable_Iterable_Iterable_Iterable_Iterable_limit_helper(
+                EP.positiveBigIntegers(),
+                EP.negativeBigIntegers(),
+                EP.characters(),
+                EP.strings(),
+                EP.floats(),
+                EP.lists(EP.integers()),
+                EP.bigDecimals(),
                 "ExhaustiveProvider_septuples_Iterable_Iterable_Iterable_Iterable_Iterable_Iterable_Iterable_vii"
         );
     }
@@ -2720,6 +2782,8 @@ public strictfp class ExhaustiveProviderTest {
         septuples_Iterable_helper(EP.naturalIntegers(), "ExhaustiveProvider_septuples_Iterable_vi");
         septuples_Iterable_helper(repeat(1), "ExhaustiveProvider_septuples_Iterable_vii");
     }
+
+    //todo continue cleanup
 
     private static void strings_int_String_helper(int size, @NotNull String input, @NotNull String output) {
         aeqitLog(EP.strings(size, input), output);
