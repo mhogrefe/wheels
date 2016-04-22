@@ -2270,12 +2270,12 @@ public strictfp class ExhaustiveProviderTest {
                 "ExhaustiveProvider_pairs_Iterable_Iterable_vii");
     }
 
-    private static void pairs_Iterable_helper(@NotNull String input, @NotNull String output) {
-        simpleProviderHelper(EP.pairs(readIntegerListWithNulls(input)), output);
-    }
-
     private static void pairs_Iterable_helper(@NotNull Iterable<Integer> input, @NotNull String output) {
         simpleProviderHelper(EP.pairs(input), output);
+    }
+
+    private static void pairs_Iterable_helper(@NotNull String input, @NotNull String output) {
+        pairs_Iterable_helper(readIntegerListWithNulls(input), output);
     }
 
     @Test
@@ -2333,12 +2333,12 @@ public strictfp class ExhaustiveProviderTest {
         );
     }
 
-    private static void triples_Iterable_helper(@NotNull String input, @NotNull String output) {
-        simpleProviderHelper(EP.triples(readIntegerListWithNulls(input)), output);
-    }
-
     private static void triples_Iterable_helper(@NotNull Iterable<Integer> input, @NotNull String output) {
         simpleProviderHelper(EP.triples(input), output);
+    }
+
+    private static void triples_Iterable_helper(@NotNull String input, @NotNull String output) {
+        triples_Iterable_helper(readIntegerListWithNulls(input), output);
     }
 
     @Test
@@ -2426,12 +2426,12 @@ public strictfp class ExhaustiveProviderTest {
         );
     }
 
-    private static void quadruples_Iterable_helper(@NotNull String input, @NotNull String output) {
-        simpleProviderHelper(EP.quadruples(readIntegerListWithNulls(input)), output);
-    }
-
     private static void quadruples_Iterable_helper(@NotNull Iterable<Integer> input, @NotNull String output) {
         simpleProviderHelper(EP.quadruples(input), output);
+    }
+
+    private static void quadruples_Iterable_helper(@NotNull String input, @NotNull String output) {
+        quadruples_Iterable_helper(readIntegerListWithNulls(input), output);
     }
 
     @Test
@@ -2528,12 +2528,12 @@ public strictfp class ExhaustiveProviderTest {
         );
     }
 
-    private static void quintuples_Iterable_helper(@NotNull String input, @NotNull String output) {
-        simpleProviderHelper(EP.quintuples(readIntegerListWithNulls(input)), output);
-    }
-
     private static void quintuples_Iterable_helper(@NotNull Iterable<Integer> input, @NotNull String output) {
         simpleProviderHelper(EP.quintuples(input), output);
+    }
+
+    private static void quintuples_Iterable_helper(@NotNull String input, @NotNull String output) {
+        quintuples_Iterable_helper(readIntegerListWithNulls(input), output);
     }
 
     @Test
@@ -2640,12 +2640,12 @@ public strictfp class ExhaustiveProviderTest {
         );
     }
 
-    private static void sextuples_Iterable_helper(@NotNull String input, @NotNull String output) {
-        simpleProviderHelper(EP.sextuples(readIntegerListWithNulls(input)), output);
-    }
-
     private static void sextuples_Iterable_helper(@NotNull Iterable<Integer> input, @NotNull String output) {
         simpleProviderHelper(EP.sextuples(input), output);
+    }
+
+    private static void sextuples_Iterable_helper(@NotNull String input, @NotNull String output) {
+        sextuples_Iterable_helper(readIntegerListWithNulls(input), output);
     }
 
     @Test
@@ -2764,12 +2764,12 @@ public strictfp class ExhaustiveProviderTest {
         );
     }
 
-    private static void septuples_Iterable_helper(@NotNull String input, @NotNull String output) {
-        simpleProviderHelper(EP.septuples(readIntegerListWithNulls(input)), output);
-    }
-
     private static void septuples_Iterable_helper(@NotNull Iterable<Integer> input, @NotNull String output) {
         simpleProviderHelper(EP.septuples(input), output);
+    }
+
+    private static void septuples_Iterable_helper(@NotNull String input, @NotNull String output) {
+        septuples_Iterable_helper(readIntegerListWithNulls(input), output);
     }
 
     @Test
@@ -2783,14 +2783,19 @@ public strictfp class ExhaustiveProviderTest {
         septuples_Iterable_helper(repeat(1), "ExhaustiveProvider_septuples_Iterable_vii");
     }
 
-    //todo continue cleanup
-
     private static void strings_int_String_helper(int size, @NotNull String input, @NotNull String output) {
         aeqitLog(EP.strings(size, input), output);
     }
 
     private static void strings_int_String_helper_limit(int size, @NotNull String input, @NotNull String output) {
         simpleProviderHelper(EP.strings(size, input), output);
+    }
+
+    private static void strings_int_String_fail_helper(int size, @NotNull String input) {
+        try {
+            EP.strings(size, input);
+            fail();
+        } catch (IllegalArgumentException ignored) {}
     }
 
     @Test
@@ -2820,18 +2825,19 @@ public strictfp class ExhaustiveProviderTest {
         strings_int_String_helper_limit(2, "Mississippi", "ExhaustiveProvider_strings_int_String_xix");
         strings_int_String_helper_limit(3, "Mississippi", "ExhaustiveProvider_strings_int_String_xx");
 
-        try {
-            EP.strings(-1, "");
-            fail();
-        } catch (IllegalArgumentException ignored) {}
-        try {
-            EP.strings(-1, "abc");
-            fail();
-        } catch (IllegalArgumentException ignored) {}
+        strings_int_String_fail_helper(-1, "");
+        strings_int_String_fail_helper(-1, "abc");
     }
 
     private static void strings_int_helper(int size, @NotNull String output) {
         simpleProviderHelper(EP.strings(size), output);
+    }
+
+    private static void strings_int_fail_helper(int size) {
+        try {
+            EP.strings(size);
+            fail();
+        } catch (IllegalArgumentException ignored) {}
     }
 
     @Test
@@ -2840,35 +2846,47 @@ public strictfp class ExhaustiveProviderTest {
         strings_int_helper(1, "ExhaustiveProvider_strings_int_ii");
         strings_int_helper(2, "ExhaustiveProvider_strings_int_iii");
         strings_int_helper(3, "ExhaustiveProvider_strings_int_iv");
-        try {
-            EP.strings(-1);
-            fail();
-        } catch (IllegalArgumentException ignored) {}
+
+        strings_int_fail_helper(-1);
+    }
+
+    private static void lists_Iterable_helper(@NotNull Iterable<Integer> input, @NotNull String output) {
+        simpleProviderHelper(EP.lists(input), output);
+    }
+
+    private static void lists_Iterable_helper(@NotNull String input, @NotNull String output) {
+        simpleProviderHelper(EP.lists(readIntegerList(input)), output);
     }
 
     @Test
     public void testLists_Iterable() {
-        aeqitLog(EP.lists(Collections.emptyList()), "ExhaustiveProvider_lists_Iterable_i");
-        simpleProviderHelper(EP.lists(Collections.singletonList(5)), "ExhaustiveProvider_lists_Iterable_ii");
-        simpleProviderHelper(EP.lists(Arrays.asList(1, 2, 3)), "ExhaustiveProvider_lists_Iterable_iii");
-        simpleProviderHelper(EP.lists(Arrays.asList(1, 2, 2, 3)), "ExhaustiveProvider_lists_Iterable_iv");
-        simpleProviderHelper(EP.lists(EP.naturalIntegers()), "ExhaustiveProvider_lists_Iterable_v");
-        simpleProviderHelper(EP.lists(repeat(1)), "ExhaustiveProvider_lists_Iterable_vi");
+        lists_Iterable_helper("[]", "ExhaustiveProvider_lists_Iterable_i");
+        lists_Iterable_helper("[5]", "ExhaustiveProvider_lists_Iterable_ii");
+        lists_Iterable_helper("[1, 2, 3]", "ExhaustiveProvider_lists_Iterable_iii");
+        lists_Iterable_helper("[1, 2, 2, 3]", "ExhaustiveProvider_lists_Iterable_iv");
+        lists_Iterable_helper(EP.naturalIntegers(), "ExhaustiveProvider_lists_Iterable_v");
+        lists_Iterable_helper(repeat(1), "ExhaustiveProvider_lists_Iterable_vi");
+    }
+
+    private static void strings_String_helper(@NotNull String input, @NotNull String output) {
+        simpleProviderHelper(EP.strings(input), output);
     }
 
     @Test
     public void testStrings_String() {
-        aeqitLog(EP.strings(""), "ExhaustiveProvider_strings_String_i");
-        simpleProviderHelper(EP.strings("a"), "ExhaustiveProvider_strings_String_ii");
-        simpleProviderHelper(EP.strings("abc"), "ExhaustiveProvider_strings_String_iii");
-        simpleProviderHelper(EP.strings("abbc"), "ExhaustiveProvider_strings_String_iv");
-        simpleProviderHelper(EP.strings("Mississippi"), "ExhaustiveProvider_strings_String_v");
+        strings_String_helper("", "ExhaustiveProvider_strings_String_i");
+        strings_String_helper("a", "ExhaustiveProvider_strings_String_ii");
+        strings_String_helper("abc", "ExhaustiveProvider_strings_String_iii");
+        strings_String_helper("abbc", "ExhaustiveProvider_strings_String_iv");
+        strings_String_helper("Mississippi", "ExhaustiveProvider_strings_String_v");
     }
 
     @Test
     public void testStrings() {
         simpleProviderHelper(EP.strings(), "ExhaustiveProvider_strings");
     }
+
+    //todo continue cleanup
 
     private static void listsAtLeast_helper(int minSize, @NotNull Iterable<Integer> input, @NotNull String output) {
         simpleProviderHelper(EP.listsAtLeast(minSize, input), output);
