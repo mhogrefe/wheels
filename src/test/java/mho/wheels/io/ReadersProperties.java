@@ -1,6 +1,5 @@
 package mho.wheels.io;
 
-import mho.wheels.ordering.Ordering;
 import mho.wheels.structures.FiniteDomainFunction;
 import mho.wheels.structures.Pair;
 import mho.wheels.testing.TestProperties;
@@ -8,7 +7,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.math.RoundingMode;
 import java.util.Collections;
 import java.util.Optional;
 import java.util.function.Function;
@@ -18,8 +16,9 @@ import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.testing.Testing.*;
 
 public strictfp class ReadersProperties extends TestProperties {
-    private static final @NotNull String STRICT_BOOLEAN_CHARS = "aeflrstu";
-    private static final @NotNull String BOOLEAN_CHARS = " 01AEFLRSTUaeflrstu";
+    private static final @NotNull String BOOLEAN_CHARS = "aeflrstu";
+    private static final @NotNull String ORDERING_CHARS = "EGLQT";
+    private static final @NotNull String ROUNDING_MODE_CHARS = "ACDEFGHILNOPRSUVWY_";
     private static final @NotNull String INTEGRAL_CHARS = "-0123456789";
 
     public ReadersProperties() {
@@ -63,40 +62,35 @@ public strictfp class ReadersProperties extends TestProperties {
 
     private void propertiesReadBooleanStrict() {
         initialize("readBooleanStrict(String)");
+        propertiesReadHelper(LIMIT, P, BOOLEAN_CHARS, P.booleans(), Readers::readBooleanStrict, b -> {}, false, true);
+    }
+
+    private void propertiesReadOrderingStrict() {
+        initialize("readOrderingStrict(String)");
         propertiesReadHelper(
                 LIMIT,
                 P,
-                STRICT_BOOLEAN_CHARS,
-                P.booleans(),
-                Readers::readBooleanStrict,
-                b -> {},
+                ORDERING_CHARS,
+                P.orderings(),
+                Readers::readOrderingStrict,
+                o -> {},
                 false,
                 true
         );
     }
 
-    private void propertiesReadOrderingStrict() {
-        initialize("readOrderingStrict(String)");
-        for (String s : take(LIMIT, P.strings())) {
-            readOrderingStrict(s);
-        }
-
-        for (Ordering o : take(LIMIT, P.orderings())) {
-            Optional<Ordering> oo = readOrderingStrict(o.toString());
-            assertEquals(o, oo.get(), o);
-        }
-    }
-
     private void propertiesReadRoundingModeStrict() {
         initialize("readRoundingModeStrict(String)");
-        for (String s : take(LIMIT, P.strings())) {
-            readRoundingModeStrict(s);
-        }
-
-        for (RoundingMode rm : take(LIMIT, P.roundingModes())) {
-            Optional<RoundingMode> orm = readRoundingModeStrict(rm.toString());
-            assertEquals(rm, orm.get(), rm);
-        }
+        propertiesReadHelper(
+                LIMIT,
+                P,
+                ROUNDING_MODE_CHARS,
+                P.roundingModes(),
+                Readers::readRoundingModeStrict,
+                rm -> {},
+                false,
+                true
+        );
     }
 
     private void propertiesReadBigIntegerStrict() {

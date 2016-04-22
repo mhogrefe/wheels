@@ -103,28 +103,38 @@ public class ReadersTest {
         readBooleanStrict_helper("0", "Optional.empty");
     }
 
+    private void readOrderingStrict_helper(@NotNull String input, @NotNull String output) {
+        aeq(readOrderingStrict(input), output);
+    }
+
     @Test
     public void testReadOrderingStrict() {
-        aeq(readOrderingStrict("LT").get(), "LT");
-        aeq(readOrderingStrict("EQ").get(), "EQ");
-        aeq(readOrderingStrict("GT").get(), "GT");
-        assertFalse(readOrderingStrict(" LT").isPresent());
-        assertFalse(readOrderingStrict("eq").isPresent());
-        assertFalse(readOrderingStrict("gt ").isPresent());
-        assertFalse(readOrderingStrict("").isPresent());
-        assertFalse(readOrderingStrict("dsfsdfgd").isPresent());
+        readOrderingStrict_helper("LT", "Optional[LT]");
+        readOrderingStrict_helper("EQ", "Optional[EQ]");
+        readOrderingStrict_helper("GT", "Optional[GT]");
+
+        readOrderingStrict_helper(" LT", "Optional.empty");
+        readOrderingStrict_helper("eq", "Optional.empty");
+        readOrderingStrict_helper("gt ", "Optional.empty");
+        readOrderingStrict_helper("", "Optional.empty");
+        readOrderingStrict_helper("dsfsdfgd", "Optional.empty");
+    }
+
+    private void readRoundingModeStrict_helper(@NotNull String input, @NotNull String output) {
+        aeq(readRoundingModeStrict(input), output);
     }
 
     @Test
     public void testReadRoundingModeStrict() {
-        aeq(readRoundingModeStrict("UP").get(), "UP");
-        aeq(readRoundingModeStrict("UNNECESSARY").get(), "UNNECESSARY");
-        aeq(readRoundingModeStrict("HALF_EVEN").get(), "HALF_EVEN");
-        assertFalse(readRoundingModeStrict(" DOWN").isPresent());
-        assertFalse(readRoundingModeStrict("HALF-EVEN").isPresent());
-        assertFalse(readRoundingModeStrict("FLOOR ").isPresent());
-        assertFalse(readRoundingModeStrict("").isPresent());
-        assertFalse(readRoundingModeStrict("dsfsdfgd").isPresent());
+        readRoundingModeStrict_helper("UP", "Optional[UP]");
+        readRoundingModeStrict_helper("UNNECESSARY", "Optional[UNNECESSARY]");
+        readRoundingModeStrict_helper("HALF_EVEN", "Optional[HALF_EVEN]");
+
+        readRoundingModeStrict_helper(" DOWN", "Optional.empty");
+        readRoundingModeStrict_helper("HALF-EVEN", "Optional.empty");
+        readRoundingModeStrict_helper("FLOOR ", "Optional.empty");
+        readRoundingModeStrict_helper("", "Optional.empty");
+        readRoundingModeStrict_helper("dsfsdfgd", "Optional.empty");
     }
 
     @Test
@@ -407,16 +417,6 @@ public class ReadersTest {
 
     @Test
     public void testReadListWithNulls() {
-        //todo
-    }
-
-    @Test
-    public void testFindListIn() {
-        //todo
-    }
-
-    @Test
-    public void testFindListWithNullsIn() {
         //todo
     }
 }

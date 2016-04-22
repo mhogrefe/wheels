@@ -14,8 +14,7 @@ import static mho.wheels.testing.Testing.*;
 
 @SuppressWarnings("UnusedDeclaration")
 public class ReadersDemos extends Demos {
-    private static final @NotNull String STRICT_BOOLEAN_CHARS = "aeflrstu";
-    private static final @NotNull String BOOLEAN_CHARS = " 01AEFLRSTUaeflrstu";
+    private static final @NotNull String BOOLEAN_CHARS = "aeflrstu";
     private static final @NotNull String ORDERING_CHARS = "EGLQT";
     private static final @NotNull String ROUNDING_MODE_CHARS = "ACDEFGHILNOPRSUVWY_";
     private static final @NotNull String INTEGRAL_CHARS = "-0123456789";
@@ -44,14 +43,14 @@ public class ReadersDemos extends Demos {
     }
 
     private void demoReadBooleanStrict_targeted() {
-        for (String s : take(LIMIT, P.strings(STRICT_BOOLEAN_CHARS))) {
+        for (String s : take(LIMIT, P.strings(BOOLEAN_CHARS))) {
             System.out.println("readBooleanStrict(" + s + ") = " + readBooleanStrict(s));
         }
     }
 
     private void demoReadOrderingStrict() {
         for (String s : take(LIMIT, P.strings())) {
-            System.out.println("readOrderingStrict(" + s + ") = " + readOrderingStrict(s));
+            System.out.println("readOrderingStrict(" + nicePrint(s) + ") = " + readOrderingStrict(s));
         }
     }
 
@@ -63,7 +62,7 @@ public class ReadersDemos extends Demos {
 
     private void demoReadRoundingModeStrict() {
         for (String s : take(LIMIT, P.strings())) {
-            System.out.println("readRoundingModeStrict(" + s + ") = " + readRoundingModeStrict(s));
+            System.out.println("readRoundingModeStrict(" + nicePrint(s) + ") = " + readRoundingModeStrict(s));
         }
     }
 
@@ -75,7 +74,7 @@ public class ReadersDemos extends Demos {
 
     private void demoReadBigIntegerStrict() {
         for (String s : take(LIMIT, P.strings())) {
-            System.out.println("readBigIntegerStrict(" + s + ") = " + readBigIntegerStrict(s));
+            System.out.println("readBigIntegerStrict(" + nicePrint(s) + ") = " + readBigIntegerStrict(s));
         }
     }
 
@@ -87,7 +86,7 @@ public class ReadersDemos extends Demos {
 
     private void demoReadByteStrict() {
         for (String s : take(LIMIT, P.strings())) {
-            System.out.println("readByteStrict(" + s + ") = " + readByteStrict(s));
+            System.out.println("readByteStrict(" + nicePrint(s) + ") = " + readByteStrict(s));
         }
     }
 
@@ -99,7 +98,7 @@ public class ReadersDemos extends Demos {
 
     private void demoReadShortStrict() {
         for (String s : take(LIMIT, P.strings())) {
-            System.out.println("readShortStrict(" + s + ") = " + readShortStrict(s));
+            System.out.println("readShortStrict(" + nicePrint(s) + ") = " + readShortStrict(s));
         }
     }
 
@@ -111,7 +110,7 @@ public class ReadersDemos extends Demos {
 
     private void demoReadIntegerStrict() {
         for (String s : take(LIMIT, P.strings())) {
-            System.out.println("readIntegerStrict(" + s + ") = " + readByteStrict(s));
+            System.out.println("readIntegerStrict(" + nicePrint(s) + ") = " + readByteStrict(s));
         }
     }
 
@@ -123,7 +122,7 @@ public class ReadersDemos extends Demos {
 
     private void demoReadLongStrict() {
         for (String s : take(LIMIT, P.strings())) {
-            System.out.println("readLongStrict(" + s + ") = " + readLongStrict(s));
+            System.out.println("readLongStrict(" + nicePrint(s) + ") = " + readLongStrict(s));
         }
     }
 
@@ -135,7 +134,7 @@ public class ReadersDemos extends Demos {
 
     private void demoReadFloatStrict() {
         for (String s : take(LIMIT, P.strings())) {
-            System.out.println("readFloatStrict(" + s + ") = " + readFloatStrict(s));
+            System.out.println("readFloatStrict(" + nicePrint(s) + ") = " + readFloatStrict(s));
         }
     }
 
@@ -147,7 +146,7 @@ public class ReadersDemos extends Demos {
 
     private void demoReadDoubleStrict() {
         for (String s : take(LIMIT, P.strings())) {
-            System.out.println("readDoubleStrict(" + s + ") = " + readDoubleStrict(s));
+            System.out.println("readDoubleStrict(" + nicePrint(s) + ") = " + readDoubleStrict(s));
         }
     }
 
@@ -159,7 +158,7 @@ public class ReadersDemos extends Demos {
 
     private void demoReadBigDecimalStrict() {
         for (String s : take(LIMIT, P.strings())) {
-            System.out.println("readBigDecimalStrict(" + s + ") = " + readBigDecimalStrict(s));
+            System.out.println("readBigDecimalStrict(" + nicePrint(s) + ") = " + readBigDecimalStrict(s));
         }
     }
 
@@ -171,7 +170,7 @@ public class ReadersDemos extends Demos {
 
     private void demoReadCharacter() {
         for (String s : take(LIMIT, P.strings())) {
-            System.out.println("readCharacter(" + s + ") = " + readCharacter(s));
+            System.out.println("readCharacter(" + nicePrint(s) + ") = " + readCharacter(s));
         }
     }
 
