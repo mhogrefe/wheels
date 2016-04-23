@@ -108,50 +108,31 @@ public strictfp class ReadersProperties extends TestProperties {
 
     private void propertiesReadByteStrict() {
         initialize("readByteStrict(String)");
-        for (String s : take(LIMIT, P.strings())) {
-            readByteStrict(s);
-        }
-
-        for (byte b : take(LIMIT, P.bytes())) {
-            Optional<Byte> ob = readByteStrict(Byte.toString(b));
-            assertEquals(b, ob.get(), b);
-        }
+        propertiesReadHelper(LIMIT, P, INTEGRAL_CHARS, P.bytes(), Readers::readByteStrict, rm -> {}, false, true);
     }
 
     private void propertiesReadShortStrict() {
         initialize("readShortStrict(String)");
-        for (String s : take(LIMIT, P.strings())) {
-            readShortStrict(s);
-        }
-
-        for (short s : take(LIMIT, P.shorts())) {
-            Optional<Short> os = readShortStrict(Short.toString(s));
-            assertEquals(s, os.get(), s);
-        }
+        propertiesReadHelper(LIMIT, P, INTEGRAL_CHARS, P.shorts(), Readers::readShortStrict, rm -> {}, false, true);
     }
 
     private void propertiesReadIntegerStrict() {
         initialize("readIntegerStrict(String)");
-        for (String s : take(LIMIT, P.strings())) {
-            readIntegerStrict(s);
-        }
-
-        for (int i : take(LIMIT, P.integers())) {
-            Optional<Integer> oi = readIntegerStrict(Integer.toString(i));
-            assertEquals(i, oi.get(), i);
-        }
+        propertiesReadHelper(
+                LIMIT,
+                P,
+                INTEGRAL_CHARS,
+                P.integers(),
+                Readers::readIntegerStrict,
+                rm -> {},
+                false,
+                true
+        );
     }
 
     private void propertiesReadLongStrict() {
         initialize("readLongStrict(String)");
-        for (String s : take(LIMIT, P.strings())) {
-            readLongStrict(s);
-        }
-
-        for (long l : take(LIMIT, P.longs())) {
-            Optional<Long> ol = readLongStrict(Long.toString(l));
-            assertEquals(l, ol.get(), l);
-        }
+        propertiesReadHelper(LIMIT, P, INTEGRAL_CHARS, P.longs(), Readers::readLongStrict, rm -> {}, false, true);
     }
 
     private void propertiesReadFloatStrict() {

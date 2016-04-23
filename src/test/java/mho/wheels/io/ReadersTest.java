@@ -4,7 +4,6 @@ import mho.wheels.structures.NullableOptional;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
 
-import java.math.BigInteger;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
@@ -158,86 +157,104 @@ public class ReadersTest {
         readBigIntegerStrict_helper("+4", "Optional.empty");
     }
 
+    private void readByteStrict_helper(@NotNull String input, @NotNull String output) {
+        aeq(readByteStrict(input), output);
+    }
+
     @Test
     public void testReadByteStrict() {
-        aeq(readByteStrict("0").get(), "0");
-        aeq(readByteStrict("5").get(), "5");
-        aeq(readByteStrict("-100").get(), "-100");
-        aeq(readByteStrict(Integer.toString(Byte.MAX_VALUE)).get(), "127");
-        aeq(readByteStrict(Integer.toString(Byte.MIN_VALUE)).get(), "-128");
-        assertFalse(readByteStrict(Integer.toString(Byte.MAX_VALUE + 1)).isPresent());
-        assertFalse(readByteStrict(Integer.toString(Byte.MIN_VALUE - 1)).isPresent());
-        assertFalse(readByteStrict(" 1").isPresent());
-        assertFalse(readByteStrict("00").isPresent());
-        assertFalse(readByteStrict("-0").isPresent());
-        assertFalse(readByteStrict("0xff").isPresent());
-        assertFalse(readByteStrict("0xff").isPresent());
-        assertFalse(readByteStrict("2 ").isPresent());
-        assertFalse(readByteStrict("--1").isPresent());
-        assertFalse(readByteStrict("1-2").isPresent());
-        assertFalse(readByteStrict("+4").isPresent());
+        readByteStrict_helper("0", "Optional[0]");
+        readByteStrict_helper("5", "Optional[5]");
+        readByteStrict_helper("-100", "Optional[-100]");
+        readByteStrict_helper("127", "Optional[127]");
+        readByteStrict_helper("-128", "Optional[-128]");
+
+        readByteStrict_helper("128", "Optional.empty");
+        readByteStrict_helper("-129", "Optional.empty");
+        readByteStrict_helper(" 1", "Optional.empty");
+        readByteStrict_helper("00", "Optional.empty");
+        readByteStrict_helper("-0", "Optional.empty");
+        readByteStrict_helper("0xff", "Optional.empty");
+        readByteStrict_helper("0xff", "Optional.empty");
+        readByteStrict_helper("2 ", "Optional.empty");
+        readByteStrict_helper("--1", "Optional.empty");
+        readByteStrict_helper("1-2", "Optional.empty");
+        readByteStrict_helper("+4", "Optional.empty");
+    }
+
+    private void readShortStrict_helper(@NotNull String input, @NotNull String output) {
+        aeq(readShortStrict(input), output);
     }
 
     @Test
     public void testReadShortStrict() {
-        aeq(readShortStrict("0").get(), "0");
-        aeq(readShortStrict("5").get(), "5");
-        aeq(readShortStrict("-100").get(), "-100");
-        aeq(readShortStrict(Integer.toString(Short.MAX_VALUE)).get(), "32767");
-        aeq(readShortStrict(Integer.toString(Short.MIN_VALUE)).get(), "-32768");
-        assertFalse(readShortStrict(Integer.toString(Short.MAX_VALUE + 1)).isPresent());
-        assertFalse(readShortStrict(Integer.toString(Short.MIN_VALUE - 1)).isPresent());
-        assertFalse(readShortStrict(" 1").isPresent());
-        assertFalse(readShortStrict("00").isPresent());
-        assertFalse(readShortStrict("-0").isPresent());
-        assertFalse(readShortStrict("0xff").isPresent());
-        assertFalse(readShortStrict("0xff").isPresent());
-        assertFalse(readShortStrict("2 ").isPresent());
-        assertFalse(readShortStrict("--1").isPresent());
-        assertFalse(readShortStrict("1-2").isPresent());
-        assertFalse(readShortStrict("+4").isPresent());
+        readShortStrict_helper("0", "Optional[0]");
+        readShortStrict_helper("5", "Optional[5]");
+        readShortStrict_helper("-100", "Optional[-100]");
+        readShortStrict_helper("32767", "Optional[32767]");
+        readShortStrict_helper("-32768", "Optional[-32768]");
+
+        readShortStrict_helper("32768", "Optional.empty");
+        readShortStrict_helper("-32769", "Optional.empty");
+        readShortStrict_helper(" 1", "Optional.empty");
+        readShortStrict_helper("00", "Optional.empty");
+        readShortStrict_helper("-0", "Optional.empty");
+        readShortStrict_helper("0xff", "Optional.empty");
+        readShortStrict_helper("0xff", "Optional.empty");
+        readShortStrict_helper("2 ", "Optional.empty");
+        readShortStrict_helper("--1", "Optional.empty");
+        readShortStrict_helper("1-2", "Optional.empty");
+        readShortStrict_helper("+4", "Optional.empty");
+    }
+
+    private void readIntegerStrict_helper(@NotNull String input, @NotNull String output) {
+        aeq(readIntegerStrict(input), output);
     }
 
     @Test
     public void testReadIntegerStrict() {
-        aeq(readIntegerStrict("0").get(), "0");
-        aeq(readIntegerStrict("5").get(), "5");
-        aeq(readIntegerStrict("-100").get(), "-100");
-        aeq(readIntegerStrict(Integer.toString(Integer.MAX_VALUE)).get(), "2147483647");
-        aeq(readIntegerStrict(Integer.toString(Integer.MIN_VALUE)).get(), "-2147483648");
-        assertFalse(readIntegerStrict(Long.toString((long) Integer.MAX_VALUE + 1)).isPresent());
-        assertFalse(readIntegerStrict(Long.toString((long) Integer.MIN_VALUE - 1)).isPresent());
-        assertFalse(readIntegerStrict(" 1").isPresent());
-        assertFalse(readIntegerStrict("00").isPresent());
-        assertFalse(readIntegerStrict("-0").isPresent());
-        assertFalse(readIntegerStrict("0xff").isPresent());
-        assertFalse(readIntegerStrict("0xff").isPresent());
-        assertFalse(readIntegerStrict("2 ").isPresent());
-        assertFalse(readIntegerStrict("--1").isPresent());
-        assertFalse(readIntegerStrict("1-2").isPresent());
-        assertFalse(readIntegerStrict("+4").isPresent());
+        readIntegerStrict_helper("0", "Optional[0]");
+        readIntegerStrict_helper("5", "Optional[5]");
+        readIntegerStrict_helper("-100", "Optional[-100]");
+        readIntegerStrict_helper("2147483647", "Optional[2147483647]");
+        readIntegerStrict_helper("-2147483648", "Optional[-2147483648]");
+
+        readIntegerStrict_helper("2147483648", "Optional.empty");
+        readIntegerStrict_helper("-2147483649", "Optional.empty");
+        readIntegerStrict_helper(" 1", "Optional.empty");
+        readIntegerStrict_helper("00", "Optional.empty");
+        readIntegerStrict_helper("-0", "Optional.empty");
+        readIntegerStrict_helper("0xff", "Optional.empty");
+        readIntegerStrict_helper("0xff", "Optional.empty");
+        readIntegerStrict_helper("2 ", "Optional.empty");
+        readIntegerStrict_helper("--1", "Optional.empty");
+        readIntegerStrict_helper("1-2", "Optional.empty");
+        readIntegerStrict_helper("+4", "Optional.empty");
+    }
+
+    private void readLongStrict_helper(@NotNull String input, @NotNull String output) {
+        aeq(readLongStrict(input), output);
     }
 
     @Test
     public void testReadLongStrict() {
-        aeq(readLongStrict("0").get(), "0");
-        aeq(readLongStrict("5").get(), "5");
-        aeq(readLongStrict("-100").get(), "-100");
-        aeq(readLongStrict(Long.toString(Long.MAX_VALUE)).get(), "9223372036854775807");
-        aeq(readLongStrict(Long.toString(Long.MIN_VALUE)).get(), "-9223372036854775808");
-        assertFalse(readLongStrict(BigInteger.valueOf(Long.MAX_VALUE).add(BigInteger.ONE).toString()).isPresent());
-        assertFalse(
-                readLongStrict(BigInteger.valueOf(Long.MIN_VALUE).subtract(BigInteger.ONE).toString()).isPresent()
-        );
-        assertFalse(readLongStrict(" 1").isPresent());
-        assertFalse(readLongStrict("00").isPresent());
-        assertFalse(readLongStrict("-0").isPresent());
-        assertFalse(readLongStrict("0xff").isPresent());
-        assertFalse(readLongStrict("0xff").isPresent());
-        assertFalse(readLongStrict("2 ").isPresent());
-        assertFalse(readLongStrict("--1").isPresent());
-        assertFalse(readLongStrict("1-2").isPresent());
-        assertFalse(readLongStrict("+4").isPresent());
+        readLongStrict_helper("0", "Optional[0]");
+        readLongStrict_helper("5", "Optional[5]");
+        readLongStrict_helper("-100", "Optional[-100]");
+        readLongStrict_helper("9223372036854775807", "Optional[9223372036854775807]");
+        readLongStrict_helper("-9223372036854775808", "Optional[-9223372036854775808]");
+
+        readLongStrict_helper("9223372036854775808", "Optional.empty");
+        readLongStrict_helper("-9223372036854775809", "Optional.empty");
+        readLongStrict_helper(" 1", "Optional.empty");
+        readLongStrict_helper("00", "Optional.empty");
+        readLongStrict_helper("-0", "Optional.empty");
+        readLongStrict_helper("0xff", "Optional.empty");
+        readLongStrict_helper("0xff", "Optional.empty");
+        readLongStrict_helper("2 ", "Optional.empty");
+        readLongStrict_helper("--1", "Optional.empty");
+        readLongStrict_helper("1-2", "Optional.empty");
+        readLongStrict_helper("+4", "Optional.empty");
     }
 
     @Test
