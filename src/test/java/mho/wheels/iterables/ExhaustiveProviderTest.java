@@ -3132,7 +3132,7 @@ public strictfp class ExhaustiveProviderTest {
         aeqitLog(EP.distinctStringsLex(size, input), output);
     }
 
-    private static void distinctStringsLex_int_String_helper_limit(
+    private static void distinctStringsLex_int_String_limit_helper(
             int size,
             @NotNull String input,
             @NotNull String output
@@ -3140,7 +3140,12 @@ public strictfp class ExhaustiveProviderTest {
         simpleProviderHelper(EP.distinctStringsLex(size, input), output);
     }
 
-    //todo continue cleanup
+    private static void distinctStringsLex_int_String_fail_helper(int size, @NotNull String input) {
+        try {
+            EP.distinctStringsLex(size, input);
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+    }
 
     @Test
     public void testDistinctStringsLex_int_String() {
@@ -3164,23 +3169,17 @@ public strictfp class ExhaustiveProviderTest {
         distinctStringsLex_int_String_helper(2, "abbc", "ExhaustiveProvider_distinctStringsLex_int_String_xv");
         distinctStringsLex_int_String_helper(3, "abbc", "ExhaustiveProvider_distinctStringsLex_int_String_xvi");
 
-        distinctStringsLex_int_String_helper_limit(0, "Mississippi",
+        distinctStringsLex_int_String_limit_helper(0, "Mississippi",
                 "ExhaustiveProvider_distinctStringsLex_int_String_xvii");
-        distinctStringsLex_int_String_helper_limit(1, "Mississippi",
+        distinctStringsLex_int_String_limit_helper(1, "Mississippi",
                 "ExhaustiveProvider_distinctStringsLex_int_String_xviii");
-        distinctStringsLex_int_String_helper_limit(2, "Mississippi",
+        distinctStringsLex_int_String_limit_helper(2, "Mississippi",
                 "ExhaustiveProvider_distinctStringsLex_int_String_xix");
-        distinctStringsLex_int_String_helper_limit(3, "Mississippi",
+        distinctStringsLex_int_String_limit_helper(3, "Mississippi",
                 "ExhaustiveProvider_distinctStringsLex_int_String_xx");
 
-        try {
-            EP.distinctStringsLex(-1, "");
-            fail();
-        } catch (IllegalArgumentException ignored) {}
-        try {
-            EP.distinctStringsLex(-1, "abc");
-            fail();
-        } catch (IllegalArgumentException ignored) {}
+        distinctStringsLex_int_String_fail_helper(-1, "");
+        distinctStringsLex_int_String_fail_helper(-1, "abc");
     }
 
     private static void distinctListsLex_List_helper(@NotNull String input, @NotNull String output) {
@@ -3197,18 +3196,33 @@ public strictfp class ExhaustiveProviderTest {
         distinctListsLex_List_helper("[1, 2, 2, 3]", "ExhaustiveProvider_distinctListsLex_List_vi");
     }
 
+    private static void distinctStringsLex_String_helper(@NotNull String input, @NotNull String output) {
+        aeqitLog(EP.distinctStringsLex(input), output);
+    }
+
+    private static void distinctStringsLex_String_limit_helper(@NotNull String input, @NotNull String output) {
+        simpleProviderHelper(EP.distinctStringsLex(input), output);
+    }
+
     @Test
     public void testDistinctStringsLex_String() {
-        aeqitLog(EP.distinctStringsLex(""), "ExhaustiveProvider_distinctStringsLex_String_i");
-        aeqitLog(EP.distinctStringsLex("a"), "ExhaustiveProvider_distinctStringsLex_String_ii");
-        aeqitLog(EP.distinctStringsLex("abc"), "ExhaustiveProvider_distinctStringsLex_String_iii");
-        aeqitLog(EP.distinctStringsLex("abcd"), "ExhaustiveProvider_distinctStringsLex_String_iv");
-        aeqitLog(EP.distinctStringsLex("abbc"), "ExhaustiveProvider_distinctStringsLex_String_v");
-        simpleProviderHelper(EP.distinctStringsLex("Mississippi"), "ExhaustiveProvider_distinctStringsLex_String_vi");
+        distinctStringsLex_String_helper("", "ExhaustiveProvider_distinctStringsLex_String_i");
+        distinctStringsLex_String_helper("a", "ExhaustiveProvider_distinctStringsLex_String_ii");
+        distinctStringsLex_String_helper("abc", "ExhaustiveProvider_distinctStringsLex_String_iii");
+        distinctStringsLex_String_helper("abcd", "ExhaustiveProvider_distinctStringsLex_String_iv");
+        distinctStringsLex_String_helper("abbc", "ExhaustiveProvider_distinctStringsLex_String_v");
+        distinctStringsLex_String_limit_helper("Mississippi", "ExhaustiveProvider_distinctStringsLex_String_vi");
     }
 
     private static void distinctListsLexAtLeast_helper(int minSize, @NotNull String input, @NotNull String output) {
         aeqitLog(EP.distinctListsLexAtLeast(minSize, readIntegerListWithNulls(input)), output);
+    }
+
+    private static void distinctListsLexAtLeast_fail_helper(int minSize, @NotNull String input) {
+        try {
+            EP.distinctListsLexAtLeast(minSize, readIntegerListWithNulls(input));
+            fail();
+        } catch (IllegalArgumentException ignored) {}
     }
 
     @Test
@@ -3243,26 +3257,27 @@ public strictfp class ExhaustiveProviderTest {
         distinctListsLexAtLeast_helper(2, "[1, 2, 2, 3]", "ExhaustiveProvider_distinctListsLexAtLeast_xxiii");
         distinctListsLexAtLeast_helper(3, "[1, 2, 2, 3]", "ExhaustiveProvider_distinctListsLexAtLeast_xxiv");
 
-        try {
-            EP.distinctListsLexAtLeast(-1, Collections.emptyList());
-            fail();
-        } catch (IllegalArgumentException ignored) {}
-        try {
-            EP.distinctListsLexAtLeast(-1, Arrays.asList(1, 2, 3));
-            fail();
-        } catch (IllegalArgumentException ignored) {}
+        distinctListsLexAtLeast_fail_helper(-1, "[]s");
+        distinctListsLexAtLeast_fail_helper(-1, "[1, 2, 3]");
     }
 
     private static void distinctStringsLexAtLeast_helper(int minSize, @NotNull String input, @NotNull String output) {
         aeqitLog(EP.distinctStringsLexAtLeast(minSize, input), output);
     }
 
-    private static void distinctStringsLexAtLeast_helper_limit(
+    private static void distinctStringsLexAtLeast_limit_helper(
             int minSize,
             @NotNull String input,
             @NotNull String output
     ) {
         simpleProviderHelper(EP.distinctStringsLexAtLeast(minSize, input), output);
+    }
+
+    private static void distinctStringsLexAtLeast_fail_helper(int minSize, @NotNull String input) {
+        try {
+            EP.distinctStringsLexAtLeast(minSize, input);
+            fail();
+        } catch (IllegalArgumentException ignored) {}
     }
 
     @Test
@@ -3287,19 +3302,13 @@ public strictfp class ExhaustiveProviderTest {
         distinctStringsLexAtLeast_helper(2, "abbc", "ExhaustiveProvider_distinctStringsLexAtLeast_xv");
         distinctStringsLexAtLeast_helper(3, "abbc", "ExhaustiveProvider_distinctStringsLexAtLeast_xvi");
 
-        distinctStringsLexAtLeast_helper_limit(0, "Mississippi", "ExhaustiveProvider_distinctStringsLexAtLeast_xvii");
-        distinctStringsLexAtLeast_helper_limit(1, "Mississippi", "ExhaustiveProvider_distinctStringsLexAtLeast_xviii");
-        distinctStringsLexAtLeast_helper_limit(2, "Mississippi", "ExhaustiveProvider_distinctStringsLexAtLeast_xix");
-        distinctStringsLexAtLeast_helper_limit(3, "Mississippi", "ExhaustiveProvider_distinctStringsLexAtLeast_xx");
+        distinctStringsLexAtLeast_limit_helper(0, "Mississippi", "ExhaustiveProvider_distinctStringsLexAtLeast_xvii");
+        distinctStringsLexAtLeast_limit_helper(1, "Mississippi", "ExhaustiveProvider_distinctStringsLexAtLeast_xviii");
+        distinctStringsLexAtLeast_limit_helper(2, "Mississippi", "ExhaustiveProvider_distinctStringsLexAtLeast_xix");
+        distinctStringsLexAtLeast_limit_helper(3, "Mississippi", "ExhaustiveProvider_distinctStringsLexAtLeast_xx");
 
-        try {
-            EP.distinctStringsLexAtLeast(-1, "");
-            fail();
-        } catch (IllegalArgumentException ignored) {}
-        try {
-            EP.distinctStringsLexAtLeast(-1, "abc");
-            fail();
-        } catch (IllegalArgumentException ignored) {}
+        distinctStringsLexAtLeast_fail_helper(-1, "");
+        distinctStringsLexAtLeast_fail_helper(-1, "abc");
     }
 
     private static void distinctListsShortlex_helper(@NotNull String input, @NotNull String output) {
@@ -3316,15 +3325,22 @@ public strictfp class ExhaustiveProviderTest {
         distinctListsShortlex_helper("[1, 2, 2, 3]", "ExhaustiveProvider_distinctListsShortlex_vi");
     }
 
+    private static void distinctStringsShortlex_helper(@NotNull String input, @NotNull String output) {
+        aeqitLog(EP.distinctStringsShortlex(input), output);
+    }
+
+    private static void distinctStringsShortlex_limit_helper(@NotNull String input, @NotNull String output) {
+        simpleProviderHelper(EP.distinctStringsShortlex(input), output);
+    }
+
     @Test
     public void testDistinctStringsShortlex() {
-        aeqitLog(EP.distinctStringsShortlex(""), "ExhaustiveProvider_distinctStringsShortlex_i");
-        aeqitLog(EP.distinctStringsShortlex("a"), "ExhaustiveProvider_distinctStringsShortlex_ii");
-        aeqitLog(EP.distinctStringsShortlex("abc"), "ExhaustiveProvider_distinctStringsShortlex_iii");
-        aeqitLog(EP.distinctStringsShortlex("abcd"), "ExhaustiveProvider_distinctStringsShortlex_iv");
-        aeqitLog(EP.distinctStringsShortlex("abbc"), "ExhaustiveProvider_distinctStringsShortlex_v");
-        simpleProviderHelper(EP.distinctStringsShortlex("Mississippi"),
-                "ExhaustiveProvider_distinctStringsShortlex_vi");
+        distinctStringsShortlex_helper("", "ExhaustiveProvider_distinctStringsShortlex_i");
+        distinctStringsShortlex_helper("a", "ExhaustiveProvider_distinctStringsShortlex_ii");
+        distinctStringsShortlex_helper("abc", "ExhaustiveProvider_distinctStringsShortlex_iii");
+        distinctStringsShortlex_helper("abcd", "ExhaustiveProvider_distinctStringsShortlex_iv");
+        distinctStringsShortlex_helper("abbc", "ExhaustiveProvider_distinctStringsShortlex_v");
+        distinctStringsShortlex_limit_helper("Mississippi", "ExhaustiveProvider_distinctStringsShortlex_vi");
     }
 
     private static void distinctListsShortlexAtLeast_helper(
@@ -3333,6 +3349,13 @@ public strictfp class ExhaustiveProviderTest {
             @NotNull String output
     ) {
         aeqitLog(EP.distinctListsShortlexAtLeast(minSize, readIntegerListWithNulls(input)), output);
+    }
+
+    private static void distinctListsShortlexAtLeast_fail_helper(int minSize, @NotNull String input) {
+        try {
+            EP.distinctListsShortlexAtLeast(minSize, readIntegerListWithNulls(input));
+            fail();
+        } catch (IllegalArgumentException ignored) {}
     }
 
     @Test
@@ -3375,15 +3398,11 @@ public strictfp class ExhaustiveProviderTest {
         distinctListsShortlexAtLeast_helper(3, "[1, 2, 2, 3]",
                 "ExhaustiveProvider_distinctListsShortlexAtLeast_xxviii");
 
-        try {
-            EP.distinctListsShortlexAtLeast(-1, Collections.emptyList());
-            fail();
-        } catch (IllegalArgumentException ignored) {}
-        try {
-            EP.distinctListsShortlexAtLeast(-1, Arrays.asList(1, 2, 3));
-            fail();
-        } catch (IllegalArgumentException ignored) {}
+        distinctListsShortlexAtLeast_fail_helper(-1, "[]");
+        distinctListsShortlexAtLeast_fail_helper(-1, "[1, 2, 3]");
     }
+
+    //todo continue cleanup
 
     private static void distinctStringsShortlexAtLeast_helper(
             int minSize,
