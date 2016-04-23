@@ -6,7 +6,6 @@ import mho.wheels.testing.TestProperties;
 import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.Collections;
 import java.util.Optional;
 import java.util.function.Function;
@@ -95,14 +94,16 @@ public strictfp class ReadersProperties extends TestProperties {
 
     private void propertiesReadBigIntegerStrict() {
         initialize("readBigIntegerStrict(String)");
-        for (String s : take(LIMIT, P.strings())) {
-            readBigIntegerStrict(s);
-        }
-
-        for (BigInteger i : take(LIMIT, P.bigIntegers())) {
-            Optional<BigInteger> oi = readBigIntegerStrict(i.toString());
-            assertEquals(i, oi.get(), i);
-        }
+        propertiesReadHelper(
+                LIMIT,
+                P,
+                INTEGRAL_CHARS,
+                P.bigIntegers(),
+                Readers::readBigIntegerStrict,
+                rm -> {},
+                false,
+                true
+        );
     }
 
     private void propertiesReadByteStrict() {

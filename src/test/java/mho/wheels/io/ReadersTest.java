@@ -137,20 +137,25 @@ public class ReadersTest {
         readRoundingModeStrict_helper("dsfsdfgd", "Optional.empty");
     }
 
+    private void readBigIntegerStrict_helper(@NotNull String input, @NotNull String output) {
+        aeq(readBigIntegerStrict(input), output);
+    }
+
     @Test
     public void testReadBigIntegerStrict() {
-        aeq(readBigIntegerStrict("0").get(), "0");
-        aeq(readBigIntegerStrict("5").get(), "5");
-        aeq(readBigIntegerStrict("314159265358").get(), "314159265358");
-        aeq(readBigIntegerStrict("-314159265358").get(), "-314159265358");
-        assertFalse(readBigIntegerStrict(" 1").isPresent());
-        assertFalse(readBigIntegerStrict("00").isPresent());
-        assertFalse(readBigIntegerStrict("-0").isPresent());
-        assertFalse(readBigIntegerStrict("0xff").isPresent());
-        assertFalse(readBigIntegerStrict("2 ").isPresent());
-        assertFalse(readBigIntegerStrict("--1").isPresent());
-        assertFalse(readBigIntegerStrict("1-2").isPresent());
-        assertFalse(readBigIntegerStrict("+4").isPresent());
+        readBigIntegerStrict_helper("0", "Optional[0]");
+        readBigIntegerStrict_helper("5", "Optional[5]");
+        readBigIntegerStrict_helper("314159265358", "Optional[314159265358]");
+        readBigIntegerStrict_helper("-314159265358", "Optional[-314159265358]");
+
+        readBigIntegerStrict_helper(" 1", "Optional.empty");
+        readBigIntegerStrict_helper("00", "Optional.empty");
+        readBigIntegerStrict_helper("-0", "Optional.empty");
+        readBigIntegerStrict_helper("0xff", "Optional.empty");
+        readBigIntegerStrict_helper("2 ", "Optional.empty");
+        readBigIntegerStrict_helper("--1", "Optional.empty");
+        readBigIntegerStrict_helper("1-2", "Optional.empty");
+        readBigIntegerStrict_helper("+4", "Optional.empty");
     }
 
     @Test
