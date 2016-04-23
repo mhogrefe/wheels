@@ -2886,14 +2886,19 @@ public strictfp class ExhaustiveProviderTest {
         simpleProviderHelper(EP.strings(), "ExhaustiveProvider_strings");
     }
 
-    //todo continue cleanup
-
     private static void listsAtLeast_helper(int minSize, @NotNull Iterable<Integer> input, @NotNull String output) {
         simpleProviderHelper(EP.listsAtLeast(minSize, input), output);
     }
 
     private static void listsAtLeast_helper(int minSize, @NotNull String input, @NotNull String output) {
         listsAtLeast_helper(minSize, readIntegerListWithNulls(input), output);
+    }
+
+    private static void listsAtLeast_fail_helper(int minSize, @NotNull String input) {
+        try {
+            EP.listsAtLeast(minSize, readIntegerListWithNulls(input));
+            fail();
+        } catch (IllegalArgumentException ignored) {}
     }
 
     @Test
@@ -2933,18 +2938,19 @@ public strictfp class ExhaustiveProviderTest {
         listsAtLeast_helper(2, repeat(1), "ExhaustiveProvider_listsAtLeast_xxvii");
         listsAtLeast_helper(3, repeat(1), "ExhaustiveProvider_listsAtLeast_xxviii");
 
-        try {
-            EP.listsAtLeast(-1, Collections.emptyList());
-            fail();
-        } catch (IllegalArgumentException ignored) {}
-        try {
-            EP.listsAtLeast(-1, Arrays.asList(1, 2, 3));
-            fail();
-        } catch (IllegalArgumentException ignored) {}
+        listsAtLeast_fail_helper(-1, "[]");
+        listsAtLeast_fail_helper(-1, "[1, 2, 3]");
     }
 
     private static void stringsAtLeast_String_helper(int minSize, @NotNull String input, @NotNull String output) {
         simpleProviderHelper(EP.stringsAtLeast(minSize, input), output);
+    }
+
+    private static void stringsAtLeast_String_fail_helper(int minSize, @NotNull String input) {
+        try {
+            EP.stringsAtLeast(minSize, input);
+            fail();
+        } catch (IllegalArgumentException ignored) {}
     }
 
     @Test
@@ -2973,34 +2979,41 @@ public strictfp class ExhaustiveProviderTest {
         stringsAtLeast_String_helper(1, "Mississippi", "ExhaustiveProvider_stringsAtLeast_String_xviii");
         stringsAtLeast_String_helper(2, "Mississippi", "ExhaustiveProvider_stringsAtLeast_String_xix");
         stringsAtLeast_String_helper(3, "Mississippi", "ExhaustiveProvider_stringsAtLeast_String_xx");
-        try {
-            EP.stringsAtLeast(-1, "");
-            fail();
-        } catch (IllegalArgumentException ignored) {}
-        try {
-            EP.stringsAtLeast(-1, "abc");
-            fail();
-        } catch (IllegalArgumentException ignored) {}
+
+        stringsAtLeast_String_fail_helper(-1, "");
+        stringsAtLeast_String_fail_helper(-1, "abc");
     }
 
-    private static void stringsAtLeast_helper(int minSize, @NotNull String output) {
+    private static void stringsAtLeast_int_helper(int minSize, @NotNull String output) {
         simpleProviderHelper(EP.stringsAtLeast(minSize), output);
     }
 
-    @Test
-    public void testStringsAtLeast() {
-        stringsAtLeast_helper(0, "ExhaustiveProvider_stringsAtLeast_i");
-        stringsAtLeast_helper(1, "ExhaustiveProvider_stringsAtLeast_ii");
-        stringsAtLeast_helper(2, "ExhaustiveProvider_stringsAtLeast_iii");
-        stringsAtLeast_helper(3, "ExhaustiveProvider_stringsAtLeast_iv");
+    private static void stringsAtLeast_int_fail_helper(int minSize) {
         try {
-            EP.stringsAtLeast(-1);
+            EP.stringsAtLeast(minSize);
             fail();
         } catch (IllegalArgumentException ignored) {}
+    }
+
+    @Test
+    public void testStringsAtLeast_int() {
+        stringsAtLeast_int_helper(0, "ExhaustiveProvider_stringsAtLeast_int_i");
+        stringsAtLeast_int_helper(1, "ExhaustiveProvider_stringsAtLeast_int_ii");
+        stringsAtLeast_int_helper(2, "ExhaustiveProvider_stringsAtLeast_int_iii");
+        stringsAtLeast_int_helper(3, "ExhaustiveProvider_stringsAtLeast_int_iv");
+
+        stringsAtLeast_int_fail_helper(-1);
     }
 
     private static void distinctListsLex_int_List_helper(int size, @NotNull String input, @NotNull String output) {
         aeqitLog(EP.distinctListsLex(size, readIntegerListWithNulls(input)), output);
+    }
+
+    private static void distinctListsLex_int_List_fail_helper(int size, @NotNull String input) {
+        try {
+            EP.distinctListsLex(size, readIntegerListWithNulls(input));
+            fail();
+        } catch (IllegalArgumentException ignored) {}
     }
 
     @Test
@@ -3030,14 +3043,8 @@ public strictfp class ExhaustiveProviderTest {
         distinctListsLex_int_List_helper(2, "[1, null, 3]", "ExhaustiveProvider_distinctListsLex_int_List_xx");
         distinctListsLex_int_List_helper(3, "[1, null, 3]", "ExhaustiveProvider_distinctListsLex_int_List_xxi");
 
-        try {
-            EP.distinctListsLex(-1, Collections.emptyList());
-            fail();
-        } catch (IllegalArgumentException ignored) {}
-        try {
-            EP.distinctListsLex(-1, Arrays.asList(1, 2, 3));
-            fail();
-        } catch (IllegalArgumentException ignored) {}
+        distinctListsLex_int_List_fail_helper(-1, "[]");
+        distinctListsLex_int_List_fail_helper(-1, "[1, 2, 3]");
     }
 
     private static void distinctPairsLex_helper(@NotNull String input, @NotNull String output) {
@@ -3132,6 +3139,8 @@ public strictfp class ExhaustiveProviderTest {
     ) {
         simpleProviderHelper(EP.distinctStringsLex(size, input), output);
     }
+
+    //todo continue cleanup
 
     @Test
     public void testDistinctStringsLex_int_String() {
