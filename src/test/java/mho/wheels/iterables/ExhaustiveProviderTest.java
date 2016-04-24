@@ -2942,11 +2942,11 @@ public strictfp class ExhaustiveProviderTest {
         listsAtLeast_fail_helper(-1, "[1, 2, 3]");
     }
 
-    private static void stringsAtLeast_String_helper(int minSize, @NotNull String input, @NotNull String output) {
+    private static void stringsAtLeast_int_String_helper(int minSize, @NotNull String input, @NotNull String output) {
         simpleProviderHelper(EP.stringsAtLeast(minSize, input), output);
     }
 
-    private static void stringsAtLeast_String_fail_helper(int minSize, @NotNull String input) {
+    private static void stringsAtLeast_int_String_fail_helper(int minSize, @NotNull String input) {
         try {
             EP.stringsAtLeast(minSize, input);
             fail();
@@ -2954,34 +2954,34 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     @Test
-    public void testStringsAtLeast_String() {
-        stringsAtLeast_String_helper(0, "", "ExhaustiveProvider_stringsAtLeast_String_i");
-        stringsAtLeast_String_helper(1, "", "ExhaustiveProvider_stringsAtLeast_String_ii");
-        stringsAtLeast_String_helper(2, "", "ExhaustiveProvider_stringsAtLeast_String_iii");
-        stringsAtLeast_String_helper(3, "", "ExhaustiveProvider_stringsAtLeast_String_iv");
+    public void testStringsAtLeast_int_String() {
+        stringsAtLeast_int_String_helper(0, "", "ExhaustiveProvider_stringsAtLeast_int_String_i");
+        stringsAtLeast_int_String_helper(1, "", "ExhaustiveProvider_stringsAtLeast_int_String_ii");
+        stringsAtLeast_int_String_helper(2, "", "ExhaustiveProvider_stringsAtLeast_int_String_iii");
+        stringsAtLeast_int_String_helper(3, "", "ExhaustiveProvider_stringsAtLeast_int_String_iv");
 
-        stringsAtLeast_String_helper(0, "a", "ExhaustiveProvider_stringsAtLeast_String_v");
-        stringsAtLeast_String_helper(1, "a", "ExhaustiveProvider_stringsAtLeast_String_vi");
-        stringsAtLeast_String_helper(2, "a", "ExhaustiveProvider_stringsAtLeast_String_vii");
-        stringsAtLeast_String_helper(3, "a", "ExhaustiveProvider_stringsAtLeast_String_viii");
+        stringsAtLeast_int_String_helper(0, "a", "ExhaustiveProvider_stringsAtLeast_int_String_v");
+        stringsAtLeast_int_String_helper(1, "a", "ExhaustiveProvider_stringsAtLeast_int_String_vi");
+        stringsAtLeast_int_String_helper(2, "a", "ExhaustiveProvider_stringsAtLeast_int_String_vii");
+        stringsAtLeast_int_String_helper(3, "a", "ExhaustiveProvider_stringsAtLeast_int_String_viii");
 
-        stringsAtLeast_String_helper(0, "abc", "ExhaustiveProvider_stringsAtLeast_String_ix");
-        stringsAtLeast_String_helper(1, "abc", "ExhaustiveProvider_stringsAtLeast_String_x");
-        stringsAtLeast_String_helper(2, "abc", "ExhaustiveProvider_stringsAtLeast_String_xi");
-        stringsAtLeast_String_helper(3, "abc", "ExhaustiveProvider_stringsAtLeast_String_xii");
+        stringsAtLeast_int_String_helper(0, "abc", "ExhaustiveProvider_stringsAtLeast_int_String_ix");
+        stringsAtLeast_int_String_helper(1, "abc", "ExhaustiveProvider_stringsAtLeast_int_String_x");
+        stringsAtLeast_int_String_helper(2, "abc", "ExhaustiveProvider_stringsAtLeast_int_String_xi");
+        stringsAtLeast_int_String_helper(3, "abc", "ExhaustiveProvider_stringsAtLeast_int_String_xii");
 
-        stringsAtLeast_String_helper(0, "abbc", "ExhaustiveProvider_stringsAtLeast_String_xiii");
-        stringsAtLeast_String_helper(1, "abbc", "ExhaustiveProvider_stringsAtLeast_String_xiv");
-        stringsAtLeast_String_helper(2, "abbc", "ExhaustiveProvider_stringsAtLeast_String_xv");
-        stringsAtLeast_String_helper(3, "abbc", "ExhaustiveProvider_stringsAtLeast_String_xvi");
+        stringsAtLeast_int_String_helper(0, "abbc", "ExhaustiveProvider_stringsAtLeast_int_String_xiii");
+        stringsAtLeast_int_String_helper(1, "abbc", "ExhaustiveProvider_stringsAtLeast_int_String_xiv");
+        stringsAtLeast_int_String_helper(2, "abbc", "ExhaustiveProvider_stringsAtLeast_int_String_xv");
+        stringsAtLeast_int_String_helper(3, "abbc", "ExhaustiveProvider_stringsAtLeast_int_String_xvi");
 
-        stringsAtLeast_String_helper(0, "Mississippi", "ExhaustiveProvider_stringsAtLeast_String_xvii");
-        stringsAtLeast_String_helper(1, "Mississippi", "ExhaustiveProvider_stringsAtLeast_String_xviii");
-        stringsAtLeast_String_helper(2, "Mississippi", "ExhaustiveProvider_stringsAtLeast_String_xix");
-        stringsAtLeast_String_helper(3, "Mississippi", "ExhaustiveProvider_stringsAtLeast_String_xx");
+        stringsAtLeast_int_String_helper(0, "Mississippi", "ExhaustiveProvider_stringsAtLeast_int_String_xvii");
+        stringsAtLeast_int_String_helper(1, "Mississippi", "ExhaustiveProvider_stringsAtLeast_int_String_xviii");
+        stringsAtLeast_int_String_helper(2, "Mississippi", "ExhaustiveProvider_stringsAtLeast_int_String_xix");
+        stringsAtLeast_int_String_helper(3, "Mississippi", "ExhaustiveProvider_stringsAtLeast_int_String_xx");
 
-        stringsAtLeast_String_fail_helper(-1, "");
-        stringsAtLeast_String_fail_helper(-1, "abc");
+        stringsAtLeast_int_String_fail_helper(-1, "");
+        stringsAtLeast_int_String_fail_helper(-1, "abc");
     }
 
     private static void stringsAtLeast_int_helper(int minSize, @NotNull String output) {
@@ -3257,7 +3257,7 @@ public strictfp class ExhaustiveProviderTest {
         distinctListsLexAtLeast_helper(2, "[1, 2, 2, 3]", "ExhaustiveProvider_distinctListsLexAtLeast_xxiii");
         distinctListsLexAtLeast_helper(3, "[1, 2, 2, 3]", "ExhaustiveProvider_distinctListsLexAtLeast_xxiv");
 
-        distinctListsLexAtLeast_fail_helper(-1, "[]s");
+        distinctListsLexAtLeast_fail_helper(-1, "[]");
         distinctListsLexAtLeast_fail_helper(-1, "[1, 2, 3]");
     }
 
@@ -3281,7 +3281,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     @Test
-    public void testDistinctStringsLexAtLeast_int_String() {
+    public void testDistinctStringsLexAtLeast() {
         distinctStringsLexAtLeast_helper(0, "", "ExhaustiveProvider_distinctStringsLexAtLeast_i");
         distinctStringsLexAtLeast_helper(1, "", "ExhaustiveProvider_distinctStringsLexAtLeast_ii");
         distinctStringsLexAtLeast_helper(2, "", "ExhaustiveProvider_distinctStringsLexAtLeast_iii");
@@ -3402,8 +3402,6 @@ public strictfp class ExhaustiveProviderTest {
         distinctListsShortlexAtLeast_fail_helper(-1, "[1, 2, 3]");
     }
 
-    //todo continue cleanup
-
     private static void distinctStringsShortlexAtLeast_helper(
             int minSize,
             @NotNull String input,
@@ -3412,7 +3410,7 @@ public strictfp class ExhaustiveProviderTest {
         aeqitLog(EP.distinctStringsShortlexAtLeast(minSize, input), output);
     }
 
-    private static void distinctStringsShortlexAtLeast_helper_limit(
+    private static void distinctStringsShortlexAtLeast_limit_helper(
             int minSize,
             @NotNull String input,
             @NotNull String output
@@ -3420,60 +3418,46 @@ public strictfp class ExhaustiveProviderTest {
         simpleProviderHelper(EP.distinctStringsShortlexAtLeast(minSize, input), output);
     }
 
+    private static void distinctStringsShortlexAtLeast_fail_helper(int minSize, @NotNull String input) {
+        try {
+            EP.distinctStringsShortlexAtLeast(minSize, input);
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+    }
+
     @Test
-    public void testDistinctStringsShortlexAtLeast_int_String() {
-        distinctStringsShortlexAtLeast_helper(0, "", "ExhaustiveProvider_distinctStringsShortlexAtLeast_int_String_i");
-        distinctStringsShortlexAtLeast_helper(1, "",
-                "ExhaustiveProvider_distinctStringsShortlexAtLeast_int_String_ii");
-        distinctStringsShortlexAtLeast_helper(2, "",
-                "ExhaustiveProvider_distinctStringsShortlexAtLeast_int_String_iii");
-        distinctStringsShortlexAtLeast_helper(3, "",
-                "ExhaustiveProvider_distinctStringsShortlexAtLeast_int_String_iv");
+    public void testDistinctStringsShortlexAtLeast() {
+        distinctStringsShortlexAtLeast_helper(0, "", "ExhaustiveProvider_distinctStringsShortlexAtLeast_i");
+        distinctStringsShortlexAtLeast_helper(1, "", "ExhaustiveProvider_distinctStringsShortlexAtLeast_ii");
+        distinctStringsShortlexAtLeast_helper(2, "", "ExhaustiveProvider_distinctStringsShortlexAtLeast_iii");
+        distinctStringsShortlexAtLeast_helper(3, "", "ExhaustiveProvider_distinctStringsShortlexAtLeast_iv");
 
-        distinctStringsShortlexAtLeast_helper(0, "a",
-                "ExhaustiveProvider_distinctStringsShortlexAtLeast_int_String_v");
-        distinctStringsShortlexAtLeast_helper(1, "a",
-                "ExhaustiveProvider_distinctStringsShortlexAtLeast_int_String_vi");
-        distinctStringsShortlexAtLeast_helper(2, "a",
-                "ExhaustiveProvider_distinctStringsShortlexAtLeast_int_String_vii");
-        distinctStringsShortlexAtLeast_helper(3, "a",
-                "ExhaustiveProvider_distinctStringsShortlexAtLeast_int_String_viii");
+        distinctStringsShortlexAtLeast_helper(0, "a", "ExhaustiveProvider_distinctStringsShortlexAtLeast_v");
+        distinctStringsShortlexAtLeast_helper(1, "a", "ExhaustiveProvider_distinctStringsShortlexAtLeast_vi");
+        distinctStringsShortlexAtLeast_helper(2, "a", "ExhaustiveProvider_distinctStringsShortlexAtLeast_vii");
+        distinctStringsShortlexAtLeast_helper(3, "a", "ExhaustiveProvider_distinctStringsShortlexAtLeast_viii");
 
-        distinctStringsShortlexAtLeast_helper(0, "abc",
-                "ExhaustiveProvider_distinctStringsShortlexAtLeast_int_String_ix");
-        distinctStringsShortlexAtLeast_helper(1, "abc",
-                "ExhaustiveProvider_distinctStringsShortlexAtLeast_int_String_x");
-        distinctStringsShortlexAtLeast_helper(2, "abc",
-                "ExhaustiveProvider_distinctStringsShortlexAtLeast_int_String_xi");
-        distinctStringsShortlexAtLeast_helper(3, "abc",
-                "ExhaustiveProvider_distinctStringsShortlexAtLeast_int_String_xii");
+        distinctStringsShortlexAtLeast_helper(0, "abc", "ExhaustiveProvider_distinctStringsShortlexAtLeast_ix");
+        distinctStringsShortlexAtLeast_helper(1, "abc", "ExhaustiveProvider_distinctStringsShortlexAtLeast_x");
+        distinctStringsShortlexAtLeast_helper(2, "abc", "ExhaustiveProvider_distinctStringsShortlexAtLeast_xi");
+        distinctStringsShortlexAtLeast_helper(3, "abc", "ExhaustiveProvider_distinctStringsShortlexAtLeast_xii");
 
-        distinctStringsShortlexAtLeast_helper(0, "abbc",
-                "ExhaustiveProvider_distinctStringsShortlexAtLeast_int_String_xiii");
-        distinctStringsShortlexAtLeast_helper(1, "abbc",
-                "ExhaustiveProvider_distinctStringsShortlexAtLeast_int_String_xiv");
-        distinctStringsShortlexAtLeast_helper(2, "abbc",
-                "ExhaustiveProvider_distinctStringsShortlexAtLeast_int_String_xv");
-        distinctStringsShortlexAtLeast_helper(3, "abbc",
-                "ExhaustiveProvider_distinctStringsShortlexAtLeast_int_String_xvi");
+        distinctStringsShortlexAtLeast_helper(0, "abbc", "ExhaustiveProvider_distinctStringsShortlexAtLeast_xiii");
+        distinctStringsShortlexAtLeast_helper(1, "abbc", "ExhaustiveProvider_distinctStringsShortlexAtLeast_xiv");
+        distinctStringsShortlexAtLeast_helper(2, "abbc", "ExhaustiveProvider_distinctStringsShortlexAtLeast_xv");
+        distinctStringsShortlexAtLeast_helper(3, "abbc", "ExhaustiveProvider_distinctStringsShortlexAtLeast_xvi");
 
-        distinctStringsShortlexAtLeast_helper_limit(0, "Mississippi",
-                "ExhaustiveProvider_distinctStringsShortlexAtLeast_int_String_xvii");
-        distinctStringsShortlexAtLeast_helper_limit(1, "Mississippi",
-                "ExhaustiveProvider_distinctStringsShortlexAtLeast_int_String_xviii");
-        distinctStringsShortlexAtLeast_helper_limit(2, "Mississippi",
-                "ExhaustiveProvider_distinctStringsShortlexAtLeast_int_String_xix");
-        distinctStringsShortlexAtLeast_helper_limit(3, "Mississippi",
-                "ExhaustiveProvider_distinctStringsShortlexAtLeast_int_String_xx");
+        distinctStringsShortlexAtLeast_limit_helper(0, "Mississippi",
+                "ExhaustiveProvider_distinctStringsShortlexAtLeast_xvii");
+        distinctStringsShortlexAtLeast_limit_helper(1, "Mississippi",
+                "ExhaustiveProvider_distinctStringsShortlexAtLeast_xviii");
+        distinctStringsShortlexAtLeast_limit_helper(2, "Mississippi",
+                "ExhaustiveProvider_distinctStringsShortlexAtLeast_xix");
+        distinctStringsShortlexAtLeast_limit_helper(3, "Mississippi",
+                "ExhaustiveProvider_distinctStringsShortlexAtLeast_xx");
 
-        try {
-            EP.distinctStringsShortlexAtLeast(-1, "");
-            fail();
-        } catch (IllegalArgumentException ignored) {}
-        try {
-            EP.distinctStringsShortlexAtLeast(-1, "abc");
-            fail();
-        } catch (IllegalArgumentException ignored) {}
+        distinctStringsShortlexAtLeast_fail_helper(-1, "");
+        distinctStringsShortlexAtLeast_fail_helper(-1, "abc");
     }
 
     private static void distinctLists_int_Iterable_helper(int size, @NotNull String input, @NotNull String output) {
@@ -3540,12 +3524,12 @@ public strictfp class ExhaustiveProviderTest {
         distinctLists_int_Iterable_fail_helper(-1, "[1, 2, 3]");
     }
 
-    private static void distinctPairs_helper(@NotNull String input, @NotNull String output) {
-        simpleProviderHelper(EP.distinctPairs(readIntegerListWithNulls(input)), output);
-    }
-
     private static void distinctPairs_helper(@NotNull Iterable<Integer> input, @NotNull String output) {
         simpleProviderHelper(EP.distinctPairs(input), output);
+    }
+
+    private static void distinctPairs_helper(@NotNull String input, @NotNull String output) {
+        distinctPairs_helper(readIntegerListWithNulls(input), output);
     }
 
     @Test
@@ -3559,12 +3543,12 @@ public strictfp class ExhaustiveProviderTest {
         distinctPairs_helper(repeat(1), "ExhaustiveProvider_distinctPairs_vii");
     }
 
-    private static void distinctTriples_helper(@NotNull String input, @NotNull String output) {
-        simpleProviderHelper(EP.distinctTriples(readIntegerListWithNulls(input)), output);
-    }
-
     private static void distinctTriples_helper(@NotNull Iterable<Integer> input, @NotNull String output) {
         simpleProviderHelper(EP.distinctTriples(input), output);
+    }
+
+    private static void distinctTriples_helper(@NotNull String input, @NotNull String output) {
+        distinctTriples_helper(readIntegerListWithNulls(input), output);
     }
 
     @Test
@@ -3578,12 +3562,12 @@ public strictfp class ExhaustiveProviderTest {
         distinctTriples_helper(repeat(1), "ExhaustiveProvider_distinctTriples_vii");
     }
 
-    private static void distinctQuadruples_helper(@NotNull String input, @NotNull String output) {
-        simpleProviderHelper(EP.distinctQuadruples(readIntegerListWithNulls(input)), output);
-    }
-
     private static void distinctQuadruples_helper(@NotNull Iterable<Integer> input, @NotNull String output) {
         simpleProviderHelper(EP.distinctQuadruples(input), output);
+    }
+
+    private static void distinctQuadruples_helper(@NotNull String input, @NotNull String output) {
+        distinctQuadruples_helper(readIntegerListWithNulls(input), output);
     }
 
     @Test
@@ -3597,12 +3581,12 @@ public strictfp class ExhaustiveProviderTest {
         distinctQuadruples_helper(repeat(1), "ExhaustiveProvider_distinctQuadruples_vii");
     }
 
-    private static void distinctQuintuples_helper(@NotNull String input, @NotNull String output) {
-        simpleProviderHelper(EP.distinctQuintuples(readIntegerListWithNulls(input)), output);
-    }
-
     private static void distinctQuintuples_helper(@NotNull Iterable<Integer> input, @NotNull String output) {
         simpleProviderHelper(EP.distinctQuintuples(input), output);
+    }
+
+    private static void distinctQuintuples_helper(@NotNull String input, @NotNull String output) {
+        distinctQuintuples_helper(readIntegerListWithNulls(input), output);
     }
 
     @Test
@@ -3617,12 +3601,12 @@ public strictfp class ExhaustiveProviderTest {
         distinctQuintuples_helper(repeat(1), "ExhaustiveProvider_distinctQuintuples_viii");
     }
 
-    private static void distinctSextuples_helper(@NotNull String input, @NotNull String output) {
-        simpleProviderHelper(EP.distinctSextuples(readIntegerListWithNulls(input)), output);
-    }
-
     private static void distinctSextuples_helper(@NotNull Iterable<Integer> input, @NotNull String output) {
         simpleProviderHelper(EP.distinctSextuples(input), output);
+    }
+
+    private static void distinctSextuples_helper(@NotNull String input, @NotNull String output) {
+        distinctSextuples_helper(readIntegerListWithNulls(input), output);
     }
 
     @Test
@@ -3637,12 +3621,12 @@ public strictfp class ExhaustiveProviderTest {
         distinctSextuples_helper(repeat(1), "ExhaustiveProvider_distinctSextuples_viii");
     }
 
-    private static void distinctSeptuples_helper(@NotNull String input, @NotNull String output) {
-        simpleProviderHelper(EP.distinctSeptuples(readIntegerListWithNulls(input)), output);
-    }
-
     private static void distinctSeptuples_helper(@NotNull Iterable<Integer> input, @NotNull String output) {
         simpleProviderHelper(EP.distinctSeptuples(input), output);
+    }
+
+    private static void distinctSeptuples_helper(@NotNull String input, @NotNull String output) {
+        distinctSeptuples_helper(readIntegerListWithNulls(input), output);
     }
 
     @Test
@@ -3667,6 +3651,13 @@ public strictfp class ExhaustiveProviderTest {
             @NotNull String output
     ) {
         simpleProviderHelper(EP.distinctStrings(size, input), output);
+    }
+
+    private static void distinctStrings_int_String_fail_helper(int size, @NotNull String input) {
+        try {
+            EP.distinctStrings(size, input);
+            fail();
+        } catch (IllegalArgumentException ignored) {}
     }
 
     @Test
@@ -3698,18 +3689,19 @@ public strictfp class ExhaustiveProviderTest {
         distinctStrings_int_String_helper_limit(2, "Mississippi", "ExhaustiveProvider_distinctStrings_int_String_xix");
         distinctStrings_int_String_helper_limit(3, "Mississippi", "ExhaustiveProvider_distinctStrings_int_String_xx");
 
-        try {
-            EP.distinctStrings(-1, "");
-            fail();
-        } catch (IllegalArgumentException ignored) {}
-        try {
-            EP.distinctStrings(-1, "abc");
-            fail();
-        } catch (IllegalArgumentException ignored) {}
+        distinctStrings_int_String_fail_helper(-1, "");
+        distinctStrings_int_String_fail_helper(-1, "abc");
     }
 
     private static void distinctStrings_int_helper(int size, @NotNull String output) {
         simpleProviderHelper(EP.distinctStrings(size), output);
+    }
+
+    private static void distinctStrings_int_fail_helper(int size) {
+        try {
+            EP.distinctStrings(size);
+            fail();
+        } catch (IllegalArgumentException ignored) {}
     }
 
     @Test
@@ -3720,32 +3712,38 @@ public strictfp class ExhaustiveProviderTest {
         distinctStrings_int_helper(3, "ExhaustiveProvider_distinctStrings_int_iv");
         distinctStrings_int_helper(65537, "ExhaustiveProvider_distinctStrings_int_v");
 
-        try {
-            EP.distinctStrings(-1);
-            fail();
-        } catch (IllegalArgumentException ignored) {}
+        distinctStrings_int_fail_helper(-1);
+    }
+
+    private static void distinctLists_Iterable_helper(@NotNull Iterable<Integer> input, @NotNull String output) {
+        simpleProviderHelper(EP.distinctLists(input), output);
+    }
+
+    private static void distinctLists_Iterable_helper(@NotNull String input, @NotNull String output) {
+        distinctLists_Iterable_helper(readIntegerList(input), output);
     }
 
     @Test
     public void testDistinctLists_Iterable() {
-        aeqitLog(EP.distinctLists(Collections.emptyList()), "ExhaustiveProvider_distinctLists_Iterable_i");
-        simpleProviderHelper(EP.distinctLists(Collections.singletonList(5)),
-                "ExhaustiveProvider_distinctLists_Iterable_ii");
-        simpleProviderHelper(EP.distinctLists(Arrays.asList(1, 2, 3)),
-                "ExhaustiveProvider_distinctLists_Iterable_iii");
-        simpleProviderHelper(EP.distinctLists(Arrays.asList(1, 2, 2, 3)),
-                "ExhaustiveProvider_distinctLists_Iterable_iv");
-        simpleProviderHelper(EP.distinctLists(EP.naturalIntegers()), "ExhaustiveProvider_distinctLists_Iterable_v");
-        simpleProviderHelper(EP.distinctLists(repeat(1)), "ExhaustiveProvider_distinctLists_Iterable_vi");
+        distinctLists_Iterable_helper("[]", "ExhaustiveProvider_distinctLists_Iterable_i");
+        distinctLists_Iterable_helper("[5]", "ExhaustiveProvider_distinctLists_Iterable_ii");
+        distinctLists_Iterable_helper("[1, 2, 3]", "ExhaustiveProvider_distinctLists_Iterable_iii");
+        distinctLists_Iterable_helper("[1, 2, 2, 3]", "ExhaustiveProvider_distinctLists_Iterable_iv");
+        distinctLists_Iterable_helper(EP.naturalIntegers(), "ExhaustiveProvider_distinctLists_Iterable_v");
+        distinctLists_Iterable_helper(repeat(1), "ExhaustiveProvider_distinctLists_Iterable_vi");
+    }
+
+    private static void distinctStrings_String_helper(@NotNull String input, @NotNull String output) {
+        simpleProviderHelper(EP.distinctStrings(input), output);
     }
 
     @Test
     public void testDistinctStrings_String() {
-        aeqitLog(EP.distinctStrings(""), "ExhaustiveProvider_distinctStrings_String_i");
-        simpleProviderHelper(EP.distinctStrings("a"), "ExhaustiveProvider_distinctStrings_String_ii");
-        simpleProviderHelper(EP.distinctStrings("abc"), "ExhaustiveProvider_distinctStrings_String_iii");
-        simpleProviderHelper(EP.distinctStrings("abbc"), "ExhaustiveProvider_distinctStrings_String_iv");
-        simpleProviderHelper(EP.distinctStrings("Mississippi"), "ExhaustiveProvider_distinctStrings_String_v");
+        distinctStrings_String_helper("", "ExhaustiveProvider_distinctStrings_String_i");
+        distinctStrings_String_helper("a", "ExhaustiveProvider_distinctStrings_String_ii");
+        distinctStrings_String_helper("abc", "ExhaustiveProvider_distinctStrings_String_iii");
+        distinctStrings_String_helper("abbc", "ExhaustiveProvider_distinctStrings_String_iv");
+        distinctStrings_String_helper("Mississippi", "ExhaustiveProvider_distinctStrings_String_v");
     }
 
     @Test
@@ -3763,6 +3761,13 @@ public strictfp class ExhaustiveProviderTest {
 
     private static void distinctListsAtLeast_helper(int minSize, @NotNull String input, @NotNull String output) {
         distinctListsAtLeast_helper(minSize, readIntegerListWithNulls(input), output);
+    }
+
+    private static void distinctListsAtLeast_fail_helper(int minSize, @NotNull String input) {
+        try {
+            EP.distinctListsAtLeast(minSize, readIntegerListWithNulls(input));
+            fail();
+        } catch (IllegalArgumentException ignored) {}
     }
 
     @Test
@@ -3802,17 +3807,11 @@ public strictfp class ExhaustiveProviderTest {
         distinctListsAtLeast_helper(2, repeat(1), "ExhaustiveProvider_distinctListsAtLeast_xxvii");
         distinctListsAtLeast_helper(3, repeat(1), "ExhaustiveProvider_distinctListsAtLeast_xxviii");
 
-        try {
-            EP.distinctListsAtLeast(-1, Collections.emptyList());
-            fail();
-        } catch (IllegalArgumentException ignored) {}
-        try {
-            EP.distinctListsAtLeast(-1, Arrays.asList(1, 2, 3));
-            fail();
-        } catch (IllegalArgumentException ignored) {}
+        distinctListsAtLeast_fail_helper(-1, "[]");
+        distinctListsAtLeast_fail_helper(-1, "[1, 2, 3]");
     }
 
-    private static void distinctStringsAtLeast_String_helper(
+    private static void distinctStringsAtLeast_int_String_helper(
             int minSize,
             @NotNull String input,
             @NotNull String output
@@ -3820,63 +3819,83 @@ public strictfp class ExhaustiveProviderTest {
         simpleProviderHelper(EP.distinctStringsAtLeast(minSize, input), output);
     }
 
-    @Test
-    public void testDistinctStringsAtLeast_String() {
-        distinctStringsAtLeast_String_helper(0, "", "ExhaustiveProvider_distinctStringsAtLeast_String_i");
-        distinctStringsAtLeast_String_helper(1, "", "ExhaustiveProvider_distinctStringsAtLeast_String_ii");
-        distinctStringsAtLeast_String_helper(2, "", "ExhaustiveProvider_distinctStringsAtLeast_String_iii");
-        distinctStringsAtLeast_String_helper(3, "", "ExhaustiveProvider_distinctStringsAtLeast_String_iv");
-
-        distinctStringsAtLeast_String_helper(0, "a", "ExhaustiveProvider_distinctStringsAtLeast_String_v");
-        distinctStringsAtLeast_String_helper(1, "a", "ExhaustiveProvider_distinctStringsAtLeast_String_vi");
-        distinctStringsAtLeast_String_helper(2, "a", "ExhaustiveProvider_distinctStringsAtLeast_String_vii");
-        distinctStringsAtLeast_String_helper(3, "a", "ExhaustiveProvider_distinctStringsAtLeast_String_viii");
-
-        distinctStringsAtLeast_String_helper(0, "abc", "ExhaustiveProvider_distinctStringsAtLeast_String_ix");
-        distinctStringsAtLeast_String_helper(1, "abc", "ExhaustiveProvider_distinctStringsAtLeast_String_x");
-        distinctStringsAtLeast_String_helper(2, "abc", "ExhaustiveProvider_distinctStringsAtLeast_String_xi");
-        distinctStringsAtLeast_String_helper(3, "abc", "ExhaustiveProvider_distinctStringsAtLeast_String_xii");
-
-        distinctStringsAtLeast_String_helper(0, "abbc", "ExhaustiveProvider_distinctStringsAtLeast_String_xiii");
-        distinctStringsAtLeast_String_helper(1, "abbc", "ExhaustiveProvider_distinctStringsAtLeast_String_xiv");
-        distinctStringsAtLeast_String_helper(2, "abbc", "ExhaustiveProvider_distinctStringsAtLeast_String_xv");
-        distinctStringsAtLeast_String_helper(3, "abbc", "ExhaustiveProvider_distinctStringsAtLeast_String_xvi");
-
-        distinctStringsAtLeast_String_helper(0, "Mississippi",
-                "ExhaustiveProvider_distinctStringsAtLeast_String_xvii");
-        distinctStringsAtLeast_String_helper(1, "Mississippi",
-                "ExhaustiveProvider_distinctStringsAtLeast_String_xviii");
-        distinctStringsAtLeast_String_helper(2, "Mississippi",
-                "ExhaustiveProvider_distinctStringsAtLeast_String_xix");
-        distinctStringsAtLeast_String_helper(3, "Mississippi",
-                "ExhaustiveProvider_distinctStringsAtLeast_String_xx");
-
+    private static void distinctStringsAtLeast_int_String_fail_helper(int minSize, @NotNull String input) {
         try {
-            EP.distinctStringsAtLeast(-1, "");
-            fail();
-        } catch (IllegalArgumentException ignored) {}
-        try {
-            EP.distinctStringsAtLeast(-1, "abc");
+            EP.distinctStringsAtLeast(minSize, input);
             fail();
         } catch (IllegalArgumentException ignored) {}
     }
 
-    private static void distinctStringsAtLeast_helper(int minSize, @NotNull String output) {
+    @Test
+    public void testDistinctStringsAtLeast_int_String() {
+        distinctStringsAtLeast_int_String_helper(0, "", "ExhaustiveProvider_distinctStringsAtLeast_int_String_i");
+        distinctStringsAtLeast_int_String_helper(1, "", "ExhaustiveProvider_distinctStringsAtLeast_int_String_ii");
+        distinctStringsAtLeast_int_String_helper(2, "", "ExhaustiveProvider_distinctStringsAtLeast_int_String_iii");
+        distinctStringsAtLeast_int_String_helper(3, "", "ExhaustiveProvider_distinctStringsAtLeast_int_String_iv");
+
+        distinctStringsAtLeast_int_String_helper(0, "a", "ExhaustiveProvider_distinctStringsAtLeast_int_String_v");
+        distinctStringsAtLeast_int_String_helper(1, "a", "ExhaustiveProvider_distinctStringsAtLeast_int_String_vi");
+        distinctStringsAtLeast_int_String_helper(2, "a", "ExhaustiveProvider_distinctStringsAtLeast_int_String_vii");
+        distinctStringsAtLeast_int_String_helper(3, "a", "ExhaustiveProvider_distinctStringsAtLeast_int_String_viii");
+
+        distinctStringsAtLeast_int_String_helper(0, "abc", "ExhaustiveProvider_distinctStringsAtLeast_int_String_ix");
+        distinctStringsAtLeast_int_String_helper(1, "abc", "ExhaustiveProvider_distinctStringsAtLeast_int_String_x");
+        distinctStringsAtLeast_int_String_helper(2, "abc", "ExhaustiveProvider_distinctStringsAtLeast_int_String_xi");
+        distinctStringsAtLeast_int_String_helper(3, "abc", "ExhaustiveProvider_distinctStringsAtLeast_int_String_xii");
+
+        distinctStringsAtLeast_int_String_helper(
+                0,
+                "abbc",
+                "ExhaustiveProvider_distinctStringsAtLeast_int_String_xiii"
+        );
+        distinctStringsAtLeast_int_String_helper(
+                1,
+                "abbc",
+                "ExhaustiveProvider_distinctStringsAtLeast_int_String_xiv"
+        );
+        distinctStringsAtLeast_int_String_helper(2, "abbc", "ExhaustiveProvider_distinctStringsAtLeast_int_String_xv");
+        distinctStringsAtLeast_int_String_helper(
+                3,
+                "abbc",
+                "ExhaustiveProvider_distinctStringsAtLeast_int_String_xvi"
+        );
+
+        distinctStringsAtLeast_int_String_helper(0, "Mississippi",
+                "ExhaustiveProvider_distinctStringsAtLeast_int_String_xvii");
+        distinctStringsAtLeast_int_String_helper(1, "Mississippi",
+                "ExhaustiveProvider_distinctStringsAtLeast_int_String_xviii");
+        distinctStringsAtLeast_int_String_helper(2, "Mississippi",
+                "ExhaustiveProvider_distinctStringsAtLeast_int_String_xix");
+        distinctStringsAtLeast_int_String_helper(3, "Mississippi",
+                "ExhaustiveProvider_distinctStringsAtLeast_int_String_xx");
+
+        distinctStringsAtLeast_int_String_fail_helper(-1, "");
+        distinctStringsAtLeast_int_String_fail_helper(-1, "abc");
+    }
+
+    private static void distinctStringsAtLeast_int_helper(int minSize, @NotNull String output) {
         simpleProviderHelper(EP.distinctStringsAtLeast(minSize), output);
     }
 
-    @Test
-    public void testDistinctStringsAtLeast() {
-        distinctStringsAtLeast_helper(0, "ExhaustiveProvider_distinctStringsAtLeast_i");
-        distinctStringsAtLeast_helper(1, "ExhaustiveProvider_distinctStringsAtLeast_ii");
-        distinctStringsAtLeast_helper(2, "ExhaustiveProvider_distinctStringsAtLeast_iii");
-        distinctStringsAtLeast_helper(3, "ExhaustiveProvider_distinctStringsAtLeast_iv");
-        distinctStringsAtLeast_helper(65537, "ExhaustiveProvider_distinctStringsAtLeast_v");
+    private static void distinctStringsAtLeast_int_fail_helper(int minSize) {
         try {
-            EP.distinctStringsAtLeast(-1);
+            EP.distinctStringsAtLeast(minSize);
             fail();
         } catch (IllegalArgumentException ignored) {}
     }
+
+    @Test
+    public void testDistinctStringsAtLeast_int() {
+        distinctStringsAtLeast_int_helper(0, "ExhaustiveProvider_distinctStringsAtLeast_int_i");
+        distinctStringsAtLeast_int_helper(1, "ExhaustiveProvider_distinctStringsAtLeast_int_ii");
+        distinctStringsAtLeast_int_helper(2, "ExhaustiveProvider_distinctStringsAtLeast_int_iii");
+        distinctStringsAtLeast_int_helper(3, "ExhaustiveProvider_distinctStringsAtLeast_int_iv");
+        distinctStringsAtLeast_int_helper(65537, "ExhaustiveProvider_distinctStringsAtLeast_int_v");
+
+        distinctStringsAtLeast_int_fail_helper(-1);
+    }
+
+    //todo continue cleanup
 
     private static void bagsLex_int_List_helper(int size, @NotNull String input, @NotNull String output) {
         aeqitLog(EP.bagsLex(size, readIntegerListWithNulls(input)), output);
