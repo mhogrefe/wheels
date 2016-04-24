@@ -257,86 +257,101 @@ public class ReadersTest {
         readLongStrict_helper("+4", "Optional.empty");
     }
 
+    private void readFloatStrict_helper(@NotNull String input, @NotNull String output) {
+        aeq(readFloatStrict(input), output);
+    }
+
     @Test
     public void testReadFloatStrict() {
-        aeq(readFloatStrict("0.0").get(), "0.0");
-        aeq(readFloatStrict("-0.0").get(), "-0.0");
-        aeq(readFloatStrict("5.0").get(), "5.0");
-        aeq(readFloatStrict("-100.0").get(), "-100.0");
-        aeq(readFloatStrict("1.0E10").get(), "1.0E10");
-        aeq(readFloatStrict("1.0E-10").get(), "1.0E-10");
-        aeq(readFloatStrict("1.234").get(), "1.234");
-        aeq(readFloatStrict("1.111111").get(), "1.111111");
-        aeq(readFloatStrict("NaN").get(), "NaN");
-        aeq(readFloatStrict("Infinity").get(), "Infinity");
-        aeq(readFloatStrict("-Infinity").get(), "-Infinity");
-        assertFalse(readFloatStrict("1.1111111").isPresent());
-        assertFalse(readFloatStrict("1.0e10").isPresent());
-        assertFalse(readFloatStrict("1.0e-10").isPresent());
-        assertFalse(readFloatStrict(".").isPresent());
-        assertFalse(readFloatStrict("0.").isPresent());
-        assertFalse(readFloatStrict(".0").isPresent());
-        assertFalse(readFloatStrict(" 1.0").isPresent());
-        assertFalse(readFloatStrict("--1.0").isPresent());
+        readFloatStrict_helper("0.0", "Optional[0.0]");
+        readFloatStrict_helper("-0.0", "Optional[-0.0]");
+        readFloatStrict_helper("5.0", "Optional[5.0]");
+        readFloatStrict_helper("-100.0", "Optional[-100.0]");
+        readFloatStrict_helper("1.0E10", "Optional[1.0E10]");
+        readFloatStrict_helper("1.0E-10", "Optional[1.0E-10]");
+        readFloatStrict_helper("1.234", "Optional[1.234]");
+        readFloatStrict_helper("1.111111", "Optional[1.111111]");
+        readFloatStrict_helper("NaN", "Optional[NaN]");
+        readFloatStrict_helper("Infinity", "Optional[Infinity]");
+        readFloatStrict_helper("-Infinity", "Optional[-Infinity]");
+
+        readFloatStrict_helper("1.1111111", "Optional.empty");
+        readFloatStrict_helper("1.0e10", "Optional.empty");
+        readFloatStrict_helper("1.0e-10", "Optional.empty");
+        readFloatStrict_helper(".", "Optional.empty");
+        readFloatStrict_helper("0.", "Optional.empty");
+        readFloatStrict_helper(".0", "Optional.empty");
+        readFloatStrict_helper(" 1.0", "Optional.empty");
+        readFloatStrict_helper("--1.0", "Optional.empty");
+    }
+
+    private void readDoubleStrict_helper(@NotNull String input, @NotNull String output) {
+        aeq(readDoubleStrict(input), output);
     }
 
     @Test
     public void testReadDoubleStrict() {
-        aeq(readDoubleStrict("0.0").get(), "0.0");
-        aeq(readDoubleStrict("-0.0").get(), "-0.0");
-        aeq(readDoubleStrict("5.0").get(), "5.0");
-        aeq(readDoubleStrict("-100.0").get(), "-100.0");
-        aeq(readDoubleStrict("1.0E10").get(), "1.0E10");
-        aeq(readDoubleStrict("1.0E-10").get(), "1.0E-10");
-        aeq(readDoubleStrict("1.234").get(), "1.234");
-        aeq(readDoubleStrict("1.111111111111111").get(), "1.111111111111111");
-        aeq(readDoubleStrict("NaN").get(), "NaN");
-        aeq(readDoubleStrict("Infinity").get(), "Infinity");
-        aeq(readDoubleStrict("-Infinity").get(), "-Infinity");
-        assertFalse(readDoubleStrict("1.1111111111111111").isPresent());
-        assertFalse(readDoubleStrict("1.0e10").isPresent());
-        assertFalse(readDoubleStrict("1.0e-10").isPresent());
-        assertFalse(readDoubleStrict(".").isPresent());
-        assertFalse(readDoubleStrict("0.").isPresent());
-        assertFalse(readDoubleStrict(".0").isPresent());
-        assertFalse(readDoubleStrict(" 1.0").isPresent());
-        assertFalse(readDoubleStrict("--1.0").isPresent());
+        readDoubleStrict_helper("0.0", "Optional[0.0]");
+        readDoubleStrict_helper("-0.0", "Optional[-0.0]");
+        readDoubleStrict_helper("5.0", "Optional[5.0]");
+        readDoubleStrict_helper("-100.0", "Optional[-100.0]");
+        readDoubleStrict_helper("1.0E10", "Optional[1.0E10]");
+        readDoubleStrict_helper("1.0E-10", "Optional[1.0E-10]");
+        readDoubleStrict_helper("1.234", "Optional[1.234]");
+        readDoubleStrict_helper("1.111111111111111", "Optional[1.111111111111111]");
+        readDoubleStrict_helper("NaN", "Optional[NaN]");
+        readDoubleStrict_helper("Infinity", "Optional[Infinity]");
+        readDoubleStrict_helper("-Infinity", "Optional[-Infinity]");
+
+        readDoubleStrict_helper("1.1111111111111111", "Optional.empty");
+        readDoubleStrict_helper("1.0e10", "Optional.empty");
+        readDoubleStrict_helper("1.0e-10", "Optional.empty");
+        readDoubleStrict_helper(".", "Optional.empty");
+        readDoubleStrict_helper("0.", "Optional.empty");
+        readDoubleStrict_helper(".0", "Optional.empty");
+        readDoubleStrict_helper(" 1.0", "Optional.empty");
+        readDoubleStrict_helper("--1.0", "Optional.empty");
+    }
+
+    private void readBigDecimalStrict_helper(@NotNull String input, @NotNull String output) {
+        aeq(readBigDecimalStrict(input), output);
     }
 
     @Test
     public void testReadBigDecimalStrict() {
-        aeq(readBigDecimalStrict("0.0").get(), "0.0");
-        aeq(readBigDecimalStrict("5.0").get(), "5.0");
-        aeq(readBigDecimalStrict("-100.0").get(), "-100.0");
-        aeq(readBigDecimalStrict("1.0E+10").get(), "1.0E+10");
-        aeq(readBigDecimalStrict("1.0E-10").get(), "1.0E-10");
-        aeq(readBigDecimalStrict("1.234").get(), "1.234");
-        aeq(readBigDecimalStrict("1.111111111111111").get(), "1.111111111111111");
-        assertFalse(readBigDecimalStrict("1.0e10").isPresent());
-        assertFalse(readBigDecimalStrict("1.0e-10").isPresent());
-        assertFalse(readBigDecimalStrict(".").isPresent());
-        assertFalse(readBigDecimalStrict("0.").isPresent());
-        assertFalse(readBigDecimalStrict(".0").isPresent());
-        assertFalse(readBigDecimalStrict(" 1.0").isPresent());
-        assertFalse(readBigDecimalStrict("--1.0").isPresent());
-        assertFalse(readBigDecimalStrict("-0.0").isPresent());
-        assertFalse(readBigDecimalStrict("NaN").isPresent());
-        assertFalse(readBigDecimalStrict("Infinity").isPresent());
+        readBigDecimalStrict_helper("0.0", "Optional[0.0]");
+        readBigDecimalStrict_helper("5.0", "Optional[5.0]");
+        readBigDecimalStrict_helper("-100.0", "Optional[-100.0]");
+        readBigDecimalStrict_helper("1.0E+10", "Optional[1.0E+10]");
+        readBigDecimalStrict_helper("1.0E-10", "Optional[1.0E-10]");
+        readBigDecimalStrict_helper("1.234", "Optional[1.234]");
+        readBigDecimalStrict_helper("1.111111111111111", "Optional[1.111111111111111]");
+
+        readBigDecimalStrict_helper("1.0e10", "Optional.empty");
+        readBigDecimalStrict_helper("1.0e-10", "Optional.empty");
+        readBigDecimalStrict_helper(".", "Optional.empty");
+        readBigDecimalStrict_helper("0.", "Optional.empty");
+        readBigDecimalStrict_helper(".0", "Optional.empty");
+        readBigDecimalStrict_helper(" 1.0", "Optional.empty");
+        readBigDecimalStrict_helper("--1.0", "Optional.empty");
+        readBigDecimalStrict_helper("-0.0", "Optional.empty");
+        readBigDecimalStrict_helper("NaN", "Optional.empty");
+        readBigDecimalStrict_helper("Infinity", "Optional.empty");
     }
 
     @Test
-    public void testReadCharacter() {
-        aeq(readCharacter("a").get(), "a");
-        aeq(readCharacter("ø").get(), "ø");
-        assertFalse(readCharacter("hi").isPresent());
-        assertFalse(readCharacter("").isPresent());
+    public void testReadCharacterStrict() {
+        aeq(readCharacterStrict("a").get(), "a");
+        aeq(readCharacterStrict("ø").get(), "ø");
+        assertFalse(readCharacterStrict("hi").isPresent());
+        assertFalse(readCharacterStrict("").isPresent());
     }
 
     @Test
-    public void testReadString() {
-        aeq(readString("Hello").get(), "Hello");
-        aeq(readString("ø").get(), "ø");
-        aeq(readString("").get(), "");
+    public void testReadStringStrict() {
+        aeq(readStringStrict("Hello").get(), "Hello");
+        aeq(readStringStrict("ø").get(), "ø");
+        aeq(readStringStrict("").get(), "");
     }
 
     @Test
@@ -344,11 +359,11 @@ public class ReadersTest {
         aeq(readWithNullsStrict(Readers::readIntegerStrict).apply("23").get(), "23");
         aeq(readWithNullsStrict(Readers::readIntegerStrict).apply("-500").get(), "-500");
         assertNull(readWithNullsStrict(Readers::readIntegerStrict).apply("null").get());
-        aeq(readWithNullsStrict(Readers::readString).apply("hello").get(), "hello");
-        aeq(readWithNullsStrict(Readers::readString).apply("bye").get(), "bye");
-        aeq(readWithNullsStrict(Readers::readString).apply("nullification").get(), "nullification");
-        aeq(readWithNullsStrict(Readers::readString).apply("").get(), "");
-        assertNull(readWithNullsStrict(Readers::readString).apply("null").get());
+        aeq(readWithNullsStrict(Readers::readStringStrict).apply("hello").get(), "hello");
+        aeq(readWithNullsStrict(Readers::readStringStrict).apply("bye").get(), "bye");
+        aeq(readWithNullsStrict(Readers::readStringStrict).apply("nullification").get(), "nullification");
+        aeq(readWithNullsStrict(Readers::readStringStrict).apply("").get(), "");
+        assertNull(readWithNullsStrict(Readers::readStringStrict).apply("null").get());
         assertFalse(readWithNullsStrict(Readers::readIntegerStrict).apply("annull").isPresent());
         assertFalse(readWithNullsStrict(Readers::readIntegerStrict).apply("--").isPresent());
         assertFalse(readWithNullsStrict(Readers::readIntegerStrict).apply("").isPresent());
@@ -424,15 +439,15 @@ public class ReadersTest {
         assertFalse(readListStrict(Readers::readIntegerStrict).apply("[00]").isPresent());
         Optional<List<String>> ss;
 
-        ss = readListStrict(Readers::readString).apply("[hello]");
+        ss = readListStrict(Readers::readStringStrict).apply("[hello]");
         aeq(ss.get(), "[hello]");
         aeq(ss.get().size(), 1);
 
-        ss = readListStrict(Readers::readString).apply("[hello, bye]");
+        ss = readListStrict(Readers::readStringStrict).apply("[hello, bye]");
         aeq(ss.get(), "[hello, bye]");
         aeq(ss.get().size(), 2);
 
-        ss = readListStrict(Readers::readString).apply("[a, b, c]");
+        ss = readListStrict(Readers::readStringStrict).apply("[a, b, c]");
         aeq(ss.get(), "[a, b, c]");
         aeq(ss.get().size(), 3);
     }

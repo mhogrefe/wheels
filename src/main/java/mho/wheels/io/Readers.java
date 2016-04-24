@@ -296,7 +296,7 @@ public class Readers {
      * @return the {@code Character} represented by {@code s}, or {@code Optional.empty} if {@code s} does not
      * represent a {@code Character}
      */
-    public static @NotNull Optional<Character> readCharacter(@NotNull String s) {
+    public static @NotNull Optional<Character> readCharacterStrict(@NotNull String s) {
         return s.length() == 1 ? Optional.of(s.charAt(0)) : Optional.<Character>empty();
     }
 
@@ -311,7 +311,7 @@ public class Readers {
      * @param s the input {@code String}
      * @return the {@code String} represented by {@code s}
      */
-    public static @NotNull Optional<String> readString(@NotNull String s) {
+    public static @NotNull Optional<String> readStringStrict(@NotNull String s) {
         return Optional.of(s);
     }
 

@@ -168,15 +168,15 @@ public class ReadersDemos extends Demos {
         }
     }
 
-    private void demoReadCharacter() {
+    private void demoReadCharacterStrict() {
         for (String s : take(LIMIT, P.strings())) {
-            System.out.println("readCharacter(" + nicePrint(s) + ") = " + readCharacter(s));
+            System.out.println("readCharacterStrict(" + nicePrint(s) + ") = " + readCharacterStrict(s));
         }
     }
 
-    private void demoReadString() {
+    private void demoReadStringStrict() {
         for (String s : take(LIMIT, P.strings())) {
-            System.out.println("readString(" + s + ") = " + readString(s));
+            System.out.println("readStringStrict(" + s + ") = " + readStringStrict(s));
         }
     }
 }

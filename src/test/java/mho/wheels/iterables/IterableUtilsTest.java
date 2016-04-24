@@ -288,7 +288,7 @@ public strictfp class IterableUtilsTest {
     }
 
     private static void charsToStringHelper(@NotNull String input, @NotNull String output) {
-        aeq(charsToString(Readers.readListWithNullsStrict(Readers::readCharacter).apply(input).get()), output);
+        aeq(charsToString(Readers.readListWithNullsStrict(Readers::readCharacterStrict).apply(input).get()), output);
     }
 
     @Test

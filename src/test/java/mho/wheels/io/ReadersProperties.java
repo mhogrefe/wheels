@@ -5,7 +5,6 @@ import mho.wheels.structures.Pair;
 import mho.wheels.testing.TestProperties;
 import org.jetbrains.annotations.NotNull;
 
-import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.Optional;
 import java.util.function.Function;
@@ -19,6 +18,8 @@ public strictfp class ReadersProperties extends TestProperties {
     private static final @NotNull String ORDERING_CHARS = "EGLQT";
     private static final @NotNull String ROUNDING_MODE_CHARS = "ACDEFGHILNOPRSUVWY_";
     private static final @NotNull String INTEGRAL_CHARS = "-0123456789";
+    private static final @NotNull String FLOATING_POINT_CHARS = "-.0123456789EINafinty";
+    private static final @NotNull String BIG_DECIMAL_CHARS = "+-.0123456789E";
 
     public ReadersProperties() {
         super("Readers");
@@ -38,8 +39,8 @@ public strictfp class ReadersProperties extends TestProperties {
         propertiesReadFloatStrict();
         propertiesReadDoubleStrict();
         propertiesReadBigDecimalStrict();
-        propertiesReadCharacter();
-        propertiesReadString();
+        propertiesReadCharacterStrict();
+        propertiesReadStringStrict();
     }
 
     private void propertiesGenericReadStrict() {
@@ -100,7 +101,7 @@ public strictfp class ReadersProperties extends TestProperties {
                 INTEGRAL_CHARS,
                 P.bigIntegers(),
                 Readers::readBigIntegerStrict,
-                rm -> {},
+                i -> {},
                 false,
                 true
         );
@@ -108,85 +109,82 @@ public strictfp class ReadersProperties extends TestProperties {
 
     private void propertiesReadByteStrict() {
         initialize("readByteStrict(String)");
-        propertiesReadHelper(LIMIT, P, INTEGRAL_CHARS, P.bytes(), Readers::readByteStrict, rm -> {}, false, true);
+        propertiesReadHelper(LIMIT, P, INTEGRAL_CHARS, P.bytes(), Readers::readByteStrict, b -> {}, false, true);
     }
 
     private void propertiesReadShortStrict() {
         initialize("readShortStrict(String)");
-        propertiesReadHelper(LIMIT, P, INTEGRAL_CHARS, P.shorts(), Readers::readShortStrict, rm -> {}, false, true);
+        propertiesReadHelper(LIMIT, P, INTEGRAL_CHARS, P.shorts(), Readers::readShortStrict, s -> {}, false, true);
     }
 
     private void propertiesReadIntegerStrict() {
         initialize("readIntegerStrict(String)");
+        propertiesReadHelper(LIMIT, P, INTEGRAL_CHARS, P.integers(), Readers::readIntegerStrict, i -> {}, false, true);
+    }
+
+    private void propertiesReadLongStrict() {
+        initialize("readLongStrict(String)");
+        propertiesReadHelper(LIMIT, P, INTEGRAL_CHARS, P.longs(), Readers::readLongStrict, l -> {}, false, true);
+    }
+
+    private void propertiesReadFloatStrict() {
+        initialize("readFloatStrict(String)");
         propertiesReadHelper(
                 LIMIT,
                 P,
-                INTEGRAL_CHARS,
-                P.integers(),
-                Readers::readIntegerStrict,
-                rm -> {},
+                FLOATING_POINT_CHARS,
+                P.floats(),
+                Readers::readFloatStrict,
+                f -> {},
                 false,
                 true
         );
     }
 
-    private void propertiesReadLongStrict() {
-        initialize("readLongStrict(String)");
-        propertiesReadHelper(LIMIT, P, INTEGRAL_CHARS, P.longs(), Readers::readLongStrict, rm -> {}, false, true);
-    }
-
-    private void propertiesReadFloatStrict() {
-        initialize("readFloatStrict(String)");
-        for (String s : take(LIMIT, P.strings())) {
-            readFloatStrict(s);
-        }
-
-        for (float f : take(LIMIT, P.floats())) {
-            Optional<Float> of = readFloatStrict(Float.toString(f));
-            assertEquals(f, of.get(), f);
-        }
-    }
-
     private void propertiesReadDoubleStrict() {
         initialize("readDoubleStrict(String)");
-        for (String s : take(LIMIT, P.strings())) {
-            readDoubleStrict(s);
-        }
-
-        for (double d : take(LIMIT, P.doubles())) {
-            Optional<Double> od = readDoubleStrict(Double.toString(d));
-            assertEquals(d, od.get(), d);
-        }
+        propertiesReadHelper(
+                LIMIT,
+                P,
+                FLOATING_POINT_CHARS,
+                P.doubles(),
+                Readers::readDoubleStrict,
+                d -> {},
+                false,
+                true
+        );
     }
 
     private void propertiesReadBigDecimalStrict() {
         initialize("readBigDecimalStrict(String)");
-        for (String s : take(LIMIT, P.strings())) {
-            readBigDecimalStrict(s);
-        }
-
-        for (BigDecimal bd : take(LIMIT, P.bigDecimals())) {
-            Optional<BigDecimal> obd = readBigDecimalStrict(bd.toString());
-            assertEquals(bd, obd.get(), bd);
-        }
+        propertiesReadHelper(
+                LIMIT,
+                P,
+                BIG_DECIMAL_CHARS,
+                P.bigDecimals(),
+                Readers::readBigDecimalStrict,
+                bd -> {},
+                false,
+                true
+        );
     }
 
-    private void propertiesReadCharacter() {
-        initialize("readCharacter(String)");
+    private void propertiesReadCharacterStrict() {
+        initialize("readCharacterStrict(String)");
         for (String s : take(LIMIT, P.strings())) {
-            readCharacter(s);
+            readCharacterStrict(s);
         }
 
         for (char c : take(LIMIT, P.characters())) {
-            Optional<Character> oc = readCharacter(Character.toString(c));
+            Optional<Character> oc = readCharacterStrict(Character.toString(c));
             assertEquals(c, oc.get(), c);
         }
     }
 
-    private void propertiesReadString() {
-        initialize("readString(String)");
+    private void propertiesReadStringStrict() {
+        initialize("readStringStrict(String)");
         for (String s : take(LIMIT, P.strings())) {
-            Optional<String> os = readString(s);
+            Optional<String> os = readStringStrict(s);
             assertEquals(s, os.get(), s);
         }
     }
