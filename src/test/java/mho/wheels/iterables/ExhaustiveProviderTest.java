@@ -3895,8 +3895,6 @@ public strictfp class ExhaustiveProviderTest {
         distinctStringsAtLeast_int_fail_helper(-1);
     }
 
-    //todo continue cleanup
-
     private static void bagsLex_int_List_helper(int size, @NotNull String input, @NotNull String output) {
         aeqitLog(EP.bagsLex(size, readIntegerListWithNulls(input)), output);
     }
@@ -4074,12 +4072,19 @@ public strictfp class ExhaustiveProviderTest {
         aeqitLog(EP.stringBagsLex(size, input), output);
     }
 
-    private static void stringBagsLex_helper_limit(
+    private static void stringBagLex_limit_helper(
             int size,
             @NotNull String input,
             @NotNull String output
     ) {
         simpleProviderHelper(EP.stringBagsLex(size, input), output);
+    }
+
+    private static void stringBagsLex_fail_helper(int size, @NotNull String input) {
+        try {
+            EP.stringBagsLex(size, input);
+            fail();
+        } catch (ArithmeticException ignored) {}
     }
 
     @Test
@@ -4104,19 +4109,13 @@ public strictfp class ExhaustiveProviderTest {
         stringBagsLex_helper(2, "abbc", "ExhaustiveProvider_stringBagsLex_xv");
         stringBagsLex_helper(3, "abbc", "ExhaustiveProvider_stringBagsLex_xvi");
 
-        stringBagsLex_helper_limit(0, "Mississippi", "ExhaustiveProvider_stringBagsLex_xvii");
-        stringBagsLex_helper_limit(1, "Mississippi", "ExhaustiveProvider_stringBagsLex_xviii");
-        stringBagsLex_helper_limit(2, "Mississippi", "ExhaustiveProvider_stringBagsLex_xix");
-        stringBagsLex_helper_limit(3, "Mississippi", "ExhaustiveProvider_stringBagsLex_xx");
+        stringBagLex_limit_helper(0, "Mississippi", "ExhaustiveProvider_stringBagsLex_xvii");
+        stringBagLex_limit_helper(1, "Mississippi", "ExhaustiveProvider_stringBagsLex_xviii");
+        stringBagLex_limit_helper(2, "Mississippi", "ExhaustiveProvider_stringBagsLex_xix");
+        stringBagLex_limit_helper(3, "Mississippi", "ExhaustiveProvider_stringBagsLex_xx");
 
-        try {
-            EP.stringBagsLex(-1, "");
-            fail();
-        } catch (ArithmeticException ignored) {}
-        try {
-            EP.stringBagsLex(-1, "abc");
-            fail();
-        } catch (ArithmeticException ignored) {}
+        stringBagsLex_fail_helper(-1, "");
+        stringBagsLex_fail_helper(-1, "abc");
     }
 
     private static void bagsShortlex_helper(@NotNull String input, @NotNull String output) {
@@ -4158,6 +4157,13 @@ public strictfp class ExhaustiveProviderTest {
         simpleProviderHelper(EP.bagsShortlexAtLeast(minSize, readIntegerList(input)), output);
     }
 
+    private static void bagsShortlexAtLeast_fail_helper(int minSize, @NotNull String input) {
+        try {
+            toList(EP.bagsShortlexAtLeast(minSize, readIntegerListWithNulls(input)));
+            fail();
+        } catch (NullPointerException | IllegalArgumentException ignored) {}
+    }
+
     @Test
     public void testBagsShortlexAtLeast() {
         bagsShortlexAtLeast_helper(0, "[]", "ExhaustiveProvider_bagsShortlexAtLeast_i");
@@ -4175,26 +4181,21 @@ public strictfp class ExhaustiveProviderTest {
         bagsShortlexAtLeast_helper(2, "[1, 2, 3]", "ExhaustiveProvider_bagsShortlexAtLeast_xi");
         bagsShortlexAtLeast_helper(3, "[1, 2, 3]", "ExhaustiveProvider_bagsShortlexAtLeast_xii");
 
-        try {
-            EP.bagsShortlexAtLeast(-1, Collections.<Integer>emptyList());
-            fail();
-        } catch (IllegalArgumentException ignored) {}
-        try {
-            EP.bagsShortlexAtLeast(-1, Arrays.asList(1, 2, 3));
-            fail();
-        } catch (IllegalArgumentException ignored) {}
-        try {
-            toList(EP.bagsShortlexAtLeast(1, Arrays.asList(1, null, 3)));
-            fail();
-        } catch (NullPointerException ignored) {}
-        try {
-            toList(EP.bagsShortlexAtLeast(1, Collections.<Integer>singletonList(null)));
-            fail();
-        } catch (NullPointerException ignored) {}
+        bagsShortlexAtLeast_fail_helper(-1, "[]");
+        bagsShortlexAtLeast_fail_helper(-1, "[1, 2, 3]");
+        bagsShortlexAtLeast_fail_helper(1, "[1, null, 3]");
+        bagsShortlexAtLeast_fail_helper(1, "[null]");
     }
 
     private static void stringBagsShortlexAtLeast_helper(int minSize, @NotNull String input, @NotNull String output) {
         simpleProviderHelper(EP.stringBagsShortlexAtLeast(minSize, input), output);
+    }
+
+    private static void stringsBagsShortlexAtLeast_fail_helper(int minSize, @NotNull String input) {
+        try {
+            EP.stringBagsShortlexAtLeast(minSize, input);
+            fail();
+        } catch (IllegalArgumentException ignored) {}
     }
 
     @Test
@@ -4224,22 +4225,16 @@ public strictfp class ExhaustiveProviderTest {
         stringBagsShortlexAtLeast_helper(2, "Mississippi", "ExhaustiveProvider_stringBagsShortlexAtLeast_xix");
         stringBagsShortlexAtLeast_helper(3, "Mississippi", "ExhaustiveProvider_stringBagsShortlexAtLeast_xx");
 
-        try {
-            EP.stringBagsShortlexAtLeast(-1, "");
-            fail();
-        } catch (IllegalArgumentException ignored) {}
-        try {
-            EP.stringBagsShortlexAtLeast(-1, "abc");
-            fail();
-        } catch (IllegalArgumentException ignored) {}
-    }
-
-    private static void bags_int_Iterable_helper(int size, @NotNull String input, @NotNull String output) {
-        aeqitLog(EP.bags(size, readIntegerList(input)), output);
+        stringsBagsShortlexAtLeast_fail_helper(-1, "");
+        stringsBagsShortlexAtLeast_fail_helper(-1, "abc");
     }
 
     private static void bags_int_Iterable_helper(int size, @NotNull Iterable<Integer> input, @NotNull String output) {
         simpleProviderHelper(EP.bags(size, input), output);
+    }
+
+    private static void bags_int_Iterable_helper(int size, @NotNull String input, @NotNull String output) {
+        bags_int_Iterable_helper(size, readIntegerList(input), output);
     }
 
     private static void bags_int_Iterable_fail_helper(int size, @NotNull String input) {
@@ -4287,12 +4282,12 @@ public strictfp class ExhaustiveProviderTest {
         bags_int_Iterable_fail_helper(1, "[null]");
     }
 
-    private static void bagPairs_helper(@NotNull String input, @NotNull String output) {
-        simpleProviderHelper(EP.bagPairs(readIntegerList(input)), output);
-    }
-
     private static void bagPairs_helper(@NotNull Iterable<Integer> input, @NotNull String output) {
         simpleProviderHelper(EP.bagPairs(input), output);
+    }
+
+    private static void bagPairs_helper(@NotNull String input, @NotNull String output) {
+        bagPairs_helper(readIntegerList(input), output);
     }
 
     private static void bagPairs_fail_helper(@NotNull String input) {
@@ -4310,15 +4305,16 @@ public strictfp class ExhaustiveProviderTest {
         bagPairs_helper("[1, 2, 2, 4]", "ExhaustiveProvider_bagPairs_iv");
         bagPairs_helper(EP.naturalIntegers(), "ExhaustiveProvider_bagPairs_v");
         bagPairs_helper(repeat(1), "ExhaustiveProvider_bagPairs_vi");
-        bagPairs_fail_helper("[1, null, 3]");
-    }
 
-    private static void bagTriples_helper(@NotNull String input, @NotNull String output) {
-        simpleProviderHelper(EP.bagTriples(readIntegerList(input)), output);
+        bagPairs_fail_helper("[1, null, 3]");
     }
 
     private static void bagTriples_helper(@NotNull Iterable<Integer> input, @NotNull String output) {
         simpleProviderHelper(EP.bagTriples(input), output);
+    }
+
+    private static void bagTriples_helper(@NotNull String input, @NotNull String output) {
+        bagTriples_helper(readIntegerList(input), output);
     }
 
     private static void bagTriples_fail_helper(@NotNull String input) {
@@ -4336,15 +4332,16 @@ public strictfp class ExhaustiveProviderTest {
         bagTriples_helper("[1, 2, 2, 4]", "ExhaustiveProvider_bagTriples_iv");
         bagTriples_helper(EP.naturalIntegers(), "ExhaustiveProvider_bagTriples_v");
         bagTriples_helper(repeat(1), "ExhaustiveProvider_bagTriples_vi");
-        bagTriples_fail_helper("[1, null, 3]");
-    }
 
-    private static void bagQuadruples_helper(@NotNull String input, @NotNull String output) {
-        simpleProviderHelper(EP.bagQuadruples(readIntegerList(input)), output);
+        bagTriples_fail_helper("[1, null, 3]");
     }
 
     private static void bagQuadruples_helper(@NotNull Iterable<Integer> input, @NotNull String output) {
         simpleProviderHelper(EP.bagQuadruples(input), output);
+    }
+
+    private static void bagQuadruples_helper(@NotNull String input, @NotNull String output) {
+        bagQuadruples_helper(readIntegerList(input), output);
     }
 
     private static void bagQuadruples_fail_helper(@NotNull String input) {
@@ -4362,15 +4359,16 @@ public strictfp class ExhaustiveProviderTest {
         bagQuadruples_helper("[1, 2, 2, 4]", "ExhaustiveProvider_bagQuadruples_iv");
         bagQuadruples_helper(EP.naturalIntegers(), "ExhaustiveProvider_bagQuadruples_v");
         bagQuadruples_helper(repeat(1), "ExhaustiveProvider_bagQuadruples_vi");
-        bagQuadruples_fail_helper("[1, null, 3]");
-    }
 
-    private static void bagQuintuples_helper(@NotNull String input, @NotNull String output) {
-        simpleProviderHelper(EP.bagQuintuples(readIntegerList(input)), output);
+        bagQuadruples_fail_helper("[1, null, 3]");
     }
 
     private static void bagQuintuples_helper(@NotNull Iterable<Integer> input, @NotNull String output) {
         simpleProviderHelper(EP.bagQuintuples(input), output);
+    }
+
+    private static void bagQuintuples_helper(@NotNull String input, @NotNull String output) {
+        bagQuintuples_helper(readIntegerList(input), output);
     }
 
     private static void bagQuintuples_fail_helper(@NotNull String input) {
@@ -4388,15 +4386,16 @@ public strictfp class ExhaustiveProviderTest {
         bagQuintuples_helper("[1, 2, 2, 4]", "ExhaustiveProvider_bagQuintuples_iv");
         bagQuintuples_helper(EP.naturalIntegers(), "ExhaustiveProvider_bagQuintuples_v");
         bagQuintuples_helper(repeat(1), "ExhaustiveProvider_bagQuintuples_vi");
-        bagQuintuples_fail_helper("[1, null, 3]");
-    }
 
-    private static void bagSextuples_helper(@NotNull String input, @NotNull String output) {
-        simpleProviderHelper(EP.bagSextuples(readIntegerList(input)), output);
+        bagQuintuples_fail_helper("[1, null, 3]");
     }
 
     private static void bagSextuples_helper(@NotNull Iterable<Integer> input, @NotNull String output) {
         simpleProviderHelper(EP.bagSextuples(input), output);
+    }
+
+    private static void bagSextuples_helper(@NotNull String input, @NotNull String output) {
+        bagSextuples_helper(readIntegerList(input), output);
     }
 
     private static void bagSextuples_fail_helper(@NotNull String input) {
@@ -4414,15 +4413,16 @@ public strictfp class ExhaustiveProviderTest {
         bagSextuples_helper("[1, 2, 2, 4]", "ExhaustiveProvider_bagSextuples_iv");
         bagSextuples_helper(EP.naturalIntegers(), "ExhaustiveProvider_bagSextuples_v");
         bagSextuples_helper(repeat(1), "ExhaustiveProvider_bagSextuples_vi");
-        bagSextuples_fail_helper("[1, null, 3]");
-    }
 
-    private static void bagSeptuples_helper(@NotNull String input, @NotNull String output) {
-        simpleProviderHelper(EP.bagSeptuples(readIntegerList(input)), output);
+        bagSextuples_fail_helper("[1, null, 3]");
     }
 
     private static void bagSeptuples_helper(@NotNull Iterable<Integer> input, @NotNull String output) {
         simpleProviderHelper(EP.bagSeptuples(input), output);
+    }
+
+    private static void bagSeptuples_helper(@NotNull String input, @NotNull String output) {
+        bagSeptuples_helper(readIntegerList(input), output);
     }
 
     private static void bagSeptuples_fail_helper(@NotNull String input) {
@@ -4440,6 +4440,7 @@ public strictfp class ExhaustiveProviderTest {
         bagSeptuples_helper("[1, 2, 2, 4]", "ExhaustiveProvider_bagSeptuples_iv");
         bagSeptuples_helper(EP.naturalIntegers(), "ExhaustiveProvider_bagSeptuples_v");
         bagSeptuples_helper(repeat(1), "ExhaustiveProvider_bagSeptuples_vi");
+
         bagSeptuples_fail_helper("[1, null, 3]");
     }
 
@@ -4447,12 +4448,19 @@ public strictfp class ExhaustiveProviderTest {
         aeqitLog(EP.stringBags(size, input), output);
     }
 
-    private static void stringBags_int_String_helper_limit(
+    private static void stringBags_int_String_limit_helper(
             int size,
             @NotNull String input,
             @NotNull String output
     ) {
         simpleProviderHelper(EP.stringBags(size, input), output);
+    }
+
+    private static void stringBags_int_String_fail_helper(int size, @NotNull String input) {
+        try {
+            EP.stringBags(size, input);
+            fail();
+        } catch (IllegalArgumentException ignored) {}
     }
 
     @Test
@@ -4477,23 +4485,24 @@ public strictfp class ExhaustiveProviderTest {
         stringBags_int_String_helper(2, "abbc", "ExhaustiveProvider_stringBags_int_String_xv");
         stringBags_int_String_helper(3, "abbc", "ExhaustiveProvider_stringBags_int_String_xvi");
 
-        stringBags_int_String_helper_limit(0, "Mississippi", "ExhaustiveProvider_stringBags_int_String_xvii");
-        stringBags_int_String_helper_limit(1, "Mississippi", "ExhaustiveProvider_stringBags_int_String_xviii");
-        stringBags_int_String_helper_limit(2, "Mississippi", "ExhaustiveProvider_stringBags_int_String_xix");
-        stringBags_int_String_helper_limit(3, "Mississippi", "ExhaustiveProvider_stringBags_int_String_xx");
+        stringBags_int_String_limit_helper(0, "Mississippi", "ExhaustiveProvider_stringBags_int_String_xvii");
+        stringBags_int_String_limit_helper(1, "Mississippi", "ExhaustiveProvider_stringBags_int_String_xviii");
+        stringBags_int_String_limit_helper(2, "Mississippi", "ExhaustiveProvider_stringBags_int_String_xix");
+        stringBags_int_String_limit_helper(3, "Mississippi", "ExhaustiveProvider_stringBags_int_String_xx");
 
-        try {
-            EP.stringBags(-1, "");
-            fail();
-        } catch (IllegalArgumentException ignored) {}
-        try {
-            EP.stringBags(-1, "abc");
-            fail();
-        } catch (IllegalArgumentException ignored) {}
+        stringBags_int_String_fail_helper(-1, "");
+        stringBags_int_String_fail_helper(-1, "abc");
     }
 
     private static void stringBags_int_helper(int size, @NotNull String output) {
         simpleProviderHelper(EP.stringBags(size), output);
+    }
+
+    private static void stringBags_int_fail_helper(int size) {
+        try {
+            EP.stringBags(size);
+            fail();
+        } catch (IllegalArgumentException ignored) {}
     }
 
     @Test
@@ -4503,11 +4512,10 @@ public strictfp class ExhaustiveProviderTest {
         stringBags_int_helper(2, "ExhaustiveProvider_stringBags_int_iii");
         stringBags_int_helper(3, "ExhaustiveProvider_stringBags_int_iv");
 
-        try {
-            EP.stringBags(-1);
-            fail();
-        } catch (IllegalArgumentException ignored) {}
+        stringBags_int_fail_helper(-1);
     }
+
+    //todo continue cleanup
 
     @Test
     public void testBags_Iterable() {
