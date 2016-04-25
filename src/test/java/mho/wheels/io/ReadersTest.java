@@ -339,19 +339,27 @@ public class ReadersTest {
         readBigDecimalStrict_helper("Infinity", "Optional.empty");
     }
 
+    private void readCharacterStrict_helper(@NotNull String input, @NotNull String output) {
+        aeq(readCharacterStrict(input), output);
+    }
+
     @Test
     public void testReadCharacterStrict() {
-        aeq(readCharacterStrict("a").get(), "a");
-        aeq(readCharacterStrict("ø").get(), "ø");
-        assertFalse(readCharacterStrict("hi").isPresent());
-        assertFalse(readCharacterStrict("").isPresent());
+        readCharacterStrict_helper("a", "Optional[a]");
+        readCharacterStrict_helper("ø", "Optional[ø]");
+        readCharacterStrict_helper("hi", "Optional.empty");
+        readCharacterStrict_helper("", "Optional.empty");
+    }
+
+    private void readStringStrict_helper(@NotNull String input, @NotNull String output) {
+        aeq(readStringStrict(input), output);
     }
 
     @Test
     public void testReadStringStrict() {
-        aeq(readStringStrict("Hello").get(), "Hello");
-        aeq(readStringStrict("ø").get(), "ø");
-        aeq(readStringStrict("").get(), "");
+        readStringStrict_helper("Hello", "Optional[Hello]");
+        readStringStrict_helper("ø", "Optional[ø]");
+        readStringStrict_helper("", "Optional[]");
     }
 
     @Test

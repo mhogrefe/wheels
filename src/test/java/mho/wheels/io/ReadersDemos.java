@@ -176,7 +176,7 @@ public class ReadersDemos extends Demos {
 
     private void demoReadStringStrict() {
         for (String s : take(LIMIT, P.strings())) {
-            System.out.println("readStringStrict(" + s + ") = " + readStringStrict(s));
+            System.out.println("readStringStrict(" + nicePrint(s) + ") = " + readStringStrict(s));
         }
     }
 }

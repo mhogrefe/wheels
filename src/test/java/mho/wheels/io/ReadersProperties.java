@@ -6,7 +6,6 @@ import mho.wheels.testing.TestProperties;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
-import java.util.Optional;
 import java.util.function.Function;
 
 import static mho.wheels.io.Readers.*;
@@ -20,6 +19,7 @@ public strictfp class ReadersProperties extends TestProperties {
     private static final @NotNull String INTEGRAL_CHARS = "-0123456789";
     private static final @NotNull String FLOATING_POINT_CHARS = "-.0123456789EINafinty";
     private static final @NotNull String BIG_DECIMAL_CHARS = "+-.0123456789E";
+    private static final @NotNull String ALL_CHARS = charsToString(EP.characters());
 
     public ReadersProperties() {
         super("Readers");
@@ -171,21 +171,29 @@ public strictfp class ReadersProperties extends TestProperties {
 
     private void propertiesReadCharacterStrict() {
         initialize("readCharacterStrict(String)");
-        for (String s : take(LIMIT, P.strings())) {
-            readCharacterStrict(s);
-        }
-
-        for (char c : take(LIMIT, P.characters())) {
-            Optional<Character> oc = readCharacterStrict(Character.toString(c));
-            assertEquals(c, oc.get(), c);
-        }
+        propertiesReadHelper(
+                LIMIT,
+                P,
+                ALL_CHARS,
+                P.characters(),
+                Readers::readCharacterStrict,
+                c -> {},
+                false,
+                true
+        );
     }
 
     private void propertiesReadStringStrict() {
         initialize("readStringStrict(String)");
-        for (String s : take(LIMIT, P.strings())) {
-            Optional<String> os = readStringStrict(s);
-            assertEquals(s, os.get(), s);
-        }
+        propertiesReadHelper(
+                LIMIT,
+                P,
+                ALL_CHARS,
+                P.strings(),
+                Readers::readStringStrict,
+                c -> {},
+                true,
+                true
+        );
     }
 }
