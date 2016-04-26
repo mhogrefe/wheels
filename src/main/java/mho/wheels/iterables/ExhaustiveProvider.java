@@ -4659,7 +4659,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      * {@code originalIndices}, this method reinterprets the indices to only generate sorted lists. For example,
      * consider the list [1, 0, 5, 3]. Let's select a list of length 4 from the characters 'a' through 'z' using these
      * indices. We'll use the cumulative sums of these indices, which are [1, 1 + 0, 1 + 0 + 5, 1 + 0 + 5 + 3], or
-     * [1, 1, 6, 9]. This corresponds to [a, a, f, i].
+     * [1, 1, 6, 9]. This corresponds to [b, b, g, j].
      *
      * <ul>
      *  <li>{@code xs} cannot be null.</li>
