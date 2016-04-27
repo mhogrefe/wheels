@@ -6,6 +6,7 @@ import mho.wheels.testing.Demos;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
+import java.util.Optional;
 import java.util.function.Function;
 
 import static mho.wheels.io.Readers.*;
@@ -26,6 +27,17 @@ public class ReadersDemos extends Demos {
     }
 
     private void demoGenericReadStrict() {
+        Iterable<Pair<Function<String, Integer>, String>> ps = map(
+                p -> new Pair<>(new FiniteDomainFunction<>(Collections.singletonList(p)), p.a),
+                P.pairs(P.strings(), P.withNull(P.integers()))
+        );
+        for (Pair<Function<String, Integer>, String> p : take(LIMIT, ps)) {
+            System.out.println("genericReadStrict(" + p.a + ").apply(" + nicePrint(p.b) + ") = " +
+                    genericReadStrict(p.a).apply(p.b));
+        }
+    }
+
+    private void demoGenericReadStrict_targeted() {
         Iterable<Pair<Function<String, Integer>, String>> ps = map(
                 p -> new Pair<>(new FiniteDomainFunction<>(Collections.singletonList(p)), p.a),
                 P.pairs(P.strings(INTEGRAL_CHARS), P.withNull(P.integers()))
@@ -177,6 +189,28 @@ public class ReadersDemos extends Demos {
     private void demoReadStringStrict() {
         for (String s : take(LIMIT, P.strings())) {
             System.out.println("readStringStrict(" + nicePrint(s) + ") = " + readStringStrict(s));
+        }
+    }
+
+    private void demoReadWithNullsStrict() {
+        Iterable<Pair<Function<String, Optional<Integer>>, String>> ps = map(
+                p -> new Pair<>(new FiniteDomainFunction<>(Collections.singletonList(p)), p.a),
+                P.pairs(P.strings(), P.optionals(P.integers()))
+        );
+        for (Pair<Function<String, Optional<Integer>>, String> p : take(LIMIT, ps)) {
+            System.out.println("readWithNullsStrict(" + p.a + ").apply(" + nicePrint(p.b) + ") = " +
+                    readWithNullsStrict(p.a).apply(p.b));
+        }
+    }
+
+    private void demoReadWithNullsStrict_targeted() {
+        Iterable<Pair<Function<String, Optional<Integer>>, String>> ps = map(
+                p -> new Pair<>(new FiniteDomainFunction<>(Collections.singletonList(p)), p.a),
+                P.pairs(P.strings(INTEGRAL_CHARS), P.optionals(P.integers()))
+        );
+        for (Pair<Function<String, Optional<Integer>>, String> p : take(LIMIT, ps)) {
+            System.out.println("readWithNullsStrict(" + p.a + ").apply(" + p.b + ") = " +
+                    readWithNullsStrict(p.a).apply(p.b));
         }
     }
 }

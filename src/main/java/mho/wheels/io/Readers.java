@@ -316,14 +316,15 @@ public class Readers {
     }
 
     /**
-     * Transforms a read function into a read function that can also read nulls if necessary.
+     * Transforms a read function into a read function that can also read nulls if necessary. The {@code String} "null"
+     * will return a null, even if it could be also parsed as a value of type {@code T}.
      *
      * <ul>
      *  <li>{@code read} must be non-null.</li>
      *  <li>The result must be called on {@code String}s that {@code read} terminates and doesn't return null on.</li>
      * </ul>
      *
-     * @param read a function which takes a {@code String} and returns an {@code Optional{@literal<T>}}.
+     * @param read a function which takes a {@code String} and returns a {@code NullableOptional{@literal<T>}}.
      * @param <T> the type of the value to be read
      * @return a null-handling version of {@code read}
      */

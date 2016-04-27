@@ -82,7 +82,7 @@ public class ReadersTest {
         genericReadStrict_helper(s -> null, "four", "Optional.empty");
     }
 
-    private void readBooleanStrict_helper(@NotNull String input, @NotNull String output) {
+    private static void readBooleanStrict_helper(@NotNull String input, @NotNull String output) {
         aeq(readBooleanStrict(input), output);
     }
 
@@ -102,7 +102,7 @@ public class ReadersTest {
         readBooleanStrict_helper("0", "Optional.empty");
     }
 
-    private void readOrderingStrict_helper(@NotNull String input, @NotNull String output) {
+    private static void readOrderingStrict_helper(@NotNull String input, @NotNull String output) {
         aeq(readOrderingStrict(input), output);
     }
 
@@ -119,7 +119,7 @@ public class ReadersTest {
         readOrderingStrict_helper("dsfsdfgd", "Optional.empty");
     }
 
-    private void readRoundingModeStrict_helper(@NotNull String input, @NotNull String output) {
+    private static void readRoundingModeStrict_helper(@NotNull String input, @NotNull String output) {
         aeq(readRoundingModeStrict(input), output);
     }
 
@@ -136,7 +136,7 @@ public class ReadersTest {
         readRoundingModeStrict_helper("dsfsdfgd", "Optional.empty");
     }
 
-    private void readBigIntegerStrict_helper(@NotNull String input, @NotNull String output) {
+    private static void readBigIntegerStrict_helper(@NotNull String input, @NotNull String output) {
         aeq(readBigIntegerStrict(input), output);
     }
 
@@ -157,7 +157,7 @@ public class ReadersTest {
         readBigIntegerStrict_helper("+4", "Optional.empty");
     }
 
-    private void readByteStrict_helper(@NotNull String input, @NotNull String output) {
+    private static void readByteStrict_helper(@NotNull String input, @NotNull String output) {
         aeq(readByteStrict(input), output);
     }
 
@@ -182,7 +182,7 @@ public class ReadersTest {
         readByteStrict_helper("+4", "Optional.empty");
     }
 
-    private void readShortStrict_helper(@NotNull String input, @NotNull String output) {
+    private static void readShortStrict_helper(@NotNull String input, @NotNull String output) {
         aeq(readShortStrict(input), output);
     }
 
@@ -207,7 +207,7 @@ public class ReadersTest {
         readShortStrict_helper("+4", "Optional.empty");
     }
 
-    private void readIntegerStrict_helper(@NotNull String input, @NotNull String output) {
+    private static void readIntegerStrict_helper(@NotNull String input, @NotNull String output) {
         aeq(readIntegerStrict(input), output);
     }
 
@@ -232,7 +232,7 @@ public class ReadersTest {
         readIntegerStrict_helper("+4", "Optional.empty");
     }
 
-    private void readLongStrict_helper(@NotNull String input, @NotNull String output) {
+    private static void readLongStrict_helper(@NotNull String input, @NotNull String output) {
         aeq(readLongStrict(input), output);
     }
 
@@ -257,7 +257,7 @@ public class ReadersTest {
         readLongStrict_helper("+4", "Optional.empty");
     }
 
-    private void readFloatStrict_helper(@NotNull String input, @NotNull String output) {
+    private static void readFloatStrict_helper(@NotNull String input, @NotNull String output) {
         aeq(readFloatStrict(input), output);
     }
 
@@ -285,7 +285,7 @@ public class ReadersTest {
         readFloatStrict_helper("--1.0", "Optional.empty");
     }
 
-    private void readDoubleStrict_helper(@NotNull String input, @NotNull String output) {
+    private static void readDoubleStrict_helper(@NotNull String input, @NotNull String output) {
         aeq(readDoubleStrict(input), output);
     }
 
@@ -313,7 +313,7 @@ public class ReadersTest {
         readDoubleStrict_helper("--1.0", "Optional.empty");
     }
 
-    private void readBigDecimalStrict_helper(@NotNull String input, @NotNull String output) {
+    private static void readBigDecimalStrict_helper(@NotNull String input, @NotNull String output) {
         aeq(readBigDecimalStrict(input), output);
     }
 
@@ -339,7 +339,7 @@ public class ReadersTest {
         readBigDecimalStrict_helper("Infinity", "Optional.empty");
     }
 
-    private void readCharacterStrict_helper(@NotNull String input, @NotNull String output) {
+    private static void readCharacterStrict_helper(@NotNull String input, @NotNull String output) {
         aeq(readCharacterStrict(input), output);
     }
 
@@ -351,7 +351,7 @@ public class ReadersTest {
         readCharacterStrict_helper("", "Optional.empty");
     }
 
-    private void readStringStrict_helper(@NotNull String input, @NotNull String output) {
+    private static void readStringStrict_helper(@NotNull String input, @NotNull String output) {
         aeq(readStringStrict(input), output);
     }
 
@@ -362,22 +362,39 @@ public class ReadersTest {
         readStringStrict_helper("", "Optional[]");
     }
 
+    private static <T> void readWithNullsStrict_helper(
+            @NotNull Function<String, Optional<T>> read,
+            @NotNull String input,
+            @NotNull String output
+    ) {
+        aeq(readWithNullsStrict(read).apply(input), output);
+    }
+
+    private static <T> void readWithNullsStrict_fail_helper(
+            @NotNull Function<String, Optional<T>> read,
+            @NotNull String input
+    ) {
+        try {
+            readWithNullsStrict(read).apply(input);
+            fail();
+        } catch (NullPointerException | IllegalArgumentException ignored) {}
+    }
+
     @Test
     public void testReadWithNullsStrict() {
-        aeq(readWithNullsStrict(Readers::readIntegerStrict).apply("23").get(), "23");
-        aeq(readWithNullsStrict(Readers::readIntegerStrict).apply("-500").get(), "-500");
-        assertNull(readWithNullsStrict(Readers::readIntegerStrict).apply("null").get());
-        aeq(readWithNullsStrict(Readers::readStringStrict).apply("hello").get(), "hello");
-        aeq(readWithNullsStrict(Readers::readStringStrict).apply("bye").get(), "bye");
-        aeq(readWithNullsStrict(Readers::readStringStrict).apply("nullification").get(), "nullification");
-        aeq(readWithNullsStrict(Readers::readStringStrict).apply("").get(), "");
-        assertNull(readWithNullsStrict(Readers::readStringStrict).apply("null").get());
-        assertFalse(readWithNullsStrict(Readers::readIntegerStrict).apply("annull").isPresent());
-        assertFalse(readWithNullsStrict(Readers::readIntegerStrict).apply("--").isPresent());
-        assertFalse(readWithNullsStrict(Readers::readIntegerStrict).apply("").isPresent());
-        try {
-            readWithNullsStrict(s -> null).apply("hello");
-        } catch (NullPointerException | IllegalArgumentException ignored) {}
+        readWithNullsStrict_helper(Readers::readIntegerStrict, "23", "NullableOptional[23]");
+        readWithNullsStrict_helper(Readers::readIntegerStrict, "-500", "NullableOptional[-500]");
+        readWithNullsStrict_helper(Readers::readIntegerStrict, "null", "NullableOptional[null]");
+        readWithNullsStrict_helper(Readers::readStringStrict, "hello", "NullableOptional[hello]");
+        readWithNullsStrict_helper(Readers::readStringStrict, "bye", "NullableOptional[bye]");
+        readWithNullsStrict_helper(Readers::readStringStrict, "nullification", "NullableOptional[nullification]");
+        readWithNullsStrict_helper(Readers::readStringStrict, "", "NullableOptional[]");
+        readWithNullsStrict_helper(Readers::readStringStrict, "null", "NullableOptional[null]");
+        readWithNullsStrict_helper(Readers::readIntegerStrict, "annull", "NullableOptional.empty");
+        readWithNullsStrict_helper(Readers::readIntegerStrict, "--", "NullableOptional.empty");
+        readWithNullsStrict_helper(Readers::readIntegerStrict, "", "NullableOptional.empty");
+
+        readWithNullsStrict_fail_helper(s -> null, "hello");
     }
 
     @Test

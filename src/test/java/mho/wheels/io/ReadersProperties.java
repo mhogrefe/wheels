@@ -6,6 +6,7 @@ import mho.wheels.testing.TestProperties;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
+import java.util.Optional;
 import java.util.function.Function;
 
 import static mho.wheels.io.Readers.*;
@@ -41,6 +42,7 @@ public strictfp class ReadersProperties extends TestProperties {
         propertiesReadBigDecimalStrict();
         propertiesReadCharacterStrict();
         propertiesReadStringStrict();
+        propertiesReadWithNullsStrict();
     }
 
     private void propertiesGenericReadStrict() {
@@ -195,5 +197,24 @@ public strictfp class ReadersProperties extends TestProperties {
                 true,
                 true
         );
+    }
+
+    private void propertiesReadWithNullsStrict() {
+        initialize("readWithNullsStrict(Function<String, Optional<T>>)");
+        Iterable<Pair<Function<String, Optional<Integer>>, String>> ps = map(
+                p -> new Pair<>(new FiniteDomainFunction<>(Collections.singletonList(p)), p.a),
+                P.pairs(P.strings(INTEGRAL_CHARS), P.optionals(P.integers()))
+        );
+        for (Pair<Function<String, Optional<Integer>>, String> p : take(LIMIT, ps)) {
+            readWithNullsStrict(p.a).apply(p.b);
+        }
+
+        for (int i : take(LIMIT, P.integers())) {
+            String s = Integer.toString(i);
+            Function<String, Optional<Integer>> f = new FiniteDomainFunction<>(
+                    Collections.singletonList(new Pair<>(s, Optional.of(i)))
+            );
+            assertEquals(i, readWithNullsStrict(f).apply(s).get(), i);
+        }
     }
 }
