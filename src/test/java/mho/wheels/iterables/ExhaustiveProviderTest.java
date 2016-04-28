@@ -4860,18 +4860,23 @@ public strictfp class ExhaustiveProviderTest {
         subsetSeptuplesLex_fail_helper("[null]");
     }
 
-    //todo continue cleanup
-
     private static void stringSubsetsLex_helper(int size, @NotNull String input, @NotNull String output) {
         aeqitLog(EP.stringSubsetsLex(size, input), output);
     }
 
-    private static void stringSubsetsLex_helper_limit(
+    private static void stringSubsetsLex_limit_helper(
             int size,
             @NotNull String input,
             @NotNull String output
     ) {
         simpleProviderHelper(EP.stringSubsetsLex(size, input), output);
+    }
+
+    private static void stringSubsetsLex_fail_helper(int size, @NotNull String input) {
+        try {
+            EP.stringSubsetsLex(size, input);
+            fail();
+        } catch (ArithmeticException ignored) {}
     }
 
     @Test
@@ -4896,19 +4901,13 @@ public strictfp class ExhaustiveProviderTest {
         stringSubsetsLex_helper(2, "abbc", "ExhaustiveProvider_stringSubsetsLex_xv");
         stringSubsetsLex_helper(3, "abbc", "ExhaustiveProvider_stringSubsetsLex_xvi");
 
-        stringSubsetsLex_helper_limit(0, "Mississippi", "ExhaustiveProvider_stringSubsetsLex_xvii");
-        stringSubsetsLex_helper_limit(1, "Mississippi", "ExhaustiveProvider_stringSubsetsLex_xviii");
-        stringSubsetsLex_helper_limit(2, "Mississippi", "ExhaustiveProvider_stringSubsetsLex_xix");
-        stringSubsetsLex_helper_limit(3, "Mississippi", "ExhaustiveProvider_stringSubsetsLex_xx");
+        stringSubsetsLex_limit_helper(0, "Mississippi", "ExhaustiveProvider_stringSubsetsLex_xvii");
+        stringSubsetsLex_limit_helper(1, "Mississippi", "ExhaustiveProvider_stringSubsetsLex_xviii");
+        stringSubsetsLex_limit_helper(2, "Mississippi", "ExhaustiveProvider_stringSubsetsLex_xix");
+        stringSubsetsLex_limit_helper(3, "Mississippi", "ExhaustiveProvider_stringSubsetsLex_xx");
 
-        try {
-            EP.stringSubsetsLex(-1, "");
-            fail();
-        } catch (ArithmeticException ignored) {}
-        try {
-            EP.stringSubsetsLex(-1, "abc");
-            fail();
-        } catch (ArithmeticException ignored) {}
+        stringSubsetsLex_fail_helper(-1, "");
+        stringSubsetsLex_fail_helper(-1, "abc");
     }
 
     private static void subsetsLex_List_helper(@NotNull String input, @NotNull String output) {
@@ -4934,14 +4933,23 @@ public strictfp class ExhaustiveProviderTest {
         subsetsLex_fail_helper("[1, null, 3]");
     }
 
+    private static void stringSubsetsLex_String_helper(@NotNull String input, @NotNull String output) {
+        aeqitLog(EP.stringSubsetsLex(input), output);
+    }
+
+    private static void stringSubsetsLex_String_limit_helper(@NotNull String input, @NotNull String output) {
+        simpleProviderHelper(EP.stringSubsetsLex(input), output);
+    }
+
     @Test
     public void testStringSubsetsLex_String() {
-        aeqitLog(EP.stringSubsetsLex(""), "ExhaustiveProvider_stringSubsetsLex_String_i");
-        aeqitLog(EP.stringSubsetsLex("a"), "ExhaustiveProvider_stringSubsetsLex_String_ii");
-        aeqitLog(EP.stringSubsetsLex("abc"), "ExhaustiveProvider_stringSubsetsLex_String_iii");
-        aeqitLog(EP.stringSubsetsLex("abcd"), "ExhaustiveProvider_stringSubsetsLex_String_iv");
-        aeqitLog(EP.stringSubsetsLex("abbc"), "ExhaustiveProvider_stringSubsetsLex_String_v");
-        simpleProviderHelper(EP.stringSubsetsLex("Mississippi"), "ExhaustiveProvider_stringSubsetsLex_String_vi");
+        stringSubsetsLex_String_helper("", "ExhaustiveProvider_stringSubsetsLex_String_i");
+        stringSubsetsLex_String_helper("a", "ExhaustiveProvider_stringSubsetsLex_String_ii");
+        stringSubsetsLex_String_helper("abc", "ExhaustiveProvider_stringSubsetsLex_String_iii");
+        stringSubsetsLex_String_helper("abcd", "ExhaustiveProvider_stringSubsetsLex_String_iv");
+        stringSubsetsLex_String_helper("abbc", "ExhaustiveProvider_stringSubsetsLex_String_v");
+
+        stringSubsetsLex_String_limit_helper("Mississippi", "ExhaustiveProvider_stringSubsetsLex_String_vi");
     }
 
     private static void subsetsLexAtLeast_helper(int minSize, @NotNull String input, @NotNull String output) {
@@ -4992,12 +5000,19 @@ public strictfp class ExhaustiveProviderTest {
         aeqitLog(EP.stringSubsetsLexAtLeast(minSize, input), output);
     }
 
-    private static void stringSubsetsLexAtLeast_helper_limit(
+    private static void stringSubsetsLexAtLeast_limit_helper(
             int minSize,
             @NotNull String input,
             @NotNull String output
     ) {
         simpleProviderHelper(EP.stringSubsetsLexAtLeast(minSize, input), output);
+    }
+
+    private static void stringSubsetsLexAtLeast_fail_helper(int minSize, @NotNull String input) {
+        try {
+            EP.stringSubsetsLexAtLeast(minSize, input);
+            fail();
+        } catch (IllegalArgumentException ignored) {}
     }
 
     @Test
@@ -5022,19 +5037,13 @@ public strictfp class ExhaustiveProviderTest {
         stringSubsetsLexAtLeast_helper(2, "abbc", "ExhaustiveProvider_stringSubsetsLexAtLeast_xv");
         stringSubsetsLexAtLeast_helper(3, "abbc", "ExhaustiveProvider_stringSubsetsLexAtLeast_xvi");
 
-        stringSubsetsLexAtLeast_helper_limit(0, "Mississippi", "ExhaustiveProvider_stringSubsetsLexAtLeast_xvii");
-        stringSubsetsLexAtLeast_helper_limit(1, "Mississippi", "ExhaustiveProvider_stringSubsetsLexAtLeast_xviii");
-        stringSubsetsLexAtLeast_helper_limit(2, "Mississippi", "ExhaustiveProvider_stringSubsetsLexAtLeast_xix");
-        stringSubsetsLexAtLeast_helper_limit(3, "Mississippi", "ExhaustiveProvider_stringSubsetsLexAtLeast_xx");
+        stringSubsetsLexAtLeast_limit_helper(0, "Mississippi", "ExhaustiveProvider_stringSubsetsLexAtLeast_xvii");
+        stringSubsetsLexAtLeast_limit_helper(1, "Mississippi", "ExhaustiveProvider_stringSubsetsLexAtLeast_xviii");
+        stringSubsetsLexAtLeast_limit_helper(2, "Mississippi", "ExhaustiveProvider_stringSubsetsLexAtLeast_xix");
+        stringSubsetsLexAtLeast_limit_helper(3, "Mississippi", "ExhaustiveProvider_stringSubsetsLexAtLeast_xx");
 
-        try {
-            EP.stringSubsetsLexAtLeast(-1, "");
-            fail();
-        } catch (IllegalArgumentException ignored) {}
-        try {
-            EP.stringSubsetsLexAtLeast(-1, "abc");
-            fail();
-        } catch (IllegalArgumentException ignored) {}
+        stringSubsetsLexAtLeast_fail_helper(-1, "");
+        stringSubsetsLexAtLeast_fail_helper(-1, "abc");
     }
 
     private static void subsetsShortlex_helper(@NotNull String input, @NotNull String output) {
@@ -5076,6 +5085,13 @@ public strictfp class ExhaustiveProviderTest {
         simpleProviderHelper(EP.subsetsShortlexAtLeast(minSize, readIntegerList(input)), output);
     }
 
+    private static void subsetsShortlexAtLeast_fail_helper(int minSize, @NotNull String input) {
+        try {
+            toList(EP.subsetsShortlexAtLeast(minSize, readIntegerListWithNulls(input)));
+            fail();
+        } catch (IllegalArgumentException | NullPointerException ignored) {}
+    }
+
     @Test
     public void testSubsetsShortlexAtLeast() {
         subsetsShortlexAtLeast_helper(0, "[]", "ExhaustiveProvider_subsetsShortlexAtLeast_i");
@@ -5093,22 +5109,10 @@ public strictfp class ExhaustiveProviderTest {
         subsetsShortlexAtLeast_helper(2, "[1, 2, 3]", "ExhaustiveProvider_subsetsShortlexAtLeast_xi");
         subsetsShortlexAtLeast_helper(3, "[1, 2, 3]", "ExhaustiveProvider_subsetsShortlexAtLeast_xii");
 
-        try {
-            EP.subsetsShortlexAtLeast(-1, Collections.<Integer>emptyList());
-            fail();
-        } catch (IllegalArgumentException ignored) {}
-        try {
-            EP.subsetsShortlexAtLeast(-1, Arrays.asList(1, 2, 3));
-            fail();
-        } catch (IllegalArgumentException ignored) {}
-        try {
-            toList(EP.subsetsShortlexAtLeast(1, Arrays.asList(1, null, 3)));
-            fail();
-        } catch (NullPointerException ignored) {}
-        try {
-            toList(EP.subsetsShortlexAtLeast(1, Collections.<Integer>singletonList(null)));
-            fail();
-        } catch (NullPointerException ignored) {}
+        subsetsShortlexAtLeast_fail_helper(-1, "[]");
+        subsetsShortlexAtLeast_fail_helper(-1, "[1, 2, 3]");
+        subsetsShortlexAtLeast_fail_helper(1, "[1, null, 3]");
+        subsetsShortlexAtLeast_fail_helper(1, "[null]");
     }
 
     private static void stringSubsetsShortlexAtLeast_helper(
@@ -5117,6 +5121,13 @@ public strictfp class ExhaustiveProviderTest {
             @NotNull String output
     ) {
         simpleProviderHelper(EP.stringSubsetsShortlexAtLeast(minSize, input), output);
+    }
+
+    private static void stringSubsetsShortlexAtLeast_fail_helper(int minSize, @NotNull String input) {
+        try {
+            EP.stringSubsetsShortlexAtLeast(minSize, input);
+            fail();
+        } catch (IllegalArgumentException ignored) {}
     }
 
     @Test
@@ -5146,21 +5157,15 @@ public strictfp class ExhaustiveProviderTest {
         stringSubsetsShortlexAtLeast_helper(2, "Mississippi", "ExhaustiveProvider_stringSubsetsShortlexAtLeast_xix");
         stringSubsetsShortlexAtLeast_helper(3, "Mississippi", "ExhaustiveProvider_stringSubsetsShortlexAtLeast_xx");
 
-        try {
-            EP.stringSubsetsShortlexAtLeast(-1, "");
-            fail();
-        } catch (IllegalArgumentException ignored) {}
-        try {
-            EP.stringSubsetsShortlexAtLeast(-1, "abc");
-            fail();
-        } catch (IllegalArgumentException ignored) {}
+        stringSubsetsShortlexAtLeast_fail_helper(-1, "");
+        stringSubsetsShortlexAtLeast_fail_helper(-1, "abc");
     }
 
     private static void subsets_int_Iterable_helper(int size, @NotNull String input, @NotNull String output) {
         aeqitLog(EP.subsets(size, readIntegerList(input)), output);
     }
 
-    private static void subsets_int_Iterable_helper(
+    private static void subsets_int_Iterable_limit_helper(
             int size,
             @NotNull Iterable<Integer> input,
             @NotNull String output
@@ -5197,15 +5202,15 @@ public strictfp class ExhaustiveProviderTest {
         subsets_int_Iterable_helper(2, "[1, 2, 2, 3]", "ExhaustiveProvider_subsets_int_Iterable_xv");
         subsets_int_Iterable_helper(3, "[1, 2, 2, 3]", "ExhaustiveProvider_subsets_int_Iterable_xvi");
 
-        subsets_int_Iterable_helper(0, EP.positiveIntegers(), "ExhaustiveProvider_subsets_int_Iterable_xvii");
-        subsets_int_Iterable_helper(1, EP.positiveIntegers(), "ExhaustiveProvider_subsets_int_Iterable_xviii");
-        subsets_int_Iterable_helper(2, EP.positiveIntegers(), "ExhaustiveProvider_subsets_int_Iterable_xix");
-        subsets_int_Iterable_helper(3, EP.positiveIntegers(), "ExhaustiveProvider_subsets_int_Iterable_xx");
+        subsets_int_Iterable_limit_helper(0, EP.positiveIntegers(), "ExhaustiveProvider_subsets_int_Iterable_xvii");
+        subsets_int_Iterable_limit_helper(1, EP.positiveIntegers(), "ExhaustiveProvider_subsets_int_Iterable_xviii");
+        subsets_int_Iterable_limit_helper(2, EP.positiveIntegers(), "ExhaustiveProvider_subsets_int_Iterable_xix");
+        subsets_int_Iterable_limit_helper(3, EP.positiveIntegers(), "ExhaustiveProvider_subsets_int_Iterable_xx");
 
-        subsets_int_Iterable_helper(0, repeat(1), "ExhaustiveProvider_subsets_int_Iterable_xxi");
-        subsets_int_Iterable_helper(1, repeat(1), "ExhaustiveProvider_subsets_int_Iterable_xxii");
-        subsets_int_Iterable_helper(2, repeat(1), "ExhaustiveProvider_subsets_int_Iterable_xxiii");
-        subsets_int_Iterable_helper(3, repeat(1), "ExhaustiveProvider_subsets_int_Iterable_xxiv");
+        subsets_int_Iterable_limit_helper(0, repeat(1), "ExhaustiveProvider_subsets_int_Iterable_xxi");
+        subsets_int_Iterable_limit_helper(1, repeat(1), "ExhaustiveProvider_subsets_int_Iterable_xxii");
+        subsets_int_Iterable_limit_helper(2, repeat(1), "ExhaustiveProvider_subsets_int_Iterable_xxiii");
+        subsets_int_Iterable_limit_helper(3, repeat(1), "ExhaustiveProvider_subsets_int_Iterable_xxiv");
 
         subsets_int_Iterable_fail_helper(-1, "[]");
         subsets_int_Iterable_fail_helper(-1, "[1, 2, 3]");
@@ -5213,12 +5218,12 @@ public strictfp class ExhaustiveProviderTest {
         subsets_int_Iterable_fail_helper(1, "[null]");
     }
 
-    private static void subsetPairs_helper(@NotNull String input, @NotNull String output) {
-        simpleProviderHelper(EP.subsetPairs(readIntegerList(input)), output);
-    }
-
     private static void subsetPairs_helper(@NotNull Iterable<Integer> input, @NotNull String output) {
         simpleProviderHelper(EP.subsetPairs(input), output);
+    }
+
+    private static void subsetPairs_helper(@NotNull String input, @NotNull String output) {
+        subsetPairs_helper(readIntegerList(input), output);
     }
 
     private static void subsetPairs_fail_helper(@NotNull String input) {
@@ -5236,15 +5241,16 @@ public strictfp class ExhaustiveProviderTest {
         subsetPairs_helper("[1, 2, 2, 4]", "ExhaustiveProvider_subsetPairs_iv");
         subsetPairs_helper(EP.naturalIntegers(), "ExhaustiveProvider_subsetPairs_v");
         subsetPairs_helper(repeat(1), "ExhaustiveProvider_subsetPairs_vi");
-        subsetPairs_fail_helper("[1, null, 3]");
-    }
 
-    private static void subsetTriples_helper(@NotNull String input, @NotNull String output) {
-        simpleProviderHelper(EP.subsetTriples(readIntegerList(input)), output);
+        subsetPairs_fail_helper("[1, null, 3]");
     }
 
     private static void subsetTriples_helper(@NotNull Iterable<Integer> input, @NotNull String output) {
         simpleProviderHelper(EP.subsetTriples(input), output);
+    }
+
+    private static void subsetTriples_helper(@NotNull String input, @NotNull String output) {
+        subsetTriples_helper(readIntegerList(input), output);
     }
 
     private static void subsetTriples_fail_helper(@NotNull String input) {
@@ -5262,15 +5268,16 @@ public strictfp class ExhaustiveProviderTest {
         subsetTriples_helper("[1, 2, 2, 4]", "ExhaustiveProvider_subsetTriples_iv");
         subsetTriples_helper(EP.naturalIntegers(), "ExhaustiveProvider_subsetTriples_v");
         subsetTriples_helper(repeat(1), "ExhaustiveProvider_subsetTriples_vi");
-        subsetTriples_fail_helper("[1, null, 3]");
-    }
 
-    private static void subsetQuadruples_helper(@NotNull String input, @NotNull String output) {
-        simpleProviderHelper(EP.subsetQuadruples(readIntegerList(input)), output);
+        subsetTriples_fail_helper("[1, null, 3]");
     }
 
     private static void subsetQuadruples_helper(@NotNull Iterable<Integer> input, @NotNull String output) {
         simpleProviderHelper(EP.subsetQuadruples(input), output);
+    }
+
+    private static void subsetQuadruples_helper(@NotNull String input, @NotNull String output) {
+        subsetQuadruples_helper(readIntegerList(input), output);
     }
 
     private static void subsetQuadruples_fail_helper(@NotNull String input) {
@@ -5288,15 +5295,16 @@ public strictfp class ExhaustiveProviderTest {
         subsetQuadruples_helper("[1, 2, 2, 4]", "ExhaustiveProvider_subsetQuadruples_iv");
         subsetQuadruples_helper(EP.naturalIntegers(), "ExhaustiveProvider_subsetQuadruples_v");
         subsetQuadruples_helper(repeat(1), "ExhaustiveProvider_subsetQuadruples_vi");
-        subsetQuadruples_fail_helper("[1, null, 3, 4, 5, 6, 7, 8]");
-    }
 
-    private static void subsetQuintuples_helper(@NotNull String input, @NotNull String output) {
-        simpleProviderHelper(EP.subsetQuintuples(readIntegerList(input)), output);
+        subsetQuadruples_fail_helper("[1, null, 3, 4, 5, 6, 7, 8]");
     }
 
     private static void subsetQuintuples_helper(@NotNull Iterable<Integer> input, @NotNull String output) {
         simpleProviderHelper(EP.subsetQuintuples(input), output);
+    }
+
+    private static void subsetQuintuples_helper(@NotNull String input, @NotNull String output) {
+        subsetQuintuples_helper(readIntegerList(input), output);
     }
 
     private static void subsetQuintuples_fail_helper(@NotNull String input) {
@@ -5315,15 +5323,16 @@ public strictfp class ExhaustiveProviderTest {
         subsetQuintuples_helper("[1, 2, 2, 4, 5, 6, 7, 8]", "ExhaustiveProvider_subsetQuintuples_v");
         subsetQuintuples_helper(EP.naturalIntegers(), "ExhaustiveProvider_subsetQuintuples_vi");
         subsetQuintuples_helper(repeat(1), "ExhaustiveProvider_subsetQuintuples_vii");
-        subsetQuintuples_fail_helper("[1, null, 3, 4, 5, 6, 7, 8]");
-    }
 
-    private static void subsetSextuples_helper(@NotNull String input, @NotNull String output) {
-        simpleProviderHelper(EP.subsetSextuples(readIntegerList(input)), output);
+        subsetQuintuples_fail_helper("[1, null, 3, 4, 5, 6, 7, 8]");
     }
 
     private static void subsetSextuples_helper(@NotNull Iterable<Integer> input, @NotNull String output) {
         simpleProviderHelper(EP.subsetSextuples(input), output);
+    }
+
+    private static void subsetSextuples_helper(@NotNull String input, @NotNull String output) {
+        subsetSextuples_helper(readIntegerList(input), output);
     }
 
     private static void subsetSextuples_fail_helper(@NotNull String input) {
@@ -5342,15 +5351,16 @@ public strictfp class ExhaustiveProviderTest {
         subsetSextuples_helper("[1, 2, 2, 4, 5, 6, 7, 8]", "ExhaustiveProvider_subsetSextuples_v");
         subsetSextuples_helper(EP.naturalIntegers(), "ExhaustiveProvider_subsetSextuples_vi");
         subsetSextuples_helper(repeat(1), "ExhaustiveProvider_subsetSextuples_vii");
-        subsetSextuples_fail_helper("[1, null, 3, 4, 5, 6, 7, 8]");
-    }
 
-    private static void subsetSeptuples_helper(@NotNull String input, @NotNull String output) {
-        simpleProviderHelper(EP.subsetSeptuples(readIntegerList(input)), output);
+        subsetSextuples_fail_helper("[1, null, 3, 4, 5, 6, 7, 8]");
     }
 
     private static void subsetSeptuples_helper(@NotNull Iterable<Integer> input, @NotNull String output) {
         simpleProviderHelper(EP.subsetSeptuples(input), output);
+    }
+
+    private static void subsetSeptuples_helper(@NotNull String input, @NotNull String output) {
+        subsetSeptuples_helper(readIntegerList(input), output);
     }
 
     private static void subsetSeptuples_fail_helper(@NotNull String input) {
@@ -5369,6 +5379,7 @@ public strictfp class ExhaustiveProviderTest {
         subsetSeptuples_helper("[1, 2, 2, 4, 5, 6, 7, 8]", "ExhaustiveProvider_subsetSeptuples_v");
         subsetSeptuples_helper(EP.naturalIntegers(), "ExhaustiveProvider_subsetSeptuples_vi");
         subsetSeptuples_helper(repeat(1), "ExhaustiveProvider_subsetSeptuples_vii");
+
         subsetSeptuples_fail_helper("[1, null, 3, 4, 5, 6, 7, 8]");
     }
 
@@ -5383,6 +5394,8 @@ public strictfp class ExhaustiveProviderTest {
     ) {
         simpleProviderHelper(EP.stringSubsets(size, input), output);
     }
+
+    //todo continue cleanup
 
     @Test
     public void testStringSubsets_int_String() {
