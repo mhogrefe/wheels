@@ -14,13 +14,19 @@ public class ResultCache<A, B> {
 
     private final @NotNull Function<A, B> function;
     private final @NotNull Predicate<A> largeEnough;
+    private final @NotNull Function<A, A> preprocess;
     public final @NotNull HashMap<A, B> resultMap;
     public final @NotNull HashMap<A, Pair<Integer, Long>> costMap;
     public final @NotNull PriorityQueue<Pair<Long, A>> costQueue;
 
-    public ResultCache(@NotNull Function<A, B> function, @NotNull Predicate<A> largeEnough) {
+    public ResultCache(
+            @NotNull Function<A, B> function,
+            @NotNull Predicate<A> largeEnough,
+            @NotNull Function<A, A> preprocess
+    ) {
         this.function = function;
         this.largeEnough = largeEnough;
+        this.preprocess = preprocess;
         resultMap = new HashMap<>();
         costMap = new HashMap<>();
         costQueue = new PriorityQueue<>((p, q) -> Long.compare(p.a, q.a));
@@ -30,6 +36,7 @@ public class ResultCache<A, B> {
         if (!largeEnough.test(input)) {
             return function.apply(input);
         }
+        input = preprocess.apply(input);
         B result;
         result = resultMap.get(input);
         if (result != null) {
