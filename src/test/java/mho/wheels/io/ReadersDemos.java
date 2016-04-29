@@ -206,11 +206,33 @@ public class ReadersDemos extends Demos {
     private void demoReadWithNullsStrict_targeted() {
         Iterable<Pair<Function<String, Optional<Integer>>, String>> ps = map(
                 p -> new Pair<>(new FiniteDomainFunction<>(Collections.singletonList(p)), p.a),
-                P.pairs(P.strings(INTEGRAL_CHARS), P.optionals(P.integers()))
+                P.pairs(P.strings(sort(nub(INTEGRAL_CHARS + "null"))), P.optionals(P.integers()))
         );
         for (Pair<Function<String, Optional<Integer>>, String> p : take(LIMIT, ps)) {
             System.out.println("readWithNullsStrict(" + p.a + ").apply(" + p.b + ") = " +
                     readWithNullsStrict(p.a).apply(p.b));
+        }
+    }
+
+    private void demoReadOptionalStrict() {
+        Iterable<Pair<Function<String, Optional<Integer>>, String>> ps = map(
+                p -> new Pair<>(new FiniteDomainFunction<>(Collections.singletonList(p)), p.a),
+                P.pairs(P.strings(), P.optionals(P.integers()))
+        );
+        for (Pair<Function<String, Optional<Integer>>, String> p : take(LIMIT, ps)) {
+            System.out.println("readOptionalStrict(" + p.a + ").apply(" + nicePrint(p.b) + ") = " +
+                    readOptionalStrict(p.a).apply(p.b));
+        }
+    }
+
+    private void demoReadOptionalStrict_targeted() {
+        Iterable<Pair<Function<String, Optional<Integer>>, String>> ps = map(
+                p -> new Pair<>(new FiniteDomainFunction<>(Collections.singletonList(p)), p.a),
+                P.pairs(P.strings(sort(nub(INTEGRAL_CHARS + "Optional[]"))), P.optionals(P.integers()))
+        );
+        for (Pair<Function<String, Optional<Integer>>, String> p : take(LIMIT, ps)) {
+            System.out.println("readOptionalStrict(" + p.a + ").apply(" + nicePrint(p.b) + ") = " +
+                    readOptionalStrict(p.a).apply(p.b));
         }
     }
 }

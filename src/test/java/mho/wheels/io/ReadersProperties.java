@@ -43,6 +43,7 @@ public strictfp class ReadersProperties extends TestProperties {
         propertiesReadCharacterStrict();
         propertiesReadStringStrict();
         propertiesReadWithNullsStrict();
+        propertiesReadOptionalStrict();
     }
 
     private void propertiesGenericReadStrict() {
@@ -203,7 +204,7 @@ public strictfp class ReadersProperties extends TestProperties {
         initialize("readWithNullsStrict(Function<String, Optional<T>>)");
         Iterable<Pair<Function<String, Optional<Integer>>, String>> ps = map(
                 p -> new Pair<>(new FiniteDomainFunction<>(Collections.singletonList(p)), p.a),
-                P.pairs(P.strings(INTEGRAL_CHARS), P.optionals(P.integers()))
+                P.pairs(P.strings(), P.optionals(P.integers()))
         );
         for (Pair<Function<String, Optional<Integer>>, String> p : take(LIMIT, ps)) {
             readWithNullsStrict(p.a).apply(p.b);
@@ -215,6 +216,27 @@ public strictfp class ReadersProperties extends TestProperties {
                     Collections.singletonList(new Pair<>(s, Optional.of(i)))
             );
             assertEquals(i, readWithNullsStrict(f).apply(s).get(), i);
+            assertNull(i, readWithNullsStrict(f).apply("null").get());
+        }
+    }
+
+    private void propertiesReadOptionalStrict() {
+        initialize("readOptionalStrict(Function<String, Optional<T>>)");
+        Iterable<Pair<Function<String, Optional<Integer>>, String>> ps = map(
+                p -> new Pair<>(new FiniteDomainFunction<>(Collections.singletonList(p)), p.a),
+                P.pairs(P.strings(), P.optionals(P.integers()))
+        );
+        for (Pair<Function<String, Optional<Integer>>, String> p : take(LIMIT, ps)) {
+            readOptionalStrict(p.a).apply(p.b);
+        }
+
+        for (int i : take(LIMIT, P.integers())) {
+            String s = Integer.toString(i);
+            Function<String, Optional<Integer>> f = new FiniteDomainFunction<>(
+                    Collections.singletonList(new Pair<>(s, Optional.of(i)))
+            );
+            assertEquals(i, readOptionalStrict(f).apply("Optional[" + s + "]").get().get(), i);
+            assertFalse(i, readOptionalStrict(f).apply("Optional.empty").get().isPresent());
         }
     }
 }

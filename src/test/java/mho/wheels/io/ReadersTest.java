@@ -397,28 +397,43 @@ public class ReadersTest {
         readWithNullsStrict_fail_helper(s -> null, "hello");
     }
 
+    private static <T> void readOptionalStrict_helper(
+            @NotNull Function<String, Optional<T>> read,
+            @NotNull String input,
+            @NotNull String output
+    ) {
+        aeq(readOptionalStrict(read).apply(input), output);
+    }
+
+    private static <T> void readOptionalStrict_fail_helper(
+            @NotNull Function<String, Optional<T>> read,
+            @NotNull String input
+    ) {
+        try {
+            readOptionalStrict(read).apply(input);
+            fail();
+        } catch (NullPointerException ignored) {}
+    }
+
     @Test
     public void testReadOptionalStrict() {
-        aeq(readOptionalStrict(Readers::readIntegerStrict).apply("Optional[23]").get(), "Optional[23]");
-        aeq(readOptionalStrict(Readers::readIntegerStrict).apply("Optional[0]").get(), "Optional[0]");
-        aeq(readOptionalStrict(Readers::readIntegerStrict).apply("Optional[-5]").get(), "Optional[-5]");
-        aeq(readOptionalStrict(Readers::readIntegerStrict).apply("Optional.empty").get(), "Optional.empty");
-        aeq(readOptionalStrict(Readers::readBooleanStrict).apply("Optional[false]").get(), "Optional[false]");
-        aeq(readOptionalStrict(Readers::readBooleanStrict).apply("Optional[true]").get(), "Optional[true]");
-        aeq(readOptionalStrict(Readers::readBooleanStrict).apply("Optional.empty").get(), "Optional.empty");
-        assertFalse(
-                readOptionalStrict(Readers::readIntegerStrict).apply("Optional[10000000000000000000]").isPresent()
-        );
-        assertFalse(readOptionalStrict(Readers::readIntegerStrict).apply("Optional[xyz]").isPresent());
-        assertFalse(readOptionalStrict(Readers::readIntegerStrict).apply("Optional[null]").isPresent());
-        assertFalse(readOptionalStrict(Readers::readIntegerStrict).apply("Optional[10").isPresent());
-        assertFalse(readOptionalStrict(Readers::readIntegerStrict).apply("Optional").isPresent());
-        assertFalse(readOptionalStrict(Readers::readIntegerStrict).apply("xyz").isPresent());
-        assertFalse(readOptionalStrict(Readers::readIntegerStrict).apply("").isPresent());
-        assertFalse(readOptionalStrict(Readers::readBooleanStrict).apply("Optional[12]").isPresent());
-        try {
-            readOptionalStrict(s -> null).apply("Optional[hello]");
-        } catch (NullPointerException ignored) {}
+        readOptionalStrict_helper(Readers::readIntegerStrict, "Optional[23]", "Optional[Optional[23]]");
+        readOptionalStrict_helper(Readers::readIntegerStrict, "Optional[0]", "Optional[Optional[0]]");
+        readOptionalStrict_helper(Readers::readIntegerStrict, "Optional[-5]", "Optional[Optional[-5]]");
+        readOptionalStrict_helper(Readers::readIntegerStrict, "Optional.empty", "Optional[Optional.empty]");
+        readOptionalStrict_helper(Readers::readBooleanStrict, "Optional[false]", "Optional[Optional[false]]");
+        readOptionalStrict_helper(Readers::readBooleanStrict, "Optional[true]", "Optional[Optional[true]]");
+
+        readOptionalStrict_helper(Readers::readIntegerStrict, "Optional[10000000000000000000]", "Optional.empty");
+        readOptionalStrict_helper(Readers::readIntegerStrict, "Optional[xyz]", "Optional.empty");
+        readOptionalStrict_helper(Readers::readIntegerStrict, "Optional[null]", "Optional.empty");
+        readOptionalStrict_helper(Readers::readIntegerStrict, "Optional[10", "Optional.empty");
+        readOptionalStrict_helper(Readers::readIntegerStrict, "Optional", "Optional.empty");
+        readOptionalStrict_helper(Readers::readIntegerStrict, "xyz", "Optional.empty");
+        readOptionalStrict_helper(Readers::readIntegerStrict, "", "Optional.empty");
+        readOptionalStrict_helper(Readers::readBooleanStrict, "Optional[12]", "Optional.empty");
+
+        readOptionalStrict_fail_helper(s -> null, "Optional[hello]");
     }
 
     @Test
