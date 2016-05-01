@@ -1,6 +1,7 @@
 package mho.wheels.io;
 
 import mho.wheels.structures.FiniteDomainFunction;
+import mho.wheels.structures.NullableOptional;
 import mho.wheels.structures.Pair;
 import mho.wheels.testing.Demos;
 import org.jetbrains.annotations.NotNull;
@@ -233,6 +234,31 @@ public class ReadersDemos extends Demos {
         for (Pair<Function<String, Optional<Integer>>, String> p : take(LIMIT, ps)) {
             System.out.println("readOptionalStrict(" + p.a + ").apply(" + nicePrint(p.b) + ") = " +
                     readOptionalStrict(p.a).apply(p.b));
+        }
+    }
+
+    private void demoReadNullableOptionalStrict() {
+        Iterable<Pair<Function<String, NullableOptional<Integer>>, String>> ps = map(
+                p -> new Pair<>(new FiniteDomainFunction<>(Collections.singletonList(p)), p.a),
+                P.pairs(P.strings(), P.nullableOptionals(P.withNull(P.integers())))
+        );
+        for (Pair<Function<String, NullableOptional<Integer>>, String> p : take(LIMIT, ps)) {
+            System.out.println("readNullableOptionalStrict(" + p.a + ").apply(" + nicePrint(p.b) + ") = " +
+                    readNullableOptionalStrict(p.a).apply(p.b));
+        }
+    }
+
+    private void demoReadNullableOptionalStrict_targeted() {
+        Iterable<Pair<Function<String, NullableOptional<Integer>>, String>> ps = map(
+                p -> new Pair<>(new FiniteDomainFunction<>(Collections.singletonList(p)), p.a),
+                P.pairs(
+                        P.strings(sort(nub(INTEGRAL_CHARS + "NullableOptional[]"))),
+                        P.nullableOptionals(P.withNull(P.integers()))
+                )
+        );
+        for (Pair<Function<String, NullableOptional<Integer>>, String> p : take(LIMIT, ps)) {
+            System.out.println("readNullableOptionalStrict(" + p.a + ").apply(" + nicePrint(p.b) + ") = " +
+                    readNullableOptionalStrict(p.a).apply(p.b));
         }
     }
 }

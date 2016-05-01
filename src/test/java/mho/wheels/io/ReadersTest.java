@@ -436,34 +436,49 @@ public class ReadersTest {
         readOptionalStrict_fail_helper(s -> null, "Optional[hello]");
     }
 
+    private static <T> void readNullableOptionalStrict_helper(
+            @NotNull Function<String, NullableOptional<T>> read,
+            @NotNull String input,
+            @NotNull String output
+    ) {
+        aeq(readNullableOptionalStrict(read).apply(input), output);
+    }
+
+    private static <T> void readNullableOptionalStrict_fail_helper(
+            @NotNull Function<String, NullableOptional<T>> read,
+            @NotNull String input
+    ) {
+        try {
+            readNullableOptionalStrict(read).apply(input);
+            fail();
+        } catch (NullPointerException ignored) {}
+    }
+
     @Test
     public void testReadNullableOptionalStrict() {
-        Function<String, Optional<NullableOptional<Integer>>> fi = readNullableOptionalStrict(
-                readWithNullsStrict(Readers::readIntegerStrict)
-        );
-        Function<String, Optional<NullableOptional<Boolean>>> fb = readNullableOptionalStrict(
-                readWithNullsStrict(Readers::readBooleanStrict)
-        );
-        aeq(fi.apply("NullableOptional[23]").get(), "NullableOptional[23]");
-        aeq(fi.apply("NullableOptional[0]").get(), "NullableOptional[0]");
-        aeq(fi.apply("NullableOptional[-5]").get(), "NullableOptional[-5]");
-        aeq(fi.apply("NullableOptional[null]").get(), "NullableOptional[null]");
-        aeq(fi.apply("NullableOptional.empty").get(), "NullableOptional.empty");
-        aeq(fb.apply("NullableOptional[false]").get(), "NullableOptional[false]");
-        aeq(fb.apply("NullableOptional[true]").get(), "NullableOptional[true]");
-        aeq(fb.apply("NullableOptional[null]").get(), "NullableOptional[null]");
-        aeq(fb.apply("NullableOptional.empty").get(), "NullableOptional.empty");
-        assertFalse(fi.apply("Optional[23]").isPresent());
-        assertFalse(fi.apply("NullableOptional[10000000000000000000]").isPresent());
-        assertFalse(fi.apply("NullableOptional[xyz]").isPresent());
-        assertFalse(fi.apply("NullableOptional[10").isPresent());
-        assertFalse(fi.apply("NullableOptional").isPresent());
-        assertFalse(fi.apply("xyz").isPresent());
-        assertFalse(fi.apply("").isPresent());
-        assertFalse(fb.apply("NullableOptional[12]").isPresent());
-        try {
-            readNullableOptionalStrict(s -> null).apply("NullableOptional[hello]");
-        } catch (NullPointerException ignored) {}
+        Function<String, NullableOptional<Integer>> fi = readWithNullsStrict(Readers::readIntegerStrict);
+        Function<String, NullableOptional<Boolean>> fb = readWithNullsStrict(Readers::readBooleanStrict);
+
+        readNullableOptionalStrict_helper(fi, "NullableOptional[23]", "Optional[NullableOptional[23]]");
+        readNullableOptionalStrict_helper(fi, "NullableOptional[0]", "Optional[NullableOptional[0]]");
+        readNullableOptionalStrict_helper(fi, "NullableOptional[-5]", "Optional[NullableOptional[-5]]");
+        readNullableOptionalStrict_helper(fi, "NullableOptional[null]", "Optional[NullableOptional[null]]");
+        readNullableOptionalStrict_helper(fi, "NullableOptional.empty", "Optional[NullableOptional.empty]");
+        readNullableOptionalStrict_helper(fb, "NullableOptional[false]", "Optional[NullableOptional[false]]");
+        readNullableOptionalStrict_helper(fb, "NullableOptional[true]", "Optional[NullableOptional[true]]");
+        readNullableOptionalStrict_helper(fb, "NullableOptional[null]", "Optional[NullableOptional[null]]");
+        readNullableOptionalStrict_helper(fb, "NullableOptional.empty", "Optional[NullableOptional.empty]");
+
+        readNullableOptionalStrict_helper(fi, "Optional[23]", "Optional.empty");
+        readNullableOptionalStrict_helper(fi, "NullableOptional[10000000000000000000]", "Optional.empty");
+        readNullableOptionalStrict_helper(fi, "NullableOptional[xyz]", "Optional.empty");
+        readNullableOptionalStrict_helper(fi, "NullableOptional[10", "Optional.empty");
+        readNullableOptionalStrict_helper(fi, "NullableOptional", "Optional.empty");
+        readNullableOptionalStrict_helper(fi, "xyz", "Optional.empty");
+        readNullableOptionalStrict_helper(fi, "", "Optional.empty");
+        readNullableOptionalStrict_helper(fb, "NullableOptional[12]", "Optional.empty");
+
+        readNullableOptionalStrict_fail_helper(s -> null, "NullableOptional[hello]");
     }
 
     @Test

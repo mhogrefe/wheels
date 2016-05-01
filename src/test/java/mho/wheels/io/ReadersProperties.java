@@ -1,6 +1,7 @@
 package mho.wheels.io;
 
 import mho.wheels.structures.FiniteDomainFunction;
+import mho.wheels.structures.NullableOptional;
 import mho.wheels.structures.Pair;
 import mho.wheels.testing.TestProperties;
 import org.jetbrains.annotations.NotNull;
@@ -44,6 +45,7 @@ public strictfp class ReadersProperties extends TestProperties {
         propertiesReadStringStrict();
         propertiesReadWithNullsStrict();
         propertiesReadOptionalStrict();
+        propertiesReadNullableOptionalStrict();
     }
 
     private void propertiesGenericReadStrict() {
@@ -237,6 +239,26 @@ public strictfp class ReadersProperties extends TestProperties {
             );
             assertEquals(i, readOptionalStrict(f).apply("Optional[" + s + "]").get().get(), i);
             assertFalse(i, readOptionalStrict(f).apply("Optional.empty").get().isPresent());
+        }
+    }
+
+    private void propertiesReadNullableOptionalStrict() {
+        initialize("readNullableOptionalStrict(Function<String, NullableOptional<T>>)");
+        Iterable<Pair<Function<String, NullableOptional<Integer>>, String>> ps = map(
+                p -> new Pair<>(new FiniteDomainFunction<>(Collections.singletonList(p)), p.a),
+                P.pairs(P.strings(), P.nullableOptionals(P.withNull(P.integers())))
+        );
+        for (Pair<Function<String, NullableOptional<Integer>>, String> p : take(LIMIT, ps)) {
+            readNullableOptionalStrict(p.a).apply(p.b);
+        }
+
+        for (Integer i : take(LIMIT, P.withNull(P.integers()))) {
+            String s = i == null ? "null" : Integer.toString(i);
+            Function<String, NullableOptional<Integer>> f = new FiniteDomainFunction<>(
+                    Collections.singletonList(new Pair<>(s, NullableOptional.of(i)))
+            );
+            assertEquals(i, readNullableOptionalStrict(f).apply("NullableOptional[" + s + "]").get().get(), i);
+            assertFalse(i, readNullableOptionalStrict(f).apply("NullableOptional.empty").get().isPresent());
         }
     }
 }
