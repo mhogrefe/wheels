@@ -62,7 +62,6 @@ public strictfp class BinaryFractionProperties extends TestProperties {
         propertiesHashCode();
         propertiesCompareTo();
         propertiesRead();
-        propertiesFindIn();
         propertiesToString();
     }
 
@@ -743,19 +742,8 @@ public strictfp class BinaryFractionProperties extends TestProperties {
                 P.binaryFractions(),
                 BinaryFraction::read,
                 BinaryFraction::validate,
+                true,
                 true
-        );
-    }
-
-    private void propertiesFindIn() {
-        initialize("findIn(String)");
-        propertiesFindInHelper(
-                LIMIT,
-                P,
-                P.binaryFractions(),
-                BinaryFraction::read,
-                BinaryFraction::findIn,
-                BinaryFraction::validate
         );
     }
 

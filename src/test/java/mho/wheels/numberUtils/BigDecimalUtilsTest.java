@@ -16,12 +16,12 @@ public class BigDecimalUtilsTest {
     }
 
     private static void ceilingLog10_helper(@NotNull String x, int result) {
-        aeq(ceilingLog10(Readers.readBigDecimal(x).get()), result);
+        aeq(ceilingLog10(Readers.readBigDecimalStrict(x).get()), result);
     }
 
     private static void ceilingLog10_fail_helper(@NotNull String x) {
         try {
-            ceilingLog10(Readers.readBigDecimal(x).get());
+            ceilingLog10(Readers.readBigDecimalStrict(x).get());
             fail();
         } catch (ArithmeticException ignored) {}
     }
@@ -49,12 +49,12 @@ public class BigDecimalUtilsTest {
     }
 
     private static void setPrecision_helper(@NotNull String x, int scale, @NotNull String output) {
-        aeq(setPrecision(Readers.readBigDecimal(x).get(), scale), output);
+        aeq(setPrecision(Readers.readBigDecimalStrict(x).get(), scale), output);
     }
 
     private static void setPrecision_fail(@NotNull String x, int scale) {
         try {
-            setPrecision(Readers.readBigDecimal(x).get(), scale);
+            setPrecision(Readers.readBigDecimalStrict(x).get(), scale);
             fail();
         } catch (ArithmeticException ignored) {}
     }
@@ -95,7 +95,7 @@ public class BigDecimalUtilsTest {
     }
 
     private static void successor_helper(@NotNull String x, @NotNull String output) {
-        aeq(successor(Readers.readBigDecimal(x).get()), output);
+        aeq(successor(Readers.readBigDecimalStrict(x).get()), output);
     }
 
     @Test
@@ -114,7 +114,7 @@ public class BigDecimalUtilsTest {
     }
 
     private static void predecessor_helper(@NotNull String x, @NotNull String output) {
-        aeq(predecessor(Readers.readBigDecimal(x).get()), output);
+        aeq(predecessor(Readers.readBigDecimalStrict(x).get()), output);
     }
 
     @Test
@@ -133,7 +133,7 @@ public class BigDecimalUtilsTest {
     }
 
     private static void shiftLeft_helper(@NotNull String input, int bits, @NotNull String output) {
-        aeq(shiftLeft(Readers.readBigDecimal(input).get(), bits), output);
+        aeq(shiftLeft(Readers.readBigDecimalStrict(input).get(), bits), output);
     }
 
     @Test
@@ -174,7 +174,7 @@ public class BigDecimalUtilsTest {
     }
 
     private static void shiftRight_helper(@NotNull String input, int bits, @NotNull String output) {
-        aeq(shiftRight(Readers.readBigDecimal(input).get(), bits), output);
+        aeq(shiftRight(Readers.readBigDecimalStrict(input).get(), bits), output);
     }
 
     @Test
@@ -215,7 +215,7 @@ public class BigDecimalUtilsTest {
     }
 
     private static void canonicalize_helper(@NotNull String x, @NotNull String output) {
-        aeq(canonicalize(Readers.readBigDecimal(x).get()), output);
+        aeq(canonicalize(Readers.readBigDecimalStrict(x).get()), output);
     }
 
     @Test
@@ -241,11 +241,11 @@ public class BigDecimalUtilsTest {
     }
 
     private static void isCanonical_true_helper(@NotNull String x) {
-        assertTrue(isCanonical(Readers.readBigDecimal(x).get()));
+        assertTrue(isCanonical(Readers.readBigDecimalStrict(x).get()));
     }
 
     private static void isCanonical_false_helper(@NotNull String x) {
-        assertFalse(isCanonical(Readers.readBigDecimal(x).get()));
+        assertFalse(isCanonical(Readers.readBigDecimalStrict(x).get()));
     }
 
     @Test

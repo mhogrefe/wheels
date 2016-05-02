@@ -738,7 +738,7 @@ public class IntegerUtilsProperties extends TestProperties {
             List<Integer> digits = toList(digits(p.b, p.a));
             assertFalse(p, digits.isEmpty());
             assertNotEquals(p, last(digits), 0);
-            int targetDigitCount = ceilingLog(BigInteger.valueOf(p.b), BigInteger.valueOf(p.a)).intValueExact();
+            int targetDigitCount = ceilingLog(BigInteger.valueOf(p.b), BigInteger.valueOf(p.a));
             if (BigInteger.valueOf(p.b).pow(targetDigitCount).equals(BigInteger.valueOf(p.a))) {
                 targetDigitCount++;
             }
@@ -857,7 +857,7 @@ public class IntegerUtilsProperties extends TestProperties {
             List<BigInteger> digits = toList(digits(p.b, p.a));
             assertFalse(p, digits.isEmpty());
             assertNotEquals(p, last(digits), BigInteger.ZERO);
-            int targetDigitCount = ceilingLog(p.b, p.a).intValueExact();
+            int targetDigitCount = ceilingLog(p.b, p.a);
             if (p.b.pow(targetDigitCount).equals(p.a)) {
                 targetDigitCount++;
             }
@@ -941,8 +941,7 @@ public class IntegerUtilsProperties extends TestProperties {
                         p -> {
                             int targetDigitCount = 0;
                             if (p.a > 0) {
-                                targetDigitCount = ceilingLog(BigInteger.valueOf(p.b), BigInteger.valueOf(p.a))
-                                        .intValueExact();
+                                targetDigitCount = ceilingLog(BigInteger.valueOf(p.b), BigInteger.valueOf(p.a));
                                 BigInteger x = BigInteger.valueOf(p.b).pow(targetDigitCount);
                                 BigInteger y = BigInteger.valueOf(p.a);
                                 //noinspection SuspiciousNameCombination
@@ -1053,7 +1052,7 @@ public class IntegerUtilsProperties extends TestProperties {
                         p -> {
                             int targetDigitCount = 0;
                             if (p.a.signum() == 1) {
-                                targetDigitCount = ceilingLog(p.b, p.a).intValueExact();
+                                targetDigitCount = ceilingLog(p.b, p.a);
                                 if (p.b.pow(targetDigitCount).equals(p.a)) {
                                     targetDigitCount++;
                                 }
@@ -1159,7 +1158,7 @@ public class IntegerUtilsProperties extends TestProperties {
             List<Integer> digits = bigEndianDigits(p.b, p.a);
             assertFalse(p, digits.isEmpty());
             assertNotEquals(p, head(digits), 0);
-            int targetDigitCount = ceilingLog(BigInteger.valueOf(p.b), BigInteger.valueOf(p.a)).intValueExact();
+            int targetDigitCount = ceilingLog(BigInteger.valueOf(p.b), BigInteger.valueOf(p.a));
             if (BigInteger.valueOf(p.b).pow(targetDigitCount).equals(BigInteger.valueOf(p.a))) {
                 targetDigitCount++;
             }
@@ -1226,7 +1225,7 @@ public class IntegerUtilsProperties extends TestProperties {
             List<BigInteger> digits = bigEndianDigits(p.b, p.a);
             assertFalse(p, digits.isEmpty());
             assertNotEquals(p, head(digits), BigInteger.ZERO);
-            int targetDigitCount = ceilingLog(p.b, p.a).intValueExact();
+            int targetDigitCount = ceilingLog(p.b, p.a);
             if (p.b.pow(targetDigitCount).equals(p.a)) {
                 targetDigitCount++;
             }
@@ -1300,8 +1299,7 @@ public class IntegerUtilsProperties extends TestProperties {
                         p -> {
                             int targetDigitCount = 0;
                             if (p.a > 0) {
-                                targetDigitCount = ceilingLog(BigInteger.valueOf(p.b), BigInteger.valueOf(p.a))
-                                        .intValueExact();
+                                targetDigitCount = ceilingLog(BigInteger.valueOf(p.b), BigInteger.valueOf(p.a));
                                 BigInteger x = BigInteger.valueOf(p.b).pow(targetDigitCount);
                                 BigInteger y = BigInteger.valueOf(p.a);
                                 //noinspection SuspiciousNameCombination
@@ -1412,7 +1410,7 @@ public class IntegerUtilsProperties extends TestProperties {
                         p -> {
                             int targetDigitCount = 0;
                             if (p.a.signum() == 1) {
-                                targetDigitCount = ceilingLog(p.b, p.a).intValueExact();
+                                targetDigitCount = ceilingLog(p.b, p.a);
                                 if (p.b.pow(targetDigitCount).equals(p.a)) {
                                     targetDigitCount++;
                                 }

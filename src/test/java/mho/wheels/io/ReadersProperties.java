@@ -1,16 +1,12 @@
 package mho.wheels.io;
 
-import mho.wheels.ordering.Ordering;
 import mho.wheels.structures.FiniteDomainFunction;
+import mho.wheels.structures.NullableOptional;
 import mho.wheels.structures.Pair;
 import mho.wheels.testing.TestProperties;
 import org.jetbrains.annotations.NotNull;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.math.RoundingMode;
 import java.util.Collections;
-import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
@@ -19,7 +15,13 @@ import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.testing.Testing.*;
 
 public strictfp class ReadersProperties extends TestProperties {
+    private static final @NotNull String BOOLEAN_CHARS = "aeflrstu";
+    private static final @NotNull String ORDERING_CHARS = "EGLQT";
+    private static final @NotNull String ROUNDING_MODE_CHARS = "ACDEFGHILNOPRSUVWY_";
     private static final @NotNull String INTEGRAL_CHARS = "-0123456789";
+    private static final @NotNull String FLOATING_POINT_CHARS = "-.0123456789EINafinty";
+    private static final @NotNull String BIG_DECIMAL_CHARS = "+-.0123456789E";
+    private static final @NotNull String ALL_CHARS = charsToString(EP.characters());
 
     public ReadersProperties() {
         super("Readers");
@@ -27,338 +29,236 @@ public strictfp class ReadersProperties extends TestProperties {
 
     @Override
     protected void testBothModes() {
-        propertiesGenericRead();
-        propertiesGenericFindIn_List_T();
-        propertiesReadBoolean();
-        propertiesFindBooleanIn();
-        propertiesReadOrdering();
-        propertiesFindOrderingIn();
-        propertiesReadRoundingMode();
-        propertiesFindRoundingModeIn();
-        propertiesReadBigInteger();
-        propertiesFindBigIntegerIn();
-        propertiesReadByte();
-        propertiesFindByteIn();
-        propertiesReadShort();
-        propertiesFindShortIn();
-        propertiesReadInteger();
-        propertiesFindIntegerIn();
-        propertiesReadLong();
-        propertiesFindLongIn();
-        propertiesReadFloat();
-        propertiesFindFloatIn();
-        propertiesReadDouble();
-        propertiesFindDoubleIn();
-        propertiesReadBigDecimal();
-        propertiesFindBigDecimalIn();
-        propertiesReadCharacter();
-        propertiesFindCharacterIn();
-        propertiesReadString();
+        propertiesGenericReadStrict();
+        propertiesReadBooleanStrict();
+        propertiesReadOrderingStrict();
+        propertiesReadRoundingModeStrict();
+        propertiesReadBigIntegerStrict();
+        propertiesReadByteStrict();
+        propertiesReadShortStrict();
+        propertiesReadIntegerStrict();
+        propertiesReadLongStrict();
+        propertiesReadFloatStrict();
+        propertiesReadDoubleStrict();
+        propertiesReadBigDecimalStrict();
+        propertiesReadCharacterStrict();
+        propertiesReadStringStrict();
+        propertiesReadWithNullsStrict();
+        propertiesReadOptionalStrict();
+        propertiesReadNullableOptionalStrict();
     }
 
-    private void propertiesGenericRead() {
-        initialize("genericRead(Function<String, T>)");
+    private void propertiesGenericReadStrict() {
+        initialize("genericReadStrict(Function<String, T>)");
         Iterable<Pair<Function<String, Integer>, String>> ps = map(
                 p -> new Pair<>(new FiniteDomainFunction<>(Collections.singletonList(p)), p.a),
                 P.pairs(P.strings(INTEGRAL_CHARS), P.withNull(P.integers()))
         );
         for (Pair<Function<String, Integer>, String> p : take(LIMIT, ps)) {
-            genericRead(p.a).apply(p.b);
+            genericReadStrict(p.a).apply(p.b);
         }
 
         for (int i : take(LIMIT, P.integers())) {
             String s = Integer.toString(i);
             Function<String, Integer> f = new FiniteDomainFunction<>(Collections.singletonList(new Pair<>(s, i)));
-            assertEquals(i, genericRead(f).apply(s).get(), i);
+            assertEquals(i, genericReadStrict(f).apply(s).get(), i);
         }
     }
 
-    private void propertiesGenericFindIn_List_T() {
-        initialize("genericFindIn(List<T>)");
-        Iterable<Pair<List<Integer>, String>> ps = P.pairs(P.subsets(P.integers()), P.strings(INTEGRAL_CHARS));
-        for (Pair<List<Integer>, String> p : take(LIMIT, ps)) {
-            genericFindIn(p.a).apply(p.b);
-        }
-
-        for (int i : take(LIMIT, P.integers())) {
-            assertEquals(
-                    i,
-                    genericFindIn(Collections.singletonList(i)).apply(Integer.toString(i)).get(),
-                    new Pair<>(i, 0)
-            );
-        }
-
-        ps = map(
-                p -> p.b,
-                P.dependentPairsInfinite(
-                        P.integers(),
-                        i -> P.pairs(
-                                P.subsetsWithElement(i, P.integers()),
-                                P.stringsWithSubstrings(P.uniformSample(Collections.singletonList(i.toString())))
-                        )
-                )
-        );
-        for (Pair<List<Integer>, String> p : take(LIMIT, ps)) {
-            Optional<Pair<Integer, Integer>> oq = genericFindIn(p.a).apply(p.b);
-            Pair<Integer, Integer> q = oq.get();
-            assertNotNull(p, q.a);
-            assertNotNull(p, q.b);
-            assertTrue(p, q.b >= 0 && q.b < p.b.length());
-            String before = take(q.b, p.b);
-            Optional<Pair<Integer, Integer>> appliedBefore = genericFindIn(p.a).apply(before);
-            assertFalse(p, appliedBefore.isPresent() && appliedBefore.get().a.equals(q.a));
-            String during = q.a.toString();
-            assertTrue(p, p.b.substring(q.b).startsWith(during));
-        }
-
-        Iterable<Pair<List<Integer>, String>> psFail = P.pairs(P.listsWithElement(null, P.integers()), P.strings());
-        for (Pair<List<Integer>, String> p : take(LIMIT, psFail)) {
-            try {
-                genericFindIn(p.a).apply(p.b);
-                fail(p);
-            } catch (NullPointerException ignored) {}
-        }
-
-        Iterable<List<Integer>> nonUniqueLists = nub(
-                map(
-                        p -> toList(insert(p.a, p.b.b, p.b.a)),
-                        P.dependentPairs(
-                                P.distinctListsAtLeast(1, P.integers()),
-                                xs -> P.pairs(P.uniformSample(xs), P.range(0, xs.size()))
-                        )
-                )
-        );
-        for (Pair<List<Integer>, String> p : take(LIMIT, P.pairs(nonUniqueLists, P.strings()))) {
-            try {
-                genericFindIn(p.a).apply(p.b);
-                fail(p);
-            } catch (IllegalArgumentException ignored) {}
-        }
+    private void propertiesReadBooleanStrict() {
+        initialize("readBooleanStrict(String)");
+        propertiesReadHelper(LIMIT, P, BOOLEAN_CHARS, P.booleans(), Readers::readBooleanStrict, b -> {}, false, true);
     }
 
-    private void propertiesReadBoolean() {
-        initialize("readBoolean(String)");
-        for (String s : take(LIMIT, P.strings())) {
-            readBoolean(s);
-        }
-
-        for (boolean b : take(LIMIT, P.booleans())) {
-            Optional<Boolean> ob = readBoolean(Boolean.toString(b));
-            assertEquals(b, ob.get(), b);
-        }
-    }
-
-    private void propertiesFindBooleanIn() {
-        initialize("findBooleanIn(String)");
-        propertiesFindInHelper(LIMIT, P, P.booleans(), Readers::readBoolean, Readers::findBooleanIn, b -> {});
-    }
-
-    private void propertiesReadOrdering() {
-        initialize("readOrdering(String)");
-        for (String s : take(LIMIT, P.strings())) {
-            readOrdering(s);
-        }
-
-        for (Ordering o : take(LIMIT, P.orderings())) {
-            Optional<Ordering> oo = readOrdering(o.toString());
-            assertEquals(o, oo.get(), o);
-        }
-    }
-
-    private void propertiesFindOrderingIn() {
-        initialize("findOrderingIn(String)");
-        propertiesFindInHelper(LIMIT, P, P.orderings(), Readers::readOrdering, Readers::findOrderingIn, o -> {});
-    }
-
-    private void propertiesReadRoundingMode() {
-        initialize("readRoundingMode(String)");
-        for (String s : take(LIMIT, P.strings())) {
-            readRoundingMode(s);
-        }
-
-        for (RoundingMode rm : take(LIMIT, P.roundingModes())) {
-            Optional<RoundingMode> orm = readRoundingMode(rm.toString());
-            assertEquals(rm, orm.get(), rm);
-        }
-    }
-
-    private void propertiesFindRoundingModeIn() {
-        initialize("findRoundingModeIn(String)");
-        propertiesFindInHelper(
+    private void propertiesReadOrderingStrict() {
+        initialize("readOrderingStrict(String)");
+        propertiesReadHelper(
                 LIMIT,
                 P,
+                ORDERING_CHARS,
+                P.orderings(),
+                Readers::readOrderingStrict,
+                o -> {},
+                false,
+                true
+        );
+    }
+
+    private void propertiesReadRoundingModeStrict() {
+        initialize("readRoundingModeStrict(String)");
+        propertiesReadHelper(
+                LIMIT,
+                P,
+                ROUNDING_MODE_CHARS,
                 P.roundingModes(),
-                Readers::readRoundingMode,
-                Readers::findRoundingModeIn,
-                rm -> {}
+                Readers::readRoundingModeStrict,
+                rm -> {},
+                false,
+                true
         );
     }
 
-    private void propertiesReadBigInteger() {
-        initialize("readBigInteger(String)");
-        for (String s : take(LIMIT, P.strings())) {
-            readBigInteger(s);
-        }
-
-        for (BigInteger i : take(LIMIT, P.bigIntegers())) {
-            Optional<BigInteger> oi = readBigInteger(i.toString());
-            assertEquals(i, oi.get(), i);
-        }
+    private void propertiesReadBigIntegerStrict() {
+        initialize("readBigIntegerStrict(String)");
+        propertiesReadHelper(
+                LIMIT,
+                P,
+                INTEGRAL_CHARS,
+                P.bigIntegers(),
+                Readers::readBigIntegerStrict,
+                i -> {},
+                false,
+                true
+        );
     }
 
-    private void propertiesFindBigIntegerIn() {
-        initialize("findBigIntegerIn(String)");
-        propertiesFindInHelper(LIMIT, P, P.bigIntegers(), Readers::readBigInteger, Readers::findBigIntegerIn, i -> {});
+    private void propertiesReadByteStrict() {
+        initialize("readByteStrict(String)");
+        propertiesReadHelper(LIMIT, P, INTEGRAL_CHARS, P.bytes(), Readers::readByteStrict, b -> {}, false, true);
     }
 
-    private void propertiesReadByte() {
-        initialize("readByte(String)");
-        for (String s : take(LIMIT, P.strings())) {
-            readByte(s);
-        }
-
-        for (byte b : take(LIMIT, P.bytes())) {
-            Optional<Byte> ob = readByte(Byte.toString(b));
-            assertEquals(b, ob.get(), b);
-        }
+    private void propertiesReadShortStrict() {
+        initialize("readShortStrict(String)");
+        propertiesReadHelper(LIMIT, P, INTEGRAL_CHARS, P.shorts(), Readers::readShortStrict, s -> {}, false, true);
     }
 
-    private void propertiesFindByteIn() {
-        initialize("findByteIn(String)");
-        propertiesFindInHelper(LIMIT, P, P.bytes(), Readers::readByte, Readers::findByteIn, b -> {});
+    private void propertiesReadIntegerStrict() {
+        initialize("readIntegerStrict(String)");
+        propertiesReadHelper(LIMIT, P, INTEGRAL_CHARS, P.integers(), Readers::readIntegerStrict, i -> {}, false, true);
     }
 
-    private void propertiesReadShort() {
-        initialize("readShort(String)");
-        for (String s : take(LIMIT, P.strings())) {
-            readShort(s);
-        }
-
-        for (short s : take(LIMIT, P.shorts())) {
-            Optional<Short> os = readShort(Short.toString(s));
-            assertEquals(s, os.get(), s);
-        }
+    private void propertiesReadLongStrict() {
+        initialize("readLongStrict(String)");
+        propertiesReadHelper(LIMIT, P, INTEGRAL_CHARS, P.longs(), Readers::readLongStrict, l -> {}, false, true);
     }
 
-    private void propertiesFindShortIn() {
-        initialize("findShortIn(String)");
-        propertiesFindInHelper(LIMIT, P, P.shorts(), Readers::readShort, Readers::findShortIn, s -> {});
+    private void propertiesReadFloatStrict() {
+        initialize("readFloatStrict(String)");
+        propertiesReadHelper(
+                LIMIT,
+                P,
+                FLOATING_POINT_CHARS,
+                P.floats(),
+                Readers::readFloatStrict,
+                f -> {},
+                false,
+                true
+        );
     }
 
-    private void propertiesReadInteger() {
-        initialize("readInteger(String)");
-        for (String s : take(LIMIT, P.strings())) {
-            readInteger(s);
+    private void propertiesReadDoubleStrict() {
+        initialize("readDoubleStrict(String)");
+        propertiesReadHelper(
+                LIMIT,
+                P,
+                FLOATING_POINT_CHARS,
+                P.doubles(),
+                Readers::readDoubleStrict,
+                d -> {},
+                false,
+                true
+        );
+    }
+
+    private void propertiesReadBigDecimalStrict() {
+        initialize("readBigDecimalStrict(String)");
+        propertiesReadHelper(
+                LIMIT,
+                P,
+                BIG_DECIMAL_CHARS,
+                P.bigDecimals(),
+                Readers::readBigDecimalStrict,
+                bd -> {},
+                false,
+                true
+        );
+    }
+
+    private void propertiesReadCharacterStrict() {
+        initialize("readCharacterStrict(String)");
+        propertiesReadHelper(
+                LIMIT,
+                P,
+                ALL_CHARS,
+                P.characters(),
+                Readers::readCharacterStrict,
+                c -> {},
+                false,
+                true
+        );
+    }
+
+    private void propertiesReadStringStrict() {
+        initialize("readStringStrict(String)");
+        propertiesReadHelper(
+                LIMIT,
+                P,
+                ALL_CHARS,
+                P.strings(),
+                Readers::readStringStrict,
+                c -> {},
+                true,
+                true
+        );
+    }
+
+    private void propertiesReadWithNullsStrict() {
+        initialize("readWithNullsStrict(Function<String, Optional<T>>)");
+        Iterable<Pair<Function<String, Optional<Integer>>, String>> ps = map(
+                p -> new Pair<>(new FiniteDomainFunction<>(Collections.singletonList(p)), p.a),
+                P.pairs(P.strings(), P.optionals(P.integers()))
+        );
+        for (Pair<Function<String, Optional<Integer>>, String> p : take(LIMIT, ps)) {
+            readWithNullsStrict(p.a).apply(p.b);
         }
 
         for (int i : take(LIMIT, P.integers())) {
-            Optional<Integer> oi = readInteger(Integer.toString(i));
-            assertEquals(i, oi.get(), i);
+            String s = Integer.toString(i);
+            Function<String, Optional<Integer>> f = new FiniteDomainFunction<>(
+                    Collections.singletonList(new Pair<>(s, Optional.of(i)))
+            );
+            assertEquals(i, readWithNullsStrict(f).apply(s).get(), i);
+            assertNull(i, readWithNullsStrict(f).apply("null").get());
         }
     }
 
-    private void propertiesFindIntegerIn() {
-        initialize("findIntegerIn(String)");
-        propertiesFindInHelper(LIMIT, P, P.integers(), Readers::readInteger, Readers::findIntegerIn, i -> {});
-    }
-
-    private void propertiesReadLong() {
-        initialize("readLong(String)");
-        for (String s : take(LIMIT, P.strings())) {
-            readLong(s);
-        }
-
-        for (long l : take(LIMIT, P.longs())) {
-            Optional<Long> ol = readLong(Long.toString(l));
-            assertEquals(l, ol.get(), l);
-        }
-    }
-
-    private void propertiesFindLongIn() {
-        initialize("findLongIn(String)");
-        propertiesFindInHelper(LIMIT, P, P.longs(), Readers::readLong, Readers::findLongIn, l -> {});
-    }
-
-    private void propertiesReadFloat() {
-        initialize("readFloat(String)");
-        for (String s : take(LIMIT, P.strings())) {
-            readFloat(s);
-        }
-
-        for (float f : take(LIMIT, P.floats())) {
-            Optional<Float> of = readFloat(Float.toString(f));
-            assertEquals(f, of.get(), f);
-        }
-    }
-
-    private void propertiesFindFloatIn() {
-        initialize("findFloatIn(String)");
-        propertiesFindInHelper(LIMIT, P, P.floats(), Readers::readFloat, Readers::findFloatIn, f -> {});
-    }
-
-    private void propertiesReadDouble() {
-        initialize("readDouble(String)");
-        for (String s : take(LIMIT, P.strings())) {
-            readDouble(s);
-        }
-
-        for (double d : take(LIMIT, P.doubles())) {
-            Optional<Double> od = readDouble(Double.toString(d));
-            assertEquals(d, od.get(), d);
-        }
-    }
-
-    private void propertiesFindDoubleIn() {
-        initialize("findDoubleIn(String)");
-        propertiesFindInHelper(LIMIT, P, P.doubles(), Readers::readDouble, Readers::findDoubleIn, d -> {});
-    }
-
-    private void propertiesReadBigDecimal() {
-        initialize("readBigDecimal(String)");
-        for (String s : take(LIMIT, P.strings())) {
-            readBigDecimal(s);
-        }
-
-        for (BigDecimal bd : take(LIMIT, P.bigDecimals())) {
-            Optional<BigDecimal> obd = readBigDecimal(bd.toString());
-            assertEquals(bd, obd.get(), bd);
-        }
-    }
-
-    private void propertiesFindBigDecimalIn() {
-        initialize("findBigDecimalIn(String)");
-        propertiesFindInHelper(
-                LIMIT,
-                P,
-                P.bigDecimals(),
-                Readers::readBigDecimal,
-                Readers::findBigDecimalIn,
-                bd -> {}
+    private void propertiesReadOptionalStrict() {
+        initialize("readOptionalStrict(Function<String, Optional<T>>)");
+        Iterable<Pair<Function<String, Optional<Integer>>, String>> ps = map(
+                p -> new Pair<>(new FiniteDomainFunction<>(Collections.singletonList(p)), p.a),
+                P.pairs(P.strings(), P.optionals(P.integers()))
         );
-    }
-
-    private void propertiesReadCharacter() {
-        initialize("readCharacter(String)");
-        for (String s : take(LIMIT, P.strings())) {
-            readCharacter(s);
+        for (Pair<Function<String, Optional<Integer>>, String> p : take(LIMIT, ps)) {
+            readOptionalStrict(p.a).apply(p.b);
         }
 
-        for (char c : take(LIMIT, P.characters())) {
-            Optional<Character> oc = readCharacter(Character.toString(c));
-            assertEquals(c, oc.get(), c);
+        for (int i : take(LIMIT, P.integers())) {
+            String s = Integer.toString(i);
+            Function<String, Optional<Integer>> f = new FiniteDomainFunction<>(
+                    Collections.singletonList(new Pair<>(s, Optional.of(i)))
+            );
+            assertEquals(i, readOptionalStrict(f).apply("Optional[" + s + "]").get().get(), i);
+            assertFalse(i, readOptionalStrict(f).apply("Optional.empty").get().isPresent());
         }
     }
 
-    private void propertiesFindCharacterIn() {
-        initialize("findCharacterIn(String)");
-        propertiesFindInHelper(LIMIT, P, P.characters(), Readers::readCharacter, Readers::findCharacterIn, c -> {});
-    }
+    private void propertiesReadNullableOptionalStrict() {
+        initialize("readNullableOptionalStrict(Function<String, NullableOptional<T>>)");
+        Iterable<Pair<Function<String, NullableOptional<Integer>>, String>> ps = map(
+                p -> new Pair<>(new FiniteDomainFunction<>(Collections.singletonList(p)), p.a),
+                P.pairs(P.strings(), P.nullableOptionals(P.withNull(P.integers())))
+        );
+        for (Pair<Function<String, NullableOptional<Integer>>, String> p : take(LIMIT, ps)) {
+            readNullableOptionalStrict(p.a).apply(p.b);
+        }
 
-    private void propertiesReadString() {
-        initialize("readString(String)");
-        for (String s : take(LIMIT, P.strings())) {
-            Optional<String> os = readString(s);
-            assertEquals(s, os.get(), s);
+        for (Integer i : take(LIMIT, P.withNull(P.integers()))) {
+            String s = i == null ? "null" : Integer.toString(i);
+            Function<String, NullableOptional<Integer>> f = new FiniteDomainFunction<>(
+                    Collections.singletonList(new Pair<>(s, NullableOptional.of(i)))
+            );
+            assertEquals(i, readNullableOptionalStrict(f).apply("NullableOptional[" + s + "]").get().get(), i);
+            assertFalse(i, readNullableOptionalStrict(f).apply("NullableOptional.empty").get().isPresent());
         }
     }
 }

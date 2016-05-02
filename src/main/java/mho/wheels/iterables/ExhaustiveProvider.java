@@ -1628,10 +1628,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
                 nub(
                         map(
                                 p -> BigDecimalUtils.canonicalize(
-                                        new BigDecimal(
-                                                p.a,
-                                                p.b + MathUtils.ceilingLog(BigInteger.TEN, p.a).intValueExact() - pow
-                                        )
+                                        new BigDecimal(p.a, p.b + MathUtils.ceilingLog(BigInteger.TEN, p.a) - pow)
                                 ),
                                 INSTANCE.pairsLogarithmicOrder(
                                         INSTANCE.positiveBigIntegers(),
@@ -4662,7 +4659,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      * {@code originalIndices}, this method reinterprets the indices to only generate sorted lists. For example,
      * consider the list [1, 0, 5, 3]. Let's select a list of length 4 from the characters 'a' through 'z' using these
      * indices. We'll use the cumulative sums of these indices, which are [1, 1 + 0, 1 + 0 + 5, 1 + 0 + 5 + 3], or
-     * [1, 1, 6, 9]. This corresponds to [a, a, f, i].
+     * [1, 1, 6, 9]. This corresponds to [b, b, g, j].
      *
      * <ul>
      *  <li>{@code xs} cannot be null.</li>
@@ -5307,7 +5304,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      * {@code elementCount}–1
      */
     private static @NotNull Iterable<List<Integer>> subsetIndicesAtLeast(int minSize, int elementCount) {
-        BigInteger outputSize = MathUtils.subsetCount(minSize, BigInteger.valueOf(elementCount));
+        BigInteger outputSize = MathUtils.subsetCount(minSize, elementCount);
         Iterable<Integer> range = IterableUtils.range(0, minSize - 1);
         int limit = elementCount - 1;
         int offset = elementCount - minSize;
@@ -5798,7 +5795,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
                 xs,
                 listsAtLeast(minSize, naturalIntegers()),
                 Optional.of(minSize),
-                n -> MathUtils.subsetCount(minSize, BigInteger.valueOf(n))
+                n -> MathUtils.subsetCount(minSize, n)
         );
     }
 

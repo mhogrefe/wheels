@@ -26,6 +26,17 @@
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>mho.wheels.io.Interpreter</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.17</version>
                 <configuration>
@@ -38,10 +49,8 @@
                         <include>**/IterableUtilsProperties.java</include>
                         <include>**/NoRemoveIteratorTest.java</include>
                         <include>**/NoRemoveIteratorProperties.java</include>
-                        <include>**/randomProvider/BasicTest.java</include>
-                        <include>**/randomProvider/CompoundTest.java</include>
-                        <include>**/randomProvider/NonIntegerNumericsTest.java</include>
-                        <include>**/randomProvider/RandomProviderProperties.java</include>
+                        <include>**/RandomProviderTest.java</include>
+                        <include>**/RandomProviderProperties.java</include>
                         <include>**/BinaryFractionTest.java</include>
                         <include>**/BinaryFractionProperties.java</include>
                         <include>**/MathUtilsTest.java</include>

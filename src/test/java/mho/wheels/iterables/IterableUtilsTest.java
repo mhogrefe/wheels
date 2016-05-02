@@ -288,7 +288,7 @@ public strictfp class IterableUtilsTest {
     }
 
     private static void charsToStringHelper(@NotNull String input, @NotNull String output) {
-        aeq(charsToString(Readers.readListWithNulls(Readers::readCharacter).apply(input).get()), output);
+        aeq(charsToString(Readers.readListWithNullsStrict(Readers::readCharacterStrict).apply(input).get()), output);
     }
 
     @Test
@@ -1624,26 +1624,26 @@ public strictfp class IterableUtilsTest {
     }
 
     private static @NotNull List<Integer> readIntegerList(@NotNull String s) {
-        return Readers.readList(Readers::readInteger).apply(s).get();
+        return Readers.readListStrict(Readers::readIntegerStrict).apply(s).get();
     }
 
     private static @NotNull List<Integer> readIntegerListWithNulls(@NotNull String s) {
-        return Readers.readListWithNulls(Readers::readInteger).apply(s).get();
+        return Readers.readListWithNullsStrict(Readers::readIntegerStrict).apply(s).get();
     }
 
     private static @NotNull List<BigInteger> readBigIntegerList(@NotNull String s) {
-        return Readers.readList(Readers::readBigInteger).apply(s).get();
+        return Readers.readListStrict(Readers::readBigIntegerStrict).apply(s).get();
     }
 
     private static @NotNull List<BigInteger> readBigIntegerListWithNulls(@NotNull String s) {
-        return Readers.readListWithNulls(Readers::readBigInteger).apply(s).get();
+        return Readers.readListWithNullsStrict(Readers::readBigIntegerStrict).apply(s).get();
     }
 
     private static @NotNull List<BigDecimal> readBigDecimalList(@NotNull String s) {
-        return Readers.readList(Readers::readBigDecimal).apply(s).get();
+        return Readers.readListStrict(Readers::readBigDecimalStrict).apply(s).get();
     }
 
     private static @NotNull List<BigDecimal> readBigDecimalListWithNulls(@NotNull String s) {
-        return Readers.readListWithNulls(Readers::readBigDecimal).apply(s).get();
+        return Readers.readListWithNullsStrict(Readers::readBigDecimalStrict).apply(s).get();
     }
 }

@@ -13,6 +13,7 @@ Progress
 |:--------------------------- |:-------:|:-------:|:-----:|:-----:|:----------:|
 | ConcurrencyUtils            | ✔       | ✘       | ✘     | ✘     | ✘          |
 | ResultCache                 | ✔       | ✘       | ✘     | ✘     | ✘          |
+| Interpreter                 | ✘       | ✘       | ✘     | ✘     | ✘          |
 | Readers                     | ✔       | ✘       | ✘     | ✘     | ✘          |
 | TextInput                   | ✔       | ✘       | ✘     | ✘     | ✘          |
 | TextOutput                  | ✔       | ✘       | ✘     | ✘     | ✘          |
@@ -25,7 +26,7 @@ Progress
 | NoRemoveIterator            | ✔       | ✔       | ✔     | ✔     | ✔          |
 | RandomProvider              | ✘       | ✔       | ✔     | ✔     | ✔          |
 | BinaryFraction              | ✔       | ✔       | ✔     | ✔     | ✔          |
-| MathUtils                   | ✔       | ✘       | ✘     | ✘     | ✘          |
+| MathUtils                   | ✔       | ✔       | ✔     | ✔     | ✔          |
 | BigDecimalUtils             | ✔       | ✔       | ✔     | ✔     | ✔          |
 | FloatingPointUtils          | ✔       | ✔       | ✔     | ✔     | ✔          |
 | IntegerUtils                | ✔       | ✔       | ✔     | ✔     | ✔          |

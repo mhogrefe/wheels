@@ -33,6 +33,49 @@ public final class MathUtils {
     private MathUtils() {}
 
     /**
+     * Returns an {@code int} raised to the power of another {@code int}. Throws an exception on overflow.
+     * 0<sup>0</sup> is 1.
+     *
+     * <ul>
+     *  <li>{@code n} may be any {@code int}.</li>
+     *  <li>{@code p} cannot be negative.</li>
+     *  <li>{@code p}<sup>{@code n}</sup> must be greater than or equal to –2<sup>31</sup> and less than
+     *  2<sup>31</sup>.</li>
+     * </ul>
+     *
+     * @param n a number
+     * @param p the power {@code n} is raised to
+     * @return {@code n}<sup>{@code p}</sup>
+     */
+    public static int pow(int n, int p) {
+        if (p < 0) {
+            throw new ArithmeticException("p cannot be negative. Invalid p: " + p);
+        }
+        if (p == 0) return 1;
+        if (n == 0) return 0;
+        if (n == 1) return 1;
+        if (n == 2) {
+            if (p > 30) {
+                throw new ArithmeticException("n^p must be less than 2^31. n: " + n + ", p: " + p);
+            }
+            return 1 << p;
+        }
+        if (n == -2) {
+            if (p == 31) return Integer.MIN_VALUE;
+            if (p > 31) {
+                throw new ArithmeticException("n^p must be greater than or equal to -2^31. n: " + n + ", p: " + p);
+            }
+            int result = 1 << p;
+            return (p & 1) == 0 ? result : -result;
+        }
+        int result = 1;
+        for (int i = 0; i < p; i++) {
+            result = Math.multiplyExact(result, n);
+        }
+        return result;
+    }
+
+    /**
      * The greatest common divisor of two {@link int}s. If both {@code x} and {@code y} are zero, the result is zero.
      * Otherwise, the result is positive.
      *
@@ -413,6 +456,9 @@ public final class MathUtils {
      * allowing repetitions
      */
     public static @NotNull BigInteger multisetCoefficient(@NotNull BigInteger n, int k) {
+        if (n.signum() == -1) {
+            throw new ArithmeticException("n cannot be negative. Invalid n: " + n);
+        }
         if (k < 0) {
             throw new ArithmeticException("k cannot be negative. Invalid k: " + k);
         }
@@ -422,12 +468,41 @@ public final class MathUtils {
         return binomialCoefficient(n.add(BigInteger.valueOf(k - 1)), k);
     }
 
-    public static @NotNull BigInteger subsetCount(int minSize, @NotNull BigInteger n) {
+    /**
+     * The number of unordered arrangements (of length at least {@code minSize}) of a set with {@code n} elements.
+     *
+     * <ul>
+     *  <li>{@code minSize} cannot be negative.</li>
+     *  <li>{@code n} cannot be negative.</li>
+     *  <li>The result is not negative.</li>
+     * </ul>
+     *
+     * @param minSize the minimum length of the arrangements
+     * @param n the number of elements in a set
+     * @return the number of different subsets that can be made by choosing at least {@code minSize} elements from the
+     * set
+     */
+    public static @NotNull BigInteger subsetCount(int minSize, int n) {
+        if (n < 0) {
+            throw new ArithmeticException("n cannot be negative. Invalid n: " + n);
+        }
         return sumBigInteger(
-                map(k -> binomialCoefficient(n, k.intValueExact()), range(BigInteger.valueOf(minSize), n))
+                map(k -> binomialCoefficient(BigInteger.valueOf(n), k), range(minSize, n))
         );
     }
 
+    /**
+     * The number of distinct permutations of a list, taking repeated elements into account.
+     *
+     * <ul>
+     *  <li>{@code xs} cannot be null.</li>
+     *  <li>The result is positive.</li>
+     * </ul>
+     *
+     * @param xs a {@code List} of elements
+     * @param <T> the type of elements in {@code xs}
+     * @return the number of permutations of {@code xs}
+     */
     public static @NotNull <T> BigInteger permutationCount(@NotNull List<T> xs) {
         BigInteger result = factorial(xs.size());
         for (BigInteger divisor : map(f -> factorial(f.b), frequencies(xs))) {
@@ -438,70 +513,218 @@ public final class MathUtils {
         return result;
     }
 
+    /**
+     * Returns the sign, or signature, of the reversal of a list of {@code i} elements, considered as a permutation.
+     * False means negative, true means positive.
+     *
+     * <ul>
+     *  <li>{@code i} cannot be negative.</li>
+     *  <li>The result may be either {@code boolean}.</li>
+     * </ul>
+     *
+     * @param i the number of elements of a list
+     * @return the parity (false is odd, true is even) of reversing the elements of the list with {@code i} elements
+     */
     public static boolean reversePermutationSign(int i) {
+        if (i < 0) {
+            throw new IllegalArgumentException("i cannot be negative. Invalid i: " + i);
+        }
         return (i & 2) == 0;
     }
 
-    public static @NotNull BigInteger fastGrowingCeilingInverse(
-            @NotNull Function<BigInteger, BigInteger> f,
-            @NotNull BigInteger y,
-            @NotNull BigInteger min,
-            @NotNull BigInteger max
+    /**
+     * Given a weakly monotonically increasing function from {@code Integer} to {@code BigInteger} {@code f} over the
+     * inclusive range [{@code min}, {@code max}] and a value {@code y}, finds the smallest {@code int} x in
+     * [{@code min}, {@code max}] such that {@code f}(x)≥{@code y}. {@code f} should be fast-growing (exponential or
+     * better) for a quick result. Otherwise, use
+     * {@link MathUtils#ceilingInverse(Function, BigInteger, BigInteger, BigInteger)}.
+     *
+     * <ul>
+     *  <ul>{@code f} must terminate on all inputs in [{@code min}, {@code max}] with throwing an exception, and cannot
+     *  return null.</ul>
+     *  <li>{@code f} should be weakly monotonically increasing over [{@code min}, {@code max}], and {@code f}(x)
+     *  should be greater than or equal to {@code y} for some value of x in that range.</li>
+     *  <li>{@code min} may be any {@code int}.</li>
+     *  <li>{@code max} may be any {@code int}.</li>
+     *  <li>{@code min} must be less than or equal to {@code max}.</li>
+     *  <li>{@code y} cannot be null.</li>
+     *  <li>The result may be any {@code int}.</li>
+     * </ul>
+     *
+     * @param f a fast-growing function that is weakly monotonically increasing in [{@code min}, {@code max}].
+     * @param min the inclusive lower bound of the search interval
+     * @param max the inclusive upper bound of the search interval
+     * @param y a value
+     * @return ⌈{@code f}<sup>–1</sup>({@code y})⌉, where the inverse is defined over x∈[{@code min}, {@code max}]
+     */
+    public static int fastGrowingCeilingInverse(
+            @NotNull Function<Integer, BigInteger> f,
+            int min,
+            int max,
+            @NotNull BigInteger y
     ) {
-        for (BigInteger x : range(min, max)) {
-            BigInteger j = f.apply(x);
-            if (ge(j, y)) {
+        if (gt(min, max)) {
+            throw new IllegalArgumentException("min must be less than or equal to max. min: " + min + ", max: " + max);
+        }
+        BigInteger previous = null;
+        for (int x : range(min, max)) {
+            BigInteger i = f.apply(x);
+            if (i == null) {
+                throw new IllegalArgumentException("f cannot return null for any value in [min, max]. min: " +
+                        min + ", max: " + max + ", f(" + x + ") = null");
+            }
+            if (previous != null && lt(i, previous)) {
+                throw new IllegalArgumentException("f must be weakly monotonically increasing over [min, max]. min: " +
+                        min + ", max: " + max + ", f(" + x + ") < f(" + (x - 1) + ")");
+            }
+            if (ge(i, y)) {
                 return x;
             }
+            previous = i;
         }
-        throw new IllegalArgumentException("inverse not found in range");
+        throw new IllegalArgumentException("f(x) should be greater than or equal to y for some value of x in" +
+                " [min, max]. y: " + y + ", min: " + min + ", max: " + max + ", f(" + max + ") = " + f.apply(max));
     }
 
-    public static @NotNull BigInteger ceilingLog(@NotNull BigInteger base, @NotNull BigInteger x) {
+    /**
+     * Returns the ceiling of the base-{@code base} logarithm of {@code x}.
+     *
+     * <ul>
+     *  <li>{@code base} must be at least 2.</li>
+     *  <li>{@code x} must be positive.</li>
+     *  <li>The result is not negative.</li>
+     * </ul>
+     *
+     * @param base the base of the logarithm
+     * @param x the argument of the logarithm
+     * @return ⌈log<sub>{@code base}</sub>({@code x})⌉
+     */
+    public static int ceilingLog(@NotNull BigInteger base, @NotNull BigInteger x) {
         if (lt(base, IntegerUtils.TWO)) {
-            throw new ArithmeticException("Base must be at least 2. Invalid base: " + base);
+            throw new ArithmeticException("base must be at least 2. Invalid base: " + base);
         }
         if (x.signum() != 1) {
             throw new ArithmeticException("x must be positive. Invalid x: " + x);
         }
         //noinspection SuspiciousNameCombination
-        return fastGrowingCeilingInverse(i -> base.pow(i.intValueExact()), x, BigInteger.ZERO, x); //very loose bound
+        return fastGrowingCeilingInverse(base::pow, 0, x.bitLength(), x);
     }
 
+    /**
+     * Given a weakly monotonically increasing function from {@code BigInteger} to {@code BigInteger} {@code f} over
+     * the inclusive range [{@code min}, {@code max}] and a value {@code y}, finds the smallest {@code int} x in
+     * [{@code min}, {@code max}] such that {@code f}(x)≥{@code y}.
+     *
+     * <ul>
+     *  <ul>{@code f} must terminate on all inputs in [{@code min}, {@code max}] with throwing an exception, and cannot
+     *  return null.</ul>
+     *  <li>{@code f} should be weakly monotonically increasing over [{@code min}, {@code max}], and {@code f}(x)
+     *  should be greater than or equal to {@code y} for some value of x in that range.</li>
+     *  <li>{@code min} may be any {@code int}.</li>
+     *  <li>{@code max} may be any {@code int}.</li>
+     *  <li>{@code min} must be less than or equal to {@code max}.</li>
+     *  <li>{@code y} cannot be null.</li>
+     *  <li>The result may be any {@code int}.</li>
+     * </ul>
+     *
+     * @param f a fast-growing function that is weakly monotonically increasing in [{@code min}, {@code max}].
+     * @param min the inclusive lower bound of the search interval
+     * @param max the inclusive upper bound of the search interval
+     * @param y a value
+     * @return ⌈{@code f}<sup>–1</sup>({@code y})⌉, where the inverse is defined over x∈[{@code min}, {@code max}]
+     */
     public static @NotNull BigInteger ceilingInverse(
             @NotNull Function<BigInteger, BigInteger> f,
-            @NotNull BigInteger y,
             @NotNull BigInteger min,
-            @NotNull BigInteger max
+            @NotNull BigInteger max,
+            @NotNull BigInteger y
     ) {
+        BigInteger originalMin = min;
+        BigInteger originalMax = max;
+        if (gt(min, max)) {
+            throw new IllegalArgumentException("min must be less than or equal to max. min: " + min + ", max: " + max);
+        }
+        BigInteger previous = null;
+        boolean previousWasLower = false;
         while (true) {
-            if (min.equals(max)) return max;
+            if (min.equals(max)) {
+                BigInteger fMax = f.apply(max);
+                if (ge(fMax, y)) {
+                    return max;
+                } else {
+                    throw new IllegalArgumentException("f(x) should be greater than or equal to y for some value in" +
+                            " [min, max]. y: " + y + ", min: " + originalMin + ", max: " + originalMax + ", f(" + max +
+                            ") = " + fMax);
+                }
+            }
             BigInteger mid = min.add(max).shiftRight(1);
             BigInteger fMid = f.apply(mid);
+            if (fMid == null) {
+                throw new IllegalArgumentException("f cannot return null for any value in [min, max]. min: " +
+                        min + ", max: " + max + ", f(" + mid + ") = null");
+            }
+            if (previous != null) {
+                if (previousWasLower) {
+                    if (lt(fMid, previous)) {
+                        throw new IllegalArgumentException("f must be weakly monotonically increasing over" +
+                                " [min, max]. min: " + min + ", max: " + max + ", f(" + fMid + ") < f(" + previous +
+                                ")");
+                    }
+                } else {
+                    if (gt(fMid, previous)) {
+                        throw new IllegalArgumentException("f must be weakly monotonically increasing over" +
+                                " [min, max]. min: " + min + ", max: " + max + ", f(" + previous + ") < f(" + fMid +
+                                ")");
+                    }
+                }
+            }
             switch (compare(fMid, y)) {
                 case GT:
-                    max = mid; break;
+                    max = mid;
+                    previousWasLower = false;
+                    break;
                 case LT:
-                    min = mid.add(BigInteger.ONE); break;
+                    min = mid.add(BigInteger.ONE);
+                    previousWasLower = true;
+                    break;
                 default:
                     return mid;
             }
+            previous = fMid;
         }
     }
 
-    public static @NotNull BigInteger ceilingRoot(@NotNull BigInteger r, @NotNull BigInteger x) {
+    /**
+     * Returns the ceiling of the {@code r}th root of {@code x}.
+     *
+     * <ul>
+     *  <li>{@code r} must be positive.</li>
+     *  <li>{@code x} cannot be negative.</li>
+     *  <li>The result is not negative.</li>
+     * </ul>
+     *
+     * @param r the order of the root
+     * @param x the argument of the root
+     * @return ⌈{@code x}<sup>1/{@code r}</sup>⌉
+     */
+    public static @NotNull BigInteger ceilingRoot(int r, @NotNull BigInteger x) {
+        if (r < 1) {
+            throw new ArithmeticException("r must be positive. Invalid r: " + r);
+        }
         if (x.signum() == -1) {
-            throw new ArithmeticException();
+            throw new ArithmeticException("x cannot be negative. Invalid x: " + x);
         }
+        if (x.equals(BigInteger.ZERO)) return BigInteger.ZERO;
+        if (r == 1) return x;
+        int bitLengthEstimate = x.bitLength();
+        bitLengthEstimate = (bitLengthEstimate & 1) == 0 ? bitLengthEstimate / 2 : bitLengthEstimate / 2 + 1;
         //noinspection SuspiciousNameCombination
-        return ceilingInverse(
-                i -> i.pow(r.intValueExact()),
-                x,
-                BigInteger.ZERO,
-                x //very loose bound
-        );
+        return ceilingInverse(i -> i.pow(r), BigInteger.ZERO, BigInteger.ONE.shiftLeft(bitLengthEstimate), x);
     }
 
+    /**
+     * Initializes the prime sieve, if it hasn't already been initialized.
+     */
     private static void ensurePrimeSieveInitialized() {
         if (PRIME_SIEVE != null) return;
         PRIME_SIEVE = new BitSet(PRIME_SIEVE_SIZE);
@@ -515,21 +738,47 @@ public final class MathUtils {
         }
     }
 
+    /**
+     * Returns the smallest prime factor of {@code n}.
+     *
+     * <ul>
+     *  <li>{@code n} must be at least 2.</li>
+     *  <li>The result is prime.</li>
+     * </ul>
+     *
+     * @param n a number
+     * @return the smallest prime factor of {@code n}
+     */
     public static int smallestPrimeFactor(int n) {
-        if (n < 2)
-            throw new IllegalArgumentException("argument must be at least 2");
+        if (n < 2) {
+            throw new IllegalArgumentException("n must be at least 2. Invalid n: " + n);
+        }
         if (n % 2 == 0) return 2;
         ensurePrimeSieveInitialized();
         if (n < PRIME_SIEVE_SIZE && PRIME_SIEVE.get(n)) return n;
-        for (int i = 3; ; i += 2) {
+        for (int i = 3; i < PRIME_SIEVE_SIZE; i += 2) {
             int square = i * i;
-            if (square > n || square < 0) break;
+            if (square > n) break;
             if (PRIME_SIEVE.get(i) && n % i == 0) return i;
         }
         return n;
     }
 
+    /**
+     * Returns the smallest prime factor of {@code n}.
+     *
+     * <ul>
+     *  <li>{@code n} must be at least 2.</li>
+     *  <li>The result is prime.</li>
+     * </ul>
+     *
+     * @param n a number
+     * @return the smallest prime factor of {@code n}
+     */
     public static @NotNull BigInteger smallestPrimeFactor(@NotNull BigInteger n) {
+        if (lt(n, IntegerUtils.TWO)) {
+            throw new IllegalArgumentException("n must be at least 2. Invalid n: " + n);
+        }
         if (le(n, BigInteger.valueOf(Integer.MAX_VALUE))) {
             return BigInteger.valueOf(smallestPrimeFactor(n.intValueExact()));
         }
@@ -540,7 +789,7 @@ public final class MathUtils {
             if (gt(bi.pow(2), n)) return n;
             if (PRIME_SIEVE.get(i) && n.mod(bi).equals(BigInteger.ZERO)) return bi;
         }
-        BigInteger limit = ceilingRoot(IntegerUtils.TWO, n);
+        BigInteger limit = ceilingRoot(2, n);
         Iterable<BigInteger> candidates = concatMap(
                 i -> {
                     BigInteger sixI = i.multiply(BigInteger.valueOf(6));
@@ -554,14 +803,47 @@ public final class MathUtils {
         return n;
     }
 
+    /**
+     * Determines whether a number is prime. 1 is not prime (it has zero prime factors).
+     *
+     * <ul>
+     *  <li>{@code n} must be positive.</li>
+     *  <li>The result may be either {@code boolean}.</li>
+     * </ul>
+     *
+     * @param n a number
+     * @return whether {@code n} is prime
+     */
     public static boolean isPrime(int n) {
         return n != 1 && smallestPrimeFactor(n) == n;
     }
 
+    /**
+     * Determines whether a number is prime. 1 is not prime (it has zero prime factors).
+     *
+     * <ul>
+     *  <li>{@code n} must be positive.</li>
+     *  <li>The result may be either {@code boolean}.</li>
+     * </ul>
+     *
+     * @param n a number
+     * @return whether {@code n} is prime
+     */
     public static boolean isPrime(@NotNull BigInteger n) {
         return !n.equals(BigInteger.ONE) && smallestPrimeFactor(n).equals(n);
     }
 
+    /**
+     * Returns the prime factors of a number, including multiplicities.
+     *
+     * <ul>
+     *  <li>{@code n} must be positive.</li>
+     *  <li>The result is a finite {@code Iterable} of primes in weakly ascending order.</li>
+     * </ul>
+     *
+     * @param n a number
+     * @return the prime factors of {@code n}
+     */
     public static @NotNull Iterable<Integer> primeFactors(int n) {
         return unfoldr(
                 i -> {
@@ -573,6 +855,17 @@ public final class MathUtils {
         );
     }
 
+    /**
+     * Returns the prime factors of a number, including multiplicities.
+     *
+     * <ul>
+     *  <li>{@code n} must be positive.</li>
+     *  <li>The result is a finite {@code Iterable} of primes in weakly ascending order.</li>
+     * </ul>
+     *
+     * @param n a number
+     * @return the prime factors of {@code n}
+     */
     public static @NotNull Iterable<BigInteger> primeFactors(@NotNull BigInteger n) {
         return unfoldr(
                 i -> {
@@ -584,36 +877,93 @@ public final class MathUtils {
         );
     }
 
+    /**
+     * Returns the prime factors of number. The output format is a list of pairs, where the first elements are the
+     * primes and the second elements are the powers that the corresponding primes are raised to.
+     *
+     * <ul>
+     *  <li>{@code n} must be positive.</li>
+     *  <li>The result is a finite {@code Iterable} of pairs, where the first elements are distinct primes in
+     *  increasing order and the second elements are all positive.</li>
+     * </ul>
+     *
+     * @param n a number
+     * @return [p<sub>1</sub>, e<sub>1</sub>, p<sub>2</sub>, e<sub>2</sub>, ..., p<sub>n</sub>, e<sub>n</sub>], where
+     * p are distinct primes in ascending order and {@code n}=Πp<sub>i</sub><sup>e<sub>i</sub></sup>
+     */
     public static @NotNull Iterable<Pair<Integer, Integer>> compactPrimeFactors(int n) {
         return countAdjacent(primeFactors(n));
     }
 
+    /**
+     * Returns the prime factors of number. The output format is a list of pairs, where the first elements are the
+     * primes and the second elements are the powers that the corresponding primes are raised to.
+     *
+     * <ul>
+     *  <li>{@code n} must be positive.</li>
+     *  <li>The result is a finite {@code Iterable} of pairs, where the first elements are distinct primes in
+     *  increasing order and the second elements are all positive.</li>
+     * </ul>
+     *
+     * @param n a number
+     * @return [p<sub>1</sub>, e<sub>1</sub>, p<sub>2</sub>, e<sub>2</sub>, ..., p<sub>n</sub>, e<sub>n</sub>], where
+     * p are distinct primes in ascending order and {@code n}=Πp<sub>i</sub><sup>e<sub>i</sub></sup>
+     */
     public static @NotNull Iterable<Pair<BigInteger, Integer>> compactPrimeFactors(@NotNull BigInteger n) {
         return countAdjacent(primeFactors(n));
     }
 
+    /**
+     * Returns the factors of a number in ascending order.
+     *
+     * <ul>
+     *  <li>{@code n} must be positive.</li>
+     *  <li>The result is a finite {@code List} of {@code int}s in ascending order.</li>
+     * </ul>
+     *
+     * @param n a number
+     * @return the factors of {@code n}
+     */
     public static @NotNull List<Integer> factors(int n) {
-        List<Pair<Integer, Integer>> cpf = toList(compactPrimeFactors(n));
+        List<Pair<Integer, Integer>> primeFactors = toList(compactPrimeFactors(n));
         Iterable<List<Integer>> possibleExponents = ExhaustiveProvider.INSTANCE.cartesianProduct(
-                toList(map(p -> toList(range(0, p.b)), cpf))
+                toList(map(p -> toList(range(0, p.b)), primeFactors))
         );
         Function<List<Integer>, Integer> f = exponents -> productInteger(
-                zipWith((x, y) -> BigInteger.valueOf(x).pow(y).intValueExact(), map(q -> q.a, cpf), exponents)
+                zipWith(MathUtils::pow, map(q -> q.a, primeFactors), exponents)
         );
         return sort(map(f, possibleExponents));
     }
 
+    /**
+     * Returns the factors of a number in ascending order.
+     *
+     * <ul>
+     *  <li>{@code n} must be positive.</li>
+     *  <li>The result is a finite {@code List} of {@code BigInteger}s in ascending order.</li>
+     * </ul>
+     *
+     * @param n a number
+     * @return the factors of {@code n}
+     */
     public static @NotNull List<BigInteger> factors(@NotNull BigInteger n) {
-        List<Pair<BigInteger, Integer>> cpf = toList(compactPrimeFactors(n));
+        List<Pair<BigInteger, Integer>> primeFactors = toList(compactPrimeFactors(n));
         Iterable<List<Integer>> possibleExponents = ExhaustiveProvider.INSTANCE.cartesianProduct(
-                toList(map(p -> toList(range(0, p.b)), cpf))
+                toList(map(p -> toList(range(0, p.b)), primeFactors))
         );
         Function<List<Integer>, BigInteger> f = exponents -> productBigInteger(
-                zipWith(BigInteger::pow, map(q -> q.a, cpf), exponents)
+                zipWith(BigInteger::pow, map(q -> q.a, primeFactors), exponents)
         );
         return sort(map(f, possibleExponents));
     }
 
+    /**
+     * Returns all prime {@code int}s in ascending order.
+     *
+     * Length is 105,097,565
+     *
+     * @return prime {@code int}s
+     */
     public static @NotNull Iterable<Integer> intPrimes() {
         @SuppressWarnings("ConstantConditions")
         int start = (PRIME_SIEVE_SIZE & 1) == 0 ? PRIME_SIEVE_SIZE + 1 : PRIME_SIEVE_SIZE;
@@ -624,6 +974,13 @@ public final class MathUtils {
         );
     }
 
+    /**
+     * Returns all prime {@code BigInteger}s in ascending order.
+     *
+     * Length is infinite
+     *
+     * @return prime {@code BigInteger}s
+     */
     public static @NotNull Iterable<BigInteger> primes() {
         Iterable<BigInteger> candidates = concatMap(
                 i -> {
@@ -636,7 +993,192 @@ public final class MathUtils {
         return concat(map(i -> BigInteger.valueOf(i), intPrimes()), filterInfinite(MathUtils::isPrime, candidates));
     }
 
+    /**
+     * Returns the largest number that, when raised to the {@code p}th power, divides {@code n}.
+     *
+     * <ul>
+     *  <li>{@code p} must be positive.</li>
+     *  <li>{@code n} must be positive.</li>
+     *  <li>The result is positive.</li>
+     * </ul>
+     *
+     * @param p a power
+     * @param n a number
+     * @return the largest m such that m<sup>{@code p}</sup>|{@code n}
+     */
+    public static int largestPerfectPowerFactor(int p, int n) {
+        if (p < 1) {
+            throw new IllegalArgumentException("p must be positive. Invalid p: " + p);
+        }
+        if (n < 1) {
+            throw new IllegalArgumentException("n must be positive. Invalid n: " + n);
+        }
+        return p == 1 ? n : productInteger(map(q -> pow(q.a, q.b / p), compactPrimeFactors(n)));
+    }
+
+    /**
+     * Returns the largest number that, when raised to the {@code p}th power, divides {@code n}.
+     *
+     * <ul>
+     *  <li>{@code p} must be positive.</li>
+     *  <li>{@code n} must be positive.</li>
+     *  <li>The result is positive.</li>
+     * </ul>
+     *
+     * @param p a power
+     * @param n a number
+     * @return the largest m such that m<sup>{@code p}</sup>|{@code n}
+     */
     public static @NotNull BigInteger largestPerfectPowerFactor(int p, @NotNull BigInteger n) {
-        return productBigInteger(map(q -> q.a.pow(q.b / p), compactPrimeFactors(n)));
+        if (p < 1) {
+            throw new IllegalArgumentException("p must be positive. Invalid p: " + p);
+        }
+        if (n.signum() != 1) {
+            throw new IllegalArgumentException("n must be positive. Invalid n: " + n);
+        }
+        return p == 1 ? n : productBigInteger(map(q -> q.a.pow(q.b / p), compactPrimeFactors(n)));
+    }
+
+    /**
+     * Returns Euler's totient function of {@code n}, or the number of positive integers less than or equal to
+     * {@code n} that are relatively prime to {@code n}.
+     *
+     * <ul>
+     *  <li>{@code n} must be positive.</li>
+     *  <li>The result is positive.</li>
+     * </ul>
+     *
+     * @param n a number
+     * @return φ({@code n})
+     */
+    @SuppressWarnings("JavaDoc")
+    public static int totient(int n) {
+        return productInteger(map(p -> pow(p.a, p.b - 1) * (p.a - 1), compactPrimeFactors(n)));
+    }
+
+    /**
+     * Returns Euler's totient function of {@code n}, or the number of positive integers less than or equal to
+     * {@code n} that are relatively prime to {@code n}.
+     *
+     * <ul>
+     *  <li>{@code n} must be positive.</li>
+     *  <li>The result is positive.</li>
+     * </ul>
+     *
+     * @param n a number
+     * @return φ({@code n})
+     */
+    @SuppressWarnings("JavaDoc")
+    public static @NotNull BigInteger totient(@NotNull BigInteger n) {
+        return productBigInteger(
+                map(p -> p.a.pow(p.b - 1).multiply(p.a.subtract(BigInteger.ONE)), compactPrimeFactors(n))
+        );
+    }
+
+    /**
+     * Returns the inverse of Euler's totient function, or every number whose totient is a given number.
+     *
+     * <ul>
+     *  <li>{@code n} must be positive.</li>
+     *  <li>The result is a {@code List} of distinct positive {@code BigInteger}s in ascending order.</li>
+     * </ul>
+     *
+     * @param n a totient
+     * @return φ<sup>–1</sup>({@code n})
+     */
+    public static @NotNull List<BigInteger> inverseTotient(@NotNull BigInteger n) {
+        if (n.signum() != 1) {
+            throw new IllegalArgumentException();
+        }
+        return sort(inverseTotientHelper(n, new HashMap<>(), new HashMap<>()));
+    }
+
+    /**
+     * A helper function for {@link MathUtils#inverseTotient(BigInteger)}. Since the inverse totient algorithm involves
+     * several recursive calls to itself and several calls to {@link MathUtils#smallestPrimeFactor(BigInteger)}, we get
+     * a considerable speedup by memoizing these calls.
+     *
+     * <ul>
+     *  <li>{@code n} must be positive.</li>
+     *  <li>Every entry in {@code cache} must be of the form n -> φ<sup>–1</sup>({@code n}).</li>
+     *  <li>Every entry in {@code spfCache} must be of the form n -> smallest prime factor of n.</li>
+     *  <li>The result is a {@code List} of distinct positive {@code BigInteger}s in ascending order.</li>
+     * </ul>
+     *
+     * @param n a totient
+     * @param cache a cache of inverse totient results
+     * @param spfCache a cache of smallest prime factor results
+     * @return φ<sup>–1</sup>({@code n})
+     */
+    private static @NotNull List<BigInteger> inverseTotientHelper(
+            @NotNull BigInteger n,
+            @NotNull Map<BigInteger, List<BigInteger>> cache,
+            @NotNull Map<BigInteger, BigInteger> spfCache
+    ) {
+        List<BigInteger> result = cache.get(n);
+        if (result != null) return result;
+        if (n.equals(BigInteger.ONE)) {
+            result = Arrays.asList(BigInteger.ONE, IntegerUtils.TWO);
+            cache.put(n, result);
+            return result;
+        }
+        if (n.and(BigInteger.ONE).equals(BigInteger.ONE)) {
+            result = Collections.emptyList();
+            cache.put(n, result);
+            return result;
+        }
+
+        ArrayList<BigInteger> elements = new ArrayList<>();
+        for (BigInteger factor : factors(n)) {
+            if (factor.equals(BigInteger.ONE)) continue;
+            BigInteger p = factor.add(BigInteger.ONE);
+            if (isPrime(p)) {
+                BigInteger pPower = p;
+                BigInteger x = n.divide(factor);
+                boolean first = true;
+                while (first || x.mod(p).equals(BigInteger.ZERO)) {
+                    if (first) {
+                        first = false;
+                    } else {
+                        x = x.divide(p);
+                    }
+                    if (x.equals(BigInteger.ONE) || x.and(BigInteger.ONE).equals(BigInteger.ZERO)) {
+                        for (BigInteger y : inverseTotientHelper(x, cache, spfCache)) {
+                            if (y.equals(BigInteger.ONE)) {
+                                elements.add(pPower);
+                            } else {
+                                BigInteger spf = spfCache.get(y);
+                                if (spf == null) {
+                                    spf = smallestPrimeFactor(y);
+                                    spfCache.put(y, spf);
+                                }
+                                if (gt(spf, p)) {
+                                    elements.add(y.multiply(pPower));
+                                }
+                            }
+                        }
+                    }
+                    pPower = pPower.multiply(p);
+                }
+            }
+        }
+
+        List<BigInteger> doubles = toList(map(e -> e.shiftLeft(1), elements));
+        elements.addAll(doubles);
+
+        BigInteger x = n;
+        int limit = n.getLowestSetBit();
+        for (int d = 0; d < limit; d++) {
+            x = x.shiftRight(1);
+            if (x.equals(BigInteger.ONE) || x.and(BigInteger.ONE).equals(BigInteger.ZERO)) {
+                for (BigInteger y : inverseTotientHelper(x, cache, spfCache)) {
+                    if (y.and(BigInteger.ONE).equals(BigInteger.ONE)) {
+                        elements.add(y.shiftLeft(d + 2));
+                    }
+                }
+            }
+        }
+        cache.put(n, elements);
+        return elements;
     }
 }

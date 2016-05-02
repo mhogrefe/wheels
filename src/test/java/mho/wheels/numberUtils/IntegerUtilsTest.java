@@ -72,12 +72,12 @@ public class IntegerUtilsTest {
     }
 
     private static void isPowerOfTwo_BigInteger_helper(@NotNull String input, boolean output) {
-        aeq(isPowerOfTwo(Readers.readBigInteger(input).get()), output);
+        aeq(isPowerOfTwo(Readers.readBigIntegerStrict(input).get()), output);
     }
 
     private static void isPowerOfTwo_BigInteger_fail_helper(@NotNull String input) {
         try {
-            isPowerOfTwo(Readers.readBigInteger(input).get());
+            isPowerOfTwo(Readers.readBigIntegerStrict(input).get());
             fail();
         } catch (ArithmeticException ignored) {}
     }
@@ -153,12 +153,12 @@ public class IntegerUtilsTest {
     }
 
     private static void ceilingLog2_BigInteger_helper(@NotNull String input, int output) {
-        aeq(ceilingLog2(Readers.readBigInteger(input).get()), output);
+        aeq(ceilingLog2(Readers.readBigIntegerStrict(input).get()), output);
     }
 
     private static void ceilingLog2_BigInteger_fail_helper(@NotNull String input) {
         try {
-            ceilingLog2(Readers.readBigInteger(input).get());
+            ceilingLog2(Readers.readBigIntegerStrict(input).get());
             fail();
         } catch (ArithmeticException ignored) {}
     }
@@ -200,12 +200,12 @@ public class IntegerUtilsTest {
     }
 
     private static void bits_BigInteger_helper(@NotNull String input, @NotNull String output) {
-        aeq(bits(Readers.readBigInteger(input).get()), output);
+        aeq(bits(Readers.readBigIntegerStrict(input).get()), output);
     }
 
     private static void bits_BigInteger_fail_helper(@NotNull String input) {
         try {
-            bits(Readers.readBigInteger(input).get());
+            bits(Readers.readBigIntegerStrict(input).get());
             fail();
         } catch (ArithmeticException ignored) {}
     }
@@ -247,12 +247,12 @@ public class IntegerUtilsTest {
     }
 
     private static void bitsPadded_int_BigInteger_helper(int length, @NotNull String n, @NotNull String output) {
-        aeq(bitsPadded(length, Readers.readBigInteger(n).get()), output);
+        aeq(bitsPadded(length, Readers.readBigIntegerStrict(n).get()), output);
     }
 
     private static void bitsPadded_int_BigInteger_fail_helper(int length, @NotNull String n) {
         try {
-            bitsPadded(length, Readers.readBigInteger(n).get());
+            bitsPadded(length, Readers.readBigIntegerStrict(n).get());
             fail();
         } catch (ArithmeticException | IllegalArgumentException ignored) {}
     }
@@ -294,12 +294,12 @@ public class IntegerUtilsTest {
     }
 
     private static void bigEndianBits_BigInteger_helper(@NotNull String input, @NotNull String output) {
-        aeq(bigEndianBits(Readers.readBigInteger(input).get()), output);
+        aeq(bigEndianBits(Readers.readBigIntegerStrict(input).get()), output);
     }
 
     private static void bigEndianBits_BigInteger_fail_helper(@NotNull String input) {
         try {
-            bigEndianBits(Readers.readBigInteger(input).get());
+            bigEndianBits(Readers.readBigIntegerStrict(input).get());
             fail();
         } catch (ArithmeticException ignored) {}
     }
@@ -345,12 +345,12 @@ public class IntegerUtilsTest {
             @NotNull String n,
             @NotNull String output
     ) {
-        aeq(bigEndianBitsPadded(length, Readers.readBigInteger(n).get()), output);
+        aeq(bigEndianBitsPadded(length, Readers.readBigIntegerStrict(n).get()), output);
     }
 
     private static void bigEndianBitsPadded_int_BigInteger_fail_helper(int length, @NotNull String n) {
         try {
-            bigEndianBitsPadded(length, Readers.readBigInteger(n).get());
+            bigEndianBitsPadded(length, Readers.readBigIntegerStrict(n).get());
             fail();
         } catch (ArithmeticException | IllegalArgumentException ignored) {}
     }
@@ -461,12 +461,12 @@ public class IntegerUtilsTest {
             @NotNull String n,
             @NotNull String output
     ) {
-        aeq(digits(Readers.readBigInteger(base).get(), Readers.readBigInteger(n).get()), output);
+        aeq(digits(Readers.readBigIntegerStrict(base).get(), Readers.readBigIntegerStrict(n).get()), output);
     }
 
     private static void digits_BigInteger_BigInteger_fail_helper(@NotNull String base, @NotNull String n) {
         try {
-            digits(Readers.readBigInteger(base).get(), Readers.readBigInteger(n).get());
+            digits(Readers.readBigIntegerStrict(base).get(), Readers.readBigIntegerStrict(n).get());
             fail();
         } catch (IllegalArgumentException | ArithmeticException ignored) {}
     }
@@ -578,7 +578,10 @@ public class IntegerUtilsTest {
             @NotNull String n,
             @NotNull String output
     ) {
-        aeq(digitsPadded(length, Readers.readBigInteger(base).get(), Readers.readBigInteger(n).get()), output);
+        aeq(
+                digitsPadded(length, Readers.readBigIntegerStrict(base).get(), Readers.readBigIntegerStrict(n).get()),
+                output
+        );
     }
 
     private static void digitsPadded_int_BigInteger_BigInteger_fail_helper(
@@ -587,7 +590,7 @@ public class IntegerUtilsTest {
             @NotNull String n
     ) {
         try {
-            digitsPadded(length, Readers.readBigInteger(base).get(), Readers.readBigInteger(n).get());
+            digitsPadded(length, Readers.readBigIntegerStrict(base).get(), Readers.readBigIntegerStrict(n).get());
             fail();
         } catch (IllegalArgumentException | ArithmeticException ignored) {}
     }
@@ -698,12 +701,12 @@ public class IntegerUtilsTest {
             @NotNull String n,
             @NotNull String output
     ) {
-        aeq(bigEndianDigits(Readers.readBigInteger(base).get(), Readers.readBigInteger(n).get()), output);
+        aeq(bigEndianDigits(Readers.readBigIntegerStrict(base).get(), Readers.readBigIntegerStrict(n).get()), output);
     }
 
     private static void bigEndianDigits_BigInteger_BigInteger_fail_helper(@NotNull String base, @NotNull String n) {
         try {
-            bigEndianDigits(Readers.readBigInteger(base).get(), Readers.readBigInteger(n).get());
+            bigEndianDigits(Readers.readBigIntegerStrict(base).get(), Readers.readBigIntegerStrict(n).get());
             fail();
         } catch (IllegalArgumentException | ArithmeticException ignored) {}
     }
@@ -816,7 +819,11 @@ public class IntegerUtilsTest {
             @NotNull String output
     ) {
         aeq(
-                bigEndianDigitsPadded(length, Readers.readBigInteger(base).get(), Readers.readBigInteger(n).get()),
+                bigEndianDigitsPadded(
+                        length,
+                        Readers.readBigIntegerStrict(base).get(),
+                        Readers.readBigIntegerStrict(n).get()
+                ),
                 output
         );
     }
@@ -827,7 +834,10 @@ public class IntegerUtilsTest {
             @NotNull String n
     ) {
         try {
-            bigEndianDigitsPadded(length, Readers.readBigInteger(base).get(), Readers.readBigInteger(n).get());
+            bigEndianDigitsPadded(
+                    length,
+                    Readers.readBigIntegerStrict(base).get(), Readers.readBigIntegerStrict(n).get()
+            );
             fail();
         } catch (IllegalArgumentException | ArithmeticException ignored) {}
     }
@@ -926,7 +936,7 @@ public class IntegerUtilsTest {
             @NotNull String digits,
             @NotNull String output
     ) {
-        aeq(fromDigits(Readers.readBigInteger(base).get(), readBigIntegerList(digits)), output);
+        aeq(fromDigits(Readers.readBigIntegerStrict(base).get(), readBigIntegerList(digits)), output);
     }
 
     private static void fromDigits_BigInteger_Iterable_BigInteger_fail_helper(
@@ -934,7 +944,7 @@ public class IntegerUtilsTest {
             @NotNull String digits
     ) {
         try {
-            fromDigits(Readers.readBigInteger(base).get(), readBigIntegerListWithNulls(digits));
+            fromDigits(Readers.readBigIntegerStrict(base).get(), readBigIntegerListWithNulls(digits));
             fail();
         } catch (IllegalArgumentException | NullPointerException ignored) {}
     }
@@ -990,7 +1000,7 @@ public class IntegerUtilsTest {
             @NotNull String digits,
             @NotNull String output
     ) {
-        aeq(fromBigEndianDigits(Readers.readBigInteger(base).get(), readBigIntegerList(digits)), output);
+        aeq(fromBigEndianDigits(Readers.readBigIntegerStrict(base).get(), readBigIntegerList(digits)), output);
     }
 
     private static void fromBigEndianDigits_BigInteger_Iterable_BigInteger_fail_helper(
@@ -998,7 +1008,7 @@ public class IntegerUtilsTest {
             @NotNull String digits
     ) {
         try {
-            fromBigEndianDigits(Readers.readBigInteger(base).get(), readBigIntegerListWithNulls(digits));
+            fromBigEndianDigits(Readers.readBigIntegerStrict(base).get(), readBigIntegerListWithNulls(digits));
             fail();
         } catch (IllegalArgumentException | NullPointerException ignored) {}
     }
@@ -1111,12 +1121,12 @@ public class IntegerUtilsTest {
             @NotNull String n,
             @NotNull String output
     ) {
-        aeq(toStringBase(Readers.readBigInteger(base).get(), Readers.readBigInteger(n).get()), output);
+        aeq(toStringBase(Readers.readBigIntegerStrict(base).get(), Readers.readBigIntegerStrict(n).get()), output);
     }
 
     private static void toStringBase_BigInteger_BigInteger_fail_helper(@NotNull String base, @NotNull String n) {
         try {
-            toStringBase(Readers.readBigInteger(base).get(), Readers.readBigInteger(n).get());
+            toStringBase(Readers.readBigIntegerStrict(base).get(), Readers.readBigIntegerStrict(n).get());
             fail();
         } catch (IllegalArgumentException ignored) {}
     }
@@ -1278,12 +1288,12 @@ public class IntegerUtilsTest {
             @NotNull String s,
             @NotNull String output
     ) {
-        aeq(fromStringBase(Readers.readBigInteger(base).get(), s), output);
+        aeq(fromStringBase(Readers.readBigIntegerStrict(base).get(), s), output);
     }
 
     private static void fromStringBase_BigInteger_String_fail_helper(@NotNull String base, @NotNull String s) {
         try {
-            fromStringBase(Readers.readBigInteger(base).get(), s);
+            fromStringBase(Readers.readBigIntegerStrict(base).get(), s);
             fail();
         } catch (IllegalArgumentException ignored) {}
     }
@@ -1397,12 +1407,12 @@ public class IntegerUtilsTest {
     }
 
     private static void logarithmicMux_helper(@NotNull String x, @NotNull String y, @NotNull String output) {
-        aeq(logarithmicMux(Readers.readBigInteger(x).get(), Readers.readBigInteger(y).get()), output);
+        aeq(logarithmicMux(Readers.readBigIntegerStrict(x).get(), Readers.readBigIntegerStrict(y).get()), output);
     }
 
     private static void logarithmicMux_fail_helper(@NotNull String x, @NotNull String y) {
         try {
-            logarithmicMux(Readers.readBigInteger(x).get(), Readers.readBigInteger(y).get());
+            logarithmicMux(Readers.readBigIntegerStrict(x).get(), Readers.readBigIntegerStrict(y).get());
             fail();
         } catch (ArithmeticException ignored) {}
     }
@@ -1422,14 +1432,14 @@ public class IntegerUtilsTest {
     }
 
     private static void logarithmicDemux_helper(@NotNull String n, @NotNull String x, @NotNull String y) {
-        Pair<BigInteger, BigInteger> p = logarithmicDemux(Readers.readBigInteger(n).get());
+        Pair<BigInteger, BigInteger> p = logarithmicDemux(Readers.readBigIntegerStrict(n).get());
         aeq(p.a, x);
         aeq(p.b, y);
     }
 
     private static void logarithmicDemux_fail_helper(@NotNull String n) {
         try {
-            logarithmicDemux(Readers.readBigInteger(n).get());
+            logarithmicDemux(Readers.readBigIntegerStrict(n).get());
             fail();
         } catch (ArithmeticException ignored) {}
     }
@@ -1447,12 +1457,12 @@ public class IntegerUtilsTest {
     }
 
     private static void squareRootMux_helper(@NotNull String x, @NotNull String y, @NotNull String output) {
-        aeq(squareRootMux(Readers.readBigInteger(x).get(), Readers.readBigInteger(y).get()), output);
+        aeq(squareRootMux(Readers.readBigIntegerStrict(x).get(), Readers.readBigIntegerStrict(y).get()), output);
     }
 
     private static void squareRootMux_fail_helper(@NotNull String x, @NotNull String y) {
         try {
-            squareRootMux(Readers.readBigInteger(x).get(), Readers.readBigInteger(y).get());
+            squareRootMux(Readers.readBigIntegerStrict(x).get(), Readers.readBigIntegerStrict(y).get());
             fail();
         } catch (ArithmeticException ignored) {}
     }
@@ -1471,14 +1481,14 @@ public class IntegerUtilsTest {
     }
 
     private static void squareRootDemux_helper(@NotNull String n, @NotNull String x, @NotNull String y) {
-        Pair<BigInteger, BigInteger> p = squareRootDemux(Readers.readBigInteger(n).get());
+        Pair<BigInteger, BigInteger> p = squareRootDemux(Readers.readBigIntegerStrict(n).get());
         aeq(p.a, x);
         aeq(p.b, y);
     }
 
     private static void squareRootDemux_fail_helper(@NotNull String n) {
         try {
-            squareRootDemux(Readers.readBigInteger(n).get());
+            squareRootDemux(Readers.readBigIntegerStrict(n).get());
             fail();
         } catch (ArithmeticException ignored) {}
     }
@@ -1528,12 +1538,12 @@ public class IntegerUtilsTest {
     }
 
     private static void demux_helper(int size, @NotNull String n, @NotNull String output) {
-        aeq(demux(size, Readers.readBigInteger(n).get()), output);
+        aeq(demux(size, Readers.readBigIntegerStrict(n).get()), output);
     }
 
     private static void demux_fail_helper(int size, @NotNull String n) {
         try {
-            demux(size, Readers.readBigInteger(n).get());
+            demux(size, Readers.readBigIntegerStrict(n).get());
             fail();
         } catch (ArithmeticException ignored) {}
     }
@@ -1561,26 +1571,26 @@ public class IntegerUtilsTest {
     }
 
     private static @NotNull List<Boolean> readBooleanList(@NotNull String s) {
-        return Readers.readList(Readers::readBoolean).apply(s).get();
+        return Readers.readListStrict(Readers::readBooleanStrict).apply(s).get();
     }
 
     private static @NotNull List<Boolean> readBooleanListWithNulls(@NotNull String s) {
-        return Readers.readListWithNulls(Readers::readBoolean).apply(s).get();
+        return Readers.readListWithNullsStrict(Readers::readBooleanStrict).apply(s).get();
     }
 
     private static @NotNull List<Integer> readIntegerList(@NotNull String s) {
-        return Readers.readList(Readers::readInteger).apply(s).get();
+        return Readers.readListStrict(Readers::readIntegerStrict).apply(s).get();
     }
 
     private static @NotNull List<Integer> readIntegerListWithNulls(@NotNull String s) {
-        return Readers.readListWithNulls(Readers::readInteger).apply(s).get();
+        return Readers.readListWithNullsStrict(Readers::readIntegerStrict).apply(s).get();
     }
 
     private static @NotNull List<BigInteger> readBigIntegerList(@NotNull String s) {
-        return Readers.readList(Readers::readBigInteger).apply(s).get();
+        return Readers.readListStrict(Readers::readBigIntegerStrict).apply(s).get();
     }
 
     private static @NotNull List<BigInteger> readBigIntegerListWithNulls(@NotNull String s) {
-        return Readers.readListWithNulls(Readers::readBigInteger).apply(s).get();
+        return Readers.readListWithNullsStrict(Readers::readBigIntegerStrict).apply(s).get();
     }
 }

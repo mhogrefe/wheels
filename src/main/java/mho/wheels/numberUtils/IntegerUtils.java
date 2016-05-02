@@ -1039,7 +1039,7 @@ public class IntegerUtils {
             digits = toList(
                     map(
                             digit -> {
-                                Optional<Integer> oi = Readers.readInteger(digit);
+                                Optional<Integer> oi = Readers.readIntegerStrict(digit);
                                 if (!oi.isPresent()) {
                                     throw new IllegalArgumentException("Improperly-formatted digit: " + digit);
                                 }
@@ -1102,7 +1102,7 @@ public class IntegerUtils {
             digits = toList(
                     map(
                             digit -> {
-                                Optional<BigInteger> oi = Readers.readBigInteger(digit);
+                                Optional<BigInteger> oi = Readers.readBigIntegerStrict(digit);
                                 if (!oi.isPresent()) {
                                     throw new IllegalArgumentException("Improperly-formatted digit: " + digit);
                                 }

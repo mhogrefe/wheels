@@ -148,7 +148,7 @@ public class NullableOptionalProperties extends TestProperties {
                 LIMIT,
                 NULLABLE_OPTIONAL_INTEGER_CHARS,
                 P.nullableOptionals(P.withNull(P.integers())),
-                Readers.readNullableOptional(Readers.readWithNulls(Readers::readInteger))
+                Readers.readNullableOptionalStrict(Readers.readWithNullsStrict(Readers::readIntegerStrict))
         );
     }
 }

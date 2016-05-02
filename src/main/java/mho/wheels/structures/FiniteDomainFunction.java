@@ -26,8 +26,9 @@ public class FiniteDomainFunction<A, B> implements Function<A, B> {
 
     @Override
     public B apply(@Nullable A a) {
-        if (!map.containsKey(a))
+        if (!map.containsKey(a)) {
             throw new IllegalArgumentException(Objects.toString(a));
+        }
         return map.get(a);
     }
 

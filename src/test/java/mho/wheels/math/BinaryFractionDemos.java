@@ -265,18 +265,6 @@ public strictfp class BinaryFractionDemos extends Demos {
         }
     }
 
-    private void demoFindIn() {
-        for (String s : take(LIMIT, P.strings())) {
-            System.out.println("findIn(" + nicePrint(s) + ") = " + findIn(s));
-        }
-    }
-
-    private void demoFindIn_targeted() {
-        for (String s : take(LIMIT, P.strings(BINARY_FRACTION_CHARS))) {
-            System.out.println("findIn(" + s + ") = " + findIn(s));
-        }
-    }
-
     private void demoToString() {
         for (BinaryFraction bf : take(LIMIT, P.binaryFractions())) {
             System.out.println(bf);
