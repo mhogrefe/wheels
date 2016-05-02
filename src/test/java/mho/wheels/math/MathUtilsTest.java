@@ -9,10 +9,9 @@ import java.math.BigInteger;
 import java.util.List;
 import java.util.function.Function;
 
-import static mho.wheels.iterables.IterableUtils.*;
+import static mho.wheels.iterables.IterableUtils.toList;
 import static mho.wheels.math.MathUtils.*;
 import static mho.wheels.testing.Testing.*;
-import static mho.wheels.testing.Testing.testNoRemove;
 import static org.junit.Assert.fail;
 
 public class MathUtilsTest {

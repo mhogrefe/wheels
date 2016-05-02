@@ -9,8 +9,9 @@ import java.util.Optional;
 import java.util.function.Function;
 
 import static mho.wheels.io.Readers.*;
-import static org.junit.Assert.*;
-import static mho.wheels.testing.Testing.*;
+import static mho.wheels.testing.Testing.aeq;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.fail;
 
 public class ReadersTest {
     @Test

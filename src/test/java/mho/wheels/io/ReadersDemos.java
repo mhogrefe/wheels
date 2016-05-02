@@ -12,7 +12,7 @@ import java.util.function.Function;
 
 import static mho.wheels.io.Readers.*;
 import static mho.wheels.iterables.IterableUtils.*;
-import static mho.wheels.testing.Testing.*;
+import static mho.wheels.testing.Testing.nicePrint;
 
 @SuppressWarnings("UnusedDeclaration")
 public class ReadersDemos extends Demos {

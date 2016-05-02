@@ -1,8 +1,5 @@
 package mho.wheels.iterables;
 
-import mho.wheels.iterables.IterableProvider;
-import mho.wheels.iterables.IterableUtils;
-import mho.wheels.iterables.RandomProvider;
 import mho.wheels.math.BinaryFraction;
 import mho.wheels.random.IsaacPRNG;
 import mho.wheels.structures.FiniteDomainFunction;

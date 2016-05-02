@@ -12,10 +12,9 @@ import java.util.function.Function;
 
 import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.math.MathUtils.*;
-import static mho.wheels.ordering.Ordering.*;
-import static mho.wheels.testing.Testing.LARGE_LIMIT;
-import static mho.wheels.testing.Testing.MEDIUM_LIMIT;
-import static mho.wheels.testing.Testing.SMALL_LIMIT;
+import static mho.wheels.ordering.Ordering.ge;
+import static mho.wheels.ordering.Ordering.le;
+import static mho.wheels.testing.Testing.*;
 
 @SuppressWarnings("UnusedDeclaration")
 public class MathUtilsDemos extends Demos {
