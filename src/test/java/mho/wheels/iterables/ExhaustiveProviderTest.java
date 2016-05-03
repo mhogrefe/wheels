@@ -6036,90 +6036,131 @@ public strictfp class ExhaustiveProviderTest {
         stringSubsetsWithChar_char_helper('#', "ExhaustiveProvider_subsetsWithChar_char_ii");
     }
 
-    //todo continue cleanup
+    private static void listsWithSublistsHelper(
+            @NotNull Iterable<List<Integer>> sublists,
+            @NotNull Iterable<Integer> xs,
+            @NotNull String output
+    ) {
+        simpleProviderHelper(EP.listsWithSublists(sublists, xs), output);
+    }
 
-    @Test
-    public void testListsWithSublists() {
-        simpleProviderHelper(EP.listsWithSublists(Collections.emptyList(), Collections.singletonList(0)),
-                "ExhaustiveProvider_listsWithSublists_i");
-        simpleProviderHelper(EP.listsWithSublists(Collections.emptyList(), Collections.emptyList()),
-                "ExhaustiveProvider_listsWithSublists_ii");
+    private static void listsWithSublistsHelper(@NotNull String sublists, @NotNull String xs, @NotNull String output) {
         simpleProviderHelper(
-                EP.listsWithSublists(Collections.singletonList(Collections.emptyList()), Collections.emptyList()),
-                "ExhaustiveProvider_listsWithSublists_iii"
+                EP.listsWithSublists(readIntegerListWithNullsLists(sublists), readIntegerList(xs)),
+                output
         );
-        simpleProviderHelper(
-                EP.listsWithSublists(Collections.singletonList(Collections.emptyList()), Collections.singletonList(0)),
-                "ExhaustiveProvider_listsWithSublists_iv"
-        );
-        simpleProviderHelper(
-                EP.listsWithSublists(Collections.singletonList(Arrays.asList(1, 0, 1)), Collections.singletonList(0)),
-                "ExhaustiveProvider_listsWithSublists_v"
-        );
-        simpleProviderHelper(
-                EP.listsWithSublists(Collections.singletonList(Arrays.asList(1, 0, 1)), EP.positiveIntegers()),
-                "ExhaustiveProvider_listsWithSublists_vi"
-        );
-        simpleProviderHelper(
-                EP.listsWithSublists(
-                        map(i -> Arrays.asList(i, i), EP.positiveIntegers()),
-                        Collections.singletonList(0)
-                ),
-                "ExhaustiveProvider_listsWithSublists_vii"
-        );
-        simpleProviderHelper(
-                EP.listsWithSublists(map(i -> Arrays.asList(i, i), EP.positiveIntegers()), EP.positiveIntegers()),
-                "ExhaustiveProvider_listsWithSublists_viii"
-        );
+    }
+
+    private static void listsWithSublists_fail_helper(@NotNull String sublists, @NotNull String xs) {
         try {
-            toList(EP.listsWithSublists(Collections.singletonList(null), Collections.singletonList(0)));
+            EP.listsWithSublists(readIntegerListWithNullsListsWithNulls(sublists), readIntegerListWithNulls(xs));
             fail();
         } catch (NullPointerException ignored) {}
     }
 
     @Test
+    public void testListsWithSublists() {
+        listsWithSublistsHelper("[]", "[0]", "ExhaustiveProvider_listsWithSublists_i");
+        listsWithSublistsHelper("[]", "[]", "ExhaustiveProvider_listsWithSublists_ii");
+        listsWithSublistsHelper("[[]]", "[]", "ExhaustiveProvider_listsWithSublists_iii");
+        listsWithSublistsHelper("[[]]", "[0]", "ExhaustiveProvider_listsWithSublists_iv");
+        listsWithSublistsHelper("[[1, 0, 1]]", "[0]", "ExhaustiveProvider_listsWithSublists_v");
+        listsWithSublistsHelper(Collections.singletonList(Arrays.asList(1, 0, 1)), EP.positiveIntegers(),
+                "ExhaustiveProvider_listsWithSublists_vi");
+        listsWithSublistsHelper(map(i -> Arrays.asList(i, i), EP.positiveIntegers()), Collections.singletonList(0),
+                "ExhaustiveProvider_listsWithSublists_vii");
+        listsWithSublistsHelper(map(i -> Arrays.asList(i, i), EP.positiveIntegers()), EP.positiveIntegers(),
+                "ExhaustiveProvider_listsWithSublists_viii");
+
+        listsWithSublists_fail_helper("[null]", "[0]");
+    }
+
+    private static void stringsWithSubstrings_Iterable_String_String_helper(
+            @NotNull Iterable<String> substrings,
+            @NotNull String s,
+            @NotNull String output
+    ) {
+        simpleProviderHelper(EP.stringsWithSubstrings(substrings, s), output);
+    }
+
+    private static void stringsWithSubstrings_Iterable_String_String_helper(
+            @NotNull String substrings,
+            @NotNull String s,
+            @NotNull String output
+    ) {
+        simpleProviderHelper(EP.stringsWithSubstrings(readStringList(substrings), s), output);
+    }
+
+    private static void stringsWithSubstrings_Iterable_String_String_fail_helper(
+            @NotNull Iterable<String> substrings,
+            @NotNull String s
+    ) {
+        try {
+            EP.stringsWithSubstrings(substrings, s);
+            fail();
+        } catch (NullPointerException | IllegalArgumentException ignored) {}
+    }
+
+    @Test
     public void testStringsWithSubstrings_Iterable_String_String() {
-        simpleProviderHelper(EP.stringsWithSubstrings(Collections.emptyList(), ""),
+        stringsWithSubstrings_Iterable_String_String_helper("[]", "",
                 "ExhaustiveProvider_stringsWithSubstrings_Iterable_String_String_i");
-        simpleProviderHelper(EP.stringsWithSubstrings(Collections.emptyList(), charsToString(range('a', 'z'))),
+        stringsWithSubstrings_Iterable_String_String_helper("[]", charsToString(range('a', 'z')),
                 "ExhaustiveProvider_stringsWithSubstrings_Iterable_String_String_ii");
-        simpleProviderHelper(EP.stringsWithSubstrings(Collections.singletonList(""), ""),
+        stringsWithSubstrings_Iterable_String_String_helper(Collections.singletonList(""), "",
                 "ExhaustiveProvider_stringsWithSubstrings_Iterable_String_String_iii");
-        simpleProviderHelper(
-                EP.stringsWithSubstrings(Collections.singletonList(""), charsToString(range('a', 'z'))),
+        stringsWithSubstrings_Iterable_String_String_helper(
+                Collections.singletonList(""),
+                charsToString(range('a', 'z')),
                 "ExhaustiveProvider_stringsWithSubstrings_Iterable_String_String_iv"
         );
-        simpleProviderHelper(
-                EP.stringsWithSubstrings(Collections.singletonList("cat"), charsToString(range('a', 'z'))),
+        stringsWithSubstrings_Iterable_String_String_helper(
+                Collections.singletonList("cat"),
+                charsToString(range('a', 'z')),
                 "ExhaustiveProvider_stringsWithSubstrings_Iterable_String_String_v"
         );
-        simpleProviderHelper(
-                EP.stringsWithSubstrings(
-                        map(d -> Double.toString(d), EP.positiveDoubles()),
-                        charsToString(range('a', 'z'))
-                ),
+        stringsWithSubstrings_Iterable_String_String_helper(
+                map(d -> Double.toString(d), EP.positiveDoubles()),
+                charsToString(range('a', 'z')),
                 "ExhaustiveProvider_stringsWithSubstrings_Iterable_String_String_vi"
         );
+
+        stringsWithSubstrings_Iterable_String_String_fail_helper(
+                Collections.singletonList(null),
+                charsToString(range('a', 'z'))
+        );
+    }
+
+    private static void stringsWithSubstrings_Iterable_String_helper(
+            @NotNull Iterable<String> input,
+            @NotNull String output
+    ) {
+        simpleProviderHelper(EP.stringsWithSubstrings(input), output);
+    }
+
+    private static void stringsWithSubstrings_Iterable_String_helper(@NotNull String input, @NotNull String output) {
+        simpleProviderHelper(EP.stringsWithSubstrings(readStringList(input)), output);
+    }
+
+    private static void stringsWithSubstrings_Iterable_String_fail_helper(@NotNull String input) {
         try {
-            toList(EP.stringsWithSubstrings(Collections.singletonList(null), charsToString(range('a', 'z'))));
+            toList(EP.stringsWithSubstrings(readStringListWithNulls(input)));
             fail();
         } catch (NullPointerException | IllegalArgumentException ignored) {}
     }
 
     @Test
     public void testStringsWithSubstrings_Iterable_String() {
-        simpleProviderHelper(EP.stringsWithSubstrings(Collections.emptyList()),
+        stringsWithSubstrings_Iterable_String_helper("[]",
                 "ExhaustiveProvider_stringsWithSubstrings_Iterable_String_i");
-        simpleProviderHelper(EP.stringsWithSubstrings(Collections.singletonList("")),
+        stringsWithSubstrings_Iterable_String_helper(Collections.singletonList(""),
                 "ExhaustiveProvider_stringsWithSubstrings_Iterable_String_ii");
-        simpleProviderHelper(EP.stringsWithSubstrings(Collections.singletonList("cat")),
+        stringsWithSubstrings_Iterable_String_helper("[cat]",
                 "ExhaustiveProvider_stringsWithSubstrings_Iterable_String_iii");
-        simpleProviderHelper(EP.stringsWithSubstrings(map(d -> Double.toString(d), EP.positiveDoubles())),
+        stringsWithSubstrings_Iterable_String_helper(map(d -> Double.toString(d), EP.positiveDoubles()),
                 "ExhaustiveProvider_stringsWithSubstrings_Iterable_String_iv");
-        try {
-            toList(EP.stringsWithSubstrings(Collections.singletonList(null)));
-            fail();
-        } catch (NullPointerException | IllegalArgumentException ignored) {}
+
+        stringsWithSubstrings_Iterable_String_fail_helper("[null]");
     }
 
     private static void maps_helper(@NotNull String keys, @NotNull Iterable<Integer> values, @NotNull String output) {
@@ -6163,7 +6204,9 @@ public strictfp class ExhaustiveProviderTest {
             int tertiaryScale,
             @NotNull String output
     ) {
-        simpleProviderHelper(EP.randomProvidersFixedScales(scale, secondaryScale, tertiaryScale), output);
+        Iterable<RandomProvider> rps = EP.randomProvidersFixedScales(scale, secondaryScale, tertiaryScale);
+        take(TINY_LIMIT, rps).forEach(RandomProvider::validate);
+        simpleProviderHelper(rps, output);
     }
 
     @Test
@@ -6175,24 +6218,30 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testRandomProvidersDefault() {
-        simpleProviderHelper(EP.randomProvidersDefault(), "ExhaustiveProvider_randomProvidersDefault");
+        Iterable<RandomProvider> rps = EP.randomProvidersDefault();
+        take(TINY_LIMIT, rps).forEach(RandomProvider::validate);
+        simpleProviderHelper(rps, "ExhaustiveProvider_randomProvidersDefault");
     }
 
     @Test
     public void testRandomProvidersDefaultSecondaryAndTertiaryScale() {
-        simpleProviderHelper(EP.randomProvidersDefaultSecondaryAndTertiaryScale(),
-                "ExhaustiveProvider_randomProviderDefaultSecondaryAndTertiaryScale");
+        Iterable<RandomProvider> rps = EP.randomProvidersDefaultSecondaryAndTertiaryScale();
+        take(TINY_LIMIT, rps).forEach(RandomProvider::validate);
+        simpleProviderHelper(rps, "ExhaustiveProvider_randomProviderDefaultSecondaryAndTertiaryScale");
     }
 
     @Test
     public void testRandomProvidersDefaultTertiaryScale() {
-        simpleProviderHelper(EP.randomProvidersDefaultTertiaryScale(),
-                "ExhaustiveProvider_randomProvidersDefaultTertiaryScale");
+        Iterable<RandomProvider> rps = EP.randomProvidersDefaultTertiaryScale();
+        take(TINY_LIMIT, rps).forEach(RandomProvider::validate);
+        simpleProviderHelper(rps, "ExhaustiveProvider_randomProvidersDefaultTertiaryScale");
     }
 
     @Test
     public void testRandomProviders() {
-        simpleProviderHelper(EP.randomProviders(), "ExhaustiveProvider_randomProviders");
+        Iterable<RandomProvider> rps = EP.randomProviders();
+        take(TINY_LIMIT, rps).forEach(RandomProvider::validate);
+        simpleProviderHelper(rps, "ExhaustiveProvider_randomProviders");
     }
 
     @Test
@@ -6230,6 +6279,14 @@ public strictfp class ExhaustiveProviderTest {
     private static @NotNull List<List<Integer>> readIntegerListWithNullsListsWithNulls(@NotNull String s) {
         return Readers.readListWithNullsStrict(Readers.readListWithNullsStrict(Readers::readIntegerStrict))
                 .apply(s).get();
+    }
+
+    private static @NotNull List<String> readStringList(@NotNull String s) {
+        return Readers.readListStrict(Readers::readStringStrict).apply(s).get();
+    }
+
+    private static @NotNull List<String> readStringListWithNulls(@NotNull String s) {
+        return Readers.readListWithNullsStrict(Readers::readStringStrict).apply(s).get();
     }
 }
 // @formatter:on
