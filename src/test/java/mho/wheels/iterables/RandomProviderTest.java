@@ -38,52 +38,99 @@ public strictfp class RandomProviderTest {
 
     @Test
     public void testConstructor() {
-        RandomProvider provider = new RandomProvider();
-        aeq(provider.getScale(), 32);
-        aeq(provider.getSecondaryScale(), 8);
-        aeq(provider.getTertiaryScale(), 2);
+        RandomProvider rp = new RandomProvider();
+        rp.validate();
+        aeq(rp.getScale(), 32);
+        aeq(rp.getSecondaryScale(), 8);
+        aeq(rp.getTertiaryScale(), 2);
+    }
+
+    private static void constructor_List_Integer_helper(@NotNull List<Integer> input, @NotNull String output) {
+        RandomProvider rp = new RandomProvider(input);
+        rp.validate();
+        aeq(rp, output);
+    }
+
+    private static void constructor_List_Integer_fail_helper(@NotNull String input) {
+        try {
+            new RandomProvider(readIntegerListWithNulls(input));
+            fail();
+        } catch (IllegalArgumentException | NullPointerException ignored) {}
     }
 
     @Test
-    public void testConstructor_int() {
-        aeq(Q, "RandomProvider[@-7948823947390831374, 32, 8, 2]");
-        aeq(R, "RandomProvider[@2449928962525148503, 32, 8, 2]");
-        aeq(
-                new RandomProvider(toList(IterableUtils.rangeBy(-1, -1, -IsaacPRNG.SIZE))),
-                "RandomProvider[@3417306423260907531, 32, 8, 2]"
-        );
+    public void testConstructor_List_Integer() {
+        constructor_List_Integer_helper(toList(replicate(IsaacPRNG.SIZE, 0)),
+                "RandomProvider[@-7948823947390831374, 32, 8, 2]");
+        constructor_List_Integer_helper(toList(IterableUtils.range(1, IsaacPRNG.SIZE)),
+                "RandomProvider[@2449928962525148503, 32, 8, 2]");
+        constructor_List_Integer_helper(toList(IterableUtils.rangeBy(-1, -1, -IsaacPRNG.SIZE)),
+                "RandomProvider[@3417306423260907531, 32, 8, 2]");
+
+        constructor_List_Integer_fail_helper("[]");
+        constructor_List_Integer_fail_helper("[1, 2, 3]");
     }
 
     @Test
     public void testExample() {
-        aeq(RandomProvider.example(), "RandomProvider[@-8800290164235921060, 32, 8, 2]");
+        RandomProvider rp = RandomProvider.example();
+        rp.validate();
+        aeq(rp, "RandomProvider[@-8800290164235921060, 32, 8, 2]");
+    }
+
+    private static void getScale_helper(@NotNull RandomProvider rp, int scale) {
+        aeq(rp.getScale(), scale);
+    }
+
+    private static void getScale_helper(int scale) {
+        aeq(new RandomProvider().withScale(scale).getScale(), scale);
     }
 
     @Test
     public void testGetScale() {
-        aeq(P.getScale(), 32);
-        aeq(new RandomProvider().withScale(100).getScale(), 100);
-        aeq(new RandomProvider().withScale(3).getScale(), 3);
+        getScale_helper(P, 32);
+        getScale_helper(100);
+        getScale_helper(3);
+    }
+
+    private static void getSecondaryScale_helper(@NotNull RandomProvider rp, int secondaryScale) {
+        aeq(rp.getSecondaryScale(), secondaryScale);
+    }
+
+    private static void getSecondaryScale_helper(int secondaryScale) {
+        aeq(new RandomProvider().withSecondaryScale(secondaryScale).getSecondaryScale(), secondaryScale);
     }
 
     @Test
     public void testGetSecondaryScale() {
-        aeq(P.getSecondaryScale(), 8);
-        aeq(new RandomProvider().withSecondaryScale(100).getSecondaryScale(), 100);
-        aeq(new RandomProvider().withSecondaryScale(3).getSecondaryScale(), 3);
+        getSecondaryScale_helper(P, 8);
+        getSecondaryScale_helper(100);
+        getSecondaryScale_helper(3);
+    }
+
+    private static void getTertiaryScale_helper(@NotNull RandomProvider rp, int tertiaryScale) {
+        aeq(rp.getTertiaryScale(), tertiaryScale);
+    }
+
+    private static void getTertiaryScale_helper(int tertiaryScale) {
+        aeq(new RandomProvider().withTertiaryScale(tertiaryScale).getTertiaryScale(), tertiaryScale);
     }
 
     @Test
     public void testGetTertiaryScale() {
-        aeq(P.getTertiaryScale(), 2);
-        aeq(new RandomProvider().withTertiaryScale(100).getTertiaryScale(), 100);
-        aeq(new RandomProvider().withTertiaryScale(3).getTertiaryScale(), 3);
+        getTertiaryScale_helper(P, 2);
+        getTertiaryScale_helper(100);
+        getTertiaryScale_helper(3);
+    }
+
+    private static void getSeed_helper(@NotNull RandomProvider rp, @NotNull String seed) {
+        aeq(rp.getSeed(), seed);
     }
 
     @Test
     public void testGetSeed() {
-        aeq(
-                P.getSeed(),
+        getSeed_helper(
+                P,
                 "[-1740315277, -1661427768, 842676458, -1268128447, -121858045, 1559496322, -581535260, -1819723670," +
                 " -334232530, 244755020, -534964695, 301563516, -1795957210, 1451814771, 1299826235, -666749112," +
                 " -1729602324, -565031294, 1897952431, 1118663606, -299718943, -1499922009, -837624734, 1439650052," +
@@ -117,8 +164,8 @@ public strictfp class RandomProviderTest {
                 " -270682579, 44310291, 564559440, 957643125, 1374924466, 962420298, 1319979537, 1206138289," +
                 " -948832823, -909756549, -664108386, -1355112330, -125435854, -1502071736, -790593389]"
         );
-        aeq(
-                Q.getSeed(),
+        getSeed_helper(
+                Q,
                 "[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0," +
                 " 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0," +
                 " 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0," +
@@ -128,8 +175,8 @@ public strictfp class RandomProviderTest {
                 " 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0," +
                 " 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]"
         );
-        aeq(
-                R.getSeed(),
+        getSeed_helper(
+                R,
                 "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27," +
                 " 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51," +
                 " 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75," +
@@ -144,40 +191,59 @@ public strictfp class RandomProviderTest {
                 " 233, 234, 235, 236, 237, 238, 239, 240, 241, 242, 243, 244, 245, 246, 247, 248, 249, 250, 251," +
                 " 252, 253, 254, 255, 256]"
         );
-        try {
-            new RandomProvider(Collections.emptyList());
-            fail();
-        } catch (IllegalArgumentException ignored) {}
-        try {
-            new RandomProvider(Arrays.asList(1, 2, 3));
-            fail();
-        } catch (IllegalArgumentException ignored) {}
+    }
+
+    private static void withScale_helper(@NotNull RandomProvider rp, int scale, @NotNull String output) {
+        RandomProvider s = rp.withScale(scale);
+        s.validate();
+        aeq(s, output);
     }
 
     @Test
     public void testWithScale() {
-        aeq(P.withScale(100), "RandomProvider[@-8800290164235921060, 100, 8, 2]");
-        aeq(Q.withScale(3), "RandomProvider[@-7948823947390831374, 3, 8, 2]");
-        aeq(R.withScale(0), "RandomProvider[@2449928962525148503, 0, 8, 2]");
+        withScale_helper(P, 100, "RandomProvider[@-8800290164235921060, 100, 8, 2]");
+        withScale_helper(Q, 3, "RandomProvider[@-7948823947390831374, 3, 8, 2]");
+        withScale_helper(R, 0, "RandomProvider[@2449928962525148503, 0, 8, 2]");
+    }
+
+    private static void withSecondaryScale_helper(
+            @NotNull RandomProvider rp,
+            int secondaryScale,
+            @NotNull String output
+    ) {
+        RandomProvider s = rp.withSecondaryScale(secondaryScale);
+        s.validate();
+        aeq(s, output);
     }
 
     @Test
     public void testWithSecondaryScale() {
-        aeq(P.withSecondaryScale(100), "RandomProvider[@-8800290164235921060, 32, 100, 2]");
-        aeq(Q.withSecondaryScale(3), "RandomProvider[@-7948823947390831374, 32, 3, 2]");
-        aeq(R.withSecondaryScale(0), "RandomProvider[@2449928962525148503, 32, 0, 2]");
+        withSecondaryScale_helper(P, 100, "RandomProvider[@-8800290164235921060, 32, 100, 2]");
+        withSecondaryScale_helper(Q, 3, "RandomProvider[@-7948823947390831374, 32, 3, 2]");
+        withSecondaryScale_helper(R, 0, "RandomProvider[@2449928962525148503, 32, 0, 2]");
+    }
+
+    private static void withTertiaryScale_helper(
+            @NotNull RandomProvider rp,
+            int tertiaryScale,
+            @NotNull String output
+    ) {
+        RandomProvider s = rp.withTertiaryScale(tertiaryScale);
+        s.validate();
+        aeq(s, output);
     }
 
     @Test
     public void testWithTertiaryScale() {
-        aeq(P.withTertiaryScale(100), "RandomProvider[@-8800290164235921060, 32, 8, 100]");
-        aeq(Q.withTertiaryScale(3), "RandomProvider[@-7948823947390831374, 32, 8, 3]");
-        aeq(R.withTertiaryScale(0), "RandomProvider[@2449928962525148503, 32, 8, 0]");
+        withTertiaryScale_helper(P, 100, "RandomProvider[@-8800290164235921060, 32, 8, 100]");
+        withTertiaryScale_helper(Q, 3, "RandomProvider[@-7948823947390831374, 32, 8, 3]");
+        withTertiaryScale_helper(R, 0, "RandomProvider[@2449928962525148503, 32, 8, 0]");
     }
 
     @Test
     public void testCopy() {
         RandomProvider copy = P.copy();
+        copy.validate();
         assertEquals(P, copy);
         head(P.integers());
         assertEquals(P, copy);
@@ -186,6 +252,7 @@ public strictfp class RandomProviderTest {
     @Test
     public void testDeepCopy() {
         RandomProvider copy = P.deepCopy();
+        copy.validate();
         assertEquals(P, copy);
         head(P.integers());
         assertNotEquals(P, copy);
@@ -201,6 +268,7 @@ public strictfp class RandomProviderTest {
         assertNotEquals(P, original);
         assertNotEquals(PDependent, dependent);
         P.reset();
+        P.validate();
         assertEquals(P, original);
         assertEquals(PDependent, dependent);
     }
