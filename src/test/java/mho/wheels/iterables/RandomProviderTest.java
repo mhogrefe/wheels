@@ -273,15 +273,18 @@ public strictfp class RandomProviderTest {
         assertEquals(PDependent, dependent);
     }
 
-    //todo continue cleanup
+    private static void getId_helper(@NotNull RandomProvider rp, long id) {
+        aeq(rp.getId(), id);
+    }
 
     @Test
     public void testGetId() {
-        aeq(P.getId(), -8800290164235921060L);
-        head(P.integers());
-        aeq(P.getId(), -6220528511995005615L);
-        aeq(Q.getId(), -7948823947390831374L);
-        aeq(R.getId(), 2449928962525148503L);
+        getId_helper(P, -8800290164235921060L);
+        head(P.integers()); // change P state
+        getId_helper(P, -6220528511995005615L);
+        getId_helper(Q, -7948823947390831374L);
+        getId_helper(R, 2449928962525148503L);
+        P.reset();
     }
 
     private static <T> void simpleProviderHelper(@NotNull Iterable<T> xs, @NotNull String output) {
@@ -325,6 +328,7 @@ public strictfp class RandomProviderTest {
     public void testUniformSample_Iterable() {
         uniformSample_Iterable_helper("[3, 1, 4, 1]", "RandomProvider_uniformSample_Iterable_i");
         uniformSample_Iterable_helper("[3, 1, null, 1]", "RandomProvider_uniformSample_Iterable_ii");
+
         uniformSample_Iterable_fail_helper("[]");
     }
 
@@ -346,6 +350,7 @@ public strictfp class RandomProviderTest {
     @Test
     public void testUniformSample_String() {
         uniformSample_String_helper("hello", "RandomProvider_uniformSample_String");
+
         uniformSample_String_fail_helper("");
     }
 
@@ -749,6 +754,7 @@ public strictfp class RandomProviderTest {
         positiveIntegersGeometric_helper(5, "RandomProvider_positiveIntegersGeometric_iv", 5.004360000008482);
         positiveIntegersGeometric_helper(10, "RandomProvider_positiveIntegersGeometric_v", 9.996188000005418);
         positiveIntegersGeometric_helper(100, "RandomProvider_positiveIntegersGeometric_vi", 99.9640719999968);
+
         positiveIntegersGeometric_fail_helper(1);
         positiveIntegersGeometric_fail_helper(0);
         positiveIntegersGeometric_fail_helper(-1);
@@ -777,6 +783,7 @@ public strictfp class RandomProviderTest {
         negativeIntegersGeometric_helper(5, "RandomProvider_negativeIntegersGeometric_iv", -5.004360000008482);
         negativeIntegersGeometric_helper(10, "RandomProvider_negativeIntegersGeometric_v", -9.996188000005418);
         negativeIntegersGeometric_helper(100, "RandomProvider_negativeIntegersGeometric_vi", -99.9640719999968);
+
         negativeIntegersGeometric_fail_helper(1);
         negativeIntegersGeometric_fail_helper(0);
         negativeIntegersGeometric_fail_helper(-1);
@@ -806,6 +813,7 @@ public strictfp class RandomProviderTest {
         naturalIntegersGeometric_helper(5, "RandomProvider_naturalIntegersGeometric_v", 5.005650000005037);
         naturalIntegersGeometric_helper(10, "RandomProvider_naturalIntegersGeometric_vi", 9.996028000004106);
         naturalIntegersGeometric_helper(100, "RandomProvider_naturalIntegersGeometric_vii", 99.96387799999758);
+
         naturalIntegersGeometric_fail_helper(0);
         naturalIntegersGeometric_fail_helper(-1);
         naturalIntegersGeometric_fail_helper(Integer.MAX_VALUE);
@@ -871,6 +879,7 @@ public strictfp class RandomProviderTest {
                 -0.14496700000000257,
                 99.97359300000046
         );
+
         nonzeroIntegersGeometric_fail_helper(1);
         nonzeroIntegersGeometric_fail_helper(0);
         nonzeroIntegersGeometric_fail_helper(-1);
@@ -907,6 +916,7 @@ public strictfp class RandomProviderTest {
         integersGeometric_helper(5, "RandomProvider_integersGeometric_v", 0.003408000000000304, 4.9993930000049955);
         integersGeometric_helper(10, "RandomProvider_integersGeometric_vi", 0.010864000000000018, 9.983633000004563);
         integersGeometric_helper(100, "RandomProvider_integersGeometric_vii", -0.1466660000000059, 99.86606600000295);
+
         integersGeometric_fail_helper(0);
         integersGeometric_fail_helper(-1);
         integersGeometric_fail_helper(Integer.MAX_VALUE);
@@ -947,6 +957,7 @@ public strictfp class RandomProviderTest {
                 "RandomProvider_rangeUpGeometric_viii",
                 -2.1474836470149984E9
         );
+
         rangeUpGeometric_fail_helper(5, 5);
         rangeUpGeometric_fail_helper(4, 5);
         rangeUpGeometric_fail_helper(Integer.MAX_VALUE - 5, -10);
@@ -987,6 +998,7 @@ public strictfp class RandomProviderTest {
                 "RandomProvider_rangeDownGeometric_viii",
                 -2.147483647372161E9
         );
+
         rangeDownGeometric_fail_helper(5, 5);
         rangeDownGeometric_fail_helper(6, 5);
         rangeDownGeometric_fail_helper(-5, Integer.MIN_VALUE);
@@ -1048,6 +1060,7 @@ public strictfp class RandomProviderTest {
                 Double.POSITIVE_INFINITY,
                 99.9771549999987
         );
+
         positiveBigIntegers_fail_helper(1);
         positiveBigIntegers_fail_helper(0);
         positiveBigIntegers_fail_helper(-1);
@@ -1116,6 +1129,7 @@ public strictfp class RandomProviderTest {
                 Double.NEGATIVE_INFINITY,
                 99.9771549999987
         );
+
         negativeBigIntegers_fail_helper(1);
         negativeBigIntegers_fail_helper(0);
         negativeBigIntegers_fail_helper(-1);
@@ -1160,6 +1174,7 @@ public strictfp class RandomProviderTest {
                 Double.POSITIVE_INFINITY,
                 99.9762349999981
         );
+
         naturalBigIntegers_fail_helper(0);
         naturalBigIntegers_fail_helper(-1);
         naturalBigIntegers_fail_helper(Integer.MAX_VALUE);
@@ -1198,6 +1213,7 @@ public strictfp class RandomProviderTest {
                 9.995175000005379
         );
         nonzeroBigIntegers_helper(100, "RandomProvider_nonzeroBigIntegers_vi", Double.NaN, 99.9676500000014);
+
         nonzeroBigIntegers_fail_helper(1);
         nonzeroBigIntegers_fail_helper(0);
         nonzeroBigIntegers_fail_helper(-1);
@@ -1237,6 +1253,7 @@ public strictfp class RandomProviderTest {
         bigIntegers_helper(5, "RandomProvider_bigIntegers_v", 5.6936067849711536E16, 5.009217000005041);
         bigIntegers_helper(10, "RandomProvider_bigIntegers_vi", -3.800274840387793E39, 9.993747000004165);
         bigIntegers_helper(100, "RandomProvider_bigIntegers_vii", Double.NaN, 99.96628299999787);
+
         bigIntegers_fail_helper(0);
         bigIntegers_fail_helper(-1);
         bigIntegers_fail_helper(Integer.MAX_VALUE);
@@ -1329,6 +1346,7 @@ public strictfp class RandomProviderTest {
                 6.216950512238074E39,
                 9.998103000004235
         );
+
         rangeUp_BigInteger_fail_helper(4, 10);
         rangeUp_BigInteger_fail_helper(3, 10);
         rangeUp_BigInteger_fail_helper(Integer.MAX_VALUE, -10);
@@ -1432,6 +1450,7 @@ public strictfp class RandomProviderTest {
                 -7.070705170732308E21,
                 10.006835999993193
         );
+
         rangeDown_BigInteger_fail_helper(4, -10);
         rangeDown_BigInteger_fail_helper(3, -10);
         rangeDown_BigInteger_fail_helper(Integer.MAX_VALUE, 10);
@@ -1514,6 +1533,7 @@ public strictfp class RandomProviderTest {
                 99.91674399999913,
                 10.005905000005157
         );
+
         positiveBinaryFractions_fail_helper(1, 1);
         positiveBinaryFractions_fail_helper(2, 0);
     }
@@ -1580,6 +1600,7 @@ public strictfp class RandomProviderTest {
                 99.91674399999913,
                 10.005905000005157
         );
+
         negativeBinaryFractions_fail_helper(1, 1);
         negativeBinaryFractions_fail_helper(2, 0);
     }
@@ -1646,6 +1667,7 @@ public strictfp class RandomProviderTest {
                 99.89809500000158,
                 10.005882000004926
         );
+
         nonzeroBinaryFractions_fail_helper(1, 1);
         nonzeroBinaryFractions_fail_helper(2, 0);
     }
@@ -1712,6 +1734,7 @@ public strictfp class RandomProviderTest {
                 99.8870699999952,
                 9.98571900000396
         );
+
         binaryFractions_fail_helper(1, 0);
         binaryFractions_fail_helper(0, 1);
     }
@@ -1994,6 +2017,7 @@ public strictfp class RandomProviderTest {
                 36.9378720000084,
                 23.766452999822757
         );
+
         rangeUp_BinaryFraction_fail_helper(1, 0, "0");
         rangeUp_BinaryFraction_fail_helper(0, 1, "0");
     }
@@ -2276,6 +2300,7 @@ public strictfp class RandomProviderTest {
                 37.07091300000956,
                 23.789788999822175
         );
+
         rangeDown_BinaryFraction_fail_helper(1, 0, "0");
         rangeDown_BinaryFraction_fail_helper(0, 1, "0");
     }
@@ -2639,6 +2664,7 @@ public strictfp class RandomProviderTest {
                 53.410762000035774,
                 32.06946100002204
         );
+
         range_BinaryFraction_BinaryFraction_fail_helper(0, "0", "1");
         range_BinaryFraction_BinaryFraction_fail_helper(-1, "0", "1");
         range_BinaryFraction_BinaryFraction_fail_helper(Integer.MAX_VALUE, "0", "1");
@@ -2768,6 +2794,7 @@ public strictfp class RandomProviderTest {
         rangeUp_float_helper(-Float.MAX_VALUE, "RandomProvider_rangeUp_float_xvi", -5.4709615E33f);
         rangeUp_float_helper(Float.POSITIVE_INFINITY, "RandomProvider_rangeUp_float_xvii", Float.POSITIVE_INFINITY);
         rangeUp_float_helper(Float.NEGATIVE_INFINITY, "RandomProvider_rangeUp_float_xviii", -5.471121E33f);
+
         rangeUp_float_fail_helper(Float.NaN);
     }
 
@@ -2807,6 +2834,7 @@ public strictfp class RandomProviderTest {
                 "RandomProvider_rangeDown_float_xviii",
                 Float.NEGATIVE_INFINITY
         );
+
         rangeDown_float_fail_helper(Float.NaN);
     }
 
@@ -2897,6 +2925,7 @@ public strictfp class RandomProviderTest {
         );
         range_float_float_helper(Float.POSITIVE_INFINITY, 1.0f, "RandomProvider_range_float_float_xxii", 0.0f);
         range_float_float_helper(1.0f, Float.NEGATIVE_INFINITY, "RandomProvider_range_float_float_xxiii", 0.0f);
+
         range_float_float_fail_helper(Float.NaN, 1.0f);
         range_float_float_fail_helper(Float.NaN, Float.POSITIVE_INFINITY);
         range_float_float_fail_helper(Float.NaN, Float.NEGATIVE_INFINITY);
@@ -2946,6 +2975,7 @@ public strictfp class RandomProviderTest {
                 "RandomProvider_rangeUp_double_xviii",
                 -3.959346934339273E303
         );
+
         rangeUp_double_fail_helper(Double.NaN);
     }
 
@@ -2989,6 +3019,7 @@ public strictfp class RandomProviderTest {
                 "RandomProvider_rangeDown_double_xviii",
                 Double.NEGATIVE_INFINITY
         );
+
         rangeDown_double_fail_helper(Double.NaN);
     }
 
@@ -3079,6 +3110,7 @@ public strictfp class RandomProviderTest {
         );
         range_double_double_helper(Double.POSITIVE_INFINITY, 1.0, "RandomProvider_range_double_double_xxii", 0.0);
         range_double_double_helper(1.0, Double.NEGATIVE_INFINITY, "RandomProvider_range_double_double_xxiii", 0.0);
+
         range_double_double_fail_helper(Double.NaN, 1.0);
         range_double_double_fail_helper(Double.NaN, Double.POSITIVE_INFINITY);
         range_double_double_fail_helper(Double.NaN, Double.NEGATIVE_INFINITY);
@@ -3348,6 +3380,7 @@ public strictfp class RandomProviderTest {
                 "RandomProvider_rangeDownUniform_double_xvi",
                 Double.NEGATIVE_INFINITY
         );
+
         rangeDownUniform_double_fail_helper(Double.POSITIVE_INFINITY);
         rangeDownUniform_double_fail_helper(Double.NEGATIVE_INFINITY);
         rangeDownUniform_double_fail_helper(Double.NaN);
@@ -3521,6 +3554,7 @@ public strictfp class RandomProviderTest {
                 99.91674399999913,
                 10.005905000005157
         );
+
         positiveBigDecimals_fail_helper(1, 1);
         positiveBigDecimals_fail_helper(2, 0);
     }
@@ -3587,6 +3621,7 @@ public strictfp class RandomProviderTest {
                 99.91674399999913,
                 10.005905000005157
         );
+
         negativeBigDecimals_fail_helper(1, 1);
         negativeBigDecimals_fail_helper(2, 0);
     }
@@ -3653,6 +3688,7 @@ public strictfp class RandomProviderTest {
                 99.9163349999983,
                 10.004244000004174
         );
+
         nonzeroBigDecimals_fail_helper(1, 1);
         nonzeroBigDecimals_fail_helper(2, 0);
     }
@@ -3719,6 +3755,7 @@ public strictfp class RandomProviderTest {
                 99.91854699999466,
                 10.00440500000418
         );
+
         bigDecimals_fail_helper(0, 1);
         bigDecimals_fail_helper(2, 0);
     }
@@ -3785,6 +3822,7 @@ public strictfp class RandomProviderTest {
                 99.93904899999788,
                 10.005566000005233
         );
+
         positiveCanonicalBigDecimals_fail_helper(1, 1);
         positiveCanonicalBigDecimals_fail_helper(2, 0);
     }
@@ -3851,6 +3889,7 @@ public strictfp class RandomProviderTest {
                 99.93904899999788,
                 10.005566000005233
         );
+
         negativeCanonicalBigDecimals_fail_helper(1, 1);
         negativeCanonicalBigDecimals_fail_helper(2, 0);
     }
@@ -3917,6 +3956,7 @@ public strictfp class RandomProviderTest {
                 99.93122599999683,
                 10.008305000004126
         );
+
         nonzeroCanonicalBigDecimals_fail_helper(1, 1);
         nonzeroCanonicalBigDecimals_fail_helper(2, 0);
     }
@@ -3983,6 +4023,7 @@ public strictfp class RandomProviderTest {
                 99.93086299999682,
                 10.008105000004125
         );
+
         canonicalBigDecimals_fail_helper(1, 1);
         canonicalBigDecimals_fail_helper(2, 0);
     }
@@ -4562,6 +4603,7 @@ public strictfp class RandomProviderTest {
                 98.06712599995508,
                 15.959104999996125
         );
+
         rangeUp_BigDecimal_fail_helper(1, 1, "0");
         rangeUp_BigDecimal_fail_helper(2, 0, "0");
     }
@@ -5141,6 +5183,7 @@ public strictfp class RandomProviderTest {
                 98.11771199995576,
                 15.959104999996125
         );
+
         rangeDown_BigDecimal_fail_helper(1, 1, "0");
         rangeDown_BigDecimal_fail_helper(2, 0, "0");
     }
@@ -5814,6 +5857,7 @@ public strictfp class RandomProviderTest {
                 0.0,
                 0.0
         );
+
         range_BigDecimal_BigDecimal_fail_helper(0, 1, "0", "1");
         range_BigDecimal_BigDecimal_fail_helper(1, 0, "0", "1");
     }
@@ -6395,6 +6439,7 @@ public strictfp class RandomProviderTest {
                 71.79637100000163,
                 7.9745270000163195
         );
+
         rangeUpCanonical_BigDecimal_fail_helper(1, 1, "0");
         rangeUpCanonical_BigDecimal_fail_helper(2, 0, "0");
     }
@@ -6976,6 +7021,7 @@ public strictfp class RandomProviderTest {
                 71.84684600000809,
                 7.9745270000163195
         );
+
         rangeDownCanonical_BigDecimal_fail_helper(1, 1, "0");
         rangeDownCanonical_BigDecimal_fail_helper(2, 0, "0");
     }
@@ -7649,9 +7695,12 @@ public strictfp class RandomProviderTest {
                 0.0,
                 0.0
         );
+
         rangeCanonical_BigDecimal_BigDecimal_fail_helper(0, 1, "0", "1");
         rangeCanonical_BigDecimal_BigDecimal_fail_helper(1, 0, "0", "1");
     }
+
+    //todo continue cleanup
 
     private static void withElement_helper(
             int scale,
