@@ -199,7 +199,7 @@ public class ReadersDemos extends Demos {
                 P.pairs(P.strings(), P.optionals(P.integers()))
         );
         for (Pair<Function<String, Optional<Integer>>, String> p : take(LIMIT, ps)) {
-            System.out.println("readWithNullsStrict(" + p.a + ").apply(" + nicePrint(p.b) + ") = " +
+            System.out.println("readWithNullsStrict(" + nicePrint(p.a.toString()) + ").apply(" + nicePrint(p.b) + ") = " +
                     readWithNullsStrict(p.a).apply(p.b));
         }
     }
@@ -221,7 +221,7 @@ public class ReadersDemos extends Demos {
                 P.pairs(P.strings(), P.optionals(P.integers()))
         );
         for (Pair<Function<String, Optional<Integer>>, String> p : take(LIMIT, ps)) {
-            System.out.println("readOptionalStrict(" + p.a + ").apply(" + nicePrint(p.b) + ") = " +
+            System.out.println("readOptionalStrict(" + nicePrint(p.a.toString()) + ").apply(" + nicePrint(p.b) + ") = " +
                     readOptionalStrict(p.a).apply(p.b));
         }
     }
@@ -243,8 +243,8 @@ public class ReadersDemos extends Demos {
                 P.pairs(P.strings(), P.nullableOptionals(P.withNull(P.integers())))
         );
         for (Pair<Function<String, NullableOptional<Integer>>, String> p : take(LIMIT, ps)) {
-            System.out.println("readNullableOptionalStrict(" + p.a + ").apply(" + nicePrint(p.b) + ") = " +
-                    readNullableOptionalStrict(p.a).apply(p.b));
+            System.out.println("readNullableOptionalStrict(" + nicePrint(p.a.toString()) + ").apply(" +
+                    nicePrint(p.b) + ") = " + readNullableOptionalStrict(p.a).apply(p.b));
         }
     }
 
@@ -259,6 +259,23 @@ public class ReadersDemos extends Demos {
         for (Pair<Function<String, NullableOptional<Integer>>, String> p : take(LIMIT, ps)) {
             System.out.println("readNullableOptionalStrict(" + p.a + ").apply(" + nicePrint(p.b) + ") = " +
                     readNullableOptionalStrict(p.a).apply(p.b));
+        }
+    }
+
+    private void demoReadListStrict() {
+        Iterable<Pair<Function<String, Optional<Integer>>, String>> ps = map(
+                q -> new Pair<>((Function<String, Optional<Integer>>) q.b, q.b.domain().toString()),
+                P.dependentPairsInfinite(
+                        P.withScale(4).subsetsAtLeast(1, P.withScale(4).strings()),
+                        ss -> map(
+                                m -> new FiniteDomainFunction<>(m),
+                                P.maps(ss, P.nonEmptyOptionals(P.integers()))
+                        )
+                )
+        );
+        for (Pair<Function<String, Optional<Integer>>, String> p : take(LIMIT, ps)) {
+            System.out.println("readListStrict(" + nicePrint(p.a.toString()) + ").apply(" + nicePrint(p.b) + ") = " +
+                    readListStrict(p.a).apply(p.b));
         }
     }
 }

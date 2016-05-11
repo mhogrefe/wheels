@@ -10,7 +10,6 @@ import java.util.function.Function;
 
 import static mho.wheels.io.Readers.*;
 import static mho.wheels.testing.Testing.aeq;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.fail;
 
 public class ReadersTest {
@@ -482,30 +481,52 @@ public class ReadersTest {
         readNullableOptionalStrict_fail_helper(s -> null, "NullableOptional[hello]");
     }
 
+    private static <T> void readListStrict_helper(
+            @NotNull Function<String, Optional<T>> read,
+            @NotNull String s,
+            @NotNull String output
+    ) {
+        aeq(readListStrict(read).apply(s), output);
+    }
+
+    private static void readListStrict_helper(
+            @NotNull Function<String, Optional<String>> read,
+            @NotNull String s,
+            int length,
+            @NotNull String output
+    ) {
+        Optional<List<String>> result = readListStrict(read).apply(s);
+        aeq(result.get().size(), length);
+        aeq(result, output);
+    }
+
+    private static <T> void readListStrict_fail_helper(
+            @NotNull Function<String, Optional<T>> read,
+            @NotNull String input
+    ) {
+        try {
+            readListStrict(read).apply(input);
+            fail();
+        } catch (NullPointerException ignored) {}
+    }
+
     @Test
     public void testReadListStrict() {
-        aeq(readListStrict(Readers::readIntegerStrict).apply("[]").get(), "[]");
-        aeq(readListStrict(Readers::readIntegerStrict).apply("[1]").get(), "[1]");
-        aeq(readListStrict(Readers::readIntegerStrict).apply("[1, 2, -3]").get(), "[1, 2, -3]");
-        assertFalse(readListStrict(Readers::readIntegerStrict).apply("[1000000000000000]").isPresent());
-        assertFalse(readListStrict(Readers::readIntegerStrict).apply("[null]").isPresent());
-        assertFalse(readListStrict(Readers::readIntegerStrict).apply("[1, 2").isPresent());
-        assertFalse(readListStrict(Readers::readIntegerStrict).apply("1, 2").isPresent());
-        assertFalse(readListStrict(Readers::readIntegerStrict).apply("[a]").isPresent());
-        assertFalse(readListStrict(Readers::readIntegerStrict).apply("[00]").isPresent());
-        Optional<List<String>> ss;
+        readListStrict_helper(Readers::readIntegerStrict, "[]", "Optional[[]]");
+        readListStrict_helper(Readers::readIntegerStrict, "[1]", "Optional[[1]]");
+        readListStrict_helper(Readers::readIntegerStrict, "[1, 2, -3]", "Optional[[1, 2, -3]]");
+        readListStrict_helper(Readers::readIntegerStrict, "[1000000000000000]", "Optional.empty");
+        readListStrict_helper(Readers::readIntegerStrict, "[null]", "Optional.empty");
+        readListStrict_helper(Readers::readIntegerStrict, "[1, 2", "Optional.empty");
+        readListStrict_helper(Readers::readIntegerStrict, "1, 2", "Optional.empty");
+        readListStrict_helper(Readers::readIntegerStrict, "[a]", "Optional.empty");
+        readListStrict_helper(Readers::readIntegerStrict, "[00]", "Optional.empty");
 
-        ss = readListStrict(Readers::readStringStrict).apply("[hello]");
-        aeq(ss.get(), "[hello]");
-        aeq(ss.get().size(), 1);
+        readListStrict_helper(Readers::readStringStrict, "[hello]", 1, "Optional[[hello]]");
+        readListStrict_helper(Readers::readStringStrict, "[hello, bye]", 2, "Optional[[hello, bye]]");
+        readListStrict_helper(Readers::readStringStrict, "[a, b, c]", 3, "Optional[[a, b, c]]");
 
-        ss = readListStrict(Readers::readStringStrict).apply("[hello, bye]");
-        aeq(ss.get(), "[hello, bye]");
-        aeq(ss.get().size(), 2);
-
-        ss = readListStrict(Readers::readStringStrict).apply("[a, b, c]");
-        aeq(ss.get(), "[a, b, c]");
-        aeq(ss.get().size(), 3);
+        readListStrict_fail_helper(s -> null, "[hello]");
     }
 
     @Test
