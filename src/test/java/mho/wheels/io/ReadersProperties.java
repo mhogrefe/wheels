@@ -7,6 +7,7 @@ import mho.wheels.testing.TestProperties;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
@@ -46,6 +47,7 @@ public strictfp class ReadersProperties extends TestProperties {
         propertiesReadWithNullsStrict();
         propertiesReadOptionalStrict();
         propertiesReadNullableOptionalStrict();
+        propertiesReadListStrict();
     }
 
     private void propertiesGenericReadStrict() {
@@ -259,6 +261,27 @@ public strictfp class ReadersProperties extends TestProperties {
             );
             assertEquals(i, readNullableOptionalStrict(f).apply("NullableOptional[" + s + "]").get().get(), i);
             assertFalse(i, readNullableOptionalStrict(f).apply("NullableOptional.empty").get().isPresent());
+        }
+    }
+
+    private void propertiesReadListStrict() {
+        initialize("readListStrict(Function<String, Optional<T>>)");
+        Iterable<Pair<Function<String, Optional<Integer>>, String>> ps = map(
+                q -> new Pair<>((Function<String, Optional<Integer>>) q.b, q.b.domain().toString()),
+                P.dependentPairsInfinite(
+                        P.withScale(4).subsetsAtLeast(1, P.withScale(4).strings()),
+                        ss -> map(
+                                m -> new FiniteDomainFunction<>(m),
+                                P.maps(ss, P.nonEmptyOptionals(P.integers()))
+                        )
+                )
+        );
+        for (Pair<Function<String, Optional<Integer>>, String> p : take(LIMIT, ps)) {
+            readListStrict(p.a).apply(p.b);
+        }
+
+        for (List<Integer> xs : take(LIMIT, P.lists(P.integers()))) {
+            assertEquals(xs, readListStrict(Readers::readIntegerStrict).apply(xs.toString()).get(), xs);
         }
     }
 }
