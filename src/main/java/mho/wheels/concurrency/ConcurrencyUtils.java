@@ -28,6 +28,8 @@ public class ConcurrencyUtils {
             throw new RuntimeException(e);
         } catch (InterruptedException ignored) {
             throw new IllegalArgumentException();
+        } finally {
+            service.shutdownNow();
         }
     }
 }
