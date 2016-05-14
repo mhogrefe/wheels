@@ -7700,8 +7700,6 @@ public strictfp class RandomProviderTest {
         rangeCanonical_BigDecimal_BigDecimal_fail_helper(1, 0, "0", "1");
     }
 
-    //todo continue cleanup
-
     private static void withElement_helper(
             int scale,
             @NotNull String input,
@@ -7716,6 +7714,17 @@ public strictfp class RandomProviderTest {
         P.reset();
     }
 
+    private static void withElement_fail_helper(
+            int scale,
+            @NotNull Iterable<Integer> input,
+            @Nullable Integer element
+    ) {
+        try {
+            toList(P.withScale(scale).withElement(element, input));
+            fail();
+        } catch (IllegalArgumentException | IllegalStateException ignored) {}
+    }
+
     @Test
     public void testWithElement() {
         withElement_helper(2, "[1]", null, "RandomProvider_withElement_i", 0.4992549999935604);
@@ -7725,14 +7734,8 @@ public strictfp class RandomProviderTest {
         withElement_helper(8, "[null, 2, 3]", 10, "RandomProvider_withElement_v", 0.12480700000010415);
         withElement_helper(32, "[null, 2, 3]", 10, "RandomProvider_withElement_vi", 0.031218000000010567);
 
-        try {
-            toList(P.withElement(null, readIntegerListWithNulls("[1, 2, 3]")));
-            fail();
-        } catch (IllegalArgumentException ignored) {}
-        try {
-            P.withScale(1).withElement(null, cycle(readIntegerListWithNulls("[1, 2, 3]")));
-            fail();
-        } catch (IllegalStateException ignored) {}
+        withElement_fail_helper(32, Arrays.asList(1, 2, 3), null);
+        withElement_fail_helper(1, cycle(Arrays.asList(1, 2, 3)), null);
     }
 
     private static void withNull_helper(
@@ -7748,6 +7751,13 @@ public strictfp class RandomProviderTest {
         P.reset();
     }
 
+    private static void withNull_fail_helper(int scale, @NotNull Iterable<Integer> input) {
+        try {
+            toList(P.withScale(scale).withNull(input));
+            fail();
+        } catch (IllegalArgumentException | IllegalStateException ignored) {}
+    }
+
     @Test
     public void testWithNull() {
         withNull_helper(2, "[1]", "RandomProvider_withNull_i", 0.4992549999935604);
@@ -7757,14 +7767,8 @@ public strictfp class RandomProviderTest {
         withNull_helper(8, "[1, 2, 3]", "RandomProvider_withNull_v", 0.12480700000010415);
         withNull_helper(32, "[1, 2, 3]", "RandomProvider_withNull_vi", 0.031218000000010567);
 
-        try {
-            toList(P.withNull(readIntegerListWithNulls("[1, 2, 3]")));
-            fail();
-        } catch (IllegalArgumentException ignored) {}
-        try {
-            P.withScale(1).withNull(cycle(readIntegerListWithNulls("[1, 2, 3]")));
-            fail();
-        } catch (IllegalStateException ignored) {}
+        withNull_fail_helper(32, Arrays.asList(1, 2, 3));
+        withNull_fail_helper(1, cycle(Arrays.asList(1, 2, 3)));
     }
 
     private static void optionalsHelper(
@@ -7780,6 +7784,13 @@ public strictfp class RandomProviderTest {
         P.reset();
     }
 
+    private static void optionals_fail_helper(int scale, @NotNull Iterable<Integer> input) {
+        try {
+            toList(P.withScale(scale).optionals(input));
+            fail();
+        } catch (IllegalArgumentException | IllegalStateException ignored) {}
+    }
+
     @Test
     public void testOptionals() {
         optionalsHelper(2, "[1]", "RandomProvider_optionals_i", 0.4992549999935604);
@@ -7789,14 +7800,8 @@ public strictfp class RandomProviderTest {
         optionalsHelper(8, "[1, 2, 3]", "RandomProvider_optionals_v", 0.12480700000010415);
         optionalsHelper(32, "[1, 2, 3]", "RandomProvider_optionals_vi", 0.031218000000010567);
 
-        try {
-            toList(P.optionals(readIntegerListWithNulls("[1, 2, 3]")));
-            fail();
-        } catch (IllegalArgumentException ignored) {}
-        try {
-            P.withScale(1).optionals(cycle(readIntegerListWithNulls("[1, 2, 3]")));
-            fail();
-        } catch (IllegalStateException ignored) {}
+        optionals_fail_helper(32, Arrays.asList(1, 2, 3));
+        optionals_fail_helper(1, cycle(Arrays.asList(1, 2, 3)));
     }
 
     private static void nullableOptionals_helper(
@@ -7813,6 +7818,13 @@ public strictfp class RandomProviderTest {
         P.reset();
     }
 
+    private static void nullableOptionals_fail_helper(int scale, @NotNull Iterable<Integer> input) {
+        try {
+            toList(P.withScale(scale).nullableOptionals(input));
+            fail();
+        } catch (IllegalArgumentException | IllegalStateException ignored) {}
+    }
+
     @Test
     public void testNullableOptionals() {
         nullableOptionals_helper(2, "[1]", "RandomProvider_nullableOptionals_i", 0.4992549999935604);
@@ -7822,15 +7834,11 @@ public strictfp class RandomProviderTest {
         nullableOptionals_helper(8, "[null, 2, 3]", "RandomProvider_nullableOptionals_v", 0.12480700000010415);
         nullableOptionals_helper(32, "[null, 2, 3]", "RandomProvider_nullableOptionals_vi", 0.031218000000010567);
 
-        try {
-            toList(P.nullableOptionals(readIntegerListWithNulls("[1, 2, 3]")));
-            fail();
-        } catch (IllegalArgumentException ignored) {}
-        try {
-            P.withScale(1).nullableOptionals(cycle(readIntegerListWithNulls("[1, 2, 3]")));
-            fail();
-        } catch (IllegalStateException ignored) {}
+        nullableOptionals_fail_helper(32, Arrays.asList(1, 2, 3));
+        nullableOptionals_fail_helper(1, cycle(Arrays.asList(1, 2, 3)));
     }
+
+    //todo continue cleanup
 
     @Test
     public void dependentPairsInfiniteTest() {
