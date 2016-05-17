@@ -471,6 +471,26 @@ public class Readers {
         return genericReadListStrict(s -> NullableOptional.fromOptional(read.apply(s)));
     }
 
+    /**
+     * Returns a function which reads a possibly-null-containing {@link java.util.List} from a {@code String}. Only
+     * {@code String}s which could have been emitted by {@code java.util.List#toString} are recognized. In some cases
+     * there may be ambiguity; for example, when reading {@code "[a, b, c]"} as a list of {@code String}s, both
+     * {@code ["a", "b", "c"]} and {@code ["a, b, c"]} are valid interpretations. This method stops reading each list
+     * element as soon as possible, so the first option would be returned. If {@code "null"} appears in the list, it is
+     * read as a null, even if {@code "null"} is also returned by {@link Object#toString()} on some value of type
+     * {@code T}.
+     *
+     * <ul>
+     *  <li>{@code read} must be non-null.</li>
+     *  <li>The result must be applied to {@code String}s {@code s} such that {@code read}, when applied to any
+     *  substring of {@code s} other than {@code "null"}, must terminate and not return null. (This precondition is not
+     *  checked for every substring.)</li>
+     * </ul>
+     *
+     * @param read a function which reads a {@code String} into a value of type {@code T}
+     * @param <T> the type of the {@code List}'s values
+     * @return a function which reads a {@code List} which may contain nulls.
+     */
     public static @NotNull <T> Function<String, Optional<List<T>>> readListWithNullsStrict(
             @NotNull Function<String, Optional<T>> read
     ) {

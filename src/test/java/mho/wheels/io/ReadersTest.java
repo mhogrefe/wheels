@@ -529,8 +529,51 @@ public class ReadersTest {
         readListStrict_fail_helper(s -> null, "[hello]");
     }
 
+    private static <T> void readListWithNullsStrict_helper(
+            @NotNull Function<String, Optional<T>> read,
+            @NotNull String s,
+            @NotNull String output
+    ) {
+        aeq(readListWithNullsStrict(read).apply(s), output);
+    }
+
+    private static void readListWithNullsStrict_helper(
+            @NotNull Function<String, Optional<String>> read,
+            @NotNull String s,
+            int length,
+            @NotNull String output
+    ) {
+        Optional<List<String>> result = readListWithNullsStrict(read).apply(s);
+        aeq(result.get().size(), length);
+        aeq(result, output);
+    }
+
+    private static <T> void readListWithNullsStrict_fail_helper(
+            @NotNull Function<String, Optional<T>> read,
+            @NotNull String input
+    ) {
+        try {
+            readListWithNullsStrict(read).apply(input);
+            fail();
+        } catch (NullPointerException ignored) {}
+    }
+
     @Test
-    public void testReadListWithNulls() {
-        //todo
+    public void testReadListWithNullsStrict() {
+        readListWithNullsStrict_helper(Readers::readIntegerStrict, "[]", "Optional[[]]");
+        readListWithNullsStrict_helper(Readers::readIntegerStrict, "[1]", "Optional[[1]]");
+        readListWithNullsStrict_helper(Readers::readIntegerStrict, "[1, 2, -3]", "Optional[[1, 2, -3]]");
+        readListWithNullsStrict_helper(Readers::readIntegerStrict, "[1000000000000000]", "Optional.empty");
+        readListWithNullsStrict_helper(Readers::readIntegerStrict, "[null]", "Optional[[null]]");
+        readListWithNullsStrict_helper(Readers::readIntegerStrict, "[1, 2", "Optional.empty");
+        readListWithNullsStrict_helper(Readers::readIntegerStrict, "1, 2", "Optional.empty");
+        readListWithNullsStrict_helper(Readers::readIntegerStrict, "[a]", "Optional.empty");
+        readListWithNullsStrict_helper(Readers::readIntegerStrict, "[00]", "Optional.empty");
+
+        readListWithNullsStrict_helper(Readers::readStringStrict, "[hello]", 1, "Optional[[hello]]");
+        readListWithNullsStrict_helper(Readers::readStringStrict, "[hello, bye]", 2, "Optional[[hello, bye]]");
+        readListWithNullsStrict_helper(Readers::readStringStrict, "[a, b, c]", 3, "Optional[[a, b, c]]");
+
+        readListWithNullsStrict_fail_helper(s -> null, "[hello]");
     }
 }
