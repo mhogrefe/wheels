@@ -24,7 +24,7 @@ Progress
 | IterableUtils               | ✘       | ✘       | ✘     | ✘     | ✘          |
 | NoRemoveIterable            | ✔       | ✘       | ✘     | ✘     | ✘          |
 | NoRemoveIterator            | ✔       | ✔       | ✔     | ✔     | ✔          |
-| RandomProvider              | ✘       | ✔       | ✔     | ✔     | ✔          |
+| RandomProvider              | ✔       | ✔       | ✔     | ✔     | ✔          |
 | BinaryFraction              | ✔       | ✔       | ✔     | ✔     | ✔          |
 | MathUtils                   | ✔       | ✔       | ✔     | ✔     | ✔          |
 | BigDecimalUtils             | ✔       | ✔       | ✔     | ✔     | ✔          |

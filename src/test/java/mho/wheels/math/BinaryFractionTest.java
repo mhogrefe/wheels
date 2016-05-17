@@ -14,6 +14,7 @@ import static mho.wheels.iterables.IterableUtils.toList;
 import static mho.wheels.math.BinaryFraction.*;
 import static mho.wheels.math.BinaryFraction.sum;
 import static mho.wheels.testing.Testing.*;
+import static org.junit.Assert.fail;
 
 public strictfp class BinaryFractionTest {
     @Test
@@ -64,37 +65,46 @@ public strictfp class BinaryFractionTest {
         getExponent_helper("-5 >> 20", -20);
     }
 
-    private static void of_BigInteger_int_helper(int mantissa, int exponent, @NotNull String output) {
-        aeq(of(BigInteger.valueOf(mantissa), exponent), output);
+    private static void of_BigInteger_int_helper(@NotNull String mantissa, int exponent, @NotNull String output) {
+        BinaryFraction bf = of(Readers.readBigIntegerStrict(mantissa).get(), exponent);
+        bf.validate();
+        aeq(bf, output);
+    }
+
+    private static void of_BigInteger_int_fail_helper(@NotNull String mantissa, int exponent) {
+        try {
+            of(Readers.readBigIntegerStrict(mantissa).get(), exponent);
+            fail();
+        } catch (ArithmeticException ignored) {}
     }
 
     @Test
     public void testOf_BigInteger_int() {
-        of_BigInteger_int_helper(0, 0, "0");
-        of_BigInteger_int_helper(0, 1, "0");
-        of_BigInteger_int_helper(0, -3, "0");
-        of_BigInteger_int_helper(1, 0, "1");
-        of_BigInteger_int_helper(2, 0, "1 << 1");
-        of_BigInteger_int_helper(1, 1, "1 << 1");
-        of_BigInteger_int_helper(5, 20, "5 << 20");
-        of_BigInteger_int_helper(5, -20, "5 >> 20");
-        of_BigInteger_int_helper(100, 0, "25 << 2");
-        of_BigInteger_int_helper(-1, 0, "-1");
-        of_BigInteger_int_helper(-2, 0, "-1 << 1");
-        of_BigInteger_int_helper(-1, 1, "-1 << 1");
-        of_BigInteger_int_helper(-5, 20, "-5 << 20");
-        of_BigInteger_int_helper(-5, -20, "-5 >> 20");
-        of_BigInteger_int_helper(-100, 0, "-25 << 2");
-        of_BigInteger_int_helper(1, Integer.MAX_VALUE, "1 << 2147483647");
-        of_BigInteger_int_helper(1, Integer.MIN_VALUE, "1 >> 2147483648");
-        try {
-            of(BigInteger.valueOf(4), Integer.MAX_VALUE);
-            Assert.fail();
-        } catch (ArithmeticException ignored) {}
+        of_BigInteger_int_helper("0", 0, "0");
+        of_BigInteger_int_helper("0", 1, "0");
+        of_BigInteger_int_helper("0", -3, "0");
+        of_BigInteger_int_helper("1", 0, "1");
+        of_BigInteger_int_helper("2", 0, "1 << 1");
+        of_BigInteger_int_helper("1", 1, "1 << 1");
+        of_BigInteger_int_helper("5", 20, "5 << 20");
+        of_BigInteger_int_helper("5", -20, "5 >> 20");
+        of_BigInteger_int_helper("100", 0, "25 << 2");
+        of_BigInteger_int_helper("-1", 0, "-1");
+        of_BigInteger_int_helper("-2", 0, "-1 << 1");
+        of_BigInteger_int_helper("-1", 1, "-1 << 1");
+        of_BigInteger_int_helper("-5", 20, "-5 << 20");
+        of_BigInteger_int_helper("-5", -20, "-5 >> 20");
+        of_BigInteger_int_helper("-100", 0, "-25 << 2");
+        of_BigInteger_int_helper("1", Integer.MAX_VALUE, "1 << 2147483647");
+        of_BigInteger_int_helper("1", Integer.MIN_VALUE, "1 >> 2147483648");
+
+        of_BigInteger_int_fail_helper("4", Integer.MAX_VALUE);
     }
 
     private static void of_BigInteger_helper(int n, @NotNull String output) {
-        aeq(of(BigInteger.valueOf(n)), output);
+        BinaryFraction bf = of(BigInteger.valueOf(n));
+        bf.validate();
+        aeq(bf, output);
     }
 
     @Test
@@ -109,7 +119,9 @@ public strictfp class BinaryFractionTest {
     }
 
     private static void of_int_helper(int n, @NotNull String output) {
-        aeq(of(n), output);
+        BinaryFraction bf = of(n);
+        bf.validate();
+        aeq(bf, output);
     }
 
     @Test
