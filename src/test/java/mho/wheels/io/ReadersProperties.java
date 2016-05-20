@@ -48,6 +48,7 @@ public strictfp class ReadersProperties extends TestProperties {
         propertiesReadOptionalStrict();
         propertiesReadNullableOptionalStrict();
         propertiesReadListStrict();
+        propertiesReadListWithNullsStrict();
     }
 
     private void propertiesGenericReadStrict() {
@@ -282,6 +283,27 @@ public strictfp class ReadersProperties extends TestProperties {
 
         for (List<Integer> xs : take(LIMIT, P.lists(P.integers()))) {
             assertEquals(xs, readListStrict(Readers::readIntegerStrict).apply(xs.toString()).get(), xs);
+        }
+    }
+
+    private void propertiesReadListWithNullsStrict() {
+        initialize("readListWithNullsStrict(Function<String, Optional<T>>)");
+        Iterable<Pair<Function<String, Optional<Integer>>, String>> ps = map(
+                q -> new Pair<>((Function<String, Optional<Integer>>) q.b, q.b.domain().toString()),
+                P.dependentPairsInfinite(
+                        P.withScale(4).subsetsAtLeast(1, P.withScale(4).strings()),
+                        ss -> map(
+                                m -> new FiniteDomainFunction<>(m),
+                                P.maps(ss, P.nonEmptyOptionals(P.integers()))
+                        )
+                )
+        );
+        for (Pair<Function<String, Optional<Integer>>, String> p : take(LIMIT, ps)) {
+            readListWithNullsStrict(p.a).apply(p.b);
+        }
+
+        for (List<Integer> xs : take(LIMIT, P.listsWithElement(null, P.integers()))) {
+            assertEquals(xs, readListWithNullsStrict(Readers::readIntegerStrict).apply(xs.toString()).get(), xs);
         }
     }
 }

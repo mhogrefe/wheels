@@ -14,7 +14,7 @@ Progress
 | ConcurrencyUtils            | ✔       | ✘       | ✘     | ✘     | ✘          |
 | ResultCache                 | ✔       | ✘       | ✘     | ✘     | ✘          |
 | Interpreter                 | ✘       | ✘       | ✘     | ✘     | ✘          |
-| Readers                     | ✔       | ✔       | ✔     | ✘     | ✘          |
+| Readers                     | ✔       | ✔       | ✔     | ✔     | ✔          |
 | TextInput                   | ✔       | ✘       | ✘     | ✘     | ✘          |
 | TextOutput                  | ✔       | ✘       | ✘     | ✘     | ✘          |
 | CachedIterator              | ✔       | ✘       | ✘     | ✘     | ✘          |

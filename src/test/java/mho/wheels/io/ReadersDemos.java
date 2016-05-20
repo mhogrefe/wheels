@@ -278,4 +278,21 @@ public class ReadersDemos extends Demos {
                     readListStrict(p.a).apply(p.b));
         }
     }
+
+    private void demoReadListWithNullsStrict() {
+        Iterable<Pair<Function<String, Optional<Integer>>, String>> ps = map(
+                q -> new Pair<>((Function<String, Optional<Integer>>) q.b, q.b.domain().toString()),
+                P.dependentPairsInfinite(
+                        P.withScale(4).subsetsAtLeast(1, P.withScale(4).strings()),
+                        ss -> map(
+                                m -> new FiniteDomainFunction<>(m),
+                                P.maps(ss, P.nonEmptyOptionals(P.integers()))
+                        )
+                )
+        );
+        for (Pair<Function<String, Optional<Integer>>, String> p : take(LIMIT, ps)) {
+            System.out.println("readListWithNullsStrict(" + nicePrint(p.a.toString()) + ").apply(" + nicePrint(p.b) +
+                    ") = " + readListWithNullsStrict(p.a).apply(p.b));
+        }
+    }
 }
