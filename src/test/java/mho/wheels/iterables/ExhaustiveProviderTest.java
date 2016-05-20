@@ -543,7 +543,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void rangeUp_BinaryFraction_helper(@NotNull String a, @NotNull String output) {
-        simpleProviderHelper(EP.rangeUp(BinaryFraction.read(a).get()), output);
+        simpleProviderHelper(EP.rangeUp(BinaryFraction.readStrict(a).get()), output);
     }
 
     @Test
@@ -560,7 +560,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void rangeDown_BinaryFraction_helper(@NotNull String a, @NotNull String output) {
-        simpleProviderHelper(EP.rangeDown(BinaryFraction.read(a).get()), output);
+        simpleProviderHelper(EP.rangeDown(BinaryFraction.readStrict(a).get()), output);
     }
 
     @Test
@@ -581,7 +581,7 @@ public strictfp class ExhaustiveProviderTest {
             @NotNull String b,
             @NotNull String output
     ) {
-        simpleProviderHelper(EP.range(BinaryFraction.read(a).get(), BinaryFraction.read(b).get()), output);
+        simpleProviderHelper(EP.range(BinaryFraction.readStrict(a).get(), BinaryFraction.readStrict(b).get()), output);
     }
 
     @Test

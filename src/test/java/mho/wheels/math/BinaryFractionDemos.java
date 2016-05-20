@@ -253,15 +253,15 @@ public strictfp class BinaryFractionDemos extends Demos {
         }
     }
 
-    private void demoRead() {
+    private void demoReadStrict() {
         for (String s : take(LIMIT, P.strings())) {
-            System.out.println("read(" + nicePrint(s) + ") = " + read(s));
+            System.out.println("readStrict(" + nicePrint(s) + ") = " + readStrict(s));
         }
     }
 
-    private void demoRead_targeted() {
+    private void demoReadStrict_targeted() {
         for (String s : take(LIMIT, P.strings(BINARY_FRACTION_CHARS))) {
-            System.out.println("read(" + s + ") = " + read(s));
+            System.out.println("readStrict(" + s + ") = " + readStrict(s));
         }
     }
 

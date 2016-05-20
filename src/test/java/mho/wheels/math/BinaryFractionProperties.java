@@ -61,7 +61,7 @@ public strictfp class BinaryFractionProperties extends TestProperties {
         propertiesEquals();
         propertiesHashCode();
         propertiesCompareTo();
-        propertiesRead();
+        propertiesReadStrict();
         propertiesToString();
     }
 
@@ -733,14 +733,14 @@ public strictfp class BinaryFractionProperties extends TestProperties {
         }
     }
 
-    private void propertiesRead() {
-        initialize("read(String)");
+    private void propertiesReadStrict() {
+        initialize("readStrict(String)");
         propertiesReadHelper(
                 LIMIT,
                 P,
                 BINARY_FRACTION_CHARS,
                 P.binaryFractions(),
-                BinaryFraction::read,
+                BinaryFraction::readStrict,
                 BinaryFraction::validate,
                 true,
                 true
@@ -749,6 +749,6 @@ public strictfp class BinaryFractionProperties extends TestProperties {
 
     private void propertiesToString() {
         initialize("toString()");
-        propertiesToStringHelper(LIMIT, BINARY_FRACTION_CHARS, P.binaryFractions(), BinaryFraction::read);
+        propertiesToStringHelper(LIMIT, BINARY_FRACTION_CHARS, P.binaryFractions(), BinaryFraction::readStrict);
     }
 }

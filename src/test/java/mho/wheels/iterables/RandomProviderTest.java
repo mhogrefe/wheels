@@ -1750,7 +1750,7 @@ public strictfp class RandomProviderTest {
             double exponentMean
     ) {
         binaryFractionHelper(
-                P.withScale(scale).withSecondaryScale(secondaryScale).rangeUp(BinaryFraction.read(a).get()),
+                P.withScale(scale).withSecondaryScale(secondaryScale).rangeUp(BinaryFraction.readStrict(a).get()),
                 output,
                 sampleMean,
                 mantissaBitSizeMean,
@@ -1765,7 +1765,7 @@ public strictfp class RandomProviderTest {
             @NotNull String a
     ) {
         try {
-            P.withScale(scale).withSecondaryScale(secondaryScale).rangeUp(BinaryFraction.read(a).get());
+            P.withScale(scale).withSecondaryScale(secondaryScale).rangeUp(BinaryFraction.readStrict(a).get());
             fail();
         } catch (IllegalStateException ignored) {}
         finally {
@@ -2033,7 +2033,7 @@ public strictfp class RandomProviderTest {
             double exponentMean
     ) {
         binaryFractionHelper(
-                P.withScale(scale).withSecondaryScale(secondaryScale).rangeDown(BinaryFraction.read(a).get()),
+                P.withScale(scale).withSecondaryScale(secondaryScale).rangeDown(BinaryFraction.readStrict(a).get()),
                 output,
                 sampleMean,
                 mantissaBitSizeMean,
@@ -2048,7 +2048,7 @@ public strictfp class RandomProviderTest {
             @NotNull String a
     ) {
         try {
-            P.withScale(scale).withSecondaryScale(secondaryScale).rangeDown(BinaryFraction.read(a).get());
+            P.withScale(scale).withSecondaryScale(secondaryScale).rangeDown(BinaryFraction.readStrict(a).get());
             fail();
         } catch (IllegalStateException ignored) {}
         finally {
@@ -2316,7 +2316,7 @@ public strictfp class RandomProviderTest {
             double exponentMean
     ) {
         binaryFractionHelper(
-                P.withScale(meanDivisionSize).range(BinaryFraction.read(a).get(), BinaryFraction.read(b).get()),
+                P.withScale(meanDivisionSize).range(BinaryFraction.readStrict(a).get(), BinaryFraction.readStrict(b).get()),
                 output,
                 sampleMean,
                 mantissaBitSizeMean,
@@ -2331,7 +2331,7 @@ public strictfp class RandomProviderTest {
             @NotNull String b
     ) {
         try {
-            P.withScale(meanDivisionSize).range(BinaryFraction.read(a).get(), BinaryFraction.read(b).get());
+            P.withScale(meanDivisionSize).range(BinaryFraction.readStrict(a).get(), BinaryFraction.readStrict(b).get());
             fail();
         } catch (IllegalStateException ignored) {}
         finally {
