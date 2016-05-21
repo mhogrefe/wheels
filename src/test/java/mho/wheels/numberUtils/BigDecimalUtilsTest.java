@@ -43,6 +43,7 @@ public class BigDecimalUtilsTest {
         ceilingLog10_helper("9E-12", -11);
         ceilingLog10_helper("1E-11", -11);
         ceilingLog10_helper("1.1E-11", -10);
+
         ceilingLog10_fail_helper("0");
         ceilingLog10_fail_helper("-1");
         ceilingLog10_fail_helper("-0.001");
@@ -52,7 +53,7 @@ public class BigDecimalUtilsTest {
         aeq(setPrecision(Readers.readBigDecimalStrict(x).get(), scale), output);
     }
 
-    private static void setPrecision_fail(@NotNull String x, int scale) {
+    private static void setPrecision_fail_helper(@NotNull String x, int scale) {
         try {
             setPrecision(Readers.readBigDecimalStrict(x).get(), scale);
             fail();
@@ -90,8 +91,9 @@ public class BigDecimalUtilsTest {
         setPrecision_helper("0.0", 1, "0");
         setPrecision_helper("0.0", 2, "0.0");
         setPrecision_helper("0.0", 3, "0.00");
-        setPrecision_fail("3.14159", 0);
-        setPrecision_fail("3.14159", -1);
+
+        setPrecision_fail_helper("3.14159", 0);
+        setPrecision_fail_helper("3.14159", -1);
     }
 
     private static void successor_helper(@NotNull String x, @NotNull String output) {
@@ -240,33 +242,29 @@ public class BigDecimalUtilsTest {
         canonicalize_helper("0.0", "0");
     }
 
-    private static void isCanonical_true_helper(@NotNull String x) {
-        assertTrue(isCanonical(Readers.readBigDecimalStrict(x).get()));
-    }
-
-    private static void isCanonical_false_helper(@NotNull String x) {
-        assertFalse(isCanonical(Readers.readBigDecimalStrict(x).get()));
+    private static void isCanonical_helper(@NotNull String input, boolean output) {
+        aeq(isCanonical(Readers.readBigDecimalStrict(input).get()), output);
     }
 
     @Test
     public void testIsCanonical() {
-        isCanonical_false_helper("1E+1");
-        isCanonical_true_helper("10");
-        isCanonical_false_helper("10.0");
-        isCanonical_false_helper("10.00");
-        isCanonical_true_helper("1.1");
-        isCanonical_false_helper("1.10");
-        isCanonical_false_helper("1.100");
-        isCanonical_true_helper("3.14159");
-        isCanonical_true_helper("1200");
-        isCanonical_false_helper("1.2E+3");
-        isCanonical_true_helper("-9");
-        isCanonical_true_helper("0.99");
-        isCanonical_true_helper("0.999");
-        isCanonical_true_helper("-0.99");
-        isCanonical_true_helper("-0.999");
-        isCanonical_true_helper("0");
-        isCanonical_false_helper("0E+1");
-        isCanonical_false_helper("0.0");
+        isCanonical_helper("1E+1", false);
+        isCanonical_helper("10", true);
+        isCanonical_helper("10.0", false);
+        isCanonical_helper("10.00", false);
+        isCanonical_helper("1.1", true);
+        isCanonical_helper("1.10", false);
+        isCanonical_helper("1.100", false);
+        isCanonical_helper("3.14159", true);
+        isCanonical_helper("1200", true);
+        isCanonical_helper("1.2E+3", false);
+        isCanonical_helper("-9", true);
+        isCanonical_helper("0.99", true);
+        isCanonical_helper("0.999", true);
+        isCanonical_helper("-0.99", true);
+        isCanonical_helper("-0.999", true);
+        isCanonical_helper("0", true);
+        isCanonical_helper("0E+1", false);
+        isCanonical_helper("0.0", false);
     }
 }
