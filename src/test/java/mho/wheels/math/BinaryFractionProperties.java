@@ -610,7 +610,7 @@ public strictfp class BinaryFractionProperties extends TestProperties {
     }
 
     private void propertiesSum() {
-        initialize("sum(Iterable<BinaryFraction>)");
+        initialize("sum(List<BinaryFraction>)");
         propertiesFoldHelper(
                 LIMIT,
                 P,
@@ -634,7 +634,7 @@ public strictfp class BinaryFractionProperties extends TestProperties {
     }
 
     private void propertiesProduct() {
-        initialize("product(Iterable<BinaryFraction>)");
+        initialize("product(List<BinaryFraction>)");
         propertiesFoldHelper(
                 LIMIT,
                 P,

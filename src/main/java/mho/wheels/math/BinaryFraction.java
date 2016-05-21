@@ -9,6 +9,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.List;
 import java.util.Optional;
 
 import static mho.wheels.iterables.IterableUtils.*;
@@ -619,19 +620,19 @@ public strictfp class BinaryFraction implements Comparable<BinaryFraction> {
      * A correct result will be returned as long as the result doesn't overflow, even if intermediate sums would.
      *
      * <ul>
-     *  <li>{@code xs} must be finite and may not contain any nulls. The result must have an exponent less than
-     *  2<sup>31</sup> and greater than or equal to –2<sup>31</sup>.</li>
+     *  <li>{@code xs} may not contain any nulls. The result must have an exponent less than 2<sup>31</sup> and greater
+     *  than or equal to –2<sup>31</sup>.</li>
      *  <li>The result may be any {@code BinaryFraction}.</li>
      * </ul>
      *
-     * @param xs an {@code Iterable} of {@code BinaryFraction}s.
+     * @param xs {@code List} of {@code BinaryFraction}s.
      * @return Σxs
      */
-    public static @NotNull BinaryFraction sum(@NotNull Iterable<BinaryFraction> xs) {
+    public static @NotNull BinaryFraction sum(@NotNull List<BinaryFraction> xs) {
         if (any(x -> x == null, xs)) {
             throw new NullPointerException("xs may not contain any nulls. xs: " + xs);
         }
-        if (isEmpty(xs)) return ZERO;
+        if (xs.isEmpty()) return ZERO;
         int smallestExponent = minimum(map(BinaryFraction::getExponent, xs));
         return of(
                 sumBigInteger(map(x -> x.shiftRight(smallestExponent).bigIntegerValueExact(), xs)),
@@ -644,15 +645,15 @@ public strictfp class BinaryFraction implements Comparable<BinaryFraction> {
      * correct result will be returned as long as the result doesn't overflow, even if intermediate products would.
      *
      * <ul>
-     *  <li>{@code xs} must be finite and may not contain any nulls. The result must have an exponent less than
-     *  2<sup>31</sup> and greater than or equal to –2<sup>31</sup>.</li>
+     *  <li>{@code xs} may not contain any nulls. The result must have an exponent less than 2<sup>31</sup> and greater
+     *  than or equal to –2<sup>31</sup>.</li>
      *  <li>The result may be any {@code BinaryFraction}.</li>
      * </ul>
      *
-     * @param xs an {@code Iterable} of {@code BinaryFraction}s.
+     * @param xs a {@code List} of {@code BinaryFraction}s.
      * @return Πxs
      */
-    public static @NotNull BinaryFraction product(@NotNull Iterable<BinaryFraction> xs) {
+    public static @NotNull BinaryFraction product(@NotNull List<BinaryFraction> xs) {
         if (any(x -> x == null, xs)) {
             throw new NullPointerException("xs may not contain any nulls. xs: " + xs);
         }
