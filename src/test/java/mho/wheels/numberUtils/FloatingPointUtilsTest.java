@@ -30,48 +30,64 @@ public strictfp class FloatingPointUtilsTest {
                 "36831978686870043355177324550146752512");
     }
 
+    private static void isNegativeZero_float_helper(float input, boolean output) {
+        aeq(isNegativeZero(input), output);
+    }
+
     @Test
     public void testIsNegativeZero_float() {
-        assertFalse(FloatingPointUtils.isNegativeZero(0.0f));
-        assertTrue(FloatingPointUtils.isNegativeZero(-0.0f));
-        assertFalse(FloatingPointUtils.isNegativeZero(1.0f));
-        assertFalse(FloatingPointUtils.isNegativeZero(-1.0f));
-        assertFalse(FloatingPointUtils.isNegativeZero(Float.NaN));
-        assertFalse(FloatingPointUtils.isNegativeZero(Float.POSITIVE_INFINITY));
-        assertFalse(FloatingPointUtils.isNegativeZero(Float.NEGATIVE_INFINITY));
+        isNegativeZero_float_helper(0.0f, false);
+        isNegativeZero_float_helper(-0.0f, true);
+        isNegativeZero_float_helper(1.0f, false);
+        isNegativeZero_float_helper(-1.0f, false);
+        isNegativeZero_float_helper(Float.NaN, false);
+        isNegativeZero_float_helper(Float.POSITIVE_INFINITY, false);
+        isNegativeZero_float_helper(Float.NEGATIVE_INFINITY, false);
+    }
+
+    private static void isNegativeZero_double_helper(double input, boolean output) {
+        aeq(isNegativeZero(input), output);
     }
 
     @Test
     public void testIsNegativeZero_double() {
-        assertFalse(FloatingPointUtils.isNegativeZero(0.0));
-        assertTrue(FloatingPointUtils.isNegativeZero(-0.0));
-        assertFalse(FloatingPointUtils.isNegativeZero(1.0));
-        assertFalse(FloatingPointUtils.isNegativeZero(-1.0));
-        assertFalse(FloatingPointUtils.isNegativeZero(Double.NaN));
-        assertFalse(FloatingPointUtils.isNegativeZero(Double.POSITIVE_INFINITY));
-        assertFalse(FloatingPointUtils.isNegativeZero(Double.NEGATIVE_INFINITY));
+        isNegativeZero_double_helper(0.0, false);
+        isNegativeZero_double_helper(-0.0, true);
+        isNegativeZero_double_helper(1.0, false);
+        isNegativeZero_double_helper(-1.0, false);
+        isNegativeZero_double_helper(Double.NaN, false);
+        isNegativeZero_double_helper(Double.POSITIVE_INFINITY, false);
+        isNegativeZero_double_helper(Double.NEGATIVE_INFINITY, false);
+    }
+
+    private static void isPositiveZero_float_helper(float input, boolean output) {
+        aeq(isPositiveZero(input), output);
     }
 
     @Test
     public void testIsPositiveZero_float() {
-        assertTrue(FloatingPointUtils.isPositiveZero(0.0f));
-        assertFalse(FloatingPointUtils.isPositiveZero(-0.0f));
-        assertFalse(FloatingPointUtils.isPositiveZero(1.0f));
-        assertFalse(FloatingPointUtils.isPositiveZero(-1.0f));
-        assertFalse(FloatingPointUtils.isPositiveZero(Float.NaN));
-        assertFalse(FloatingPointUtils.isPositiveZero(Float.POSITIVE_INFINITY));
-        assertFalse(FloatingPointUtils.isPositiveZero(Float.NEGATIVE_INFINITY));
+        isPositiveZero_float_helper(0.0f, true);
+        isPositiveZero_float_helper(-0.0f, false);
+        isPositiveZero_float_helper(1.0f, false);
+        isPositiveZero_float_helper(-1.0f, false);
+        isPositiveZero_float_helper(Float.NaN, false);
+        isPositiveZero_float_helper(Float.POSITIVE_INFINITY, false);
+        isPositiveZero_float_helper(Float.NEGATIVE_INFINITY, false);
+    }
+
+    private static void isPositiveZero_double_helper(double input, boolean output) {
+        aeq(isPositiveZero(input), output);
     }
 
     @Test
     public void testIsPositiveZero_double() {
-        assertTrue(FloatingPointUtils.isPositiveZero(0.0));
-        assertFalse(FloatingPointUtils.isPositiveZero(-0.0));
-        assertFalse(FloatingPointUtils.isPositiveZero(1.0));
-        assertFalse(FloatingPointUtils.isPositiveZero(-1.0));
-        assertFalse(FloatingPointUtils.isPositiveZero(Double.NaN));
-        assertFalse(FloatingPointUtils.isPositiveZero(Double.POSITIVE_INFINITY));
-        assertFalse(FloatingPointUtils.isPositiveZero(Double.NEGATIVE_INFINITY));
+        isPositiveZero_double_helper(0.0, true);
+        isPositiveZero_double_helper(-0.0, false);
+        isPositiveZero_double_helper(1.0, false);
+        isPositiveZero_double_helper(-1.0, false);
+        isPositiveZero_double_helper(Double.NaN, false);
+        isPositiveZero_double_helper(Double.POSITIVE_INFINITY, false);
+        isPositiveZero_double_helper(Double.NEGATIVE_INFINITY, false);
     }
 
     private static void successor_float_helper(float f, float g) {
@@ -104,6 +120,7 @@ public strictfp class FloatingPointUtilsTest {
         successor_float_helper(Float.MAX_VALUE, Float.POSITIVE_INFINITY);
         successor_float_helper(-Float.MAX_VALUE, -3.4028233E38f);
         successor_float_helper(Float.NEGATIVE_INFINITY, -3.4028235E38f);
+
         successor_float_fail_helper(Float.POSITIVE_INFINITY);
         successor_float_fail_helper(Float.NaN);
     }
@@ -138,6 +155,7 @@ public strictfp class FloatingPointUtilsTest {
         predecessor_float_helper(Float.MAX_VALUE, 3.4028233E38f);
         predecessor_float_helper(-Float.MAX_VALUE, Float.NEGATIVE_INFINITY);
         predecessor_float_helper(Float.POSITIVE_INFINITY, 3.4028235E38f);
+
         predecessor_float_fail_helper(Float.NEGATIVE_INFINITY);
         predecessor_float_fail_helper(Float.NaN);
     }
@@ -172,6 +190,7 @@ public strictfp class FloatingPointUtilsTest {
         successor_double_helper(Double.MAX_VALUE, Double.POSITIVE_INFINITY);
         successor_double_helper(-Double.MAX_VALUE, -1.7976931348623155E308);
         successor_double_helper(Double.NEGATIVE_INFINITY, -1.7976931348623157E308);
+
         successor_double_fail_helper(Double.POSITIVE_INFINITY);
         successor_double_fail_helper(Double.NaN);
     }
@@ -206,6 +225,7 @@ public strictfp class FloatingPointUtilsTest {
         predecessor_double_helper(Double.MAX_VALUE, 1.7976931348623155E308);
         predecessor_double_helper(-Double.MAX_VALUE, Double.NEGATIVE_INFINITY);
         predecessor_double_helper(Double.POSITIVE_INFINITY, 1.7976931348623157E308);
+
         predecessor_double_fail_helper(Double.NEGATIVE_INFINITY);
         predecessor_double_fail_helper(Double.NaN);
     }
@@ -247,6 +267,7 @@ public strictfp class FloatingPointUtilsTest {
         toOrderedRepresentation_float_helper(-1.401E-42f, -1000);
         toOrderedRepresentation_float_helper(-1.401298E-39f, -1000000);
         toOrderedRepresentation_float_helper(-0.0047237873f, -1000000000);
+
         toOrderedRepresentation_float_fail_helper(Float.NaN);
     }
 
@@ -286,6 +307,7 @@ public strictfp class FloatingPointUtilsTest {
         floatFromOrderedRepresentation_helper(-1000, -1.401E-42f);
         floatFromOrderedRepresentation_helper(-1000000, -1.401298E-39f);
         floatFromOrderedRepresentation_helper(-1000000000, -0.0047237873f);
+
         floatFromOrderedRepresentation_fail_helper(2139095041);
         floatFromOrderedRepresentation_fail_helper(-2139095041);
     }
@@ -327,6 +349,7 @@ public strictfp class FloatingPointUtilsTest {
         toOrderedRepresentation_double_helper(-4.940656E-318, -1000000L);
         toOrderedRepresentation_double_helper(-4.94065645841E-312, -1000000000000L);
         toOrderedRepresentation_double_helper(-7.832953389245686E-242, -1000000000000000000L);
+
         toOrderedRepresentation_double_fail_helper(Double.NaN);
     }
 
@@ -366,9 +389,12 @@ public strictfp class FloatingPointUtilsTest {
         doubleFromOrderedRepresentation_helper(-1000000L, -4.940656E-318);
         doubleFromOrderedRepresentation_helper(-1000000000000L, -4.94065645841E-312);
         doubleFromOrderedRepresentation_helper(-1000000000000000000L, -7.832953389245686E-242);
+
         doubleFromOrderedRepresentation_fail_helper(9218868437227405313L);
         doubleFromOrderedRepresentation_fail_helper(-9218868437227405313L);
     }
+
+    //todo continue cleanup
 
     private static void floatFromMantissaAndExponent_helper(int m, int e, float f) {
         aeq(floatFromMantissaAndExponent(m, e).get(), f);
