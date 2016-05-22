@@ -359,7 +359,7 @@ public final class MathUtils {
         if (n < 0) {
             throw new ArithmeticException("n cannot be negative. Invalid n: " + n);
         }
-        return productBigInteger(range(x.subtract(BigInteger.valueOf(n - 1)), x));
+        return productBigInteger(toList(range(x.subtract(BigInteger.valueOf(n - 1)), x)));
     }
 
     /**
@@ -487,7 +487,7 @@ public final class MathUtils {
             throw new ArithmeticException("n cannot be negative. Invalid n: " + n);
         }
         return sumBigInteger(
-                map(k -> binomialCoefficient(BigInteger.valueOf(n), k), range(minSize, n))
+                toList(map(k -> binomialCoefficient(BigInteger.valueOf(n), k), range(minSize, n)))
         );
     }
 
@@ -930,7 +930,7 @@ public final class MathUtils {
                 toList(map(p -> toList(range(0, p.b)), primeFactors))
         );
         Function<List<Integer>, Integer> f = exponents -> productInteger(
-                zipWith(MathUtils::pow, map(q -> q.a, primeFactors), exponents)
+                toList(zipWith(MathUtils::pow, map(q -> q.a, primeFactors), exponents))
         );
         return sort(map(f, possibleExponents));
     }
@@ -952,7 +952,7 @@ public final class MathUtils {
                 toList(map(p -> toList(range(0, p.b)), primeFactors))
         );
         Function<List<Integer>, BigInteger> f = exponents -> productBigInteger(
-                zipWith(BigInteger::pow, map(q -> q.a, primeFactors), exponents)
+                toList(zipWith(BigInteger::pow, map(q -> q.a, primeFactors), exponents))
         );
         return sort(map(f, possibleExponents));
     }
@@ -1013,7 +1013,7 @@ public final class MathUtils {
         if (n < 1) {
             throw new IllegalArgumentException("n must be positive. Invalid n: " + n);
         }
-        return p == 1 ? n : productInteger(map(q -> pow(q.a, q.b / p), compactPrimeFactors(n)));
+        return p == 1 ? n : productInteger(toList(map(q -> pow(q.a, q.b / p), compactPrimeFactors(n))));
     }
 
     /**
@@ -1036,7 +1036,7 @@ public final class MathUtils {
         if (n.signum() != 1) {
             throw new IllegalArgumentException("n must be positive. Invalid n: " + n);
         }
-        return p == 1 ? n : productBigInteger(map(q -> q.a.pow(q.b / p), compactPrimeFactors(n)));
+        return p == 1 ? n : productBigInteger(toList(map(q -> q.a.pow(q.b / p), compactPrimeFactors(n))));
     }
 
     /**
@@ -1053,7 +1053,7 @@ public final class MathUtils {
      */
     @SuppressWarnings("JavaDoc")
     public static int totient(int n) {
-        return productInteger(map(p -> pow(p.a, p.b - 1) * (p.a - 1), compactPrimeFactors(n)));
+        return productInteger(toList(map(p -> pow(p.a, p.b - 1) * (p.a - 1), compactPrimeFactors(n))));
     }
 
     /**
@@ -1071,7 +1071,7 @@ public final class MathUtils {
     @SuppressWarnings("JavaDoc")
     public static @NotNull BigInteger totient(@NotNull BigInteger n) {
         return productBigInteger(
-                map(p -> p.a.pow(p.b - 1).multiply(p.a.subtract(BigInteger.ONE)), compactPrimeFactors(n))
+                toList(map(p -> p.a.pow(p.b - 1).multiply(p.a.subtract(BigInteger.ONE)), compactPrimeFactors(n)))
         );
     }
 

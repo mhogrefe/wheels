@@ -2304,14 +2304,14 @@ public final strictfp class IterableUtils {
      * returned.
      *
      * <ul>
-     *  <li>{@code xs} must be finite and may not contain any nulls.</li>
+     *  <li>{@code xs} may not contain any nulls.</li>
      *  <li>The result may be any {@code byte}.</li>
      * </ul>
      *
-     * @param xs an {@code Iterable} of {@code Byte}s.
+     * @param xs a {@code List} of {@code Byte}s.
      * @return Σxs
      */
-    public static byte sumByte(@NotNull Iterable<Byte> xs) {
+    public static byte sumByte(@NotNull List<Byte> xs) {
         return foldl((x, y) -> (byte) (x + y), (byte) 0, xs);
     }
 
@@ -2320,14 +2320,14 @@ public final strictfp class IterableUtils {
      * returned.
      *
      * <ul>
-     *  <li>{@code xs} must be finite and may not contain any nulls.</li>
+     *  <li>{@code xs} may not contain any nulls.</li>
      *  <li>The result may be any {@code short}.</li>
      * </ul>
      *
-     * @param xs an {@code Iterable} of {@code Short}s.
+     * @param xs a {@code List} of {@code Short}s.
      * @return Σxs
      */
-    public static short sumShort(@NotNull Iterable<Short> xs) {
+    public static short sumShort(@NotNull List<Short> xs) {
         return foldl((x, y) -> (short) (x + y), (short) 0, xs);
     }
 
@@ -2336,14 +2336,14 @@ public final strictfp class IterableUtils {
      * returned.
      *
      * <ul>
-     *  <li>{@code xs} must be finite and may not contain any nulls.</li>
+     *  <li>{@code xs} may not contain any nulls.</li>
      *  <li>The result may be any {@code int}.</li>
      * </ul>
      *
-     * @param xs an {@code Iterable} of {@code Integer}s.
+     * @param xs a {@code List} of {@code Integer}s.
      * @return Σxs
      */
-    public static int sumInteger(@NotNull Iterable<Integer> xs) {
+    public static int sumInteger(@NotNull List<Integer> xs) {
         return foldl((x, y) -> x + y, 0, xs);
     }
 
@@ -2352,14 +2352,14 @@ public final strictfp class IterableUtils {
      * returned.
      *
      * <ul>
-     *  <li>{@code xs} must be finite and may not contain any nulls.</li>
+     *  <li>{@code xs} may not contain any nulls.</li>
      *  <li>The result may be any {@code long}.</li>
      * </ul>
      *
-     * @param xs an {@code Iterable} of {@code Long}s.
+     * @param xs a {@code List} of {@code Long}s.
      * @return Σxs
      */
-    public static long sumLong(@NotNull Iterable<Long> xs) {
+    public static long sumLong(@NotNull List<Long> xs) {
         return foldl((x, y) -> x + y, 0L, xs);
     }
 
@@ -2368,15 +2368,15 @@ public final strictfp class IterableUtils {
      * empty, 0.0 is returned.
      *
      * <ul>
-     *  <li>{@code xs} must be finite and may not contain any nulls.</li>
+     *  <li>{@code xs} may not contain any nulls.</li>
      *  <li>The result may be any {@code float}.</li>
      * </ul>
      *
-     * @param xs an {@code Iterable} of {@code Float}s.
+     * @param xs a {@code List} of {@code Float}s.
      * @return Σxs
      */
-    public static float sumFloat(@NotNull Iterable<Float> xs) {
-        if (isEmpty(xs)) return 0.0f;
+    public static float sumFloat(@NotNull List<Float> xs) {
+        if (xs.isEmpty()) return 0.0f;
         return foldl1((x, y) -> x + y, xs);
     }
 
@@ -2385,15 +2385,15 @@ public final strictfp class IterableUtils {
      * empty, 0.0 is returned.
      *
      * <ul>
-     *  <li>{@code xs} must be finite and may not contain any nulls.</li>
+     *  <li>{@code xs} may not contain any nulls.</li>
      *  <li>The result may be any {@code double}.</li>
      * </ul>
      *
-     * @param xs an {@code Iterable} of {@code Double}s.
+     * @param xs a {@code List} of {@code Double}s.
      * @return Σxs
      */
-    public static double sumDouble(Iterable<Double> xs) {
-        if (isEmpty(xs)) return 0.0;
+    public static double sumDouble(List<Double> xs) {
+        if (xs.isEmpty()) return 0.0;
         return foldl1((x, y) -> x + y, xs);
     }
 
@@ -2401,14 +2401,14 @@ public final strictfp class IterableUtils {
      * Returns the sum of all the {@code BigInteger}s in {@code xs}. If {@code xs} is empty, 0 is returned.
      *
      * <ul>
-     *  <li>{@code xs} must be finite and may not contain any nulls.</li>
+     *  <li>{@code xs} may not contain any nulls.</li>
      *  <li>The result may be any {@code BigInteger}.</li>
      * </ul>
      *
-     * @param xs an {@code Iterable} of {@code BigInteger}s.
+     * @param xs a {@code List} of {@code BigInteger}s.
      * @return Σxs
      */
-    public static @NotNull BigInteger sumBigInteger(@NotNull Iterable<BigInteger> xs) {
+    public static @NotNull BigInteger sumBigInteger(@NotNull List<BigInteger> xs) {
         return foldl(BigInteger::add, BigInteger.ZERO, xs);
     }
 
@@ -2416,15 +2416,15 @@ public final strictfp class IterableUtils {
      * Returns the sum of all the {@code BigDecimal}s in {@code xs}. If {@code xs} is empty, 0 is returned.
      *
      * <ul>
-     *  <li>{@code xs} must be finite and may not contain any nulls.</li>
+     *  <li>{@code xs} may not contain any nulls.</li>
      *  <li>The result may be any {@code BigDecimal}.</li>
      * </ul>
      *
-     * @param xs an {@code Iterable} of {@code BigDecimal}s.
+     * @param xs a {@code List} of {@code BigDecimal}s.
      * @return Σxs
      */
-    public static @NotNull BigDecimal sumBigDecimal(@NotNull Iterable<BigDecimal> xs) {
-        if (isEmpty(xs)) return BigDecimal.ZERO;
+    public static @NotNull BigDecimal sumBigDecimal(@NotNull List<BigDecimal> xs) {
+        if (xs.isEmpty()) return BigDecimal.ZERO;
         if (head(xs) == null)
             throw new NullPointerException();
         return foldl1(BigDecimal::add, xs);
@@ -2435,14 +2435,14 @@ public final strictfp class IterableUtils {
      * returned.
      *
      * <ul>
-     *  <li>{@code xs} must be finite and may not contain any nulls.</li>
+     *  <li>{@code xs} may not contain any nulls.</li>
      *  <li>The result may be any {@code byte}.</li>
      * </ul>
      *
-     * @param xs an {@code Iterable} of {@code Byte}s.
+     * @param xs a {@code List} of {@code Byte}s.
      * @return Πxs
      */
-    public static byte productByte(@NotNull Iterable<Byte> xs) {
+    public static byte productByte(@NotNull List<Byte> xs) {
         return foldl((x, y) -> (byte) (x * y), (byte) 1, xs);
     }
 
@@ -2451,14 +2451,14 @@ public final strictfp class IterableUtils {
      * returned.
      *
      * <ul>
-     *  <li>{@code xs} must be finite and may not contain any nulls.</li>
+     *  <li>{@code xs} may not contain any nulls.</li>
      *  <li>The result may be any {@code short}.</li>
      * </ul>
      *
-     * @param xs an {@code Iterable} of {@code Short}s.
+     * @param xs a {@code List} of {@code Short}s.
      * @return Πxs
      */
-    public static short productShort(@NotNull Iterable<Short> xs) {
+    public static short productShort(@NotNull List<Short> xs) {
         return foldl((x, y) -> (short) (x * y), (short) 1, xs);
     }
 
@@ -2467,14 +2467,14 @@ public final strictfp class IterableUtils {
      * returned.
      *
      * <ul>
-     *  <li>{@code xs} must be finite and may not contain any nulls.</li>
+     *  <li>{@code xs} may not contain any nulls.</li>
      *  <li>The result may be any {@code int}.</li>
      * </ul>
      *
-     * @param xs an {@code Iterable} of {@code Integer}s.
+     * @param xs a {@code List} of {@code Integer}s.
      * @return Πxs
      */
-    public static int productInteger(@NotNull Iterable<Integer> xs) {
+    public static int productInteger(@NotNull List<Integer> xs) {
         return foldl((x, y) -> x * y, 1, xs);
     }
 
@@ -2483,14 +2483,14 @@ public final strictfp class IterableUtils {
      * returned.
      *
      * <ul>
-     *  <li>{@code xs} must be finite and may not contain any nulls.</li>
+     *  <li>{@code xs} may not contain any nulls.</li>
      *  <li>The result may be any {@code long}.</li>
      * </ul>
      *
-     * @param xs an {@code Iterable} of {@code Long}s.
+     * @param xs a {@code List} of {@code Long}s.
      * @return Πxs
      */
-    public static long productLong(@NotNull Iterable<Long> xs) {
+    public static long productLong(@NotNull List<Long> xs) {
         return foldl((x, y) -> x * y, 1L, xs);
     }
 
@@ -2499,14 +2499,14 @@ public final strictfp class IterableUtils {
      * {@code xs} is empty, 1.0 is returned.
      *
      * <ul>
-     *  <li>{@code xs} must be finite and may not contain any nulls.</li>
+     *  <li>{@code xs} may not contain any nulls.</li>
      *  <li>The result may be any {@code float}.</li>
      * </ul>
      *
-     * @param xs an {@code Iterable} of {@code Float}s.
+     * @param xs a {@code List} of {@code Float}s.
      * @return Πxs
      */
-    public static float productFloat(@NotNull Iterable<Float> xs) {
+    public static float productFloat(@NotNull List<Float> xs) {
         return foldl((x, y) -> x * y, 1.0f, xs);
     }
 
@@ -2515,14 +2515,14 @@ public final strictfp class IterableUtils {
      * {@code xs} is empty, 1.0 is returned.
      *
      * <ul>
-     *  <li>{@code xs} must be finite and may not contain any nulls.</li>
+     *  <li>{@code xs} may not contain any nulls.</li>
      *  <li>The result may be any {@code double}.</li>
      * </ul>
      *
-     * @param xs an {@code Iterable} of {@code Double}s.
+     * @param xs a {@code List} of {@code Double}s.
      * @return Πxs
      */
-    public static double productDouble(@NotNull Iterable<Double> xs) {
+    public static double productDouble(@NotNull List<Double> xs) {
         return foldl((x, y) -> x * y, 1.0, xs);
     }
 
@@ -2530,14 +2530,14 @@ public final strictfp class IterableUtils {
      * Returns the product of all the {@code BigInteger}s in {@code xs}. If {@code xs} is empty, 1 is returned.
      *
      * <ul>
-     *  <li>{@code xs} must be finite and may not contain any nulls.</li>
+     *  <li>{@code xs} may not contain any nulls.</li>
      *  <li>The result may be any {@code BigInteger}.</li>
      * </ul>
      *
-     * @param xs an {@code Iterable} of {@code BigInteger}s.
+     * @param xs a {@code List} of {@code BigInteger}s.
      * @return Πxs
      */
-    public static @NotNull BigInteger productBigInteger(Iterable<BigInteger> xs) {
+    public static @NotNull BigInteger productBigInteger(List<BigInteger> xs) {
         if (any(x -> x == null, xs)) throw new NullPointerException();
         if (any(x -> x.equals(BigInteger.ZERO), xs)) return BigInteger.ZERO;
         return foldl(BigInteger::multiply, BigInteger.ONE, xs);
@@ -2547,15 +2547,15 @@ public final strictfp class IterableUtils {
      * Returns the product of all the {@code BigDecimal}s in {@code xs}. If {@code xs} is empty, 1 is returned.
      *
      * <ul>
-     *  <li>{@code xs} must be finite and may not contain any nulls.</li>
+     *  <li>{@code xs} may not contain any nulls.</li>
      *  <li>The result may be any {@code BigDecimal}.</li>
      * </ul>
      *
-     * @param xs an {@code Iterable} of {@code BigDecimal}s.
+     * @param xs a {@code List} of {@code BigDecimal}s.
      * @return Πxs
      */
-    public static @NotNull BigDecimal productBigDecimal(@NotNull Iterable<BigDecimal> xs) {
-        if (isEmpty(xs)) return BigDecimal.ONE;
+    public static @NotNull BigDecimal productBigDecimal(@NotNull List<BigDecimal> xs) {
+        if (xs.isEmpty()) return BigDecimal.ONE;
         if (any(x -> x == null, xs)) throw new NullPointerException();
         if (any(x -> eq(x, BigDecimal.ZERO), xs)) return BigDecimal.ZERO;
         return foldl(BigDecimal::multiply, BigDecimal.ONE, xs);

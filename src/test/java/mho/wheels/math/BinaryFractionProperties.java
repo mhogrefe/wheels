@@ -624,7 +624,7 @@ public strictfp class BinaryFractionProperties extends TestProperties {
 
         for (List<BinaryFraction> bfs : take(LIMIT, P.lists(P.binaryFractions()))) {
             homomorphic(
-                    xs -> map(BinaryFraction::bigDecimalValue, xs),
+                    xs -> toList(map(BinaryFraction::bigDecimalValue, xs)),
                     BinaryFraction::bigDecimalValue,
                     BinaryFraction::sum,
                     xs -> BigDecimalUtils.canonicalize(IterableUtils.sumBigDecimal(xs)),
@@ -648,7 +648,7 @@ public strictfp class BinaryFractionProperties extends TestProperties {
 
         for (List<BinaryFraction> bfs : take(LIMIT, P.lists(P.binaryFractions()))) {
             homomorphic(
-                    xs -> map(BinaryFraction::bigDecimalValue, xs),
+                    xs -> toList(map(BinaryFraction::bigDecimalValue, xs)),
                     BinaryFraction::bigDecimalValue,
                     BinaryFraction::product,
                     xs -> BigDecimalUtils.canonicalize(IterableUtils.productBigDecimal(xs)),

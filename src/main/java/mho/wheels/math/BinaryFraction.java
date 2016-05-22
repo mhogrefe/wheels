@@ -635,7 +635,7 @@ public strictfp class BinaryFraction implements Comparable<BinaryFraction> {
         if (xs.isEmpty()) return ZERO;
         int smallestExponent = minimum(map(BinaryFraction::getExponent, xs));
         return of(
-                sumBigInteger(map(x -> x.shiftRight(smallestExponent).bigIntegerValueExact(), xs)),
+                sumBigInteger(toList(map(x -> x.shiftRight(smallestExponent).bigIntegerValueExact(), xs))),
                 smallestExponent
         );
     }
@@ -659,9 +659,9 @@ public strictfp class BinaryFraction implements Comparable<BinaryFraction> {
         }
         if (any(x -> x == ZERO, xs)) return ZERO;
         return of(
-                productBigInteger(map(BinaryFraction::getMantissa, xs)),
+                productBigInteger(toList(map(BinaryFraction::getMantissa, xs))),
                 //BigInteger conversion protects against over- and underflow
-                sumBigInteger(map(x -> BigInteger.valueOf(x.getExponent()), xs)).intValueExact()
+                sumBigInteger(toList(map(x -> BigInteger.valueOf(x.getExponent()), xs))).intValueExact()
         );
     }
 

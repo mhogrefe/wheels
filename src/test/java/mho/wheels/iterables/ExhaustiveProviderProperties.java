@@ -1345,7 +1345,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
             assertTrue(p, all(q -> q != null, pairs));
             assertTrue(p, isSubsetOf(map(q -> q.a, pairs), p.a));
             assertTrue(p, isSubsetOf(map(q -> q.b, pairs), concat(p.b.range())));
-            assertEquals(p, length(pairs), sumInteger(map(i -> length(p.b.apply(i)), p.a)));
+            assertEquals(p, length(pairs), sumInteger(toList(map(i -> length(p.b.apply(i)), p.a))));
         }
 
         ps = P.dependentPairsInfinite(
@@ -9566,7 +9566,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
         for (List<List<Integer>> xss : take(LIMIT, xsss)) {
             Iterable<List<Integer>> lists = EP.cartesianProduct(xss);
             testNoRemove(TINY_LIMIT, lists);
-            BigInteger listsLength = productBigInteger(map(xs -> BigInteger.valueOf(xs.size()), xss));
+            BigInteger listsLength = productBigInteger(toList(map(xs -> BigInteger.valueOf(xs.size()), xss)));
             if (lt(listsLength, BigInteger.valueOf(SMALL_LIMIT))) {
                 List<List<Integer>> listsList = toList(lists);
                 assertEquals(xss, listsList.size(), listsLength.intValueExact());
@@ -9583,7 +9583,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
         for (List<List<Integer>> xss : take(LIMIT, xsss)) {
             Iterable<List<Integer>> lists = EP.cartesianProduct(xss);
             testNoRemove(TINY_LIMIT, lists);
-            BigInteger listsLength = productBigInteger(map(xs -> BigInteger.valueOf(xs.size()), xss));
+            BigInteger listsLength = productBigInteger(toList(map(xs -> BigInteger.valueOf(xs.size()), xss)));
             if (lt(listsLength, BigInteger.valueOf(SMALL_LIMIT))) {
                 assertTrue(xss, unique(lists));
             }

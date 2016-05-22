@@ -444,7 +444,7 @@ public class MathUtilsProperties extends TestProperties {
         if (n < 0) {
             throw new ArithmeticException("n cannot be negative. Invalid n: " + n);
         }
-        return productBigInteger(range(BigInteger.ONE, BigInteger.valueOf(n)));
+        return productBigInteger(toList(range(BigInteger.ONE, BigInteger.valueOf(n))));
     }
 
     private void propertiesFactorial_int() {
@@ -480,7 +480,7 @@ public class MathUtilsProperties extends TestProperties {
         if (n.signum() == -1) {
             throw new ArithmeticException("n cannot be negative. Invalid n: " + n);
         }
-        return productBigInteger(range(BigInteger.ONE, n));
+        return productBigInteger(toList(range(BigInteger.ONE, n)));
     }
 
     private void propertiesFactorial_BigInteger() {
@@ -614,7 +614,7 @@ public class MathUtilsProperties extends TestProperties {
             throw new ArithmeticException("n cannot be negative. Invalid n: " + n);
         }
         BigInteger bigN = BigInteger.valueOf(n);
-        return sumBigInteger(map(k -> fallingFactorial(bigN, k), range(0, n)));
+        return sumBigInteger(toList(map(k -> fallingFactorial(bigN, k), range(0, n))));
     }
 
     private void propertiesNumberOfArrangementsOfASet_int() {
@@ -650,7 +650,7 @@ public class MathUtilsProperties extends TestProperties {
             throw new ArithmeticException("n cannot be negative. Invalid n: " + n);
         }
         BigInteger bigN = BigInteger.valueOf(n);
-        return sumBigInteger(map(k -> fallingFactorial(bigN, k), range(minSize, n)));
+        return sumBigInteger(toList(map(k -> fallingFactorial(bigN, k), range(minSize, n))));
     }
 
     private void propertiesNumberOfArrangementsOfASet_int_int() {
@@ -1222,7 +1222,7 @@ public class MathUtilsProperties extends TestProperties {
         for (int i : take(LIMIT, P.positiveIntegers())) {
             List<Integer> primeFactors = toList(primeFactors(i));
             assertEquals(i, toList(map(BigInteger::intValueExact, primeFactors(BigInteger.valueOf(i)))), primeFactors);
-            inverse(MathUtils::primeFactors, IterableUtils::productInteger, i);
+            inverse(is -> toList(primeFactors(is)), IterableUtils::productInteger, i);
             assertTrue(i, weaklyIncreasing(primeFactors));
             assertTrue(i, all(MathUtils::isPrime, primeFactors));
         }
@@ -1243,7 +1243,7 @@ public class MathUtilsProperties extends TestProperties {
         initialize("primeFactors(BigInteger)");
         for (BigInteger i : take(LIMIT, P.withScale(12).positiveBigIntegers())) {
             List<BigInteger> primeFactors = toList(primeFactors(i));
-            inverse(MathUtils::primeFactors, IterableUtils::productBigInteger, i);
+            inverse(is -> toList(primeFactors(is)), IterableUtils::productBigInteger, i);
             assertTrue(i, weaklyIncreasing(primeFactors));
             assertTrue(i, all(MathUtils::isPrime, primeFactors));
         }
@@ -1272,9 +1272,7 @@ public class MathUtilsProperties extends TestProperties {
             );
             inverse(
                     MathUtils::compactPrimeFactors,
-                    (Iterable<Pair<Integer, Integer>> fs) -> productInteger(
-                            map(p -> pow(p.a, p.b), fs)
-                    ),
+                    (Iterable<Pair<Integer, Integer>> fs) -> productInteger(toList(map(p -> pow(p.a, p.b), fs))),
                     i
             );
             //noinspection RedundantCast
@@ -1301,7 +1299,7 @@ public class MathUtilsProperties extends TestProperties {
             List<Pair<BigInteger, Integer>> primeFactors = toList(compactPrimeFactors(i));
             inverse(
                     MathUtils::compactPrimeFactors,
-                    (Iterable<Pair<BigInteger, Integer>> fs) -> productBigInteger(map(p -> p.a.pow(p.b), fs)),
+                    (Iterable<Pair<BigInteger, Integer>> fs) -> productBigInteger(toList(map(p -> p.a.pow(p.b), fs))),
                     i
             );
             //noinspection RedundantCast

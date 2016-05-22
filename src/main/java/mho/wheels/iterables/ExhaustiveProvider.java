@@ -6013,7 +6013,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     private static @NotNull Iterable<List<Integer>> cartesianProductIndices(List<Integer> listSizes) {
         //noinspection Convert2MethodRef
-        BigInteger outputSize = productBigInteger(map(i -> BigInteger.valueOf(i), listSizes));
+        BigInteger outputSize = productBigInteger(toList(map(i -> BigInteger.valueOf(i), listSizes)));
         int limit = listSizes.size() - 1;
         return () -> new EventuallyKnownSizeIterator<List<Integer>>() {
             private final @NotNull List<Integer> list = toList(replicate(listSizes.size(), 0));

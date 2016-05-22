@@ -11141,11 +11141,11 @@ public strictfp class RandomProviderTest {
     }
 
     private static double meanOfIntegers(@NotNull List<Integer> xs) {
-        return sumDouble(map(i -> (double) i / DEFAULT_SAMPLE_SIZE, xs));
+        return sumDouble(toList(map(i -> (double) i / DEFAULT_SAMPLE_SIZE, xs)));
     }
 
     private static double meanOfBigIntegers(@NotNull List<BigInteger> xs) {
-        return sumDouble(map(i -> i.doubleValue() / DEFAULT_SAMPLE_SIZE, xs));
+        return sumDouble(toList(map(i -> i.doubleValue() / DEFAULT_SAMPLE_SIZE, xs)));
     }
 
     private static @NotNull List<Integer> readIntegerListWithNulls(@NotNull String s) {
@@ -11158,19 +11158,19 @@ public strictfp class RandomProviderTest {
     }
 
     private static double meanOfBinaryFractions(@NotNull List<BinaryFraction> xs) {
-        return sumDouble(map(bf -> bf.doubleRange().a / DEFAULT_SAMPLE_SIZE, xs));
+        return sumDouble(toList(map(bf -> bf.doubleRange().a / DEFAULT_SAMPLE_SIZE, xs)));
     }
 
     private static float meanOfFloats(@NotNull List<Float> xs) {
-        return sumFloat(map(f -> f / DEFAULT_SAMPLE_SIZE, xs));
+        return sumFloat(toList(map(f -> f / DEFAULT_SAMPLE_SIZE, xs)));
     }
 
     private static double meanOfDoubles(@NotNull List<Double> xs) {
-        return sumDouble(map(d -> d / DEFAULT_SAMPLE_SIZE, xs));
+        return sumDouble(toList(map(d -> d / DEFAULT_SAMPLE_SIZE, xs)));
     }
 
     private static double meanOfBigDecimals(@NotNull List<BigDecimal> xs) {
-        return sumDouble(map(bd -> bd.doubleValue() / DEFAULT_SAMPLE_SIZE, xs));
+        return sumDouble(toList(map(bd -> bd.doubleValue() / DEFAULT_SAMPLE_SIZE, xs)));
     }
 }
 // @formatter:on
