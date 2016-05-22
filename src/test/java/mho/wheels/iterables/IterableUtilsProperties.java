@@ -103,7 +103,12 @@ public strictfp class IterableUtilsProperties extends TestProperties {
         Map<String, Function<List<Integer>, List<Integer>>> functions = new LinkedHashMap<>();
         functions.put("alt", IterableUtilsProperties::unrepeat_alt);
         functions.put("standard", IterableUtils::unrepeat);
-        compareImplementations("unrepeat(List<T>)", take(LIMIT, P.lists(P.withNull(P.integers()))), functions);
+        compareImplementations(
+                "unrepeat(List<T>)",
+                take(LIMIT, P.lists(P.withNull(P.integers()))),
+                functions,
+                v -> P.reset()
+        );
     }
 
     private void propertiesSumByte() {
@@ -219,7 +224,8 @@ public strictfp class IterableUtilsProperties extends TestProperties {
         compareImplementations(
                 "sumBigInteger(List<BigInteger>)",
                 take(LIMIT, P.lists(P.bigIntegers())),
-                functions
+                functions,
+                v -> P.reset()
         );
     }
 
@@ -357,7 +363,8 @@ public strictfp class IterableUtilsProperties extends TestProperties {
         compareImplementations(
                 "productBigInteger(List<BigInteger>)",
                 take(LIMIT, P.lists(P.bigIntegers())),
-                functions
+                functions,
+                v -> P.reset()
         );
     }
 
@@ -395,7 +402,8 @@ public strictfp class IterableUtilsProperties extends TestProperties {
         compareImplementations(
                 "productBigDecimal(List<BigInteger>)",
                 take(LIMIT, P.lists(P.bigDecimals())),
-                functions
+                functions,
+                v -> P.reset()
         );
     }
 
@@ -513,7 +521,8 @@ public strictfp class IterableUtilsProperties extends TestProperties {
         compareImplementations(
                 "sumSignBigInteger(List<BigInteger>)",
                 take(LIMIT, P.lists(P.bigIntegers())),
-                functions
+                functions,
+                v -> P.reset()
         );
     }
 
@@ -631,7 +640,8 @@ public strictfp class IterableUtilsProperties extends TestProperties {
         compareImplementations(
                 "sumSignBigDecimal(List<BigDecimal>)",
                 take(LIMIT, P.lists(P.bigDecimals())),
-                functions
+                functions,
+                v -> P.reset()
         );
     }
 

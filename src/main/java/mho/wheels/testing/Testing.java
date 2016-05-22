@@ -446,10 +446,12 @@ public strictfp class Testing {
     public static <A, B> void compareImplementations(
             @NotNull String method,
             @NotNull Iterable<A> inputs,
-            @NotNull Map<String, Function<A, B>> functions
+            @NotNull Map<String, Function<A, B>> functions,
+            @NotNull Consumer<Void> reset
     ) {
         System.out.println("\t\tcomparing " + method + " implementations...");
         for (Map.Entry<String, Function<A, B>> entry : functions.entrySet()) {
+            reset.accept(null);
             Function<A, B> function = entry.getValue();
             long totalTime = 0;
             for (A input : inputs) {

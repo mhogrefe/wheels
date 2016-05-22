@@ -186,7 +186,7 @@ public class MathUtilsProperties extends TestProperties {
                 },
                 P.pairsLogarithmicOrder(P.integersGeometric(), P.naturalIntegersGeometric())
         );
-        compareImplementations("pow(int, int)", take(100000, ps), functions);
+        compareImplementations("pow(int, int)", take(LIMIT, ps), functions, v -> P.reset());
     }
 
     private static int gcd_int_int_simplest(int x, int y) {
@@ -239,7 +239,7 @@ public class MathUtilsProperties extends TestProperties {
         functions.put("simplest", p -> gcd_int_int_simplest(p.a, p.b));
         functions.put("explicit", p -> gcd_int_int_explicit(p.a, p.b));
         functions.put("standard", p -> gcd(p.a, p.b));
-        compareImplementations("gcd(int, int)", take(LIMIT, P.pairs(P.integers())), functions);
+        compareImplementations("gcd(int, int)", take(LIMIT, P.pairs(P.integers())), functions, v -> P.reset());
     }
 
     private static long gcd_long_long_simplest(long x, long y) {
@@ -293,14 +293,19 @@ public class MathUtilsProperties extends TestProperties {
         Map<String, Function<Pair<Long, Long>, Long>> functions = new LinkedHashMap<>();
         functions.put("simplest", p -> gcd_long_long_simplest(p.a, p.b));
         functions.put("standard", p -> gcd(p.a, p.b));
-        compareImplementations("gcd(long, long)", take(LIMIT, P.pairs(P.longs())), functions);
+        compareImplementations("gcd(long, long)", take(LIMIT, P.pairs(P.longs())), functions, v -> P.reset());
     }
 
     private void compareImplementationsGcd_long_long2() {
         Map<String, Function<Pair<Long, Long>, Long>> functions = new LinkedHashMap<>();
         functions.put("explicit", p -> gcd_long_long_explicit(p.a, p.b));
         functions.put("standard", p -> gcd(p.a, p.b));
-        compareImplementations("gcd(long, long)", take(LIMIT, P.pairs(map(i -> (long) i, P.integers()))), functions);
+        compareImplementations(
+                "gcd(long, long)",
+                take(LIMIT, P.pairs(map(i -> (long) i, P.integers()))),
+                functions,
+                v -> P.reset()
+        );
     }
 
     private static @NotNull BigInteger lcm_explicit(@NotNull BigInteger x, @NotNull BigInteger y) {
@@ -355,7 +360,7 @@ public class MathUtilsProperties extends TestProperties {
         functions.put("standard", p -> lcm(p.a, p.b));
         //noinspection Convert2MethodRef
         Iterable<Pair<BigInteger, BigInteger>> ps = P.pairs(map(s -> BigInteger.valueOf(s), P.positiveShorts()));
-        compareImplementations("lcm(BigInteger, BigInteger)", take(LIMIT, ps), functions);
+        compareImplementations("lcm(BigInteger, BigInteger)", take(LIMIT, ps), functions, v -> P.reset());
     }
 
     private static @NotNull BigInteger gcd_List_BigInteger_alt(@NotNull List<BigInteger> xs) {
@@ -385,7 +390,12 @@ public class MathUtilsProperties extends TestProperties {
         Map<String, Function<List<BigInteger>, BigInteger>> functions = new LinkedHashMap<>();
         functions.put("alt", MathUtilsProperties::gcd_List_BigInteger_alt);
         functions.put("standard", MathUtils::gcd);
-        compareImplementations("gcd(List<BigInteger>)", take(LIMIT, P.lists(P.bigIntegers())), functions);
+        compareImplementations(
+                "gcd(List<BigInteger>)",
+                take(LIMIT, P.lists(P.bigIntegers())),
+                functions,
+                v -> P.reset()
+        );
     }
 
     private static @NotNull BigInteger lcm_List_BigInteger_alt(@NotNull List<BigInteger> xs) {
@@ -433,7 +443,7 @@ public class MathUtilsProperties extends TestProperties {
         functions.put("alt", MathUtilsProperties::lcm_List_BigInteger_alt);
         functions.put("standard", MathUtils::lcm);
         Iterable<List<BigInteger>> iss = P.listsAtLeast(1, P.positiveBigIntegers());
-        compareImplementations("lcm(List<BigInteger>)", take(LIMIT, iss), functions);
+        compareImplementations("lcm(List<BigInteger>)", take(LIMIT, iss), functions, v -> P.reset());
     }
 
     private static @NotNull BigInteger factorial_int_simplest(int n) {
@@ -473,7 +483,12 @@ public class MathUtilsProperties extends TestProperties {
         functions.put("simplest", MathUtilsProperties::factorial_int_simplest);
         functions.put("alt", MathUtilsProperties::factorial_int_alt);
         functions.put("standard", MathUtils::factorial);
-        compareImplementations("factorial(int)", take(MEDIUM_LIMIT, P.naturalIntegersGeometric()), functions);
+        compareImplementations(
+                "factorial(int)",
+                take(MEDIUM_LIMIT, P.naturalIntegersGeometric()),
+                functions,
+                v -> P.reset()
+        );
     }
 
     private static @NotNull BigInteger factorial_BigInteger_alt(@NotNull BigInteger n) {
@@ -511,7 +526,7 @@ public class MathUtilsProperties extends TestProperties {
         functions.put("standard", MathUtils::factorial);
         //noinspection Convert2MethodRef
         Iterable<BigInteger> is = map(j -> BigInteger.valueOf(j), P.naturalIntegersGeometric());
-        compareImplementations("factorial(BigInteger)", take(MEDIUM_LIMIT, is), functions);
+        compareImplementations("factorial(BigInteger)", take(MEDIUM_LIMIT, is), functions, v -> P.reset());
     }
 
     private static @NotNull BigInteger subfactorial_int_simplest(int n) {
@@ -542,7 +557,12 @@ public class MathUtilsProperties extends TestProperties {
         Map<String, Function<Integer, BigInteger>> functions = new LinkedHashMap<>();
         functions.put("simplest", MathUtilsProperties::subfactorial_int_simplest);
         functions.put("standard", MathUtils::subfactorial);
-        compareImplementations("subfactorial(int)", take(MEDIUM_LIMIT, P.naturalIntegersGeometric()), functions);
+        compareImplementations(
+                "subfactorial(int)",
+                take(MEDIUM_LIMIT, P.naturalIntegersGeometric()),
+                functions,
+                v -> P.reset()
+        );
     }
 
     private void propertiesSubfactorial_BigInteger() {
@@ -639,7 +659,7 @@ public class MathUtilsProperties extends TestProperties {
         functions.put("alt", MathUtilsProperties::numberOfArrangementsOfASet_int_alt);
         functions.put("standard", MathUtils::numberOfArrangementsOfASet);
         Iterable<Integer> is = P.naturalIntegersGeometric();
-        compareImplementations("numberOfArrangementsOfASet(int)", take(SMALL_LIMIT, is), functions);
+        compareImplementations("numberOfArrangementsOfASet(int)", take(SMALL_LIMIT, is), functions, v -> P.reset());
     }
 
     private static @NotNull BigInteger numberOfArrangementsOfASet_int_int_alt(int minSize, int n) {
@@ -689,7 +709,7 @@ public class MathUtilsProperties extends TestProperties {
         functions.put("alt", p -> numberOfArrangementsOfASet_int_int_alt(p.a, p.b));
         functions.put("standard", p -> numberOfArrangementsOfASet(p.a, p.b));
         Iterable<Pair<Integer, Integer>> ps = P.pairs(P.naturalIntegersGeometric());
-        compareImplementations("numberOfArrangementsOfASet(int, int)", take(LIMIT, ps), functions);
+        compareImplementations("numberOfArrangementsOfASet(int, int)", take(LIMIT, ps), functions, v -> P.reset());
     }
 
     private void propertiesBinomialCoefficient() {
@@ -841,7 +861,12 @@ public class MathUtilsProperties extends TestProperties {
         Map<String, Function<Integer, Boolean>> functions = new LinkedHashMap<>();
         functions.put("alt", MathUtilsProperties::reversePermutationSign_alt);
         functions.put("standard", MathUtils::reversePermutationSign);
-        compareImplementations("reversePermutationSign()", take(LIMIT, P.naturalIntegers()), functions);
+        compareImplementations(
+                "reversePermutationSign()",
+                take(LIMIT, P.naturalIntegers()),
+                functions,
+                v -> P.reset()
+        );
     }
 
     private void propertiesFastGrowingCeilingInverse() {
@@ -930,7 +955,7 @@ public class MathUtilsProperties extends TestProperties {
         functions.put("alt", p -> ceilingLog_alt(p.a, p.b));
         functions.put("standard", p -> ceilingLog(p.a, p.b));
         Iterable<Pair<BigInteger, BigInteger>> ps = P.pairs(P.rangeUp(IntegerUtils.TWO), P.positiveBigIntegers());
-        compareImplementations("ceilingLog(BigInteger, BigInteger)", take(LIMIT, ps), functions);
+        compareImplementations("ceilingLog(BigInteger, BigInteger)", take(LIMIT, ps), functions, v -> P.reset());
     }
 
     private void propertiesCeilingInverse() {
@@ -1045,7 +1070,7 @@ public class MathUtilsProperties extends TestProperties {
                 P.naturalBigIntegers(),
                 P.positiveIntegersGeometric()
         );
-        compareImplementations("ceilingRoot(int, BigInteger)", take(LIMIT, ps), functions);
+        compareImplementations("ceilingRoot(int, BigInteger)", take(LIMIT, ps), functions, v -> P.reset());
     }
 
     private static int smallestPrimeFactor_int_simplest(int n) {
@@ -1114,7 +1139,7 @@ public class MathUtilsProperties extends TestProperties {
         functions.put("alt2", MathUtilsProperties::smallestPrimeFactor_int_alt2);
         functions.put("standard", MathUtils::smallestPrimeFactor);
         Iterable<Integer> is = P.withScale(65536).rangeUpGeometric(2);
-        compareImplementations("smallestPrimeFactor(int)", take(LIMIT, is), functions);
+        compareImplementations("smallestPrimeFactor(int)", take(LIMIT, is), functions, v -> P.reset());
     }
 
     private void propertiesSmallestPrimeFactor_BigInteger() {
@@ -1200,7 +1225,12 @@ public class MathUtilsProperties extends TestProperties {
         functions.put("alt1", MathUtilsProperties::isPrime_int_alt1);
         functions.put("alt2", MathUtilsProperties::isPrime_int_alt2);
         functions.put("standard", MathUtils::isPrime);
-        compareImplementations("isPrime(int)", take(LIMIT, P.withScale(65536).positiveIntegersGeometric()), functions);
+        compareImplementations(
+                "isPrime(int)",
+                take(LIMIT, P.withScale(65536).positiveIntegersGeometric()),
+                functions,
+                v -> P.reset()
+        );
     }
 
     private void propertiesIsPrime_BigInteger() {
@@ -1495,7 +1525,7 @@ public class MathUtilsProperties extends TestProperties {
         functions.put("simplest", MathUtilsProperties::totient_int_simplest);
         functions.put("standard", MathUtils::totient);
         Iterable<Integer> is = P.withScale(65536).rangeUpGeometric(2);
-        compareImplementations("totient(int)", take(LIMIT, is), functions);
+        compareImplementations("totient(int)", take(LIMIT, is), functions, v -> P.reset());
     }
 
     private void propertiesTotient_BigInteger() {

@@ -433,7 +433,12 @@ public strictfp class BinaryFractionProperties extends TestProperties {
         Map<String, Function<Pair<BinaryFraction, BinaryFraction>, BinaryFraction>> functions = new LinkedHashMap<>();
         functions.put("simplest", p -> subtract_simplest(p.a, p.b));
         functions.put("standard", p -> p.a.subtract(p.b));
-        compareImplementations("subtract(BinaryFraction)", take(LIMIT, P.pairs(P.binaryFractions())), functions);
+        compareImplementations(
+                "subtract(BinaryFraction)",
+                take(LIMIT, P.pairs(P.binaryFractions())),
+                functions,
+                v -> P.reset()
+        );
     }
 
     private void propertiesMultiply() {
@@ -548,7 +553,7 @@ public strictfp class BinaryFractionProperties extends TestProperties {
                 },
                 P.pairs(P.binaryFractions(), P.integersGeometric())
         );
-        compareImplementations("shiftLeft(int)", take(LIMIT, ps), functions);
+        compareImplementations("shiftLeft(int)", take(LIMIT, ps), functions, v -> P.reset());
     }
 
     private static @NotNull BinaryFraction shiftRight_simplest(@NotNull BinaryFraction bf, int bits) {
@@ -606,7 +611,7 @@ public strictfp class BinaryFractionProperties extends TestProperties {
                 },
                 P.pairs(P.binaryFractions(), P.integersGeometric())
         );
-        compareImplementations("shiftRight(int)", take(LIMIT, ps), functions);
+        compareImplementations("shiftRight(int)", take(LIMIT, ps), functions, v -> P.reset());
     }
 
     private void propertiesSum() {

@@ -30,9 +30,7 @@ public class ConcurrencyUtils {
         service.shutdownNow();
         try {
             service.awaitTermination(1, TimeUnit.MINUTES);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        } catch (InterruptedException ignored) {}
         return result;
     }
 }

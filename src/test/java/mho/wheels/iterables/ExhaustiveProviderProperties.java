@@ -1806,7 +1806,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
                 xs -> xs.size() < TINY_LIMIT,
                 P.withScale(4).lists(P.withNull(P.integersGeometric()))
         );
-        compareImplementations("pairsLogarithmicOrder(Iterable<T>)", take(LIMIT, iss), functions);
+        compareImplementations("pairsLogarithmicOrder(Iterable<T>)", take(LIMIT, iss), functions, v -> P.reset());
     }
 
     private void propertiesPairsSquareRootOrder_Iterable_Iterable() {
@@ -1908,7 +1908,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
         functions.put("simplest", ExhaustiveProviderProperties::pairsSquareRootOrder_Iterable_simplest);
         functions.put("standard", xs -> toList(EP.pairsSquareRootOrder(xs)));
         Iterable<List<Integer>> iss = P.withScale(4).lists(P.integersGeometric());
-        compareImplementations("pairsSquareRootOrder(Iterable<T>)", take(LIMIT, iss), functions);
+        compareImplementations("pairsSquareRootOrder(Iterable<T>)", take(LIMIT, iss), functions, v -> P.reset());
     }
 
     private void propertiesPermutationsFinite() {
@@ -2142,7 +2142,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
                         P.withScale(4).naturalIntegersGeometric()
                 )
         );
-        compareImplementations("listsLex(int, List<T>)", take(LIMIT, ps), functions);
+        compareImplementations("listsLex(int, List<T>)", take(LIMIT, ps), functions, v -> P.reset());
     }
 
     private void propertiesPairsLex() {
@@ -2953,7 +2953,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
                         P.withScale(4).naturalIntegersGeometric()
                 )
         );
-        compareImplementations("stringsLex(int, String)", take(LIMIT, ps), functions);
+        compareImplementations("stringsLex(int, String)", take(LIMIT, ps), functions, v -> P.reset());
     }
 
     private void propertiesListsShortlex() {
@@ -3274,7 +3274,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
                 xs -> lt(BigInteger.valueOf(xs.size()).pow(2), BigInteger.valueOf(LIMIT)),
                 P.withScale(4).lists(P.withNull(P.integersGeometric()))
         );
-        compareImplementations("pairs(Iterable<T>)", take(LIMIT, iss), functions);
+        compareImplementations("pairs(Iterable<T>)", take(LIMIT, iss), functions, v -> P.reset());
     }
 
     private void propertiesTriples_Iterable_Iterable_Iterable() {
@@ -3401,7 +3401,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
                 xs -> lt(BigInteger.valueOf(xs.size()).pow(3), BigInteger.valueOf(LIMIT)),
                 P.withScale(4).lists(P.withNull(P.integersGeometric()))
         );
-        compareImplementations("triples(Iterable<T>)", take(LIMIT, iss), functions);
+        compareImplementations("triples(Iterable<T>)", take(LIMIT, iss), functions, v -> P.reset());
     }
 
     private void propertiesQuadruples_Iterable_Iterable_Iterable_Iterable() {
@@ -3540,7 +3540,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
                 xs -> lt(BigInteger.valueOf(xs.size()).pow(4), BigInteger.valueOf(LIMIT)),
                 P.withScale(4).lists(P.withNull(P.integersGeometric()))
         );
-        compareImplementations("quadruples(Iterable<T>)", take(MEDIUM_LIMIT, iss), functions);
+        compareImplementations("quadruples(Iterable<T>)", take(MEDIUM_LIMIT, iss), functions, v -> P.reset());
     }
 
     private void propertiesQuintuples_Iterable_Iterable_Iterable_Iterable_Iterable() {
@@ -3734,7 +3734,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
                 xs -> lt(BigInteger.valueOf(xs.size()).pow(5), BigInteger.valueOf(LIMIT)),
                 P.withScale(4).lists(P.withNull(P.integersGeometric()))
         );
-        compareImplementations("quintuples(Iterable<T>)", take(MEDIUM_LIMIT, iss), functions);
+        compareImplementations("quintuples(Iterable<T>)", take(MEDIUM_LIMIT, iss), functions, v -> P.reset());
     }
 
     private void propertiesSextuples_Iterable_Iterable_Iterable_Iterable_Iterable_Iterable() {
@@ -3954,7 +3954,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
                 xs -> lt(BigInteger.valueOf(xs.size()).pow(6), BigInteger.valueOf(LIMIT)),
                 P.withScale(4).lists(P.withNull(P.integersGeometric()))
         );
-        compareImplementations("sextuples(Iterable<T>)", take(MEDIUM_LIMIT, iss), functions);
+        compareImplementations("sextuples(Iterable<T>)", take(MEDIUM_LIMIT, iss), functions, v -> P.reset());
     }
 
     private void propertiesSeptuples_Iterable_Iterable_Iterable_Iterable_Iterable_Iterable_Iterable() {
@@ -4205,7 +4205,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
                 xs -> lt(BigInteger.valueOf(xs.size()).pow(7), BigInteger.valueOf(LIMIT)),
                 P.withScale(4).lists(P.withNull(P.integersGeometric()))
         );
-        compareImplementations("septuples(Iterable<T>)", take(MEDIUM_LIMIT, iss), functions);
+        compareImplementations("septuples(Iterable<T>)", take(MEDIUM_LIMIT, iss), functions, v -> P.reset());
     }
 
     private void propertiesStrings_int_String() {

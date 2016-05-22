@@ -130,7 +130,7 @@ public class IntegerUtilsProperties extends TestProperties {
         functions.put("simplest", IntegerUtilsProperties::isPowerOfTwo_int_simplest);
         functions.put("alt", IntegerUtilsProperties::isPowerOfTwo_int_alt);
         functions.put("standard", IntegerUtils::isPowerOfTwo);
-        compareImplementations("isPowerOfTwo(int)", take(LIMIT, P.positiveIntegers()), functions);
+        compareImplementations("isPowerOfTwo(int)", take(LIMIT, P.positiveIntegers()), functions, v -> P.reset());
     }
 
     private static boolean isPowerOfTwo_long_simplest(long n) {
@@ -165,7 +165,7 @@ public class IntegerUtilsProperties extends TestProperties {
         functions.put("simplest", IntegerUtilsProperties::isPowerOfTwo_long_simplest);
         functions.put("alt", IntegerUtilsProperties::isPowerOfTwo_long_alt);
         functions.put("standard", IntegerUtils::isPowerOfTwo);
-        compareImplementations("isPowerOfTwo(long)", take(LIMIT, P.positiveLongs()), functions);
+        compareImplementations("isPowerOfTwo(long)", take(LIMIT, P.positiveLongs()), functions, v -> P.reset());
     }
 
     private static boolean isPowerOfTwo_BigInteger_alt(@NotNull BigInteger n) {
@@ -195,7 +195,12 @@ public class IntegerUtilsProperties extends TestProperties {
         Map<String, Function<BigInteger, Boolean>> functions = new LinkedHashMap<>();
         functions.put("alt", IntegerUtilsProperties::isPowerOfTwo_BigInteger_alt);
         functions.put("standard", IntegerUtils::isPowerOfTwo);
-        compareImplementations("isPowerOfTwo(BigInteger)", take(LIMIT, P.positiveBigIntegers()), functions);
+        compareImplementations(
+                "isPowerOfTwo(BigInteger)",
+                take(LIMIT, P.positiveBigIntegers()),
+                functions,
+                v -> P.reset()
+        );
     }
 
     private static int ceilingLog2_int_simplest(int n) {
@@ -222,7 +227,7 @@ public class IntegerUtilsProperties extends TestProperties {
         Map<String, Function<Integer, Integer>> functions = new LinkedHashMap<>();
         functions.put("simplest", IntegerUtilsProperties::ceilingLog2_int_simplest);
         functions.put("standard", IntegerUtils::ceilingLog2);
-        compareImplementations("ceilingLog2(int)", take(LIMIT, P.positiveIntegers()), functions);
+        compareImplementations("ceilingLog2(int)", take(LIMIT, P.positiveIntegers()), functions, v -> P.reset());
     }
 
     private static int ceilingLog2_long_simplest(long n) {
@@ -249,7 +254,7 @@ public class IntegerUtilsProperties extends TestProperties {
         Map<String, Function<Long, Integer>> functions = new LinkedHashMap<>();
         functions.put("simplest", IntegerUtilsProperties::ceilingLog2_long_simplest);
         functions.put("standard", IntegerUtils::ceilingLog2);
-        compareImplementations("ceilingLog2(long)", take(LIMIT, P.positiveLongs()), functions);
+        compareImplementations("ceilingLog2(long)", take(LIMIT, P.positiveLongs()), functions, v -> P.reset());
     }
 
     private void propertiesCeilingLog2_BigInteger() {
@@ -301,7 +306,7 @@ public class IntegerUtilsProperties extends TestProperties {
         Map<String, Function<Integer, List<Boolean>>> functions = new LinkedHashMap<>();
         functions.put("simplest", IntegerUtilsProperties::bits_int_simplest);
         functions.put("standard", IntegerUtils::bits);
-        compareImplementations("bits(int)", take(LIMIT, P.naturalIntegers()), functions);
+        compareImplementations("bits(int)", take(LIMIT, P.naturalIntegers()), functions, v -> P.reset());
     }
 
     private static @NotNull List<Boolean> bits_BigInteger_alt(@NotNull BigInteger n) {
@@ -344,7 +349,7 @@ public class IntegerUtilsProperties extends TestProperties {
         Map<String, Function<BigInteger, List<Boolean>>> functions = new LinkedHashMap<>();
         functions.put("alt", IntegerUtilsProperties::bits_BigInteger_alt);
         functions.put("standard", IntegerUtils::bits);
-        compareImplementations("bits(BigInteger)", take(LIMIT, P.naturalBigIntegers()), functions);
+        compareImplementations("bits(BigInteger)", take(LIMIT, P.naturalBigIntegers()), functions, v -> P.reset());
     }
 
     private static @NotNull List<Boolean> bitsPadded_int_int_simplest(int length, int n) {
@@ -397,7 +402,7 @@ public class IntegerUtilsProperties extends TestProperties {
                 P.naturalIntegers(),
                 P.naturalIntegersGeometric()
         );
-        compareImplementations("bitsPadded(int, int)", take(LIMIT, ps), functions);
+        compareImplementations("bitsPadded(int, int)", take(LIMIT, ps), functions, v -> P.reset());
     }
 
     private void propertiesBitsPadded_int_BigInteger() {
@@ -476,7 +481,7 @@ public class IntegerUtilsProperties extends TestProperties {
         functions.put("simplest", IntegerUtilsProperties::bigEndianBits_int_simplest);
         functions.put("alt", IntegerUtilsProperties::bigEndianBits_int_alt);
         functions.put("standard", IntegerUtils::bigEndianBits);
-        compareImplementations("bigEndianBits(int)", take(LIMIT, P.naturalIntegers()), functions);
+        compareImplementations("bigEndianBits(int)", take(LIMIT, P.naturalIntegers()), functions, v -> P.reset());
     }
 
     private static @NotNull List<Boolean> bigEndianBits_BigInteger_simplest(@NotNull BigInteger n) {
@@ -512,7 +517,12 @@ public class IntegerUtilsProperties extends TestProperties {
         Map<String, Function<BigInteger, List<Boolean>>> functions = new LinkedHashMap<>();
         functions.put("simplest", IntegerUtilsProperties::bigEndianBits_BigInteger_simplest);
         functions.put("standard", IntegerUtils::bigEndianBits);
-        compareImplementations("bigEndianBits(BigInteger)", take(LIMIT, P.naturalBigIntegers()), functions);
+        compareImplementations(
+                "bigEndianBits(BigInteger)",
+                take(LIMIT, P.naturalBigIntegers()),
+                functions,
+                v -> P.reset()
+        );
     }
 
     private static @NotNull List<Boolean> bigEndianBitsPadded_int_int_simplest(int length, int n) {
@@ -571,7 +581,7 @@ public class IntegerUtilsProperties extends TestProperties {
                 P.naturalIntegers(),
                 P.naturalIntegersGeometric()
         );
-        compareImplementations("bigEndianBitsPadded(int, int)", take(LIMIT, ps), functions);
+        compareImplementations("bigEndianBitsPadded(int, int)", take(LIMIT, ps), functions, v -> P.reset());
     }
 
     private static @NotNull List<Boolean> bigEndianBitsPadded_int_BigInteger_alt(int length, @NotNull BigInteger n) {
@@ -624,7 +634,7 @@ public class IntegerUtilsProperties extends TestProperties {
                 P.naturalBigIntegers(),
                 P.naturalIntegersGeometric()
         );
-        compareImplementations("bigEndianBitsPadded(int, BigInteger)", take(LIMIT, ps), functions);
+        compareImplementations("bigEndianBitsPadded(int, BigInteger)", take(LIMIT, ps), functions, v -> P.reset());
     }
 
     private static @NotNull BigInteger fromBits_alt(@NotNull Iterable<Boolean> xs) {
@@ -665,7 +675,12 @@ public class IntegerUtilsProperties extends TestProperties {
         Map<String, Function<List<Boolean>, BigInteger>> functions = new LinkedHashMap<>();
         functions.put("alt", IntegerUtilsProperties::fromBits_alt);
         functions.put("standard", IntegerUtils::fromBits);
-        compareImplementations("fromBits(Iterable<Boolean>)", take(LIMIT, P.lists(P.booleans())), functions);
+        compareImplementations(
+                "fromBits(Iterable<Boolean>)",
+                take(LIMIT, P.lists(P.booleans())),
+                functions,
+                v -> P.reset()
+        );
     }
 
     private static @NotNull BigInteger fromBigEndianBits_simplest(@NotNull Iterable<Boolean> xs) {
@@ -698,7 +713,12 @@ public class IntegerUtilsProperties extends TestProperties {
         Map<String, Function<List<Boolean>, BigInteger>> functions = new LinkedHashMap<>();
         functions.put("simplest", IntegerUtilsProperties::fromBigEndianBits_simplest);
         functions.put("standard", IntegerUtils::fromBigEndianBits);
-        compareImplementations("fromBigEndianBits(Iterable<Boolean>)", take(LIMIT, P.lists(P.booleans())), functions);
+        compareImplementations(
+                "fromBigEndianBits(Iterable<Boolean>)",
+                take(LIMIT, P.lists(P.booleans())),
+                functions,
+                v -> P.reset()
+        );
     }
 
     private static @NotNull List<Integer> digits_int_int_simplest(int base, int n) {
@@ -782,7 +802,7 @@ public class IntegerUtilsProperties extends TestProperties {
         functions.put("alt", p -> digits_int_int_alt(p.b, p.a));
         functions.put("standard", p -> digits(p.b, p.a));
         Iterable<Pair<Integer, Integer>> ps = P.pairsSquareRootOrder(P.naturalIntegers(), P.rangeUpGeometric(2));
-        compareImplementations("digits(int, int)", take(LIMIT, ps), functions);
+        compareImplementations("digits(int, int)", take(LIMIT, ps), functions, v -> P.reset());
     }
 
     private static @NotNull List<BigInteger> digits_BigInteger_BigInteger_alt(
@@ -905,7 +925,7 @@ public class IntegerUtilsProperties extends TestProperties {
                 P.naturalBigIntegers(),
                 map(i -> BigInteger.valueOf(i), P.rangeUpGeometric(2))
         );
-        compareImplementations("digits(BigInteger, BigInteger)", take(LIMIT, ps), functions);
+        compareImplementations("digits(BigInteger, BigInteger)", take(LIMIT, ps), functions, v -> P.reset());
     }
 
     private static @NotNull List<Integer> digitsPadded_int_int_int_simplest(int length, int base, int n) {
@@ -1014,7 +1034,7 @@ public class IntegerUtilsProperties extends TestProperties {
                 P.rangeUpGeometric(2),
                 P.naturalIntegers()
         );
-        compareImplementations("digitsPadded(int, int, int)", take(LIMIT, ts), functions);
+        compareImplementations("digitsPadded(int, int, int)", take(LIMIT, ts), functions, v -> P.reset());
     }
 
     private static @NotNull List<BigInteger> digitsPadded_int_BigInteger_BigInteger_alt(
@@ -1131,7 +1151,12 @@ public class IntegerUtilsProperties extends TestProperties {
                 map(i -> BigInteger.valueOf(i), P.rangeUpGeometric(2)),
                 P.naturalBigIntegers()
         );
-        compareImplementations("digitsPadded(int, BigInteger, BigInteger)", take(LIMIT, ts), functions);
+        compareImplementations(
+                "digitsPadded(int, BigInteger, BigInteger)",
+                take(LIMIT, ts),
+                functions,
+                v -> P.reset()
+        );
     }
 
     private static @NotNull List<Integer> bigEndianDigits_int_int_simplest(int base, int n) {
@@ -1202,7 +1227,7 @@ public class IntegerUtilsProperties extends TestProperties {
         functions.put("simplest", p -> bigEndianDigits_int_int_simplest(p.b, p.a));
         functions.put("standard", p -> bigEndianDigits(p.b, p.a));
         Iterable<Pair<Integer, Integer>> ps = P.pairsSquareRootOrder(P.naturalIntegers(), P.rangeUpGeometric(2));
-        compareImplementations("bigEndianDigits(int, int)", take(LIMIT, ps), functions);
+        compareImplementations("bigEndianDigits(int, int)", take(LIMIT, ps), functions, v -> P.reset());
     }
 
     private void propertiesBigEndianDigits_BigInteger_BigInteger() {
@@ -1372,7 +1397,7 @@ public class IntegerUtilsProperties extends TestProperties {
                 P.rangeUpGeometric(2),
                 P.naturalIntegers()
         );
-        compareImplementations("bigEndianDigitsPadded(int, int, int)", take(LIMIT, ts), functions);
+        compareImplementations("bigEndianDigitsPadded(int, int, int)", take(LIMIT, ts), functions, v -> P.reset());
     }
 
     private static @NotNull List<BigInteger> bigEndianDigitsPadded_int_BigInteger_BigInteger_alt(
@@ -1479,7 +1504,12 @@ public class IntegerUtilsProperties extends TestProperties {
                 map(i -> BigInteger.valueOf(i), P.rangeUpGeometric(2)),
                 P.naturalBigIntegers()
         );
-        compareImplementations("bigEndianDigitsPadded(int, BigInteger, BigInteger)", take(LIMIT, ts), functions);
+        compareImplementations(
+                "bigEndianDigitsPadded(int, BigInteger, BigInteger)",
+                take(LIMIT, ts),
+                functions,
+                v -> P.reset()
+        );
     }
 
     private static @NotNull BigInteger fromDigits_int_Iterable_Integer_simplest(
@@ -1560,7 +1590,7 @@ public class IntegerUtilsProperties extends TestProperties {
                 p -> all(i -> i < p.b, p.a),
                 P.pairsLogarithmicOrder(P.lists(P.naturalIntegersGeometric()), P.rangeUpGeometric(2))
         );
-        compareImplementations("fromDigits(int, Iterable<Integer>)", take(LIMIT, ps), functions);
+        compareImplementations("fromDigits(int, Iterable<Integer>)", take(LIMIT, ps), functions, v -> P.reset());
     }
 
     private void propertiesFromDigits_BigInteger_Iterable_BigInteger() {
@@ -1706,7 +1736,12 @@ public class IntegerUtilsProperties extends TestProperties {
                 p -> all(i -> i < p.b, p.a),
                 P.pairsLogarithmicOrder(P.lists(P.naturalIntegersGeometric()), P.rangeUpGeometric(2))
         );
-        compareImplementations("fromBigEndianDigits(int, Iterable<Integer>)", take(LIMIT, ps), functions);
+        compareImplementations(
+                "fromBigEndianDigits(int, Iterable<Integer>)",
+                take(LIMIT, ps),
+                functions,
+                v -> P.reset()
+        );
     }
 
     private void propertiesFromBigEndianDigits_int_Iterable_BigInteger() {
@@ -1863,7 +1898,12 @@ public class IntegerUtilsProperties extends TestProperties {
         functions.put("simplest", p -> toStringBase_int_int_simplest(p.b, p.a));
         functions.put("standard", p -> toStringBase(p.b, p.a));
         Iterable<Pair<Integer, Integer>> ps = P.pairsSquareRootOrder(P.naturalIntegers(), P.rangeUpGeometric(2));
-        compareImplementations("fromBigEndianDigits(int, Iterable<Integer>)", take(LIMIT, ps), functions);
+        compareImplementations(
+                "fromBigEndianDigits(int, Iterable<Integer>)",
+                take(LIMIT, ps),
+                functions,
+                v -> P.reset()
+        );
     }
 
     private void propertiesToStringBase_BigInteger_BigInteger() {
@@ -1948,7 +1988,7 @@ public class IntegerUtilsProperties extends TestProperties {
                 p -> new Pair<>(p.a, toStringBase(BigInteger.valueOf(p.a), p.b)),
                 P.pairs(P.rangeUpGeometric(2), P.bigIntegers())
         );
-        compareImplementations("fromString(int, String)", take(LIMIT, ps), functions);
+        compareImplementations("fromString(int, String)", take(LIMIT, ps), functions, v -> P.reset());
     }
 
     private void propertiesFromStringBase_BigInteger_String() {
@@ -2061,7 +2101,7 @@ public class IntegerUtilsProperties extends TestProperties {
         functions.put("alt", p -> squareRootMux_alt(p.a, p.b));
         functions.put("standard", p -> squareRootMux(p.a, p.b));
         Iterable<Pair<BigInteger, BigInteger>> ps = P.pairs(P.naturalBigIntegers());
-        compareImplementations("squareRootMux(BigInteger, BigInteger)", take(LIMIT, ps), functions);
+        compareImplementations("squareRootMux(BigInteger, BigInteger)", take(LIMIT, ps), functions, v -> P.reset());
     }
 
     private static @NotNull Pair<BigInteger, BigInteger> squareRootDemux_alt(@NotNull BigInteger n) {
@@ -2093,7 +2133,12 @@ public class IntegerUtilsProperties extends TestProperties {
         Map<String, Function<BigInteger, Pair<BigInteger, BigInteger>>> functions = new LinkedHashMap<>();
         functions.put("alt", IntegerUtilsProperties::squareRootDemux_alt);
         functions.put("standard", IntegerUtils::squareRootDemux);
-        compareImplementations("squareRootDemux(BigInteger)", take(LIMIT, P.naturalBigIntegers()), functions);
+        compareImplementations(
+                "squareRootDemux(BigInteger)",
+                take(LIMIT, P.naturalBigIntegers()),
+                functions,
+                v -> P.reset()
+        );
     }
 
     private static @NotNull BigInteger mux_alt(@NotNull List<BigInteger> xs) {
@@ -2138,7 +2183,12 @@ public class IntegerUtilsProperties extends TestProperties {
         Map<String, Function<List<BigInteger>, BigInteger>> functions = new LinkedHashMap<>();
         functions.put("alt", IntegerUtilsProperties::mux_alt);
         functions.put("standard", IntegerUtils::mux);
-        compareImplementations("mux(List<BigInteger>)", take(LIMIT, P.lists(P.naturalBigIntegers())), functions);
+        compareImplementations(
+                "mux(List<BigInteger>)",
+                take(LIMIT, P.lists(P.naturalBigIntegers())),
+                functions,
+                v -> P.reset()
+        );
     }
 
     private static @NotNull List<BigInteger> demux_alt(int size, @NotNull BigInteger n) {
@@ -2225,6 +2275,6 @@ public class IntegerUtilsProperties extends TestProperties {
                 new Pair<>(BigInteger.ZERO, 0),
                 P.pairsLogarithmicOrder(P.naturalBigIntegers(), P.positiveIntegersGeometric())
         );
-        compareImplementations("demux(int, BigInteger)", take(LIMIT, ps), functions);
+        compareImplementations("demux(int, BigInteger)", take(LIMIT, ps), functions, v -> P.reset());
     }
 }
