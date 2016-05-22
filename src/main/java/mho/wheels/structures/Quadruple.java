@@ -69,6 +69,13 @@ public final class Quadruple<A, B, C, D> {
         return Arrays.asList(q.a, q.b, q.c, q.d);
     }
 
+    public static <T> Quadruple<T, T, T, T> fromList(@NotNull List<T> xs) {
+        if (xs.size() != 4) {
+            throw new IllegalArgumentException();
+        }
+        return new Quadruple<>(xs.get(0), xs.get(1), xs.get(2), xs.get(3));
+    }
+
     /**
      * Compares two {@code Quadruple}s, provided that {@code A}, {@code B}, {@code C}, and {@code D} all implement
      * {@code Comparable}.

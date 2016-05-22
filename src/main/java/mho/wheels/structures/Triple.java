@@ -60,6 +60,13 @@ public final class Triple<A, B, C> {
         return Arrays.asList(t.a, t.b, t.c);
     }
 
+    public static <T> Triple<T, T, T> fromList(@NotNull List<T> xs) {
+        if (xs.size() != 3) {
+            throw new IllegalArgumentException();
+        }
+        return new Triple<>(xs.get(0), xs.get(1), xs.get(2));
+    }
+
     /**
      * Compares two {@code Triple}s, provided that {@code A}, {@code B}, and {@code C} all implement
      * {@code Comparable}.

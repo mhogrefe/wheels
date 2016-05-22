@@ -51,6 +51,13 @@ public final class Pair<A, B> {
         return Arrays.asList(p.a, p.b);
     }
 
+    public static <T> Pair<T, T> fromList(@NotNull List<T> xs) {
+        if (xs.size() != 2) {
+            throw new IllegalArgumentException();
+        }
+        return new Pair<>(xs.get(0), xs.get(1));
+    }
+
     /**
      * Compares two {@code Pair}s, provided that {@code A} and {@code B} both implement {@link java.lang.Comparable}.
      *

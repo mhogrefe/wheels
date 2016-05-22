@@ -1931,14 +1931,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
             @NotNull Iterable<A> xs,
             @NotNull Function<A, Iterable<B>> f
     ) {
-        return dependentPairsInfinite(
-                bi -> {
-                    List<BigInteger> list = IntegerUtils.demux(2, bi);
-                    return new Pair<>(list.get(0), list.get(1));
-                },
-                xs,
-                f
-        );
+        return dependentPairsInfinite(bi -> Pair.fromList(IntegerUtils.demux(2, bi)), xs, f);
     }
 
     /**
@@ -2833,14 +2826,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull <A, B> Iterable<Pair<A, B>> pairs(@NotNull Iterable<A> as, @NotNull Iterable<B> bs) {
-        return pairsByFunction(
-                bi -> {
-                    List<BigInteger> list = IntegerUtils.demux(2, bi);
-                    return new Pair<>(list.get(0), list.get(1));
-                },
-                as,
-                bs
-        );
+        return pairsByFunction(bi -> Pair.fromList(IntegerUtils.demux(2, bi)), as, bs);
     }
 
     /**
@@ -2860,7 +2846,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     @Override
     public @NotNull <T> Iterable<Pair<T, T>> pairs(@NotNull Iterable<T> xs) {
         if (isEmpty(xs)) return Collections.emptyList();
-        return map(list -> new Pair<>(list.get(0), list.get(1)), lists(2, xs));
+        return map(Pair::fromList, lists(2, xs));
     }
 
     /**
@@ -2942,7 +2928,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     @Override
     public @NotNull <T> Iterable<Triple<T, T, T>> triples(@NotNull Iterable<T> xs) {
         if (isEmpty(xs)) return Collections.emptyList();
-        return map(list -> new Triple<>(list.get(0), list.get(1), list.get(2)), lists(3, xs));
+        return map(Triple::fromList, lists(3, xs));
     }
 
     /**
@@ -3033,7 +3019,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     @Override
     public @NotNull <T> Iterable<Quadruple<T, T, T, T>> quadruples(@NotNull Iterable<T> xs) {
         if (isEmpty(xs)) return Collections.emptyList();
-        return map(list -> new Quadruple<>(list.get(0), list.get(1), list.get(2), list.get(3)), lists(4, xs));
+        return map(Quadruple::fromList, lists(4, xs));
     }
 
     /**
@@ -3134,10 +3120,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     @Override
     public @NotNull <T> Iterable<Quintuple<T, T, T, T, T>> quintuples(@NotNull Iterable<T> xs) {
         if (isEmpty(xs)) return Collections.emptyList();
-        return map(
-                list -> new Quintuple<>(list.get(0), list.get(1), list.get(2), list.get(3), list.get(4)),
-                lists(5, xs)
-        );
+        return map(Quintuple::fromList, lists(5, xs));
     }
 
     /**
@@ -3248,10 +3231,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     @Override
     public @NotNull <T> Iterable<Sextuple<T, T, T, T, T, T>> sextuples(@NotNull Iterable<T> xs) {
         if (isEmpty(xs)) return Collections.emptyList();
-        return map(
-                list -> new Sextuple<>(list.get(0), list.get(1), list.get(2), list.get(3), list.get(4), list.get(5)),
-                lists(6, xs)
-        );
+        return map(Sextuple::fromList, lists(6, xs));
     }
 
     /**
@@ -3371,18 +3351,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     @Override
     public @NotNull <T> Iterable<Septuple<T, T, T, T, T, T, T>> septuples(@NotNull Iterable<T> xs) {
         if (isEmpty(xs)) return Collections.emptyList();
-        return map(
-                list -> new Septuple<>(
-                        list.get(0),
-                        list.get(1),
-                        list.get(2),
-                        list.get(3),
-                        list.get(4),
-                        list.get(5),
-                        list.get(6)
-                ),
-                lists(7, xs)
-        );
+        return map(Septuple::fromList, lists(7, xs));
     }
 
     /**
@@ -3561,7 +3530,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull <T> Iterable<Pair<T, T>> distinctPairsLex(@NotNull List<T> xs) {
-        return map(list -> new Pair<>(list.get(0), list.get(1)), distinctListsLex(2, xs));
+        return map(Pair::fromList, distinctListsLex(2, xs));
     }
 
     /**
@@ -3581,7 +3550,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull <T> Iterable<Triple<T, T, T>> distinctTriplesLex(@NotNull List<T> xs) {
-        return map(list -> new Triple<>(list.get(0), list.get(1), list.get(2)), distinctListsLex(3, xs));
+        return map(Triple::fromList, distinctListsLex(3, xs));
     }
 
     /**
@@ -3601,10 +3570,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull <T> Iterable<Quadruple<T, T, T, T>> distinctQuadruplesLex(@NotNull List<T> xs) {
-        return map(
-                list -> new Quadruple<>(list.get(0), list.get(1), list.get(2), list.get(3)),
-                distinctListsLex(4, xs)
-        );
+        return map(Quadruple::fromList, distinctListsLex(4, xs));
     }
 
     /**
@@ -3624,10 +3590,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull <T> Iterable<Quintuple<T, T, T, T, T>> distinctQuintuplesLex(@NotNull List<T> xs) {
-        return map(
-                list -> new Quintuple<>(list.get(0), list.get(1), list.get(2), list.get(3), list.get(4)),
-                distinctListsLex(5, xs)
-        );
+        return map(Quintuple::fromList, distinctListsLex(5, xs));
     }
 
     /**
@@ -3647,10 +3610,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull <T> Iterable<Sextuple<T, T, T, T, T, T>> distinctSextuplesLex(@NotNull List<T> xs) {
-        return map(
-                list -> new Sextuple<>(list.get(0), list.get(1), list.get(2), list.get(3), list.get(4), list.get(5)),
-                distinctListsLex(6, xs)
-        );
+        return map(Sextuple::fromList, distinctListsLex(6, xs));
     }
 
     /**
@@ -3670,18 +3630,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull <T> Iterable<Septuple<T, T, T, T, T, T, T>> distinctSeptuplesLex(@NotNull List<T> xs) {
-        return map(
-                list -> new Septuple<>(
-                        list.get(0),
-                        list.get(1),
-                        list.get(2),
-                        list.get(3),
-                        list.get(4),
-                        list.get(5),
-                        list.get(6)
-                ),
-                distinctListsLex(7, xs)
-        );
+        return map(Septuple::fromList, distinctListsLex(7, xs));
     }
 
     /**
@@ -4155,7 +4104,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull <T> Iterable<Pair<T, T>> distinctPairs(@NotNull Iterable<T> xs) {
-        return map(list -> new Pair<>(list.get(0), list.get(1)), distinctLists(2, xs));
+        return map(Pair::fromList, distinctLists(2, xs));
     }
 
     /**
@@ -4174,7 +4123,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull <T> Iterable<Triple<T, T, T>> distinctTriples(@NotNull Iterable<T> xs) {
-        return map(list -> new Triple<>(list.get(0), list.get(1), list.get(2)), distinctLists(3, xs));
+        return map(Triple::fromList, distinctLists(3, xs));
     }
 
     /**
@@ -4193,7 +4142,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull <T> Iterable<Quadruple<T, T, T, T>> distinctQuadruples(@NotNull Iterable<T> xs) {
-        return map(list -> new Quadruple<>(list.get(0), list.get(1), list.get(2), list.get(3)), distinctLists(4, xs));
+        return map(Quadruple::fromList, distinctLists(4, xs));
     }
 
     /**
@@ -4212,10 +4161,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull <T> Iterable<Quintuple<T, T, T, T, T>> distinctQuintuples(@NotNull Iterable<T> xs) {
-        return map(
-                list -> new Quintuple<>(list.get(0), list.get(1), list.get(2), list.get(3), list.get(4)),
-                distinctLists(5, xs)
-        );
+        return map(Quintuple::fromList, distinctLists(5, xs));
     }
 
     /**
@@ -4234,10 +4180,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull <T> Iterable<Sextuple<T, T, T, T, T, T>> distinctSextuples(@NotNull Iterable<T> xs) {
-        return map(
-                list -> new Sextuple<>(list.get(0), list.get(1), list.get(2), list.get(3), list.get(4), list.get(5)),
-                distinctLists(6, xs)
-        );
+        return map(Sextuple::fromList, distinctLists(6, xs));
     }
 
     /**
@@ -4256,18 +4199,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull <T> Iterable<Septuple<T, T, T, T, T, T, T>> distinctSeptuples(@NotNull Iterable<T> xs) {
-        return map(
-                list -> new Septuple<>(
-                        list.get(0),
-                        list.get(1),
-                        list.get(2),
-                        list.get(3),
-                        list.get(4),
-                        list.get(5),
-                        list.get(6)
-                ),
-                distinctLists(7, xs)
-        );
+        return map(Septuple::fromList, distinctLists(7, xs));
     }
 
     /**
@@ -4411,7 +4343,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<Pair<T, T>> bagPairsLex(@NotNull List<T> xs) {
-        return map(list -> new Pair<>(list.get(0), list.get(1)), bagsLex(2, xs));
+        return map(Pair::fromList, bagsLex(2, xs));
     }
 
     /**
@@ -4431,7 +4363,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<Triple<T, T, T>> bagTriplesLex(@NotNull List<T> xs) {
-        return map(list -> new Triple<>(list.get(0), list.get(1), list.get(2)), bagsLex(3, xs));
+        return map(Triple::fromList, bagsLex(3, xs));
     }
 
     /**
@@ -4451,7 +4383,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<Quadruple<T, T, T, T>> bagQuadruplesLex(@NotNull List<T> xs) {
-        return map(list -> new Quadruple<>(list.get(0), list.get(1), list.get(2), list.get(3)), bagsLex(4, xs));
+        return map(Quadruple::fromList, bagsLex(4, xs));
     }
 
     /**
@@ -4473,10 +4405,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     public @NotNull <T extends Comparable<T>> Iterable<Quintuple<T, T, T, T, T>> bagQuintuplesLex(
             @NotNull List<T> xs
     ) {
-        return map(
-                list -> new Quintuple<>(list.get(0), list.get(1), list.get(2), list.get(3), list.get(4)),
-                bagsLex(5, xs)
-        );
+        return map(Quintuple::fromList, bagsLex(5, xs));
     }
 
     /**
@@ -4498,10 +4427,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     public @NotNull <T extends Comparable<T>> Iterable<Sextuple<T, T, T, T, T, T>> bagSextuplesLex(
             @NotNull List<T> xs
     ) {
-        return map(
-                list -> new Sextuple<>(list.get(0), list.get(1), list.get(2), list.get(3), list.get(4), list.get(5)),
-                bagsLex(6, xs)
-        );
+        return map(Sextuple::fromList, bagsLex(6, xs));
     }
 
     /**
@@ -4523,18 +4449,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     public @NotNull <T extends Comparable<T>> Iterable<Septuple<T, T, T, T, T, T, T>> bagSeptuplesLex(
             @NotNull List<T> xs
     ) {
-        return map(
-                list -> new Septuple<>(
-                        list.get(0),
-                        list.get(1),
-                        list.get(2),
-                        list.get(3),
-                        list.get(4),
-                        list.get(5),
-                        list.get(6)
-                ),
-                bagsLex(7, xs)
-        );
+        return map(Septuple::fromList, bagsLex(7, xs));
     }
 
     /**
@@ -4764,7 +4679,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<Pair<T, T>> bagPairs(@NotNull Iterable<T> xs) {
-        return map(list -> new Pair<>(list.get(0), list.get(1)), bags(2, xs));
+        return map(Pair::fromList, bags(2, xs));
     }
 
     /**
@@ -4783,7 +4698,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<Triple<T, T, T>> bagTriples(@NotNull Iterable<T> xs) {
-        return map(list -> new Triple<>(list.get(0), list.get(1), list.get(2)), bags(3, xs));
+        return map(Triple::fromList, bags(3, xs));
     }
 
     /**
@@ -4802,7 +4717,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<Quadruple<T, T, T, T>> bagQuadruples(@NotNull Iterable<T> xs) {
-        return map(list -> new Quadruple<>(list.get(0), list.get(1), list.get(2), list.get(3)), bags(4, xs));
+        return map(Quadruple::fromList, bags(4, xs));
     }
 
     /**
@@ -4823,10 +4738,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     public @NotNull <T extends Comparable<T>> Iterable<Quintuple<T, T, T, T, T>> bagQuintuples(
             @NotNull Iterable<T> xs
     ) {
-        return map(
-                list -> new Quintuple<>(list.get(0), list.get(1), list.get(2), list.get(3), list.get(4)),
-                bags(5, xs)
-        );
+        return map(Quintuple::fromList, bags(5, xs));
     }
 
     /**
@@ -4847,10 +4759,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     public @NotNull <T extends Comparable<T>> Iterable<Sextuple<T, T, T, T, T, T>> bagSextuples(
             @NotNull Iterable<T> xs
     ) {
-        return map(
-                list -> new Sextuple<>(list.get(0), list.get(1), list.get(2), list.get(3), list.get(4), list.get(5)),
-                bags(6, xs)
-        );
+        return map(Sextuple::fromList, bags(6, xs));
     }
 
     /**
@@ -4871,18 +4780,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     public @NotNull <T extends Comparable<T>> Iterable<Septuple<T, T, T, T, T, T, T>> bagSeptuples(
             @NotNull Iterable<T> xs
     ) {
-        return map(
-                list -> new Septuple<>(
-                        list.get(0),
-                        list.get(1),
-                        list.get(2),
-                        list.get(3),
-                        list.get(4),
-                        list.get(5),
-                        list.get(6)
-                ),
-                bags(7, xs)
-        );
+        return map(Septuple::fromList, bags(7, xs));
     }
 
     /**
@@ -5042,7 +4940,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<Pair<T, T>> subsetPairsLex(@NotNull List<T> xs) {
-        return map(list -> new Pair<>(list.get(0), list.get(1)), subsetsLex(2, xs));
+        return map(Pair::fromList, subsetsLex(2, xs));
     }
 
     /**
@@ -5062,7 +4960,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<Triple<T, T, T>> subsetTriplesLex(@NotNull List<T> xs) {
-        return map(list -> new Triple<>(list.get(0), list.get(1), list.get(2)), subsetsLex(3, xs));
+        return map(Triple::fromList, subsetsLex(3, xs));
     }
 
     /**
@@ -5084,7 +4982,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     public @NotNull <T extends Comparable<T>> Iterable<Quadruple<T, T, T, T>> subsetQuadruplesLex(
             @NotNull List<T> xs
     ) {
-        return map(list -> new Quadruple<>(list.get(0), list.get(1), list.get(2), list.get(3)), subsetsLex(4, xs));
+        return map(Quadruple::fromList, subsetsLex(4, xs));
     }
 
     /**
@@ -5106,10 +5004,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     public @NotNull <T extends Comparable<T>> Iterable<Quintuple<T, T, T, T, T>> subsetQuintuplesLex(
             @NotNull List<T> xs
     ) {
-        return map(
-                list -> new Quintuple<>(list.get(0), list.get(1), list.get(2), list.get(3), list.get(4)),
-                subsetsLex(5, xs)
-        );
+        return map(Quintuple::fromList, subsetsLex(5, xs));
     }
 
     /**
@@ -5131,10 +5026,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     public @NotNull <T extends Comparable<T>> Iterable<Sextuple<T, T, T, T, T, T>> subsetSextuplesLex(
             @NotNull List<T> xs
     ) {
-        return map(
-                list -> new Sextuple<>(list.get(0), list.get(1), list.get(2), list.get(3), list.get(4), list.get(5)),
-                subsetsLex(6, xs)
-        );
+        return map(Sextuple::fromList, subsetsLex(6, xs));
     }
 
     /**
@@ -5156,18 +5048,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     public @NotNull <T extends Comparable<T>> Iterable<Septuple<T, T, T, T, T, T, T>> subsetSeptuplesLex(
             @NotNull List<T> xs
     ) {
-        return map(
-                list -> new Septuple<>(
-                        list.get(0),
-                        list.get(1),
-                        list.get(2),
-                        list.get(3),
-                        list.get(4),
-                        list.get(5),
-                        list.get(6)
-                ),
-                subsetsLex(7, xs)
-        );
+        return map(Septuple::fromList, subsetsLex(7, xs));
     }
 
     /**
@@ -5622,7 +5503,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<Pair<T, T>> subsetPairs(@NotNull Iterable<T> xs) {
-        return map(list -> new Pair<>(list.get(0), list.get(1)), subsets(2, xs));
+        return map(Pair::fromList, subsets(2, xs));
     }
 
     /**
@@ -5642,7 +5523,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<Triple<T, T, T>> subsetTriples(@NotNull Iterable<T> xs) {
-        return map(list -> new Triple<>(list.get(0), list.get(1), list.get(2)), subsets(3, xs));
+        return map(Triple::fromList, subsets(3, xs));
     }
 
     /**
@@ -5664,7 +5545,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     public @NotNull <T extends Comparable<T>> Iterable<Quadruple<T, T, T, T>> subsetQuadruples(
             @NotNull Iterable<T> xs
     ) {
-        return map(list -> new Quadruple<>(list.get(0), list.get(1), list.get(2), list.get(3)), subsets(4, xs));
+        return map(Quadruple::fromList, subsets(4, xs));
     }
 
     /**
@@ -5686,10 +5567,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     public @NotNull <T extends Comparable<T>> Iterable<Quintuple<T, T, T, T, T>> subsetQuintuples(
             @NotNull Iterable<T> xs
     ) {
-        return map(
-                list -> new Quintuple<>(list.get(0), list.get(1), list.get(2), list.get(3), list.get(4)),
-                subsets(5, xs)
-        );
+        return map(Quintuple::fromList, subsets(5, xs));
     }
 
     /**
@@ -5711,10 +5589,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     public @NotNull <T extends Comparable<T>> Iterable<Sextuple<T, T, T, T, T, T>> subsetSextuples(
             @NotNull Iterable<T> xs
     ) {
-        return map(
-                list -> new Sextuple<>(list.get(0), list.get(1), list.get(2), list.get(3), list.get(4), list.get(5)),
-                subsets(6, xs)
-        );
+        return map(Sextuple::fromList, subsets(6, xs));
     }
 
     /**
@@ -5736,18 +5611,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     public @NotNull <T extends Comparable<T>> Iterable<Septuple<T, T, T, T, T, T, T>> subsetSeptuples(
             @NotNull Iterable<T> xs
     ) {
-        return map(
-                list -> new Septuple<>(
-                        list.get(0),
-                        list.get(1),
-                        list.get(2),
-                        list.get(3),
-                        list.get(4),
-                        list.get(5),
-                        list.get(6)
-                ),
-                subsets(7, xs)
-        );
+        return map(Septuple::fromList, subsets(7, xs));
     }
 
     /**

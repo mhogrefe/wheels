@@ -78,6 +78,13 @@ public final class Quintuple<A, B, C, D, E> {
         return Arrays.asList(q.a, q.b, q.c, q.d, q.e);
     }
 
+    public static <T> Quintuple<T, T, T, T, T> fromList(@NotNull List<T> xs) {
+        if (xs.size() != 5) {
+            throw new IllegalArgumentException();
+        }
+        return new Quintuple<>(xs.get(0), xs.get(1), xs.get(2), xs.get(3), xs.get(4));
+    }
+
     /**
      * Compares two {@code Quintuples}s, provided that {@code A}, {@code B}, {@code C}, {@code D}, and {@code E} all
      * implement {@code Comparable}.

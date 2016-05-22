@@ -96,6 +96,13 @@ public final class Septuple<A, B, C, D, E, F, G> {
         return Arrays.asList(s.a, s.b, s.c, s.d, s.e, s.f, s.g);
     }
 
+    public static <T> Septuple<T, T, T, T, T, T, T> fromList(@NotNull List<T> xs) {
+        if (xs.size() != 7) {
+            throw new IllegalArgumentException();
+        }
+        return new Septuple<>(xs.get(0), xs.get(1), xs.get(2), xs.get(3), xs.get(4), xs.get(5), xs.get(6));
+    }
+
     /**
      * Compares two {@code Septuples}s, provided that {@code A}, {@code B}, {@code C}, {@code D}, {@code E}, {@code F},
      * and {@code G} all implement {@code Comparable}.

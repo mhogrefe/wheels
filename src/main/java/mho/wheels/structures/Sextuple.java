@@ -87,6 +87,13 @@ public final class Sextuple<A, B, C, D, E, F> {
         return Arrays.asList(s.a, s.b, s.c, s.d, s.e, s.f);
     }
 
+    public static <T> Sextuple<T, T, T, T, T, T> fromList(@NotNull List<T> xs) {
+        if (xs.size() != 6) {
+            throw new IllegalArgumentException();
+        }
+        return new Sextuple<>(xs.get(0), xs.get(1), xs.get(2), xs.get(3), xs.get(4), xs.get(5));
+    }
+
     /**
      * Compares two {@code Sextuples}s, provided that {@code A}, {@code B}, {@code C}, {@code D}, {@code E}, and
      * {@code F} all implement {@code Comparable}.

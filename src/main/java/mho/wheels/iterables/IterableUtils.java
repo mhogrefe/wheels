@@ -3690,89 +3690,38 @@ public final strictfp class IterableUtils {
     public static @NotNull <T extends Comparable<T>> Iterable<Pair<T, T>> sortedChunkPairsInfinite(
             @NotNull Iterable<T> xs
     ) {
-        return map(
-                p -> {
-                    List<T> list = sort(Pair.toList(p));
-                    return new Pair<>(list.get(0), list.get(1));
-                },
-                chunkPairsInfinite(xs)
-        );
+        return map(p -> Pair.fromList(sort(Pair.toList(p))), chunkPairsInfinite(xs));
     }
 
     public static @NotNull <T extends Comparable<T>> Iterable<Triple<T, T, T>> sortedChunkTriplesInfinite(
             @NotNull Iterable<T> xs
     ) {
-        return map(
-                t -> {
-                    List<T> list = sort(Triple.toList(t));
-                    return new Triple<>(list.get(0), list.get(1), list.get(2));
-                },
-                chunkTriplesInfinite(xs)
-        );
+        return map(t -> Triple.fromList(sort(Triple.toList(t))), chunkTriplesInfinite(xs));
     }
 
     public static @NotNull <T extends Comparable<T>> Iterable<Quadruple<T, T, T, T>> sortedChunkQuadruplesInfinite(
             @NotNull Iterable<T> xs
     ) {
-        return map(
-                t -> {
-                    List<T> list = sort(Quadruple.toList(t));
-                    return new Quadruple<>(list.get(0), list.get(1), list.get(2), list.get(3));
-                },
-                chunkQuadruplesInfinite(xs)
-        );
+        return map(q -> Quadruple.fromList(sort(Quadruple.toList(q))), chunkQuadruplesInfinite(xs));
     }
 
     public static @NotNull <T extends Comparable<T>> Iterable<Quintuple<T, T, T, T, T>> sortedChunkQuintuplesInfinite(
             @NotNull Iterable<T> xs
     ) {
-        return map(
-                t -> {
-                    List<T> list = sort(Quintuple.toList(t));
-                    return new Quintuple<>(list.get(0), list.get(1), list.get(2), list.get(3), list.get(4));
-                },
-                chunkQuintuplesInfinite(xs)
-        );
+        return map(q -> Quintuple.fromList(sort(Quintuple.toList(q))), chunkQuintuplesInfinite(xs));
     }
 
     public static @NotNull <T extends Comparable<T>> Iterable<Sextuple<T, T, T, T, T, T>> sortedChunkSextuplesInfinite(
             @NotNull Iterable<T> xs
     ) {
-        return map(
-                t -> {
-                    List<T> list = sort(Sextuple.toList(t));
-                    return new Sextuple<>(
-                            list.get(0),
-                            list.get(1),
-                            list.get(2),
-                            list.get(3),
-                            list.get(4),
-                            list.get(5)
-                    );
-                },
-                chunkSextuplesInfinite(xs)
-        );
+        return map(s -> Sextuple.fromList(sort(Sextuple.toList(s))), chunkSextuplesInfinite(xs));
     }
 
     public static @NotNull <T extends Comparable<T>> Iterable<Septuple<T, T, T, T, T, T, T>>
     sortedChunkSeptuplesInfinite(
             @NotNull Iterable<T> xs
     ) {
-        return map(
-                t -> {
-                    List<T> list = sort(Septuple.toList(t));
-                    return new Septuple<>(
-                            list.get(0),
-                            list.get(1),
-                            list.get(2),
-                            list.get(3),
-                            list.get(4),
-                            list.get(5),
-                            list.get(6)
-                    );
-                },
-                chunkSeptuplesInfinite(xs)
-        );
+        return map(s -> Septuple.fromList(sort(Septuple.toList(s))), chunkSeptuplesInfinite(xs));
     }
 
     public static @NotNull <T extends Comparable<T>> Iterable<List<T>> sortedDistinctChunkInfinite(
@@ -3788,84 +3737,33 @@ public final strictfp class IterableUtils {
     public static @NotNull <T extends Comparable<T>> Iterable<Pair<T, T>> sortedDistinctChunkPairsInfinite(
             @NotNull Iterable<T> xs
     ) {
-        return map(
-                p -> {
-                    List<T> list = sort(Pair.toList(p));
-                    return new Pair<>(list.get(0), list.get(1));
-                },
-                distinctChunkPairsInfinite(xs)
-        );
+        return map(p -> Pair.fromList(sort(Pair.toList(p))), distinctChunkPairsInfinite(xs));
     }
 
     public static @NotNull <T extends Comparable<T>> Iterable<Triple<T, T, T>> sortedDistinctChunkTriplesInfinite(
             @NotNull Iterable<T> xs
     ) {
-        return map(
-                p -> {
-                    List<T> list = sort(Triple.toList(p));
-                    return new Triple<>(list.get(0), list.get(1), list.get(2));
-                },
-                distinctChunkTriplesInfinite(xs)
-        );
+        return map(t -> Triple.fromList(sort(Triple.toList(t))), distinctChunkTriplesInfinite(xs));
     }
 
     public static @NotNull <T extends Comparable<T>> Iterable<Quadruple<T, T, T, T>>
     sortedDistinctChunkQuadruplesInfinite(@NotNull Iterable<T> xs) {
-        return map(
-                p -> {
-                    List<T> list = sort(Quadruple.toList(p));
-                    return new Quadruple<>(list.get(0), list.get(1), list.get(2), list.get(3));
-                },
-                distinctChunkQuadruplesInfinite(xs)
-        );
+        return map(q -> Quadruple.fromList(sort(Quadruple.toList(q))), distinctChunkQuadruplesInfinite(xs));
     }
 
     public static @NotNull <T extends Comparable<T>> Iterable<Quintuple<T, T, T, T, T>>
     sortedDistinctChunkQuintuplesInfinite(@NotNull Iterable<T> xs) {
-        return map(
-                p -> {
-                    List<T> list = sort(Quintuple.toList(p));
-                    return new Quintuple<>(list.get(0), list.get(1), list.get(2), list.get(3), list.get(4));
-                },
-                distinctChunkQuintuplesInfinite(xs)
-        );
+        return map(q -> Quintuple.fromList(sort(Quintuple.toList(q))), distinctChunkQuintuplesInfinite(xs));
     }
 
     public static @NotNull <T extends Comparable<T>> Iterable<Sextuple<T, T, T, T, T, T>>
     sortedDistinctChunkSextuplesInfinite(@NotNull Iterable<T> xs) {
-        return map(
-                p -> {
-                    List<T> list = sort(Sextuple.toList(p));
-                    return new Sextuple<>(
-                            list.get(0),
-                            list.get(1),
-                            list.get(2),
-                            list.get(3),
-                            list.get(4),
-                            list.get(5)
-                    );
-                },
-                distinctChunkSextuplesInfinite(xs)
-        );
+        return map(s -> Sextuple.fromList(sort(Sextuple.toList(s))), distinctChunkSextuplesInfinite(xs));
     }
 
     public static @NotNull <T extends Comparable<T>> Iterable<Septuple<T, T, T, T, T, T, T>>
     sortedDistinctChunkSeptuplesInfinite(@NotNull Iterable<T> xs) {
-        return map(
-                p -> {
-                    List<T> list = sort(Septuple.toList(p));
-                    return new Septuple<>(
-                            list.get(0),
-                            list.get(1),
-                            list.get(2),
-                            list.get(3),
-                            list.get(4),
-                            list.get(5),
-                            list.get(6)
-                    );
-                },
-                distinctChunkSeptuplesInfinite(xs)
-        );
+        return map(s -> Septuple.fromList(sort(Septuple.toList(s))), distinctChunkSeptuplesInfinite(xs));
     }
 
     public static @NotNull <T> Iterable<List<T>> chunkPadded(@Nullable T pad, int size, @NotNull Iterable<T> xs) {
