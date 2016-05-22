@@ -91,10 +91,7 @@ public final class Triple<A, B, C> {
             A extends Comparable<A>,
             B extends Comparable<B>,
             C extends Comparable<C>
-            > Ordering compare(
-            @NotNull Triple<A, B, C> p,
-            @NotNull Triple<A, B, C> q
-    ) {
+            > Ordering compare(@NotNull Triple<A, B, C> p, @NotNull Triple<A, B, C> q) {
         Ordering aOrdering = Ordering.compare(p.a, q.a);
         if (aOrdering != EQ) return aOrdering;
         Ordering bOrdering = Ordering.compare(p.b, q.b);
@@ -146,8 +143,7 @@ public final class Triple<A, B, C> {
      * Creates a {@code Triple} from a {@code String}. Valid strings are of the form
      * {@code "(" + a + ", " + b + ", " + c + ")"}, where {@code a}, {@code b}, and {@code c} are valid {@code String}s
      * for their types. {@code a} and {@code b} must not contain the {@code String} {@code ", "}, because this will
-     * confuse the parser. If the {@code String} is invalid, the method returns {@code Optional.empty()} without
-     * throwing an exception; this aids composability.
+     * confuse the parser.
      *
      * <ul>
      *  <li>{@code s} must be non-null.</li>
@@ -163,7 +159,7 @@ public final class Triple<A, B, C> {
      * @param <C> the type of the {@code Triple}'s third value
      * @return the {@code Triple} represented by {@code s}, or an empty {@code Optional} if {@code s} is invalid
      */
-    public static @NotNull <A, B, C> Optional<Triple<A, B, C>> read(
+    public static @NotNull <A, B, C> Optional<Triple<A, B, C>> readStrict(
             @NotNull String s,
             @NotNull Function<String, NullableOptional<A>> readA,
             @NotNull Function<String, NullableOptional<B>> readB,

@@ -103,10 +103,7 @@ public final class Quadruple<A, B, C, D> {
             B extends Comparable<B>,
             C extends Comparable<C>,
             D extends Comparable<D>
-            > Ordering compare(
-            @NotNull Quadruple<A, B, C, D> p,
-            @NotNull Quadruple<A, B, C, D> q
-    ) {
+            > Ordering compare(@NotNull Quadruple<A, B, C, D> p, @NotNull Quadruple<A, B, C, D> q) {
         Ordering aOrdering = Ordering.compare(p.a, q.a);
         if (aOrdering != EQ) return aOrdering;
         Ordering bOrdering = Ordering.compare(p.b, q.b);
@@ -162,8 +159,7 @@ public final class Quadruple<A, B, C, D> {
      * Creates a {@code Quadruple} from a {@code String}. Valid strings are of the form
      * {@code "(" + a + ", " + b + ", " + c + ", " + d + ")"}, where {@code a}, {@code b}, {@code c}, and {@code d} are
      * valid {@code String}s for their types. {@code a}, {@code b}, and {@code c} must not contain the {@code String}
-     * {@code ", "}, because this will confuse the parser. If the {@code String} is invalid, the method returns
-     * {@code Optional.empty()} without throwing an exception; this aids composability.
+     * {@code ", "}, because this will confuse the parser.
      *
      * <ul>
      *  <li>{@code s} must be non-null.</li>
@@ -181,7 +177,7 @@ public final class Quadruple<A, B, C, D> {
      * @param <D> the type of the {@code Quadruple}'s fourth value
      * @return the {@code Quadruple} represented by {@code s}, or an empty {@code Optional} if {@code s} is invalid
      */
-    public static @NotNull <A, B, C, D> Optional<Quadruple<A, B, C, D>> read(
+    public static @NotNull <A, B, C, D> Optional<Quadruple<A, B, C, D>> readStrict(
             @NotNull String s,
             @NotNull Function<String, NullableOptional<A>> readA,
             @NotNull Function<String, NullableOptional<B>> readB,

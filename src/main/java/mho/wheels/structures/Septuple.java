@@ -139,10 +139,7 @@ public final class Septuple<A, B, C, D, E, F, G> {
             E extends Comparable<E>,
             F extends Comparable<F>,
             G extends Comparable<G>
-            > Ordering compare(
-            @NotNull Septuple<A, B, C, D, E, F, G> p,
-            @NotNull Septuple<A, B, C, D, E, F, G> q
-    ) {
+            > Ordering compare(@NotNull Septuple<A, B, C, D, E, F, G> p, @NotNull Septuple<A, B, C, D, E, F, G> q) {
         Ordering aOrdering = Ordering.compare(p.a, q.a);
         if (aOrdering != EQ) return aOrdering;
         Ordering bOrdering = Ordering.compare(p.b, q.b);
@@ -211,8 +208,7 @@ public final class Septuple<A, B, C, D, E, F, G> {
      * {@code "(" + a + ", " + b + ", " + c + ", " + d + ", " + e + ", " + f + ", " + g + ")"}, where {@code a},
      * {@code b}, {@code c}, {@code d}, {@code e}, {@code f}, and {@code g} are valid {@code String}s for their types.
      * {@code a}, {@code b}, {@code c}, {@code d}, {@code e}, and {@code f} must not contain the {@code String}
-     * {@code ", "}, because this will confuse the parser. If the {@code String} is invalid, the method returns
-     * {@code Optional.empty()} without throwing an exception; this aids composability.
+     * {@code ", "}, because this will confuse the parser.
      *
      * <ul>
      *  <li>{@code s} must be non-null.</li>
@@ -236,7 +232,7 @@ public final class Septuple<A, B, C, D, E, F, G> {
      * @param <G> the type of the {@code Septuple}'s seventh value
      * @return the {@code Septuple} represented by {@code s}, or an empty {@code Optional} if {@code s} is invalid
      */
-    public static @NotNull <A, B, C, D, E, F, G> Optional<Septuple<A, B, C, D, E, F, G>> read(
+    public static @NotNull <A, B, C, D, E, F, G> Optional<Septuple<A, B, C, D, E, F, G>> readStrict(
             @NotNull String s,
             @NotNull Function<String, NullableOptional<A>> readA,
             @NotNull Function<String, NullableOptional<B>> readB,

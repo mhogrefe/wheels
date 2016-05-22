@@ -127,10 +127,7 @@ public final class Sextuple<A, B, C, D, E, F> {
             D extends Comparable<D>,
             E extends Comparable<E>,
             F extends Comparable<F>
-            > Ordering compare(
-            @NotNull Sextuple<A, B, C, D, E, F> p,
-            @NotNull Sextuple<A, B, C, D, E, F> q
-    ) {
+            > Ordering compare(@NotNull Sextuple<A, B, C, D, E, F> p, @NotNull Sextuple<A, B, C, D, E, F> q) {
         Ordering aOrdering = Ordering.compare(p.a, q.a);
         if (aOrdering != EQ) return aOrdering;
         Ordering bOrdering = Ordering.compare(p.b, q.b);
@@ -195,8 +192,7 @@ public final class Sextuple<A, B, C, D, E, F> {
      * {@code "(" + a + ", " + b + ", " + c + ", " + d + ", " + e + ", " + f + ")"}, where {@code a}, {@code b},
      * {@code c}, {@code d}, {@code e}, and {@code f} are valid {@code String}s for their types. {@code a}, {@code b},
      * {@code c}, {@code d}, and {@code e} must not contain the {@code String} {@code ", "}, because this will confuse
-     * the parser. If the {@code String} is invalid, the method returns {@code Optional.empty()} without throwing an
-     * exception; this aids composability.
+     * the parser.
      *
      * <ul>
      *  <li>{@code s} must be non-null.</li>
@@ -218,7 +214,7 @@ public final class Sextuple<A, B, C, D, E, F> {
      * @param <F> the type of the {@code Sextuple}'s sixth value
      * @return the {@code Sextuple} represented by {@code s}, or an empty {@code Optional} if {@code s} is invalid
      */
-    public static @NotNull <A, B, C, D, E, F> Optional<Sextuple<A, B, C, D, E, F>> read(
+    public static @NotNull <A, B, C, D, E, F> Optional<Sextuple<A, B, C, D, E, F>> readStrict(
             @NotNull String s,
             @NotNull Function<String, NullableOptional<A>> readA,
             @NotNull Function<String, NullableOptional<B>> readB,

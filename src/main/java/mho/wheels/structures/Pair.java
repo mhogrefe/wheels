@@ -125,8 +125,7 @@ public final class Pair<A, B> {
     /**
      * Creates a {@code Pair} from a {@code String}. Valid strings are of the form {@code "(" + a + ", " + b + ")"},
      * where {@code a} and {@code b} are valid {@code String}s for their types. {@code a} must not contain the
-     * {@code String} {@code ", "}, because this will confuse the parser. If the {@code String} is invalid, the method
-     * returns {@code Optional.empty()} without throwing an exception; this aids composability.
+     * {@code String} {@code ", "}, because this will confuse the parser.
      *
      * <ul>
      *  <li>{@code s} must be non-null.</li>
@@ -140,7 +139,7 @@ public final class Pair<A, B> {
      * @param <B> the type of the {@code Pair}'s second value
      * @return the {@code Pair} represented by {@code s}, or an empty {@code Optional} if {@code s} is invalid.
      */
-    public static @NotNull <A, B> Optional<Pair<A, B>> read(
+    public static @NotNull <A, B> Optional<Pair<A, B>> readStrict(
             @NotNull String s,
             @NotNull Function<String, NullableOptional<A>> readA,
             @NotNull Function<String, NullableOptional<B>> readB
