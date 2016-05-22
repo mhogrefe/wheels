@@ -65,13 +65,37 @@ public final class Quadruple<A, B, C, D> {
         this.d = d;
     }
 
+    /**
+     * Converts a {@code Quadruple} of four values of the same type to a {@code List}.
+     *
+     * <ul>
+     *  <li>{@code q} cannot be null.</li>
+     *  <li>The result has length 4.</li>
+     * </ul>
+     *
+     * @param q a {@code Quadruple}
+     * @param <T> the type of all values of {@code q}
+     * @return a {@code List} containing the values of {@code q}
+     */
     public static <T> List<T> toList(Quadruple<T, T, T, T> q) {
         return Arrays.asList(q.a, q.b, q.c, q.d);
     }
 
+    /**
+     * Converts a {@code List} of four values to a {@code Quadruple}.
+     *
+     * <ul>
+     *  <li>{@code xs} must have length 4.</li>
+     *  <li>The result is not null.</li>
+     * </ul>
+     *
+     * @param xs a {@code List}
+     * @param <T> the type of the elements in {@code xs}
+     * @return a {@code Quadruple} containing the values of {@code xs}
+     */
     public static <T> Quadruple<T, T, T, T> fromList(@NotNull List<T> xs) {
         if (xs.size() != 4) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("xs must have length 4. Invalid xs: " + xs);
         }
         return new Quadruple<>(xs.get(0), xs.get(1), xs.get(2), xs.get(3));
     }
@@ -272,8 +296,8 @@ public final class Quadruple<A, B, C, D> {
         }
 
         /**
-         * Compares two {@code Quadruple}s, returning 1, –1, or 0 if the answer is "greater than", "less than", or
-         * "equal to", respectively.
+         * Compares two {@code Quadruple}s lexicographically, returning 1, –1, or 0 if the answer is "greater than",
+         * "less than", or "equal to", respectively.
          *
          * <ul>
          *  <li>{@code p} must be non-null.</li>

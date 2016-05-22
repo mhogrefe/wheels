@@ -47,13 +47,37 @@ public final class Pair<A, B> {
         this.b = b;
     }
 
+    /**
+     * Converts a {@code Pair} of two values of the same type to a {@code List}.
+     *
+     * <ul>
+     *  <li>{@code p} cannot be null.</li>
+     *  <li>The result has length 2.</li>
+     * </ul>
+     *
+     * @param p a {@code Pair}
+     * @param <T> the type of both values of {@code p}
+     * @return a {@code List} containing the values of {@code p}
+     */
     public static <T> List<T> toList(Pair<T, T> p) {
         return Arrays.asList(p.a, p.b);
     }
 
+    /**
+     * Converts a {@code List} of two values to a {@code Pair}.
+     *
+     * <ul>
+     *  <li>{@code xs} must have length 2.</li>
+     *  <li>The result is not null.</li>
+     * </ul>
+     *
+     * @param xs a {@code List}
+     * @param <T> the type of the elements in {@code xs}
+     * @return a {@code Pair} containing the values of {@code xs}
+     */
     public static <T> Pair<T, T> fromList(@NotNull List<T> xs) {
         if (xs.size() != 2) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("xs must have length 2. Invalid xs: " + xs);
         }
         return new Pair<>(xs.get(0), xs.get(1));
     }
@@ -205,8 +229,8 @@ public final class Pair<A, B> {
         }
 
         /**
-         * Compares two {@code Pair}s, returning 1, –1, or 0 if the answer is "greater than", "less than", or
-         * "equal to", respectively.
+         * Compares two {@code Pair}s lexicographically, returning 1, –1, or 0 if the answer is "greater than",
+         * "less than", or "equal to", respectively.
          *
          * <ul>
          *  <li>{@code p} must be non-null.</li>

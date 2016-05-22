@@ -74,13 +74,37 @@ public final class Quintuple<A, B, C, D, E> {
         this.e = e;
     }
 
+    /**
+     * Converts a {@code Quintuple} of five values of the same type to a {@code List}.
+     *
+     * <ul>
+     *  <li>{@code q} cannot be null.</li>
+     *  <li>The result has length 5.</li>
+     * </ul>
+     *
+     * @param q a {@code Quintuple}
+     * @param <T> the type of all values of {@code q}
+     * @return a {@code List} containing the values of {@code q}
+     */
     public static <T> List<T> toList(Quintuple<T, T, T, T, T> q) {
         return Arrays.asList(q.a, q.b, q.c, q.d, q.e);
     }
 
+    /**
+     * Converts a {@code List} of five values to a {@code Quintuple}.
+     *
+     * <ul>
+     *  <li>{@code xs} must have length 5.</li>
+     *  <li>The result is not null.</li>
+     * </ul>
+     *
+     * @param xs a {@code List}
+     * @param <T> the type of the elements in {@code xs}
+     * @return a {@code Quintuple} containing the values of {@code xs}
+     */
     public static <T> Quintuple<T, T, T, T, T> fromList(@NotNull List<T> xs) {
         if (xs.size() != 5) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("xs must have length 5. Invalid xs: " + xs);
         }
         return new Quintuple<>(xs.get(0), xs.get(1), xs.get(2), xs.get(3), xs.get(4));
     }
@@ -303,8 +327,8 @@ public final class Quintuple<A, B, C, D, E> {
         }
 
         /**
-         * Compares two {@code Quintuple}s, returning 1, –1, or 0 if the answer is "greater than", "less than", or
-         * "equal to", respectively.
+         * Compares two {@code Quintuple}s lexicographically, returning 1, –1, or 0 if the answer is "greater than",
+         * "less than", or "equal to", respectively.
          *
          * <ul>
          *  <li>{@code p} must be non-null.</li>

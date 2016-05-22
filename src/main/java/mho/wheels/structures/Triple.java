@@ -56,13 +56,37 @@ public final class Triple<A, B, C> {
         this.c = c;
     }
 
+    /**
+     * Converts a {@code Triple} of three values of the same type to a {@code List}.
+     *
+     * <ul>
+     *  <li>{@code p} cannot be null.</li>
+     *  <li>The result has length 3.</li>
+     * </ul>
+     *
+     * @param t a {@code Triple}
+     * @param <T> the type of all values of {@code t}
+     * @return a {@code List} containing the values of {@code t}
+     */
     public static <T> List<T> toList(Triple<T, T, T> t) {
         return Arrays.asList(t.a, t.b, t.c);
     }
 
+    /**
+     * Converts a {@code List} of three values to a {@code Triple}.
+     *
+     * <ul>
+     *  <li>{@code xs} must have length 3.</li>
+     *  <li>The result is not null.</li>
+     * </ul>
+     *
+     * @param xs a {@code List}
+     * @param <T> the type of the elements in {@code xs}
+     * @return a {@code Triple} containing the values of {@code xs}
+     */
     public static <T> Triple<T, T, T> fromList(@NotNull List<T> xs) {
         if (xs.size() != 3) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("xs must have length 3. Invalid xs: " + xs);
         }
         return new Triple<>(xs.get(0), xs.get(1), xs.get(2));
     }
@@ -241,8 +265,8 @@ public final class Triple<A, B, C> {
         }
 
         /**
-         * Compares two {@code Triple}s, returning 1, –1, or 0 if the answer is "greater than", "less than", or "equal
-         * to", respectively.
+         * Compares two {@code Triple}s lexicographically, returning 1, –1, or 0 if the answer is "greater than", "less
+         * than", or "equal to", respectively.
          *
          * <ul>
          *  <li>{@code p} must be non-null.</li>

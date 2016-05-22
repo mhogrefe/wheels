@@ -92,13 +92,37 @@ public final class Septuple<A, B, C, D, E, F, G> {
         this.g = g;
     }
 
+    /**
+     * Converts a {@code Septuple} of seven values of the same type to a {@code List}.
+     *
+     * <ul>
+     *  <li>{@code s} cannot be null.</li>
+     *  <li>The result has length 7.</li>
+     * </ul>
+     *
+     * @param s a {@code Septuple}
+     * @param <T> the type of all values of {@code s}
+     * @return a {@code List} containing the values of {@code s}
+     */
     public static <T> List<T> toList(Septuple<T, T, T, T, T, T, T> s) {
         return Arrays.asList(s.a, s.b, s.c, s.d, s.e, s.f, s.g);
     }
 
+    /**
+     * Converts a {@code List} of seven values to a {@code Septuple}.
+     *
+     * <ul>
+     *  <li>{@code xs} must have length 7.</li>
+     *  <li>The result is not null.</li>
+     * </ul>
+     *
+     * @param xs a {@code List}
+     * @param <T> the type of the elements in {@code xs}
+     * @return a {@code Septuple} containing the values of {@code xs}
+     */
     public static <T> Septuple<T, T, T, T, T, T, T> fromList(@NotNull List<T> xs) {
         if (xs.size() != 7) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("xs must have length 7. Invalid xs: " + xs);
         }
         return new Septuple<>(xs.get(0), xs.get(1), xs.get(2), xs.get(3), xs.get(4), xs.get(5), xs.get(6));
     }
@@ -167,6 +191,7 @@ public final class Septuple<A, B, C, D, E, F, G> {
      * @param that The {@code Septuple} to be compared with {@code this}
      * @return {@code this}={@code that}
      */
+    @SuppressWarnings("ConstantConditions")
     @Override
     public boolean equals(Object that) {
         if (this == that) return true;
@@ -366,8 +391,8 @@ public final class Septuple<A, B, C, D, E, F, G> {
         }
 
         /**
-         * Compares two {@code Septuple}s, returning 1, –1, or 0 if the answer is "greater than", "less than", or
-         * "equal to", respectively.
+         * Compares two {@code Septuple}s lexicographically, returning 1, –1, or 0 if the answer is "greater than",
+         * "less than", or "equal to", respectively.
          *
          * <ul>
          *  <li>{@code p} must be non-null.</li>

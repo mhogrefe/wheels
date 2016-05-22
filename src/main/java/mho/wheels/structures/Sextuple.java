@@ -83,13 +83,37 @@ public final class Sextuple<A, B, C, D, E, F> {
         this.f = f;
     }
 
+    /**
+     * Converts a {@code Sextuple} of six values of the same type to a {@code List}.
+     *
+     * <ul>
+     *  <li>{@code s} cannot be null.</li>
+     *  <li>The result has length 6.</li>
+     * </ul>
+     *
+     * @param s a {@code Sextuple}
+     * @param <T> the type of all values of {@code s}
+     * @return a {@code List} containing the values of {@code s}
+     */
     public static <T> List<T> toList(Sextuple<T, T, T, T, T, T> s) {
         return Arrays.asList(s.a, s.b, s.c, s.d, s.e, s.f);
     }
 
+    /**
+     * Converts a {@code List} of six values to a {@code Sextuple}.
+     *
+     * <ul>
+     *  <li>{@code xs} must have length 6.</li>
+     *  <li>The result is not null.</li>
+     * </ul>
+     *
+     * @param xs a {@code List}
+     * @param <T> the type of the elements in {@code xs}
+     * @return a {@code Sextuple} containing the values of {@code xs}
+     */
     public static <T> Sextuple<T, T, T, T, T, T> fromList(@NotNull List<T> xs) {
         if (xs.size() != 6) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("xs must have length 6. Invalid xs: " + xs);
         }
         return new Sextuple<>(xs.get(0), xs.get(1), xs.get(2), xs.get(3), xs.get(4), xs.get(5));
     }
@@ -335,8 +359,8 @@ public final class Sextuple<A, B, C, D, E, F> {
         }
 
         /**
-         * Compares two {@code Sextuple}s, returning 1, –1, or 0 if the answer is "greater than", "less than", or
-         * "equal to", respectively.
+         * Compares two {@code Sextuple}s lexicographically, returning 1, –1, or 0 if the answer is "greater than",
+         * "less than", or "equal to", respectively.
          *
          * <ul>
          *  <li>{@code p} must be non-null.</li>
