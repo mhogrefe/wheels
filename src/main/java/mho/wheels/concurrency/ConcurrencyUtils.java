@@ -5,10 +5,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.*;
 import java.util.function.Function;
 
 import static mho.wheels.iterables.IterableUtils.*;
@@ -22,14 +19,20 @@ public class ConcurrencyUtils {
         List<Callable<Pair<String, B>>> tasks = toList(
                 map(p -> (() -> new Pair<>(p.a, p.b.apply(input))), fromMap(functions))
         );
+        Pair<String, B> result;
         try {
-            return service.invokeAny(tasks);
+            result = service.invokeAny(tasks);
         } catch (ExecutionException e) {
             throw new RuntimeException(e);
         } catch (InterruptedException ignored) {
             throw new IllegalArgumentException();
-        } finally {
-            service.shutdownNow();
         }
+        service.shutdownNow();
+        try {
+            service.awaitTermination(1, TimeUnit.MINUTES);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 }
