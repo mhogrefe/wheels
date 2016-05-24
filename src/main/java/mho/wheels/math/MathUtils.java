@@ -1040,6 +1040,31 @@ public final class MathUtils {
     }
 
     /**
+     * Expresses {@code n} as a<sup>b</sup> with the largest possible b. {@code n} must be at least 2 (otherwise there
+     * is no upper bound on the exponent).
+     *
+     * <ul>
+     *  <li>{@code n} must be at least 2.</li>
+     *  <li>The result is a pair whose first element is at least 2 and whose second element is positive.</li>
+     * </ul>
+     *
+     * @param n a number
+     * @return (a, b), where a<sup>b</sup>={@code n} and b is as large as possible
+     */
+    public static @NotNull Pair<BigInteger, Integer> expressAsPower(@NotNull BigInteger n) {
+        if (lt(n, IntegerUtils.TWO)) {
+            throw new ArithmeticException("n must be at least 2. Invalid n: " + n);
+        }
+        for (int p = n.bitLength() - 1; p >= 2; p--) {
+            BigInteger root = ceilingRoot(p, n);
+            if (root.pow(p).equals(n)) {
+                return new Pair<>(root, p);
+            }
+        }
+        return new Pair<>(n, 1);
+    }
+
+    /**
      * Returns Euler's totient function of {@code n}, or the number of positive integers less than or equal to
      * {@code n} that are relatively prime to {@code n}.
      *

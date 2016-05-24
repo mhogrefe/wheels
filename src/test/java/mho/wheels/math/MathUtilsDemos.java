@@ -322,6 +322,12 @@ public class MathUtilsDemos extends Demos {
         }
     }
 
+    private void demoExpressAsPower() {
+        for (BigInteger i : take(LIMIT, P.rangeUp(IntegerUtils.TWO))) {
+            System.out.println("expressAsPower(" + i + ") = " + expressAsPower(i));
+        }
+    }
+
     private void demoTotient_int() {
         for (int i : take(LIMIT, P.positiveIntegers())) {
             System.out.println("φ(" + i + ") = " + totient(i));

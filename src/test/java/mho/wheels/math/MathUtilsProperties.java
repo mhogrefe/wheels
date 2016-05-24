@@ -85,6 +85,7 @@ public class MathUtilsProperties extends TestProperties {
         propertiesFactors_BigInteger();
         propertiesLargestPerfectPowerFactor_int_int();
         propertiesLargestPerfectPowerFactor_int_BigInteger();
+        propertiesExpressAsPower();
         propertiesTotient_int();
         compareImplementationsTotient_int();
         propertiesTotient_BigInteger();
@@ -1478,6 +1479,26 @@ public class MathUtilsProperties extends TestProperties {
                 largestPerfectPowerFactor(p.a, p.b);
                 fail(p);
             } catch (IllegalArgumentException ignored) {}
+        }
+    }
+
+    private void propertiesExpressAsPower() {
+        initialize("expressAsPower(BigInteger)");
+        for (BigInteger i : take(LIMIT, P.rangeUp(IntegerUtils.TWO))) {
+            Pair<BigInteger, Integer> p = expressAsPower(i);
+            assertTrue(i, ge(p.a, IntegerUtils.TWO));
+            assertTrue(i, p.b > 0);
+            inverse(MathUtils::expressAsPower, q -> q.a.pow(q.b), i);
+            Pair<BigInteger, Integer> r = expressAsPower(p.a);
+            assertEquals(i, r.a, p.a);
+            assertEquals(i, r.b, 1);
+        }
+
+        for (BigInteger i : take(LIMIT, P.rangeDown(BigInteger.ONE))) {
+            try {
+                expressAsPower(i);
+                fail(i);
+            } catch (ArithmeticException ignored) {}
         }
     }
 
