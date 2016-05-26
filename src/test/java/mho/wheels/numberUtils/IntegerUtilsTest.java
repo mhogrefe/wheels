@@ -41,6 +41,7 @@ public class IntegerUtilsTest {
         isPowerOfTwo_int_helper(3, false);
         isPowerOfTwo_int_helper(13, false);
         isPowerOfTwo_int_helper(100, false);
+
         isPowerOfTwo_int_fail_helper(0);
         isPowerOfTwo_int_fail_helper(-5);
     }
@@ -67,6 +68,7 @@ public class IntegerUtilsTest {
         isPowerOfTwo_long_helper(3L, false);
         isPowerOfTwo_long_helper(13L, false);
         isPowerOfTwo_long_helper(100L, false);
+
         isPowerOfTwo_long_fail_helper(0);
         isPowerOfTwo_long_fail_helper(-5);
     }
@@ -92,6 +94,7 @@ public class IntegerUtilsTest {
         isPowerOfTwo_BigInteger_helper("3", false);
         isPowerOfTwo_BigInteger_helper("13", false);
         isPowerOfTwo_BigInteger_helper("100", false);
+
         isPowerOfTwo_BigInteger_fail_helper("0");
         isPowerOfTwo_BigInteger_fail_helper("-5");
     }
@@ -120,6 +123,7 @@ public class IntegerUtilsTest {
         ceilingLog2_int_helper(9, 4);
         ceilingLog2_int_helper(1000, 10);
         ceilingLog2_int_helper(Integer.MAX_VALUE, 31);
+
         ceilingLog2_int_fail_helper(0);
         ceilingLog2_int_fail_helper(-5);
     }
@@ -148,6 +152,7 @@ public class IntegerUtilsTest {
         ceilingLog2_long_helper(9L, 4);
         ceilingLog2_long_helper(1000L, 10);
         ceilingLog2_long_helper(Long.MAX_VALUE, 63);
+
         ceilingLog2_long_fail_helper(0L);
         ceilingLog2_long_fail_helper(-5L);
     }
@@ -175,6 +180,7 @@ public class IntegerUtilsTest {
         ceilingLog2_BigInteger_helper("8", 3);
         ceilingLog2_BigInteger_helper("9", 4);
         ceilingLog2_BigInteger_helper("1000", 10);
+
         ceilingLog2_BigInteger_fail_helper("0");
         ceilingLog2_BigInteger_fail_helper("-5");
     }
@@ -196,6 +202,7 @@ public class IntegerUtilsTest {
         bits_int_helper(1, "[true]");
         bits_int_helper(6, "[false, true, true]");
         bits_int_helper(105, "[true, false, false, true, false, true, true]");
+
         bits_int_fail_helper(-1);
     }
 
@@ -216,6 +223,7 @@ public class IntegerUtilsTest {
         bits_BigInteger_helper("1", "[true]");
         bits_BigInteger_helper("6", "[false, true, true]");
         bits_BigInteger_helper("105", "[true, false, false, true, false, true, true]");
+
         bits_BigInteger_fail_helper("-1");
     }
 
@@ -242,6 +250,7 @@ public class IntegerUtilsTest {
         bitsPadded_int_int_helper(1, 104, "[false]");
         bitsPadded_int_int_helper(1, 105, "[true]");
         bitsPadded_int_int_helper(0, 104, "[]");
+
         bitsPadded_int_int_fail_helper(8, -1);
         bitsPadded_int_int_fail_helper(-1, 8);
     }
@@ -269,6 +278,7 @@ public class IntegerUtilsTest {
         bitsPadded_int_BigInteger_helper(1, "104", "[false]");
         bitsPadded_int_BigInteger_helper(1, "105", "[true]");
         bitsPadded_int_BigInteger_helper(0, "104", "[]");
+
         bitsPadded_int_BigInteger_fail_helper(8, "-1");
         bitsPadded_int_BigInteger_fail_helper(-1, "8");
     }
@@ -290,6 +300,7 @@ public class IntegerUtilsTest {
         bigEndianBits_int_helper(1, "[true]");
         bigEndianBits_int_helper(6, "[true, true, false]");
         bigEndianBits_int_helper(105, "[true, true, false, true, false, false, true]");
+
         bigEndianBits_int_fail_helper(-1);
     }
 
@@ -310,6 +321,7 @@ public class IntegerUtilsTest {
         bigEndianBits_BigInteger_helper("1", "[true]");
         bigEndianBits_BigInteger_helper("6", "[true, true, false]");
         bigEndianBits_BigInteger_helper("105", "[true, true, false, true, false, false, true]");
+
         bigEndianBits_BigInteger_fail_helper("-1");
     }
 
@@ -336,6 +348,7 @@ public class IntegerUtilsTest {
         bigEndianBitsPadded_int_int_helper(1, 104, "[false]");
         bigEndianBitsPadded_int_int_helper(1, 105, "[true]");
         bigEndianBitsPadded_int_int_helper(0, 104, "[]");
+
         bigEndianBitsPadded_int_int_fail_helper(8, -1);
         bigEndianBitsPadded_int_int_fail_helper(-1, 8);
     }
@@ -367,6 +380,7 @@ public class IntegerUtilsTest {
         bigEndianBitsPadded_int_BigInteger_helper(1, "104", "[false]");
         bigEndianBitsPadded_int_BigInteger_helper(1, "105", "[true]");
         bigEndianBitsPadded_int_BigInteger_helper(0, "104", "[]");
+
         bigEndianBitsPadded_int_BigInteger_fail_helper(8, "-1");
         bigEndianBitsPadded_int_BigInteger_fail_helper(-1, "8");
     }
@@ -389,6 +403,7 @@ public class IntegerUtilsTest {
         fromBits_helper("[true, false]", "1");
         fromBits_helper("[false, true, true, false, false, false, false, false]", "6");
         fromBits_helper("[true, false, false, true, false, true, true]", "105");
+
         fromBits_fail_helper("[true, null, true]");
     }
 
@@ -410,6 +425,7 @@ public class IntegerUtilsTest {
         fromBigEndianBits_helper("[false, true]", "1");
         fromBigEndianBits_helper("[false, false, false, false, false, true, true, false]", "6");
         fromBigEndianBits_helper("[true, true, false, true, false, false, true]", "105");
+
         fromBigEndianBits_fail_helper("[true, null, true]");
     }
 
@@ -450,6 +466,7 @@ public class IntegerUtilsTest {
         digits_int_int_helper(10, 187, "[7, 8, 1]");
         digits_int_int_helper(12, 187, "[7, 3, 1]");
         digits_int_int_helper(57, 187, "[16, 3]");
+
         digits_int_int_fail_helper(1, 10);
         digits_int_int_fail_helper(0, 10);
         digits_int_int_fail_helper(2, -1);
@@ -497,6 +514,7 @@ public class IntegerUtilsTest {
         digits_BigInteger_BigInteger_helper("10", "187", "[7, 8, 1]");
         digits_BigInteger_BigInteger_helper("12", "187", "[7, 3, 1]");
         digits_BigInteger_BigInteger_helper("57", "187", "[16, 3]");
+
         digits_BigInteger_BigInteger_fail_helper("1", "10");
         digits_BigInteger_BigInteger_fail_helper("0", "10");
         digits_BigInteger_BigInteger_fail_helper("2", "-1");
@@ -564,6 +582,7 @@ public class IntegerUtilsTest {
         digitsPadded_int_int_int_helper(8, 2, 187, "[1, 1, 0, 1, 1, 1, 0, 1]");
         digitsPadded_int_int_int_helper(8, 3, 187, "[1, 2, 2, 0, 2, 0, 0, 0]");
         digitsPadded_int_int_int_helper(8, 57, 187, "[16, 3, 0, 0, 0, 0, 0, 0]");
+
         digitsPadded_int_int_int_fail_helper(3, 1, 10);
         digitsPadded_int_int_int_fail_helper(3, 0, 10);
         digitsPadded_int_int_int_fail_helper(3, 2, -1);
@@ -645,6 +664,7 @@ public class IntegerUtilsTest {
         digitsPadded_int_BigInteger_BigInteger_helper(8, "2", "187", "[1, 1, 0, 1, 1, 1, 0, 1]");
         digitsPadded_int_BigInteger_BigInteger_helper(8, "3", "187", "[1, 2, 2, 0, 2, 0, 0, 0]");
         digitsPadded_int_BigInteger_BigInteger_helper(8, "57", "187", "[16, 3, 0, 0, 0, 0, 0, 0]");
+
         digitsPadded_int_BigInteger_BigInteger_fail_helper(3, "1", "10");
         digitsPadded_int_BigInteger_BigInteger_fail_helper(3, "0", "10");
         digitsPadded_int_BigInteger_BigInteger_fail_helper(3, "2", "-1");
@@ -690,6 +710,7 @@ public class IntegerUtilsTest {
         bigEndianDigits_int_int_helper(10, 187, "[1, 8, 7]");
         bigEndianDigits_int_int_helper(12, 187, "[1, 3, 7]");
         bigEndianDigits_int_int_helper(57, 187, "[3, 16]");
+
         bigEndianDigits_int_int_fail_helper(1, 10);
         bigEndianDigits_int_int_fail_helper(0, 10);
         bigEndianDigits_int_int_fail_helper(2, -1);
@@ -737,6 +758,7 @@ public class IntegerUtilsTest {
         bigEndianDigits_BigInteger_BigInteger_helper("10", "187", "[1, 8, 7]");
         bigEndianDigits_BigInteger_BigInteger_helper("12", "187", "[1, 3, 7]");
         bigEndianDigits_BigInteger_BigInteger_helper("57", "187", "[3, 16]");
+
         bigEndianDigits_BigInteger_BigInteger_fail_helper("1", "10");
         bigEndianDigits_BigInteger_BigInteger_fail_helper("0", "10");
         bigEndianDigits_BigInteger_BigInteger_fail_helper("2", "-1");
@@ -804,6 +826,7 @@ public class IntegerUtilsTest {
         bigEndianDigitsPadded_int_int_int_helper(8, 2, 187, "[1, 0, 1, 1, 1, 0, 1, 1]");
         bigEndianDigitsPadded_int_int_int_helper(8, 3, 187, "[0, 0, 0, 2, 0, 2, 2, 1]");
         bigEndianDigitsPadded_int_int_int_helper(8, 57, 187, "[0, 0, 0, 0, 0, 0, 3, 16]");
+
         bigEndianDigitsPadded_int_int_int_fail_helper(3, 1, 10);
         bigEndianDigitsPadded_int_int_int_fail_helper(3, 0, 10);
         bigEndianDigitsPadded_int_int_int_fail_helper(3, 2, -1);
@@ -892,6 +915,7 @@ public class IntegerUtilsTest {
         bigEndianDigitsPadded_int_BigInteger_BigInteger_helper(8, "2", "187", "[1, 0, 1, 1, 1, 0, 1, 1]");
         bigEndianDigitsPadded_int_BigInteger_BigInteger_helper(8, "3", "187", "[0, 0, 0, 2, 0, 2, 2, 1]");
         bigEndianDigitsPadded_int_BigInteger_BigInteger_helper(8, "57", "187", "[0, 0, 0, 0, 0, 0, 3, 16]");
+
         bigEndianDigitsPadded_int_BigInteger_BigInteger_fail_helper(3, "1", "10");
         bigEndianDigitsPadded_int_BigInteger_BigInteger_fail_helper(3, "0", "10");
         bigEndianDigitsPadded_int_BigInteger_BigInteger_fail_helper(3, "2", "-1");
@@ -923,6 +947,7 @@ public class IntegerUtilsTest {
         fromDigits_int_Iterable_Integer_helper(10, "[9, 5, 1, 4, 1, 3]", "314159");
         fromDigits_int_Iterable_Integer_helper(70, "[8, 0, 20, 5, 43]", "1034243008");
         fromDigits_int_Iterable_Integer_helper(70, "[]", "0");
+
         fromDigits_int_Iterable_Integer_fail_helper(2, "[0, null]");
         fromDigits_int_Iterable_Integer_fail_helper(1, "[1, 2, 3]");
         fromDigits_int_Iterable_Integer_fail_helper(0, "[1, 2, 3]");
@@ -957,6 +982,7 @@ public class IntegerUtilsTest {
         fromDigits_BigInteger_Iterable_BigInteger_helper("10", "[9, 5, 1, 4, 1, 3]", "314159");
         fromDigits_BigInteger_Iterable_BigInteger_helper("70", "[8, 0, 20, 5, 43]", "1034243008");
         fromDigits_BigInteger_Iterable_BigInteger_helper("70", "[]", "0");
+
         fromDigits_BigInteger_Iterable_BigInteger_fail_helper("2", "[0, null]");
         fromDigits_BigInteger_Iterable_BigInteger_fail_helper("1", "[1, 2, 3]");
         fromDigits_BigInteger_Iterable_BigInteger_fail_helper("0", "[1, 2, 3]");
@@ -988,6 +1014,7 @@ public class IntegerUtilsTest {
         fromBigEndianDigits_int_Iterable_Integer_helper(10, "[3, 1, 4, 1, 5, 9]", "314159");
         fromBigEndianDigits_int_Iterable_Integer_helper(70, "[43, 5, 20, 0, 8]", "1034243008");
         fromBigEndianDigits_int_Iterable_Integer_helper(70, "[]", "0");
+
         fromBigEndianDigits_int_Iterable_Integer_fail_helper(1, "[1, 2, 3]");
         fromBigEndianDigits_int_Iterable_Integer_fail_helper(0, "[1, 2, 3]");
         fromBigEndianDigits_int_Iterable_Integer_fail_helper(-1, "[1, 2, 3]");
@@ -1021,6 +1048,7 @@ public class IntegerUtilsTest {
         fromBigEndianDigits_BigInteger_Iterable_BigInteger_helper("10", "[3, 1, 4, 1, 5, 9]", "314159");
         fromBigEndianDigits_BigInteger_Iterable_BigInteger_helper("70", "[43, 5, 20, 0, 8]", "1034243008");
         fromBigEndianDigits_BigInteger_Iterable_BigInteger_helper("70", "[]", "0");
+
         fromBigEndianDigits_BigInteger_Iterable_BigInteger_fail_helper("1", "[1, 2, 3]");
         fromBigEndianDigits_BigInteger_Iterable_BigInteger_fail_helper("0", "[1, 2, 3]");
         fromBigEndianDigits_BigInteger_Iterable_BigInteger_fail_helper("-1", "[1, 2, 3]");
@@ -1046,6 +1074,7 @@ public class IntegerUtilsTest {
         toDigit_helper(10, 'A');
         toDigit_helper(20, 'K');
         toDigit_helper(35, 'Z');
+
         toDigit_fail_helper(-1);
         toDigit_fail_helper(36);
     }
@@ -1068,6 +1097,7 @@ public class IntegerUtilsTest {
         fromDigit_helper('A', 10);
         fromDigit_helper('K', 20);
         fromDigit_helper('Z', 35);
+
         fromDigit_fail_helper(' ');
         fromDigit_fail_helper('a');
     }
@@ -1112,6 +1142,7 @@ public class IntegerUtilsTest {
         toStringBase_int_int_helper(36, -524393454, "-8O7KKU");
         toStringBase_int_int_helper(88, -524393454, "-(8)(65)(44)(8)(46)");
         toStringBase_int_int_helper(100, -524393454, "-(5)(24)(39)(34)(54)");
+
         toStringBase_int_int_fail_helper(1, 524393454);
         toStringBase_int_int_fail_helper(0, 524393454);
     }
@@ -1160,6 +1191,7 @@ public class IntegerUtilsTest {
         toStringBase_BigInteger_BigInteger_helper("36", "-524393454", "-8O7KKU");
         toStringBase_BigInteger_BigInteger_helper("88", "-524393454", "-(8)(65)(44)(8)(46)");
         toStringBase_BigInteger_BigInteger_helper("100", "-524393454", "-(5)(24)(39)(34)(54)");
+
         toStringBase_BigInteger_BigInteger_fail_helper("1", "524393454");
         toStringBase_BigInteger_BigInteger_fail_helper("0", "524393454");
     }
@@ -1475,6 +1507,7 @@ public class IntegerUtilsTest {
         squareRootMux_helper("5", "10", "538");
         squareRootMux_helper("10", "5", "101");
         squareRootMux_helper("7680", "76", "1000000");
+
         squareRootMux_fail_helper("-5", "5");
         squareRootMux_fail_helper("5", "-5");
         squareRootMux_fail_helper("-5", "-5");
@@ -1501,6 +1534,7 @@ public class IntegerUtilsTest {
         squareRootDemux_helper("538", "5", "10");
         squareRootDemux_helper("101", "10", "5");
         squareRootDemux_helper("1000000", "7680", "76");
+
         squareRootDemux_fail_helper("-5");
     }
 

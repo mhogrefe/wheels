@@ -20,35 +20,31 @@ public class NullableOptionalTest {
         aeq(empty(), "NullableOptional.empty");
     }
 
+    private static <T> void of_helper(T input, @NotNull String output) {
+        aeq(of(input), output);
+    }
+
     @Test
     public void testOf() {
-        aeq(of(1), "NullableOptional[1]");
-        aeq(of("hello"), "NullableOptional[hello]");
-        aeq(of(null), "NullableOptional[null]");
+        of_helper(1, "NullableOptional[1]");
+        of_helper("hello", "NullableOptional[hello]");
+        of_helper(null, "NullableOptional[null]");
     }
 
-    private static void isPresent_true_helper(@NotNull String s) {
-        assertTrue(readNullableOptionalInteger(s).isPresent());
-    }
-
-    private static void isPresent_false_helper(@NotNull String s) {
-        assertFalse(readNullableOptionalInteger(s).isPresent());
+    private static void isPresent_helper(@NotNull String input, boolean output) {
+        aeq(readNullableOptionalInteger(input).isPresent(), output);
     }
 
     @Test
     public void testIsPresent() {
-        isPresent_true_helper("NullableOptional[1]");
-        isPresent_true_helper("NullableOptional[-5]");
-        isPresent_true_helper("NullableOptional[null]");
-        isPresent_false_helper("NullableOptional.empty");
+        isPresent_helper("NullableOptional[1]", true);
+        isPresent_helper("NullableOptional[-5]", true);
+        isPresent_helper("NullableOptional[null]", true);
+        isPresent_helper("NullableOptional.empty", false);
     }
 
-    private static void get_helper(@NotNull String x, @NotNull String output) {
-        aeq(readNullableOptionalInteger(x).get(), output);
-    }
-
-    private static void get_null_helper(@NotNull String x) {
-        assertNull(readNullableOptionalInteger(x).get());
+    private static void get_helper(@NotNull String input, @NotNull String output) {
+        aeq(readNullableOptionalInteger(input).get(), output);
     }
 
     private static void get_fail_helper(@NotNull String x) {
@@ -63,12 +59,13 @@ public class NullableOptionalTest {
     public void testGet() {
         get_helper("NullableOptional[1]", "1");
         get_helper("NullableOptional[-5]", "-5");
-        get_null_helper("NullableOptional[null]");
+        get_helper("NullableOptional[null]", "null");
+
         get_fail_helper("NullableOptional.empty");
     }
 
-    private static void fromOptional_helper(@NotNull String x, @NotNull String output) {
-        aeq(fromOptional(readOptionalInteger(x)), output);
+    private static void fromOptional_helper(@NotNull String input, @NotNull String output) {
+        aeq(fromOptional(readOptionalInteger(input)), output);
     }
 
     @Test
@@ -121,6 +118,7 @@ public class NullableOptionalTest {
         map_helper("NullableOptional[2]", 2, null, "NullableOptional[null]");
         map_helper("NullableOptional[null]", null, 3, "NullableOptional[3]");
         map_helper("NullableOptional[null]", null, null, "NullableOptional[null]");
+
         map_fail_helper("NullableOptional[2]", 1, 3);
         map_fail_helper("NullableOptional[null]", 1, 3);
     }
