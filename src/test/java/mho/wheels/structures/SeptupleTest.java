@@ -2,6 +2,7 @@ package mho.wheels.structures;
 
 import mho.wheels.ordering.Ordering;
 import mho.wheels.ordering.comparators.LexComparator;
+import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -12,38 +13,27 @@ import static mho.wheels.ordering.Ordering.*;
 import static org.junit.Assert.*;
 
 public class SeptupleTest {
-    private static final List<Integer> x = Arrays.asList(1, 0);
+    private static final @NotNull List<Integer> x = Arrays.asList(1, 0);
+
+    private static <A, B, C, D, E, F, G> void constructor_helper(
+            A a,
+            B b,
+            C c,
+            D d,
+            E e,
+            F f,
+            G g,
+            @NotNull String output
+    ) {
+        aeq(new Septuple<>(a, b, c, d, e, f, g), output);
+    }
 
     @Test
     public void testConstructor() {
-        aeq(new Septuple<>("hi", 3, true, 'a', GT, 0.5, x).a, "hi");
-        aeq(new Septuple<>("hi", 3, true, 'a', GT, 0.5, x).b, 3);
-        aeq(new Septuple<>("hi", 3, true, 'a', GT, 0.5, x).c, true);
-        aeq(new Septuple<>("hi", 3, true, 'a', GT, 0.5, x).d, 'a');
-        aeq(new Septuple<>("hi", 3, true, 'a', GT, 0.5, x).e, GT);
-        aeq(new Septuple<>("hi", 3, true, 'a', GT, 0.5, x).f, 0.5);
-        aeq(new Septuple<>("hi", 3, true, 'a', GT, 0.5, x).g, x);
-        aeq(new Septuple<>("hi", 3, true, 'a', GT, 0.5, null).a, "hi");
-        aeq(new Septuple<>("hi", 3, true, 'a', GT, 0.5, null).b, 3);
-        aeq(new Septuple<>("hi", 3, true, 'a', GT, 0.5, null).c, true);
-        aeq(new Septuple<>("hi", 3, true, 'a', GT, 0.5, null).d, 'a');
-        aeq(new Septuple<>("hi", 3, true, 'a', GT, 0.5, null).e, GT);
-        aeq(new Septuple<>("hi", 3, true, 'a', GT, 0.5, null).f, 0.5);
-        assertNull(new Septuple<>("hi", 3, true, 'a', GT, 0.5, null).g);
-        assertNull(new Septuple<>(null, 3, true, 'a', GT, 0.5, x).a);
-        aeq(new Septuple<>(null, 3, true, 'a', GT, 0.5, x).b, 3);
-        aeq(new Septuple<>(null, 3, true, 'a', GT, 0.5, x).c, true);
-        aeq(new Septuple<>(null, 3, true, 'a', GT, 0.5, x).d, 'a');
-        aeq(new Septuple<>(null, 3, true, 'a', GT, 0.5, x).e, GT);
-        aeq(new Septuple<>(null, 3, true, 'a', GT, 0.5, x).f, 0.5);
-        aeq(new Septuple<>(null, 3, true, 'a', GT, 0.5, x).g, x);
-        assertNull(new Septuple<>(null, null, null, null, null, null, null).a);
-        assertNull(new Septuple<>(null, null, null, null, null, null, null).b);
-        assertNull(new Septuple<>(null, null, null, null, null, null, null).c);
-        assertNull(new Septuple<>(null, null, null, null, null, null, null).d);
-        assertNull(new Septuple<>(null, null, null, null, null, null, null).e);
-        assertNull(new Septuple<>(null, null, null, null, null, null, null).f);
-        assertNull(new Septuple<>(null, null, null, null, null, null, null).g);
+        constructor_helper("hi", 3, true, 'a', GT, 0.5, x, "(hi, 3, true, a, GT, 0.5, [1, 0])");
+        constructor_helper("hi", 3, true, 'a', GT, 0.5, null, "(hi, 3, true, a, GT, 0.5, null)");
+        constructor_helper(null, 3, true, 'a', GT, 0.5, x, "(null, 3, true, a, GT, 0.5, [1, 0])");
+        constructor_helper(null, null, null, null, null, null, null, "(null, null, null, null, null, null, null)");
     }
 
     @Test

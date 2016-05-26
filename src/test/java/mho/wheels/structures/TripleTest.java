@@ -1,5 +1,6 @@
 package mho.wheels.structures;
 
+import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
 
 import java.util.Comparator;
@@ -8,20 +9,16 @@ import static mho.wheels.ordering.Ordering.*;
 import static org.junit.Assert.*;
 
 public class TripleTest {
+    private static <A, B, C> void constructor_helper(A a, B b, C c, @NotNull String output) {
+        aeq(new Triple<>(a, b, c), output);
+    }
+
     @Test
     public void testConstructor() {
-        aeq(new Triple<>("hi", 3, true).a, "hi");
-        aeq(new Triple<>("hi", 3, true).b, 3);
-        aeq(new Triple<>("hi", 3, true).c, true);
-        aeq(new Triple<>("hi", 3, null).a, "hi");
-        aeq(new Triple<>("hi", 3, null).b, 3);
-        assertNull(new Triple<>("hi", 3, null).c);
-        assertNull(new Triple<>(null, 3, true).a);
-        aeq(new Triple<>(null, 3, true).b, 3);
-        aeq(new Triple<>(null, 3, true).c, true);
-        assertNull(new Triple<>(null, null, null).a);
-        assertNull(new Triple<>(null, null, null).b);
-        assertNull(new Triple<>(null, null, null).c);
+        constructor_helper("hi", 3, true, "(hi, 3, true)");
+        constructor_helper("hi", 3, null, "(hi, 3, null)");
+        constructor_helper(null, 3, true, "(null, 3, true)");
+        constructor_helper(null, null, null, "(null, null, null)");
     }
 
     @Test

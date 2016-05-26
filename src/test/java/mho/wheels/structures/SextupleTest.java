@@ -1,6 +1,7 @@
 package mho.wheels.structures;
 
 import mho.wheels.ordering.Ordering;
+import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
 
 import java.util.Comparator;
@@ -9,32 +10,16 @@ import static mho.wheels.ordering.Ordering.*;
 import static org.junit.Assert.*;
 
 public class SextupleTest {
+    private static <A, B, C, D, E, F> void constructor_helper(A a, B b, C c, D d, E e, F f, @NotNull String output) {
+        aeq(new Sextuple<>(a, b, c, d, e, f), output);
+    }
+
     @Test
     public void testConstructor() {
-        aeq(new Sextuple<>("hi", 3, true, 'a', GT, 0.5).a, "hi");
-        aeq(new Sextuple<>("hi", 3, true, 'a', GT, 0.5).b, 3);
-        aeq(new Sextuple<>("hi", 3, true, 'a', GT, 0.5).c, true);
-        aeq(new Sextuple<>("hi", 3, true, 'a', GT, 0.5).d, 'a');
-        aeq(new Sextuple<>("hi", 3, true, 'a', GT, 0.5).e, GT);
-        aeq(new Sextuple<>("hi", 3, true, 'a', GT, 0.5).f, 0.5);
-        aeq(new Sextuple<>("hi", 3, true, 'a', GT, null).a, "hi");
-        aeq(new Sextuple<>("hi", 3, true, 'a', GT, null).b, 3);
-        aeq(new Sextuple<>("hi", 3, true, 'a', GT, null).c, true);
-        aeq(new Sextuple<>("hi", 3, true, 'a', GT, null).d, 'a');
-        aeq(new Sextuple<>("hi", 3, true, 'a', GT, null).e, GT);
-        assertNull(new Sextuple<>("hi", 3, true, 'a', GT, null).f);
-        assertNull(new Sextuple<>(null, 3, true, 'a', GT, 0.5).a);
-        aeq(new Sextuple<>(null, 3, true, 'a', GT, 0.5).b, 3);
-        aeq(new Sextuple<>(null, 3, true, 'a', GT, 0.5).c, true);
-        aeq(new Sextuple<>(null, 3, true, 'a', GT, 0.5).d, 'a');
-        aeq(new Sextuple<>(null, 3, true, 'a', GT, 0.5).e, GT);
-        aeq(new Sextuple<>(null, 3, true, 'a', GT, 0.5).f, 0.5);
-        assertNull(new Sextuple<>(null, null, null, null, null, null).a);
-        assertNull(new Sextuple<>(null, null, null, null, null, null).b);
-        assertNull(new Sextuple<>(null, null, null, null, null, null).c);
-        assertNull(new Sextuple<>(null, null, null, null, null, null).d);
-        assertNull(new Sextuple<>(null, null, null, null, null, null).e);
-        assertNull(new Sextuple<>(null, null, null, null, null, null).f);
+        constructor_helper("hi", 3, true, 'a', GT, 0.5, "(hi, 3, true, a, GT, 0.5)");
+        constructor_helper("hi", 3, true, 'a', GT, null, "(hi, 3, true, a, GT, null)");
+        constructor_helper(null, 3, true, 'a', GT, 0.5, "(null, 3, true, a, GT, 0.5)");
+        constructor_helper(null, null, null, null, null, null, "(null, null, null, null, null, null)");
     }
 
     @Test

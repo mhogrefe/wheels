@@ -1,5 +1,6 @@
 package mho.wheels.structures;
 
+import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
 
 import java.util.Comparator;
@@ -8,16 +9,16 @@ import static mho.wheels.ordering.Ordering.*;
 import static org.junit.Assert.*;
 
 public class PairTest {
+    private static <A, B> void constructor_helper(A a, B b, @NotNull String output) {
+        aeq(new Pair<>(a, b), output);
+    }
+
     @Test
     public void testConstructor() {
-        aeq(new Pair<>("hi", 3).a, "hi");
-        aeq(new Pair<>("hi", 3).b, 3);
-        aeq(new Pair<>("hi", null).a, "hi");
-        assertNull(new Pair<>("hi", null).b);
-        assertNull(new Pair<>(null, 3).a);
-        aeq(new Pair<>(null, 3).b, 3);
-        assertNull(new Pair<>(null, null).a);
-        assertNull(new Pair<>(null, null).b);
+        constructor_helper("hi", 3, "(hi, 3)");
+        constructor_helper("hi", null, "(hi, null)");
+        constructor_helper(null, 3, "(null, 3)");
+        constructor_helper(null, null, "(null, null)");
     }
 
     @Test

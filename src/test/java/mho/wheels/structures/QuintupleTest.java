@@ -1,6 +1,7 @@
 package mho.wheels.structures;
 
 import mho.wheels.ordering.Ordering;
+import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
 
 import java.util.Comparator;
@@ -9,28 +10,16 @@ import static mho.wheels.ordering.Ordering.*;
 import static org.junit.Assert.*;
 
 public class QuintupleTest {
+    private static <A, B, C, D, E> void constructor_helper(A a, B b, C c, D d, E e, @NotNull String output) {
+        aeq(new Quintuple<>(a, b, c, d, e), output);
+    }
+
     @Test
     public void testConstructor() {
-        aeq(new Quintuple<>("hi", 3, true, 'a', GT).a, "hi");
-        aeq(new Quintuple<>("hi", 3, true, 'a', GT).b, 3);
-        aeq(new Quintuple<>("hi", 3, true, 'a', GT).c, true);
-        aeq(new Quintuple<>("hi", 3, true, 'a', GT).d, 'a');
-        aeq(new Quintuple<>("hi", 3, true, 'a', GT).e, GT);
-        aeq(new Quintuple<>("hi", 3, true, 'a', null).a, "hi");
-        aeq(new Quintuple<>("hi", 3, true, 'a', null).b, 3);
-        aeq(new Quintuple<>("hi", 3, true, 'a', null).c, true);
-        aeq(new Quintuple<>("hi", 3, true, 'a', null).d, 'a');
-        assertNull(new Quintuple<>("hi", 3, true, 'a', null).e);
-        assertNull(new Quintuple<>(null, 3, true, 'a', GT).a);
-        aeq(new Quintuple<>(null, 3, true, 'a', GT).b, 3);
-        aeq(new Quintuple<>(null, 3, true, 'a', GT).c, true);
-        aeq(new Quintuple<>(null, 3, true, 'a', GT).d, 'a');
-        aeq(new Quintuple<>(null, 3, true, 'a', GT).e, GT);
-        assertNull(new Quintuple<>(null, null, null, null, null).a);
-        assertNull(new Quintuple<>(null, null, null, null, null).b);
-        assertNull(new Quintuple<>(null, null, null, null, null).c);
-        assertNull(new Quintuple<>(null, null, null, null, null).d);
-        assertNull(new Quintuple<>(null, null, null, null, null).e);
+        constructor_helper("hi", 3, true, 'a', GT, "(hi, 3, true, a, GT)");
+        constructor_helper("hi", 3, true, 'a', null, "(hi, 3, true, a, null)");
+        constructor_helper(null, 3, true, 'a', GT, "(null, 3, true, a, GT)");
+        constructor_helper(null, null, null, null, null, "(null, null, null, null, null)");
     }
 
     @Test

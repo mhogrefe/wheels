@@ -1,5 +1,6 @@
 package mho.wheels.structures;
 
+import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
 
 import java.util.Comparator;
@@ -8,24 +9,16 @@ import static mho.wheels.ordering.Ordering.*;
 import static org.junit.Assert.*;
 
 public class QuadrupleTest {
+    private static <A, B, C, D> void constructor_helper(A a, B b, C c, D d, @NotNull String output) {
+        aeq(new Quadruple<>(a, b, c, d), output);
+    }
+
     @Test
     public void testConstructor() {
-        aeq(new Quadruple<>("hi", 3, true, 'a').a, "hi");
-        aeq(new Quadruple<>("hi", 3, true, 'a').b, 3);
-        aeq(new Quadruple<>("hi", 3, true, 'a').c, true);
-        aeq(new Quadruple<>("hi", 3, true, 'a').d, 'a');
-        aeq(new Quadruple<>("hi", 3, true, null).a, "hi");
-        aeq(new Quadruple<>("hi", 3, true, null).b, 3);
-        aeq(new Quadruple<>("hi", 3, true, null).c, true);
-        assertNull(new Quadruple<>("hi", 3, true, null).d);
-        assertNull(new Quadruple<>(null, 3, true, 'a').a);
-        aeq(new Quadruple<>(null, 3, true, 'a').b, 3);
-        aeq(new Quadruple<>(null, 3, true, 'a').c, true);
-        aeq(new Quadruple<>(null, 3, true, 'a').d, 'a');
-        assertNull(new Quadruple<>(null, null, null, null).a);
-        assertNull(new Quadruple<>(null, null, null, null).b);
-        assertNull(new Quadruple<>(null, null, null, null).c);
-        assertNull(new Quadruple<>(null, null, null, null).d);
+        constructor_helper("hi", 3, true, 'a', "(hi, 3, true, a)");
+        constructor_helper("hi", 3, true, null, "(hi, 3, true, null)");
+        constructor_helper(null, 3, true, 'a', "(null, 3, true, a)");
+        constructor_helper(null, null, null, null, "(null, null, null, null)");
     }
 
     @Test
