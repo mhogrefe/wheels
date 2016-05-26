@@ -199,8 +199,8 @@ public class ReadersDemos extends Demos {
                 P.pairs(P.strings(), P.optionals(P.integers()))
         );
         for (Pair<Function<String, Optional<Integer>>, String> p : take(LIMIT, ps)) {
-            System.out.println("readWithNullsStrict(" + nicePrint(p.a.toString()) + ").apply(" + nicePrint(p.b) + ") = " +
-                    readWithNullsStrict(p.a).apply(p.b));
+            System.out.println("readWithNullsStrict(" + nicePrint(p.a.toString()) + ").apply(" + nicePrint(p.b) +
+                    ") = " + readWithNullsStrict(p.a).apply(p.b));
         }
     }
 
@@ -221,8 +221,8 @@ public class ReadersDemos extends Demos {
                 P.pairs(P.strings(), P.optionals(P.integers()))
         );
         for (Pair<Function<String, Optional<Integer>>, String> p : take(LIMIT, ps)) {
-            System.out.println("readOptionalStrict(" + nicePrint(p.a.toString()) + ").apply(" + nicePrint(p.b) + ") = " +
-                    readOptionalStrict(p.a).apply(p.b));
+            System.out.println("readOptionalStrict(" + nicePrint(p.a.toString()) + ").apply(" + nicePrint(p.b) +
+                    ") = " + readOptionalStrict(p.a).apply(p.b));
         }
     }
 
