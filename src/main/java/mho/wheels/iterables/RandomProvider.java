@@ -379,7 +379,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Long> longs() {
-        return map(c -> (long) c.get(0) << 32 | c.get(1) & 0xffffffffL, chunk(2, integers()));
+        return map(c -> (long) c.get(0) << 32 | c.get(1) & 0xffffffffL, chunkInfinite(2, integers()));
     }
 
     /**
