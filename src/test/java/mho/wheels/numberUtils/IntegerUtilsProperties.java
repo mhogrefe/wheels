@@ -26,6 +26,10 @@ public class IntegerUtilsProperties extends TestProperties {
 
     @Override
     protected void testBothModes() {
+        propertiesLowestOneBit_int();
+        propertiesLowestOneBit_long();
+        propertiesHighestOneBit_int();
+        propertiesHighestOneBit_long();
         propertiesIsPowerOfTwo_int();
         compareImplementationsIsPowerOfTwo_int();
         propertiesIsPowerOfTwo_long();
@@ -98,6 +102,98 @@ public class IntegerUtilsProperties extends TestProperties {
         compareImplementationsDemux();
     }
 
+    private void propertiesLowestOneBit_int() {
+        initialize("lowestOneBit(int)");
+        for (int i : take(LIMIT, P.integers())) {
+            //noinspection ResultOfMethodCallIgnored
+            Integer.lowestOneBit(i);
+        }
+
+        for (int i : take(LIMIT, filterInfinite(j -> j != Integer.MIN_VALUE, P.integers()))) {
+            int b = Integer.lowestOneBit(i);
+            assertTrue(i, b >= 0);
+            assertTrue(i, b <= 1 << 30);
+            assertEquals(i, Integer.lowestOneBit(-i), b);
+        }
+
+        for (int i : take(LIMIT, filterInfinite(j -> j != Integer.MIN_VALUE, P.nonzeroIntegers()))) {
+            int b = Integer.lowestOneBit(i);
+            assertTrue(i, isPowerOfTwo(b));
+            assertNotEquals(i, i & b, 0);
+        }
+    }
+
+    private void propertiesLowestOneBit_long() {
+        initialize("lowestOneBit(long)");
+        for (long l : take(LIMIT, P.longs())) {
+            //noinspection ResultOfMethodCallIgnored
+            Long.lowestOneBit(l);
+        }
+
+        for (long l : take(LIMIT, filterInfinite(m -> m != Long.MIN_VALUE, P.longs()))) {
+            long b = Long.lowestOneBit(l);
+            assertTrue(l, b >= 0);
+            assertTrue(l, b <= 1L << 62);
+            assertEquals(l, Long.lowestOneBit(-l), b);
+        }
+
+        for (long l : take(LIMIT, filterInfinite(m -> m != Long.MIN_VALUE, P.nonzeroLongs()))) {
+            long b = Long.lowestOneBit(l);
+            assertTrue(l, isPowerOfTwo(b));
+            assertNotEquals(l, l & b, 0);
+        }
+    }
+
+    private void propertiesHighestOneBit_int() {
+        initialize("highestOneBit(int)");
+        for (int i : take(LIMIT, P.integers())) {
+            //noinspection ResultOfMethodCallIgnored
+            Integer.highestOneBit(i);
+        }
+
+        for (int i : take(LIMIT, P.naturalIntegers())) {
+            int b = Integer.highestOneBit(i);
+            assertTrue(i, b >= 0);
+            assertTrue(i, b <= 1 << 30);
+        }
+
+        for (int i : take(LIMIT, P.negativeIntegers())) {
+            int b = Integer.highestOneBit(i);
+            assertEquals(i, b, Integer.MIN_VALUE);
+        }
+
+        for (int i : take(LIMIT, P.positiveIntegers())) {
+            int b = Integer.highestOneBit(i);
+            assertTrue(i, isPowerOfTwo(b));
+            assertNotEquals(i, i & b, 0);
+        }
+    }
+
+    private void propertiesHighestOneBit_long() {
+        initialize("highestOneBit(long)");
+        for (long l : take(LIMIT, P.longs())) {
+            //noinspection ResultOfMethodCallIgnored
+            Long.highestOneBit(l);
+        }
+
+        for (long l : take(LIMIT, P.naturalLongs())) {
+            long b = Long.highestOneBit(l);
+            assertTrue(l, b >= 0);
+            assertTrue(l, b <= 1L << 62);
+        }
+
+        for (long l : take(LIMIT, P.negativeLongs())) {
+            long b = Long.highestOneBit(l);
+            assertEquals(l, b, Long.MIN_VALUE);
+        }
+
+        for (long l : take(LIMIT, P.positiveLongs())) {
+            long b = Long.highestOneBit(l);
+            assertTrue(l, isPowerOfTwo(b));
+            assertNotEquals(l, l & b, 0);
+        }
+    }
+
     private static boolean isPowerOfTwo_int_simplest(int n) {
         return isPowerOfTwo(BigInteger.valueOf(n));
     }
@@ -130,7 +226,7 @@ public class IntegerUtilsProperties extends TestProperties {
         functions.put("simplest", IntegerUtilsProperties::isPowerOfTwo_int_simplest);
         functions.put("alt", IntegerUtilsProperties::isPowerOfTwo_int_alt);
         functions.put("standard", IntegerUtils::isPowerOfTwo);
-        compareImplementations("isPowerOfTwo(int)", take(LIMIT, P.positiveIntegers()), functions, v -> P.reset());
+        compareImplementations("isPowerOfTwo(int)", take(100000, P.positiveIntegers()), functions, v -> P.reset());
     }
 
     private static boolean isPowerOfTwo_long_simplest(long n) {
@@ -211,6 +307,8 @@ public class IntegerUtilsProperties extends TestProperties {
         initialize("ceilingLog2(int)");
         for (int i : take(LIMIT, P.positiveIntegers())) {
             int ceilingLog2 = ceilingLog2(i);
+            assertTrue(i, ceilingLog2 >= 0);
+            assertTrue(i, ceilingLog2 < 32);
             assertTrue(i, ceilingLog2 == 31 || 1 << ceilingLog2 >= i);
             assertTrue(i, 1 << (ceilingLog2 - 1) < i);
         }
@@ -238,6 +336,8 @@ public class IntegerUtilsProperties extends TestProperties {
         initialize("ceilingLog2(long)");
         for (long l : take(LIMIT, P.positiveLongs())) {
             int ceilingLog2 = ceilingLog2(l);
+            assertTrue(l, ceilingLog2 >= 0);
+            assertTrue(l, ceilingLog2 < 64);
             assertTrue(l, ceilingLog2 == 63 || 1L << ceilingLog2 >= l);
             assertTrue(l, 1L << (ceilingLog2 - 1) < l);
         }
@@ -261,6 +361,7 @@ public class IntegerUtilsProperties extends TestProperties {
         initialize("ceilingLog2(BigInteger)");
         for (BigInteger i : take(LIMIT, P.positiveBigIntegers())) {
             int ceilingLog2 = ceilingLog2(i);
+            assertTrue(i, ceilingLog2 >= 0);
             assertTrue(i, ge(BigInteger.ONE.shiftLeft(ceilingLog2), i));
             assertTrue(i, lt(BigInteger.ONE.shiftLeft(ceilingLog2 - 1), i));
         }

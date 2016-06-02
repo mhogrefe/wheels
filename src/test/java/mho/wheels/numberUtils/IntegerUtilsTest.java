@@ -19,6 +19,146 @@ public class IntegerUtilsTest {
         aeq(TWO, "2");
     }
 
+    private static void lowestOneBit_int_helper(int input, int output) {
+        aeq(Integer.lowestOneBit(input), output);
+    }
+
+    @Test
+    public void testLowestOneBit_int() {
+        lowestOneBit_int_helper(0, 0);
+        lowestOneBit_int_helper(1, 1);
+        lowestOneBit_int_helper(2, 2);
+        lowestOneBit_int_helper(3, 1);
+        lowestOneBit_int_helper(4, 4);
+        lowestOneBit_int_helper(5, 1);
+        lowestOneBit_int_helper(6, 2);
+        lowestOneBit_int_helper(7, 1);
+        lowestOneBit_int_helper(8, 8);
+        lowestOneBit_int_helper(9, 1);
+        lowestOneBit_int_helper(10, 2);
+        lowestOneBit_int_helper(111, 1);
+        lowestOneBit_int_helper(1000, 8);
+        lowestOneBit_int_helper(-1, 1);
+        lowestOneBit_int_helper(-2, 2);
+        lowestOneBit_int_helper(-3, 1);
+        lowestOneBit_int_helper(-4, 4);
+        lowestOneBit_int_helper(-5, 1);
+        lowestOneBit_int_helper(-6, 2);
+        lowestOneBit_int_helper(-7, 1);
+        lowestOneBit_int_helper(-8, 8);
+        lowestOneBit_int_helper(-9, 1);
+        lowestOneBit_int_helper(-10, 2);
+        lowestOneBit_int_helper(-111, 1);
+        lowestOneBit_int_helper(-1000, 8);
+        lowestOneBit_int_helper(Integer.MAX_VALUE, 1);
+        lowestOneBit_int_helper(Integer.MIN_VALUE, -2147483648);
+    }
+
+    private static void lowestOneBit_long_helper(long input, long output) {
+        aeq(Long.lowestOneBit(input), output);
+    }
+
+    @Test
+    public void testLowestOneBit_long() {
+        lowestOneBit_long_helper(0L, 0L);
+        lowestOneBit_long_helper(1L, 1L);
+        lowestOneBit_long_helper(2L, 2L);
+        lowestOneBit_long_helper(3L, 1L);
+        lowestOneBit_long_helper(4L, 4L);
+        lowestOneBit_long_helper(5L, 1L);
+        lowestOneBit_long_helper(6L, 2L);
+        lowestOneBit_long_helper(7L, 1L);
+        lowestOneBit_long_helper(8L, 8L);
+        lowestOneBit_long_helper(9L, 1L);
+        lowestOneBit_long_helper(10L, 2L);
+        lowestOneBit_long_helper(111L, 1L);
+        lowestOneBit_long_helper(1000L, 8L);
+        lowestOneBit_long_helper(-1L, 1L);
+        lowestOneBit_long_helper(-2L, 2L);
+        lowestOneBit_long_helper(-3L, 1L);
+        lowestOneBit_long_helper(-4L, 4L);
+        lowestOneBit_long_helper(-5L, 1L);
+        lowestOneBit_long_helper(-6L, 2L);
+        lowestOneBit_long_helper(-7L, 1L);
+        lowestOneBit_long_helper(-8L, 8L);
+        lowestOneBit_long_helper(-9L, 1L);
+        lowestOneBit_long_helper(-10L, 2L);
+        lowestOneBit_long_helper(-111L, 1L);
+        lowestOneBit_long_helper(-1000L, 8L);
+        lowestOneBit_long_helper(Long.MAX_VALUE, 1L);
+        lowestOneBit_long_helper(Long.MIN_VALUE, -9223372036854775808L);
+    }
+
+    private static void highestOneBit_int_helper(int input, int output) {
+        aeq(Integer.highestOneBit(input), output);
+    }
+
+    @Test
+    public void testHighestOneBit_int() {
+        highestOneBit_int_helper(0, 0);
+        highestOneBit_int_helper(1, 1);
+        highestOneBit_int_helper(2, 2);
+        highestOneBit_int_helper(3, 2);
+        highestOneBit_int_helper(4, 4);
+        highestOneBit_int_helper(5, 4);
+        highestOneBit_int_helper(6, 4);
+        highestOneBit_int_helper(7, 4);
+        highestOneBit_int_helper(8, 8);
+        highestOneBit_int_helper(9, 8);
+        highestOneBit_int_helper(10, 8);
+        highestOneBit_int_helper(111, 64);
+        highestOneBit_int_helper(1000, 512);
+        highestOneBit_int_helper(-1, -2147483648);
+        highestOneBit_int_helper(-2, -2147483648);
+        highestOneBit_int_helper(-3, -2147483648);
+        highestOneBit_int_helper(-4, -2147483648);
+        highestOneBit_int_helper(-5, -2147483648);
+        highestOneBit_int_helper(-6, -2147483648);
+        highestOneBit_int_helper(-7, -2147483648);
+        highestOneBit_int_helper(-8, -2147483648);
+        highestOneBit_int_helper(-9, -2147483648);
+        highestOneBit_int_helper(-10, -2147483648);
+        highestOneBit_int_helper(-111, -2147483648);
+        highestOneBit_int_helper(-1000, -2147483648);
+        highestOneBit_int_helper(Integer.MAX_VALUE, 1073741824);
+        highestOneBit_int_helper(Integer.MIN_VALUE, -2147483648);
+    }
+
+    private static void highestOneBit_long_helper(long input, long output) {
+        aeq(Long.highestOneBit(input), output);
+    }
+
+    @Test
+    public void testHighestOneBit_long() {
+        highestOneBit_long_helper(0L, 0L);
+        highestOneBit_long_helper(1L, 1L);
+        highestOneBit_long_helper(2L, 2L);
+        highestOneBit_long_helper(3L, 2L);
+        highestOneBit_long_helper(4L, 4L);
+        highestOneBit_long_helper(5L, 4L);
+        highestOneBit_long_helper(6L, 4L);
+        highestOneBit_long_helper(7L, 4L);
+        highestOneBit_long_helper(8L, 8L);
+        highestOneBit_long_helper(9L, 8L);
+        highestOneBit_long_helper(10L, 8L);
+        highestOneBit_long_helper(111L, 64L);
+        highestOneBit_long_helper(1000L, 512L);
+        highestOneBit_long_helper(-1L, -9223372036854775808L);
+        highestOneBit_long_helper(-2L, -9223372036854775808L);
+        highestOneBit_long_helper(-3L, -9223372036854775808L);
+        highestOneBit_long_helper(-4L, -9223372036854775808L);
+        highestOneBit_long_helper(-5L, -9223372036854775808L);
+        highestOneBit_long_helper(-6L, -9223372036854775808L);
+        highestOneBit_long_helper(-7L, -9223372036854775808L);
+        highestOneBit_long_helper(-8L, -9223372036854775808L);
+        highestOneBit_long_helper(-9L, -9223372036854775808L);
+        highestOneBit_long_helper(-10L, -9223372036854775808L);
+        highestOneBit_long_helper(-111L, -9223372036854775808L);
+        highestOneBit_long_helper(-1000L, -9223372036854775808L);
+        highestOneBit_long_helper(Long.MAX_VALUE, 4611686018427387904L);
+        highestOneBit_long_helper(Long.MIN_VALUE, -9223372036854775808L);
+    }
+
     private static void isPowerOfTwo_int_helper(int input, boolean output) {
         aeq(isPowerOfTwo(input), output);
     }
