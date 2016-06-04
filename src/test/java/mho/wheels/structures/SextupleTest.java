@@ -22,6 +22,17 @@ public class SextupleTest {
         constructor_helper(null, null, null, null, null, null, "(null, null, null, null, null, null)");
     }
 
+    private static <T> void toList_helper(T a, T b, T c, T d, T e, T f, @NotNull String output) {
+        aeq(Sextuple.toList(new Sextuple<>(a, b, c, d, e, f)), output);
+    }
+
+    @Test
+    public void testToList() {
+        toList_helper(1, 2, 3, 4, 5, 6, "[1, 2, 3, 4, 5, 6]");
+        toList_helper("hi", "bye", "hey", "yo", "ayy", "hello", "[hi, bye, hey, yo, ayy, hello]");
+        toList_helper(1, null, null, null, null, null, "[1, null, null, null, null, null]");
+    }
+
     @Test
     public void testCompare() {
         aeq(Sextuple.compare(

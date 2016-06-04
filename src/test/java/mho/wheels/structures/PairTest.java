@@ -21,6 +21,17 @@ public class PairTest {
         constructor_helper(null, null, "(null, null)");
     }
 
+    private static <T> void toList_helper(T a, T b, @NotNull String output) {
+        aeq(Pair.toList(new Pair<>(a, b)), output);
+    }
+
+    @Test
+    public void testToList() {
+        toList_helper(1, 2, "[1, 2]");
+        toList_helper("hi", "bye", "[hi, bye]");
+        toList_helper(1, null, "[1, null]");
+    }
+
     @Test
     public void testCompare() {
         aeq(Pair.compare(new Pair<>("hi", 3), new Pair<>("hi", 3)), EQ);

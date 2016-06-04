@@ -22,6 +22,17 @@ public class QuintupleTest {
         constructor_helper(null, null, null, null, null, "(null, null, null, null, null)");
     }
 
+    private static <T> void toList_helper(T a, T b, T c, T d, T e, @NotNull String output) {
+        aeq(Quintuple.toList(new Quintuple<>(a, b, c, d, e)), output);
+    }
+
+    @Test
+    public void testToList() {
+        toList_helper(1, 2, 3, 4, 5, "[1, 2, 3, 4, 5]");
+        toList_helper("hi", "bye", "hey", "yo", "ayy", "[hi, bye, hey, yo, ayy]");
+        toList_helper(1, null, null, null, null, "[1, null, null, null, null]");
+    }
+
     @Test
     public void testCompare() {
         aeq(Quintuple.compare(new Quintuple<>("hi", 3, true, 'a', GT), new Quintuple<>("hi", 3, true, 'a', GT)), EQ);

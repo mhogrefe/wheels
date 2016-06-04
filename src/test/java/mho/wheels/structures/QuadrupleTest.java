@@ -21,6 +21,17 @@ public class QuadrupleTest {
         constructor_helper(null, null, null, null, "(null, null, null, null)");
     }
 
+    private static <T> void toList_helper(T a, T b, T c, T d, @NotNull String output) {
+        aeq(Quadruple.toList(new Quadruple<>(a, b, c, d)), output);
+    }
+
+    @Test
+    public void testToList() {
+        toList_helper(1, 2, 3, 4, "[1, 2, 3, 4]");
+        toList_helper("hi", "bye", "hey", "yo", "[hi, bye, hey, yo]");
+        toList_helper(1, null, null, null, "[1, null, null, null]");
+    }
+
     @Test
     public void testCompare() {
         aeq(Quadruple.compare(new Quadruple<>("hi", 3, true, 'a'), new Quadruple<>("hi", 3, true, 'a')), EQ);

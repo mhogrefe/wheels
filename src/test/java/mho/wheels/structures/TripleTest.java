@@ -21,6 +21,17 @@ public class TripleTest {
         constructor_helper(null, null, null, "(null, null, null)");
     }
 
+    private static <T> void toList_helper(T a, T b, T c, @NotNull String output) {
+        aeq(Triple.toList(new Triple<>(a, b, c)), output);
+    }
+
+    @Test
+    public void testToList() {
+        toList_helper(1, 2, 3, "[1, 2, 3]");
+        toList_helper("hi", "bye", "hey", "[hi, bye, hey]");
+        toList_helper(1, null, null, "[1, null, null]");
+    }
+
     @Test
     public void testCompare() {
         aeq(Triple.compare(new Triple<>("hi", 3, true), new Triple<>("hi", 3, true)), EQ);
