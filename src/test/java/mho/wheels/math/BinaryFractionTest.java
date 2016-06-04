@@ -3,7 +3,6 @@ package mho.wheels.math;
 import mho.wheels.io.Readers;
 import mho.wheels.numberUtils.FloatingPointUtils;
 import org.jetbrains.annotations.NotNull;
-import org.junit.Assert;
 import org.junit.Test;
 
 import java.math.BigInteger;
@@ -449,12 +448,7 @@ public strictfp class BinaryFractionTest {
     }
 
     private static void isInteger_helper(@NotNull String input, boolean output) {
-        BinaryFraction bf = readStrict(input).get();
-        if (output) {
-            Assert.assertTrue(bf.isInteger());
-        } else {
-            Assert.assertFalse(bf.isInteger());
-        }
+        aeq(readStrict(input).get().isInteger(), output);
     }
 
     @Test
@@ -468,6 +462,33 @@ public strictfp class BinaryFractionTest {
         isInteger_helper("-11", true);
         isInteger_helper("-5 << 20", true);
         isInteger_helper("-5 >> 20", false);
+    }
+
+    private static void isPowerOfTwo_helper(@NotNull String input, boolean output) {
+        aeq(readStrict(input).get().isPowerOfTwo(), output);
+    }
+
+    private static void isPowerOfTwo_fail_helper(@NotNull String input) {
+        try {
+            readStrict(input).get().isPowerOfTwo();
+            fail();
+        } catch (ArithmeticException ignored) {}
+    }
+
+    @Test
+    public void testIsPowerOfTwo() {
+        isPowerOfTwo_helper("1", true);
+        isPowerOfTwo_helper("1 << 3", true);
+        isPowerOfTwo_helper("1 >> 3", true);
+        isPowerOfTwo_helper("11", false);
+        isPowerOfTwo_helper("5 << 20", false);
+        isPowerOfTwo_helper("5 >> 20", false);
+
+        isPowerOfTwo_fail_helper("0");
+        isPowerOfTwo_fail_helper("-1");
+        isPowerOfTwo_fail_helper("-11");
+        isPowerOfTwo_fail_helper("-5 << 20");
+        isPowerOfTwo_fail_helper("-5 >> 20");
     }
 
     private static void add_helper(@NotNull String x, @NotNull String y, @NotNull String output) {

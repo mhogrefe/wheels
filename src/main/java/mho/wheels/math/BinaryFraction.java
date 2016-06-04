@@ -420,6 +420,23 @@ public strictfp class BinaryFraction implements Comparable<BinaryFraction> {
     }
 
     /**
+     * Determines whether {@code this} is a power of 2.
+     *
+     * <ul>
+     *  <li>{@code this} must be positive.</li>
+     *  <li>The result may be either {@code boolean}.</li>
+     * </ul>
+     *
+     * @return whether {@code this} is a power of two
+     */
+    public boolean isPowerOfTwo() {
+        if (signum() != 1) {
+            throw new ArithmeticException("this must be positive. Invalid this: " + this);
+        }
+        return mantissa.equals(BigInteger.ONE);
+    }
+
+    /**
      * Returns the sum of {@code this} and {@code that}.
      *
      * <ul>

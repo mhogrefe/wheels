@@ -43,6 +43,7 @@ public strictfp class BinaryFractionProperties extends TestProperties {
         propertiesDoubleRange();
         propertiesIsInteger();
         propertiesAdd();
+        propertiesIsPowerOfTwo();
         propertiesNegate();
         propertiesAbs();
         propertiesSignum();
@@ -284,6 +285,20 @@ public strictfp class BinaryFractionProperties extends TestProperties {
 
         for (BigInteger i : take(LIMIT, P.bigIntegers())) {
             assertTrue(i, of(i).isInteger());
+        }
+    }
+
+    private void propertiesIsPowerOfTwo() {
+        initialize("isPowerOfTwo()");
+        for (BinaryFraction bf : take(LIMIT, P.positiveBinaryFractions())) {
+            assertEquals(bf, bf.isPowerOfTwo(), ONE.shiftLeft(bf.getExponent()).equals(bf));
+        }
+
+        for (BinaryFraction bf : take(LIMIT, P.withElement(ZERO, P.negativeBinaryFractions()))) {
+            try {
+                bf.isPowerOfTwo();
+                fail(bf);
+            } catch (ArithmeticException ignored) {}
         }
     }
 

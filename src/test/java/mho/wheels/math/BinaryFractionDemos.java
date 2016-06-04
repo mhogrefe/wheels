@@ -97,6 +97,12 @@ public strictfp class BinaryFractionDemos extends Demos {
         }
     }
 
+    private void demoIsPowerOfTwo() {
+        for (BinaryFraction bf : take(LIMIT, P.positiveBinaryFractions())) {
+            System.out.println(bf + " is " + (bf.isPowerOfTwo() ? "a" : "not a") + " power of 2");
+        }
+    }
+
     private void demoAdd() {
         Iterable<Pair<BinaryFraction, BinaryFraction>> ps = filterInfinite(
                 p -> {
