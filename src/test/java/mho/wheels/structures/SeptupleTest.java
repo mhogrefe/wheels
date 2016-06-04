@@ -1,5 +1,6 @@
 package mho.wheels.structures;
 
+import mho.wheels.io.Readers;
 import mho.wheels.ordering.Ordering;
 import mho.wheels.ordering.comparators.LexComparator;
 import org.jetbrains.annotations.NotNull;
@@ -10,6 +11,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import static mho.wheels.ordering.Ordering.*;
+import static mho.wheels.testing.Testing.*;
 import static org.junit.Assert.*;
 
 public class SeptupleTest {
@@ -45,6 +47,29 @@ public class SeptupleTest {
         toList_helper(1, 2, 3, 4, 5, 6, 7, "[1, 2, 3, 4, 5, 6, 7]");
         toList_helper("hi", "bye", "hey", "yo", "ayy", "hello", "oy", "[hi, bye, hey, yo, ayy, hello, oy]");
         toList_helper(1, null, null, null, null, null, null, "[1, null, null, null, null, null, null]");
+    }
+
+    private static void fromList_helper(@NotNull String input, @NotNull String output) {
+        aeq(
+                Septuple.fromList(Readers.readListWithNullsStrict(Readers::readIntegerStrict).apply(input).get()),
+                output
+        );
+    }
+
+    private static void fromList_fail_helper(@NotNull String input) {
+        try {
+            Septuple.fromList(Readers.readListWithNullsStrict(Readers::readIntegerStrict).apply(input).get());
+        } catch (IllegalArgumentException ignored) {}
+    }
+
+    @Test
+    public void testFromList() {
+        fromList_helper("[1, 2, 3, 4, 5, 6, 7]", "(1, 2, 3, 4, 5, 6, 7)");
+        fromList_helper("[1, null, null, null, null, null, null]", "(1, null, null, null, null, null, null)");
+
+        fromList_fail_helper("[]");
+        fromList_fail_helper("[1, 2, 3, 4, 5, 6]");
+        fromList_fail_helper("[1, 2, 3, 4, 5, 6, 7, 8]");
     }
 
     @Test
@@ -518,9 +543,5 @@ public class SeptupleTest {
                 new Septuple<>(null, null, null, null, null, null, null),
                 new Septuple<>(null, null, null, null, null, null, null)
         ), 0);
-    }
-
-    private static void aeq(Object a, Object b) {
-        assertEquals(a.toString(), b.toString());
     }
 }

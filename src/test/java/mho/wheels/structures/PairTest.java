@@ -1,11 +1,13 @@
 package mho.wheels.structures;
 
+import mho.wheels.io.Readers;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
 
 import java.util.Comparator;
 
 import static mho.wheels.ordering.Ordering.*;
+import static mho.wheels.testing.Testing.*;
 import static org.junit.Assert.*;
 
 public class PairTest {
@@ -30,6 +32,26 @@ public class PairTest {
         toList_helper(1, 2, "[1, 2]");
         toList_helper("hi", "bye", "[hi, bye]");
         toList_helper(1, null, "[1, null]");
+    }
+
+    private static void fromList_helper(@NotNull String input, @NotNull String output) {
+        aeq(Pair.fromList(Readers.readListWithNullsStrict(Readers::readIntegerStrict).apply(input).get()), output);
+    }
+
+    private static void fromList_fail_helper(@NotNull String input) {
+        try {
+            Pair.fromList(Readers.readListWithNullsStrict(Readers::readIntegerStrict).apply(input).get());
+        } catch (IllegalArgumentException ignored) {}
+    }
+
+    @Test
+    public void testFromList() {
+        fromList_helper("[1, 2]", "(1, 2)");
+        fromList_helper("[1, null]", "(1, null)");
+
+        fromList_fail_helper("[]");
+        fromList_fail_helper("[1]");
+        fromList_fail_helper("[1, 2, 3]");
     }
 
     @Test
@@ -179,9 +201,5 @@ public class PairTest {
         aeq(pc.compare(new Pair<>(null, null), new Pair<>(null, 3)), -1);
         aeq(pc.compare(new Pair<>(null, null), new Pair<>(null, 4)), -1);
         aeq(pc.compare(new Pair<>(null, null), new Pair<>(null, null)), 0);
-    }
-
-    private static void aeq(Object a, Object b) {
-        assertEquals(a.toString(), b.toString());
     }
 }

@@ -1,11 +1,13 @@
 package mho.wheels.structures;
 
+import mho.wheels.io.Readers;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
 
 import java.util.Comparator;
 
 import static mho.wheels.ordering.Ordering.*;
+import static mho.wheels.testing.Testing.*;
 import static org.junit.Assert.*;
 
 public class TripleTest {
@@ -30,6 +32,26 @@ public class TripleTest {
         toList_helper(1, 2, 3, "[1, 2, 3]");
         toList_helper("hi", "bye", "hey", "[hi, bye, hey]");
         toList_helper(1, null, null, "[1, null, null]");
+    }
+
+    private static void fromList_helper(@NotNull String input, @NotNull String output) {
+        aeq(Triple.fromList(Readers.readListWithNullsStrict(Readers::readIntegerStrict).apply(input).get()), output);
+    }
+
+    private static void fromList_fail_helper(@NotNull String input) {
+        try {
+            Triple.fromList(Readers.readListWithNullsStrict(Readers::readIntegerStrict).apply(input).get());
+        } catch (IllegalArgumentException ignored) {}
+    }
+
+    @Test
+    public void testFromList() {
+        fromList_helper("[1, 2, 3]", "(1, 2, 3)");
+        fromList_helper("[1, null, null]", "(1, null, null)");
+
+        fromList_fail_helper("[]");
+        fromList_fail_helper("[1, 2]");
+        fromList_fail_helper("[1, 2, 3, 4]");
     }
 
     @Test
@@ -180,9 +202,5 @@ public class TripleTest {
         aeq(pc.compare(new Triple<>(null, null, null), new Triple<>(null, 3, true)), -1);
         aeq(pc.compare(new Triple<>(null, null, null), new Triple<>(null, 4, true)), -1);
         aeq(pc.compare(new Triple<>(null, null, null), new Triple<>(null, null, null)), 0);
-    }
-
-    private static void aeq(Object a, Object b) {
-        assertEquals(a.toString(), b.toString());
     }
 }

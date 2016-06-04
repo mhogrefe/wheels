@@ -1,5 +1,6 @@
 package mho.wheels.structures;
 
+import mho.wheels.io.Readers;
 import mho.wheels.ordering.Ordering;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
@@ -7,6 +8,7 @@ import org.junit.Test;
 import java.util.Comparator;
 
 import static mho.wheels.ordering.Ordering.*;
+import static mho.wheels.testing.Testing.*;
 import static org.junit.Assert.*;
 
 public class SextupleTest {
@@ -31,6 +33,29 @@ public class SextupleTest {
         toList_helper(1, 2, 3, 4, 5, 6, "[1, 2, 3, 4, 5, 6]");
         toList_helper("hi", "bye", "hey", "yo", "ayy", "hello", "[hi, bye, hey, yo, ayy, hello]");
         toList_helper(1, null, null, null, null, null, "[1, null, null, null, null, null]");
+    }
+
+    private static void fromList_helper(@NotNull String input, @NotNull String output) {
+        aeq(
+                Sextuple.fromList(Readers.readListWithNullsStrict(Readers::readIntegerStrict).apply(input).get()),
+                output
+        );
+    }
+
+    private static void fromList_fail_helper(@NotNull String input) {
+        try {
+            Sextuple.fromList(Readers.readListWithNullsStrict(Readers::readIntegerStrict).apply(input).get());
+        } catch (IllegalArgumentException ignored) {}
+    }
+
+    @Test
+    public void testFromList() {
+        fromList_helper("[1, 2, 3, 4, 5, 6]", "(1, 2, 3, 4, 5, 6)");
+        fromList_helper("[1, null, null, null, null, null]", "(1, null, null, null, null, null)");
+
+        fromList_fail_helper("[]");
+        fromList_fail_helper("[1, 2, 3, 4, 5]");
+        fromList_fail_helper("[1, 2, 3, 4, 5, 6, 7]");
     }
 
     @Test
@@ -343,9 +368,5 @@ public class SextupleTest {
                 new Sextuple<>(null, null, null, null, null, null),
                 new Sextuple<>(null, null, null, null, null, null)
         ), 0);
-    }
-
-    private static void aeq(Object a, Object b) {
-        assertEquals(a.toString(), b.toString());
     }
 }
