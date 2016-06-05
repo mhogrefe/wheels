@@ -1,3 +1,17 @@
+ExhaustiveProvider_booleans list 2
+false
+true
+
+ExhaustiveProvider_orderingsIncreasing list 3
+LT
+EQ
+GT
+
+ExhaustiveProvider_orderings list 3
+EQ
+LT
+GT
+
 ExhaustiveProvider_uniformSample_Iterable_i list 4
 3
 1
@@ -20,20 +34,6 @@ l
 o
 
 ExhaustiveProvider_uniformSample_String_ii list 0
-
-ExhaustiveProvider_booleans list 2
-false
-true
-
-ExhaustiveProvider_orderingsIncreasing list 3
-LT
-EQ
-GT
-
-ExhaustiveProvider_orderings list 3
-EQ
-LT
-GT
 
 ExhaustiveProvider_bytesIncreasing list 21
 -128
