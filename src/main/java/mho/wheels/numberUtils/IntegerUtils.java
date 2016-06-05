@@ -147,14 +147,12 @@ public class IntegerUtils {
     }
 
     /**
-     * Returns the bits of a non-negative {@code int}. The {@link Iterable} returned is little-endian; the
-     * least-significant bits come first. Zero gives an empty {@code Iterable}. There are no trailing unset bits. Does
-     * not support removal.
+     * Returns the bits of a non-negative {@code int}. The {@link List} returned is little-endian; the
+     * least-significant bits come first. Zero gives an empty {@code List}. There are no trailing unset bits.
      *
      * <ul>
      *  <li>{@code n} cannot be negative.</li>
-     *  <li>The result is a finite {@code Iterable}, containing no nulls. If it is non-empty, the last element is
-     *  {@code true}.</li>
+     *  <li>The result contains no nulls. If it is non-empty, the last element is {@code true}.</li>
      * </ul>
      *
      * Result length is 0 if {@code n} is 0, or ⌊log<sub>2</sub>{@code n}⌋+1 otherwise
@@ -174,14 +172,13 @@ public class IntegerUtils {
     }
 
     /**
-     * Returns the bits of a non-negative {@link BigInteger}. The {@code Iterable} returned is little-endian; the
-     * least-significant bits come first. Zero gives an empty {@code Iterable}. There are no trailing unset bits.
-     * Does not support removal.
+     * Returns the bits of a non-negative {@link BigInteger}. The {@code List} returned is little-endian; the
+     * least-significant bits come first. Zero gives an empty {@code List}. There are no trailing unset bits. Does not
+     * support removal.
      *
      * <ul>
      *  <li>{@code n} cannot be negative.</li>
-     *  <li>The result is a finite {@code Iterable}, containing no nulls. If it is non-empty, the last element is
-     *  {@code true}.</li>
+     *  <li>The result contains no nulls. If it is non-empty, the last element is {@code true}.</li>
      * </ul>
      *
      * Result length is 0 if {@code n} is 0, or ⌊log<sub>2</sub>{@code n}⌋+1 otherwise
@@ -202,14 +199,14 @@ public class IntegerUtils {
     }
 
     /**
-     * Returns the lowest {@code n} bits of a non-negative {@code int}. The {@code Iterable} returned is little-endian;
-     * the least-significant bits come first. It is exactly {@code n} bits long, and right-padded with zeroes (falses)
-     * if necessary. Does not support removal.
+     * Returns the lowest {@code n} bits of a non-negative {@code int}. The {@code List} returned is little-endian; the
+     * least-significant bits come first. It is exactly {@code n} bits long, and right-padded with zeroes (falses) if
+     * necessary. Does not support removal.
      *
      * <ul>
      *  <li>{@code length} cannot be negative.</li>
      *  <li>{@code n} cannot be negative.</li>
-     *  <li>The result is a finite {@code Iterable} containing no nulls.</li>
+     *  <li>The result contains no nulls.</li>
      * </ul>
      *
      * Result length is {@code length}
@@ -235,14 +232,14 @@ public class IntegerUtils {
     }
 
     /**
-     * Returns the lowest {@code n} bits of a non-negative {@code BigInteger}. The {@code Iterable} returned is little-
+     * Returns the lowest {@code n} bits of a non-negative {@code BigInteger}. The {@code List} returned is little-
      * endian; the least-significant bits come first. It is exactly {@code n} bits long, and right-padded with zeroes
      * (falses) if necessary. Does not support removal.
      *
      * <ul>
      *  <li>{@code length} cannot be negative.</li>
      *  <li>{@code n} cannot be negative.</li>
-     *  <li>The result is a finite {@code Iterable} containing no nulls.</li>
+     *  <li>The result contains no nulls.</li>
      * </ul>
      *
      * Result length is {@code length}
@@ -267,11 +264,11 @@ public class IntegerUtils {
 
     /**
      * Returns the bits of a non-negative {@code int}. The {@code List} returned is big-endian; the most-significant
-     * bits come first. Zero gives an empty {@code Iterable}. There are no leading unset bits.
+     * bits come first. Zero gives an empty {@code List}. There are no leading unset bits.
      *
      * <ul>
      *  <li>{@code n} cannot be negative.</li>
-     *  <li>The result is contains no nulls. If it is non-empty, the first element is {@code true}.</li>
+     *  <li>The result contains no nulls. If it is non-empty, the first element is {@code true}.</li>
      * </ul>
      *
      * Result length is 0 if {@code n} is 0, or ⌊log<sub>2</sub>{@code n}⌋+1 otherwise
