@@ -34,7 +34,7 @@ public strictfp class RandomProviderTest {
     public void initialize() {
         P = RandomProvider.example();
         Q = new RandomProvider(toList(replicate(IsaacPRNG.SIZE, 0)));
-        R = new RandomProvider(toList(IterableUtils.range(1, IsaacPRNG.SIZE)));
+        R = new RandomProvider(toList(ExhaustiveProvider.INSTANCE.rangeIncreasing(1, IsaacPRNG.SIZE)));
     }
 
     @Test
@@ -63,9 +63,9 @@ public strictfp class RandomProviderTest {
     public void testConstructor_List_Integer() {
         constructor_List_Integer_helper(toList(replicate(IsaacPRNG.SIZE, 0)),
                 "RandomProvider[@-7948823947390831374, 32, 8, 2]");
-        constructor_List_Integer_helper(toList(IterableUtils.range(1, IsaacPRNG.SIZE)),
+        constructor_List_Integer_helper(toList(ExhaustiveProvider.INSTANCE.rangeIncreasing(1, IsaacPRNG.SIZE)),
                 "RandomProvider[@2449928962525148503, 32, 8, 2]");
-        constructor_List_Integer_helper(toList(IterableUtils.rangeBy(-1, -1, -IsaacPRNG.SIZE)),
+        constructor_List_Integer_helper(toList(ExhaustiveProvider.INSTANCE.rangeDecreasing(-IsaacPRNG.SIZE, -1)),
                 "RandomProvider[@3417306423260907531, 32, 8, 2]");
 
         constructor_List_Integer_fail_helper("[]");
@@ -7859,7 +7859,10 @@ public strictfp class RandomProviderTest {
     public void dependentPairsInfiniteTest() {
         aeqitLimitLog(
                 TINY_LIMIT,
-                P.dependentPairsInfinite(P.range(1, 5), i -> P.strings(i, charsToString(range('a', 'z')))),
+                P.dependentPairsInfinite(
+                        P.range(1, 5),
+                        i -> P.strings(i, charsToString(ExhaustiveProvider.INSTANCE.rangeIncreasing('a', 'z')))
+                ),
                 "RandomProvider_dependentPairsInfinite"
         );
         P.reset();
@@ -7867,7 +7870,7 @@ public strictfp class RandomProviderTest {
         dependentPairsInfinite_fail_helper(P.range(1, 5), i -> null);
         dependentPairsInfinite_fail_helper(
                 ExhaustiveProvider.INSTANCE.range(1, 5),
-                i -> P.strings(i, charsToString(range('a', 'z')))
+                i -> P.strings(i, charsToString(ExhaustiveProvider.INSTANCE.rangeIncreasing('a', 'z')))
         );
         dependentPairsInfinite_fail_helper(P.range(1, 5), i -> ExhaustiveProvider.INSTANCE.range('a', 'z'));
     }
@@ -7895,7 +7898,7 @@ public strictfp class RandomProviderTest {
         shuffle_helper("[3, 1, 4, 1]", "[1, 1, 3, 4]");
         shuffle_helper("[3, 1, null, 1]", "[1, 1, 3, null]");
 
-        shuffle_helper(toList(IterableUtils.range(1, 10)), "[10, 4, 1, 9, 8, 7, 5, 2, 3, 6]");
+        shuffle_helper(toList(ExhaustiveProvider.INSTANCE.rangeIncreasing(1, 10)), "[10, 4, 1, 9, 8, 7, 5, 2, 3, 6]");
     }
 
     private static void permutationsFinite_helper(@NotNull String input, @NotNull String output) {
@@ -7921,7 +7924,8 @@ public strictfp class RandomProviderTest {
         permutationsFinite_helper("[3, 1, 4, 1]", "RandomProvider_permutationsFinite_viii");
         permutationsFinite_helper("[3, 1, null, 1]", "RandomProvider_permutationsFinite_ix");
 
-        permutationsFinite_helper(toList(IterableUtils.range(1, 10)), "RandomProvider_permutationsFinite_x");
+        permutationsFinite_helper(toList(ExhaustiveProvider.INSTANCE.rangeIncreasing(1, 10)),
+                "RandomProvider_permutationsFinite_x");
     }
 
     private static void stringPermutations_helper(@NotNull String input, @NotNull String output) {
@@ -10859,42 +10863,42 @@ public strictfp class RandomProviderTest {
         stringsWithSubstrings_Iterable_String_String_helper(
                 2,
                 P.uniformSample(Collections.singletonList("")),
-                charsToString(range('a', 'z')),
+                charsToString(ExhaustiveProvider.INSTANCE.rangeIncreasing('a', 'z')),
                 "RandomProvider_stringsWithSubstrings_Iterable_String_String_i",
                 2.0001649999875575
         );
         stringsWithSubstrings_Iterable_String_String_helper(
                 16,
                 P.uniformSample(Collections.singletonList("")),
-                charsToString(range('a', 'z')),
+                charsToString(ExhaustiveProvider.INSTANCE.rangeIncreasing('a', 'z')),
                 "RandomProvider_stringsWithSubstrings_Iterable_String_String_ii",
                 15.980978999996648
         );
         stringsWithSubstrings_Iterable_String_String_helper(
                 2,
                 P.uniformSample(Collections.singletonList("cat")),
-                charsToString(range('a', 'z')),
+                charsToString(ExhaustiveProvider.INSTANCE.rangeIncreasing('a', 'z')),
                 "RandomProvider_stringsWithSubstrings_Iterable_String_String_iii",
                 5.000164999985253
         );
         stringsWithSubstrings_Iterable_String_String_helper(
                 16,
                 P.uniformSample(Collections.singletonList("cat")),
-                charsToString(range('a', 'z')),
+                charsToString(ExhaustiveProvider.INSTANCE.rangeIncreasing('a', 'z')),
                 "RandomProvider_stringsWithSubstrings_Iterable_String_String_iv",
                 18.980979000012418
         );
         stringsWithSubstrings_Iterable_String_String_helper(
                 2,
                 map(f -> Float.toString(f), P.floats()),
-                charsToString(range('0', '9')),
+                charsToString(ExhaustiveProvider.INSTANCE.rangeIncreasing('0', '9')),
                 "RandomProvider_stringsWithSubstrings_Iterable_String_String_v",
                 14.31768299994003
         );
         stringsWithSubstrings_Iterable_String_String_helper(
                 16,
                 map(f -> Float.toString(f), P.floats()),
-                charsToString(range('0', '9')),
+                charsToString(ExhaustiveProvider.INSTANCE.rangeIncreasing('0', '9')),
                 "RandomProvider_stringsWithSubstrings_Iterable_String_String_vi",
                 28.306307000011344
         );
@@ -10902,7 +10906,7 @@ public strictfp class RandomProviderTest {
         stringsWithSubstrings_Iterable_String_String_fail_helper(
                 1,
                 P.uniformSample(Collections.singletonList("cat")),
-                charsToString(range('a', 'z'))
+                charsToString(ExhaustiveProvider.INSTANCE.rangeIncreasing('a', 'z'))
         );
     }
 

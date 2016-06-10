@@ -740,7 +740,7 @@ public class IntegerUtilsProperties extends TestProperties {
 
     private static @NotNull BigInteger fromBits_alt(@NotNull Iterable<Boolean> xs) {
         BigInteger n = BigInteger.ZERO;
-        for (int i : select(xs, rangeUp(0))) {
+        for (int i : select(xs, ExhaustiveProvider.INSTANCE.rangeUpIncreasing(0))) {
             n = n.setBit(i);
         }
         return n;
@@ -1912,8 +1912,8 @@ public class IntegerUtilsProperties extends TestProperties {
 
     private void propertiesToDigit() {
         initialize("toDigit(int)");
-        Set<Character> numbers = toHashSet(range('0', '9'));
-        Set<Character> letters = toHashSet(range('A', 'Z'));
+        Set<Character> numbers = toHashSet(ExhaustiveProvider.INSTANCE.rangeIncreasing('0', '9'));
+        Set<Character> letters = toHashSet(ExhaustiveProvider.INSTANCE.rangeIncreasing('A', 'Z'));
         for (int i : take(LIMIT, P.range(0, 35))) {
             char digit = toDigit(i);
             assertTrue(i, numbers.contains(digit) || letters.contains(digit));
@@ -1943,8 +1943,8 @@ public class IntegerUtilsProperties extends TestProperties {
             inverse(IntegerUtils::fromDigit, IntegerUtils::toDigit, c);
         }
 
-        Set<Character> numbers = toHashSet(range('0', '9'));
-        Set<Character> letters = toHashSet(range('A', 'Z'));
+        Set<Character> numbers = toHashSet(ExhaustiveProvider.INSTANCE.rangeIncreasing('0', '9'));
+        Set<Character> letters = toHashSet(ExhaustiveProvider.INSTANCE.rangeIncreasing('A', 'Z'));
         for (char c : take(LIMIT, filter(d -> !numbers.contains(d) && !letters.contains(d), P.characters()))) {
             try {
                 fromDigit(c);
@@ -1966,8 +1966,8 @@ public class IntegerUtilsProperties extends TestProperties {
             assertEquals(p, fromStringBase(p.b, s), BigInteger.valueOf(p.a));
         }
 
-        Set<Character> numbers = toHashSet(range('0', '9'));
-        Set<Character> letters = toHashSet(range('A', 'Z'));
+        Set<Character> numbers = toHashSet(ExhaustiveProvider.INSTANCE.rangeIncreasing('0', '9'));
+        Set<Character> letters = toHashSet(ExhaustiveProvider.INSTANCE.rangeIncreasing('A', 'Z'));
         for (Pair<Integer, Integer> p : take(LIMIT, P.pairsSquareRootOrder(P.integers(), P.range(2, 36)))) {
             String s = toStringBase(p.b, p.a);
             assertTrue(p, all(c -> c == '-' || numbers.contains(c) || letters.contains(c), s));
@@ -2019,8 +2019,8 @@ public class IntegerUtilsProperties extends TestProperties {
             assertEquals(p, fromStringBase(p.b, s), p.a);
         }
 
-        Set<Character> numbers = toHashSet(range('0', '9'));
-        Set<Character> letters = toHashSet(range('A', 'Z'));
+        Set<Character> numbers = toHashSet(ExhaustiveProvider.INSTANCE.rangeIncreasing('0', '9'));
+        Set<Character> letters = toHashSet(ExhaustiveProvider.INSTANCE.rangeIncreasing('A', 'Z'));
         //noinspection Convert2MethodRef
         ps = P.pairsSquareRootOrder(P.bigIntegers(), map(i -> BigInteger.valueOf(i), P.range(2, 36)));
         for (Pair<BigInteger, BigInteger> p : take(LIMIT, ps)) {

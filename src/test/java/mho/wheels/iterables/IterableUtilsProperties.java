@@ -434,7 +434,14 @@ public strictfp class IterableUtilsProperties extends TestProperties {
             }
         }
         int j = mostComplexIndex;
-        BigInteger sum = sumBigInteger(toList(map(xs::get, filter(i -> i != j, range(0, xs.size() - 1)))));
+        BigInteger sum = sumBigInteger(
+                toList(
+                        map(
+                                xs::get,
+                                filter(i -> i != j, ExhaustiveProvider.INSTANCE.rangeIncreasing(0, xs.size() - 1))
+                        )
+                )
+        );
         return Integer.signum(sum.compareTo(xs.get(mostComplexIndex).negate()));
     }
 
@@ -553,7 +560,14 @@ public strictfp class IterableUtilsProperties extends TestProperties {
             }
         }
         int j = mostComplexIndex;
-        BigDecimal sum = sumBigDecimal(toList(map(xs::get, filter(i -> i != j, range(0, xs.size() - 1)))));
+        BigDecimal sum = sumBigDecimal(
+                toList(
+                        map(
+                                xs::get,
+                                filter(i -> i != j, ExhaustiveProvider.INSTANCE.rangeIncreasing(0, xs.size() - 1))
+                        )
+                )
+        );
         return Integer.signum(sum.compareTo(xs.get(mostComplexIndex).negate()));
     }
 

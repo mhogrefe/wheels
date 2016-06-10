@@ -326,7 +326,7 @@ public final class MathUtils {
             throw new ArithmeticException("n cannot be negative. Invalid n: " + n);
         }
         BigInteger sf = BigInteger.ONE;
-        for (BigInteger i : range(BigInteger.ONE, n)) {
+        for (BigInteger i = BigInteger.ONE; le(i, n); i = i.add(BigInteger.ONE)) {
             sf = sf.multiply(i);
             if (i.getLowestSetBit() != 0) {
                 sf = sf.add(BigInteger.ONE);
@@ -359,7 +359,12 @@ public final class MathUtils {
         if (n < 0) {
             throw new ArithmeticException("n cannot be negative. Invalid n: " + n);
         }
-        return productBigInteger(toList(range(x.subtract(BigInteger.valueOf(n - 1)), x)));
+        if (n == 0) {
+            return BigInteger.ONE;
+        }
+        return productBigInteger(
+                toList(ExhaustiveProvider.INSTANCE.rangeIncreasing(x.subtract(BigInteger.valueOf(n - 1)), x))
+        );
     }
 
     /**
@@ -486,8 +491,14 @@ public final class MathUtils {
         if (n < 0) {
             throw new ArithmeticException("n cannot be negative. Invalid n: " + n);
         }
+        if (minSize > n) {
+            return BigInteger.ZERO;
+        }
         return sumBigInteger(
-                toList(map(k -> binomialCoefficient(BigInteger.valueOf(n), k), range(minSize, n)))
+                toList(
+                        map(k -> binomialCoefficient(BigInteger.valueOf(n), k),
+                        ExhaustiveProvider.INSTANCE.rangeIncreasing(minSize, n))
+                )
         );
     }
 
@@ -567,7 +578,7 @@ public final class MathUtils {
             throw new IllegalArgumentException("min must be less than or equal to max. min: " + min + ", max: " + max);
         }
         BigInteger previous = null;
-        for (int x : range(min, max)) {
+        for (int x : ExhaustiveProvider.INSTANCE.rangeIncreasing(min, max)) {
             BigInteger i = f.apply(x);
             if (i == null) {
                 throw new IllegalArgumentException("f cannot return null for any value in [min, max]. min: " +
@@ -732,7 +743,7 @@ public final class MathUtils {
         int multiple;
         for (multiple = 0; multiple < PRIME_SIEVE_SIZE; multiple++) {
             while (!PRIME_SIEVE.get(multiple) && multiple < PRIME_SIEVE_SIZE) multiple++;
-            for (int i : rangeBy(multiple * 2, multiple, PRIME_SIEVE_SIZE - 1)) {
+            for (int i = multiple * 2; i < PRIME_SIEVE_SIZE; i += multiple) {
                 PRIME_SIEVE.clear(i);
             }
         }
@@ -795,7 +806,7 @@ public final class MathUtils {
                     BigInteger sixI = i.multiply(BigInteger.valueOf(6));
                     return Arrays.asList(sixI.subtract(BigInteger.ONE), sixI.add(BigInteger.ONE));
                 },
-                rangeUp(BigInteger.valueOf(PRIME_SIEVE_SIZE / 6))
+                ExhaustiveProvider.INSTANCE.rangeUpIncreasing(BigInteger.valueOf(PRIME_SIEVE_SIZE / 6))
         );
         for (BigInteger candidate : takeWhile(i -> le(i, limit), candidates)) {
             if (n.mod(candidate).equals(BigInteger.ZERO)) return candidate;
@@ -927,7 +938,7 @@ public final class MathUtils {
     public static @NotNull List<Integer> factors(int n) {
         List<Pair<Integer, Integer>> primeFactors = toList(compactPrimeFactors(n));
         Iterable<List<Integer>> possibleExponents = ExhaustiveProvider.INSTANCE.cartesianProduct(
-                toList(map(p -> toList(range(0, p.b)), primeFactors))
+                toList(map(p -> toList(ExhaustiveProvider.INSTANCE.rangeIncreasing(0, p.b)), primeFactors))
         );
         Function<List<Integer>, Integer> f = exponents -> productInteger(
                 toList(zipWith(MathUtils::pow, map(q -> q.a, primeFactors), exponents))
@@ -949,7 +960,7 @@ public final class MathUtils {
     public static @NotNull List<BigInteger> factors(@NotNull BigInteger n) {
         List<Pair<BigInteger, Integer>> primeFactors = toList(compactPrimeFactors(n));
         Iterable<List<Integer>> possibleExponents = ExhaustiveProvider.INSTANCE.cartesianProduct(
-                toList(map(p -> toList(range(0, p.b)), primeFactors))
+                toList(map(p -> toList(ExhaustiveProvider.INSTANCE.rangeIncreasing(0, p.b)), primeFactors))
         );
         Function<List<Integer>, BigInteger> f = exponents -> productBigInteger(
                 toList(zipWith(BigInteger::pow, map(q -> q.a, primeFactors), exponents))
@@ -969,8 +980,8 @@ public final class MathUtils {
         int start = (PRIME_SIEVE_SIZE & 1) == 0 ? PRIME_SIEVE_SIZE + 1 : PRIME_SIEVE_SIZE;
         ensurePrimeSieveInitialized();
         return concat(
-                filter(PRIME_SIEVE::get, range(2, PRIME_SIEVE_SIZE - 1)),
-                filter(MathUtils::isPrime, rangeBy(start, 2))
+                filter(PRIME_SIEVE::get, ExhaustiveProvider.INSTANCE.rangeIncreasing(2, PRIME_SIEVE_SIZE - 1)),
+                filter(MathUtils::isPrime, takeWhile(j -> j > 0, iterate(i -> i + 2, start)))
         );
     }
 
@@ -987,7 +998,7 @@ public final class MathUtils {
                     BigInteger sixI = i.multiply(BigInteger.valueOf(6));
                     return Arrays.asList(sixI.subtract(BigInteger.ONE), sixI.add(BigInteger.ONE));
                 },
-                rangeUp(BigInteger.valueOf(PRIME_SIEVE_SIZE / 6))
+                ExhaustiveProvider.INSTANCE.rangeUpIncreasing(BigInteger.valueOf(PRIME_SIEVE_SIZE / 6))
         );
         //noinspection Convert2MethodRef
         return concat(map(i -> BigInteger.valueOf(i), intPrimes()), filterInfinite(MathUtils::isPrime, candidates));

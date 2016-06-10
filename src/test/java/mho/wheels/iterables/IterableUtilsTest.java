@@ -266,10 +266,11 @@ public strictfp class IterableUtilsTest {
         aeq(IterableUtils.toString(2, lList), "[0.2, -5.0, ...]");
         aeq(IterableUtils.toString(1, lList), "[0.2, ...]");
         aeq(IterableUtils.toString(0, lList), "[...]");
-        aeq(IterableUtils.toString(10, rangeUp(0)), "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, ...]");
-        aeq(IterableUtils.toString(2, rangeUp(0)), "[0, 1, ...]");
-        aeq(IterableUtils.toString(1, rangeUp(0)), "[0, ...]");
-        aeq(IterableUtils.toString(0, rangeUp(0)), "[...]");
+        aeq(IterableUtils.toString(10, ExhaustiveProvider.INSTANCE.rangeUpIncreasing(0)),
+                "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, ...]");
+        aeq(IterableUtils.toString(2, ExhaustiveProvider.INSTANCE.rangeUpIncreasing(0)), "[0, 1, ...]");
+        aeq(IterableUtils.toString(1, ExhaustiveProvider.INSTANCE.rangeUpIncreasing(0)), "[0, ...]");
+        aeq(IterableUtils.toString(0, ExhaustiveProvider.INSTANCE.rangeUpIncreasing(0)), "[...]");
         try {
             //noinspection ResultOfMethodCallIgnored
             IterableUtils.toString(-1, Arrays.asList(1, 2, 3));
@@ -299,349 +300,6 @@ public strictfp class IterableUtilsTest {
             charsToStringHelper("[h, null, l, l, o]", "");
             fail();
         } catch (NullPointerException ignored) {}
-    }
-
-    @Test
-    public void testRangeUp_byte() {
-        simpleProviderHelper(rangeUp((byte) 0),
-                "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, ...]");
-        aeq(length(rangeUp((byte) 0)), 1 << 7);
-        simpleProviderHelper(rangeUp(Byte.MIN_VALUE),
-                "[-128, -127, -126, -125, -124, -123, -122, -121, -120, -119, -118, -117, -116, -115, -114, -113," +
-                " -112, -111, -110, -109, ...]");
-        aeq(length(rangeUp(Byte.MIN_VALUE)), 1 << 8);
-        aeqit(rangeUp((byte) (Byte.MAX_VALUE - 10)), "[117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127]");
-        aeqit(rangeUp(Byte.MAX_VALUE), "[127]");
-    }
-
-    @Test
-    public void testRangeUp_short() {
-        simpleProviderHelper(rangeUp((short) 0),
-                "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, ...]");
-        aeq(length(rangeUp((short) 0)), 1 << 15);
-        simpleProviderHelper(rangeUp(Short.MIN_VALUE),
-                "[-32768, -32767, -32766, -32765, -32764, -32763, -32762, -32761, -32760, -32759, -32758, -32757," +
-                " -32756, -32755, -32754, -32753, -32752, -32751, -32750, -32749, ...]");
-        aeq(length(rangeUp(Short.MIN_VALUE)), 1 << 16);
-        aeqit(rangeUp((short) (Short.MAX_VALUE - 10)),
-                "[32757, 32758, 32759, 32760, 32761, 32762, 32763, 32764, 32765, 32766, 32767]");
-        aeqit(rangeUp(Short.MAX_VALUE), "[32767]");
-    }
-
-    @Test
-    public void testRangeUp_int() {
-        simpleProviderHelper(rangeUp(0),
-                "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, ...]");
-        simpleProviderHelper(rangeUp(Integer.MIN_VALUE),
-                "[-2147483648, -2147483647, -2147483646, -2147483645, -2147483644, -2147483643, -2147483642," +
-                " -2147483641, -2147483640, -2147483639, -2147483638, -2147483637, -2147483636, -2147483635," +
-                " -2147483634, -2147483633, -2147483632, -2147483631, -2147483630, -2147483629, ...]");
-        aeqit(rangeUp(Integer.MAX_VALUE - 10),
-                "[2147483637, 2147483638, 2147483639, 2147483640, 2147483641," +
-                " 2147483642, 2147483643, 2147483644, 2147483645, 2147483646, 2147483647]");
-        aeqit(rangeUp(Integer.MAX_VALUE), "[2147483647]");
-    }
-
-    @Test
-    public void testRangeUp_long() {
-        simpleProviderHelper(rangeUp(0L),
-                "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, ...]");
-        simpleProviderHelper(rangeUp(Long.MIN_VALUE),
-                "[-9223372036854775808, -9223372036854775807, -9223372036854775806, -9223372036854775805," +
-                " -9223372036854775804, -9223372036854775803, -9223372036854775802, -9223372036854775801," +
-                " -9223372036854775800, -9223372036854775799, -9223372036854775798, -9223372036854775797," +
-                " -9223372036854775796, -9223372036854775795, -9223372036854775794, -9223372036854775793," +
-                " -9223372036854775792, -9223372036854775791, -9223372036854775790, -9223372036854775789, ...]");
-        aeqit(rangeUp(Long.MAX_VALUE - 10),
-                "[9223372036854775797, 9223372036854775798, 9223372036854775799, 9223372036854775800," +
-                " 9223372036854775801, 9223372036854775802, 9223372036854775803, 9223372036854775804," +
-                " 9223372036854775805, 9223372036854775806, 9223372036854775807]");
-        aeqit(rangeUp(Long.MAX_VALUE), "[9223372036854775807]");
-    }
-
-    @Test
-    public void testRangeUp_BigInteger() {
-        simpleProviderHelper(rangeUp(BigInteger.ZERO),
-                "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, ...]");
-        simpleProviderHelper(rangeUp(BigInteger.TEN.pow(12).negate()),
-                "[-1000000000000, -999999999999, -999999999998, -999999999997, -999999999996, -999999999995," +
-                " -999999999994, -999999999993, -999999999992, -999999999991, -999999999990, -999999999989," +
-                " -999999999988, -999999999987, -999999999986, -999999999985, -999999999984, -999999999983," +
-                " -999999999982, -999999999981, ...]");
-        simpleProviderHelper(rangeUp(BigInteger.TEN.pow(12)),
-                "[1000000000000, 1000000000001, 1000000000002, 1000000000003, 1000000000004, 1000000000005," +
-                " 1000000000006, 1000000000007, 1000000000008, 1000000000009, 1000000000010, 1000000000011," +
-                " 1000000000012, 1000000000013, 1000000000014, 1000000000015, 1000000000016, 1000000000017," +
-                " 1000000000018, 1000000000019, ...]");
-    }
-
-    @Test
-    public void testRangeUp_BigDecimal() {
-        simpleProviderHelper(rangeUp(BigDecimal.ZERO),
-                "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, ...]");
-        simpleProviderHelper(rangeUp(BigDecimal.TEN.pow(12).negate()),
-                "[-1000000000000, -999999999999, -999999999998, -999999999997, -999999999996, -999999999995," +
-                " -999999999994, -999999999993, -999999999992, -999999999991, -999999999990, -999999999989," +
-                " -999999999988, -999999999987, -999999999986, -999999999985, -999999999984, -999999999983," +
-                " -999999999982, -999999999981, ...]");
-        simpleProviderHelper(rangeUp(BigDecimal.TEN.pow(12)),
-                "[1000000000000, 1000000000001, 1000000000002, 1000000000003, 1000000000004, 1000000000005," +
-                " 1000000000006, 1000000000007, 1000000000008, 1000000000009, 1000000000010, 1000000000011," +
-                " 1000000000012, 1000000000013, 1000000000014, 1000000000015, 1000000000016, 1000000000017," +
-                " 1000000000018, 1000000000019, ...]");
-        simpleProviderHelper(rangeUp(new BigDecimal("1.327")),
-                "[1.327, 2.327, 3.327, 4.327, 5.327, 6.327, 7.327, 8.327, 9.327, 10.327, 11.327, 12.327, 13.327," +
-                " 14.327, 15.327, 16.327, 17.327, 18.327, 19.327, 20.327, ...]");
-    }
-
-    @Test
-    public void testRangeUp_char() {
-        simpleProviderHelper(rangeUp('a'), "[a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, ...]");
-        simpleProviderHelper(rangeUp('\0'),
-                "[\0, \1, \2, \3, \4, \5, \6, \7, \b, \t, \n, \13, \f, \r, \16, \17, \20, \21, \22, \23, ...]");
-        aeqit(rangeUp((char) (Character.MAX_VALUE - 10)),
-                "[\uFFF5, \uFFF6, \uFFF7, \uFFF8, \uFFF9, \uFFFA, \uFFFB, \uFFFC, \uFFFD, \uFFFE, \uFFFF]");
-        aeqit(rangeUp(Character.MAX_VALUE), "[\uFFFF]");
-    }
-
-    @Test
-    public void testRangeUp_float() {
-        simpleProviderHelper(rangeUp(1.0f),
-                "[1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0, 17.0, 18.0," +
-                " 19.0, 20.0, ...]");
-        simpleProviderHelper(rangeUp(-8.329f),
-                "[-8.329, -7.329, -6.329, -5.329, -4.329, -3.329, -2.329, -1.329, -0.329, 0.671, 1.671, 2.671," +
-                " 3.671, 4.671, 5.671, 6.671, 7.671, 8.671, 9.671, 10.671, ...]");
-        simpleProviderHelper(rangeUp(1e8f),
-                "[1.0E8, 1.0E8, 1.0E8, 1.0E8, 1.0E8, 1.00000008E8, 1.00000008E8, 1.00000008E8, 1.00000008E8," +
-                " 1.00000008E8, 1.00000008E8, 1.00000008E8, 1.00000016E8, 1.00000016E8, 1.00000016E8, 1.00000016E8," +
-                " 1.00000016E8, 1.00000016E8, 1.00000016E8, 1.00000016E8, ...]");
-        simpleProviderHelper(rangeUp(Float.NEGATIVE_INFINITY),
-                "[-Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity," +
-                " -Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity," +
-                " -Infinity, -Infinity, ...]");
-        aeqit(rangeUp(Float.POSITIVE_INFINITY), "[Infinity]");
-        simpleProviderHelper(rangeUp(0.0f),
-                "[0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0, 17.0," +
-                " 18.0, 19.0, ...]");
-        simpleProviderHelper(rangeUp(-0.0f),
-                "[-0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0, 17.0," +
-                " 18.0, 19.0, ...]");
-        simpleProviderHelper(rangeUp(Float.MIN_VALUE),
-                "[1.4E-45, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0," +
-                " 17.0, 18.0, 19.0, ...]");
-        simpleProviderHelper(rangeUp(Float.MAX_VALUE),
-                "[3.4028235E38, 3.4028235E38, 3.4028235E38, 3.4028235E38, 3.4028235E38, 3.4028235E38, 3.4028235E38," +
-                " 3.4028235E38, 3.4028235E38, 3.4028235E38, 3.4028235E38, 3.4028235E38, 3.4028235E38, 3.4028235E38," +
-                " 3.4028235E38, 3.4028235E38, 3.4028235E38, 3.4028235E38, 3.4028235E38, 3.4028235E38, ...]");
-        try {
-            rangeUp(Float.NaN);
-            fail();
-        } catch (IllegalArgumentException ignored) {}
-    }
-
-    @Test
-    public void testRangeUp_double() {
-        simpleProviderHelper(rangeUp(1.0),
-                "[1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0, 17.0, 18.0," +
-                " 19.0, 20.0, ...]");
-        simpleProviderHelper(rangeUp(-8.329),
-                "[-8.329, -7.329, -6.329, -5.329, -4.329, -3.329, -2.329, -1.329, -0.329, 0.671, 1.671, 2.671," +
-                " 3.671, 4.671, 5.671, 6.671, 7.671, 8.671, 9.671, 10.671, ...]");
-        simpleProviderHelper(rangeUp(1e16),
-                "[1.0E16, 1.0E16, 1.0000000000000002E16, 1.0000000000000004E16, 1.0000000000000004E16," +
-                " 1.0000000000000004E16, 1.0000000000000006E16, 1.0000000000000008E16, 1.0000000000000008E16," +
-                " 1.0000000000000008E16, 1.000000000000001E16, 1.0000000000000012E16, 1.0000000000000012E16," +
-                " 1.0000000000000012E16, 1.0000000000000014E16, 1.0000000000000016E16, 1.0000000000000016E16," +
-                " 1.0000000000000016E16, 1.0000000000000018E16, 1.000000000000002E16, ...]");
-        simpleProviderHelper(rangeUp(Double.NEGATIVE_INFINITY),
-                "[-Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity," +
-                " -Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity," +
-                " -Infinity, -Infinity, ...]");
-        aeqit(rangeUp(Double.POSITIVE_INFINITY), "[Infinity]");
-        simpleProviderHelper(rangeUp(0.0),
-                "[0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0, 17.0," +
-                " 18.0, 19.0, ...]");
-        simpleProviderHelper(rangeUp(-0.0),
-                "[-0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0, 17.0," +
-                " 18.0, 19.0, ...]");
-        simpleProviderHelper(rangeUp(Double.MIN_VALUE),
-                "[4.9E-324, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0," +
-                " 17.0, 18.0, 19.0, ...]");
-        simpleProviderHelper(rangeUp(Double.MAX_VALUE),
-                "[1.7976931348623157E308, 1.7976931348623157E308, 1.7976931348623157E308, 1.7976931348623157E308," +
-                " 1.7976931348623157E308, 1.7976931348623157E308, 1.7976931348623157E308, 1.7976931348623157E308," +
-                " 1.7976931348623157E308, 1.7976931348623157E308, 1.7976931348623157E308, 1.7976931348623157E308," +
-                " 1.7976931348623157E308, 1.7976931348623157E308, 1.7976931348623157E308, 1.7976931348623157E308," +
-                " 1.7976931348623157E308, 1.7976931348623157E308, 1.7976931348623157E308, 1.7976931348623157E308," +
-                " ...]");
-        try {
-            rangeUp(Double.NaN);
-            fail();
-        } catch (IllegalArgumentException ignored) {}
-    }
-
-    @Test
-    public void testRange_byte_byte() {
-        aeqit(range((byte) 1, (byte) 10), "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]");
-        aeqit(range((byte) 1, (byte) 1), "[1]");
-        aeqit(range(Byte.MIN_VALUE, (byte) (Byte.MIN_VALUE + 3)), "[-128, -127, -126, -125]");
-        aeqit(range((byte) (Byte.MAX_VALUE - 3), Byte.MAX_VALUE), "[124, 125, 126, 127]");
-        aeqit(range((byte) 10, (byte) 1), "[]");
-    }
-
-    @Test
-    public void testRange_short_short() {
-        aeqit(range((short) 1, (short) 10), "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]");
-        aeqit(range((short) 1, (short) 1), "[1]");
-        aeqit(range(Short.MIN_VALUE, (short) (Short.MIN_VALUE + 3)), "[-32768, -32767, -32766, -32765]");
-        aeqit(range((short) (Short.MAX_VALUE - 3), Short.MAX_VALUE), "[32764, 32765, 32766, 32767]");
-        aeqit(range((short) 10, (short) 1), "[]");
-    }
-
-    @Test
-    public void testRange_int_int() {
-        aeqit(range(1, 10), "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]");
-        aeqit(range(1, 1), "[1]");
-        aeqit(range(Integer.MIN_VALUE, Integer.MIN_VALUE + 3), "[-2147483648, -2147483647, -2147483646, -2147483645]");
-        aeqit(range(Integer.MAX_VALUE - 3, Integer.MAX_VALUE), "[2147483644, 2147483645, 2147483646, 2147483647]");
-        aeqit(range(10, 1), "[]");
-    }
-
-    @Test
-    public void testRange_long_long() {
-        aeqit(range(1L, 10L), "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]");
-        aeqit(range(1L, 1L), "[1]");
-        aeqit(range(Long.MIN_VALUE, Long.MIN_VALUE + 3),
-                "[-9223372036854775808, -9223372036854775807, -9223372036854775806, -9223372036854775805]");
-        aeqit(range(Long.MAX_VALUE - 3, Long.MAX_VALUE),
-                "[9223372036854775804, 9223372036854775805, 9223372036854775806, 9223372036854775807]");
-        aeqit(range(10L, 1L), "[]");
-    }
-
-    @Test
-    public void testRange_BigInteger_BigInteger() {
-        aeqit(range(BigInteger.ONE, BigInteger.TEN), "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]");
-        aeqit(range(BigInteger.ONE, BigInteger.ONE), "[1]");
-        BigInteger trillion = BigInteger.TEN.pow(12);
-        aeqit(range(trillion.negate(), trillion.negate().add(BigInteger.valueOf(3))),
-                "[-1000000000000, -999999999999, -999999999998, -999999999997]");
-        aeqit(range(trillion.subtract(BigInteger.valueOf(3)), trillion),
-                "[999999999997, 999999999998, 999999999999, 1000000000000]");
-        aeqit(range(BigInteger.TEN, BigInteger.ONE), "[]");
-    }
-
-    @Test
-    public void testRange_BigDecimal_BigDecimal() {
-        aeqit(range(BigDecimal.ONE, BigDecimal.TEN), "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]");
-        aeqit(range(BigDecimal.ONE, BigDecimal.ONE), "[1]");
-        BigDecimal trillion = BigDecimal.TEN.pow(12);
-        aeqit(range(trillion.negate(), trillion.negate().add(BigDecimal.valueOf(3))),
-                "[-1000000000000, -999999999999, -999999999998, -999999999997]");
-        aeqit(range(trillion.subtract(BigDecimal.valueOf(3)), trillion),
-                "[999999999997, 999999999998, 999999999999, 1000000000000]");
-        aeqit(range(new BigDecimal("1.327"), new BigDecimal("8.609")),
-                "[1.327, 2.327, 3.327, 4.327, 5.327, 6.327, 7.327, 8.327]");
-        aeqit(range(BigDecimal.TEN, BigDecimal.ONE), "[]");
-    }
-
-    @Test
-    public void testRange_char_char() {
-        aeqit(range('a', 'z'), "[a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u, v, w, x, y, z]");
-        aeqit(range('a', 'a'), "[a]");
-        aeqit(range('\0', '\3'), "[\0, \1, \2, \3]");
-        aeqit(range('\uFFFC', '\uFFFF'), "[\uFFFC, \uFFFD, \uFFFE, \uFFFF]");
-        aeqit(range('z', 'a'), "[]");
-    }
-
-    @Test
-    public void testRange_float_float() {
-        aeqit(range(1.0f, 10.0f), "[1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0]");
-        aeqit(range(1.0f, 9.9f), "[1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0]");
-        aeqit(range(1.0f, 1.0f), "[1.0]");
-        aeqit(range(-8.329f, 2.05f),
-                "[-8.329, -7.329, -6.329, -5.329, -4.329, -3.329, -2.329, -1.329, -0.329, 0.671, 1.671]");
-        aeqit(range(-8.329f, -8.0f), "[-8.329]");
-        aeqit(range(10.0f, 1.0f), "[]");
-        aeqit(range(1.0e8f, 1.00000008e8f),
-                "[1.0E8, 1.0E8, 1.0E8, 1.0E8, 1.0E8, 1.00000008E8, 1.00000008E8, 1.00000008E8, 1.00000008E8]");
-        aeqit(range(0.0f, 10.0f), "[0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0]");
-        aeqit(range(-0.0f, 10.0f), "[-0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0]");
-        aeqit(range(0.0f, 0.0f), "[0.0]");
-        aeqit(range(-0.0f, 0.0f), "[-0.0]");
-        aeqit(range(-0.0f, -0.0f), "[-0.0]");
-        aeqit(range(0.0f, -0.0f), "[0.0]");
-        aeqit(range(Float.MIN_VALUE, Float.MIN_VALUE), "[1.4E-45]");
-        aeqit(range(Float.MIN_VALUE, 10.0f), "[1.4E-45, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0]");
-        aeqit(range(Float.MAX_VALUE, Float.MAX_VALUE), "[3.4028235E38]");
-        simpleProviderHelper(range(Float.MAX_VALUE, Float.POSITIVE_INFINITY),
-                "[3.4028235E38, 3.4028235E38, 3.4028235E38, 3.4028235E38, 3.4028235E38, 3.4028235E38, 3.4028235E38," +
-                " 3.4028235E38, 3.4028235E38, 3.4028235E38, 3.4028235E38, 3.4028235E38, 3.4028235E38, 3.4028235E38," +
-                " 3.4028235E38, 3.4028235E38, 3.4028235E38, 3.4028235E38, 3.4028235E38, 3.4028235E38, ...]");
-        simpleProviderHelper(range(Float.NEGATIVE_INFINITY, 10.0f),
-                "[-Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity," +
-                " -Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity," +
-                " -Infinity, -Infinity, ...]");
-        aeqit(range(Float.NEGATIVE_INFINITY, Float.NEGATIVE_INFINITY), "[-Infinity]");
-        aeqit(range(Float.POSITIVE_INFINITY, Float.MAX_VALUE), "[]");
-        try {
-            range(Float.NaN, 10.0f);
-            fail();
-        } catch (IllegalArgumentException ignored) {}
-        try {
-            range(10.0f, Float.NaN);
-            fail();
-        } catch (IllegalArgumentException ignored) {}
-        try {
-            range(Float.NaN, Float.NaN);
-            fail();
-        } catch (IllegalArgumentException ignored) {}
-    }
-
-    @Test
-    public void testRange_double_double() {
-        aeqit(range(1.0, 10.0), "[1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0]");
-        aeqit(range(1.0, 9.9), "[1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0]");
-        aeqit(range(1.0, 1.0), "[1.0]");
-        aeqit(range(-8.329, 2.05),
-                "[-8.329, -7.329, -6.329, -5.329, -4.329, -3.329, -2.329, -1.329, -0.329, 0.671, 1.671]");
-        aeqit(range(-8.329, -8.0), "[-8.329]");
-        aeqit(range(10.0, 1.0), "[]");
-        aeqit(range(1.0e16, 1.0000000000000002e16), "[1.0E16, 1.0E16, 1.0000000000000002E16]");
-        aeqit(range(0.0, 10.0), "[0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0]");
-        aeqit(range(-0.0, 10.0), "[-0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0]");
-        aeqit(range(0.0, 0.0), "[0.0]");
-        aeqit(range(-0.0, 0.0), "[-0.0]");
-        aeqit(range(-0.0, -0.0), "[-0.0]");
-        aeqit(range(0.0, -0.0), "[0.0]");
-        aeqit(range(Double.MIN_VALUE, Double.MIN_VALUE), "[4.9E-324]");
-        aeqit(range(Double.MIN_VALUE, 10.0), "[4.9E-324, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0]");
-        aeqit(range(Double.MAX_VALUE, Double.MAX_VALUE), "[1.7976931348623157E308]");
-        simpleProviderHelper(range(Double.MAX_VALUE, Double.POSITIVE_INFINITY),
-                "[1.7976931348623157E308, 1.7976931348623157E308, 1.7976931348623157E308, 1.7976931348623157E308," +
-                " 1.7976931348623157E308, 1.7976931348623157E308, 1.7976931348623157E308, 1.7976931348623157E308," +
-                " 1.7976931348623157E308, 1.7976931348623157E308, 1.7976931348623157E308, 1.7976931348623157E308," +
-                " 1.7976931348623157E308, 1.7976931348623157E308, 1.7976931348623157E308, 1.7976931348623157E308," +
-                " 1.7976931348623157E308, 1.7976931348623157E308, 1.7976931348623157E308, 1.7976931348623157E308," +
-                " ...]");
-        simpleProviderHelper(range(Double.NEGATIVE_INFINITY, 10.0),
-                "[-Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity," +
-                " -Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity," +
-                " -Infinity, -Infinity, ...]");
-        aeq(range(Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY), "[-Infinity]");
-        aeq(range(Double.POSITIVE_INFINITY, Double.MAX_VALUE), "[]");
-        try {
-            range(Double.NaN, 10.0);
-            fail();
-        } catch (IllegalArgumentException ignored) {}
-        try {
-            range(10.0, Double.NaN);
-            fail();
-        } catch (IllegalArgumentException ignored) {}
-        try {
-            range(Double.NaN, Double.NaN);
-            fail();
-        } catch (IllegalArgumentException ignored) {}
     }
 
     @Test
@@ -1464,7 +1122,7 @@ public strictfp class IterableUtilsTest {
                 "[-2, 3, -3, 4, 4, -6]");
         aeqit(deltaByte(Arrays.asList(Byte.MIN_VALUE, Byte.MAX_VALUE)), "[-1]");
         aeqit(deltaByte(Collections.singletonList((byte) 3)), "[]");
-        simpleProviderHelper(deltaByte(map(i -> (byte) (i * i), rangeUp(0))),
+        simpleProviderHelper(deltaByte(map(i -> (byte) (i * i), ExhaustiveProvider.INSTANCE.naturalIntegers())),
                 "[1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31, 33, 35, 37, 39, ...]");
         try {
             deltaByte(new ArrayList<>());
@@ -1482,7 +1140,7 @@ public strictfp class IterableUtilsTest {
                 "[-2, 3, -3, 4, 4, -6]");
         aeqit(deltaShort(Arrays.asList(Short.MIN_VALUE, Short.MAX_VALUE)), "[-1]");
         aeqit(deltaShort(Collections.singletonList((short) 3)), "[]");
-        simpleProviderHelper(deltaShort(map(i -> (short) (i * i), rangeUp(0))),
+        simpleProviderHelper(deltaShort(map(i -> (short) (i * i), ExhaustiveProvider.INSTANCE.naturalIntegers())),
                 "[1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31, 33, 35, 37, 39, ...]");
         try {
             deltaShort(new ArrayList<>());
@@ -1499,7 +1157,7 @@ public strictfp class IterableUtilsTest {
         aeqit(deltaInteger(Arrays.asList(3, 1, 4, 1, 5, 9, 3)), "[-2, 3, -3, 4, 4, -6]");
         aeqit(deltaInteger(Arrays.asList(Integer.MIN_VALUE, Integer.MAX_VALUE)), "[-1]");
         aeqit(deltaInteger(Collections.singletonList(3)), "[]");
-        simpleProviderHelper(deltaInteger(map(i -> i * i, rangeUp(0))),
+        simpleProviderHelper(deltaInteger(map(i -> i * i, ExhaustiveProvider.INSTANCE.naturalIntegers())),
                 "[1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31, 33, 35, 37, 39, ...]");
         try {
             deltaInteger(new ArrayList<>());
@@ -1516,7 +1174,7 @@ public strictfp class IterableUtilsTest {
         aeqit(deltaLong(Arrays.asList(3L, 1L, 4L, 1L, 5L, 9L, 3L)), "[-2, 3, -3, 4, 4, -6]");
         aeqit(deltaLong(Arrays.asList(Long.MIN_VALUE, Long.MAX_VALUE)), "[-1]");
         aeqit(deltaLong(Collections.singletonList(3L)), "[]");
-        simpleProviderHelper(deltaLong(map(l -> l * l, rangeUp(0L))),
+        simpleProviderHelper(deltaLong(map(l -> l * l, ExhaustiveProvider.INSTANCE.naturalLongs())),
                 "[1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31, 33, 35, 37, 39, ...]");
         try {
             deltaLong(new ArrayList<>());
@@ -1532,7 +1190,7 @@ public strictfp class IterableUtilsTest {
     public void testDeltaBigInteger() {
         aeqit(deltaBigInteger(readBigIntegerList("[3, 1, 4, 1, 5, 9, 3]")), "[-2, 3, -3, 4, 4, -6]");
         aeqit(deltaBigInteger(Collections.singletonList(BigInteger.valueOf(3))), "[]");
-        simpleProviderHelper(deltaBigInteger(map(i -> i.pow(2), rangeUp(BigInteger.ZERO))),
+        simpleProviderHelper(deltaBigInteger(map(i -> i.pow(2), ExhaustiveProvider.INSTANCE.naturalBigIntegers())),
                 "[1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31, 33, 35, 37, 39, ...]");
         try {
             deltaBigInteger(new ArrayList<>());
@@ -1611,7 +1269,7 @@ public strictfp class IterableUtilsTest {
     public void testDeltaCharacter() {
         aeqit(deltaCharacter(fromString("hello")), "[-3, 7, 0, 3]");
         aeqit(deltaCharacter(Collections.singletonList('a')), "[]");
-        simpleProviderHelper(deltaCharacter(map(i -> (char) (i * i), rangeUp(0))),
+        simpleProviderHelper(deltaCharacter(map(i -> (char) (i * i), ExhaustiveProvider.INSTANCE.naturalIntegers())),
                 "[1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31, 33, 35, 37, 39, ...]");
         try {
             deltaCharacter(new ArrayList<>());

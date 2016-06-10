@@ -13,7 +13,6 @@ Progress
 |:--------------------------- |:-------:|:-------:|:-----:|:-----:|:----------:|
 | ConcurrencyUtils            | ✔       | ✘       | ✘     | ✘     | ✘          |
 | ResultCache                 | ✔       | ✘       | ✘     | ✘     | ✘          |
-| Interpreter                 | ✘       | ✘       | ✘     | ✘     | ✘          |
 | Readers                     | ✔       | ✔       | ✔     | ✔     | ✔          |
 | TextInput                   | ✔       | ✘       | ✘     | ✘     | ✘          |
 | TextOutput                  | ✔       | ✘       | ✘     | ✘     | ✘          |
@@ -47,7 +46,6 @@ Progress
 | Septuple                    | ✔       | ✔       | ✘     | ✘     | ✘          |
 | Sextuple                    | ✔       | ✔       | ✘     | ✘     | ✘          |
 | Triple                      | ✔       | ✔       | ✘     | ✘     | ✘          |
-| TwoDimensionalArray         | ✘       | ✘       | ✘     | ✘     | ✘          |
 | Demos                       | ✘       | ✘       | ✘     | ✘     | ✘          |
 | Testing                     | ✘       | ✘       | ✘     | ✘     | ✘          |
 | TestProperties              | ✘       | ✘       | ✘     | ✘     | ✘          |

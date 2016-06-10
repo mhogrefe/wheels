@@ -304,898 +304,6 @@ public final strictfp class IterableUtils {
     }
 
     /**
-     * Generates all {@link Byte}s greater than or equal to {@code a}, in order. Does not wrap around after reaching
-     * {@code Byte.MAX_VALUE}. Does not support removal.
-     *
-     * <ul>
-     *  <li>{@code a} may be any {@code byte}.</li>
-     *  <li>The result is an {@code Iterable} of consecutive ascending {@code Byte}s ending in 2<sup>7</sup>–1.</li>
-     * </ul>
-     *
-     * Length is 2<sup>7</sup>–{@code a}
-     *
-     * @param a the starting value of this arithmetic progression
-     * @return an arithmetic progression with an increment of 1, starting at {@code a} (inclusive)
-     */
-    public static @NotNull Iterable<Byte> rangeUp(byte a) {
-        return range(a, Byte.MAX_VALUE);
-    }
-
-    /**
-     * Generates all {@link Short}s greater than or equal to {@code a}, in order. Does not wrap around after reaching
-     * {@code Short.MAX_VALUE}. Does not support removal.
-     *
-     * <ul>
-     *  <li>{@code a} may be any {@code short}.</li>
-     *  <li>The result is an {@code Iterable} of consecutive ascending {@code Short}s ending in 2<sup>15</sup>–1.</li>
-     * </ul>
-     *
-     * Length is 2<sup>15</sup>–{@code a}
-     *
-     * @param a the starting value of this arithmetic progression
-     * @return an arithmetic progression with an increment of 1, starting at {@code a} (inclusive)
-     */
-    public static @NotNull Iterable<Short> rangeUp(short a) {
-        return range(a, Short.MAX_VALUE);
-    }
-
-    /**
-     * Generates all {@link Integer}s greater than or equal to {@code a}, in order. Does not wrap around after reaching
-     * {@code Integer.MAX_VALUE}. Does not support removal.
-     *
-     * <ul>
-     *  <li>{@code a} may be any {@code int}.</li>
-     *  <li>The result is an {@code Iterable} of consecutive ascending {@code Integer}s ending in
-     *  2<sup>31</sup>–1.</li>
-     * </ul>
-     *
-     * Length is 2<sup>31</sup>–{@code a}
-     *
-     * @param a the starting value of this arithmetic progression
-     * @return an arithmetic progression with an increment of 1, starting at {@code a} (inclusive)
-     */
-    public static @NotNull Iterable<Integer> rangeUp(int a) {
-        return range(a, Integer.MAX_VALUE);
-    }
-
-    /**
-     * Generates all {@link Long}s greater than or equal to {@code a}, in order. Does not wrap around after reaching
-     * {@code Long.MAX_VALUE}. Does not support removal.
-     *
-     * <ul>
-     *  <li>{@code a} may be any {@code long}.</li>
-     *  <li>The result is an {@code Iterable} of consecutive ascending {@code Long}s ending in 2<sup>63</sup>–1.</li>
-     * </ul>
-     *
-     * Length is 2<sup>63</sup>–{@code a}
-     *
-     * @param a the starting value of this arithmetic progression
-     * @return an arithmetic progression with an increment of 1, starting at {@code a} (inclusive)
-     */
-    public static @NotNull Iterable<Long> rangeUp(long a) {
-        return range(a, Long.MAX_VALUE);
-    }
-
-    /**
-     * Generates all {@link BigInteger}s greater than or equal to {@code a}, in order. Does not support removal.
-     *
-     * <ul>
-     *  <li>{@code a} must be non-null.</li>
-     *  <li>The result is an infinite {@code Iterable} of consecutive ascending {@code BigInteger}s.</li>
-     * </ul>
-     *
-     * Length is infinite
-     *
-     * @param a the starting value of this arithmetic progression
-     * @return an arithmetic progression with an increment of 1, starting at {@code a} (inclusive)
-     */
-    public static @NotNull Iterable<BigInteger> rangeUp(@NotNull BigInteger a) {
-        return iterate(i -> i.add(BigInteger.ONE), a);
-    }
-
-    /**
-     * Generates all {@link BigDecimal}s of the form {@code a}+n where n is a non-negative integer, in order. The
-     * {@code Iterable} produced does not support removing elements.
-     *
-     * <ul>
-     *  <li>{@code a} must be non-null.</li>
-     *  <li>The result is an infinite {@code Iterable} of ascending {@code BigDecimal}s differing by 1.</li>
-     * </ul>
-     *
-     * Length is infinite
-     *
-     * @param a the starting value of this arithmetic progression
-     * @return an arithmetic progression with an increment of 1, starting at {@code a} (inclusive)
-     */
-    public static @NotNull Iterable<BigDecimal> rangeUp(@NotNull BigDecimal a) {
-        return iterate(i -> i.add(BigDecimal.ONE), a);
-    }
-
-    /**
-     * Generates all {@link Character}s greater than or equal to {@code a}, in order. Does not wrap around after
-     * reaching {@code Character.MAX_VALUE}. Does not support removal.
-     *
-     * <ul>
-     *  <li>{@code a} may be any {@code char}.</li>
-     *  <li>The result is an {@code Iterable} of consecutive ascending {@code Character}s ending in
-     *  {@code \uffff}.</li>
-     * </ul>
-     *
-     * Length is 2<sup>16</sup>–{@code a}
-     *
-     * @param a the starting value of this {@code Character} sequence
-     * @return an sequence of consecutive {@code Character}s, starting at {@code a} (inclusive)
-     */
-    public static @NotNull Iterable<Character> rangeUp(char a) {
-        return range(a, Character.MAX_VALUE);
-    }
-
-    /**
-     * Generates all {@link float}s roughly of the form {@code a}+n where n is a non-negative integer, in order.
-     * {@code a} is converted to a {@code BigDecimal} internally to minimize rounding errors. Nonetheless, rounding may
-     * produce some odd-seeming results: for example, if {@code a} is large, the result might contain runs of identical
-     * {@code float}s. If {@code a} is {@code -Infinity}, the result is {@code -Infinity} repeating forever. If
-     * {@code a} is {@code +Infinity}, the result is a single {@code +Infinity}. If {@code a} is negative zero, the
-     * first element of the result is also negative zero. {@code NaN} is not a legal input. The {@code Iterable}
-     * produced does not support removing elements.
-     *
-     * <ul>
-     *  <li>{@code a} cannot be {@code NaN}.</li>
-     *  <li>The result is either {@code [+Infinity]}, or an infinite nondecreasing {@code Iterable} of {@code float}s
-     *  roughly differing by 1.</li>
-     * </ul>
-     *
-     * Length is 1 if {@code a} is {@code +Infinity}, infinite otherwise
-     *
-     * @param a the starting value of this arithmetic progression
-     * @return an arithmetic progression with an increment of 1, starting at {@code a} (inclusive)
-     */
-    public static @NotNull Iterable<Float> rangeUp(float a) {
-        if (Float.isNaN(a))
-            throw new IllegalArgumentException("cannot begin a range with NaN");
-        if (Float.isInfinite(a)) {
-            return a < 0 ?
-                    cycle(Collections.singletonList(Float.NEGATIVE_INFINITY)) :
-                    Collections.singletonList(Float.POSITIVE_INFINITY);
-        }
-        Iterable<Float> fs = map(BigDecimal::floatValue, rangeUp(new BigDecimal(Float.toString(a))));
-        return FloatingPointUtils.isNegativeZero(Float.valueOf(a)) ? cons(-0.0f, tail(fs)): fs;
-    }
-
-    /**
-     * Generates all {@link double}s roughly of the form {@code a}+n where n is a non-negative integer, in order.
-     * {@code a} is converted to a {@code BigDecimal} internally to minimize rounding errors. Nonetheless, rounding may
-     * produce some odd-seeming results: for example, if {@code a} is large, the result might contain runs of identical
-     * {@code double}s. If {@code a} is {@code -Infinity}, the result is {@code -Infinity} repeating forever. If
-     * {@code a} is {@code +Infinity}, the result is a single {@code +Infinity}. If {@code a} is negative zero, the
-     * first element of the result is also negative zero. {@code NaN} is not a legal input. The {@code Iterable}
-     * produced does not support removing elements.
-     *
-     * <ul>
-     *  <li>{@code a} cannot be {@code NaN}.</li>
-     *  <li>The result is either {@code [+Infinity]}, or an infinite non-decreasing {@code Iterable} of {@code double}s
-     *  roughly differing by 1.</li>
-     * </ul>
-     *
-     * Length is 1 if {@code a} is {@code +Infinity}, infinite otherwise
-     *
-     * @param a the starting value of this arithmetic progression
-     * @return an arithmetic progression with an increment of 1, starting at {@code a} (inclusive)
-     */
-    public static @NotNull Iterable<Double> rangeUp(double a) {
-        if (Double.isNaN(a))
-            throw new IllegalArgumentException("cannot begin a range with NaN");
-        if (Double.isInfinite(a)) {
-            return a < 0 ?
-                    cycle(Collections.singletonList(Double.NEGATIVE_INFINITY)) :
-                    Collections.singletonList(Double.POSITIVE_INFINITY);
-        }
-        Iterable<Double> ds = map(BigDecimal::doubleValue, rangeUp(BigDecimal.valueOf(a)));
-        return FloatingPointUtils.isNegativeZero(a) ? cons(-0.0, tail(ds)) : ds;
-    }
-
-    /**
-     * Generates all {@code Byte}s greater than or equal to {@code a} and less than or equal to {@code b}, in order.
-     * If {@code a}{@literal >}{@code b}, an empty {@code Iterable} is returned. Does not support removal.
-     *
-     * <ul>
-     *  <li>{@code a} may be any {@code byte}.</li>
-     *  <li>{@code b} may be any {@code byte}.</li>
-     *  <li>The result is a possibly-empty {@code Iterable} of consecutive ascending {@code Byte}s.</li>
-     * </ul>
-     *
-     * Length is max({@code b}–{@code a}+1, 0)
-     *
-     * @param a the starting value of this arithmetic progression
-     * @param b the ending value of this arithmetic progression
-     * @return an arithmetic progression with an increment of 1, starting at {@code a} (inclusive) and ending at
-     * {@code b} (inclusive)
-     */
-    public static @NotNull Iterable<Byte> range(byte a, byte b) {
-        if (a > b) return new ArrayList<>();
-        return () -> new NoRemoveIterator<Byte>() {
-            private byte x = a;
-            private boolean reachedEnd;
-
-            @Override
-            public boolean hasNext() {
-                return !reachedEnd;
-            }
-
-            @Override
-            public Byte next() {
-                if (reachedEnd) {
-                    throw new NoSuchElementException();
-                }
-                reachedEnd = x == b;
-                return x++;
-            }
-        };
-    }
-
-    /**
-     * Generates all {@code Short}s greater than or equal to {@code a} and less than or equal to {@code b}, in order.
-     * If {@code a}{@literal >}{@code b}, an empty {@code Iterable} is returned. Does not support removal.
-     *
-     * <ul>
-     *  <li>{@code a} may be any {@code short}.</li>
-     *  <li>{@code b} may be any {@code short}.</li>
-     *  <li>The result is a possibly-empty {@code Iterable} of consecutive ascending {@code Short}s.</li>
-     * </ul>
-     *
-     * Length is max({@code b}–{@code a}+1, 0)
-     *
-     * @param a the starting value of this arithmetic progression
-     * @param b the ending value of this arithmetic progression
-     * @return an arithmetic progression with an increment of 1, starting at {@code a} (inclusive) and ending at
-     * {@code b} (inclusive)
-     */
-    public static @NotNull Iterable<Short> range(short a, short b) {
-        if (a > b) return new ArrayList<>();
-        return () -> new NoRemoveIterator<Short>() {
-            private short x = a;
-            private boolean reachedEnd;
-
-            @Override
-            public boolean hasNext() {
-                return !reachedEnd;
-            }
-
-            @Override
-            public Short next() {
-                if (reachedEnd) {
-                    throw new NoSuchElementException();
-                }
-                reachedEnd = x == b;
-                return x++;
-            }
-        };
-    }
-
-    /**
-     * Generates all {@code Integer}s greater than or equal to {@code a} and less than or equal to {@code b}, in order.
-     * If {@code a}{@literal >}{@code b}, an empty {@code Iterable} is returned. Does not support removal.
-     *
-     * <ul>
-     *  <li>{@code a} may be any {@code int}.</li>
-     *  <li>{@code b} may be any {@code int}.</li>
-     *  <li>The result is a possibly-empty {@code Iterable} of consecutive ascending {@code Integer}s.</li>
-     * </ul>
-     *
-     * Length is max({@code b}–{@code a}+1, 0)
-     *
-     * @param a the starting value of this arithmetic progression
-     * @param b the ending value of this arithmetic progression
-     * @return an arithmetic progression with an increment of 1, starting at {@code a} (inclusive) and ending at
-     * {@code b} (inclusive)
-     */
-    public static @NotNull Iterable<Integer> range(int a, int b) {
-        if (a > b) return new ArrayList<>();
-        return () -> new NoRemoveIterator<Integer>() {
-            private int x = a;
-            private boolean reachedEnd;
-
-            @Override
-            public boolean hasNext() {
-                return !reachedEnd;
-            }
-
-            @Override
-            public Integer next() {
-                if (reachedEnd) {
-                    throw new NoSuchElementException();
-                }
-                reachedEnd = x == b;
-                return x++;
-            }
-        };
-    }
-
-    /**
-     * Generates all {@code Long}s greater than or equal to {@code a} and less than or equal to {@code b}, in order.
-     * If {@code a}{@literal >}{@code b}, an empty {@code Iterable} is returned. Does not support removal.
-     *
-     * <ul>
-     *  <li>{@code a} may be any {@code long}.</li>
-     *  <li>{@code b} may be any {@code long}.</li>
-     *  <li>The result is a possibly-empty {@code Iterable} of consecutive ascending {@code Long}s.</li>
-     * </ul>
-     *
-     * Length is max({@code b}–{@code a}+1, 0)
-     *
-     * @param a the starting value of this arithmetic progression
-     * @param b the ending value of this arithmetic progression
-     * @return an arithmetic progression with an increment of 1, starting at {@code a} (inclusive) and ending at
-     * {@code b} (inclusive)
-     */
-    public static @NotNull Iterable<Long> range(long a, long b) {
-        if (a > b) return new ArrayList<>();
-        return () -> new NoRemoveIterator<Long>() {
-            private long x = a;
-            private boolean reachedEnd;
-
-            @Override
-            public boolean hasNext() {
-                return !reachedEnd;
-            }
-
-            @Override
-            public Long next() {
-                if (reachedEnd) {
-                    throw new NoSuchElementException();
-                }
-                reachedEnd = x == b;
-                return x++;
-            }
-        };
-    }
-
-    /**
-     * Generates all {@code BigInteger}s greater than or equal to {@code a} and less than or equal to {@code b}, in
-     * order. If {@code a}{@literal >}{@code b}, an empty {@code Iterable} is returned. Does not support removal.
-     *
-     * <ul>
-     *  <li>{@code a} must be non-null.</li>
-     *  <li>{@code b} must be non-null.</li>
-     *  <li>The result is a possibly-empty {@code Iterable} of consecutive ascending {@code BigInteger}s.</li>
-     * </ul>
-     *
-     * Length is max({@code b}–{@code a}+1, 0)
-     *
-     * @param a the starting value of this arithmetic progression
-     * @param b the ending value of this arithmetic progression
-     * @return an arithmetic progression with an increment of 1, starting at {@code a} (inclusive) and ending at
-     * {@code b} (inclusive)
-     */
-    public static @NotNull Iterable<BigInteger> range(@NotNull BigInteger a, @NotNull BigInteger b) {
-        if (gt(a, b)) return new ArrayList<>();
-        return () -> new NoRemoveIterator<BigInteger>() {
-            private @NotNull BigInteger x = a;
-            private boolean reachedEnd;
-
-            @Override
-            public boolean hasNext() {
-                return !reachedEnd;
-            }
-
-            @Override
-            public BigInteger next() {
-                if (reachedEnd) {
-                    throw new NoSuchElementException();
-                }
-                reachedEnd = x.equals(b);
-                BigInteger oldX = x;
-                x = x.add(BigInteger.ONE);
-                return oldX;
-            }
-        };
-    }
-
-    /**
-     * Generates all {@link BigDecimal}s greater than or equal to {@code a} and less than or equal to {@code b} of the
-     * form {@code a}+n where n is an integer, in order. If {@code a}{@literal >}{@code b}, an empty {@code Iterable}
-     * is returned. Does not support removal.
-     *
-     * <ul>
-     *  <li>{@code a} must be non-null.</li>
-     *  <li>{@code b} must be non-null.</li>
-     *  <li>The result is a possibly-empty {@code Iterable} of consecutive {@code BigDecimal}s differing by 1.</li>
-     * </ul>
-     *
-     * Length is max(⌊{@code b}–{@code a}⌋+1, 0)
-     *
-     * @param a the starting value of this arithmetic progression
-     * @param b the ending value of this arithmetic progression
-     * @return an arithmetic progression with an increment of 1, starting at {@code a} (inclusive) and ending at
-     * {@code b} (inclusive)
-     */
-    public static @NotNull Iterable<BigDecimal> range(@NotNull BigDecimal a, @NotNull BigDecimal b) {
-        if (gt(a, b)) return new ArrayList<>();
-        return () -> new NoRemoveIterator<BigDecimal>() {
-            private @NotNull BigDecimal x = a;
-            private boolean reachedEnd;
-
-            @Override
-            public boolean hasNext() {
-                return !reachedEnd;
-            }
-
-            @Override
-            public BigDecimal next() {
-                if (reachedEnd) {
-                    throw new NoSuchElementException();
-                }
-                reachedEnd = gt(x.add(BigDecimal.ONE), b);
-                BigDecimal oldX = x;
-                x = x.add(BigDecimal.ONE);
-                return oldX;
-            }
-        };
-    }
-
-    /**
-     * Generates all {@code Character}s greater than or equal to {@code a} and less than or equal to {@code b}, in
-     * order. If {@code a}{@literal >}{@code b}, an empty {@code Iterable} is returned. Does not support removal.
-     *
-     * <ul>
-     *  <li>{@code a} may be any {@code char}.</li>
-     *  <li>{@code b} may be any {@code char}.</li>
-     *  <li>The result is a possibly-empty {@code Iterable} of consecutive ascending {@code Character}s.</li>
-     * </ul>
-     *
-     * Length is max({@code b}–{@code a}+1, 0)
-     *
-     * @param a the starting value of this {@code Character} sequence
-     * @param b the ending value of this {@code Character} sequence
-     * @return an arithmetic progression with an increment of 1, starting at {@code a} (inclusive) and ending at
-     * {@code b} (inclusive)
-     */
-    public static @NotNull Iterable<Character> range(char a, char b) {
-        if (a > b) return new ArrayList<>();
-        return () -> new NoRemoveIterator<Character>() {
-            private char x = a;
-            private boolean reachedEnd;
-
-            @Override
-            public boolean hasNext() {
-                return !reachedEnd;
-            }
-
-            @Override
-            public Character next() {
-                if (reachedEnd) {
-                    throw new NoSuchElementException();
-                }
-                reachedEnd = x == b;
-                return x++;
-            }
-        };
-    }
-
-    /**
-     * Generates all {@code float}s greater than or equal to {@code a} and less than or equal to {@code b} roughly of
-     * the form {@code a}+n where n is a non-negative integer, in order. {@code a} and {@code b} are converted to
-     * {@code BigDecimal}s internally to minimize rounding errors. Nonetheless, rounding may produce some odd-seeming
-     * results: for example, if {@code a} is large, the result might contain runs of identical {@code float}s. If
-     * {@code a}{@literal >}{@code b}, the result is empty. If {@code a}={@code b}, an {@code Iterable} containing only
-     * {@code a} is returned. If {@code a} is {@code -Infinity} and {@code b} is not {@code -Infinity}, the result is
-     * {@code -Infinity} repeating forever. If {@code a} is negative zero and {@code b} is non-negative, the first
-     * element of the result is also negative zero. Neither {@code a} nor {@code b} may be {@code NaN}. The
-     * {@code Iterable} produced does not support removing elements.
-     *
-     * <ul>
-     *  <li>{@code a} cannot be {@code NaN}.</li>
-     *  <li>{@code b} cannot be {@code NaN}.</li>
-     *  <li>The result is a possibly-empty non-decreasing {@code Iterable} of {@code float}s roughly differing by
-     *  1.</li>
-     * </ul>
-     *
-     * Length is 0 if {@code a}{@literal >}{@code b}, 1 if {@code a}={@code b}, infinite if {@code a} is
-     * {@code -Infinity} or {@code b} is {@code Infinity}, and ⌊{@code new BigDecimal(b)}–{@code new BigDecimal(a)}⌋+1
-     * otherwise
-     *
-     * @param a the starting value of this arithmetic progression
-     * @param b the ending value of this arithmetic progression
-     * @return an arithmetic progression with an increment of 1, starting at {@code a} (inclusive) and ending at the
-     * largest {@code float} an integer away from {@code a} and less than or equal to {@code b}.
-     */
-    public static @NotNull Iterable<Float> range(float a, float b) {
-        if (Float.isNaN(a) || Float.isNaN(b))
-            throw new IllegalArgumentException("cannot begin or end a range with NaN");
-        if (a == b) return Collections.singletonList(a);
-        if (a > b) return new ArrayList<>();
-        if (Float.isInfinite(a)) {
-            return a < 0 ?
-                    cycle(Collections.singletonList(Float.NEGATIVE_INFINITY)) :
-                    Collections.singletonList(Float.POSITIVE_INFINITY);
-        }
-        if (Float.isInfinite(b)) {
-            return rangeUp(a);
-        }
-        Iterable<Float> fs = map(
-                BigDecimal::floatValue,
-                range(new BigDecimal(Float.toString(a)), new BigDecimal(Float.toString(b)))
-        );
-        return FloatingPointUtils.isNegativeZero(Float.valueOf(a)) ? cons(-0.0f, tail(fs)): fs;
-    }
-
-    /**
-     * Generates all {@code double}s greater than or equal to {@code a} and less than or equal to {@code b} roughly of
-     * the form {@code a}+n where n is a non-negative integer, in order. {@code a} and {@code b} are converted to
-     * {@code BigDecimal}s internally to minimize rounding errors. Nonetheless, rounding may produce some odd-seeming
-     * results: for example, if {@code a} is large, the result might contain runs of identical {@code double}s. If
-     * {@code a}{@literal >}{@code b}, the result is empty. If {@code a}={@code b}, an {@code Iterable} containing only
-     * {@code a} is returned. If {@code a} is {@code -Infinity} and {@code b} is not {@code -Infinity}, the result is
-     * {@code -Infinity} repeating forever. If {@code a} is negative zero and {@code b} is non-negative, the first
-     * element of the result is also negative zero. Neither {@code a} nor {@code b} may be {@code NaN}. The
-     * {@code Iterable} produced does not support removing elements.
-     *
-     * <ul>
-     *  <li>{@code a} cannot be {@code NaN}.</li>
-     *  <li>{@code b} cannot be {@code NaN}.</li>
-     *  <li>The result is a possibly-empty non-decreasing {@code Iterable} of {@code double}s roughly differing by
-     *  1.</li>
-     * </ul>
-     *
-     * Length is 0 if {@code a}{@literal >}{@code b}, 1 if {@code a}={@code b}, infinite if {@code a} is
-     * {@code -Infinity} or {@code b} is {@code Infinity}, and ⌊{@code new BigDecimal(b)}–{@code new BigDecimal(a)}⌋+1
-     * otherwise
-     *
-     * @param a the starting value of this arithmetic progression
-     * @param b the ending value of this arithmetic progression
-     * @return an arithmetic progression with an increment of 1, starting at {@code a} (inclusive) and ending at the
-     * largest {@code double} an integer away from {@code a} and less than or equal to {@code b}.
-     */
-    public static @NotNull Iterable<Double> range(double a, double b) {
-        if (Double.isNaN(a) || Double.isNaN(b))
-            throw new IllegalArgumentException("cannot begin or end a range with NaN");
-        if (a == b) return Collections.singletonList(a);
-        if (a > b) return new ArrayList<>();
-        if (Double.isInfinite(a)) {
-            return a < 0 ?
-                    cycle(Collections.singletonList(Double.NEGATIVE_INFINITY)) :
-                    Collections.singletonList(Double.POSITIVE_INFINITY);
-        }
-        if (Double.isInfinite(b)) {
-            return rangeUp(a);
-        }
-        Iterable<Double> ds = map(
-                BigDecimal::doubleValue,
-                range(new BigDecimal(Double.toString(a)), new BigDecimal(Double.toString(b)))
-        );
-        return FloatingPointUtils.isNegativeZero(a) ? cons(-0.0, tail(ds)): ds;
-    }
-
-    public static @NotNull Iterable<Byte> rangeBy(byte a, byte i) {
-        return () -> new NoRemoveIterator<Byte>() {
-            private byte x = a;
-            private boolean reachedEnd;
-
-            @Override
-            public boolean hasNext() {
-                return !reachedEnd;
-            }
-
-            @Override
-            public Byte next() {
-                if (reachedEnd) {
-                    throw new NoSuchElementException();
-                }
-                byte oldX = x;
-                x += i;
-                reachedEnd = i > 0 ? x < a : x > a;
-                return oldX;
-            }
-        };
-    }
-
-    public static @NotNull Iterable<Short> rangeBy(short a, short i) {
-        return () -> new NoRemoveIterator<Short>() {
-            private short x = a;
-            private boolean reachedEnd;
-
-            @Override
-            public boolean hasNext() {
-                return !reachedEnd;
-            }
-
-            @Override
-            public Short next() {
-                if (reachedEnd) {
-                    throw new NoSuchElementException();
-                }
-                short oldX = x;
-                x += i;
-                reachedEnd = i > 0 ? x < a : x > a;
-                return oldX;
-            }
-        };
-    }
-
-    public static @NotNull Iterable<Integer> rangeBy(int a, int i) {
-        return () -> new NoRemoveIterator<Integer>() {
-            private int x = a;
-            private boolean reachedEnd;
-
-            @Override
-            public boolean hasNext() {
-                return !reachedEnd;
-            }
-
-            @Override
-            public Integer next() {
-                if (reachedEnd) {
-                    throw new NoSuchElementException();
-                }
-                int oldX = x;
-                x += i;
-                reachedEnd = i > 0 ? x < a : x > a;
-                return oldX;
-            }
-        };
-    }
-
-    public static @NotNull Iterable<Long> rangeBy(long a, long i) {
-        return () -> new NoRemoveIterator<Long>() {
-            private long x = a;
-            private boolean reachedEnd;
-
-            @Override
-            public boolean hasNext() {
-                return !reachedEnd;
-            }
-
-            @Override
-            public Long next() {
-                if (reachedEnd) {
-                    throw new NoSuchElementException();
-                }
-                long oldX = x;
-                x += i;
-                reachedEnd = i > 0 ? x < a : x > a;
-                return oldX;
-            }
-        };
-    }
-
-    public static @NotNull Iterable<BigInteger> rangeBy(@NotNull BigInteger a, @NotNull BigInteger i) {
-        return () -> new NoRemoveIterator<BigInteger>() {
-            private @NotNull BigInteger x = a;
-            private boolean reachedEnd;
-
-            @Override
-            public boolean hasNext() {
-                return !reachedEnd;
-            }
-
-            @Override
-            public BigInteger next() {
-                if (reachedEnd) {
-                    throw new NoSuchElementException();
-                }
-                BigInteger oldX = x;
-                x = x.add(i);
-                reachedEnd = i.signum() == 1 ? lt(x, a) : gt(x, a);
-                return oldX;
-            }
-        };
-    }
-
-    public static @NotNull Iterable<BigDecimal> rangeBy(@NotNull BigDecimal a, @NotNull BigDecimal i) {
-        return () -> new NoRemoveIterator<BigDecimal>() {
-            private @NotNull BigDecimal x = a;
-            private boolean reachedEnd;
-
-            @Override
-            public boolean hasNext() {
-                return !reachedEnd;
-            }
-
-            @Override
-            public BigDecimal next() {
-                if (reachedEnd) {
-                    throw new NoSuchElementException();
-                }
-                BigDecimal oldX = x;
-                x = x.add(i);
-                reachedEnd = i.signum() == 1 ? lt(x, a) : gt(x, a);
-                return oldX;
-            }
-        };
-    }
-
-    public static @NotNull Iterable<Character> rangeBy(char a, int i) {
-        return () -> new NoRemoveIterator<Character>() {
-            private char x = a;
-            private boolean reachedEnd;
-
-            @Override
-            public boolean hasNext() {
-                return !reachedEnd;
-            }
-
-            @Override
-            public Character next() {
-                if (reachedEnd) {
-                    throw new NoSuchElementException();
-                }
-                char oldX = x;
-                x += i;
-                reachedEnd = i > 0 ? x < a : x > a;
-                return oldX;
-            }
-        };
-    }
-
-    public static Iterable<Byte> rangeBy(byte a, byte i, byte b) {
-        if (i > 0 ? a > b : b > a) return new ArrayList<>();
-        return () -> new NoRemoveIterator<Byte>() {
-            private byte x = a;
-            private boolean reachedEnd;
-
-            @Override
-            public boolean hasNext() {
-                return !reachedEnd;
-            }
-
-            @Override
-            public Byte next() {
-                if (reachedEnd) {
-                    throw new NoSuchElementException();
-                }
-                byte oldX = x;
-                x += i;
-                reachedEnd = i > 0 ? (x > b || x < a) : (x < b || x > a);
-                return oldX;
-            }
-        };
-    }
-
-    public static Iterable<Short> rangeBy(short a, short i, short b) {
-        if (i > 0 ? a > b : b > a) return new ArrayList<>();
-        return () -> new NoRemoveIterator<Short>() {
-            private short x = a;
-            private boolean reachedEnd;
-
-            @Override
-            public boolean hasNext() {
-                return !reachedEnd;
-            }
-
-            @Override
-            public Short next() {
-                if (reachedEnd) {
-                    throw new NoSuchElementException();
-                }
-                short oldX = x;
-                x += i;
-                reachedEnd = i > 0 ? (x > b || x < a) : (x < b || x > a);
-                return oldX;
-            }
-        };
-    }
-
-    public static Iterable<Integer> rangeBy(int a, int i, int b) {
-        if (i > 0 ? a > b : b > a) return new ArrayList<>();
-        return () -> new NoRemoveIterator<Integer>() {
-            private int x = a;
-            private boolean reachedEnd;
-
-            @Override
-            public boolean hasNext() {
-                return !reachedEnd;
-            }
-
-            @Override
-            public Integer next() {
-                if (reachedEnd) {
-                    throw new NoSuchElementException();
-                }
-                int oldX = x;
-                x += i;
-                reachedEnd = i > 0 ? (x > b || x < a) : (x < b || x > a);
-                return oldX;
-            }
-        };
-    }
-
-    public static Iterable<Long> rangeBy(long a, long i, long b) {
-        if (i > 0 ? a > b : b > a) return new ArrayList<>();
-        return () -> new NoRemoveIterator<Long>() {
-            private long x = a;
-            private boolean reachedEnd;
-
-            @Override
-            public boolean hasNext() {
-                return !reachedEnd;
-            }
-
-            @Override
-            public Long next() {
-                if (reachedEnd) {
-                    throw new NoSuchElementException();
-                }
-                long oldX = x;
-                x += i;
-                reachedEnd = i > 0 ? (x > b || x < a) : (x < b || x > a);
-                return oldX;
-            }
-        };
-    }
-
-    public static Iterable<BigInteger> rangeBy(BigInteger a, BigInteger i, BigInteger b) {
-        if (i.signum() == 1 ? gt(a, b) : gt(b, a)) return new ArrayList<>();
-        return () -> new NoRemoveIterator<BigInteger>() {
-            private @NotNull BigInteger x = a;
-            private boolean reachedEnd;
-
-            @Override
-            public boolean hasNext() {
-                return !reachedEnd;
-            }
-
-            @Override
-            public BigInteger next() {
-                if (reachedEnd) {
-                    throw new NoSuchElementException();
-                }
-                BigInteger oldX = x;
-                x = x.add(i);
-                reachedEnd = i.signum() == 1 ? gt(x, b) : lt(x, b);
-                return oldX;
-            }
-        };
-    }
-
-    public static Iterable<BigDecimal> rangeBy(BigDecimal a, BigDecimal i, BigDecimal b) {
-        if (i.signum() == 1 ? gt(a, b) : gt(b, a)) return new ArrayList<>();
-        return () -> new NoRemoveIterator<BigDecimal>() {
-            private @NotNull BigDecimal x = a;
-            private boolean reachedEnd;
-
-            @Override
-            public boolean hasNext() {
-                return !reachedEnd;
-            }
-
-            @Override
-            public BigDecimal next() {
-                if (reachedEnd) {
-                    throw new NoSuchElementException();
-                }
-                BigDecimal oldX = x;
-                x = x.add(i);
-                reachedEnd = i.signum() == 1 ? gt(x, b) : lt(x, b);
-                return oldX;
-            }
-        };
-    }
-
-    public static Iterable<Character> rangeBy(char a, int i, char b) {
-        if (i > 0 ? a > b : b > a) return new ArrayList<>();
-        return () -> new NoRemoveIterator<Character>() {
-            private char x = a;
-            private boolean reachedEnd;
-
-            @Override
-            public boolean hasNext() {
-                return !reachedEnd;
-            }
-
-            @Override
-            public Character next() {
-                if (reachedEnd) {
-                    throw new NoSuchElementException();
-                }
-                char oldX = x;
-                x += i;
-                reachedEnd = i > 0 ? (x > b || x < a) : (x < b || x > a);
-                return oldX;
-            }
-        };
-    }
-
-    /**
      * Equivalent of Haskell's {@code (:)} list constructor. Creates an {@code Iterable} whose first element is
      * {@code x} and whose remaining elements are given by {@code xs}. {@code xs} may be infinite, in which case the
      * result is also infinite. Uses O(1) additional memory. Does not support removal.
@@ -2908,7 +2016,7 @@ public final strictfp class IterableUtils {
 
     public static @NotNull String replicate(@NotNull BigInteger n, char c) {
         StringBuilder sb = new StringBuilder();
-        for (BigInteger i : range(BigInteger.ONE, n)) {
+        for (BigInteger i : ExhaustiveProvider.INSTANCE.rangeIncreasing(BigInteger.ONE, n)) {
             sb.append(c);
         }
         return sb.toString();
@@ -2960,7 +2068,7 @@ public final strictfp class IterableUtils {
             if (i == xs.size()) break;
             for (int j = 0; j < i; j++) {
                 T first = xs.get(j);
-                for (int k : rangeBy(j + i, i, xs.size() - 1)) {
+                for (int k = j + i; k < xs.size(); k += i) {
                     if (!Objects.equals(first, xs.get(k))) continue outer;
                 }
             }
@@ -3896,7 +3004,7 @@ public final strictfp class IterableUtils {
     }
 
     public static @NotNull Iterable<String> inits(@NotNull String s) {
-        return map(i -> s.substring(0, i), range(0, s.length()));
+        return map(i -> s.substring(0, i), ExhaustiveProvider.INSTANCE.rangeIncreasing(0, s.length()));
     }
 
     public static @NotNull <T> Iterable<List<T>> tails(@NotNull Iterable<T> xs) {
@@ -3909,12 +3017,12 @@ public final strictfp class IterableUtils {
                     }
                     return subList;
                 },
-                range(0, list.size())
+                ExhaustiveProvider.INSTANCE.rangeIncreasing(0, list.size())
         );
     }
 
     public static @NotNull Iterable<String> tails(@NotNull String s) {
-        return map(s::substring, range(0, s.length()));
+        return map(s::substring, ExhaustiveProvider.INSTANCE.rangeIncreasing(0, s.length()));
     }
 
     public static <T> boolean isPrefixOf(@NotNull Iterable<T> xs, @NotNull Iterable<T> ys) {
@@ -4564,7 +3672,7 @@ public final strictfp class IterableUtils {
             throw new IndexOutOfBoundsException();
         Iterator<T> xsi = xs.iterator();
         T element = null;
-        for (BigInteger j : range(BigInteger.ONE, i)) {
+        for (BigInteger j : ExhaustiveProvider.INSTANCE.rangeIncreasing(BigInteger.ONE, i)) {
             if (!xsi.hasNext())
                 throw new IndexOutOfBoundsException();
             element = xsi.next();
@@ -4667,15 +3775,27 @@ public final strictfp class IterableUtils {
     }
 
     public static @NotNull <T> Iterable<Integer> elemIndices(@Nullable T x, @NotNull Iterable<T> xs) {
-        return map(p -> p.a, filter(p -> Objects.equals(x, p.b), zip(rangeUp(0), xs)));
+        return map(
+                p -> p.a,
+                filter(p -> Objects.equals(x, p.b), zip(ExhaustiveProvider.INSTANCE.rangeUpIncreasing(0), xs))
+        );
     }
 
     public static @NotNull <T> Iterable<BigInteger> bigIntegerElemIndices(@Nullable T x, @NotNull Iterable<T> xs) {
-        return map(p -> p.a, filter(p -> Objects.equals(x, p.b), zip(rangeUp(BigInteger.ZERO), xs)));
+        return map(
+                p -> p.a,
+                filter(
+                        p -> Objects.equals(x, p.b),
+                        zip(ExhaustiveProvider.INSTANCE.rangeUpIncreasing(BigInteger.ZERO), xs)
+                )
+        );
     }
 
     public static @NotNull Iterable<Integer> elemIndices(char c, @NotNull String s) {
-        return map(p -> p.a, filter(p -> p.b == c, zip(rangeUp(0), fromString(s))));
+        return map(
+                p -> p.a,
+                filter(p -> p.b == c, zip(ExhaustiveProvider.INSTANCE.rangeUpIncreasing(0), fromString(s)))
+        );
     }
 
     public static @NotNull <T> Optional<Integer> findIndex(@NotNull Predicate<T> p, @NotNull Iterable<T> xs) {
@@ -4707,18 +3827,24 @@ public final strictfp class IterableUtils {
     }
 
     public static @NotNull <T> Iterable<Integer> findIndices(@NotNull Predicate<T> p, @NotNull Iterable<T> xs) {
-        return map(q -> q.a, filter(q -> p.test(q.b), zip(rangeUp(0), xs)));
+        return map(q -> q.a, filter(q -> p.test(q.b), zip(ExhaustiveProvider.INSTANCE.rangeUpIncreasing(0), xs)));
     }
 
     public static @NotNull <T> Iterable<BigInteger> bigIntegerFindIndices(
             @NotNull Predicate<T> p,
             @NotNull Iterable<T> xs
     ) {
-        return map(q -> q.a, filter(q -> p.test(q.b), zip(rangeUp(BigInteger.ZERO), xs)));
+        return map(
+                q -> q.a,
+                filter(q -> p.test(q.b), zip(ExhaustiveProvider.INSTANCE.rangeUpIncreasing(BigInteger.ZERO), xs))
+        );
     }
 
     public static @NotNull Iterable<Integer> findIndices(@NotNull Predicate<Character> p, @NotNull String s) {
-        return map(q -> q.a, filter(q -> p.test(q.b), zip(rangeUp(0), fromString(s))));
+        return map(
+                q -> q.a,
+                filter(q -> p.test(q.b), zip(ExhaustiveProvider.INSTANCE.rangeUpIncreasing(0), fromString(s)))
+        );
     }
 
     public static <A, B> Iterable<Pair<A, B>> zip(Iterable<A> as, Iterable<B> bs) {

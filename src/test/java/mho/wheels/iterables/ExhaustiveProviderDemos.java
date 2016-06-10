@@ -34,6 +34,212 @@ public class ExhaustiveProviderDemos extends Demos {
         }
     }
 
+    private void demoRangeUpIncreasing_byte() {
+        for (byte b : take(MEDIUM_LIMIT, P.bytes())) {
+            System.out.println("rangeUpIncreasing(" + b + ") = " + its(EP.rangeUpIncreasing(b)));
+        }
+    }
+
+    private void demoRangeUpIncreasing_short() {
+        for (short s : take(MEDIUM_LIMIT, P.shorts())) {
+            System.out.println("rangeUpIncreasing(" + s + ") = " + its(EP.rangeUpIncreasing(s)));
+        }
+    }
+
+    private void demoRangeUpIncreasing_int() {
+        for (int i : take(MEDIUM_LIMIT, P.integers())) {
+            System.out.println("rangeUpIncreasing(" + i + ") = " + its(EP.rangeUpIncreasing(i)));
+        }
+    }
+
+    private void demoRangeUpIncreasing_long() {
+        for (long l : take(MEDIUM_LIMIT, P.longs())) {
+            System.out.println("rangeUpIncreasing(" + l + ") = " + its(EP.rangeUpIncreasing(l)));
+        }
+    }
+
+    private void demoRangeUpIncreasing_BigInteger() {
+        for (BigInteger i : take(MEDIUM_LIMIT, P.bigIntegers())) {
+            System.out.println("rangeUpIncreasing(" + i + ") = " + its(EP.rangeUpIncreasing(i)));
+        }
+    }
+
+    private void demoRangeUpIncreasing_char() {
+        for (char c : take(MEDIUM_LIMIT, P.characters())) {
+            System.out.println("rangeUpIncreasing(" + nicePrint(c) + ") = " + cits(EP.rangeUpIncreasing(c)));
+        }
+    }
+
+    private void demoRangeUpDecreasing_byte() {
+        for (byte b : take(MEDIUM_LIMIT, P.bytes())) {
+            System.out.println("rangeUpDecreasing(" + b + ") = " + its(EP.rangeUpDecreasing(b)));
+        }
+    }
+
+    private void demoRangeUpDecreasing_short() {
+        for (short s : take(MEDIUM_LIMIT, P.shorts())) {
+            System.out.println("rangeUpDecreasing(" + s + ") = " + its(EP.rangeUpDecreasing(s)));
+        }
+    }
+
+    private void demoRangeUpDecreasing_int() {
+        for (int i : take(MEDIUM_LIMIT, P.integers())) {
+            System.out.println("rangeUpDecreasing(" + i + ") = " + its(EP.rangeUpDecreasing(i)));
+        }
+    }
+
+    private void demoRangeUpDecreasing_long() {
+        for (long l : take(MEDIUM_LIMIT, P.longs())) {
+            System.out.println("rangeUpDecreasing(" + l + ") = " + its(EP.rangeUpDecreasing(l)));
+        }
+    }
+
+    private void demoRangeUpDecreasing_char() {
+        for (char c : take(MEDIUM_LIMIT, P.characters())) {
+            System.out.println("rangeUpDecreasing(" + nicePrint(c) + ") = " + cits(EP.rangeUpDecreasing(c)));
+        }
+    }
+
+    private void demoRangeDownIncreasing_byte() {
+        for (byte b : take(MEDIUM_LIMIT, P.bytes())) {
+            System.out.println("rangeDownIncreasing(" + b + ") = " + its(EP.rangeDownIncreasing(b)));
+        }
+    }
+
+    private void demoRangeDownIncreasing_short() {
+        for (short s : take(MEDIUM_LIMIT, P.shorts())) {
+            System.out.println("rangeDownIncreasing(" + s + ") = " + its(EP.rangeDownIncreasing(s)));
+        }
+    }
+
+    private void demoRangeDownIncreasing_int() {
+        for (int i : take(MEDIUM_LIMIT, P.integers())) {
+            System.out.println("rangeDownIncreasing(" + i + ") = " + its(EP.rangeDownIncreasing(i)));
+        }
+    }
+
+    private void demoRangeDownIncreasing_long() {
+        for (long l : take(MEDIUM_LIMIT, P.longs())) {
+            System.out.println("rangeDownIncreasing(" + l + ") = " + its(EP.rangeDownIncreasing(l)));
+        }
+    }
+
+    private void demoRangeDownIncreasing_char() {
+        for (char c : take(MEDIUM_LIMIT, P.characters())) {
+            System.out.println("rangeDownIncreasing(" + nicePrint(c) + ") = " + cits(EP.rangeDownIncreasing(c)));
+        }
+    }
+
+    private void demoRangeDownDecreasing_byte() {
+        for (byte b : take(MEDIUM_LIMIT, P.bytes())) {
+            System.out.println("rangeDownDecreasing(" + b + ") = " + its(EP.rangeDownDecreasing(b)));
+        }
+    }
+
+    private void demoRangeDownDecreasing_short() {
+        for (short s : take(MEDIUM_LIMIT, P.shorts())) {
+            System.out.println("rangeDownDecreasing(" + s + ") = " + its(EP.rangeDownDecreasing(s)));
+        }
+    }
+
+    private void demoRangeDownDecreasing_int() {
+        for (int i : take(MEDIUM_LIMIT, P.integers())) {
+            System.out.println("rangeDownDecreasing(" + i + ") = " + its(EP.rangeDownDecreasing(i)));
+        }
+    }
+
+    private void demoRangeDownDecreasing_long() {
+        for (long l : take(MEDIUM_LIMIT, P.longs())) {
+            System.out.println("rangeDownDecreasing(" + l + ") = " + its(EP.rangeDownDecreasing(l)));
+        }
+    }
+
+    private void demoRangeDownDecreasing_BigInteger() {
+        for (BigInteger i : take(MEDIUM_LIMIT, P.bigIntegers())) {
+            System.out.println("rangeDownDecreasing(" + i + ") = " + its(EP.rangeDownDecreasing(i)));
+        }
+    }
+
+    private void demoRangeDownDecreasing_char() {
+        for (char c : take(MEDIUM_LIMIT, P.characters())) {
+            System.out.println("rangeDownDecreasing(" + nicePrint(c) + ") = " + cits(EP.rangeDownDecreasing(c)));
+        }
+    }
+
+    private void demoRangeIncreasing_byte_byte() {
+        for (Pair<Byte, Byte> p : take(MEDIUM_LIMIT, P.bagPairs(P.bytes()))) {
+            System.out.println("rangeIncreasing(" + p.a + ", " + p.b + ") = " + its(EP.rangeIncreasing(p.a, p.b)));
+        }
+    }
+
+    private void demoRangeIncreasing_short_short() {
+        for (Pair<Short, Short> p : take(MEDIUM_LIMIT, P.bagPairs(P.shorts()))) {
+            System.out.println("rangeIncreasing(" + p.a + ", " + p.b + ") = " + its(EP.rangeIncreasing(p.a, p.b)));
+        }
+    }
+
+    private void demoRangeIncreasing_int_int() {
+        for (Pair<Integer, Integer> p : take(MEDIUM_LIMIT, P.bagPairs(P.integers()))) {
+            System.out.println("rangeIncreasing(" + p.a + ", " + p.b + ") = " + its(EP.rangeIncreasing(p.a, p.b)));
+        }
+    }
+
+    private void demoRangeIncreasing_long_long() {
+        for (Pair<Long, Long> p : take(MEDIUM_LIMIT, P.bagPairs(P.longs()))) {
+            System.out.println("rangeIncreasing(" + p.a + ", " + p.b + ") = " + its(EP.rangeIncreasing(p.a, p.b)));
+        }
+    }
+
+    private void demoRangeIncreasing_BigInteger_BigInteger() {
+        for (Pair<BigInteger, BigInteger> p : take(MEDIUM_LIMIT, P.bagPairs(P.bigIntegers()))) {
+            System.out.println("rangeIncreasing(" + p.a + ", " + p.b + ") = " + its(EP.rangeIncreasing(p.a, p.b)));
+        }
+    }
+
+    private void demoRangeIncreasing_char_char() {
+        for (Pair<Character, Character> p : take(MEDIUM_LIMIT, P.bagPairs(P.characters()))) {
+            System.out.println("rangeIncreasing(" + nicePrint(p.a) + ", " + nicePrint(p.b) + ") = " +
+                    cits(EP.rangeIncreasing(p.a, p.b)));
+        }
+    }
+
+    private void demoRangeDecreasing_byte_byte() {
+        for (Pair<Byte, Byte> p : take(MEDIUM_LIMIT, P.bagPairs(P.bytes()))) {
+            System.out.println("rangeDecreasing(" + p.a + ", " + p.b + ") = " + its(EP.rangeDecreasing(p.a, p.b)));
+        }
+    }
+
+    private void demoRangeDecreasing_short_short() {
+        for (Pair<Short, Short> p : take(MEDIUM_LIMIT, P.bagPairs(P.shorts()))) {
+            System.out.println("rangeDecreasing(" + p.a + ", " + p.b + ") = " + its(EP.rangeDecreasing(p.a, p.b)));
+        }
+    }
+
+    private void demoRangeDecreasing_int_int() {
+        for (Pair<Integer, Integer> p : take(MEDIUM_LIMIT, P.bagPairs(P.integers()))) {
+            System.out.println("rangeDecreasing(" + p.a + ", " + p.b + ") = " + its(EP.rangeDecreasing(p.a, p.b)));
+        }
+    }
+
+    private void demoRangeDecreasing_long_long() {
+        for (Pair<Long, Long> p : take(MEDIUM_LIMIT, P.bagPairs(P.longs()))) {
+            System.out.println("rangeDecreasing(" + p.a + ", " + p.b + ") = " + its(EP.rangeDecreasing(p.a, p.b)));
+        }
+    }
+
+    private void demoRangeDecreasing_BigInteger_BigInteger() {
+        for (Pair<BigInteger, BigInteger> p : take(MEDIUM_LIMIT, P.bagPairs(P.bigIntegers()))) {
+            System.out.println("rangeDecreasing(" + p.a + ", " + p.b + ") = " + its(EP.rangeDecreasing(p.a, p.b)));
+        }
+    }
+
+    private void demoRangeDecreasing_char_char() {
+        for (Pair<Character, Character> p : take(MEDIUM_LIMIT, P.bagPairs(P.characters()))) {
+            System.out.println("rangeDecreasing(" + nicePrint(p.a) + ", " + nicePrint(p.b) + ") = " +
+                    cits(EP.rangeDecreasing(p.a, p.b)));
+        }
+    }
+
     private void demoRangeUp_byte() {
         for (byte b : take(MEDIUM_LIMIT, P.bytes())) {
             System.out.println("rangeUp(" + b + ") = " + its(EP.rangeUp(b)));
@@ -61,12 +267,6 @@ public class ExhaustiveProviderDemos extends Demos {
     private void demoRangeUp_BigInteger() {
         for (BigInteger i : take(MEDIUM_LIMIT, P.bigIntegers())) {
             System.out.println("rangeUp(" + i + ") = " + its(EP.rangeUp(i)));
-        }
-    }
-
-    private void demoRangeUp_char() {
-        for (char c : take(MEDIUM_LIMIT, P.characters())) {
-            System.out.println("rangeUp(" + nicePrint(c) + ") = " + cits(EP.rangeUp(c)));
         }
     }
 
@@ -100,45 +300,33 @@ public class ExhaustiveProviderDemos extends Demos {
         }
     }
 
-    private void demoRangeDown_char() {
-        for (char c : take(MEDIUM_LIMIT, P.characters())) {
-            System.out.println("rangeDown(" + nicePrint(c) + ") = " + cits(EP.rangeDown(c)));
-        }
-    }
-
     private void demoRange_byte_byte() {
-        for (Pair<Byte, Byte> p : take(MEDIUM_LIMIT, P.pairs(P.bytes()))) {
+        for (Pair<Byte, Byte> p : take(MEDIUM_LIMIT, P.bagPairs(P.bytes()))) {
             System.out.println("range(" + p.a + ", " + p.b + ") = " + its(EP.range(p.a, p.b)));
         }
     }
 
     private void demoRange_short_short() {
-        for (Pair<Short, Short> p : take(MEDIUM_LIMIT, P.pairs(P.shorts()))) {
+        for (Pair<Short, Short> p : take(MEDIUM_LIMIT, P.bagPairs(P.shorts()))) {
             System.out.println("range(" + p.a + ", " + p.b + ") = " + its(EP.range(p.a, p.b)));
         }
     }
 
     private void demoRange_int_int() {
-        for (Pair<Integer, Integer> p : take(MEDIUM_LIMIT, P.pairs(P.integers()))) {
+        for (Pair<Integer, Integer> p : take(MEDIUM_LIMIT, P.bagPairs(P.integers()))) {
             System.out.println("range(" + p.a + ", " + p.b + ") = " + its(EP.range(p.a, p.b)));
         }
     }
 
     private void demoRange_long_long() {
-        for (Pair<Long, Long> p : take(MEDIUM_LIMIT, P.pairs(P.longs()))) {
+        for (Pair<Long, Long> p : take(MEDIUM_LIMIT, P.bagPairs(P.longs()))) {
             System.out.println("range(" + p.a + ", " + p.b + ") = " + its(EP.range(p.a, p.b)));
         }
     }
 
     private void demoRange_BigInteger_BigInteger() {
-        for (Pair<BigInteger, BigInteger> p : take(MEDIUM_LIMIT, P.pairs(P.bigIntegers()))) {
+        for (Pair<BigInteger, BigInteger> p : take(MEDIUM_LIMIT, P.bagPairs(P.bigIntegers()))) {
             System.out.println("range(" + p.a + ", " + p.b + ") = " + its(EP.range(p.a, p.b)));
-        }
-    }
-
-    private void demoRange_char_char() {
-        for (Pair<Character, Character> p : take(MEDIUM_LIMIT, P.pairs(P.characters()))) {
-            System.out.println("range(" + nicePrint(p.a) + ", " + nicePrint(p.b) + ") = " + cits(EP.range(p.a, p.b)));
         }
     }
 

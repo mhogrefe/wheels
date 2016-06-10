@@ -232,9 +232,9 @@ public class IntegerUtils {
     }
 
     /**
-     * Returns the lowest {@code n} bits of a non-negative {@code BigInteger}. The {@code List} returned is little-
-     * endian; the least-significant bits come first. It is exactly {@code n} bits long, and right-padded with zeroes
-     * (falses) if necessary. Does not support removal.
+     * Returns the lowest {@code length} bits of a non-negative {@code BigInteger}. The {@code List} returned is
+     * little-endian; the least-significant bits come first. It is exactly {@code n} bits long, and right-padded with
+     * zeroes (falses) if necessary. Does not support removal.
      *
      * <ul>
      *  <li>{@code length} cannot be negative.</li>

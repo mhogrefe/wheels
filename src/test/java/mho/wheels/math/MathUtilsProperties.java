@@ -1,5 +1,6 @@
 package mho.wheels.math;
 
+import mho.wheels.iterables.ExhaustiveProvider;
 import mho.wheels.iterables.IterableUtils;
 import mho.wheels.numberUtils.IntegerUtils;
 import mho.wheels.structures.FiniteDomainFunction;
@@ -310,7 +311,7 @@ public class MathUtilsProperties extends TestProperties {
     }
 
     private static @NotNull BigInteger lcm_explicit(@NotNull BigInteger x, @NotNull BigInteger y) {
-        return head(orderedIntersection(rangeBy(x, x), rangeBy(y, y)));
+        return head(orderedIntersection(iterate(n -> n.add(x), x), iterate(n -> n.add(y), y)));
     }
 
     private void propertiesLcm_BigInteger_BigInteger() {
@@ -321,8 +322,10 @@ public class MathUtilsProperties extends TestProperties {
             assertEquals(p, lcm.signum(), 1);
             assertEquals(p, lcm.mod(p.a), BigInteger.ZERO);
             assertEquals(p, lcm.mod(p.b), BigInteger.ZERO);
-            for (BigInteger i : take(TINY_LIMIT, P.range(BigInteger.ONE, lcm.subtract(BigInteger.ONE)))) {
-                assertFalse(p, i.mod(p.a).equals(BigInteger.ZERO) && i.mod(p.b).equals(BigInteger.ZERO));
+            if (!lcm.equals(BigInteger.ONE)) {
+                for (BigInteger i : take(TINY_LIMIT, P.range(BigInteger.ONE, lcm.subtract(BigInteger.ONE)))) {
+                    assertFalse(p, i.mod(p.a).equals(BigInteger.ZERO) && i.mod(p.b).equals(BigInteger.ZERO));
+                }
             }
         }
 
@@ -455,7 +458,12 @@ public class MathUtilsProperties extends TestProperties {
         if (n < 0) {
             throw new ArithmeticException("n cannot be negative. Invalid n: " + n);
         }
-        return productBigInteger(toList(range(BigInteger.ONE, BigInteger.valueOf(n))));
+        if (n == 0) {
+            return BigInteger.ONE;
+        }
+        return productBigInteger(
+                toList(ExhaustiveProvider.INSTANCE.rangeIncreasing(BigInteger.ONE, BigInteger.valueOf(n)))
+        );
     }
 
     private void propertiesFactorial_int() {
@@ -496,7 +504,10 @@ public class MathUtilsProperties extends TestProperties {
         if (n.signum() == -1) {
             throw new ArithmeticException("n cannot be negative. Invalid n: " + n);
         }
-        return productBigInteger(toList(range(BigInteger.ONE, n)));
+        if (n.equals(BigInteger.ZERO)) {
+            return BigInteger.ONE;
+        }
+        return productBigInteger(toList(ExhaustiveProvider.INSTANCE.rangeIncreasing(BigInteger.ONE, n)));
     }
 
     private void propertiesFactorial_BigInteger() {
@@ -635,7 +646,9 @@ public class MathUtilsProperties extends TestProperties {
             throw new ArithmeticException("n cannot be negative. Invalid n: " + n);
         }
         BigInteger bigN = BigInteger.valueOf(n);
-        return sumBigInteger(toList(map(k -> fallingFactorial(bigN, k), range(0, n))));
+        return sumBigInteger(
+                toList(map(k -> fallingFactorial(bigN, k), ExhaustiveProvider.INSTANCE.rangeIncreasing(0, n)))
+        );
     }
 
     private void propertiesNumberOfArrangementsOfASet_int() {
@@ -670,8 +683,13 @@ public class MathUtilsProperties extends TestProperties {
         if (n < 0) {
             throw new ArithmeticException("n cannot be negative. Invalid n: " + n);
         }
+        if (minSize > n) {
+            return BigInteger.ZERO;
+        }
         BigInteger bigN = BigInteger.valueOf(n);
-        return sumBigInteger(toList(map(k -> fallingFactorial(bigN, k), range(minSize, n))));
+        return sumBigInteger(
+                toList(map(k -> fallingFactorial(bigN, k), ExhaustiveProvider.INSTANCE.rangeIncreasing(minSize, n)))
+        );
     }
 
     private void propertiesNumberOfArrangementsOfASet_int_int() {
@@ -876,7 +894,9 @@ public class MathUtilsProperties extends TestProperties {
         //noinspection Convert2MethodRef,RedundantCast
         Function<Pair<Integer, Integer>, Iterable<Function<Integer, BigInteger>>> fGenerator = range ->
                 map(
-                        is -> new FiniteDomainFunction<>(zip(range(range.a, range.b), is)),
+                        is -> new FiniteDomainFunction<>(
+                                zip(ExhaustiveProvider.INSTANCE.rangeIncreasing(range.a, range.b), is)
+                        ),
                         P.bags(
                                 range.b - range.a + 1,
                                 (Iterable<BigInteger>) map(i -> BigInteger.valueOf(i), P.integersGeometric())
@@ -968,7 +988,9 @@ public class MathUtilsProperties extends TestProperties {
         //noinspection Convert2MethodRef,RedundantCast
         Function<Pair<BigInteger, BigInteger>, Iterable<Function<BigInteger, BigInteger>>> fGenerator = range ->
                 map(
-                        is -> new FiniteDomainFunction<>(zip(range(range.a, range.b), is)),
+                        is -> new FiniteDomainFunction<>(
+                                zip(ExhaustiveProvider.INSTANCE.rangeIncreasing(range.a, range.b), is)
+                        ),
                         P.bags(
                                 range.b.intValueExact() - range.a.intValueExact() + 1,
                                 (Iterable<BigInteger>) map(i -> BigInteger.valueOf(i), P.integersGeometric())

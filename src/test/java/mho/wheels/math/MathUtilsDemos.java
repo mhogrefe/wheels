@@ -1,5 +1,6 @@
 package mho.wheels.math;
 
+import mho.wheels.iterables.ExhaustiveProvider;
 import mho.wheels.numberUtils.IntegerUtils;
 import mho.wheels.structures.FiniteDomainFunction;
 import mho.wheels.structures.Pair;
@@ -165,7 +166,9 @@ public class MathUtilsDemos extends Demos {
         //noinspection Convert2MethodRef,RedundantCast
         Function<Pair<Integer, Integer>, Iterable<Function<Integer, BigInteger>>> fGenerator = range ->
                 map(
-                        is -> new FiniteDomainFunction<>(zip(range(range.a, range.b), is)),
+                        is -> new FiniteDomainFunction<>(
+                                zip(ExhaustiveProvider.INSTANCE.rangeIncreasing(range.a, range.b), is)
+                        ),
                         P.bags(
                                 range.b - range.a + 1,
                                 (Iterable<BigInteger>) map(i -> BigInteger.valueOf(i), P.integersGeometric())
@@ -199,7 +202,9 @@ public class MathUtilsDemos extends Demos {
         //noinspection Convert2MethodRef,RedundantCast
         Function<Pair<BigInteger, BigInteger>, Iterable<Function<BigInteger, BigInteger>>> fGenerator = range ->
                 map(
-                        is -> new FiniteDomainFunction<>(zip(range(range.a, range.b), is)),
+                        is -> new FiniteDomainFunction<>(
+                                zip(ExhaustiveProvider.INSTANCE.rangeIncreasing(range.a, range.b), is)
+                        ),
                         P.bags(
                                 range.b.intValueExact() - range.a.intValueExact() + 1,
                                 (Iterable<BigInteger>) map(i -> BigInteger.valueOf(i), P.integersGeometric())
