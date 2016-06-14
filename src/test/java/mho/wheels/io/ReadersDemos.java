@@ -17,7 +17,7 @@ import static mho.wheels.testing.Testing.nicePrint;
 @SuppressWarnings("UnusedDeclaration")
 public class ReadersDemos extends Demos {
     private static final @NotNull String BOOLEAN_CHARS = "aeflrstu";
-    private static final @NotNull String ORDERING_CHARS = "EGLQT";
+    private static final @NotNull String ORDERING_CHARS = "<=>";
     private static final @NotNull String ROUNDING_MODE_CHARS = "ACDEFGHILNOPRSUVWY_";
     private static final @NotNull String INTEGRAL_CHARS = "-0123456789";
     private static final @NotNull String FLOATING_POINT_CHARS = "-.0123456789EINafinty";

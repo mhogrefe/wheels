@@ -108,15 +108,16 @@ public class ReadersTest {
 
     @Test
     public void testReadOrderingStrict() {
-        readOrderingStrict_helper("LT", "Optional[LT]");
-        readOrderingStrict_helper("EQ", "Optional[EQ]");
-        readOrderingStrict_helper("GT", "Optional[GT]");
+        readOrderingStrict_helper("<", "Optional[<]");
+        readOrderingStrict_helper("=", "Optional[=]");
+        readOrderingStrict_helper(">", "Optional[>]");
 
-        readOrderingStrict_helper(" LT", "Optional.empty");
+        readOrderingStrict_helper(" <", "Optional.empty");
         readOrderingStrict_helper("eq", "Optional.empty");
         readOrderingStrict_helper("gt ", "Optional.empty");
+        readOrderingStrict_helper("GT ", "Optional.empty");
         readOrderingStrict_helper("", "Optional.empty");
-        readOrderingStrict_helper("dsfsdfgd", "Optional.empty");
+        readOrderingStrict_helper("dsfs<fgd", "Optional.empty");
     }
 
     private static void readRoundingModeStrict_helper(@NotNull String input, @NotNull String output) {

@@ -33,13 +33,13 @@ public enum Ordering {
         return 0; //doesn't happen
     }
 
-    public char toChar() {
+    public @NotNull String toString() {
         switch (this) {
-            case LT: return '<';
-            case EQ: return '=';
-            case GT: return '>';
+            case LT: return "<";
+            case EQ: return "=";
+            case GT: return ">";
         }
-        return 0; //doesn't happen
+        return ""; //doesn't happen
     }
 
     public static @NotNull <T extends Comparable<T>> Ordering compare(@NotNull T a, @NotNull T b) {

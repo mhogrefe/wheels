@@ -107,11 +107,11 @@ public class Readers {
      */
     public static @NotNull Optional<Ordering> readOrderingStrict(@NotNull String s) {
         switch (s) {
-            case "LT":
+            case "<":
                 return Optional.of(Ordering.LT);
-            case "EQ":
+            case "=":
                 return Optional.of(Ordering.EQ);
-            case "GT":
+            case ">":
                 return Optional.of(Ordering.GT);
             default:
                 return Optional.empty();
