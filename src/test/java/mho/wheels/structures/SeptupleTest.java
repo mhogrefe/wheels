@@ -32,9 +32,9 @@ public class SeptupleTest {
 
     @Test
     public void testConstructor() {
-        constructor_helper("hi", 3, true, 'a', GT, 0.5, x, "(hi, 3, true, a, GT, 0.5, [1, 0])");
-        constructor_helper("hi", 3, true, 'a', GT, 0.5, null, "(hi, 3, true, a, GT, 0.5, null)");
-        constructor_helper(null, 3, true, 'a', GT, 0.5, x, "(null, 3, true, a, GT, 0.5, [1, 0])");
+        constructor_helper("hi", 3, true, 'a', GT, 0.5, x, "(hi, 3, true, a, >, 0.5, [1, 0])");
+        constructor_helper("hi", 3, true, 'a', GT, 0.5, null, "(hi, 3, true, a, >, 0.5, null)");
+        constructor_helper(null, 3, true, 'a', GT, 0.5, x, "(null, 3, true, a, >, 0.5, [1, 0])");
         constructor_helper(null, null, null, null, null, null, null, "(null, null, null, null, null, null, null)");
     }
 
@@ -194,9 +194,9 @@ public class SeptupleTest {
 
     @Test
     public void testToString() {
-        aeq(new Septuple<>("hi", 3, true, 'a', GT, 0.5, x), "(hi, 3, true, a, GT, 0.5, [1, 0])");
-        aeq(new Septuple<>("hi", 3, true, 'a', GT, 0.5, null), "(hi, 3, true, a, GT, 0.5, null)");
-        aeq(new Septuple<>(null, 3, true, 'a', GT, 0.5, x), "(null, 3, true, a, GT, 0.5, [1, 0])");
+        aeq(new Septuple<>("hi", 3, true, 'a', GT, 0.5, x), "(hi, 3, true, a, >, 0.5, [1, 0])");
+        aeq(new Septuple<>("hi", 3, true, 'a', GT, 0.5, null), "(hi, 3, true, a, >, 0.5, null)");
+        aeq(new Septuple<>(null, 3, true, 'a', GT, 0.5, x), "(null, 3, true, a, >, 0.5, [1, 0])");
         aeq(new Septuple<>(null, null, null, null, null, null, null), "(null, null, null, null, null, null, null)");
     }
 

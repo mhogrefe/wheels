@@ -18,9 +18,9 @@ public class QuintupleTest {
 
     @Test
     public void testConstructor() {
-        constructor_helper("hi", 3, true, 'a', GT, "(hi, 3, true, a, GT)");
+        constructor_helper("hi", 3, true, 'a', GT, "(hi, 3, true, a, >)");
         constructor_helper("hi", 3, true, 'a', null, "(hi, 3, true, a, null)");
-        constructor_helper(null, 3, true, 'a', GT, "(null, 3, true, a, GT)");
+        constructor_helper(null, 3, true, 'a', GT, "(null, 3, true, a, >)");
         constructor_helper(null, null, null, null, null, "(null, null, null, null, null)");
     }
 
@@ -113,9 +113,9 @@ public class QuintupleTest {
 
     @Test
     public void testToString() {
-        aeq(new Quintuple<>("hi", 3, true, 'a', GT), "(hi, 3, true, a, GT)");
+        aeq(new Quintuple<>("hi", 3, true, 'a', GT), "(hi, 3, true, a, >)");
         aeq(new Quintuple<>("hi", 3, true, 'a', null), "(hi, 3, true, a, null)");
-        aeq(new Quintuple<>(null, 3, true, 'a', GT), "(null, 3, true, a, GT)");
+        aeq(new Quintuple<>(null, 3, true, 'a', GT), "(null, 3, true, a, >)");
         aeq(new Quintuple<>(null, null, null, null, null), "(null, null, null, null, null)");
     }
 

@@ -18,9 +18,9 @@ public class SextupleTest {
 
     @Test
     public void testConstructor() {
-        constructor_helper("hi", 3, true, 'a', GT, 0.5, "(hi, 3, true, a, GT, 0.5)");
-        constructor_helper("hi", 3, true, 'a', GT, null, "(hi, 3, true, a, GT, null)");
-        constructor_helper(null, 3, true, 'a', GT, 0.5, "(null, 3, true, a, GT, 0.5)");
+        constructor_helper("hi", 3, true, 'a', GT, 0.5, "(hi, 3, true, a, >, 0.5)");
+        constructor_helper("hi", 3, true, 'a', GT, null, "(hi, 3, true, a, >, null)");
+        constructor_helper(null, 3, true, 'a', GT, 0.5, "(null, 3, true, a, >, 0.5)");
         constructor_helper(null, null, null, null, null, null, "(null, null, null, null, null, null)");
     }
 
@@ -168,9 +168,9 @@ public class SextupleTest {
 
     @Test
     public void testToString() {
-        aeq(new Sextuple<>("hi", 3, true, 'a', GT, 0.5), "(hi, 3, true, a, GT, 0.5)");
-        aeq(new Sextuple<>("hi", 3, true, 'a', GT, null), "(hi, 3, true, a, GT, null)");
-        aeq(new Sextuple<>(null, 3, true, 'a', GT, 0.5), "(null, 3, true, a, GT, 0.5)");
+        aeq(new Sextuple<>("hi", 3, true, 'a', GT, 0.5), "(hi, 3, true, a, >, 0.5)");
+        aeq(new Sextuple<>("hi", 3, true, 'a', GT, null), "(hi, 3, true, a, >, null)");
+        aeq(new Sextuple<>(null, 3, true, 'a', GT, 0.5), "(null, 3, true, a, >, 0.5)");
         aeq(new Sextuple<>(null, null, null, null, null, null), "(null, null, null, null, null, null)");
     }
 
