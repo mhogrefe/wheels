@@ -507,7 +507,11 @@ public final strictfp class RandomProvider extends IterableProvider {
         if (n == 1) {
             return repeat(0);
         } else {
-            return filterInfinite(i -> i < n, integersPow2(IntegerUtils.ceilingLog2(n)));
+            if (IntegerUtils.isPowerOfTwo(n)) {
+                return integersPow2(IntegerUtils.ceilingLog2(n));
+            } else {
+                return filterInfinite(i -> i < n, integersPow2(IntegerUtils.ceilingLog2(n)));
+            }
         }
     }
 
@@ -530,7 +534,11 @@ public final strictfp class RandomProvider extends IterableProvider {
         if (n == 1) {
             return repeat(0L);
         } else {
-            return filterInfinite(l -> l < n, longsPow2(IntegerUtils.ceilingLog2(n)));
+            if (IntegerUtils.isPowerOfTwo(n)) {
+                return longsPow2(IntegerUtils.ceilingLog2(n));
+            } else {
+                return filterInfinite(i -> i < n, longsPow2(IntegerUtils.ceilingLog2(n)));
+            }
         }
     }
 
@@ -553,7 +561,11 @@ public final strictfp class RandomProvider extends IterableProvider {
         if (n.equals(BigInteger.ONE)) {
             return repeat(BigInteger.ZERO);
         } else {
-            return filterInfinite(i -> lt(i, n), bigIntegersPow2(IntegerUtils.ceilingLog2(n)));
+            if (IntegerUtils.isPowerOfTwo(n)) {
+                return bigIntegersPow2(IntegerUtils.ceilingLog2(n));
+            } else {
+                return filterInfinite(i -> lt(i, n), bigIntegersPow2(IntegerUtils.ceilingLog2(n)));
+            }
         }
     }
 

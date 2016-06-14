@@ -327,8 +327,10 @@ public strictfp class RandomProviderTest {
 
     @Test
     public void testUniformSample_Iterable() {
-        uniformSample_Iterable_helper("[3, 1, 4, 1]", "RandomProvider_uniformSample_Iterable_i");
-        uniformSample_Iterable_helper("[3, 1, null, 1]", "RandomProvider_uniformSample_Iterable_ii");
+        uniformSample_Iterable_helper("[5]", "RandomProvider_uniformSample_Iterable_i");
+        uniformSample_Iterable_helper("[1, 2, 3]", "RandomProvider_uniformSample_Iterable_ii");
+        uniformSample_Iterable_helper("[3, 1, 4, 1]", "RandomProvider_uniformSample_Iterable_iii");
+        uniformSample_Iterable_helper("[3, 1, null, 1]", "RandomProvider_uniformSample_Iterable_iv");
 
         uniformSample_Iterable_fail_helper("[]");
     }
@@ -350,7 +352,9 @@ public strictfp class RandomProviderTest {
 
     @Test
     public void testUniformSample_String() {
-        uniformSample_String_helper("hello", "RandomProvider_uniformSample_String");
+        uniformSample_String_helper("c", "RandomProvider_uniformSample_String_i");
+        uniformSample_String_helper("abc", "RandomProvider_uniformSample_String_ii");
+        uniformSample_String_helper("hello", "RandomProvider_uniformSample_String_iii");
 
         uniformSample_String_fail_helper("");
     }
