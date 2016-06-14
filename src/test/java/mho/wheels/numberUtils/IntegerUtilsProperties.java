@@ -1979,7 +1979,7 @@ public class IntegerUtilsProperties extends TestProperties {
             if (head(s) == '-') s = tail(s);
             assertEquals(p, head(s), '(');
             assertEquals(p, last(s), ')');
-            s = tail(init(s));
+            s = middle(s);
             Iterable<Integer> digits = map(Integer::parseInt, Arrays.asList(s.split("\\)\\(")));
             assertFalse(p, isEmpty(digits));
             assertTrue(p, p.a == 0 || head(digits) != 0);
@@ -2038,7 +2038,7 @@ public class IntegerUtilsProperties extends TestProperties {
             if (head(s) == '-') s = tail(s);
             assertEquals(p, head(s), '(');
             assertEquals(p, last(s), ')');
-            s = tail(init(s));
+            s = middle(s);
             Iterable<BigInteger> digits = map(BigInteger::new, Arrays.asList(s.split("\\)\\(")));
             assertFalse(p, isEmpty(digits));
             assertTrue(p, p.a.equals(BigInteger.ZERO) || !head(digits).equals(BigInteger.ZERO));

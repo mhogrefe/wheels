@@ -190,7 +190,7 @@ public final class Triple<A, B, C> {
             @NotNull Function<String, NullableOptional<C>> readC
     ) {
         if (s.length() < 2 || head(s) != '(' || last(s) != ')') return Optional.empty();
-        s = tail(init(s));
+        s = middle(s);
         String[] tokens = s.split(", ");
         if (tokens.length != 3) return Optional.empty();
         NullableOptional<A> oa = readA.apply(tokens[0]);

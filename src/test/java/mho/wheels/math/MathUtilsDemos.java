@@ -58,15 +58,13 @@ public class MathUtilsDemos extends Demos {
 
     private void demoGcd_List_BigInteger() {
         for (List<BigInteger> is : take(LIMIT, P.withScale(4).lists(P.bigIntegers()))) {
-            String listString = tail(init(is.toString()));
-            System.out.println("gcd(" + listString + ") = " + gcd(is));
+            System.out.println("gcd(" + middle(is.toString()) + ") = " + gcd(is));
         }
     }
 
     private void demoLcm_List_BigInteger() {
         for (List<BigInteger> is : take(LIMIT, P.withScale(4).listsAtLeast(1, P.positiveBigIntegers()))) {
-            String listString = tail(init(is.toString()));
-            System.out.println("lcm(" + listString + ") = " + lcm(is));
+            System.out.println("lcm(" + middle(is.toString()) + ") = " + lcm(is));
         }
     }
 
@@ -150,8 +148,7 @@ public class MathUtilsDemos extends Demos {
 
     private void demoPermutationCount() {
         for (List<Integer> xs : take(LIMIT, P.lists(P.withNull(P.integersGeometric())))) {
-            String listString = tail(init(xs.toString()));
-            System.out.println("permutationCount(" + listString + ") = " + permutationCount(xs));
+            System.out.println("permutationCount(" + middle(xs.toString()) + ") = " + permutationCount(xs));
         }
     }
 

@@ -146,15 +146,13 @@ public class IntegerUtilsDemos extends Demos {
 
     private void demoFromBits() {
         for (List<Boolean> bs : take(LIMIT, P.lists(P.booleans()))) {
-            String listString = tail(init(bs.toString()));
-            System.out.println("fromBits(" + listString + ") = " + fromBits(bs));
+            System.out.println("fromBits(" + middle(bs.toString()) + ") = " + fromBits(bs));
         }
     }
 
     private void demoFromBigEndianBits() {
         for (List<Boolean> bs : take(LIMIT, P.lists(P.booleans()))) {
-            String listString = tail(init(bs.toString()));
-            System.out.println("fromBigEndianBits(" + listString + ") = " + fromBigEndianBits(bs));
+            System.out.println("fromBigEndianBits(" + middle(bs.toString()) + ") = " + fromBigEndianBits(bs));
         }
     }
 
@@ -371,8 +369,7 @@ public class IntegerUtilsDemos extends Demos {
 
     private void demoMux() {
         for (List<BigInteger> is : take(LIMIT, P.withScale(4).lists(P.naturalBigIntegers()))) {
-            String listString = tail(init(is.toString()));
-            System.out.println("mux(" + listString + ") = " + mux(is));
+            System.out.println("mux(" + middle(is.toString()) + ") = " + mux(is));
         }
     }
 

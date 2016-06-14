@@ -268,7 +268,7 @@ public final class Septuple<A, B, C, D, E, F, G> {
             @NotNull Function<String, NullableOptional<G>> readG
     ) {
         if (s.length() < 2 || head(s) != '(' || last(s) != ')') return Optional.empty();
-        s = tail(init(s));
+        s = middle(s);
         String[] tokens = s.split(", ");
         if (tokens.length != 7) return Optional.empty();
         NullableOptional<A> oa = readA.apply(tokens[0]);

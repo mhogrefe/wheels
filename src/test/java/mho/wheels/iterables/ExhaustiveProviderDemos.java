@@ -23,8 +23,7 @@ public class ExhaustiveProviderDemos extends Demos {
 
     private void demoUniformSample_Iterable() {
         for (List<Integer> is : take(LIMIT, P.lists(P.withNull(P.integersGeometric())))) {
-            String listString = tail(init(is.toString()));
-            System.out.println("uniformSample(" + listString + ") = " + its(EP.uniformSample(is)));
+            System.out.println("uniformSample(" + middle(is.toString()) + ") = " + its(EP.uniformSample(is)));
         }
     }
 
@@ -428,8 +427,7 @@ public class ExhaustiveProviderDemos extends Demos {
 
     private void demoWithNull_infinite() {
         for (Iterable<Integer> xs : take(MEDIUM_LIMIT, P.prefixPermutations(EP.naturalIntegers()))) {
-            String xsString = tail(init(its(xs)));
-            System.out.println("withNull(" + xsString + ") = " + its(EP.withNull(xs)));
+            System.out.println("withNull(" + middle(xs.toString()) + ") = " + its(EP.withNull(xs)));
         }
     }
 
@@ -441,8 +439,7 @@ public class ExhaustiveProviderDemos extends Demos {
 
     private void demoNonEmptyOptionals_infinite() {
         for (Iterable<Integer> xs : take(MEDIUM_LIMIT, P.prefixPermutations(EP.naturalIntegers()))) {
-            String xsString = tail(init(its(xs)));
-            System.out.println("nonEmptyOptionals(" + xsString + ") = " + its(EP.nonEmptyOptionals(xs)));
+            System.out.println("nonEmptyOptionals(" + middle(xs.toString()) + ") = " + its(EP.nonEmptyOptionals(xs)));
         }
     }
 
@@ -454,8 +451,7 @@ public class ExhaustiveProviderDemos extends Demos {
 
     private void demoOptionals_infinite() {
         for (Iterable<Integer> xs : take(MEDIUM_LIMIT, P.prefixPermutations(EP.naturalIntegers()))) {
-            String xsString = tail(init(its(xs)));
-            System.out.println("optionals(" + xsString + ") = " + its(EP.optionals(xs)));
+            System.out.println("optionals(" + middle(xs.toString()) + ") = " + its(EP.optionals(xs)));
         }
     }
 
@@ -467,8 +463,7 @@ public class ExhaustiveProviderDemos extends Demos {
 
     private void demoNonEmptyNullableOptionals_infinite() {
         for (Iterable<Integer> xs : take(MEDIUM_LIMIT, P.prefixPermutations(EP.withNull(EP.naturalIntegers())))) {
-            String xsString = tail(init(its(xs)));
-            System.out.println("nonEmptyNullableOptionals(" + xsString + ") = " +
+            System.out.println("nonEmptyNullableOptionals(" + middle(xs.toString()) + ") = " +
                     its(EP.nonEmptyNullableOptionals(xs)));
         }
     }
@@ -481,8 +476,7 @@ public class ExhaustiveProviderDemos extends Demos {
 
     private void demoNullableOptionals_infinite() {
         for (Iterable<Integer> xs : take(MEDIUM_LIMIT, P.prefixPermutations(EP.withNull(EP.naturalIntegers())))) {
-            String xsString = tail(init(its(xs)));
-            System.out.println("nullableOptionals(" + xsString + ") = " + its(EP.nullableOptionals(xs)));
+            System.out.println("nullableOptionals(" + middle(xs.toString()) + ") = " + its(EP.nullableOptionals(xs)));
         }
     }
 
@@ -656,15 +650,15 @@ public class ExhaustiveProviderDemos extends Demos {
 
     private void demoPairsLogarithmicOrder_Iterable_finite() {
         for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
-            String listString = tail(init(xs.toString()));
-            System.out.println("pairsLogarithmicOrder(" + listString + ") = " + its(EP.pairsLogarithmicOrder(xs)));
+            System.out.println("pairsLogarithmicOrder(" + middle(xs.toString()) + ") = " +
+                    its(EP.pairsLogarithmicOrder(xs)));
         }
     }
 
     private void demoPairsLogarithmicOrder_Iterable_infinite() {
         for (Iterable<Integer> xs : take(MEDIUM_LIMIT, P.prefixPermutations(EP.withNull(EP.naturalIntegers())))) {
-            String listString = tail(init(its(xs)));
-            System.out.println("pairsLogarithmicOrder(" + listString + ") = " + its(EP.pairsLogarithmicOrder(xs)));
+            System.out.println("pairsLogarithmicOrder(" + middle(its(xs)) + ") = " +
+                    its(EP.pairsLogarithmicOrder(xs)));
         }
     }
 
@@ -690,22 +684,21 @@ public class ExhaustiveProviderDemos extends Demos {
 
     private void demoPairsSquareRootOrder_Iterable_finite() {
         for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
-            String listString = tail(init(xs.toString()));
-            System.out.println("pairsSquareRootOrder(" + listString + ") = " + its(EP.pairsSquareRootOrder(xs)));
+            System.out.println("pairsSquareRootOrder(" + middle(xs.toString()) + ") = " +
+                    its(EP.pairsSquareRootOrder(xs)));
         }
     }
 
     private void demoPairsSquareRootOrder_Iterable_infinite() {
         for (Iterable<Integer> xs : take(MEDIUM_LIMIT, P.prefixPermutations(EP.withNull(EP.naturalIntegers())))) {
-            String listString = tail(init(its(xs)));
-            System.out.println("pairsSquareRootOrder(" + listString + ") = " + its(EP.pairsSquareRootOrder(xs)));
+            System.out.println("pairsSquareRootOrder(" + middle(its(xs)) + ") = " + its(EP.pairsSquareRootOrder(xs)));
         }
     }
 
     private void demoPermutationsFinite() {
         for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
-            String listString = tail(init(xs.toString()));
-            System.out.println("permutationsFinite(" + listString + ") = " + its(EP.permutationsFinite(xs)));
+            System.out.println("permutationsFinite(" + middle(xs.toString()) + ") = " +
+                    its(EP.permutationsFinite(xs)));
         }
     }
 
@@ -717,16 +710,14 @@ public class ExhaustiveProviderDemos extends Demos {
 
     private void demoPrefixPermutations_finite() {
         for (List<Integer> xs : take(MEDIUM_LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
-            String listString = tail(init(xs.toString()));
-            System.out.println("prefixPermutations(" + listString + ") = " +
+            System.out.println("prefixPermutations(" + middle(xs.toString()) + ") = " +
                     its(map(Testing::its, EP.prefixPermutations(xs))));
         }
     }
 
     private void demoPrefixPermutations_infinite() {
         for (Iterable<Integer> xs : take(SMALL_LIMIT, P.prefixPermutations(EP.withNull(EP.naturalIntegers())))) {
-            String listString = tail(init(its(xs)));
-            System.out.println("prefixPermutations(" + listString + ") = " +
+            System.out.println("prefixPermutations(" + middle(its(xs)) + ") = " +
                     its(map(Testing::its, EP.prefixPermutations(xs))));
         }
     }
@@ -2367,8 +2358,7 @@ public class ExhaustiveProviderDemos extends Demos {
                 P.withScale(4).lists(P.withNull(P.integersGeometric()))
         );
         for (List<List<Integer>> xss : take(LIMIT, xsss)) {
-            String listString = tail(init(xss.toString()));
-            System.out.println("cartesianProduct(" + listString + ") = " + its(EP.cartesianProduct(xss)));
+            System.out.println("cartesianProduct(" + middle(xss.toString()) + ") = " + its(EP.cartesianProduct(xss)));
         }
     }
 
@@ -2378,16 +2368,14 @@ public class ExhaustiveProviderDemos extends Demos {
                 P.withScale(4).listsAtLeast(2, P.withNull(P.integersGeometric()))
         );
         for (List<Integer> xs : take(SMALL_LIMIT, xss)) {
-            String listString = tail(init(xs.toString()));
-            System.out.println("repeatingIterables(" + listString + ") = " +
+            System.out.println("repeatingIterables(" + middle(xs.toString()) + ") = " +
                     its(map(Testing::its, EP.repeatingIterables(xs))));
         }
     }
 
     private void demoRepeatingIterables_infinite() {
         for (Iterable<Integer> xs : take(SMALL_LIMIT, P.prefixPermutations(P.withNull(EP.naturalIntegers())))) {
-            String xsString = tail(init(its(xs)));
-            System.out.println("repeatingIterables(" + xsString + ") = " +
+            System.out.println("repeatingIterables(" + middle(its(xs)) + ") = " +
                     its(map(Testing::its, EP.repeatingIterables(xs))));
         }
     }
@@ -2416,8 +2404,7 @@ public class ExhaustiveProviderDemos extends Demos {
 
     private void demoSublists() {
         for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
-            String listString = tail(init(xs.toString()));
-            System.out.println("sublists(" + listString + ") = " + its(EP.sublists(xs)));
+            System.out.println("sublists(" + middle(xs.toString()) + ") = " + its(EP.sublists(xs)));
         }
     }
 

@@ -1032,7 +1032,7 @@ public class IntegerUtils {
             if (head(s) != '(' || last(s) != ')' || s.contains("()")) {
                 throw new IllegalArgumentException("Improperly-formatted String: " + s);
             }
-            s = tail(init(s));
+            s = middle(s);
             digits = toList(
                     map(
                             digit -> {
@@ -1095,7 +1095,7 @@ public class IntegerUtils {
             if (head(s) != '(' || last(s) != ')' || s.contains("()")) {
                 throw new IllegalArgumentException("Improperly-formatted String: " + s);
             }
-            s = tail(init(s));
+            s = middle(s);
             digits = toList(
                     map(
                             digit -> {

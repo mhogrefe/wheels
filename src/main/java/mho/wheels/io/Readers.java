@@ -366,7 +366,7 @@ public class Readers {
             s = s.substring("Optional".length());
             if (s.equals(".empty")) return Optional.of(Optional.<T>empty());
             if (s.length() < 2 || head(s) != '[' || last(s) != ']') return Optional.empty();
-            s = tail(init(s));
+            s = middle(s);
             return read.apply(s).map(Optional::of);
         };
     }
@@ -396,7 +396,7 @@ public class Readers {
             s = s.substring("NullableOptional".length());
             if (s.equals(".empty")) return Optional.of(NullableOptional.<T>empty());
             if (s.length() < 2 || head(s) != '[' || last(s) != ']') return Optional.empty();
-            s = tail(init(s));
+            s = middle(s);
             NullableOptional<T> ot = read.apply(s);
             return ot.isPresent() ? Optional.of(ot) : Optional.<NullableOptional<T>>empty();
         };
@@ -421,7 +421,7 @@ public class Readers {
     ) {
         return s -> {
             if (s.length() < 2 || head(s) != '[' || last(s) != ']') return Optional.empty();
-            s = tail(init(s));
+            s = middle(s);
             if (s.isEmpty()) return Optional.of(new ArrayList<>());
             String[] tokens = s.split(", ");
             List<T> result = new ArrayList<>();

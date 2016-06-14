@@ -169,7 +169,7 @@ public final class Pair<A, B> {
             @NotNull Function<String, NullableOptional<B>> readB
     ) {
         if (s.length() < 2 || head(s) != '(' || last(s) != ')') return Optional.empty();
-        s = tail(init(s));
+        s = middle(s);
         String[] tokens = s.split(", ");
         if (tokens.length != 2) return Optional.empty();
         NullableOptional<A> oa = readA.apply(tokens[0]);

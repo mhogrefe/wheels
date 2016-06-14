@@ -228,7 +228,7 @@ public final class Quintuple<A, B, C, D, E> {
             @NotNull Function<String, NullableOptional<E>> readE
     ) {
         if (s.length() < 2 || head(s) != '(' || last(s) != ')') return Optional.empty();
-        s = tail(init(s));
+        s = middle(s);
         String[] tokens = s.split(", ");
         if (tokens.length != 5) return Optional.empty();
         NullableOptional<A> oa = readA.apply(tokens[0]);

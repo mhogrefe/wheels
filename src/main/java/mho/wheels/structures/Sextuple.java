@@ -248,7 +248,7 @@ public final class Sextuple<A, B, C, D, E, F> {
             @NotNull Function<String, NullableOptional<F>> readF
     ) {
         if (s.length() < 2 || head(s) != '(' || last(s) != ')') return Optional.empty();
-        s = tail(init(s));
+        s = middle(s);
         String[] tokens = s.split(", ");
         if (tokens.length != 6) return Optional.empty();
         NullableOptional<A> oa = readA.apply(tokens[0]);

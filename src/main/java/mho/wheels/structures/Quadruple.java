@@ -209,7 +209,7 @@ public final class Quadruple<A, B, C, D> {
             @NotNull Function<String, NullableOptional<D>> readD
     ) {
         if (s.length() < 2 || head(s) != '(' || last(s) != ')') return Optional.empty();
-        s = tail(init(s));
+        s = middle(s);
         String[] tokens = s.split(", ");
         if (tokens.length != 4) return Optional.empty();
         NullableOptional<A> oa = readA.apply(tokens[0]);
