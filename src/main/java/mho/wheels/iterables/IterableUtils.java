@@ -681,6 +681,11 @@ public final strictfp class IterableUtils {
         return s.substring(0, s.length() - 1);
     }
 
+    public static @NotNull <T> Iterable<T> middle(@NotNull Iterable<T> xs) {
+        //todo better implementation
+        return tail(init(xs));
+    }
+
     public static @NotNull String middle(@NotNull String s) {
         return s.substring(1, s.length() - 1);
     }
