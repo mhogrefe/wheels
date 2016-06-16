@@ -18,18 +18,23 @@ import static mho.wheels.testing.Testing.*;
 import static org.junit.Assert.fail;
 
 public strictfp class BinaryFractionTest {
+    private static void constant_helper(@NotNull BinaryFraction input, @NotNull String output) {
+        input.validate();
+        aeq(input, output);
+    }
+
     @Test
     public void testConstants() {
-        aeq(ZERO, "0");
-        aeq(ONE, "1");
-        aeq(SMALLEST_FLOAT, "1 >> 149");
-        aeq(LARGEST_SUBNORMAL_FLOAT, "8388607 >> 149");
-        aeq(SMALLEST_NORMAL_FLOAT, "1 >> 126");
-        aeq(LARGEST_FLOAT, "16777215 << 104");
-        aeq(SMALLEST_DOUBLE, "1 >> 1074");
-        aeq(LARGEST_SUBNORMAL_DOUBLE, "4503599627370495 >> 1074");
-        aeq(SMALLEST_NORMAL_DOUBLE, "1 >> 1022");
-        aeq(LARGEST_DOUBLE, "9007199254740991 << 971");
+        constant_helper(ZERO, "0");
+        constant_helper(ONE, "1");
+        constant_helper(SMALLEST_FLOAT, "1 >> 149");
+        constant_helper(LARGEST_SUBNORMAL_FLOAT, "8388607 >> 149");
+        constant_helper(SMALLEST_NORMAL_FLOAT, "1 >> 126");
+        constant_helper(LARGEST_FLOAT, "16777215 << 104");
+        constant_helper(SMALLEST_DOUBLE, "1 >> 1074");
+        constant_helper(LARGEST_SUBNORMAL_DOUBLE, "4503599627370495 >> 1074");
+        constant_helper(SMALLEST_NORMAL_DOUBLE, "1 >> 1022");
+        constant_helper(LARGEST_DOUBLE, "9007199254740991 << 971");
     }
 
     private static void getMantissa_helper(@NotNull String x, int output) {
