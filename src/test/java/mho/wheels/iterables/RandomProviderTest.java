@@ -92,6 +92,7 @@ public strictfp class RandomProviderTest {
         getScale_helper(P, 32);
         getScale_helper(100);
         getScale_helper(3);
+        getScale_helper(-3);
     }
 
     private static void getSecondaryScale_helper(@NotNull RandomProvider rp, int secondaryScale) {
@@ -107,6 +108,7 @@ public strictfp class RandomProviderTest {
         getSecondaryScale_helper(P, 8);
         getSecondaryScale_helper(100);
         getSecondaryScale_helper(3);
+        getSecondaryScale_helper(-3);
     }
 
     private static void getTertiaryScale_helper(@NotNull RandomProvider rp, int tertiaryScale) {
@@ -122,6 +124,7 @@ public strictfp class RandomProviderTest {
         getTertiaryScale_helper(P, 2);
         getTertiaryScale_helper(100);
         getTertiaryScale_helper(3);
+        getTertiaryScale_helper(-3);
     }
 
     private static void getSeed_helper(@NotNull RandomProvider rp, @NotNull String seed) {
