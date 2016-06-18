@@ -208,6 +208,7 @@ public strictfp class RandomProviderTest {
         withScale_helper(P, 100, "RandomProvider[@-8800290164235921060, 100, 8, 2]");
         withScale_helper(Q, 3, "RandomProvider[@-7948823947390831374, 3, 8, 2]");
         withScale_helper(R, 0, "RandomProvider[@2449928962525148503, 0, 8, 2]");
+        withScale_helper(R, -3, "RandomProvider[@2449928962525148503, -3, 8, 2]");
     }
 
     private static void withSecondaryScale_helper(
@@ -225,6 +226,7 @@ public strictfp class RandomProviderTest {
         withSecondaryScale_helper(P, 100, "RandomProvider[@-8800290164235921060, 32, 100, 2]");
         withSecondaryScale_helper(Q, 3, "RandomProvider[@-7948823947390831374, 32, 3, 2]");
         withSecondaryScale_helper(R, 0, "RandomProvider[@2449928962525148503, 32, 0, 2]");
+        withSecondaryScale_helper(R, -3, "RandomProvider[@2449928962525148503, 32, -3, 2]");
     }
 
     private static void withTertiaryScale_helper(
@@ -242,6 +244,7 @@ public strictfp class RandomProviderTest {
         withTertiaryScale_helper(P, 100, "RandomProvider[@-8800290164235921060, 32, 8, 100]");
         withTertiaryScale_helper(Q, 3, "RandomProvider[@-7948823947390831374, 32, 8, 3]");
         withTertiaryScale_helper(R, 0, "RandomProvider[@2449928962525148503, 32, 8, 0]");
+        withTertiaryScale_helper(R, -3, "RandomProvider[@2449928962525148503, 32, 8, -3]");
     }
 
     @Test
