@@ -78,8 +78,9 @@ public final strictfp class RandomProvider extends IterableProvider {
 
     /**
      * A list of {@code RandomProvider}s that were created from {@code this} using
-     * {@link RandomProvider#withScale(int)} and {@link RandomProvider#withSecondaryScale(int)}. Whenever {@code this}
-     * is reset with {@link RandomProvider#reset()}, the dependents are reset as well.
+     * {@link RandomProvider#withScale(int)}, {@link RandomProvider#withSecondaryScale(int)}, and
+     * {@link RandomProvider#withTertiaryScale(int)}. Whenever {@code this} is reset with
+     * {@link RandomProvider#reset()}, the dependents are reset as well.
      */
     private @NotNull List<RandomProvider> dependents;
 
@@ -102,8 +103,8 @@ public final strictfp class RandomProvider extends IterableProvider {
      * Constructs a {@code RandomProvider} with a seed generated from the current system time.
      *
      * <ul>
-     *  <li>(conjecture) Any {@code RandomProvider} with default {@code scale} and {@code secondaryScale} may be
-     *  constructed with this constructor.</li>
+     *  <li>(conjecture) Any {@code RandomProvider} with default {@code scale}, {@code secondaryScale}, and
+     *  {@code tertiaryScale} may be constructed with this constructor.</li>
      * </ul>
      */
     public RandomProvider() {
@@ -121,8 +122,8 @@ public final strictfp class RandomProvider extends IterableProvider {
      *
      * <ul>
      *  <li>{@code seed} must have length {@link mho.wheels.random.IsaacPRNG#SIZE}.</li>
-     *  <li>Any {@code RandomProvider} with default {@code scale} and {@code secondaryScale} may be constructed with
-     *  this constructor.</li>
+     *  <li>Any {@code RandomProvider} with default {@code scale}, {@code secondaryScale}, and {@code tertiaryScale}
+     *  may be constructed with this constructor.</li>
      * </ul>
      *
      * @param seed the source of randomness
