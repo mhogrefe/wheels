@@ -1218,6 +1218,12 @@ public strictfp class ExhaustiveProviderTest {
         simpleProviderHelper(EP.range(BinaryFraction.readStrict(a).get(), BinaryFraction.readStrict(b).get()), output);
     }
 
+    private static void range_BinaryFraction_BinaryFraction_fail_helper(@NotNull String a, @NotNull String b) {
+        try {
+            EP.range(BinaryFraction.readStrict(a).get(), BinaryFraction.readStrict(b).get());
+        } catch (IllegalArgumentException ignored) {}
+    }
+
     @Test
     public void testRange_BinaryFraction_BinaryFraction() {
         range_BinaryFraction_BinaryFraction_helper("0", "1",
@@ -1226,24 +1232,23 @@ public strictfp class ExhaustiveProviderTest {
                 "ExhaustiveProvider_range_BinaryFraction_BinaryFraction_ii");
         range_BinaryFraction_BinaryFraction_helper("11", "11",
                 "ExhaustiveProvider_range_BinaryFraction_BinaryFraction_iii");
-        range_BinaryFraction_BinaryFraction_helper("11", "1",
-                "ExhaustiveProvider_range_BinaryFraction_BinaryFraction_iv");
         range_BinaryFraction_BinaryFraction_helper("-11", "-1",
-                "ExhaustiveProvider_range_BinaryFraction_BinaryFraction_v");
+                "ExhaustiveProvider_range_BinaryFraction_BinaryFraction_iv");
         range_BinaryFraction_BinaryFraction_helper("-11", "-11",
-                "ExhaustiveProvider_range_BinaryFraction_BinaryFraction_vi");
-        range_BinaryFraction_BinaryFraction_helper("-1", "-11",
-                "ExhaustiveProvider_range_BinaryFraction_BinaryFraction_vii");
+                "ExhaustiveProvider_range_BinaryFraction_BinaryFraction_v");
         range_BinaryFraction_BinaryFraction_helper("0", "0",
-                "ExhaustiveProvider_range_BinaryFraction_BinaryFraction_viii");
+                "ExhaustiveProvider_range_BinaryFraction_BinaryFraction_vi");
         range_BinaryFraction_BinaryFraction_helper("0", "11",
-                "ExhaustiveProvider_range_BinaryFraction_BinaryFraction_ix");
+                "ExhaustiveProvider_range_BinaryFraction_BinaryFraction_vii");
         range_BinaryFraction_BinaryFraction_helper("-1", "11",
-                "ExhaustiveProvider_range_BinaryFraction_BinaryFraction_x");
+                "ExhaustiveProvider_range_BinaryFraction_BinaryFraction_viii");
         range_BinaryFraction_BinaryFraction_helper("5 >> 20", "1",
-                "ExhaustiveProvider_range_BinaryFraction_BinaryFraction_xi");
+                "ExhaustiveProvider_range_BinaryFraction_BinaryFraction_ix");
         range_BinaryFraction_BinaryFraction_helper("1", "5 << 20",
-                "ExhaustiveProvider_range_BinaryFraction_BinaryFraction_xii");
+                "ExhaustiveProvider_range_BinaryFraction_BinaryFraction_x");
+
+        range_BinaryFraction_BinaryFraction_fail_helper("11", "1");
+        range_BinaryFraction_BinaryFraction_fail_helper("-1", "-11");
     }
 
     @Test
@@ -1364,7 +1369,7 @@ public strictfp class ExhaustiveProviderTest {
         try {
             EP.range(a, b);
             fail();
-        } catch (ArithmeticException ignored) {}
+        } catch (ArithmeticException | IllegalArgumentException ignored) {}
     }
 
     @Test
@@ -1400,14 +1405,11 @@ public strictfp class ExhaustiveProviderTest {
                 "ExhaustiveProvider_range_float_float_xxiv");
         range_float_float_helper(Float.NEGATIVE_INFINITY, Float.NEGATIVE_INFINITY,
                 "ExhaustiveProvider_range_float_float_xxv");
-        range_float_float_helper(1.0f, -1.0f, "ExhaustiveProvider_range_float_float_xxvi");
-        range_float_float_helper(Float.POSITIVE_INFINITY, Float.NEGATIVE_INFINITY,
-                "ExhaustiveProvider_range_float_float_xxvii");
-        range_float_float_helper(Float.POSITIVE_INFINITY, 1.0f,
-                "ExhaustiveProvider_range_float_float_xxviii");
-        range_float_float_helper(1.0f, Float.NEGATIVE_INFINITY,
-                "ExhaustiveProvider_range_float_float_xxix");
 
+        range_float_float_fail_helper(1.0f, -1.0f);
+        range_float_float_fail_helper(Float.POSITIVE_INFINITY, Float.NEGATIVE_INFINITY);
+        range_float_float_fail_helper(Float.POSITIVE_INFINITY, 1.0f);
+        range_float_float_fail_helper(1.0f, Float.NEGATIVE_INFINITY);
         range_float_float_fail_helper(Float.NaN, 1.0f);
         range_float_float_fail_helper(Float.NaN, Float.POSITIVE_INFINITY);
         range_float_float_fail_helper(Float.NaN, Float.NEGATIVE_INFINITY);
@@ -1495,7 +1497,7 @@ public strictfp class ExhaustiveProviderTest {
         try {
             EP.range(a, b);
             fail();
-        } catch (ArithmeticException ignored) {}
+        } catch (ArithmeticException | IllegalArgumentException ignored) {}
     }
 
     @Test
@@ -1531,14 +1533,11 @@ public strictfp class ExhaustiveProviderTest {
                 "ExhaustiveProvider_range_double_double_xxiv");
         range_double_double_helper(Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY,
                 "ExhaustiveProvider_range_double_double_xxv");
-        range_double_double_helper(1.0f, -1.0f, "ExhaustiveProvider_range_double_double_xxvi");
-        range_double_double_helper(Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY,
-                "ExhaustiveProvider_range_double_double_xxvii");
-        range_double_double_helper(Double.POSITIVE_INFINITY, 1.0f,
-                "ExhaustiveProvider_range_double_double_xxviii");
-        range_double_double_helper(1.0f, Double.NEGATIVE_INFINITY,
-                "ExhaustiveProvider_range_double_double_xxix");
 
+        range_double_double_fail_helper(1.0f, -1.0f);
+        range_double_double_fail_helper(Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY);
+        range_double_double_fail_helper(Double.POSITIVE_INFINITY, 1.0f);
+        range_double_double_fail_helper(1.0f, Double.NEGATIVE_INFINITY);
         range_double_double_fail_helper(Double.NaN, 1.0);
         range_double_double_fail_helper(Double.NaN, Double.POSITIVE_INFINITY);
         range_double_double_fail_helper(Double.NaN, Double.NEGATIVE_INFINITY);
@@ -1658,6 +1657,12 @@ public strictfp class ExhaustiveProviderTest {
         );
     }
 
+    private static void range_BigDecimal_BigDecimal_fail_helper(@NotNull String a, @NotNull String b) {
+        try {
+            EP.range(Readers.readBigDecimalStrict(a).get(), Readers.readBigDecimalStrict(b).get());
+        } catch (IllegalArgumentException ignored) {}
+    }
+
     @Test
     public void testRange_BigDecimal_BigDecimal() {
         range_BigDecimal_BigDecimal_helper("0", "1", "ExhaustiveProvider_range_BigDecimal_BigDecimal_i");
@@ -1680,7 +1685,8 @@ public strictfp class ExhaustiveProviderTest {
         range_BigDecimal_BigDecimal_helper("0.0", "0", "ExhaustiveProvider_range_BigDecimal_BigDecimal_xviii");
         range_BigDecimal_BigDecimal_helper("0.0", "0.0", "ExhaustiveProvider_range_BigDecimal_BigDecimal_xix");
         range_BigDecimal_BigDecimal_helper("1", "1", "ExhaustiveProvider_range_BigDecimal_BigDecimal_xx");
-        range_BigDecimal_BigDecimal_helper("5", "3", "ExhaustiveProvider_range_BigDecimal_BigDecimal_xxi");
+
+        range_BigDecimal_BigDecimal_fail_helper("5", "3");
     }
 
     private static void rangeUpCanonical_BigDecimal_helper(@NotNull String a, @NotNull String output) {
@@ -1750,6 +1756,12 @@ public strictfp class ExhaustiveProviderTest {
         );
     }
 
+    private static void rangeCanonical_BigDecimal_BigDecimal_fail_helper(@NotNull String a, @NotNull String b) {
+        try {
+            EP.rangeCanonical(Readers.readBigDecimalStrict(a).get(), Readers.readBigDecimalStrict(b).get());
+        } catch (IllegalArgumentException ignored) {}
+    }
+
     @Test
     public void testRangeCanonical_BigDecimal_BigDecimal() {
         rangeCanonical_BigDecimal_BigDecimal_helper("0", "1",
@@ -1792,8 +1804,8 @@ public strictfp class ExhaustiveProviderTest {
                 "ExhaustiveProvider_rangeCanonical_BigDecimal_BigDecimal_xix");
         rangeCanonical_BigDecimal_BigDecimal_helper("1", "1",
                 "ExhaustiveProvider_rangeCanonical_BigDecimal_BigDecimal_xx");
-        rangeCanonical_BigDecimal_BigDecimal_helper("5", "3",
-                "ExhaustiveProvider_rangeCanonical_BigDecimal_BigDecimal_xxi");
+
+        rangeCanonical_BigDecimal_BigDecimal_fail_helper("5", "3");
     }
 
     private static void withNull_finite_helper(@NotNull String x, @NotNull String output) {

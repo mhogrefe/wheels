@@ -1592,7 +1592,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
 
     private void propertiesRange_BinaryFraction_BinaryFraction() {
         initialize("range(BinaryFraction, BinaryFraction)");
-        for (Pair<BinaryFraction, BinaryFraction> p : take(LIMIT, P.pairs(P.binaryFractions()))) {
+        for (Pair<BinaryFraction, BinaryFraction> p : take(LIMIT, P.bagPairs(P.binaryFractions()))) {
             Iterable<BinaryFraction> bfs = EP.range(p.a, p.b);
             simpleTest(p, bfs, bf -> ge(bf, p.a) && le(bf, p.b));
             assertEquals(p, gt(p.a, p.b), isEmpty(bfs));
@@ -1603,6 +1603,12 @@ public class ExhaustiveProviderProperties extends TestProperties {
 
         for (BinaryFraction bf : take(LIMIT, P.binaryFractions())) {
             aeqit(bf, EP.range(bf, bf), Collections.singletonList(bf));
+        }
+
+        for (Pair<BinaryFraction, BinaryFraction> p : take(LIMIT, P.subsetPairs(P.binaryFractions()))) {
+            try {
+                EP.range(p.b, p.a);
+            } catch (IllegalArgumentException ignored) {}
         }
     }
 
@@ -1684,7 +1690,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
 
     private void propertiesRange_float_float() {
         initialize("range(float, float)");
-        for (Pair<Float, Float> p : take(LIMIT, P.pairs(filter(g -> !Float.isNaN(g), P.floats())))) {
+        for (Pair<Float, Float> p : take(LIMIT, P.subsetPairs(filter(g -> !Float.isNaN(g), P.floats())))) {
             Iterable<Float> fs = EP.range(p.a, p.b);
             Pair<Float, Float> q = new Pair<>(
                     FloatingPointUtils.absNegativeZeros(p.a),
@@ -1713,6 +1719,12 @@ public class ExhaustiveProviderProperties extends TestProperties {
 
         for (float f : take(LIMIT, filter(g -> !Float.isNaN(g) && g != Float.POSITIVE_INFINITY, P.floats()))) {
             aeqit(f, TINY_LIMIT, EP.range(Float.NEGATIVE_INFINITY, f), EP.rangeDown(f));
+        }
+
+        for (Pair<Float, Float> p : take(LIMIT, P.subsetPairs(filter(g -> !Float.isNaN(g), P.floats())))) {
+            try {
+                EP.range(p.b, p.a);
+            } catch (IllegalArgumentException ignored) {}
         }
     }
 
@@ -1766,7 +1778,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
 
     private void propertiesRange_double_double() {
         initialize("range(double, double)");
-        for (Pair<Double, Double> p : take(LIMIT, P.pairs(filter(g -> !Double.isNaN(g), P.doubles())))) {
+        for (Pair<Double, Double> p : take(LIMIT, P.bagPairs(filter(g -> !Double.isNaN(g), P.doubles())))) {
             Iterable<Double> ds = EP.range(p.a, p.b);
             Pair<Double, Double> q = new Pair<>(
                     FloatingPointUtils.absNegativeZeros(p.a),
@@ -1799,6 +1811,12 @@ public class ExhaustiveProviderProperties extends TestProperties {
 
         for (double d : take(LIMIT, filter(e -> !Double.isNaN(e) && e != Double.POSITIVE_INFINITY, P.doubles()))) {
             aeqit(d, TINY_LIMIT, EP.range(Double.NEGATIVE_INFINITY, d), EP.rangeDown(d));
+        }
+
+        for (Pair<Double, Double> p : take(LIMIT, P.subsetPairs(filter(e -> !Double.isNaN(e), P.doubles())))) {
+            try {
+                EP.range(p.b, p.a);
+            } catch (IllegalArgumentException ignored) {}
         }
     }
 
@@ -1864,7 +1882,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
 
     private void propertiesRange_BigDecimal_BigDecimal() {
         initialize("range(BigDecimal, BigDecimal)");
-        for (Pair<BigDecimal, BigDecimal> p : take(LIMIT, P.pairs(P.bigDecimals()))) {
+        for (Pair<BigDecimal, BigDecimal> p : take(LIMIT, P.bagPairs(P.bigDecimals()))) {
             Iterable<BigDecimal> bds = EP.range(p.a, p.b);
             simpleTest(p, bds, bd -> ge(bd, p.a) && le(bd, p.b));
             assertEquals(p, gt(p.a, p.b), isEmpty(bds));
@@ -1872,6 +1890,12 @@ public class ExhaustiveProviderProperties extends TestProperties {
 
         for (BigDecimal bd : take(LIMIT, P.bigDecimals())) {
             all(c -> eq(c, bd), take(TINY_LIMIT, EP.range(bd, bd)));
+        }
+
+        for (Pair<BigDecimal, BigDecimal> p : take(LIMIT, P.subsetPairs(P.bigDecimals()))) {
+            try {
+                EP.range(p.b, p.a);
+            } catch (IllegalArgumentException ignored) {}
         }
     }
 
@@ -1893,7 +1917,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
 
     private void propertiesRangeCanonical_BigDecimal_BigDecimal() {
         initialize("rangeCanonical(BigDecimal, BigDecimal)");
-        for (Pair<BigDecimal, BigDecimal> p : take(LIMIT, P.pairs(P.bigDecimals()))) {
+        for (Pair<BigDecimal, BigDecimal> p : take(LIMIT, P.bagPairs(P.bigDecimals()))) {
             Iterable<BigDecimal> bds = EP.rangeCanonical(p.a, p.b);
             simpleTest(p, bds, bd -> BigDecimalUtils.isCanonical(bd) && ge(bd, p.a) && le(bd, p.b));
             assertEquals(p, gt(p.a, p.b), isEmpty(bds));
@@ -1901,6 +1925,12 @@ public class ExhaustiveProviderProperties extends TestProperties {
 
         for (BigDecimal bd : take(LIMIT, P.bigDecimals())) {
             aeqit(bd, EP.rangeCanonical(bd, bd), Collections.singletonList(BigDecimalUtils.canonicalize(bd)));
+        }
+
+        for (Pair<BigDecimal, BigDecimal> p : take(LIMIT, P.subsetPairs(P.bigDecimals()))) {
+            try {
+                EP.rangeCanonical(p.b, p.a);
+            } catch (IllegalArgumentException ignored) {}
         }
     }
 

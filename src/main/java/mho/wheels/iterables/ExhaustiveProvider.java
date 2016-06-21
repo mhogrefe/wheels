@@ -1928,10 +1928,11 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      * <ul>
      *  <li>{@code a} cannot be null.</li>
      *  <li>{@code b} cannot be null.</li>
+     *  <li>{@code a} must be less than or equal to {@code b}.</li>
      *  <li>The result is a non-removable {@code Iterable} containing {@code BinaryFraction}s.</li>
      * </ul>
      *
-     * Length is 0 if a{@literal >}b, 1 if a=b, and infinite otherwise
+     * Length is 1 if a=b, infinite otherwise
      *
      * @param a the inclusive lower bound of the generated elements
      * @param b the inclusive upper bound of the generated elements
@@ -1940,7 +1941,8 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     @Override
     public @NotNull Iterable<BinaryFraction> range(@NotNull BinaryFraction a, @NotNull BinaryFraction b) {
         switch (compare(a, b)) {
-            case GT: return Collections.emptyList();
+            case GT:
+                throw new IllegalArgumentException("a must be less than or equal to b. a: " + a + ", b: " + b);
             case EQ: return Collections.singletonList(a);
             case LT:
                 BinaryFraction difference = b.subtract(a);
@@ -2248,6 +2250,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      * <ul>
      *  <li>{@code a} cannot be {@code NaN}.</li>
      *  <li>{@code b} cannot be {@code NaN}.</li>
+     *  <li>{@code a} must be less than or equal to {@code b}.</li>
      *  <li>The result is a non-removable {@code Iterable} containing {@code Float}s which aren't {@code NaN}.</li>
      * </ul>
      *
@@ -2266,7 +2269,9 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         if (Float.isNaN(b)) {
             throw new ArithmeticException("b cannot be NaN.");
         }
-        if (a > b) return Collections.emptyList();
+        if (a > b) {
+            throw new IllegalArgumentException("a must be less than or equal to b. a: " + a + ", b: " + b);
+        }
         if (a == Float.NEGATIVE_INFINITY) return rangeDown(b);
         if (b == Float.POSITIVE_INFINITY) return rangeUp(a);
         if (a == Float.POSITIVE_INFINITY || b == Float.NEGATIVE_INFINITY) return Collections.emptyList();
@@ -2354,6 +2359,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      * <ul>
      *  <li>{@code a} cannot be {@code NaN}.</li>
      *  <li>{@code b} cannot be {@code NaN}.</li>
+     *  <li>{@code a} must be less than or equal to {@code b}.</li>
      *  <li>The result is a non-removable {@code Iterable} containing {@code Double}s which aren't {@code NaN}.</li>
      * </ul>
      *
@@ -2372,7 +2378,9 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         if (Double.isNaN(b)) {
             throw new ArithmeticException("b cannot be NaN.");
         }
-        if (a > b) return Collections.emptyList();
+        if (a > b) {
+            throw new IllegalArgumentException("a must be less than or equal to b. a: " + a + ", b: " + b);
+        }
         if (a == Double.NEGATIVE_INFINITY) return rangeDown(b);
         if (b == Double.POSITIVE_INFINITY) return rangeUp(a);
         if (a == Double.POSITIVE_INFINITY || b == Double.NEGATIVE_INFINITY) return Collections.emptyList();
@@ -2584,10 +2592,11 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      * <ul>
      *  <li>{@code a} cannot be null.</li>
      *  <li>{@code b} cannot be null.</li>
+     *  <li>{@code a} must be less than or equal to {@code b}.</li>
      *  <li>The result is a non-removable {@code Iterable} containing {@code BigDecimal}s.</li>
      * </ul>
      *
-     * Length is 0 if a{@literal >}b, 1 if a=b, and infinite otherwise
+     * Length is 1 if a=b, infinite otherwise
      *
      * @param a the inclusive lower bound of the generated elements
      * @param b the inclusive upper bound of the generated elements
@@ -2595,6 +2604,9 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<BigDecimal> range(@NotNull BigDecimal a, @NotNull BigDecimal b) {
+        if (gt(a, b)) {
+            throw new IllegalArgumentException("a must be less than or equal to b. a: " + a + ", b: " + b);
+        }
         if (eq(a, b)) {
             if (a.signum() == 0) {
                 return map(i -> new BigDecimal(BigInteger.ZERO, i), integers());
@@ -2657,6 +2669,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      * <ul>
      *  <li>{@code a} cannot be null.</li>
      *  <li>{@code b} cannot be null.</li>
+     *  <li>{@code a} must be less than or equal to {@code b}.</li>
      *  <li>The result is a non-removable {@code Iterable} containing canonical {@code BigDecimal}s.</li>
      * </ul>
      *
@@ -2668,7 +2681,9 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<BigDecimal> rangeCanonical(@NotNull BigDecimal a, @NotNull BigDecimal b) {
-        if (gt(a, b)) return Collections.emptyList();
+        if (gt(a, b)) {
+            throw new IllegalArgumentException("a must be less than or equal to b. a: " + a + ", b: " + b);
+        }
         if (eq(a, b)) return Collections.singletonList(BigDecimalUtils.canonicalize(a));
         BigDecimal difference = BigDecimalUtils.canonicalize(b.subtract(a));
         return map(

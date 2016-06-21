@@ -342,7 +342,7 @@ public class ExhaustiveProviderDemos extends Demos {
     }
 
     private void demoRange_BinaryFraction_BinaryFraction() {
-        for (Pair<BinaryFraction, BinaryFraction> p : take(MEDIUM_LIMIT, P.pairs(P.binaryFractions()))) {
+        for (Pair<BinaryFraction, BinaryFraction> p : take(MEDIUM_LIMIT, P.bagPairs(P.binaryFractions()))) {
             System.out.println("range(" + p.a + ", " + p.b + ") = " + its(EP.range(p.a, p.b)));
         }
     }
@@ -360,7 +360,7 @@ public class ExhaustiveProviderDemos extends Demos {
     }
 
     private void demoRange_float_float() {
-        for (Pair<Float, Float> p : take(MEDIUM_LIMIT, P.pairs(filter(f -> !Float.isNaN(f), P.floats())))) {
+        for (Pair<Float, Float> p : take(MEDIUM_LIMIT, P.bagPairs(filter(f -> !Float.isNaN(f), P.floats())))) {
             System.out.println("range(" + p.a + ", " + p.b + ") = " + its(EP.range(p.a, p.b)));
         }
     }
@@ -378,7 +378,7 @@ public class ExhaustiveProviderDemos extends Demos {
     }
 
     private void demoRange_double_double() {
-        for (Pair<Double, Double> p : take(MEDIUM_LIMIT, P.pairs(filter(d -> !Double.isNaN(d), P.doubles())))) {
+        for (Pair<Double, Double> p : take(MEDIUM_LIMIT, P.bagPairs(filter(d -> !Double.isNaN(d), P.doubles())))) {
             System.out.println("range(" + p.a + ", " + p.b + ") = " + its(EP.range(p.a, p.b)));
         }
     }
@@ -396,7 +396,7 @@ public class ExhaustiveProviderDemos extends Demos {
     }
 
     private void demoRange_BigDecimal_BigDecimal() {
-        for (Pair<BigDecimal, BigDecimal> p : take(MEDIUM_LIMIT, P.pairs(P.bigDecimals()))) {
+        for (Pair<BigDecimal, BigDecimal> p : take(MEDIUM_LIMIT, P.bagPairs(P.bigDecimals()))) {
             System.out.println("range(" + p.a + ", " + p.b + ") = " + its(EP.range(p.a, p.b)));
         }
     }
@@ -414,7 +414,7 @@ public class ExhaustiveProviderDemos extends Demos {
     }
 
     private void demoRangeCanonical_BigDecimal_BigDecimal() {
-        for (Pair<BigDecimal, BigDecimal> p : take(MEDIUM_LIMIT, P.pairs(P.bigDecimals()))) {
+        for (Pair<BigDecimal, BigDecimal> p : take(MEDIUM_LIMIT, P.bagPairs(P.bigDecimals()))) {
             System.out.println("rangeCanonical(" + p.a + ", " + p.b + ") = " + its(EP.rangeCanonical(p.a, p.b)));
         }
     }
