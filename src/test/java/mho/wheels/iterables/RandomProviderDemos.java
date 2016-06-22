@@ -1,6 +1,7 @@
 package mho.wheels.iterables;
 
 import mho.wheels.math.BinaryFraction;
+import mho.wheels.ordering.Ordering;
 import mho.wheels.random.IsaacPRNG;
 import mho.wheels.structures.FiniteDomainFunction;
 import mho.wheels.structures.Pair;
@@ -340,57 +341,74 @@ public class RandomProviderDemos extends Demos {
     }
 
     private void demoRange_byte_byte() {
-        Iterable<Triple<RandomProvider, Byte, Byte>> ts = P.triples(P.randomProvidersDefault(), P.bytes(), P.bytes());
-        for (Triple<RandomProvider, Byte, Byte> p : take(LIMIT, ts)) {
+        Iterable<Triple<RandomProvider, Byte, Byte>> ts = filterInfinite(
+                t -> t.b <= t.c,
+                P.triples(P.randomProvidersDefault(), P.bytes(), P.bytes())
+        );
+        for (Triple<RandomProvider, Byte, Byte> p : take(MEDIUM_LIMIT, ts)) {
             System.out.println("range(" + p.a + ", " + p.b + ", " + p.c + ") = " + its(p.a.range(p.b, p.c)));
         }
     }
 
     private void demoRange_short_short() {
-        Iterable<Triple<RandomProvider, Short, Short>> ts = P.triples(
-                P.randomProvidersDefault(),
-                P.shorts(),
-                P.shorts()
+        Iterable<Triple<RandomProvider, Short, Short>> ts = filterInfinite(
+                t -> t.b <= t.c,
+                P.triples(
+                        P.randomProvidersDefault(),
+                        P.shorts(),
+                        P.shorts()
+                )
         );
-        for (Triple<RandomProvider, Short, Short> p : take(LIMIT, ts)) {
+        for (Triple<RandomProvider, Short, Short> p : take(MEDIUM_LIMIT, ts)) {
             System.out.println("range(" + p.a + ", " + p.b + ", " + p.c + ") = " + its(p.a.range(p.b, p.c)));
         }
     }
 
     private void demoRange_int_int() {
-        Iterable<Triple<RandomProvider, Integer, Integer>> ts = P.triples(
-                P.randomProvidersDefault(),
-                P.integers(),
-                P.integers()
+        Iterable<Triple<RandomProvider, Integer, Integer>> ts = filterInfinite(
+                t -> t.b <= t.c,
+                P.triples(
+                        P.randomProvidersDefault(),
+                        P.integers(),
+                        P.integers()
+                )
         );
-        for (Triple<RandomProvider, Integer, Integer> p : take(LIMIT, ts)) {
+        for (Triple<RandomProvider, Integer, Integer> p : take(MEDIUM_LIMIT, ts)) {
             System.out.println("range(" + p.a + ", " + p.b + ", " + p.c + ") = " + its(p.a.range(p.b, p.c)));
         }
     }
 
     private void demoRange_long_long() {
-        Iterable<Triple<RandomProvider, Long, Long>> ts = P.triples(P.randomProvidersDefault(), P.longs(), P.longs());
-        for (Triple<RandomProvider, Long, Long> p : take(LIMIT, ts)) {
+        Iterable<Triple<RandomProvider, Long, Long>> ts = filterInfinite(
+                t -> t.b <= t.c,
+                P.triples(P.randomProvidersDefault(), P.longs(), P.longs())
+        );
+        for (Triple<RandomProvider, Long, Long> p : take(MEDIUM_LIMIT, ts)) {
             System.out.println("range(" + p.a + ", " + p.b + ", " + p.c + ") = " + its(p.a.range(p.b, p.c)));
         }
     }
 
     private void demoRange_BigInteger_BigInteger() {
-        Iterable<Triple<RandomProvider, BigInteger, BigInteger>> ts = P.triples(
-                P.randomProvidersDefault(),
-                P.bigIntegers(),
-                P.bigIntegers()
+        Iterable<Triple<RandomProvider, BigInteger, BigInteger>> ts = filterInfinite(
+                t -> Ordering.le(t.b, t.c),
+                P.triples(
+                        P.randomProvidersDefault(),
+                        P.bigIntegers(),
+                        P.bigIntegers()
+                )
         );
-        for (Triple<RandomProvider, BigInteger, BigInteger> p : take(LIMIT, ts)) {
+        for (Triple<RandomProvider, BigInteger, BigInteger> p : take(MEDIUM_LIMIT, ts)) {
             System.out.println("range(" + p.a + ", " + p.b + ", " + p.c + ") = " + its(p.a.range(p.b, p.c)));
         }
     }
 
     private void demoRange_char_char() {
-        Iterable<Triple<RandomProvider, Character, Character>> ts = P.triples(
-                P.randomProvidersDefault(),
-                P.characters(),
-                P.characters()
+        Iterable<Triple<RandomProvider, Character, Character>> ts = filterInfinite(
+                t -> t.b <= t.c, P.triples(
+                        P.randomProvidersDefault(),
+                        P.characters(),
+                        P.characters()
+                )
         );
         for (Triple<RandomProvider, Character, Character> p : take(MEDIUM_LIMIT, ts)) {
             System.out.println("range(" + p.a + ", " + p.b + ", " + p.c + ") = " + cits(p.a.range(p.b, p.c)));

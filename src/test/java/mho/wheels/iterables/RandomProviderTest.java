@@ -618,20 +618,28 @@ public strictfp class RandomProviderTest {
         P.reset();
     }
 
+    private static void range_byte_byte_fail_helper(int a, int b) {
+        try {
+            P.range((byte) a, (byte) b);
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+    }
+
     @Test
     public void testRange_byte_byte() {
         range_byte_byte_helper(10, 20, "RandomProvider_range_byte_byte_i");
         range_byte_byte_helper(10, 10, "RandomProvider_range_byte_byte_ii");
-        range_byte_byte_helper((byte) 10, (byte) 9, "RandomProvider_range_byte_byte_iii");
-        range_byte_byte_helper(-20, -10, "RandomProvider_range_byte_byte_iv");
-        range_byte_byte_helper(-20, -20, "RandomProvider_range_byte_byte_v");
-        range_byte_byte_helper((byte) -20, (byte) -21, "RandomProvider_range_byte_byte_vi");
-        range_byte_byte_helper(0, 0, "RandomProvider_range_byte_byte_vii");
-        range_byte_byte_helper(0, 10, "RandomProvider_range_byte_byte_viii");
-        range_byte_byte_helper(-5, 0, "RandomProvider_range_byte_byte_ix");
-        range_byte_byte_helper(-5, 10, "RandomProvider_range_byte_byte_x");
-        range_byte_byte_helper(-10, 5, "RandomProvider_range_byte_byte_xi");
-        range_byte_byte_helper(5, -10, "RandomProvider_range_byte_byte_xii");
+        range_byte_byte_helper(-20, -10, "RandomProvider_range_byte_byte_iii");
+        range_byte_byte_helper(-20, -20, "RandomProvider_range_byte_byte_iv");
+        range_byte_byte_helper(0, 0, "RandomProvider_range_byte_byte_v");
+        range_byte_byte_helper(0, 10, "RandomProvider_range_byte_byte_vi");
+        range_byte_byte_helper(-5, 0, "RandomProvider_range_byte_byte_vii");
+        range_byte_byte_helper(-5, 10, "RandomProvider_range_byte_byte_viii");
+        range_byte_byte_helper(-10, 5, "RandomProvider_range_byte_byte_ix");
+
+        range_byte_byte_fail_helper(10, 9);
+        range_byte_byte_fail_helper(-20, -21);
+        range_byte_byte_fail_helper(5, -10);
     }
 
     private static void range_short_short_helper(int a, int b, @NotNull String output) {
@@ -639,20 +647,28 @@ public strictfp class RandomProviderTest {
         P.reset();
     }
 
+    private static void range_short_short_fail_helper(int a, int b) {
+        try {
+            P.range((short) a, (short) b);
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+    }
+
     @Test
     public void testRange_short_short() {
         range_short_short_helper(10, 20, "RandomProvider_range_short_short_i");
         range_short_short_helper(10, 10, "RandomProvider_range_short_short_ii");
-        range_short_short_helper((short) 10, (short) 9, "RandomProvider_range_short_short_iii");
-        range_short_short_helper(-20, -10, "RandomProvider_range_short_short_iv");
-        range_short_short_helper(-20, -20, "RandomProvider_range_short_short_v");
-        range_short_short_helper((short) -20, (short) -21, "RandomProvider_range_short_short_vi");
-        range_short_short_helper(0, 0, "RandomProvider_range_short_short_vii");
-        range_short_short_helper(0, 10, "RandomProvider_range_short_short_viii");
-        range_short_short_helper(-5, 0, "RandomProvider_range_short_short_ix");
-        range_short_short_helper(-5, 10, "RandomProvider_range_short_short_x");
-        range_short_short_helper(-10, 5, "RandomProvider_range_short_short_xi");
-        range_short_short_helper(5, -10, "RandomProvider_range_short_short_xii");
+        range_short_short_helper(-20, -10, "RandomProvider_range_short_short_iii");
+        range_short_short_helper(-20, -20, "RandomProvider_range_short_short_iv");
+        range_short_short_helper(0, 0, "RandomProvider_range_short_short_v");
+        range_short_short_helper(0, 10, "RandomProvider_range_short_short_vi");
+        range_short_short_helper(-5, 0, "RandomProvider_range_short_short_vii");
+        range_short_short_helper(-5, 10, "RandomProvider_range_short_short_viii");
+        range_short_short_helper(-10, 5, "RandomProvider_range_short_short_ix");
+
+        range_short_short_fail_helper(10, 9);
+        range_short_short_fail_helper(-20, -21);
+        range_short_short_fail_helper(5, -10);
     }
 
     private static void range_int_int_helper(int a, int b, @NotNull String output) {
@@ -660,20 +676,28 @@ public strictfp class RandomProviderTest {
         P.reset();
     }
 
+    private static void range_int_int_fail_helper(int a, int b) {
+        try {
+            P.range(a, b);
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+    }
+
     @Test
     public void testRange_int_int() {
         range_int_int_helper(10, 20, "RandomProvider_range_int_int_i");
         range_int_int_helper(10, 10, "RandomProvider_range_int_int_ii");
-        range_int_int_helper(10, 9, "RandomProvider_range_int_int_iii");
-        range_int_int_helper(-20, -10, "RandomProvider_range_int_int_iv");
-        range_int_int_helper(-20, -20, "RandomProvider_range_int_int_v");
-        range_int_int_helper(-20, -21, "RandomProvider_range_int_int_vi");
-        range_int_int_helper(0, 0, "RandomProvider_range_int_int_vii");
-        range_int_int_helper(0, 10, "RandomProvider_range_int_int_viii");
-        range_int_int_helper(-5, 0, "RandomProvider_range_int_int_ix");
-        range_int_int_helper(-5, 10, "RandomProvider_range_int_int_x");
-        range_int_int_helper(-10, 5, "RandomProvider_range_int_int_xi");
-        range_int_int_helper(5, -10, "RandomProvider_range_int_int_xii");
+        range_int_int_helper(-20, -10, "RandomProvider_range_int_int_iii");
+        range_int_int_helper(-20, -20, "RandomProvider_range_int_int_iv");
+        range_int_int_helper(0, 0, "RandomProvider_range_int_int_v");
+        range_int_int_helper(0, 10, "RandomProvider_range_int_int_vi");
+        range_int_int_helper(-5, 0, "RandomProvider_range_int_int_vii");
+        range_int_int_helper(-5, 10, "RandomProvider_range_int_int_viii");
+        range_int_int_helper(-10, 5, "RandomProvider_range_int_int_ix");
+
+        range_int_int_fail_helper(10, 9);
+        range_int_int_fail_helper(-20, -21);
+        range_int_int_fail_helper(5, -10);
     }
 
     private static void range_long_long_helper(long a, long b, @NotNull String output) {
@@ -681,20 +705,28 @@ public strictfp class RandomProviderTest {
         aeqitLimitLog(TINY_LIMIT, P.range(a, b), output);
     }
 
+    private static void range_long_long_fail_helper(long a, long b) {
+        try {
+            P.range(a, b);
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+    }
+
     @Test
     public void testRange_long_long() {
         range_long_long_helper(10L, 20L, "RandomProvider_range_long_long_i");
         range_long_long_helper(10L, 10L, "RandomProvider_range_long_long_ii");
-        range_long_long_helper(10L, 9L, "RandomProvider_range_long_long_iii");
-        range_long_long_helper(-20L, -10L, "RandomProvider_range_long_long_iv");
-        range_long_long_helper(-20L, -20L, "RandomProvider_range_long_long_v");
-        range_long_long_helper(-20L, -21L, "RandomProvider_range_long_long_vi");
-        range_long_long_helper(0L, 0L, "RandomProvider_range_long_long_vii");
-        range_long_long_helper(0L, 10L, "RandomProvider_range_long_long_viii");
-        range_long_long_helper(-5L, 0L, "RandomProvider_range_long_long_ix");
-        range_long_long_helper(-5L, 10L, "RandomProvider_range_long_long_x");
-        range_long_long_helper(-10L, 5L, "RandomProvider_range_long_long_xii");
-        range_long_long_helper(5L, -10L, "RandomProvider_range_long_long_xiii");
+        range_long_long_helper(-20L, -10L, "RandomProvider_range_long_long_iii");
+        range_long_long_helper(-20L, -20L, "RandomProvider_range_long_long_iv");
+        range_long_long_helper(0L, 0L, "RandomProvider_range_long_long_v");
+        range_long_long_helper(0L, 10L, "RandomProvider_range_long_long_vi");
+        range_long_long_helper(-5L, 0L, "RandomProvider_range_long_long_vii");
+        range_long_long_helper(-5L, 10L, "RandomProvider_range_long_long_viii");
+        range_long_long_helper(-10L, 5L, "RandomProvider_range_long_long_ix");
+
+        range_long_long_fail_helper(10L, 9L);
+        range_long_long_fail_helper(-20L, -21L);
+        range_long_long_fail_helper(5L, -10L);
     }
 
     private static void range_BigInteger_BigInteger_helper(int a, int b, @NotNull String output) {
@@ -702,20 +734,28 @@ public strictfp class RandomProviderTest {
         P.reset();
     }
 
+    private static void range_BigInteger_BigInteger_fail_helper(int a, int b) {
+        try {
+            P.range(BigInteger.valueOf(a), BigInteger.valueOf(b));
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+    }
+
     @Test
     public void testRange_BigInteger_BigInteger() {
         range_BigInteger_BigInteger_helper(10, 20, "RandomProvider_range_BigInteger_BigInteger_i");
         range_BigInteger_BigInteger_helper(10, 10, "RandomProvider_range_BigInteger_BigInteger_ii");
-        range_BigInteger_BigInteger_helper(10, 9, "RandomProvider_range_BigInteger_BigInteger_iii");
-        range_BigInteger_BigInteger_helper(-20, -10, "RandomProvider_range_BigInteger_BigInteger_iv");
-        range_BigInteger_BigInteger_helper(-20, -20, "RandomProvider_range_BigInteger_BigInteger_v");
-        range_BigInteger_BigInteger_helper(-20, -21, "RandomProvider_range_BigInteger_BigInteger_vi");
-        range_BigInteger_BigInteger_helper(0, 0, "RandomProvider_range_BigInteger_BigInteger_vii");
-        range_BigInteger_BigInteger_helper(0, 10, "RandomProvider_range_BigInteger_BigInteger_viii");
-        range_BigInteger_BigInteger_helper(-5, 0, "RandomProvider_range_BigInteger_BigInteger_ix");
-        range_BigInteger_BigInteger_helper(-5, 10, "RandomProvider_range_BigInteger_BigInteger_x");
-        range_BigInteger_BigInteger_helper(-10, 5, "RandomProvider_range_BigInteger_BigInteger_xi");
-        range_BigInteger_BigInteger_helper(5, -10, "RandomProvider_range_BigInteger_BigInteger_xii");
+        range_BigInteger_BigInteger_helper(-20, -10, "RandomProvider_range_BigInteger_BigInteger_iii");
+        range_BigInteger_BigInteger_helper(-20, -20, "RandomProvider_range_BigInteger_BigInteger_iv");
+        range_BigInteger_BigInteger_helper(0, 0, "RandomProvider_range_BigInteger_BigInteger_v");
+        range_BigInteger_BigInteger_helper(0, 10, "RandomProvider_range_BigInteger_BigInteger_vi");
+        range_BigInteger_BigInteger_helper(-5, 0, "RandomProvider_range_BigInteger_BigInteger_vii");
+        range_BigInteger_BigInteger_helper(-5, 10, "RandomProvider_range_BigInteger_BigInteger_viii");
+        range_BigInteger_BigInteger_helper(-10, 5, "RandomProvider_range_BigInteger_BigInteger_ix");
+
+        range_BigInteger_BigInteger_fail_helper(10, 9);
+        range_BigInteger_BigInteger_fail_helper(-20, -21);
+        range_BigInteger_BigInteger_fail_helper(5, -10);
     }
 
     private static void range_char_char_helper(char a, char b, @NotNull String output) {
@@ -723,12 +763,20 @@ public strictfp class RandomProviderTest {
         P.reset();
     }
 
+    private static void range_char_char_fail_helper(char a, char b) {
+        try {
+            P.range(a, b);
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+    }
+
     @Test
     public void testRange_char_char() {
         range_char_char_helper('a', 'z', "RandomProvider_range_char_char_i");
         range_char_char_helper('a', 'a', "RandomProvider_range_char_char_ii");
         range_char_char_helper('!', '9', "RandomProvider_range_char_char_iii");
-        range_char_char_helper('a', 'A', "RandomProvider_range_char_char_iv");
+
+        range_char_char_fail_helper('a', 'A');
     }
 
     private static void geometricHelper(
