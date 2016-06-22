@@ -77,14 +77,6 @@ public final strictfp class RandomProvider extends IterableProvider {
     private @NotNull IsaacPRNG prng;
 
     /**
-     * A list of {@code RandomProvider}s that were created from {@code this} using
-     * {@link RandomProvider#withScale(int)}, {@link RandomProvider#withSecondaryScale(int)}, and
-     * {@link RandomProvider#withTertiaryScale(int)}. Whenever {@code this} is reset with
-     * {@link RandomProvider#reset()}, the dependents are reset as well.
-     */
-    private @NotNull List<RandomProvider> dependents;
-
-    /**
      * A parameter that determines the size of some of the generated objects.
      */
     private int scale = DEFAULT_SCALE;
@@ -114,7 +106,6 @@ public final strictfp class RandomProvider extends IterableProvider {
             seed.add(prng.nextInt());
         }
         prng = new IsaacPRNG(seed);
-        dependents = new ArrayList<>();
     }
 
     /**
@@ -135,7 +126,6 @@ public final strictfp class RandomProvider extends IterableProvider {
         }
         this.seed = seed;
         prng = new IsaacPRNG(seed);
-        dependents = new ArrayList<>();
     }
 
     /**
@@ -263,7 +253,6 @@ public final strictfp class RandomProvider extends IterableProvider {
     public @NotNull RandomProvider withScale(int scale) {
         RandomProvider scaled = copy();
         scaled.scale = scale;
-        dependents.add(scaled);
         return scaled;
     }
 
@@ -283,7 +272,6 @@ public final strictfp class RandomProvider extends IterableProvider {
     public @NotNull RandomProvider withSecondaryScale(int secondaryScale) {
         RandomProvider scaled = copy();
         scaled.secondaryScale = secondaryScale;
-        dependents.add(scaled);
         return scaled;
     }
 
@@ -303,7 +291,6 @@ public final strictfp class RandomProvider extends IterableProvider {
     public @NotNull RandomProvider withTertiaryScale(int tertiaryScale) {
         RandomProvider scaled = copy();
         scaled.tertiaryScale = tertiaryScale;
-        dependents.add(scaled);
         return scaled;
     }
 
@@ -321,21 +308,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public void reset() {
-        resetHelper(new IsaacPRNG(seed), this);
-    }
-
-    /**
-     * A helper function for {@link RandomProvider#reset()}. Sets {@code rp}'s PRNG to {@code prng}, and do the same
-     * for all of {@code rp}'s dependents.
-     *
-     * @param prng the {@code IsaacPRNG} to reset
-     * @param rp the {@code RandomProvider} to reset
-     */
-    private static void resetHelper(@NotNull IsaacPRNG prng, @NotNull RandomProvider rp) {
-        rp.prng = prng;
-        for (RandomProvider dependent : rp.dependents) {
-            resetHelper(prng, dependent);
-        }
+        prng.setSeed(seed);
     }
 
     /**
@@ -4420,10 +4393,5 @@ public final strictfp class RandomProvider extends IterableProvider {
     public void validate() {
         prng.validate();
         assertEquals(this, seed.size(), IsaacPRNG.SIZE);
-        for (RandomProvider dependent : dependents) {
-            assertNotNull(this, dependent);
-            assertTrue(this, prng == dependent.prng);
-            dependent.validate();
-        }
     }
 }
