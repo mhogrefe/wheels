@@ -297,9 +297,9 @@ public final strictfp class RandomProvider extends IterableProvider {
     /**
      * Put the {@code prng} back in its original state. Creating a {@code RandomProvider}, generating some values,
      * resetting, and generating the same types of values again will result in the same values. Any
-     * {@code RandomProvider}s created from {@code this} using {@link RandomProvider#withScale(int)},
-     * {@link RandomProvider#withSecondaryScale(int)}, or {@link RandomProvider#withTertiaryScale(int)} (but not
-     * {@link RandomProvider#copy} or {@link RandomProvider#deepCopy()}) is also reset.
+     * {@code RandomProvider}s created from {@code this} using {@link RandomProvider#copy},
+     * {@link RandomProvider#withScale(int)}, {@link RandomProvider#withSecondaryScale(int)}, or
+     * {@link RandomProvider#withTertiaryScale(int)} (but not {@link RandomProvider#deepCopy()}) is also reset.
      *
      * <ul>
      *  <li>{@code this} may be any {@code RandomProvider}.</li>
