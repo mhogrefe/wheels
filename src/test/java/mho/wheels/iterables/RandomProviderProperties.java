@@ -1728,10 +1728,13 @@ public class RandomProviderProperties extends TestProperties {
 
     private void propertiesRange_float_float() {
         initialize("range(float, float)");
-        Iterable<Triple<RandomProvider, Float, Float>> ts = P.triples(
-                P.randomProvidersDefault(),
-                filter(f -> !Float.isNaN(f), P.floats()),
-                filter(f -> !Float.isNaN(f), P.floats())
+        Iterable<Triple<RandomProvider, Float, Float>> ts = filterInfinite(
+                t -> t.b <= t.c,
+                P.triples(
+                        P.randomProvidersDefault(),
+                        filter(f -> !Float.isNaN(f), P.floats()),
+                        filter(f -> !Float.isNaN(f), P.floats())
+                )
         );
         for (Triple<RandomProvider, Float, Float> t : take(LIMIT, ts)) {
             Iterable<Float> fs = t.a.range(t.b, t.c);
@@ -1790,10 +1793,13 @@ public class RandomProviderProperties extends TestProperties {
 
     private void propertiesRange_double_double() {
         initialize("range(double, double)");
-        Iterable<Triple<RandomProvider, Double, Double>> ts = P.triples(
-                P.randomProvidersDefault(),
-                filter(d -> !Double.isNaN(d), P.doubles()),
-                filter(d -> !Double.isNaN(d), P.doubles())
+        Iterable<Triple<RandomProvider, Double, Double>> ts = filterInfinite(
+                t -> t.b <= t.c,
+                P.triples(
+                        P.randomProvidersDefault(),
+                        filter(d -> !Double.isNaN(d), P.doubles()),
+                        filter(d -> !Double.isNaN(d), P.doubles())
+                )
         );
         for (Triple<RandomProvider, Double, Double> t : take(LIMIT, ts)) {
             Iterable<Double> ds = t.a.range(t.b, t.c);

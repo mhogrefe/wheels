@@ -2981,15 +2981,15 @@ public strictfp class RandomProviderTest {
                 "RandomProvider_range_float_float_xix",
                 Float.NEGATIVE_INFINITY
         );
-        range_float_float_helper(1.0f, -1.0f, "RandomProvider_range_float_float_xx", 0.0f);
-        range_float_float_helper(
-                Float.POSITIVE_INFINITY,
-                Float.NEGATIVE_INFINITY,
-                "RandomProvider_range_float_float_xxi",
-                0.0f
-        );
-        range_float_float_helper(Float.POSITIVE_INFINITY, 1.0f, "RandomProvider_range_float_float_xxii", 0.0f);
-        range_float_float_helper(1.0f, Float.NEGATIVE_INFINITY, "RandomProvider_range_float_float_xxiii", 0.0f);
+        //range_float_float_helper(1.0f, -1.0f, "RandomProvider_range_float_float_xx", 0.0f);
+        //range_float_float_helper(
+        //        Float.POSITIVE_INFINITY,
+        //        Float.NEGATIVE_INFINITY,
+        //        "RandomProvider_range_float_float_xxi",
+        //        0.0f
+        //);
+        //range_float_float_helper(Float.POSITIVE_INFINITY, 1.0f, "RandomProvider_range_float_float_xxii", 0.0f);
+        //range_float_float_helper(1.0f, Float.NEGATIVE_INFINITY, "RandomProvider_range_float_float_xxiii", 0.0f);
 
         range_float_float_fail_helper(Float.NaN, 1.0f);
         range_float_float_fail_helper(Float.NaN, Float.POSITIVE_INFINITY);
@@ -3166,15 +3166,15 @@ public strictfp class RandomProviderTest {
                 "RandomProvider_range_double_double_xix",
                 Double.NEGATIVE_INFINITY
         );
-        range_double_double_helper(1.0, -1.0, "RandomProvider_range_double_double_xx", 0.0);
-        range_double_double_helper(
-                Double.POSITIVE_INFINITY,
-                Double.NEGATIVE_INFINITY,
-                "RandomProvider_range_double_double_xxi",
-                0.0
-        );
-        range_double_double_helper(Double.POSITIVE_INFINITY, 1.0, "RandomProvider_range_double_double_xxii", 0.0);
-        range_double_double_helper(1.0, Double.NEGATIVE_INFINITY, "RandomProvider_range_double_double_xxiii", 0.0);
+        //range_double_double_helper(1.0, -1.0, "RandomProvider_range_double_double_xx", 0.0);
+        //range_double_double_helper(
+        //        Double.POSITIVE_INFINITY,
+        //        Double.NEGATIVE_INFINITY,
+        //        "RandomProvider_range_double_double_xxi",
+        //        0.0
+        //);
+        //range_double_double_helper(Double.POSITIVE_INFINITY, 1.0, "RandomProvider_range_double_double_xxii", 0.0);
+        //range_double_double_helper(1.0, Double.NEGATIVE_INFINITY, "RandomProvider_range_double_double_xxiii", 0.0);
 
         range_double_double_fail_helper(Double.NaN, 1.0);
         range_double_double_fail_helper(Double.NaN, Double.POSITIVE_INFINITY);
