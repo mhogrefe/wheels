@@ -2397,7 +2397,7 @@ public strictfp class RandomProviderTest {
                     BinaryFraction.readStrict(b).get()
             );
             fail();
-        } catch (IllegalStateException ignored) {}
+        } catch (IllegalStateException | IllegalArgumentException ignored) {}
         finally {
             P.reset();
         }
@@ -2488,36 +2488,9 @@ public strictfp class RandomProviderTest {
         );
         range_BinaryFraction_BinaryFraction_helper(
                 1,
-                "11",
-                "1",
-                "RandomProvider_range_BinaryFraction_BinaryFraction_x",
-                0.0,
-                0.0,
-                0.0
-        );
-        range_BinaryFraction_BinaryFraction_helper(
-                8,
-                "11",
-                "1",
-                "RandomProvider_range_BinaryFraction_BinaryFraction_xi",
-                0.0,
-                0.0,
-                0.0
-        );
-        range_BinaryFraction_BinaryFraction_helper(
-                32,
-                "11",
-                "1",
-                "RandomProvider_range_BinaryFraction_BinaryFraction_xii",
-                0.0,
-                0.0,
-                0.0
-        );
-        range_BinaryFraction_BinaryFraction_helper(
-                1,
                 "-11",
                 "-1",
-                "RandomProvider_range_BinaryFraction_BinaryFraction_xiii",
+                "RandomProvider_range_BinaryFraction_BinaryFraction_x",
                 -5.99957030201959,
                 3.041002999989865,
                 0.8979999999976223
@@ -2526,7 +2499,7 @@ public strictfp class RandomProviderTest {
                 8,
                 "-11",
                 "-1",
-                "RandomProvider_range_BinaryFraction_BinaryFraction_xiv",
+                "RandomProvider_range_BinaryFraction_BinaryFraction_xi",
                 -6.000382811731497,
                 9.872120000001026,
                 7.265317000023163
@@ -2535,7 +2508,7 @@ public strictfp class RandomProviderTest {
                 32,
                 "-11",
                 "-1",
-                "RandomProvider_range_BinaryFraction_BinaryFraction_xv",
+                "RandomProvider_range_BinaryFraction_BinaryFraction_xii",
                 -5.993683169675392,
                 33.930533000025925,
                 31.118525000020508
@@ -2544,79 +2517,52 @@ public strictfp class RandomProviderTest {
                 1,
                 "-11",
                 "-11",
+                "RandomProvider_range_BinaryFraction_BinaryFraction_xiii",
+                -11.000000000125029,
+                4.000000000031672,
+                0.0
+        );
+        range_BinaryFraction_BinaryFraction_helper(
+                8,
+                "-11",
+                "-11",
+                "RandomProvider_range_BinaryFraction_BinaryFraction_xiv",
+                -11.000000000125029,
+                4.000000000031672,
+                0.0
+        );
+        range_BinaryFraction_BinaryFraction_helper(
+                32,
+                "-11",
+                "-11",
+                "RandomProvider_range_BinaryFraction_BinaryFraction_xv",
+                -11.000000000125029,
+                4.000000000031672,
+                0.0
+        );
+        range_BinaryFraction_BinaryFraction_helper(
+                1,
+                "0",
+                "0",
                 "RandomProvider_range_BinaryFraction_BinaryFraction_xvi",
-                -11.000000000125029,
-                4.000000000031672,
+                0.0,
+                0.0,
                 0.0
         );
         range_BinaryFraction_BinaryFraction_helper(
                 8,
-                "-11",
-                "-11",
+                "0",
+                "0",
                 "RandomProvider_range_BinaryFraction_BinaryFraction_xvii",
-                -11.000000000125029,
-                4.000000000031672,
+                0.0,
+                0.0,
                 0.0
         );
         range_BinaryFraction_BinaryFraction_helper(
                 32,
-                "-11",
-                "-11",
+                "0",
+                "0",
                 "RandomProvider_range_BinaryFraction_BinaryFraction_xviii",
-                -11.000000000125029,
-                4.000000000031672,
-                0.0
-        );
-        range_BinaryFraction_BinaryFraction_helper(
-                1,
-                "-1",
-                "-11",
-                "RandomProvider_range_BinaryFraction_BinaryFraction_xix",
-                0.0,
-                0.0,
-                0.0
-        );
-        range_BinaryFraction_BinaryFraction_helper(
-                8,
-                "-1",
-                "-11",
-                "RandomProvider_range_BinaryFraction_BinaryFraction_xx",
-                0.0,
-                0.0,
-                0.0
-        );
-        range_BinaryFraction_BinaryFraction_helper(
-                32,
-                "-1",
-                "-11",
-                "RandomProvider_range_BinaryFraction_BinaryFraction_xxi",
-                0.0,
-                0.0,
-                0.0
-        );
-        range_BinaryFraction_BinaryFraction_helper(
-                1,
-                "0",
-                "0",
-                "RandomProvider_range_BinaryFraction_BinaryFraction_xxii",
-                0.0,
-                0.0,
-                0.0
-        );
-        range_BinaryFraction_BinaryFraction_helper(
-                8,
-                "0",
-                "0",
-                "RandomProvider_range_BinaryFraction_BinaryFraction_xxiii",
-                0.0,
-                0.0,
-                0.0
-        );
-        range_BinaryFraction_BinaryFraction_helper(
-                32,
-                "0",
-                "0",
-                "RandomProvider_range_BinaryFraction_BinaryFraction_xxiv",
                 0.0,
                 0.0,
                 0.0
@@ -2625,7 +2571,7 @@ public strictfp class RandomProviderTest {
                 1,
                 "0",
                 "11",
-                "RandomProvider_range_BinaryFraction_BinaryFraction_xxv",
+                "RandomProvider_range_BinaryFraction_BinaryFraction_xix",
                 5.500143323903409,
                 3.3425789999888273,
                 1.332903999990955
@@ -2634,7 +2580,7 @@ public strictfp class RandomProviderTest {
                 8,
                 "0",
                 "11",
-                "RandomProvider_range_BinaryFraction_BinaryFraction_xxvi",
+                "RandomProvider_range_BinaryFraction_BinaryFraction_xx",
                 5.506818198260208,
                 10.507393999999584,
                 8.069741000021585
@@ -2643,7 +2589,7 @@ public strictfp class RandomProviderTest {
                 32,
                 "0",
                 "11",
-                "RandomProvider_range_BinaryFraction_BinaryFraction_xxvii",
+                "RandomProvider_range_BinaryFraction_BinaryFraction_xxi",
                 5.496573980658701,
                 34.57617900002571,
                 32.06209300002209
@@ -2652,7 +2598,7 @@ public strictfp class RandomProviderTest {
                 1,
                 "-1",
                 "11",
-                "RandomProvider_range_BinaryFraction_BinaryFraction_xxviii",
+                "RandomProvider_range_BinaryFraction_BinaryFraction_xxii",
                 5.0041785453242,
                 2.6294259999877116,
                 0.4159939999985251
@@ -2661,7 +2607,7 @@ public strictfp class RandomProviderTest {
                 8,
                 "-1",
                 "11",
-                "RandomProvider_range_BinaryFraction_BinaryFraction_xxix",
+                "RandomProvider_range_BinaryFraction_BinaryFraction_xxiii",
                 4.9984930497873075,
                 8.580130000010076,
                 6.434966000015122
@@ -2670,7 +2616,7 @@ public strictfp class RandomProviderTest {
                 32,
                 "-1",
                 "11",
-                "RandomProvider_range_BinaryFraction_BinaryFraction_xxx",
+                "RandomProvider_range_BinaryFraction_BinaryFraction_xxiv",
                 4.999216990832369,
                 32.37837700003206,
                 30.164890000018275
@@ -2679,7 +2625,7 @@ public strictfp class RandomProviderTest {
                 1,
                 "5 >> 20",
                 "1",
-                "RandomProvider_range_BinaryFraction_BinaryFraction_xxxi",
+                "RandomProvider_range_BinaryFraction_BinaryFraction_xxv",
                 0.4997954880458359,
                 19.500193000030965,
                 20.501135000022167
@@ -2688,7 +2634,7 @@ public strictfp class RandomProviderTest {
                 8,
                 "5 >> 20",
                 "1",
-                "RandomProvider_range_BinaryFraction_BinaryFraction_xxxii",
+                "RandomProvider_range_BinaryFraction_BinaryFraction_xxvi",
                 0.5002054052455298,
                 26.88661500001311,
                 27.885368000000607
@@ -2697,7 +2643,7 @@ public strictfp class RandomProviderTest {
                 32,
                 "5 >> 20",
                 "1",
-                "RandomProvider_range_BinaryFraction_BinaryFraction_xxxiii",
+                "RandomProvider_range_BinaryFraction_BinaryFraction_xxvii",
                 0.5002069628278691,
                 51.01174300001681,
                 52.01118400001777
@@ -2706,7 +2652,7 @@ public strictfp class RandomProviderTest {
                 1,
                 "1",
                 "5 << 20",
-                "RandomProvider_range_BinaryFraction_BinaryFraction_xxxiv",
+                "RandomProvider_range_BinaryFraction_BinaryFraction_xxviii",
                 2619927.4664051863,
                 21.896850000033783,
                 1.5024889999887836
@@ -2715,7 +2661,7 @@ public strictfp class RandomProviderTest {
                 8,
                 "1",
                 "5 << 20",
-                "RandomProvider_range_BinaryFraction_BinaryFraction_xxxv",
+                "RandomProvider_range_BinaryFraction_BinaryFraction_xxix",
                 2622974.6827238556,
                 29.287213999973005,
                 8.10811100002023
@@ -2724,7 +2670,7 @@ public strictfp class RandomProviderTest {
                 32,
                 "1",
                 "5 << 20",
-                "RandomProvider_range_BinaryFraction_BinaryFraction_xxxvi",
+                "RandomProvider_range_BinaryFraction_BinaryFraction_xxx",
                 2621934.787841631,
                 53.410762000035774,
                 32.06946100002204
@@ -2733,6 +2679,7 @@ public strictfp class RandomProviderTest {
         range_BinaryFraction_BinaryFraction_fail_helper(0, "0", "1");
         range_BinaryFraction_BinaryFraction_fail_helper(-1, "0", "1");
         range_BinaryFraction_BinaryFraction_fail_helper(Integer.MAX_VALUE, "0", "1");
+        range_BinaryFraction_BinaryFraction_fail_helper(1, "1", "0");
     }
 
     @Test
@@ -2912,7 +2859,7 @@ public strictfp class RandomProviderTest {
         try {
             P.range(a, b);
             fail();
-        } catch (ArithmeticException ignored) {}
+        } catch (ArithmeticException | IllegalArgumentException ignored) {}
     }
 
     @Test
@@ -2981,15 +2928,10 @@ public strictfp class RandomProviderTest {
                 "RandomProvider_range_float_float_xix",
                 Float.NEGATIVE_INFINITY
         );
-        //range_float_float_helper(1.0f, -1.0f, "RandomProvider_range_float_float_xx", 0.0f);
-        //range_float_float_helper(
-        //        Float.POSITIVE_INFINITY,
-        //        Float.NEGATIVE_INFINITY,
-        //        "RandomProvider_range_float_float_xxi",
-        //        0.0f
-        //);
-        //range_float_float_helper(Float.POSITIVE_INFINITY, 1.0f, "RandomProvider_range_float_float_xxii", 0.0f);
-        //range_float_float_helper(1.0f, Float.NEGATIVE_INFINITY, "RandomProvider_range_float_float_xxiii", 0.0f);
+        range_float_float_helper(0.0f, 0.0f, "RandomProvider_range_float_float_xx", 0.0f);
+        range_float_float_helper(0.0f, -0.0f, "RandomProvider_range_float_float_xxi", 0.0f);
+        range_float_float_helper(-0.0f, 0.0f, "RandomProvider_range_float_float_xxii", 0.0f);
+        range_float_float_helper(-0.0f, -0.0f, "RandomProvider_range_float_float_xxiii", 0.0f);
 
         range_float_float_fail_helper(Float.NaN, 1.0f);
         range_float_float_fail_helper(Float.NaN, Float.POSITIVE_INFINITY);
@@ -2998,6 +2940,7 @@ public strictfp class RandomProviderTest {
         range_float_float_fail_helper(Float.POSITIVE_INFINITY, Float.NaN);
         range_float_float_fail_helper(Float.NEGATIVE_INFINITY, Float.NaN);
         range_float_float_fail_helper(Float.NaN, Float.NaN);
+        range_float_float_fail_helper(1.0f, 0.0f);
     }
 
     private static void rangeUp_double_helper(double a, @NotNull String output, double sampleMean) {
@@ -3097,7 +3040,7 @@ public strictfp class RandomProviderTest {
         try {
             P.range(a, b);
             fail();
-        } catch (ArithmeticException ignored) {}
+        } catch (ArithmeticException | IllegalArgumentException ignored) {}
     }
 
     @Test
@@ -3166,15 +3109,10 @@ public strictfp class RandomProviderTest {
                 "RandomProvider_range_double_double_xix",
                 Double.NEGATIVE_INFINITY
         );
-        //range_double_double_helper(1.0, -1.0, "RandomProvider_range_double_double_xx", 0.0);
-        //range_double_double_helper(
-        //        Double.POSITIVE_INFINITY,
-        //        Double.NEGATIVE_INFINITY,
-        //        "RandomProvider_range_double_double_xxi",
-        //        0.0
-        //);
-        //range_double_double_helper(Double.POSITIVE_INFINITY, 1.0, "RandomProvider_range_double_double_xxii", 0.0);
-        //range_double_double_helper(1.0, Double.NEGATIVE_INFINITY, "RandomProvider_range_double_double_xxiii", 0.0);
+        range_double_double_helper(0.0, 0.0, "RandomProvider_range_double_double_xx", 0.0);
+        range_double_double_helper(0.0, -0.0, "RandomProvider_range_double_double_xxi", 0.0);
+        range_double_double_helper(-0.0, 0.0, "RandomProvider_range_double_double_xxii", 0.0);
+        range_double_double_helper(-0.0, -0.0, "RandomProvider_range_double_double_xxiii", 0.0);
 
         range_double_double_fail_helper(Double.NaN, 1.0);
         range_double_double_fail_helper(Double.NaN, Double.POSITIVE_INFINITY);
@@ -3183,6 +3121,7 @@ public strictfp class RandomProviderTest {
         range_double_double_fail_helper(Double.POSITIVE_INFINITY, Double.NaN);
         range_double_double_fail_helper(Double.NEGATIVE_INFINITY, Double.NaN);
         range_double_double_fail_helper(Double.NaN, Double.NaN);
+        range_double_double_fail_helper(1.0f, 0.0f);
     }
 
     private static void rangeUpUniform_float_helper(float a, @NotNull String output, float sampleMean) {
@@ -3282,7 +3221,7 @@ public strictfp class RandomProviderTest {
         try {
             P.rangeUniform(a, b);
             fail();
-        } catch (ArithmeticException ignored) {}
+        } catch (ArithmeticException | IllegalArgumentException ignored) {}
     }
 
     @Test
@@ -3309,7 +3248,10 @@ public strictfp class RandomProviderTest {
         rangeUniform_float_float_helper(0.0f, 1.0f, "RandomProvider_rangeUniform_float_float_x", 0.50023586f);
         rangeUniform_float_float_helper(-1.0f, 1.0f, "RandomProvider_rangeUniform_float_float_xi", -3.822554E-4f);
         rangeUniform_float_float_helper(1.0f, 1.0f, "RandomProvider_rangeUniform_float_float_xii", 1.0090389f);
-        rangeUniform_float_float_helper(1.0f, -1.0f, "RandomProvider_rangeUniform_float_float_xiii", 0.0f);
+        rangeUniform_float_float_helper(0.0f, 0.0f, "RandomProvider_rangeUniform_float_float_xiii", 0.0f);
+        rangeUniform_float_float_helper(0.0f, -0.0f, "RandomProvider_rangeUniform_float_float_xiv", 0.0f);
+        rangeUniform_float_float_helper(-0.0f, 0.0f, "RandomProvider_rangeUniform_float_float_xv", 0.0f);
+        rangeUniform_float_float_helper(-0.0f, -0.0f, "RandomProvider_rangeUniform_float_float_xvi", 0.0f);
 
         rangeUniform_float_float_fail_helper(Float.POSITIVE_INFINITY, 1.0f);
         rangeUniform_float_float_fail_helper(Float.NEGATIVE_INFINITY, 1.0f);
@@ -3317,6 +3259,7 @@ public strictfp class RandomProviderTest {
         rangeUniform_float_float_fail_helper(1.0f, Float.POSITIVE_INFINITY);
         rangeUniform_float_float_fail_helper(1.0f, Float.NEGATIVE_INFINITY);
         rangeUniform_float_float_fail_helper(1.0f, Float.NaN);
+        rangeUniform_float_float_fail_helper(1.0f, 0.0f);
     }
 
     private static void rangeUpUniform_double_helper(double a, @NotNull String output, double sampleMean) {
@@ -3465,7 +3408,7 @@ public strictfp class RandomProviderTest {
         try {
             P.rangeUniform(a, b);
             fail();
-        } catch (ArithmeticException ignored) {}
+        } catch (ArithmeticException | IllegalArgumentException ignored) {}
     }
 
     @Test
@@ -3532,7 +3475,10 @@ public strictfp class RandomProviderTest {
                 "RandomProvider_rangeUniform_double_double_xii",
                 1.000000000007918
         );
-        rangeUniform_double_double_helper(1.0, -1.0, "RandomProvider_rangeUniform_double_double_xiii", 0.0);
+        rangeUniform_double_double_helper(0.0, 0.0, "RandomProvider_rangeUniform_double_double_xiii", 0.0);
+        rangeUniform_double_double_helper(0.0, -0.0, "RandomProvider_rangeUniform_double_double_xiv", 0.0);
+        rangeUniform_double_double_helper(-0.0, 0.0, "RandomProvider_rangeUniform_double_double_xv", 0.0);
+        rangeUniform_double_double_helper(-0.0, -0.0, "RandomProvider_rangeUniform_double_double_xvi", 0.0);
 
         rangeUniform_double_double_fail_helper(Double.POSITIVE_INFINITY, 1.0);
         rangeUniform_double_double_fail_helper(Double.NEGATIVE_INFINITY, 1.0);
@@ -3540,6 +3486,7 @@ public strictfp class RandomProviderTest {
         rangeUniform_double_double_fail_helper(1.0, Double.POSITIVE_INFINITY);
         rangeUniform_double_double_fail_helper(1.0, Double.NEGATIVE_INFINITY);
         rangeUniform_double_double_fail_helper(1.0, Double.NaN);
+        rangeUniform_double_double_fail_helper(1.0, 0.0);
     }
 
     private static void bigDecimalHelper(
@@ -5284,7 +5231,7 @@ public strictfp class RandomProviderTest {
             P.withScale(scale).withSecondaryScale(secondaryScale)
                     .range(Readers.readBigDecimalStrict(a).get(), Readers.readBigDecimalStrict(b).get());
             fail();
-        } catch (IllegalStateException ignored) {}
+        } catch (IllegalStateException | IllegalArgumentException ignored) {}
         finally {
             P.reset();
         }
@@ -5892,39 +5839,10 @@ public strictfp class RandomProviderTest {
                 27.0739779999554,
                 7.996049000016875
         );
-        range_BigDecimal_BigDecimal_helper(
-                1,
-                1,
-                "5",
-                "3",
-                "RandomProvider_range_BigDecimal_BigDecimal_lxx",
-                0.0,
-                0.0,
-                0.0
-        );
-        range_BigDecimal_BigDecimal_helper(
-                5,
-                3,
-                "5",
-                "3",
-                "RandomProvider_range_BigDecimal_BigDecimal_lxxi",
-                0.0,
-                0.0,
-                0.0
-        );
-        range_BigDecimal_BigDecimal_helper(
-                32,
-                8,
-                "5",
-                "3",
-                "RandomProvider_range_BigDecimal_BigDecimal_lxxii",
-                0.0,
-                0.0,
-                0.0
-        );
 
         range_BigDecimal_BigDecimal_fail_helper(0, 1, "0", "1");
         range_BigDecimal_BigDecimal_fail_helper(1, 0, "0", "1");
+        range_BigDecimal_BigDecimal_fail_helper(1, 1, "5", "3");
     }
 
     private static void rangeUpCanonical_BigDecimal_helper(
@@ -7122,7 +7040,7 @@ public strictfp class RandomProviderTest {
             P.withScale(scale).withSecondaryScale(secondaryScale)
                     .rangeCanonical(Readers.readBigDecimalStrict(a).get(), Readers.readBigDecimalStrict(b).get());
             fail();
-        } catch (IllegalStateException ignored) {}
+        } catch (IllegalStateException | IllegalArgumentException ignored) {}
         finally {
             P.reset();
         }
@@ -7730,39 +7648,10 @@ public strictfp class RandomProviderTest {
                 1.000000000007918,
                 0.0
         );
-        rangeCanonical_BigDecimal_BigDecimal_helper(
-                1,
-                1,
-                "5",
-                "3",
-                "RandomProvider_rangeCanonical_BigDecimal_BigDecimal_lxi",
-                0.0,
-                0.0,
-                0.0
-        );
-        rangeCanonical_BigDecimal_BigDecimal_helper(
-                5,
-                3,
-                "5",
-                "3",
-                "RandomProvider_rangeCanonical_BigDecimal_BigDecimal_lxii",
-                0.0,
-                0.0,
-                0.0
-        );
-        rangeCanonical_BigDecimal_BigDecimal_helper(
-                32,
-                8,
-                "5",
-                "3",
-                "RandomProvider_rangeCanonical_BigDecimal_BigDecimal_lxiii",
-                0.0,
-                0.0,
-                0.0
-        );
 
         rangeCanonical_BigDecimal_BigDecimal_fail_helper(0, 1, "0", "1");
         rangeCanonical_BigDecimal_BigDecimal_fail_helper(1, 0, "0", "1");
+        rangeCanonical_BigDecimal_BigDecimal_fail_helper(1, 1, "5", "3");
     }
 
     private static void withElement_helper(
