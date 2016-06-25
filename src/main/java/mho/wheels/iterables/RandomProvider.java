@@ -2263,7 +2263,8 @@ public final strictfp class RandomProvider extends IterableProvider {
      *  <li>{@code a} must be finite.</li>
      *  <li>{@code b} must be finite.</li>
      *  <li>{@code a} must be less than or equal to {@code b}.</li>
-     *  <li>The result is an infinite, non-removable {@code Iterable} containing finite {@code Float}s that are notnegative zero.</li>
+     *  <li>The result is an infinite, non-removable {@code Iterable} containing finite {@code Float}s that are not
+     *  negative zero.</li>
      * </ul>
      *
      * Length is infinite
