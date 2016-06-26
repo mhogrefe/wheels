@@ -549,7 +549,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      * <ul>
      *  <li>{@code this} may be any {@code RandomProvider}.</li>
      *  <li>{@code xs} cannot be empty.</li>
-     *  <li>The result is non-removable and either empty or infinite.</li>
+     *  <li>The result is non-removable and infinite.</li>
      * </ul>
      *
      * Length is infinite
