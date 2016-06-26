@@ -72,72 +72,50 @@ public class SeptupleTest {
         fromList_fail_helper("[1, 2, 3, 4, 5, 6, 7, 8]");
     }
 
+    private static void compare_helper(
+            @NotNull String pa,
+            int pb,
+            boolean pc,
+            char pd,
+            @NotNull String pe,
+            double pf,
+            @NotNull String pg,
+            @NotNull String qa,
+            int qb,
+            boolean qc,
+            char qd,
+            @NotNull String qe,
+            double qf,
+            @NotNull String qg,
+            @NotNull String output
+    ) {
+        aeq(
+                Septuple.compare(
+                        new Septuple<>(pa, pb, pc, pd, Readers.readOrderingStrict(pe).get(), pf, pg),
+                        new Septuple<>(qa, qb, qc, qd, Readers.readOrderingStrict(qe).get(), qf, qg)
+                ),
+                output
+        );
+    }
+
     @Test
     public void testCompare() {
-        aeq(Septuple.compare(
-                new Septuple<>("hi", 3, true, 'a', GT, 0.5, "x"),
-                new Septuple<>("hi", 3, true, 'a', GT, 0.5, "x")
-        ), EQ);
-        aeq(Septuple.compare(
-                new Septuple<>("hi", 3, true, 'a', GT, 0.5, "x"),
-                new Septuple<>("hi", 4, true, 'a', GT, 0.5, "x")
-        ), LT);
-        aeq(Septuple.compare(
-                new Septuple<>("hi", 3, true, 'a', GT, 0.5, "x"),
-                new Septuple<>("bye", 3, true, 'a', GT, 0.5, "x")
-        ), GT);
-        aeq(Septuple.compare(
-                new Septuple<>("hi", 3, true, 'a', GT, 0.5, "x"),
-                new Septuple<>("bye", 4, true, 'a', GT, 0.5, "x")
-        ), GT);
-        aeq(Septuple.compare(
-                new Septuple<>("hi", 4, true, 'a', GT, 0.5, "x"),
-                new Septuple<>("hi", 3, true, 'a', GT, 0.5, "x")
-        ), GT);
-        aeq(Septuple.compare(
-                new Septuple<>("hi", 4, true, 'a', GT, 0.5, "x"),
-                new Septuple<>("hi", 4, true, 'a', GT, 0.5, "x")
-        ), EQ);
-        aeq(Septuple.compare(
-                new Septuple<>("hi", 4, true, 'a', GT, 0.5, "x"),
-                new Septuple<>("bye", 3, true, 'a', GT, 0.5, "x")
-        ), GT);
-        aeq(Septuple.compare(
-                new Septuple<>("hi", 4, true, 'a', GT, 0.5, "x"),
-                new Septuple<>("bye", 4, true, 'a', GT, 0.5, "x")
-        ), GT);
-        aeq(Septuple.compare(
-                new Septuple<>("bye", 3, true, 'a', GT, 0.5, "x"),
-                new Septuple<>("hi", 3, true, 'a', GT, 0.5, "x")
-        ), LT);
-        aeq(Septuple.compare(
-                new Septuple<>("bye", 3, true, 'a', GT, 0.5, "x"),
-                new Septuple<>("hi", 4, true, 'a', GT, 0.5, "x")
-        ), LT);
-        aeq(Septuple.compare(
-                new Septuple<>("bye", 3, true, 'a', GT, 0.5, "x"),
-                new Septuple<>("bye", 3, true, 'a', GT, 0.5, "x")
-        ), EQ);
-        aeq(Septuple.compare(
-                new Septuple<>("bye", 3, true, 'a', GT, 0.5, "x"),
-                new Septuple<>("bye", 4, true, 'a', GT, 0.5, "x")
-        ), LT);
-        aeq(Septuple.compare(
-                new Septuple<>("bye", 4, true, 'a', GT, 0.5, "x"),
-                new Septuple<>("hi", 3, true, 'a', GT, 0.5, "x")
-        ), LT);
-        aeq(Septuple.compare(
-                new Septuple<>("bye", 4, true, 'a', GT, 0.5, "x"),
-                new Septuple<>("hi", 4, true, 'a', GT, 0.5, "x")
-        ), LT);
-        aeq(Septuple.compare(
-                new Septuple<>("bye", 4, true, 'a', GT, 0.5, "x"),
-                new Septuple<>("bye", 3, true, 'a', GT, 0.5, "x")
-        ), GT);
-        aeq(Septuple.compare(
-                new Septuple<>("bye", 4, true, 'a', GT, 0.5, "x"),
-                new Septuple<>("bye", 4, true, 'a', GT, 0.5, "x")
-        ), EQ);
+        compare_helper("hi", 3, true, 'a', ">", 0.5, "x", "hi", 3, true, 'a', ">", 0.5, "x", "=");
+        compare_helper("hi", 3, true, 'a', ">", 0.5, "x", "hi", 4, true, 'a', ">", 0.5, "x", "<");
+        compare_helper("hi", 3, true, 'a', ">", 0.5, "x", "bye", 3, true, 'a', ">", 0.5, "x", ">");
+        compare_helper("hi", 3, true, 'a', ">", 0.5, "x", "bye", 4, true, 'a', ">", 0.5, "x", ">");
+        compare_helper("hi", 4, true, 'a', ">", 0.5, "x", "hi", 3, true, 'a', ">", 0.5, "x", ">");
+        compare_helper("hi", 4, true, 'a', ">", 0.5, "x", "hi", 4, true, 'a', ">", 0.5, "x", "=");
+        compare_helper("hi", 4, true, 'a', ">", 0.5, "x", "bye", 3, true, 'a', ">", 0.5, "x", ">");
+        compare_helper("hi", 4, true, 'a', ">", 0.5, "x", "bye", 4, true, 'a', ">", 0.5, "x", ">");
+        compare_helper("bye", 3, true, 'a', ">", 0.5, "x", "hi", 3, true, 'a', ">", 0.5, "x", "<");
+        compare_helper("bye", 3, true, 'a', ">", 0.5, "x", "hi", 4, true, 'a', ">", 0.5, "x", "<");
+        compare_helper("bye", 3, true, 'a', ">", 0.5, "x", "bye", 3, true, 'a', ">", 0.5, "x", "=");
+        compare_helper("bye", 3, true, 'a', ">", 0.5, "x", "bye", 4, true, 'a', ">", 0.5, "x", "<");
+        compare_helper("bye", 4, true, 'a', ">", 0.5, "x", "hi", 3, true, 'a', ">", 0.5, "x", "<");
+        compare_helper("bye", 4, true, 'a', ">", 0.5, "x", "hi", 4, true, 'a', ">", 0.5, "x", "<");
+        compare_helper("bye", 4, true, 'a', ">", 0.5, "x", "bye", 3, true, 'a', ">", 0.5, "x", ">");
+        compare_helper("bye", 4, true, 'a', ">", 0.5, "x", "bye", 4, true, 'a', ">", 0.5, "x", "=");
     }
 
     @Test

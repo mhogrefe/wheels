@@ -6,7 +6,6 @@ import org.junit.Test;
 
 import java.util.Comparator;
 
-import static mho.wheels.ordering.Ordering.*;
 import static mho.wheels.testing.Testing.*;
 import static org.junit.Assert.*;
 
@@ -54,24 +53,34 @@ public class PairTest {
         fromList_fail_helper("[1, 2, 3]");
     }
 
+    private static void compare_helper(
+            @NotNull String pa,
+            int pb,
+            @NotNull String qa,
+            int qb,
+            @NotNull String output
+    ) {
+        aeq(Pair.compare(new Pair<>(pa, pb), new Pair<>(qa, qb)), output);
+    }
+
     @Test
     public void testCompare() {
-        aeq(Pair.compare(new Pair<>("hi", 3), new Pair<>("hi", 3)), EQ);
-        aeq(Pair.compare(new Pair<>("hi", 3), new Pair<>("hi", 4)), LT);
-        aeq(Pair.compare(new Pair<>("hi", 3), new Pair<>("bye", 3)), GT);
-        aeq(Pair.compare(new Pair<>("hi", 3), new Pair<>("bye", 4)), GT);
-        aeq(Pair.compare(new Pair<>("hi", 4), new Pair<>("hi", 3)), GT);
-        aeq(Pair.compare(new Pair<>("hi", 4), new Pair<>("hi", 4)), EQ);
-        aeq(Pair.compare(new Pair<>("hi", 4), new Pair<>("bye", 3)), GT);
-        aeq(Pair.compare(new Pair<>("hi", 4), new Pair<>("bye", 4)), GT);
-        aeq(Pair.compare(new Pair<>("bye", 3), new Pair<>("hi", 3)), LT);
-        aeq(Pair.compare(new Pair<>("bye", 3), new Pair<>("hi", 4)), LT);
-        aeq(Pair.compare(new Pair<>("bye", 3), new Pair<>("bye", 3)), EQ);
-        aeq(Pair.compare(new Pair<>("bye", 3), new Pair<>("bye", 4)), LT);
-        aeq(Pair.compare(new Pair<>("bye", 4), new Pair<>("hi", 3)), LT);
-        aeq(Pair.compare(new Pair<>("bye", 4), new Pair<>("hi", 4)), LT);
-        aeq(Pair.compare(new Pair<>("bye", 4), new Pair<>("bye", 3)), GT);
-        aeq(Pair.compare(new Pair<>("bye", 4), new Pair<>("bye", 4)), EQ);
+        compare_helper("hi", 3, "hi", 3, "=");
+        compare_helper("hi", 3, "hi", 4, "<");
+        compare_helper("hi", 3, "bye", 3, ">");
+        compare_helper("hi", 3, "bye", 4, ">");
+        compare_helper("hi", 4, "hi", 3, ">");
+        compare_helper("hi", 4, "hi", 4, "=");
+        compare_helper("hi", 4, "bye", 3, ">");
+        compare_helper("hi", 4, "bye", 4, ">");
+        compare_helper("bye", 3, "hi", 3, "<");
+        compare_helper("bye", 3, "hi", 4, "<");
+        compare_helper("bye", 3, "bye", 3, "=");
+        compare_helper("bye", 3, "bye", 4, "<");
+        compare_helper("bye", 4, "hi", 3, "<");
+        compare_helper("bye", 4, "hi", 4, "<");
+        compare_helper("bye", 4, "bye", 3, ">");
+        compare_helper("bye", 4, "bye", 4, "=");
     }
 
     @Test

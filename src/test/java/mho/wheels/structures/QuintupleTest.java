@@ -58,24 +58,46 @@ public class QuintupleTest {
         fromList_fail_helper("[1, 2, 3, 4, 5, 6]");
     }
 
+    private static void compare_helper(
+            @NotNull String pa,
+            int pb,
+            boolean pc,
+            char pd,
+            @NotNull String pe,
+            @NotNull String qa,
+            int qb,
+            boolean qc,
+            char qd,
+            @NotNull String qe,
+            @NotNull String output
+    ) {
+        aeq(
+                Quintuple.compare(
+                        new Quintuple<>(pa, pb, pc, pd, Readers.readOrderingStrict(pe).get()),
+                        new Quintuple<>(qa, qb, qc, qd, Readers.readOrderingStrict(qe).get())
+                ),
+                output
+        );
+    }
+
     @Test
     public void testCompare() {
-        aeq(Quintuple.compare(new Quintuple<>("hi", 3, true, 'a', GT), new Quintuple<>("hi", 3, true, 'a', GT)), EQ);
-        aeq(Quintuple.compare(new Quintuple<>("hi", 3, true, 'a', GT), new Quintuple<>("hi", 4, true, 'a', GT)), LT);
-        aeq(Quintuple.compare(new Quintuple<>("hi", 3, true, 'a', GT), new Quintuple<>("bye", 3, true, 'a', GT)), GT);
-        aeq(Quintuple.compare(new Quintuple<>("hi", 3, true, 'a', GT), new Quintuple<>("bye", 4, true, 'a', GT)), GT);
-        aeq(Quintuple.compare(new Quintuple<>("hi", 4, true, 'a', GT), new Quintuple<>("hi", 3, true, 'a', GT)), GT);
-        aeq(Quintuple.compare(new Quintuple<>("hi", 4, true, 'a', GT), new Quintuple<>("hi", 4, true, 'a', GT)), EQ);
-        aeq(Quintuple.compare(new Quintuple<>("hi", 4, true, 'a', GT), new Quintuple<>("bye", 3, true, 'a', GT)), GT);
-        aeq(Quintuple.compare(new Quintuple<>("hi", 4, true, 'a', GT), new Quintuple<>("bye", 4, true, 'a', GT)), GT);
-        aeq(Quintuple.compare(new Quintuple<>("bye", 3, true, 'a', GT), new Quintuple<>("hi", 3, true, 'a', GT)), LT);
-        aeq(Quintuple.compare(new Quintuple<>("bye", 3, true, 'a', GT), new Quintuple<>("hi", 4, true, 'a', GT)), LT);
-        aeq(Quintuple.compare(new Quintuple<>("bye", 3, true, 'a', GT), new Quintuple<>("bye", 3, true, 'a', GT)), EQ);
-        aeq(Quintuple.compare(new Quintuple<>("bye", 3, true, 'a', GT), new Quintuple<>("bye", 4, true, 'a', GT)), LT);
-        aeq(Quintuple.compare(new Quintuple<>("bye", 4, true, 'a', GT), new Quintuple<>("hi", 3, true, 'a', GT)), LT);
-        aeq(Quintuple.compare(new Quintuple<>("bye", 4, true, 'a', GT), new Quintuple<>("hi", 4, true, 'a', GT)), LT);
-        aeq(Quintuple.compare(new Quintuple<>("bye", 4, true, 'a', GT), new Quintuple<>("bye", 3, true, 'a', GT)), GT);
-        aeq(Quintuple.compare(new Quintuple<>("bye", 4, true, 'a', GT), new Quintuple<>("bye", 4, true, 'a', GT)), EQ);
+        compare_helper("hi", 3, true, 'a', ">", "hi", 3, true, 'a', ">", "=");
+        compare_helper("hi", 3, true, 'a', ">", "hi", 4, true, 'a', ">", "<");
+        compare_helper("hi", 3, true, 'a', ">", "bye", 3, true, 'a', ">", ">");
+        compare_helper("hi", 3, true, 'a', ">", "bye", 4, true, 'a', ">", ">");
+        compare_helper("hi", 4, true, 'a', ">", "hi", 3, true, 'a', ">", ">");
+        compare_helper("hi", 4, true, 'a', ">", "hi", 4, true, 'a', ">", "=");
+        compare_helper("hi", 4, true, 'a', ">", "bye", 3, true, 'a', ">", ">");
+        compare_helper("hi", 4, true, 'a', ">", "bye", 4, true, 'a', ">", ">");
+        compare_helper("bye", 3, true, 'a', ">", "hi", 3, true, 'a', ">", "<");
+        compare_helper("bye", 3, true, 'a', ">", "hi", 4, true, 'a', ">", "<");
+        compare_helper("bye", 3, true, 'a', ">", "bye", 3, true, 'a', ">", "=");
+        compare_helper("bye", 3, true, 'a', ">", "bye", 4, true, 'a', ">", "<");
+        compare_helper("bye", 4, true, 'a', ">", "hi", 3, true, 'a', ">", "<");
+        compare_helper("bye", 4, true, 'a', ">", "hi", 4, true, 'a', ">", "<");
+        compare_helper("bye", 4, true, 'a', ">", "bye", 3, true, 'a', ">", ">");
+        compare_helper("bye", 4, true, 'a', ">", "bye", 4, true, 'a', ">", "=");
     }
 
     @Test

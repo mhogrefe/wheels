@@ -6,7 +6,6 @@ import org.junit.Test;
 
 import java.util.Comparator;
 
-import static mho.wheels.ordering.Ordering.*;
 import static mho.wheels.testing.Testing.*;
 import static org.junit.Assert.*;
 
@@ -54,24 +53,36 @@ public class TripleTest {
         fromList_fail_helper("[1, 2, 3, 4]");
     }
 
+    private static void compare_helper(
+            @NotNull String pa,
+            int pb,
+            boolean pc,
+            @NotNull String qa,
+            int qb,
+            boolean qc,
+            @NotNull String output
+    ) {
+        aeq(Triple.compare(new Triple<>(pa, pb, pc), new Triple<>(qa, qb, qc)), output);
+    }
+
     @Test
     public void testCompare() {
-        aeq(Triple.compare(new Triple<>("hi", 3, true), new Triple<>("hi", 3, true)), EQ);
-        aeq(Triple.compare(new Triple<>("hi", 3, true), new Triple<>("hi", 4, true)), LT);
-        aeq(Triple.compare(new Triple<>("hi", 3, true), new Triple<>("bye", 3, true)), GT);
-        aeq(Triple.compare(new Triple<>("hi", 3, true), new Triple<>("bye", 4, true)), GT);
-        aeq(Triple.compare(new Triple<>("hi", 4, true), new Triple<>("hi", 3, true)), GT);
-        aeq(Triple.compare(new Triple<>("hi", 4, true), new Triple<>("hi", 4, true)), EQ);
-        aeq(Triple.compare(new Triple<>("hi", 4, true), new Triple<>("bye", 3, true)), GT);
-        aeq(Triple.compare(new Triple<>("hi", 4, true), new Triple<>("bye", 4, true)), GT);
-        aeq(Triple.compare(new Triple<>("bye", 3, true), new Triple<>("hi", 3, true)), LT);
-        aeq(Triple.compare(new Triple<>("bye", 3, true), new Triple<>("hi", 4, true)), LT);
-        aeq(Triple.compare(new Triple<>("bye", 3, true), new Triple<>("bye", 3, true)), EQ);
-        aeq(Triple.compare(new Triple<>("bye", 3, true), new Triple<>("bye", 4, true)), LT);
-        aeq(Triple.compare(new Triple<>("bye", 4, true), new Triple<>("hi", 3, true)), LT);
-        aeq(Triple.compare(new Triple<>("bye", 4, true), new Triple<>("hi", 4, true)), LT);
-        aeq(Triple.compare(new Triple<>("bye", 4, true), new Triple<>("bye", 3, true)), GT);
-        aeq(Triple.compare(new Triple<>("bye", 4, true), new Triple<>("bye", 4, true)), EQ);
+        compare_helper("hi", 3, true, "hi", 3, true, "=");
+        compare_helper("hi", 3, true, "hi", 4, true, "<");
+        compare_helper("hi", 3, true, "bye", 3, true, ">");
+        compare_helper("hi", 3, true, "bye", 4, true, ">");
+        compare_helper("hi", 4, true, "hi", 3, true, ">");
+        compare_helper("hi", 4, true, "hi", 4, true, "=");
+        compare_helper("hi", 4, true, "bye", 3, true, ">");
+        compare_helper("hi", 4, true, "bye", 4, true, ">");
+        compare_helper("bye", 3, true, "hi", 3, true, "<");
+        compare_helper("bye", 3, true, "hi", 4, true, "<");
+        compare_helper("bye", 3, true, "bye", 3, true, "=");
+        compare_helper("bye", 3, true, "bye", 4, true, "<");
+        compare_helper("bye", 4, true, "hi", 3, true, "<");
+        compare_helper("bye", 4, true, "hi", 4, true, "<");
+        compare_helper("bye", 4, true, "bye", 3, true, ">");
+        compare_helper("bye", 4, true, "bye", 4, true, "=");
     }
 
     @Test

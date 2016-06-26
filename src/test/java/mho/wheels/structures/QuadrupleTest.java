@@ -6,7 +6,6 @@ import org.junit.Test;
 
 import java.util.Comparator;
 
-import static mho.wheels.ordering.Ordering.*;
 import static mho.wheels.testing.Testing.*;
 import static org.junit.Assert.*;
 
@@ -57,24 +56,38 @@ public class QuadrupleTest {
         fromList_fail_helper("[1, 2, 3, 4, 5]");
     }
 
+    private static void compare_helper(
+            @NotNull String pa,
+            int pb,
+            boolean pc,
+            char pd,
+            @NotNull String qa,
+            int qb,
+            boolean qc,
+            char qd,
+            @NotNull String output
+    ) {
+        aeq(Quadruple.compare(new Quadruple<>(pa, pb, pc, pd), new Quadruple<>(qa, qb, qc, qd)), output);
+    }
+
     @Test
     public void testCompare() {
-        aeq(Quadruple.compare(new Quadruple<>("hi", 3, true, 'a'), new Quadruple<>("hi", 3, true, 'a')), EQ);
-        aeq(Quadruple.compare(new Quadruple<>("hi", 3, true, 'a'), new Quadruple<>("hi", 4, true, 'a')), LT);
-        aeq(Quadruple.compare(new Quadruple<>("hi", 3, true, 'a'), new Quadruple<>("bye", 3, true, 'a')), GT);
-        aeq(Quadruple.compare(new Quadruple<>("hi", 3, true, 'a'), new Quadruple<>("bye", 4, true, 'a')), GT);
-        aeq(Quadruple.compare(new Quadruple<>("hi", 4, true, 'a'), new Quadruple<>("hi", 3, true, 'a')), GT);
-        aeq(Quadruple.compare(new Quadruple<>("hi", 4, true, 'a'), new Quadruple<>("hi", 4, true, 'a')), EQ);
-        aeq(Quadruple.compare(new Quadruple<>("hi", 4, true, 'a'), new Quadruple<>("bye", 3, true, 'a')), GT);
-        aeq(Quadruple.compare(new Quadruple<>("hi", 4, true, 'a'), new Quadruple<>("bye", 4, true, 'a')), GT);
-        aeq(Quadruple.compare(new Quadruple<>("bye", 3, true, 'a'), new Quadruple<>("hi", 3, true, 'a')), LT);
-        aeq(Quadruple.compare(new Quadruple<>("bye", 3, true, 'a'), new Quadruple<>("hi", 4, true, 'a')), LT);
-        aeq(Quadruple.compare(new Quadruple<>("bye", 3, true, 'a'), new Quadruple<>("bye", 3, true, 'a')), EQ);
-        aeq(Quadruple.compare(new Quadruple<>("bye", 3, true, 'a'), new Quadruple<>("bye", 4, true, 'a')), LT);
-        aeq(Quadruple.compare(new Quadruple<>("bye", 4, true, 'a'), new Quadruple<>("hi", 3, true, 'a')), LT);
-        aeq(Quadruple.compare(new Quadruple<>("bye", 4, true, 'a'), new Quadruple<>("hi", 4, true, 'a')), LT);
-        aeq(Quadruple.compare(new Quadruple<>("bye", 4, true, 'a'), new Quadruple<>("bye", 3, true, 'a')), GT);
-        aeq(Quadruple.compare(new Quadruple<>("bye", 4, true, 'a'), new Quadruple<>("bye", 4, true, 'a')), EQ);
+        compare_helper("hi", 3, true, 'a', "hi", 3, true, 'a', "=");
+        compare_helper("hi", 3, true, 'a', "hi", 4, true, 'a', "<");
+        compare_helper("hi", 3, true, 'a', "bye", 3, true, 'a', ">");
+        compare_helper("hi", 3, true, 'a', "bye", 4, true, 'a', ">");
+        compare_helper("hi", 4, true, 'a', "hi", 3, true, 'a', ">");
+        compare_helper("hi", 4, true, 'a', "hi", 4, true, 'a', "=");
+        compare_helper("hi", 4, true, 'a', "bye", 3, true, 'a', ">");
+        compare_helper("hi", 4, true, 'a', "bye", 4, true, 'a', ">");
+        compare_helper("bye", 3, true, 'a', "hi", 3, true, 'a', "<");
+        compare_helper("bye", 3, true, 'a', "hi", 4, true, 'a', "<");
+        compare_helper("bye", 3, true, 'a', "bye", 3, true, 'a', "=");
+        compare_helper("bye", 3, true, 'a', "bye", 4, true, 'a', "<");
+        compare_helper("bye", 4, true, 'a', "hi", 3, true, 'a', "<");
+        compare_helper("bye", 4, true, 'a', "hi", 4, true, 'a', "<");
+        compare_helper("bye", 4, true, 'a', "bye", 3, true, 'a', ">");
+        compare_helper("bye", 4, true, 'a', "bye", 4, true, 'a', "=");
     }
 
     @Test
