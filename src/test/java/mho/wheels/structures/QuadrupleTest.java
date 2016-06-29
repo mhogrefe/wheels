@@ -7,7 +7,6 @@ import org.junit.Test;
 import java.util.Comparator;
 
 import static mho.wheels.testing.Testing.*;
-import static org.junit.Assert.*;
 
 public class QuadrupleTest {
     private static <A, B, C, D> void constructor_helper(A a, B b, C c, D d, @NotNull String output) {
@@ -90,36 +89,55 @@ public class QuadrupleTest {
         compare_helper("bye", 4, true, 'a', "bye", 4, true, 'a', "=");
     }
 
+    private static void equals_helper(
+            String pa,
+            Integer pb,
+            Boolean pc,
+            Character pd,
+            String qa,
+            Integer qb,
+            Boolean qc,
+            Character qd,
+            boolean output
+    ) {
+        aeq(new Quadruple<>(pa, pb, pc, pd).equals(new Quadruple<>(qa, qb, qc, qd)), output);
+    }
+
+    private static void equals_helper(String pa, Integer pb, Boolean pc, Character pd, Object x, boolean output) {
+        aeq(new Quadruple<>(pa, pb, pc, pd).equals(x), output);
+    }
+
     @Test
     public void testEquals() {
-        assertTrue(new Quadruple<>("hi", 3, true, 'a').equals(new Quadruple<>("hi", 3, true, 'a')));
-        assertFalse(new Quadruple<>("hi", 3, true, 'a').equals(new Quadruple<>("hi", 4, true, 'a')));
-        assertFalse(new Quadruple<>("hi", 3, true, 'a').equals(new Quadruple<>("bye", 3, true, 'a')));
-        assertFalse(new Quadruple<>("hi", 3, true, 'a').equals(new Quadruple<>("hi", 3, true, null)));
-        assertFalse(new Quadruple<>("hi", 3, true, 'a').equals(new Quadruple<>(null, 3, true, 'a')));
-        assertFalse(new Quadruple<>("hi", 3, true, 'a').equals(new Quadruple<>(null, null, null, null)));
-        assertFalse(new Quadruple<>("hi", 3, true, 'a').equals(null));
-        assertFalse(new Quadruple<>("hi", 3, true, 'a').equals(0.5));
-        assertFalse(new Quadruple<>("hi", 3, true, null).equals(new Quadruple<>("hi", 3, true, 'a')));
-        assertTrue(new Quadruple<>("hi", 3, true, null).equals(new Quadruple<>("hi", 3, true, null)));
-        assertFalse(new Quadruple<>("hi", 3, true, null).equals(new Quadruple<>("bye", 3, true, null)));
-        assertFalse(new Quadruple<>("hi", 3, true, null).equals(new Quadruple<>(null, 3, true, 'a')));
-        assertFalse(new Quadruple<>("hi", 3, true, null).equals(new Quadruple<>(null, null, null, null)));
-        assertFalse(new Quadruple<>("hi", 3, true, null).equals(null));
-        assertFalse(new Quadruple<>("hi", 3, true, null).equals(0.5));
-        assertFalse(new Quadruple<>(null, 3, true, 'a').equals(new Quadruple<>("hi", 3, true, 'a')));
-        assertFalse(new Quadruple<>(null, 3, true, 'a').equals(new Quadruple<>("hi", 3, true, null)));
-        assertTrue(new Quadruple<>(null, 3, true, 'a').equals(new Quadruple<>(null, 3, true, 'a')));
-        assertFalse(new Quadruple<>(null, 3, true, 'a').equals(new Quadruple<>(null, 4, true, 'a')));
-        assertFalse(new Quadruple<>(null, 3, true, 'a').equals(new Quadruple<>(null, null, null, null)));
-        assertFalse(new Quadruple<>(null, 3, true, 'a').equals(null));
-        assertFalse(new Quadruple<>(null, 3, true, 'a').equals(0.5));
-        assertFalse(new Quadruple<>(null, null, null, null).equals(new Quadruple<>("hi", 3, true, 'a')));
-        assertFalse(new Quadruple<>(null, null, null, null).equals(new Quadruple<>("hi", 3, true, null)));
-        assertFalse(new Quadruple<>(null, null, null, null).equals(new Quadruple<>(null, 3, true, 'a')));
-        assertTrue(new Quadruple<>(null, null, null, null).equals(new Quadruple<>(null, null, null, null)));
-        assertFalse(new Quadruple<>(null, null, null, null).equals(null));
-        assertFalse(new Quadruple<>(null, null, null, null).equals(0.5));
+        equals_helper("hi", 3, true, 'a', "hi", 3, true, 'a', true);
+        equals_helper("hi", 3, true, 'a', "hi", 4, true, 'a', false);
+        equals_helper("hi", 3, true, 'a', "bye", 3, true, 'a', false);
+        equals_helper("hi", 3, true, 'a', "hi", 3, true, null, false);
+        equals_helper("hi", 3, true, 'a', null, 3, true, 'a', false);
+        equals_helper("hi", 3, true, 'a', null, null, null, null, false);
+        equals_helper("hi", 3, true, null, "hi", 3, true, 'a', false);
+        equals_helper("hi", 3, true, null, "hi", 3, true, null, true);
+        equals_helper("hi", 3, true, null, "bye", 3, true, null, false);
+        equals_helper("hi", 3, true, null, null, 3, true, 'a', false);
+        equals_helper("hi", 3, true, null, null, null, null, null, false);
+        equals_helper(null, 3, true, 'a', "hi", 3, true, 'a', false);
+        equals_helper(null, 3, true, 'a', "hi", 3, true, null, false);
+        equals_helper(null, 3, true, 'a', null, 3, true, 'a', true);
+        equals_helper(null, 3, true, 'a', null, 4, true, 'a', false);
+        equals_helper(null, 3, true, 'a', null, null, null, null, false);
+        equals_helper(null, null, null, null, "hi", 3, true, 'a', false);
+        equals_helper(null, null, null, null, "hi", 3, true, null, false);
+        equals_helper(null, null, null, null, null, 3, true, 'a', false);
+        equals_helper(null, null, null, null, null, null, null, null, true);
+
+        equals_helper("hi", 3, true, 'a', null, false);
+        equals_helper("hi", 3, true, 'a', 0.5, false);
+        equals_helper("hi", 3, true, null, null, false);
+        equals_helper("hi", 3, true, null, 0.5, false);
+        equals_helper(null, 3, true, 'a', null, false);
+        equals_helper(null, 3, true, 'a', 0.5, false);
+        equals_helper(null, null, null, null, null, false);
+        equals_helper(null, null, null, null, 0.5, false);
     }
 
     @Test

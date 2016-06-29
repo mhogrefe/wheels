@@ -7,7 +7,6 @@ import org.junit.Test;
 import java.util.Comparator;
 
 import static mho.wheels.testing.Testing.*;
-import static org.junit.Assert.*;
 
 public class TripleTest {
     private static <A, B, C> void constructor_helper(A a, B b, C c, @NotNull String output) {
@@ -85,36 +84,53 @@ public class TripleTest {
         compare_helper("bye", 4, true, "bye", 4, true, "=");
     }
 
+    private static void equals_helper(
+            String pa,
+            Integer pb,
+            Boolean pc,
+            String qa,
+            Integer qb,
+            Boolean qc,
+            boolean output
+    ) {
+        aeq(new Triple<>(pa, pb, pc).equals(new Triple<>(qa, qb, qc)), output);
+    }
+
+    private static void equals_helper(String pa, Integer pb, Boolean pc, Object x, boolean output) {
+        aeq(new Triple<>(pa, pb, pc).equals(x), output);
+    }
+
     @Test
     public void testEquals() {
-        assertTrue(new Triple<>("hi", 3, true).equals(new Triple<>("hi", 3, true)));
-        assertFalse(new Triple<>("hi", 3, true).equals(new Triple<>("hi", 4, true)));
-        assertFalse(new Triple<>("hi", 3, true).equals(new Triple<>("bye", 3, true)));
-        assertFalse(new Triple<>("hi", 3, true).equals(new Triple<>("hi", 3, null)));
-        assertFalse(new Triple<>("hi", 3, true).equals(new Triple<>(null, 3, true)));
-        assertFalse(new Triple<>("hi", 3, true).equals(new Triple<>(null, null, null)));
-        assertFalse(new Triple<>("hi", 3, true).equals(null));
-        assertFalse(new Triple<>("hi", 3, true).equals(0.5));
-        assertFalse(new Triple<>("hi", 3, null).equals(new Triple<>("hi", 3, true)));
-        assertTrue(new Triple<>("hi", 3, null).equals(new Triple<>("hi", 3, null)));
-        assertFalse(new Triple<>("hi", 3, null).equals(new Triple<>("bye", 3, null)));
-        assertFalse(new Triple<>("hi", 3, null).equals(new Triple<>(null, 3, true)));
-        assertFalse(new Triple<>("hi", 3, null).equals(new Triple<>(null, null, null)));
-        assertFalse(new Triple<>("hi", 3, null).equals(null));
-        assertFalse(new Triple<>("hi", 3, null).equals(0.5));
-        assertFalse(new Triple<>(null, 3, true).equals(new Triple<>("hi", 3, true)));
-        assertFalse(new Triple<>(null, 3, true).equals(new Triple<>("hi", 3, null)));
-        assertTrue(new Triple<>(null, 3, true).equals(new Triple<>(null, 3, true)));
-        assertFalse(new Triple<>(null, 3, true).equals(new Triple<>(null, 4, true)));
-        assertFalse(new Triple<>(null, 3, true).equals(new Triple<>(null, null, null)));
-        assertFalse(new Triple<>(null, 3, true).equals(null));
-        assertFalse(new Triple<>(null, 3, true).equals(0.5));
-        assertFalse(new Triple<>(null, null, null).equals(new Triple<>("hi", 3, true)));
-        assertFalse(new Triple<>(null, null, null).equals(new Triple<>("hi", 3, null)));
-        assertFalse(new Triple<>(null, null, null).equals(new Triple<>(null, 3, true)));
-        assertTrue(new Triple<>(null, null, null).equals(new Triple<>(null, null, null)));
-        assertFalse(new Triple<>(null, null, null).equals(null));
-        assertFalse(new Triple<>(null, null, null).equals(0.5));
+        equals_helper("hi", 3, true, "hi", 3, true, true);
+        equals_helper("hi", 3, true, "hi", 4, true, false);
+        equals_helper("hi", 3, true, "bye", 3, true, false);
+        equals_helper("hi", 3, true, "hi", 3, null, false);
+        equals_helper("hi", 3, true, null, 3, true, false);
+        equals_helper("hi", 3, true, null, null, null, false);
+        equals_helper("hi", 3, null, "hi", 3, true, false);
+        equals_helper("hi", 3, null, "hi", 3, null, true);
+        equals_helper("hi", 3, null, "bye", 3, null, false);
+        equals_helper("hi", 3, null, null, 3, true, false);
+        equals_helper("hi", 3, null, null, null, null, false);
+        equals_helper(null, 3, true, "hi", 3, true, false);
+        equals_helper(null, 3, true, "hi", 3, null, false);
+        equals_helper(null, 3, true, null, 3, true, true);
+        equals_helper(null, 3, true, null, 4, true, false);
+        equals_helper(null, 3, true, null, null, null, false);
+        equals_helper(null, null, null, "hi", 3, true, false);
+        equals_helper(null, null, null, "hi", 3, null, false);
+        equals_helper(null, null, null, null, 3, true, false);
+        equals_helper(null, null, null, null, null, null, true);
+
+        equals_helper("hi", 3, true, null, false);
+        equals_helper("hi", 3, true, 0.5, false);
+        equals_helper("hi", 3, null, null, false);
+        equals_helper("hi", 3, null, 0.5, false);
+        equals_helper(null, 3, true, null, false);
+        equals_helper(null, 3, true, 0.5, false);
+        equals_helper(null, null, null, null, false);
+        equals_helper(null, null, null, 0.5, false);
     }
 
     @Test

@@ -7,7 +7,6 @@ import org.junit.Test;
 import java.util.Comparator;
 
 import static mho.wheels.testing.Testing.*;
-import static org.junit.Assert.*;
 
 public class PairTest {
     private static <A, B> void constructor_helper(A a, B b, @NotNull String output) {
@@ -83,36 +82,45 @@ public class PairTest {
         compare_helper("bye", 4, "bye", 4, "=");
     }
 
+    private static void equals_helper(String pa, Integer pb, String qa, Integer qb, boolean output) {
+        aeq(new Pair<>(pa, pb).equals(new Pair<>(qa, qb)), output);
+    }
+
+    private static void equals_helper(String pa, Integer pb, Object x, boolean output) {
+        aeq(new Pair<>(pa, pb).equals(x), output);
+    }
+
     @Test
     public void testEquals() {
-        assertTrue(new Pair<>("hi", 3).equals(new Pair<>("hi", 3)));
-        assertFalse(new Pair<>("hi", 3).equals(new Pair<>("hi", 4)));
-        assertFalse(new Pair<>("hi", 3).equals(new Pair<>("bye", 3)));
-        assertFalse(new Pair<>("hi", 3).equals(new Pair<>("hi", null)));
-        assertFalse(new Pair<>("hi", 3).equals(new Pair<>(null, 3)));
-        assertFalse(new Pair<>("hi", 3).equals(new Pair<>(null, null)));
-        assertFalse(new Pair<>("hi", 3).equals(null));
-        assertFalse(new Pair<>("hi", 3).equals(0.5));
-        assertFalse(new Pair<>("hi", null).equals(new Pair<>("hi", 3)));
-        assertTrue(new Pair<>("hi", null).equals(new Pair<>("hi", null)));
-        assertFalse(new Pair<>("hi", null).equals(new Pair<>("bye", null)));
-        assertFalse(new Pair<>("hi", null).equals(new Pair<>(null, 3)));
-        assertFalse(new Pair<>("hi", null).equals(new Pair<>(null, null)));
-        assertFalse(new Pair<>("hi", null).equals(null));
-        assertFalse(new Pair<>("hi", null).equals(0.5));
-        assertFalse(new Pair<>(null, 3).equals(new Pair<>("hi", 3)));
-        assertFalse(new Pair<>(null, 3).equals(new Pair<>("hi", null)));
-        assertTrue(new Pair<>(null, 3).equals(new Pair<>(null, 3)));
-        assertFalse(new Pair<>(null, 3).equals(new Pair<>(null, 4)));
-        assertFalse(new Pair<>(null, 3).equals(new Pair<>(null, null)));
-        assertFalse(new Pair<>(null, 3).equals(null));
-        assertFalse(new Pair<>(null, 3).equals(0.5));
-        assertFalse(new Pair<>(null, null).equals(new Pair<>("hi", 3)));
-        assertFalse(new Pair<>(null, null).equals(new Pair<>("hi", null)));
-        assertFalse(new Pair<>(null, null).equals(new Pair<>(null, 3)));
-        assertTrue(new Pair<>(null, null).equals(new Pair<>(null, null)));
-        assertFalse(new Pair<>(null, null).equals(null));
-        assertFalse(new Pair<>(null, null).equals(0.5));
+        equals_helper("hi", 3, "hi", 3, true);
+        equals_helper("hi", 3, "hi", 4, false);
+        equals_helper("hi", 3, "bye", 3, false);
+        equals_helper("hi", 3, "hi", null, false);
+        equals_helper("hi", 3, null, 3, false);
+        equals_helper("hi", 3, null, null, false);
+        equals_helper("hi", null, "hi", 3, false);
+        equals_helper("hi", null, "hi", null, true);
+        equals_helper("hi", null, "bye", null, false);
+        equals_helper("hi", null, null, 3, false);
+        equals_helper("hi", null, null, null, false);
+        equals_helper(null, 3, "hi", 3, false);
+        equals_helper(null, 3, "hi", null, false);
+        equals_helper(null, 3, null, 3, true);
+        equals_helper(null, 3, null, 4, false);
+        equals_helper(null, 3, null, null, false);
+        equals_helper(null, null, "hi", 3, false);
+        equals_helper(null, null, "hi", null, false);
+        equals_helper(null, null, null, 3, false);
+        equals_helper(null, null, null, null, true);
+
+        equals_helper("hi", 3, null, false);
+        equals_helper("hi", 3, 0.5, false);
+        equals_helper("hi", null, null, false);
+        equals_helper("hi", null, 0.5, false);
+        equals_helper(null, 3, null, false);
+        equals_helper(null, 3, 0.5, false);
+        equals_helper(null, null, null, false);
+        equals_helper(null, null, 0.5, false);
     }
 
     @Test
