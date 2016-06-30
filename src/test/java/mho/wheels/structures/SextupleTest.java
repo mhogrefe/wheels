@@ -9,7 +9,6 @@ import java.util.Comparator;
 
 import static mho.wheels.ordering.Ordering.*;
 import static mho.wheels.testing.Testing.*;
-import static org.junit.Assert.*;
 
 public class SextupleTest {
     private static <A, B, C, D, E, F> void constructor_helper(A a, B b, C c, D d, E e, F f, @NotNull String output) {
@@ -102,44 +101,97 @@ public class SextupleTest {
         compare_helper("bye", 4, true, 'a', ">", 0.5, "bye", 4, true, 'a', ">", 0.5, "=");
     }
 
+    private static void equals_helper(
+            String pa,
+            Integer pb,
+            Boolean pc,
+            Character pd,
+            @NotNull String pe,
+            Double pf,
+            String qa,
+            Integer qb,
+            Boolean qc,
+            Character qd,
+            @NotNull String qe,
+            Double qf,
+            boolean output
+    ) {
+        aeq(
+                new Sextuple<>(
+                        pa,
+                        pb,
+                        pc,
+                        pd,
+                        Readers.readWithNullsStrict(Readers::readOrderingStrict).apply(pe).get(),
+                        pf
+                ).equals(
+                        new Sextuple<>(
+                                qa,
+                                qb,
+                                qc,
+                                qd,
+                                Readers.readWithNullsStrict(Readers::readOrderingStrict).apply(qe).get(),
+                                qf
+                        )
+                ),
+                output
+        );
+    }
+
+    private static void equals_helper(
+            String pa,
+            Integer pb,
+            Boolean pc,
+            Character pd,
+            @NotNull String pe,
+            Double pf,
+            Object x,
+            boolean output
+    ) {
+        aeq(
+                new Sextuple<>(
+                        pa,
+                        pb,
+                        pc,
+                        pd,
+                        Readers.readWithNullsStrict(Readers::readOrderingStrict).apply(pe).get(),
+                        pf
+                ).equals(x),
+                output
+        );
+    }
+
     @Test
     public void testEquals() {
-        assertTrue(new Sextuple<>("hi", 3, true, 'a', GT, 0.5).equals(new Sextuple<>("hi", 3, true, 'a', GT, 0.5)));
-        assertFalse(new Sextuple<>("hi", 3, true, 'a', GT, 0.5).equals(new Sextuple<>("hi", 4, true, 'a', GT, 0.5)));
-        assertFalse(new Sextuple<>("hi", 3, true, 'a', GT, 0.5).equals(new Sextuple<>("bye", 3, true, 'a', GT, 0.5)));
-        assertFalse(new Sextuple<>("hi", 3, true, 'a', GT, 0.5).equals(new Sextuple<>("hi", 3, true, 'a', GT, null)));
-        assertFalse(new Sextuple<>("hi", 3, true, 'a', GT, 0.5).equals(new Sextuple<>(null, 3, true, 'a', GT, 0.5)));
-        assertFalse(new Sextuple<>("hi", 3, true, 'a', GT, 0.5)
-                .equals(new Sextuple<>(null, null, null, null, null, null)));
-        assertFalse(new Sextuple<>("hi", 3, true, 'a', GT, 0.5).equals(null));
-        assertFalse(new Sextuple<>("hi", 3, true, 'a', GT, 0.5).equals(0.5));
-        assertFalse(new Sextuple<>("hi", 3, true, 'a', GT, null).equals(new Sextuple<>("hi", 3, true, 'a', GT, 0.5)));
-        assertTrue(new Sextuple<>("hi", 3, true, 'a', GT, null).equals(new Sextuple<>("hi", 3, true, 'a', GT, null)));
-        assertFalse(new Sextuple<>("hi", 3, true, 'a', GT, null)
-                .equals(new Sextuple<>("bye", 3, true, 'a', GT, null)));
-        assertFalse(new Sextuple<>("hi", 3, true, 'a', GT, null).equals(new Sextuple<>(null, 3, true, 'a', GT, 0.5)));
-        assertFalse(new Sextuple<>("hi", 3, true, 'a', GT, null)
-                .equals(new Sextuple<>(null, null, null, null, null, null)));
-        assertFalse(new Sextuple<>("hi", 3, true, 'a', GT, null).equals(null));
-        assertFalse(new Sextuple<>("hi", 3, true, 'a', GT, null).equals(0.5));
-        assertFalse(new Sextuple<>(null, 3, true, 'a', GT, 0.5).equals(new Sextuple<>("hi", 3, true, 'a', GT, 0.5)));
-        assertFalse(new Sextuple<>(null, 3, true, 'a', GT, 0.5).equals(new Sextuple<>("hi", 3, true, 'a', GT, null)));
-        assertTrue(new Sextuple<>(null, 3, true, 'a', GT, 0.5).equals(new Sextuple<>(null, 3, true, 'a', GT, 0.5)));
-        assertFalse(new Sextuple<>(null, 3, true, 'a', GT, 0.5).equals(new Sextuple<>(null, 4, true, 'a', GT, 0.5)));
-        assertFalse(new Sextuple<>(null, 3, true, 'a', GT, 0.5)
-                .equals(new Sextuple<>(null, null, null, null, null, null)));
-        assertFalse(new Sextuple<>(null, 3, true, 'a', GT, 0.5).equals(null));
-        assertFalse(new Sextuple<>(null, 3, true, 'a', GT, 0.5).equals(0.5));
-        assertFalse(new Sextuple<>(null, null, null, null, null, null)
-                .equals(new Sextuple<>("hi", 3, true, 'a', GT, 0.5)));
-        assertFalse(new Sextuple<>(null, null, null, null, null, null)
-                .equals(new Sextuple<>("hi", 3, true, 'a', GT, null)));
-        assertFalse(new Sextuple<>(null, null, null, null, null, null)
-                .equals(new Sextuple<>(null, 3, true, 'a', GT, 0.5)));
-        assertTrue(new Sextuple<>(null, null, null, null, null, null)
-                .equals(new Sextuple<>(null, null, null, null, null, null)));
-        assertFalse(new Sextuple<>(null, null, null, null, null, null).equals(null));
-        assertFalse(new Sextuple<>(null, null, null, null, null, null).equals(0.5));
+        equals_helper("hi", 3, true, 'a', ">", 0.5, "hi", 3, true, 'a', ">", 0.5, true);
+        equals_helper("hi", 3, true, 'a', ">", 0.5, "hi", 4, true, 'a', ">", 0.5, false);
+        equals_helper("hi", 3, true, 'a', ">", 0.5, "bye", 3, true, 'a', ">", 0.5, false);
+        equals_helper("hi", 3, true, 'a', ">", 0.5, "hi", 3, true, 'a', ">", null, false);
+        equals_helper("hi", 3, true, 'a', ">", 0.5, null, 3, true, 'a', ">", 0.5, false);
+        equals_helper("hi", 3, true, 'a', ">", 0.5, null, null, null, null, "null", null, false);
+        equals_helper("hi", 3, true, 'a', ">", null, "hi", 3, true, 'a', ">", 0.5, false);
+        equals_helper("hi", 3, true, 'a', ">", null, "hi", 3, true, 'a', ">", null, true);
+        equals_helper("hi", 3, true, 'a', ">", null, "bye", 3, true, 'a', ">", null, false);
+        equals_helper("hi", 3, true, 'a', ">", null, null, 3, true, 'a', ">", 0.5, false);
+        equals_helper("hi", 3, true, 'a', ">", null, null, null, null, null, "null", null, false);
+        equals_helper(null, 3, true, 'a', ">", 0.5, "hi", 3, true, 'a', ">", 0.5, false);
+        equals_helper(null, 3, true, 'a', ">", 0.5, "hi", 3, true, 'a', ">", null, false);
+        equals_helper(null, 3, true, 'a', ">", 0.5, null, 3, true, 'a', ">", 0.5, true);
+        equals_helper(null, 3, true, 'a', ">", 0.5, null, 4, true, 'a', ">", 0.5, false);
+        equals_helper(null, 3, true, 'a', ">", 0.5, null, null, null, null, "null", null, false);
+        equals_helper(null, null, null, null, "null", null, "hi", 3, true, 'a', ">", 0.5, false);
+        equals_helper(null, null, null, null, "null", null, "hi", 3, true, 'a', ">", null, false);
+        equals_helper(null, null, null, null, "null", null, null, 3, true, 'a', ">", 0.5, false);
+        equals_helper(null, null, null, null, "null", null, null, null, null, null, "null", null, true);
+
+        equals_helper("hi", 3, true, 'a', ">", 0.5, null, false);
+        equals_helper("hi", 3, true, 'a', ">", 0.5, 0.5, false);
+        equals_helper("hi", 3, true, 'a', ">", null, null, false);
+        equals_helper("hi", 3, true, 'a', ">", null, 0.5, false);
+        equals_helper(null, 3, true, 'a', ">", 0.5, null, false);
+        equals_helper(null, 3, true, 'a', ">", 0.5, 0.5, false);
+        equals_helper(null, null, null, null, "null", null, null, false);
+        equals_helper(null, null, null, null, "null", null, 0.5, false);
     }
 
     @Test

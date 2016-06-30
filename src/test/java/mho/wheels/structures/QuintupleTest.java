@@ -9,7 +9,6 @@ import java.util.Comparator;
 
 import static mho.wheels.ordering.Ordering.*;
 import static mho.wheels.testing.Testing.*;
-import static org.junit.Assert.*;
 
 public class QuintupleTest {
     private static <A, B, C, D, E> void constructor_helper(A a, B b, C c, D d, E e, @NotNull String output) {
@@ -100,37 +99,91 @@ public class QuintupleTest {
         compare_helper("bye", 4, true, 'a', ">", "bye", 4, true, 'a', ">", "=");
     }
 
+    private static void equals_helper(
+            String pa,
+            Integer pb,
+            Boolean pc,
+            Character pd,
+            @NotNull String pe,
+            String qa,
+            Integer qb,
+            Boolean qc,
+            Character qd,
+            @NotNull String qe,
+            boolean output
+    ) {
+        aeq(
+                new Quintuple<>(
+                        pa,
+                        pb,
+                        pc,
+                        pd,
+                        Readers.readWithNullsStrict(Readers::readOrderingStrict).apply(pe).get()
+                ).equals(
+                        new Quintuple<>(
+                                qa,
+                                qb,
+                                qc,
+                                qd,
+                                Readers.readWithNullsStrict(Readers::readOrderingStrict).apply(qe).get()
+                        )
+                ),
+                output
+        );
+    }
+
+    private static void equals_helper(
+            String pa,
+            Integer pb,
+            Boolean pc,
+            Character pd,
+            @NotNull String pe,
+            Object x,
+            boolean output
+    ) {
+        aeq(
+                new Quintuple<>(
+                        pa,
+                        pb,
+                        pc,
+                        pd,
+                        Readers.readWithNullsStrict(Readers::readOrderingStrict).apply(pe).get()
+                ).equals(x),
+                output
+        );
+    }
+
     @Test
     public void testEquals() {
-        assertTrue(new Quintuple<>("hi", 3, true, 'a', GT).equals(new Quintuple<>("hi", 3, true, 'a', GT)));
-        assertFalse(new Quintuple<>("hi", 3, true, 'a', GT).equals(new Quintuple<>("hi", 4, true, 'a', GT)));
-        assertFalse(new Quintuple<>("hi", 3, true, 'a', GT).equals(new Quintuple<>("bye", 3, true, 'a', GT)));
-        assertFalse(new Quintuple<>("hi", 3, true, 'a', GT).equals(new Quintuple<>("hi", 3, true, 'a', null)));
-        assertFalse(new Quintuple<>("hi", 3, true, 'a', GT).equals(new Quintuple<>(null, 3, true, 'a', GT)));
-        assertFalse(new Quintuple<>("hi", 3, true, 'a', GT).equals(new Quintuple<>(null, null, null, null, null)));
-        assertFalse(new Quintuple<>("hi", 3, true, 'a', GT).equals(null));
-        assertFalse(new Quintuple<>("hi", 3, true, 'a', GT).equals(0.5));
-        assertFalse(new Quintuple<>("hi", 3, true, 'a', null).equals(new Quintuple<>("hi", 3, true, 'a', GT)));
-        assertTrue(new Quintuple<>("hi", 3, true, 'a', null).equals(new Quintuple<>("hi", 3, true, 'a', null)));
-        assertFalse(new Quintuple<>("hi", 3, true, 'a', null).equals(new Quintuple<>("bye", 3, true, 'a', null)));
-        assertFalse(new Quintuple<>("hi", 3, true, 'a', null).equals(new Quintuple<>(null, 3, true, 'a', GT)));
-        assertFalse(new Quintuple<>("hi", 3, true, 'a', null).equals(new Quintuple<>(null, null, null, null, null)));
-        assertFalse(new Quintuple<>("hi", 3, true, 'a', null).equals(null));
-        assertFalse(new Quintuple<>("hi", 3, true, 'a', null).equals(0.5));
-        assertFalse(new Quintuple<>(null, 3, true, 'a', GT).equals(new Quintuple<>("hi", 3, true, 'a', GT)));
-        assertFalse(new Quintuple<>(null, 3, true, 'a', GT).equals(new Quintuple<>("hi", 3, true, 'a', null)));
-        assertTrue(new Quintuple<>(null, 3, true, 'a', GT).equals(new Quintuple<>(null, 3, true, 'a', GT)));
-        assertFalse(new Quintuple<>(null, 3, true, 'a', GT).equals(new Quintuple<>(null, 4, true, 'a', GT)));
-        assertFalse(new Quintuple<>(null, 3, true, 'a', GT).equals(new Quintuple<>(null, null, null, null, null)));
-        assertFalse(new Quintuple<>(null, 3, true, 'a', GT).equals(null));
-        assertFalse(new Quintuple<>(null, 3, true, 'a', GT).equals(0.5));
-        assertFalse(new Quintuple<>(null, null, null, null, null).equals(new Quintuple<>("hi", 3, true, 'a', GT)));
-        assertFalse(new Quintuple<>(null, null, null, null, null).equals(new Quintuple<>("hi", 3, true, 'a', null)));
-        assertFalse(new Quintuple<>(null, null, null, null, null).equals(new Quintuple<>(null, 3, true, 'a', GT)));
-        assertTrue(new Quintuple<>(null, null, null, null, null)
-                .equals(new Quintuple<>(null, null, null, null, null)));
-        assertFalse(new Quintuple<>(null, null, null, null, null).equals(null));
-        assertFalse(new Quintuple<>(null, null, null, null, null).equals(0.5));
+        equals_helper("hi", 3, true, 'a', ">", "hi", 3, true, 'a', ">", true);
+        equals_helper("hi", 3, true, 'a', ">", "hi", 4, true, 'a', ">", false);
+        equals_helper("hi", 3, true, 'a', ">", "bye", 3, true, 'a', ">", false);
+        equals_helper("hi", 3, true, 'a', ">", "hi", 3, true, 'a', "null", false);
+        equals_helper("hi", 3, true, 'a', ">", null, 3, true, 'a', ">", false);
+        equals_helper("hi", 3, true, 'a', ">", null, null, null, null, "null", false);
+        equals_helper("hi", 3, true, 'a', "null", "hi", 3, true, 'a', ">", false);
+        equals_helper("hi", 3, true, 'a', "null", "hi", 3, true, 'a', "null", true);
+        equals_helper("hi", 3, true, 'a', "null", "bye", 3, true, 'a', "null", false);
+        equals_helper("hi", 3, true, 'a', "null", null, 3, true, 'a', ">", false);
+        equals_helper("hi", 3, true, 'a', "null", null, null, null, null, "null", false);
+        equals_helper(null, 3, true, 'a', ">", "hi", 3, true, 'a', ">", false);
+        equals_helper(null, 3, true, 'a', ">", "hi", 3, true, 'a', "null", false);
+        equals_helper(null, 3, true, 'a', ">", null, 3, true, 'a', ">", true);
+        equals_helper(null, 3, true, 'a', ">", null, 4, true, 'a', ">", false);
+        equals_helper(null, 3, true, 'a', ">", null, null, null, null, "null", false);
+        equals_helper(null, null, null, null, "null", "hi", 3, true, 'a', ">", false);
+        equals_helper(null, null, null, null, "null", "hi", 3, true, 'a', "null", false);
+        equals_helper(null, null, null, null, "null", null, 3, true, 'a', ">", false);
+        equals_helper(null, null, null, null, "null", null, null, null, null, "null", true);
+
+        equals_helper(null, null, null, null, "null", null, false);
+        equals_helper(null, null, null, null, "null", 0.5, false);
+        equals_helper("hi", 3, true, 'a', ">", null, false);
+        equals_helper("hi", 3, true, 'a', ">", 0.5, false);
+        equals_helper("hi", 3, true, 'a', "null", null, false);
+        equals_helper("hi", 3, true, 'a', "null", 0.5, false);
+        equals_helper(null, 3, true, 'a', ">", null, false);
+        equals_helper(null, 3, true, 'a', ">", 0.5, false);
     }
 
     @Test

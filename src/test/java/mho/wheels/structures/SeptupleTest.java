@@ -12,7 +12,6 @@ import java.util.List;
 
 import static mho.wheels.ordering.Ordering.*;
 import static mho.wheels.testing.Testing.*;
-import static org.junit.Assert.*;
 
 public class SeptupleTest {
     private static final @NotNull List<Integer> x = Arrays.asList(1, 0);
@@ -118,56 +117,103 @@ public class SeptupleTest {
         compare_helper("bye", 4, true, 'a', ">", 0.5, "x", "bye", 4, true, 'a', ">", 0.5, "x", "=");
     }
 
+    private static void equals_helper(
+            String pa,
+            Integer pb,
+            Boolean pc,
+            Character pd,
+            @NotNull String pe,
+            Double pf,
+            List<Integer> pg,
+            String qa,
+            Integer qb,
+            Boolean qc,
+            Character qd,
+            @NotNull String qe,
+            Double qf,
+            List<Integer> qg,
+            boolean output
+    ) {
+        aeq(
+                new Septuple<>(
+                        pa,
+                        pb,
+                        pc,
+                        pd,
+                        Readers.readWithNullsStrict(Readers::readOrderingStrict).apply(pe).get(),
+                        pf,
+                        pg
+                ).equals(
+                        new Septuple<>(
+                                qa,
+                                qb,
+                                qc,
+                                qd,
+                                Readers.readWithNullsStrict(Readers::readOrderingStrict).apply(qe).get(),
+                                qf,
+                                qg
+                        )
+                ),
+                output
+        );
+    }
+
+    private static void equals_helper(
+            String pa,
+            Integer pb,
+            Boolean pc,
+            Character pd,
+            @NotNull String pe,
+            Double pf,
+            List<Integer> pg,
+            Object x,
+            boolean output
+    ) {
+        aeq(
+                new Septuple<>(
+                        pa,
+                        pb,
+                        pc,
+                        pd,
+                        Readers.readWithNullsStrict(Readers::readOrderingStrict).apply(pe).get(),
+                        pf,
+                        pg
+                ).equals(x),
+                output
+        );
+    }
+
     @Test
     public void testEquals() {
-        assertTrue(new Septuple<>("hi", 3, true, 'a', GT, 0.5, x)
-                .equals(new Septuple<>("hi", 3, true, 'a', GT, 0.5, x)));
-        assertFalse(new Septuple<>("hi", 3, true, 'a', GT, 0.5, x)
-                .equals(new Septuple<>("hi", 4, true, 'a', GT, 0.5, x)));
-        assertFalse(new Septuple<>("hi", 3, true, 'a', GT, 0.5, x)
-                .equals(new Septuple<>("bye", 3, true, 'a', GT, 0.5, x)));
-        assertFalse(new Septuple<>("hi", 3, true, 'a', GT, 0.5, x)
-                .equals(new Septuple<>("hi", 3, true, 'a', GT, 0.5, null)));
-        assertFalse(new Septuple<>("hi", 3, true, 'a', GT, 0.5, x)
-                .equals(new Septuple<>(null, 3, true, 'a', GT, 0.5, x)));
-        assertFalse(new Septuple<>("hi", 3, true, 'a', GT, 0.5, x)
-                .equals(new Septuple<>(null, null, null, null, null, null, null)));
-        assertFalse(new Septuple<>("hi", 3, true, 'a', GT, 0.5, x).equals(null));
-        assertFalse(new Septuple<>("hi", 3, true, 'a', GT, 0.5, x).equals(0.5));
-        assertFalse(new Septuple<>("hi", 3, true, 'a', GT, 0.5, null)
-                .equals(new Septuple<>("hi", 3, true, 'a', GT, 0.5, x)));
-        assertTrue(new Septuple<>("hi", 3, true, 'a', GT, 0.5, null)
-                .equals(new Septuple<>("hi", 3, true, 'a', GT, 0.5, null)));
-        assertFalse(new Septuple<>("hi", 3, true, 'a', GT, 0.5, null)
-                .equals(new Septuple<>("bye", 3, true, 'a', GT, 0.5, null)));
-        assertFalse(new Septuple<>("hi", 3, true, 'a', GT, 0.5, null)
-                .equals(new Septuple<>(null, 3, true, 'a', GT, 0.5, x)));
-        assertFalse(new Septuple<>("hi", 3, true, 'a', GT, 0.5, null)
-                .equals(new Septuple<>(null, null, null, null, null, null, null)));
-        assertFalse(new Septuple<>("hi", 3, true, 'a', GT, 0.5, null).equals(null));
-        assertFalse(new Septuple<>("hi", 3, true, 'a', GT, 0.5, null).equals(0.5));
-        assertFalse(new Septuple<>(null, 3, true, 'a', GT, 0.5, x)
-                .equals(new Septuple<>("hi", 3, true, 'a', GT, 0.5, x)));
-        assertFalse(new Septuple<>(null, 3, true, 'a', GT, 0.5, x)
-                .equals(new Septuple<>("hi", 3, true, 'a', GT, 0.5, null)));
-        assertTrue(new Septuple<>(null, 3, true, 'a', GT, 0.5, x)
-                .equals(new Septuple<>(null, 3, true, 'a', GT, 0.5, x)));
-        assertFalse(new Septuple<>(null, 3, true, 'a', GT, 0.5, x)
-                .equals(new Septuple<>(null, 4, true, 'a', GT, 0.5, x)));
-        assertFalse(new Septuple<>(null, 3, true, 'a', GT, 0.5, x)
-                .equals(new Septuple<>(null, null, null, null, null, null, null)));
-        assertFalse(new Septuple<>(null, 3, true, 'a', GT, 0.5, x).equals(null));
-        assertFalse(new Septuple<>(null, 3, true, 'a', GT, 0.5, x).equals(0.5));
-        assertFalse(new Septuple<>(null, null, null, null, null, null, null)
-                .equals(new Septuple<>("hi", 3, true, 'a', GT, 0.5, x)));
-        assertFalse(new Septuple<>(null, null, null, null, null, null, null)
-                .equals(new Septuple<>("hi", 3, true, 'a', GT, null, x)));
-        assertFalse(new Septuple<>(null, null, null, null, null, null, null)
-                .equals(new Septuple<>(null, 3, true, 'a', GT, 0.5, x)));
-        assertTrue(new Septuple<>(null, null, null, null, null, null, null)
-                .equals(new Septuple<>(null, null, null, null, null, null, null)));
-        assertFalse(new Septuple<>(null, null, null, null, null, null, null).equals(null));
-        assertFalse(new Septuple<>(null, null, null, null, null, null, null).equals(0.5));
+        equals_helper("hi", 3, true, 'a', ">", 0.5, x, "hi", 3, true, 'a', ">", 0.5, x, true);
+        equals_helper("hi", 3, true, 'a', ">", 0.5, x, "hi", 4, true, 'a', ">", 0.5, x, false);
+        equals_helper("hi", 3, true, 'a', ">", 0.5, x, "bye", 3, true, 'a', ">", 0.5, x, false);
+        equals_helper("hi", 3, true, 'a', ">", 0.5, x, "hi", 3, true, 'a', ">", 0.5, null, false);
+        equals_helper("hi", 3, true, 'a', ">", 0.5, x, null, 3, true, 'a', ">", 0.5, x, false);
+        equals_helper("hi", 3, true, 'a', ">", 0.5, x, null, null, null, null, "null", null, null, false);
+        equals_helper("hi", 3, true, 'a', ">", 0.5, null, "hi", 3, true, 'a', ">", 0.5, x, false);
+        equals_helper("hi", 3, true, 'a', ">", 0.5, null, "hi", 3, true, 'a', ">", 0.5, null, true);
+        equals_helper("hi", 3, true, 'a', ">", 0.5, null, "bye", 3, true, 'a', ">", 0.5, null, false);
+        equals_helper("hi", 3, true, 'a', ">", 0.5, null, null, 3, true, 'a', ">", 0.5, x, false);
+        equals_helper("hi", 3, true, 'a', ">", 0.5, null, null, null, null, null, "null", null, null, false);
+        equals_helper(null, 3, true, 'a', ">", 0.5, x, "hi", 3, true, 'a', ">", 0.5, x, false);
+        equals_helper(null, 3, true, 'a', ">", 0.5, x, "hi", 3, true, 'a', ">", 0.5, null, false);
+        equals_helper(null, 3, true, 'a', ">", 0.5, x, null, 3, true, 'a', ">", 0.5, x, true);
+        equals_helper(null, 3, true, 'a', ">", 0.5, x, null, 4, true, 'a', ">", 0.5, x, false);
+        equals_helper(null, 3, true, 'a', ">", 0.5, x, null, null, null, null, "null", null, null, false);
+        equals_helper(null, null, null, null, "null", null, null, "hi", 3, true, 'a', ">", 0.5, x, false);
+        equals_helper(null, null, null, null, "null", null, null, "hi", 3, true, 'a', ">", null, x, false);
+        equals_helper(null, null, null, null, "null", null, null, null, 3, true, 'a', ">", 0.5, x, false);
+        equals_helper(null, null, null, null, "null", null, null, null, null, null, null, "null", null, null, true);
+
+        equals_helper("hi", 3, true, 'a', ">", 0.5, x, "null", false);
+        equals_helper("hi", 3, true, 'a', ">", 0.5, x, 0.5, false);
+        equals_helper("hi", 3, true, 'a', ">", 0.5, null, "null", false);
+        equals_helper("hi", 3, true, 'a', ">", 0.5, null, 0.5, false);
+        equals_helper(null, 3, true, 'a', ">", 0.5, x, "null", false);
+        equals_helper(null, 3, true, 'a', ">", 0.5, x, 0.5, false);
+        equals_helper(null, null, null, null, "null", null, null, "null", false);
+        equals_helper(null, null, null, null, "null", null, null, 0.5, false);
     }
 
     @Test
@@ -195,7 +241,7 @@ public class SeptupleTest {
                     Comparator.nullsFirst(Comparator.<Character>naturalOrder()),
                     Comparator.nullsFirst(Comparator.<Ordering>naturalOrder()),
                     Comparator.nullsFirst(Comparator.<Double>naturalOrder()),
-                    Comparator.nullsFirst(new LexComparator<Integer>())
+                    Comparator.nullsFirst(new LexComparator<>())
                 );
         aeq(pc.compare(
                 new Septuple<>("hi", 3, true, 'a', GT, 0.5, x),
