@@ -9,6 +9,14 @@ import java.util.Comparator;
 import static mho.wheels.testing.Testing.*;
 
 public class QuadrupleTest {
+    private static final Quadruple.QuadrupleComparator<String, Integer, Boolean, Character> PC =
+            new Quadruple.QuadrupleComparator<>(
+                    Comparator.nullsFirst(Comparator.<String>naturalOrder()),
+                    Comparator.nullsFirst(Comparator.<Integer>naturalOrder()),
+                    Comparator.nullsFirst(Comparator.<Boolean>naturalOrder()),
+                    Comparator.nullsFirst(Comparator.<Character>naturalOrder())
+            );
+
     private static <A, B, C, D> void constructor_helper(A a, B b, C c, D d, @NotNull String output) {
         aeq(new Quadruple<>(a, b, c, d), output);
     }
@@ -140,102 +148,102 @@ public class QuadrupleTest {
         equals_helper(null, null, null, null, 0.5, false);
     }
 
-    @Test
-    public void testToString() {
-        aeq(new Quadruple<>("hi", 3, true, 'a'), "(hi, 3, true, a)");
-        aeq(new Quadruple<>("hi", 3, true, null), "(hi, 3, true, null)");
-        aeq(new Quadruple<>(null, 3, true, 'a'), "(null, 3, true, a)");
-        aeq(new Quadruple<>(null, null, null, null), "(null, null, null, null)");
+    private static void QuadrupleComparator_compare_helper(
+            String pa,
+            Integer pb,
+            Boolean pc,
+            Character pd,
+            String qa,
+            Integer qb,
+            Boolean qc,
+            Character qd,
+            int output
+    ) {
+        aeq(PC.compare(new Quadruple<>(pa, pb, pc, pd), new Quadruple<>(qa, qb, qc, qd)), output);
     }
 
     @Test
     public void testQuadrupleComparator_compare() {
-        Quadruple.QuadrupleComparator<String, Integer, Boolean, Character> pc = new Quadruple.QuadrupleComparator<>(
-                Comparator.nullsFirst(Comparator.<String>naturalOrder()),
-                Comparator.nullsFirst(Comparator.<Integer>naturalOrder()),
-                Comparator.nullsFirst(Comparator.<Boolean>naturalOrder()),
-                Comparator.nullsFirst(Comparator.<Character>naturalOrder())
-        );
-        aeq(pc.compare(new Quadruple<>("hi", 3, true, 'a'), new Quadruple<>("hi", 3, true, 'a')), 0);
-        aeq(pc.compare(new Quadruple<>("hi", 3, true, 'a'), new Quadruple<>("hi", 4, true, 'a')), -1);
-        aeq(pc.compare(new Quadruple<>("hi", 3, true, 'a'), new Quadruple<>("hi", 3, true, null)), 1);
-        aeq(pc.compare(new Quadruple<>("hi", 3, true, 'a'), new Quadruple<>("bye", 3, true, 'a')), 1);
-        aeq(pc.compare(new Quadruple<>("hi", 3, true, 'a'), new Quadruple<>("bye", 4, true, 'a')), 1);
-        aeq(pc.compare(new Quadruple<>("hi", 3, true, 'a'), new Quadruple<>("bye", 3, true, null)), 1);
-        aeq(pc.compare(new Quadruple<>("hi", 3, true, 'a'), new Quadruple<>(null, 3, true, 'a')), 1);
-        aeq(pc.compare(new Quadruple<>("hi", 3, true, 'a'), new Quadruple<>(null, 4, true, 'a')), 1);
-        aeq(pc.compare(new Quadruple<>("hi", 3, true, 'a'), new Quadruple<>(null, null, null, null)), 1);
-        aeq(pc.compare(new Quadruple<>("hi", 4, true, 'a'), new Quadruple<>("hi", 3, true, 'a')), 1);
-        aeq(pc.compare(new Quadruple<>("hi", 4, true, 'a'), new Quadruple<>("hi", 4, true, 'a')), 0);
-        aeq(pc.compare(new Quadruple<>("hi", 4, true, 'a'), new Quadruple<>("hi", 3, true, null)), 1);
-        aeq(pc.compare(new Quadruple<>("hi", 4, true, 'a'), new Quadruple<>("bye", 3, true, 'a')), 1);
-        aeq(pc.compare(new Quadruple<>("hi", 4, true, 'a'), new Quadruple<>("bye", 4, true, 'a')), 1);
-        aeq(pc.compare(new Quadruple<>("hi", 4, true, 'a'), new Quadruple<>("bye", 3, true, null)), 1);
-        aeq(pc.compare(new Quadruple<>("hi", 4, true, 'a'), new Quadruple<>(null, 3, true, 'a')), 1);
-        aeq(pc.compare(new Quadruple<>("hi", 4, true, 'a'), new Quadruple<>(null, 4, true, 'a')), 1);
-        aeq(pc.compare(new Quadruple<>("hi", 4, true, 'a'), new Quadruple<>(null, null, null, null)), 1);
-        aeq(pc.compare(new Quadruple<>("hi", 3, true, null), new Quadruple<>("hi", 3, true, 'a')), -1);
-        aeq(pc.compare(new Quadruple<>("hi", 3, true, null), new Quadruple<>("hi", 4, true, 'a')), -1);
-        aeq(pc.compare(new Quadruple<>("hi", 3, true, null), new Quadruple<>("hi", 3, true, null)), 0);
-        aeq(pc.compare(new Quadruple<>("hi", 3, true, null), new Quadruple<>("bye", 3, true, 'a')), 1);
-        aeq(pc.compare(new Quadruple<>("hi", 3, true, null), new Quadruple<>("bye", 4, true, 'a')), 1);
-        aeq(pc.compare(new Quadruple<>("hi", 3, true, null), new Quadruple<>("bye", 3, true, null)), 1);
-        aeq(pc.compare(new Quadruple<>("hi", 3, true, null), new Quadruple<>(null, 3, true, 'a')), 1);
-        aeq(pc.compare(new Quadruple<>("hi", 3, true, null), new Quadruple<>(null, 4, true, 'a')), 1);
-        aeq(pc.compare(new Quadruple<>("hi", 3, true, null), new Quadruple<>(null, null, null, null)), 1);
-        aeq(pc.compare(new Quadruple<>("bye", 3, true, 'a'), new Quadruple<>("hi", 3, true, 'a')), -1);
-        aeq(pc.compare(new Quadruple<>("bye", 3, true, 'a'), new Quadruple<>("hi", 4, true, 'a')), -1);
-        aeq(pc.compare(new Quadruple<>("bye", 3, true, 'a'), new Quadruple<>("hi", 3, true, null)), -1);
-        aeq(pc.compare(new Quadruple<>("bye", 3, true, 'a'), new Quadruple<>("bye", 3, true, 'a')), 0);
-        aeq(pc.compare(new Quadruple<>("bye", 3, true, 'a'), new Quadruple<>("bye", 4, true, 'a')), -1);
-        aeq(pc.compare(new Quadruple<>("bye", 3, true, 'a'), new Quadruple<>("bye", 3, true, null)), 1);
-        aeq(pc.compare(new Quadruple<>("bye", 3, true, 'a'), new Quadruple<>(null, 3, true, 'a')), 1);
-        aeq(pc.compare(new Quadruple<>("bye", 3, true, 'a'), new Quadruple<>(null, 4, true, 'a')), 1);
-        aeq(pc.compare(new Quadruple<>("bye", 3, true, 'a'), new Quadruple<>(null, null, null, null)), 1);
-        aeq(pc.compare(new Quadruple<>("bye", 4, true, 'a'), new Quadruple<>("hi", 3, true, 'a')), -1);
-        aeq(pc.compare(new Quadruple<>("bye", 4, true, 'a'), new Quadruple<>("hi", 4, true, 'a')), -1);
-        aeq(pc.compare(new Quadruple<>("bye", 4, true, 'a'), new Quadruple<>("hi", 3, true, null)), -1);
-        aeq(pc.compare(new Quadruple<>("bye", 4, true, 'a'), new Quadruple<>("bye", 3, true, null)), 1);
-        aeq(pc.compare(new Quadruple<>("bye", 4, true, 'a'), new Quadruple<>("bye", 4, true, 'a')), 0);
-        aeq(pc.compare(new Quadruple<>("bye", 4, true, 'a'), new Quadruple<>("bye", 3, true, null)), 1);
-        aeq(pc.compare(new Quadruple<>("bye", 4, true, 'a'), new Quadruple<>(null, 3, true, 'a')), 1);
-        aeq(pc.compare(new Quadruple<>("bye", 4, true, 'a'), new Quadruple<>(null, 4, true, 'a')), 1);
-        aeq(pc.compare(new Quadruple<>("bye", 4, true, 'a'), new Quadruple<>(null, null, null, null)), 1);
-        aeq(pc.compare(new Quadruple<>("bye", 3, true, null), new Quadruple<>("hi", 3, true, 'a')), -1);
-        aeq(pc.compare(new Quadruple<>("bye", 3, true, null), new Quadruple<>("hi", 4, true, 'a')), -1);
-        aeq(pc.compare(new Quadruple<>("bye", 3, true, null), new Quadruple<>("hi", 3, true, null)), -1);
-        aeq(pc.compare(new Quadruple<>("bye", 3, true, null), new Quadruple<>("bye", 3, true, 'a')), -1);
-        aeq(pc.compare(new Quadruple<>("bye", 3, true, null), new Quadruple<>("bye", 4, true, 'a')), -1);
-        aeq(pc.compare(new Quadruple<>("bye", 3, true, null), new Quadruple<>("bye", 3, true, null)), 0);
-        aeq(pc.compare(new Quadruple<>("bye", 3, true, null), new Quadruple<>(null, 3, true, 'a')), 1);
-        aeq(pc.compare(new Quadruple<>("bye", 3, true, null), new Quadruple<>(null, 4, true, 'a')), 1);
-        aeq(pc.compare(new Quadruple<>("bye", 3, true, null), new Quadruple<>(null, null, null, null)), 1);
-        aeq(pc.compare(new Quadruple<>(null, 3, true, 'a'), new Quadruple<>("hi", 3, true, 'a')), -1);
-        aeq(pc.compare(new Quadruple<>(null, 3, true, 'a'), new Quadruple<>("hi", 4, true, 'a')), -1);
-        aeq(pc.compare(new Quadruple<>(null, 3, true, 'a'), new Quadruple<>("hi", 3, true, null)), -1);
-        aeq(pc.compare(new Quadruple<>(null, 3, true, 'a'), new Quadruple<>("bye", 3, true, 'a')), -1);
-        aeq(pc.compare(new Quadruple<>(null, 3, true, 'a'), new Quadruple<>("bye", 4, true, 'a')), -1);
-        aeq(pc.compare(new Quadruple<>(null, 3, true, 'a'), new Quadruple<>("bye", 3, true, null)), -1);
-        aeq(pc.compare(new Quadruple<>(null, 3, true, 'a'), new Quadruple<>(null, 3, true, 'a')), 0);
-        aeq(pc.compare(new Quadruple<>(null, 3, true, 'a'), new Quadruple<>(null, 4, true, 'a')), -1);
-        aeq(pc.compare(new Quadruple<>(null, 3, true, 'a'), new Quadruple<>(null, null, null, null)), 1);
-        aeq(pc.compare(new Quadruple<>(null, 4, true, 'a'), new Quadruple<>("hi", 3, true, 'a')), -1);
-        aeq(pc.compare(new Quadruple<>(null, 4, true, 'a'), new Quadruple<>("hi", 4, true, 'a')), -1);
-        aeq(pc.compare(new Quadruple<>(null, 4, true, 'a'), new Quadruple<>("hi", 3, true, null)), -1);
-        aeq(pc.compare(new Quadruple<>(null, 4, true, 'a'), new Quadruple<>("bye", 3, true, 'a')), -1);
-        aeq(pc.compare(new Quadruple<>(null, 4, true, 'a'), new Quadruple<>("bye", 4, true, 'a')), -1);
-        aeq(pc.compare(new Quadruple<>(null, 4, true, 'a'), new Quadruple<>("bye", 3, true, null)), -1);
-        aeq(pc.compare(new Quadruple<>(null, 4, true, 'a'), new Quadruple<>(null, 3, true, 'a')), 1);
-        aeq(pc.compare(new Quadruple<>(null, 4, true, 'a'), new Quadruple<>(null, 4, true, 'a')), 0);
-        aeq(pc.compare(new Quadruple<>(null, 4, true, 'a'), new Quadruple<>(null, null, null, null)), 1);
-        aeq(pc.compare(new Quadruple<>(null, null, null, null), new Quadruple<>("hi", 3, true, 'a')), -1);
-        aeq(pc.compare(new Quadruple<>(null, null, null, null), new Quadruple<>("hi", 4, true, 'a')), -1);
-        aeq(pc.compare(new Quadruple<>(null, null, null, null), new Quadruple<>("hi", 3, true, null)), -1);
-        aeq(pc.compare(new Quadruple<>(null, null, null, null), new Quadruple<>("bye", 3, true, 'a')), -1);
-        aeq(pc.compare(new Quadruple<>(null, null, null, null), new Quadruple<>("bye", 4, true, 'a')), -1);
-        aeq(pc.compare(new Quadruple<>(null, null, null, null), new Quadruple<>("bye", 3, true, null)), -1);
-        aeq(pc.compare(new Quadruple<>(null, null, null, null), new Quadruple<>(null, 3, true, 'a')), -1);
-        aeq(pc.compare(new Quadruple<>(null, null, null, null), new Quadruple<>(null, 4, true, 'a')), -1);
-        aeq(pc.compare(new Quadruple<>(null, null, null, null), new Quadruple<>(null, null, null, null)), 0);
+        QuadrupleComparator_compare_helper("hi", 3, true, 'a', "hi", 3, true, 'a', 0);
+        QuadrupleComparator_compare_helper("hi", 3, true, 'a', "hi", 4, true, 'a', -1);
+        QuadrupleComparator_compare_helper("hi", 3, true, 'a', "hi", 3, true, null, 1);
+        QuadrupleComparator_compare_helper("hi", 3, true, 'a', "bye", 3, true, 'a', 1);
+        QuadrupleComparator_compare_helper("hi", 3, true, 'a', "bye", 4, true, 'a', 1);
+        QuadrupleComparator_compare_helper("hi", 3, true, 'a', "bye", 3, true, null, 1);
+        QuadrupleComparator_compare_helper("hi", 3, true, 'a', null, 3, true, 'a', 1);
+        QuadrupleComparator_compare_helper("hi", 3, true, 'a', null, 4, true, 'a', 1);
+        QuadrupleComparator_compare_helper("hi", 3, true, 'a', null, null, null, null, 1);
+        QuadrupleComparator_compare_helper("hi", 4, true, 'a', "hi", 3, true, 'a', 1);
+        QuadrupleComparator_compare_helper("hi", 4, true, 'a', "hi", 4, true, 'a', 0);
+        QuadrupleComparator_compare_helper("hi", 4, true, 'a', "hi", 3, true, null, 1);
+        QuadrupleComparator_compare_helper("hi", 4, true, 'a', "bye", 3, true, 'a', 1);
+        QuadrupleComparator_compare_helper("hi", 4, true, 'a', "bye", 4, true, 'a', 1);
+        QuadrupleComparator_compare_helper("hi", 4, true, 'a', "bye", 3, true, null, 1);
+        QuadrupleComparator_compare_helper("hi", 4, true, 'a', null, 3, true, 'a', 1);
+        QuadrupleComparator_compare_helper("hi", 4, true, 'a', null, 4, true, 'a', 1);
+        QuadrupleComparator_compare_helper("hi", 4, true, 'a', null, null, null, null, 1);
+        QuadrupleComparator_compare_helper("hi", 3, true, null, "hi", 3, true, 'a', -1);
+        QuadrupleComparator_compare_helper("hi", 3, true, null, "hi", 4, true, 'a', -1);
+        QuadrupleComparator_compare_helper("hi", 3, true, null, "hi", 3, true, null, 0);
+        QuadrupleComparator_compare_helper("hi", 3, true, null, "bye", 3, true, 'a', 1);
+        QuadrupleComparator_compare_helper("hi", 3, true, null, "bye", 4, true, 'a', 1);
+        QuadrupleComparator_compare_helper("hi", 3, true, null, "bye", 3, true, null, 1);
+        QuadrupleComparator_compare_helper("hi", 3, true, null, null, 3, true, 'a', 1);
+        QuadrupleComparator_compare_helper("hi", 3, true, null, null, 4, true, 'a', 1);
+        QuadrupleComparator_compare_helper("hi", 3, true, null, null, null, null, null, 1);
+        QuadrupleComparator_compare_helper("bye", 3, true, 'a', "hi", 3, true, 'a', -1);
+        QuadrupleComparator_compare_helper("bye", 3, true, 'a', "hi", 4, true, 'a', -1);
+        QuadrupleComparator_compare_helper("bye", 3, true, 'a', "hi", 3, true, null, -1);
+        QuadrupleComparator_compare_helper("bye", 3, true, 'a', "bye", 3, true, 'a', 0);
+        QuadrupleComparator_compare_helper("bye", 3, true, 'a', "bye", 4, true, 'a', -1);
+        QuadrupleComparator_compare_helper("bye", 3, true, 'a', "bye", 3, true, null, 1);
+        QuadrupleComparator_compare_helper("bye", 3, true, 'a', null, 3, true, 'a', 1);
+        QuadrupleComparator_compare_helper("bye", 3, true, 'a', null, 4, true, 'a', 1);
+        QuadrupleComparator_compare_helper("bye", 3, true, 'a', null, null, null, null, 1);
+        QuadrupleComparator_compare_helper("bye", 4, true, 'a', "hi", 3, true, 'a', -1);
+        QuadrupleComparator_compare_helper("bye", 4, true, 'a', "hi", 4, true, 'a', -1);
+        QuadrupleComparator_compare_helper("bye", 4, true, 'a', "hi", 3, true, null, -1);
+        QuadrupleComparator_compare_helper("bye", 4, true, 'a', "bye", 3, true, null, 1);
+        QuadrupleComparator_compare_helper("bye", 4, true, 'a', "bye", 4, true, 'a', 0);
+        QuadrupleComparator_compare_helper("bye", 4, true, 'a', "bye", 3, true, null, 1);
+        QuadrupleComparator_compare_helper("bye", 4, true, 'a', null, 3, true, 'a', 1);
+        QuadrupleComparator_compare_helper("bye", 4, true, 'a', null, 4, true, 'a', 1);
+        QuadrupleComparator_compare_helper("bye", 4, true, 'a', null, null, null, null, 1);
+        QuadrupleComparator_compare_helper("bye", 3, true, null, "hi", 3, true, 'a', -1);
+        QuadrupleComparator_compare_helper("bye", 3, true, null, "hi", 4, true, 'a', -1);
+        QuadrupleComparator_compare_helper("bye", 3, true, null, "hi", 3, true, null, -1);
+        QuadrupleComparator_compare_helper("bye", 3, true, null, "bye", 3, true, 'a', -1);
+        QuadrupleComparator_compare_helper("bye", 3, true, null, "bye", 4, true, 'a', -1);
+        QuadrupleComparator_compare_helper("bye", 3, true, null, "bye", 3, true, null, 0);
+        QuadrupleComparator_compare_helper("bye", 3, true, null, null, 3, true, 'a', 1);
+        QuadrupleComparator_compare_helper("bye", 3, true, null, null, 4, true, 'a', 1);
+        QuadrupleComparator_compare_helper("bye", 3, true, null, null, null, null, null, 1);
+        QuadrupleComparator_compare_helper(null, 3, true, 'a', "hi", 3, true, 'a', -1);
+        QuadrupleComparator_compare_helper(null, 3, true, 'a', "hi", 4, true, 'a', -1);
+        QuadrupleComparator_compare_helper(null, 3, true, 'a', "hi", 3, true, null, -1);
+        QuadrupleComparator_compare_helper(null, 3, true, 'a', "bye", 3, true, 'a', -1);
+        QuadrupleComparator_compare_helper(null, 3, true, 'a', "bye", 4, true, 'a', -1);
+        QuadrupleComparator_compare_helper(null, 3, true, 'a', "bye", 3, true, null, -1);
+        QuadrupleComparator_compare_helper(null, 3, true, 'a', null, 3, true, 'a', 0);
+        QuadrupleComparator_compare_helper(null, 3, true, 'a', null, 4, true, 'a', -1);
+        QuadrupleComparator_compare_helper(null, 3, true, 'a', null, null, null, null, 1);
+        QuadrupleComparator_compare_helper(null, 4, true, 'a', "hi", 3, true, 'a', -1);
+        QuadrupleComparator_compare_helper(null, 4, true, 'a', "hi", 4, true, 'a', -1);
+        QuadrupleComparator_compare_helper(null, 4, true, 'a', "hi", 3, true, null, -1);
+        QuadrupleComparator_compare_helper(null, 4, true, 'a', "bye", 3, true, 'a', -1);
+        QuadrupleComparator_compare_helper(null, 4, true, 'a', "bye", 4, true, 'a', -1);
+        QuadrupleComparator_compare_helper(null, 4, true, 'a', "bye", 3, true, null, -1);
+        QuadrupleComparator_compare_helper(null, 4, true, 'a', null, 3, true, 'a', 1);
+        QuadrupleComparator_compare_helper(null, 4, true, 'a', null, 4, true, 'a', 0);
+        QuadrupleComparator_compare_helper(null, 4, true, 'a', null, null, null, null, 1);
+        QuadrupleComparator_compare_helper(null, null, null, null, "hi", 3, true, 'a', -1);
+        QuadrupleComparator_compare_helper(null, null, null, null, "hi", 4, true, 'a', -1);
+        QuadrupleComparator_compare_helper(null, null, null, null, "hi", 3, true, null, -1);
+        QuadrupleComparator_compare_helper(null, null, null, null, "bye", 3, true, 'a', -1);
+        QuadrupleComparator_compare_helper(null, null, null, null, "bye", 4, true, 'a', -1);
+        QuadrupleComparator_compare_helper(null, null, null, null, "bye", 3, true, null, -1);
+        QuadrupleComparator_compare_helper(null, null, null, null, null, 3, true, 'a', -1);
+        QuadrupleComparator_compare_helper(null, null, null, null, null, 4, true, 'a', -1);
+        QuadrupleComparator_compare_helper(null, null, null, null, null, null, null, null, 0);
     }
 }

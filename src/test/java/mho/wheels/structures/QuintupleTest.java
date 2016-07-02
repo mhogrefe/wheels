@@ -187,14 +187,6 @@ public class QuintupleTest {
     }
 
     @Test
-    public void testToString() {
-        aeq(new Quintuple<>("hi", 3, true, 'a', GT), "(hi, 3, true, a, >)");
-        aeq(new Quintuple<>("hi", 3, true, 'a', null), "(hi, 3, true, a, null)");
-        aeq(new Quintuple<>(null, 3, true, 'a', GT), "(null, 3, true, a, >)");
-        aeq(new Quintuple<>(null, null, null, null, null), "(null, null, null, null, null)");
-    }
-
-    @Test
     public void testQuintupleComparator_compare() {
         Quintuple.QuintupleComparator<
                 String,

@@ -9,6 +9,12 @@ import java.util.Comparator;
 import static mho.wheels.testing.Testing.*;
 
 public class TripleTest {
+    private static final Triple.TripleComparator<String, Integer, Boolean> PC = new Triple.TripleComparator<>(
+            Comparator.nullsFirst(Comparator.<String>naturalOrder()),
+            Comparator.nullsFirst(Comparator.<Integer>naturalOrder()),
+            Comparator.nullsFirst(Comparator.<Boolean>naturalOrder())
+    );
+
     private static <A, B, C> void constructor_helper(A a, B b, C c, @NotNull String output) {
         aeq(new Triple<>(a, b, c), output);
     }
@@ -133,101 +139,100 @@ public class TripleTest {
         equals_helper(null, null, null, 0.5, false);
     }
 
-    @Test
-    public void testToString() {
-        aeq(new Triple<>("hi", 3, true), "(hi, 3, true)");
-        aeq(new Triple<>("hi", 3, null), "(hi, 3, null)");
-        aeq(new Triple<>(null, 3, true), "(null, 3, true)");
-        aeq(new Triple<>(null, null, null), "(null, null, null)");
+    private static void TripleComparator_compare_helper(
+            String pa,
+            Integer pb,
+            Boolean pc,
+            String qa,
+            Integer qb,
+            Boolean qc,
+            int output
+    ) {
+        aeq(PC.compare(new Triple<>(pa, pb, pc), new Triple<>(qa, qb, qc)), output);
     }
 
     @Test
     public void testTripleComparator_compare() {
-        Triple.TripleComparator<String, Integer, Boolean> pc = new Triple.TripleComparator<>(
-                Comparator.nullsFirst(Comparator.<String>naturalOrder()),
-                Comparator.nullsFirst(Comparator.<Integer>naturalOrder()),
-                Comparator.nullsFirst(Comparator.<Boolean>naturalOrder())
-        );
-        aeq(pc.compare(new Triple<>("hi", 3, true), new Triple<>("hi", 3, true)), 0);
-        aeq(pc.compare(new Triple<>("hi", 3, true), new Triple<>("hi", 4, true)), -1);
-        aeq(pc.compare(new Triple<>("hi", 3, true), new Triple<>("hi", 3, null)), 1);
-        aeq(pc.compare(new Triple<>("hi", 3, true), new Triple<>("bye", 3, true)), 1);
-        aeq(pc.compare(new Triple<>("hi", 3, true), new Triple<>("bye", 4, true)), 1);
-        aeq(pc.compare(new Triple<>("hi", 3, true), new Triple<>("bye", 3, null)), 1);
-        aeq(pc.compare(new Triple<>("hi", 3, true), new Triple<>(null, 3, true)), 1);
-        aeq(pc.compare(new Triple<>("hi", 3, true), new Triple<>(null, 4, true)), 1);
-        aeq(pc.compare(new Triple<>("hi", 3, true), new Triple<>(null, null, null)), 1);
-        aeq(pc.compare(new Triple<>("hi", 4, true), new Triple<>("hi", 3, true)), 1);
-        aeq(pc.compare(new Triple<>("hi", 4, true), new Triple<>("hi", 4, true)), 0);
-        aeq(pc.compare(new Triple<>("hi", 4, true), new Triple<>("hi", 3, null)), 1);
-        aeq(pc.compare(new Triple<>("hi", 4, true), new Triple<>("bye", 3, true)), 1);
-        aeq(pc.compare(new Triple<>("hi", 4, true), new Triple<>("bye", 4, true)), 1);
-        aeq(pc.compare(new Triple<>("hi", 4, true), new Triple<>("bye", 3, null)), 1);
-        aeq(pc.compare(new Triple<>("hi", 4, true), new Triple<>(null, 3, true)), 1);
-        aeq(pc.compare(new Triple<>("hi", 4, true), new Triple<>(null, 4, true)), 1);
-        aeq(pc.compare(new Triple<>("hi", 4, true), new Triple<>(null, null, null)), 1);
-        aeq(pc.compare(new Triple<>("hi", 3, null), new Triple<>("hi", 3, true)), -1);
-        aeq(pc.compare(new Triple<>("hi", 3, null), new Triple<>("hi", 4, true)), -1);
-        aeq(pc.compare(new Triple<>("hi", 3, null), new Triple<>("hi", 3, null)), 0);
-        aeq(pc.compare(new Triple<>("hi", 3, null), new Triple<>("bye", 3, true)), 1);
-        aeq(pc.compare(new Triple<>("hi", 3, null), new Triple<>("bye", 4, true)), 1);
-        aeq(pc.compare(new Triple<>("hi", 3, null), new Triple<>("bye", 3, null)), 1);
-        aeq(pc.compare(new Triple<>("hi", 3, null), new Triple<>(null, 3, true)), 1);
-        aeq(pc.compare(new Triple<>("hi", 3, null), new Triple<>(null, 4, true)), 1);
-        aeq(pc.compare(new Triple<>("hi", 3, null), new Triple<>(null, null, null)), 1);
-        aeq(pc.compare(new Triple<>("bye", 3, true), new Triple<>("hi", 3, true)), -1);
-        aeq(pc.compare(new Triple<>("bye", 3, true), new Triple<>("hi", 4, true)), -1);
-        aeq(pc.compare(new Triple<>("bye", 3, true), new Triple<>("hi", 3, null)), -1);
-        aeq(pc.compare(new Triple<>("bye", 3, true), new Triple<>("bye", 3, true)), 0);
-        aeq(pc.compare(new Triple<>("bye", 3, true), new Triple<>("bye", 4, true)), -1);
-        aeq(pc.compare(new Triple<>("bye", 3, true), new Triple<>("bye", 3, null)), 1);
-        aeq(pc.compare(new Triple<>("bye", 3, true), new Triple<>(null, 3, true)), 1);
-        aeq(pc.compare(new Triple<>("bye", 3, true), new Triple<>(null, 4, true)), 1);
-        aeq(pc.compare(new Triple<>("bye", 3, true), new Triple<>(null, null, null)), 1);
-        aeq(pc.compare(new Triple<>("bye", 4, true), new Triple<>("hi", 3, true)), -1);
-        aeq(pc.compare(new Triple<>("bye", 4, true), new Triple<>("hi", 4, true)), -1);
-        aeq(pc.compare(new Triple<>("bye", 4, true), new Triple<>("hi", 3, null)), -1);
-        aeq(pc.compare(new Triple<>("bye", 4, true), new Triple<>("bye", 3, null)), 1);
-        aeq(pc.compare(new Triple<>("bye", 4, true), new Triple<>("bye", 4, true)), 0);
-        aeq(pc.compare(new Triple<>("bye", 4, true), new Triple<>("bye", 3, null)), 1);
-        aeq(pc.compare(new Triple<>("bye", 4, true), new Triple<>(null, 3, true)), 1);
-        aeq(pc.compare(new Triple<>("bye", 4, true), new Triple<>(null, 4, true)), 1);
-        aeq(pc.compare(new Triple<>("bye", 4, true), new Triple<>(null, null, null)), 1);
-        aeq(pc.compare(new Triple<>("bye", 3, null), new Triple<>("hi", 3, true)), -1);
-        aeq(pc.compare(new Triple<>("bye", 3, null), new Triple<>("hi", 4, true)), -1);
-        aeq(pc.compare(new Triple<>("bye", 3, null), new Triple<>("hi", 3, null)), -1);
-        aeq(pc.compare(new Triple<>("bye", 3, null), new Triple<>("bye", 3, true)), -1);
-        aeq(pc.compare(new Triple<>("bye", 3, null), new Triple<>("bye", 4, true)), -1);
-        aeq(pc.compare(new Triple<>("bye", 3, null), new Triple<>("bye", 3, null)), 0);
-        aeq(pc.compare(new Triple<>("bye", 3, null), new Triple<>(null, 3, true)), 1);
-        aeq(pc.compare(new Triple<>("bye", 3, null), new Triple<>(null, 4, true)), 1);
-        aeq(pc.compare(new Triple<>("bye", 3, null), new Triple<>(null, null, null)), 1);
-        aeq(pc.compare(new Triple<>(null, 3, true), new Triple<>("hi", 3, true)), -1);
-        aeq(pc.compare(new Triple<>(null, 3, true), new Triple<>("hi", 4, true)), -1);
-        aeq(pc.compare(new Triple<>(null, 3, true), new Triple<>("hi", 3, null)), -1);
-        aeq(pc.compare(new Triple<>(null, 3, true), new Triple<>("bye", 3, true)), -1);
-        aeq(pc.compare(new Triple<>(null, 3, true), new Triple<>("bye", 4, true)), -1);
-        aeq(pc.compare(new Triple<>(null, 3, true), new Triple<>("bye", 3, null)), -1);
-        aeq(pc.compare(new Triple<>(null, 3, true), new Triple<>(null, 3, true)), 0);
-        aeq(pc.compare(new Triple<>(null, 3, true), new Triple<>(null, 4, true)), -1);
-        aeq(pc.compare(new Triple<>(null, 3, true), new Triple<>(null, null, null)), 1);
-        aeq(pc.compare(new Triple<>(null, 4, true), new Triple<>("hi", 3, true)), -1);
-        aeq(pc.compare(new Triple<>(null, 4, true), new Triple<>("hi", 4, true)), -1);
-        aeq(pc.compare(new Triple<>(null, 4, true), new Triple<>("hi", 3, null)), -1);
-        aeq(pc.compare(new Triple<>(null, 4, true), new Triple<>("bye", 3, true)), -1);
-        aeq(pc.compare(new Triple<>(null, 4, true), new Triple<>("bye", 4, true)), -1);
-        aeq(pc.compare(new Triple<>(null, 4, true), new Triple<>("bye", 3, null)), -1);
-        aeq(pc.compare(new Triple<>(null, 4, true), new Triple<>(null, 3, true)), 1);
-        aeq(pc.compare(new Triple<>(null, 4, true), new Triple<>(null, 4, true)), 0);
-        aeq(pc.compare(new Triple<>(null, 4, true), new Triple<>(null, null, null)), 1);
-        aeq(pc.compare(new Triple<>(null, null, null), new Triple<>("hi", 3, true)), -1);
-        aeq(pc.compare(new Triple<>(null, null, null), new Triple<>("hi", 4, true)), -1);
-        aeq(pc.compare(new Triple<>(null, null, null), new Triple<>("hi", 3, null)), -1);
-        aeq(pc.compare(new Triple<>(null, null, null), new Triple<>("bye", 3, true)), -1);
-        aeq(pc.compare(new Triple<>(null, null, null), new Triple<>("bye", 4, true)), -1);
-        aeq(pc.compare(new Triple<>(null, null, null), new Triple<>("bye", 3, null)), -1);
-        aeq(pc.compare(new Triple<>(null, null, null), new Triple<>(null, 3, true)), -1);
-        aeq(pc.compare(new Triple<>(null, null, null), new Triple<>(null, 4, true)), -1);
-        aeq(pc.compare(new Triple<>(null, null, null), new Triple<>(null, null, null)), 0);
+        TripleComparator_compare_helper("hi", 3, true, "hi", 3, true, 0);
+        TripleComparator_compare_helper("hi", 3, true, "hi", 4, true, -1);
+        TripleComparator_compare_helper("hi", 3, true, "hi", 3, null, 1);
+        TripleComparator_compare_helper("hi", 3, true, "bye", 3, true, 1);
+        TripleComparator_compare_helper("hi", 3, true, "bye", 4, true, 1);
+        TripleComparator_compare_helper("hi", 3, true, "bye", 3, null, 1);
+        TripleComparator_compare_helper("hi", 3, true, null, 3, true, 1);
+        TripleComparator_compare_helper("hi", 3, true, null, 4, true, 1);
+        TripleComparator_compare_helper("hi", 3, true, null, null, null, 1);
+        TripleComparator_compare_helper("hi", 4, true, "hi", 3, true, 1);
+        TripleComparator_compare_helper("hi", 4, true, "hi", 4, true, 0);
+        TripleComparator_compare_helper("hi", 4, true, "hi", 3, null, 1);
+        TripleComparator_compare_helper("hi", 4, true, "bye", 3, true, 1);
+        TripleComparator_compare_helper("hi", 4, true, "bye", 4, true, 1);
+        TripleComparator_compare_helper("hi", 4, true, "bye", 3, null, 1);
+        TripleComparator_compare_helper("hi", 4, true, null, 3, true, 1);
+        TripleComparator_compare_helper("hi", 4, true, null, 4, true, 1);
+        TripleComparator_compare_helper("hi", 4, true, null, null, null, 1);
+        TripleComparator_compare_helper("hi", 3, null, "hi", 3, true, -1);
+        TripleComparator_compare_helper("hi", 3, null, "hi", 4, true, -1);
+        TripleComparator_compare_helper("hi", 3, null, "hi", 3, null, 0);
+        TripleComparator_compare_helper("hi", 3, null, "bye", 3, true, 1);
+        TripleComparator_compare_helper("hi", 3, null, "bye", 4, true, 1);
+        TripleComparator_compare_helper("hi", 3, null, "bye", 3, null, 1);
+        TripleComparator_compare_helper("hi", 3, null, null, 3, true, 1);
+        TripleComparator_compare_helper("hi", 3, null, null, 4, true, 1);
+        TripleComparator_compare_helper("hi", 3, null, null, null, null, 1);
+        TripleComparator_compare_helper("bye", 3, true, "hi", 3, true, -1);
+        TripleComparator_compare_helper("bye", 3, true, "hi", 4, true, -1);
+        TripleComparator_compare_helper("bye", 3, true, "hi", 3, null, -1);
+        TripleComparator_compare_helper("bye", 3, true, "bye", 3, true, 0);
+        TripleComparator_compare_helper("bye", 3, true, "bye", 4, true, -1);
+        TripleComparator_compare_helper("bye", 3, true, "bye", 3, null, 1);
+        TripleComparator_compare_helper("bye", 3, true, null, 3, true, 1);
+        TripleComparator_compare_helper("bye", 3, true, null, 4, true, 1);
+        TripleComparator_compare_helper("bye", 3, true, null, null, null, 1);
+        TripleComparator_compare_helper("bye", 4, true, "hi", 3, true, -1);
+        TripleComparator_compare_helper("bye", 4, true, "hi", 4, true, -1);
+        TripleComparator_compare_helper("bye", 4, true, "hi", 3, null, -1);
+        TripleComparator_compare_helper("bye", 4, true, "bye", 3, null, 1);
+        TripleComparator_compare_helper("bye", 4, true, "bye", 4, true, 0);
+        TripleComparator_compare_helper("bye", 4, true, "bye", 3, null, 1);
+        TripleComparator_compare_helper("bye", 4, true, null, 3, true, 1);
+        TripleComparator_compare_helper("bye", 4, true, null, 4, true, 1);
+        TripleComparator_compare_helper("bye", 4, true, null, null, null, 1);
+        TripleComparator_compare_helper("bye", 3, null, "hi", 3, true, -1);
+        TripleComparator_compare_helper("bye", 3, null, "hi", 4, true, -1);
+        TripleComparator_compare_helper("bye", 3, null, "hi", 3, null, -1);
+        TripleComparator_compare_helper("bye", 3, null, "bye", 3, true, -1);
+        TripleComparator_compare_helper("bye", 3, null, "bye", 4, true, -1);
+        TripleComparator_compare_helper("bye", 3, null, "bye", 3, null, 0);
+        TripleComparator_compare_helper("bye", 3, null, null, 3, true, 1);
+        TripleComparator_compare_helper("bye", 3, null, null, 4, true, 1);
+        TripleComparator_compare_helper("bye", 3, null, null, null, null, 1);
+        TripleComparator_compare_helper(null, 3, true, "hi", 3, true, -1);
+        TripleComparator_compare_helper(null, 3, true, "hi", 4, true, -1);
+        TripleComparator_compare_helper(null, 3, true, "hi", 3, null, -1);
+        TripleComparator_compare_helper(null, 3, true, "bye", 3, true, -1);
+        TripleComparator_compare_helper(null, 3, true, "bye", 4, true, -1);
+        TripleComparator_compare_helper(null, 3, true, "bye", 3, null, -1);
+        TripleComparator_compare_helper(null, 3, true, null, 3, true, 0);
+        TripleComparator_compare_helper(null, 3, true, null, 4, true, -1);
+        TripleComparator_compare_helper(null, 3, true, null, null, null, 1);
+        TripleComparator_compare_helper(null, 4, true, "hi", 3, true, -1);
+        TripleComparator_compare_helper(null, 4, true, "hi", 4, true, -1);
+        TripleComparator_compare_helper(null, 4, true, "hi", 3, null, -1);
+        TripleComparator_compare_helper(null, 4, true, "bye", 3, true, -1);
+        TripleComparator_compare_helper(null, 4, true, "bye", 4, true, -1);
+        TripleComparator_compare_helper(null, 4, true, "bye", 3, null, -1);
+        TripleComparator_compare_helper(null, 4, true, null, 3, true, 1);
+        TripleComparator_compare_helper(null, 4, true, null, 4, true, 0);
+        TripleComparator_compare_helper(null, 4, true, null, null, null, 1);
+        TripleComparator_compare_helper(null, null, null, "hi", 3, true, -1);
+        TripleComparator_compare_helper(null, null, null, "hi", 4, true, -1);
+        TripleComparator_compare_helper(null, null, null, "hi", 3, null, -1);
+        TripleComparator_compare_helper(null, null, null, "bye", 3, true, -1);
+        TripleComparator_compare_helper(null, null, null, "bye", 4, true, -1);
+        TripleComparator_compare_helper(null, null, null, "bye", 3, null, -1);
+        TripleComparator_compare_helper(null, null, null, null, 3, true, -1);
+        TripleComparator_compare_helper(null, null, null, null, 4, true, -1);
+        TripleComparator_compare_helper(null, null, null, null, null, null, 0);
     }
 }

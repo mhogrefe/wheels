@@ -40,12 +40,12 @@ Progress
 | Either                      | ✘       | ✘       | ✘     | ✘     | ✘          |
 | FiniteDomainFunction        | ✔       | ✘       | ✘     | ✘     | ✘          |
 | NullableOptional            | ✔       | ✔       | ✔     | ✔     | ✔          |
-| Pair                        | ✔       | ✔       | ✘     | ✘     | ✘          |
-| Quadruple                   | ✔       | ✔       | ✘     | ✘     | ✘          |
+| Pair                        | ✔       | ✔       | ✔     | ✘     | ✘          |
+| Quadruple                   | ✔       | ✔       | ✔     | ✘     | ✘          |
 | Quintuple                   | ✔       | ✔       | ✘     | ✘     | ✘          |
 | Septuple                    | ✔       | ✔       | ✘     | ✘     | ✘          |
 | Sextuple                    | ✔       | ✔       | ✘     | ✘     | ✘          |
-| Triple                      | ✔       | ✔       | ✘     | ✘     | ✘          |
+| Triple                      | ✔       | ✔       | ✔     | ✘     | ✘          |
 | Demos                       | ✘       | ✘       | ✘     | ✘     | ✘          |
 | Testing                     | ✘       | ✘       | ✘     | ✘     | ✘          |
 | TestProperties              | ✘       | ✘       | ✘     | ✘     | ✘          |
