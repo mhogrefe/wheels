@@ -11,6 +11,20 @@ import static mho.wheels.ordering.Ordering.*;
 import static mho.wheels.testing.Testing.*;
 
 public class QuintupleTest {
+    private static final Quintuple.QuintupleComparator<
+                String,
+                Integer,
+                Boolean,
+                Character,
+                Ordering
+                > PC = new Quintuple.QuintupleComparator<>(
+                    Comparator.nullsFirst(Comparator.<String>naturalOrder()),
+                    Comparator.nullsFirst(Comparator.<Integer>naturalOrder()),
+                    Comparator.nullsFirst(Comparator.<Boolean>naturalOrder()),
+                    Comparator.nullsFirst(Comparator.<Character>naturalOrder()),
+                    Comparator.nullsFirst(Comparator.<Ordering>naturalOrder())
+                );
+
     private static <A, B, C, D, E> void constructor_helper(A a, B b, C c, D d, E e, @NotNull String output) {
         aeq(new Quintuple<>(a, b, c, d, e), output);
     }
@@ -186,104 +200,122 @@ public class QuintupleTest {
         equals_helper(null, 3, true, 'a', ">", 0.5, false);
     }
 
+    private static void QuintupleComparator_compare_helper(
+            String pa,
+            Integer pb,
+            Boolean pc,
+            Character pd,
+            @NotNull String pe,
+            String qa,
+            Integer qb,
+            Boolean qc,
+            Character qd,
+            @NotNull String qe,
+            int output
+    ) {
+        aeq(
+                PC.compare(
+                        new Quintuple<>(
+                                pa,
+                                pb,
+                                pc,
+                                pd,
+                                Readers.readWithNullsStrict(Readers::readOrderingStrict).apply(pe).get()
+                        ),
+                        new Quintuple<>(
+                                qa,
+                                qb,
+                                qc,
+                                qd,
+                                Readers.readWithNullsStrict(Readers::readOrderingStrict).apply(qe).get()
+                        )
+                ),
+                output
+        );
+    }
+
     @Test
     public void testQuintupleComparator_compare() {
-        Quintuple.QuintupleComparator<
-                String,
-                Integer,
-                Boolean,
-                Character,
-                Ordering
-                > pc = new Quintuple.QuintupleComparator<>(
-                    Comparator.nullsFirst(Comparator.<String>naturalOrder()),
-                    Comparator.nullsFirst(Comparator.<Integer>naturalOrder()),
-                    Comparator.nullsFirst(Comparator.<Boolean>naturalOrder()),
-                    Comparator.nullsFirst(Comparator.<Character>naturalOrder()),
-                    Comparator.nullsFirst(Comparator.<Ordering>naturalOrder())
-                );
-        aeq(pc.compare(new Quintuple<>("hi", 3, true, 'a', GT), new Quintuple<>("hi", 3, true, 'a', GT)), 0);
-        aeq(pc.compare(new Quintuple<>("hi", 3, true, 'a', GT), new Quintuple<>("hi", 4, true, 'a', GT)), -1);
-        aeq(pc.compare(new Quintuple<>("hi", 3, true, 'a', GT), new Quintuple<>("hi", 3, true, 'a', null)), 1);
-        aeq(pc.compare(new Quintuple<>("hi", 3, true, 'a', GT), new Quintuple<>("bye", 3, true, 'a', GT)), 1);
-        aeq(pc.compare(new Quintuple<>("hi", 3, true, 'a', GT), new Quintuple<>("bye", 4, true, 'a', GT)), 1);
-        aeq(pc.compare(new Quintuple<>("hi", 3, true, 'a', GT), new Quintuple<>("bye", 3, true, 'a', null)), 1);
-        aeq(pc.compare(new Quintuple<>("hi", 3, true, 'a', GT), new Quintuple<>(null, 3, true, 'a', GT)), 1);
-        aeq(pc.compare(new Quintuple<>("hi", 3, true, 'a', GT), new Quintuple<>(null, 4, true, 'a', GT)), 1);
-        aeq(pc.compare(new Quintuple<>("hi", 3, true, 'a', GT), new Quintuple<>(null, null, null, null, null)), 1);
-        aeq(pc.compare(new Quintuple<>("hi", 4, true, 'a', GT), new Quintuple<>("hi", 3, true, 'a', GT)), 1);
-        aeq(pc.compare(new Quintuple<>("hi", 4, true, 'a', GT), new Quintuple<>("hi", 4, true, 'a', GT)), 0);
-        aeq(pc.compare(new Quintuple<>("hi", 4, true, 'a', GT), new Quintuple<>("hi", 3, true, 'a', null)), 1);
-        aeq(pc.compare(new Quintuple<>("hi", 4, true, 'a', GT), new Quintuple<>("bye", 3, true, 'a', GT)), 1);
-        aeq(pc.compare(new Quintuple<>("hi", 4, true, 'a', GT), new Quintuple<>("bye", 4, true, 'a', GT)), 1);
-        aeq(pc.compare(new Quintuple<>("hi", 4, true, 'a', GT), new Quintuple<>("bye", 3, true, 'a', null)), 1);
-        aeq(pc.compare(new Quintuple<>("hi", 4, true, 'a', GT), new Quintuple<>(null, 3, true, 'a', GT)), 1);
-        aeq(pc.compare(new Quintuple<>("hi", 4, true, 'a', GT), new Quintuple<>(null, 4, true, 'a', GT)), 1);
-        aeq(pc.compare(new Quintuple<>("hi", 4, true, 'a', GT), new Quintuple<>(null, null, null, null, null)), 1);
-        aeq(pc.compare(new Quintuple<>("hi", 3, true, 'a', null), new Quintuple<>("hi", 3, true, 'a', GT)), -1);
-        aeq(pc.compare(new Quintuple<>("hi", 3, true, 'a', null), new Quintuple<>("hi", 4, true, 'a', GT)), -1);
-        aeq(pc.compare(new Quintuple<>("hi", 3, true, 'a', null), new Quintuple<>("hi", 3, true, 'a', null)), 0);
-        aeq(pc.compare(new Quintuple<>("hi", 3, true, 'a', null), new Quintuple<>("bye", 3, true, 'a', GT)), 1);
-        aeq(pc.compare(new Quintuple<>("hi", 3, true, 'a', null), new Quintuple<>("bye", 4, true, 'a', GT)), 1);
-        aeq(pc.compare(new Quintuple<>("hi", 3, true, 'a', null), new Quintuple<>("bye", 3, true, 'a', null)), 1);
-        aeq(pc.compare(new Quintuple<>("hi", 3, true, 'a', null), new Quintuple<>(null, 3, true, 'a', GT)), 1);
-        aeq(pc.compare(new Quintuple<>("hi", 3, true, 'a', null), new Quintuple<>(null, 4, true, 'a', GT)), 1);
-        aeq(pc.compare(new Quintuple<>("hi", 3, true, 'a', null), new Quintuple<>(null, null, null, null, null)), 1);
-        aeq(pc.compare(new Quintuple<>("bye", 3, true, 'a', GT), new Quintuple<>("hi", 3, true, 'a', GT)), -1);
-        aeq(pc.compare(new Quintuple<>("bye", 3, true, 'a', GT), new Quintuple<>("hi", 4, true, 'a', GT)), -1);
-        aeq(pc.compare(new Quintuple<>("bye", 3, true, 'a', GT), new Quintuple<>("hi", 3, true, 'a', null)), -1);
-        aeq(pc.compare(new Quintuple<>("bye", 3, true, 'a', GT), new Quintuple<>("bye", 3, true, 'a', GT)), 0);
-        aeq(pc.compare(new Quintuple<>("bye", 3, true, 'a', GT), new Quintuple<>("bye", 4, true, 'a', GT)), -1);
-        aeq(pc.compare(new Quintuple<>("bye", 3, true, 'a', GT), new Quintuple<>("bye", 3, true, 'a', null)), 1);
-        aeq(pc.compare(new Quintuple<>("bye", 3, true, 'a', GT), new Quintuple<>(null, 3, true, 'a', GT)), 1);
-        aeq(pc.compare(new Quintuple<>("bye", 3, true, 'a', GT), new Quintuple<>(null, 4, true, 'a', GT)), 1);
-        aeq(pc.compare(new Quintuple<>("bye", 3, true, 'a', GT), new Quintuple<>(null, null, null, null, null)), 1);
-        aeq(pc.compare(new Quintuple<>("bye", 4, true, 'a', GT), new Quintuple<>("hi", 3, true, 'a', GT)), -1);
-        aeq(pc.compare(new Quintuple<>("bye", 4, true, 'a', GT), new Quintuple<>("hi", 4, true, 'a', GT)), -1);
-        aeq(pc.compare(new Quintuple<>("bye", 4, true, 'a', GT), new Quintuple<>("hi", 3, true, 'a', null)), -1);
-        aeq(pc.compare(new Quintuple<>("bye", 4, true, 'a', GT), new Quintuple<>("bye", 3, true, 'a', null)), 1);
-        aeq(pc.compare(new Quintuple<>("bye", 4, true, 'a', GT), new Quintuple<>("bye", 4, true, 'a', GT)), 0);
-        aeq(pc.compare(new Quintuple<>("bye", 4, true, 'a', GT), new Quintuple<>("bye", 3, true, 'a', null)), 1);
-        aeq(pc.compare(new Quintuple<>("bye", 4, true, 'a', GT), new Quintuple<>(null, 3, true, 'a', GT)), 1);
-        aeq(pc.compare(new Quintuple<>("bye", 4, true, 'a', GT), new Quintuple<>(null, 4, true, 'a', GT)), 1);
-        aeq(pc.compare(new Quintuple<>("bye", 4, true, 'a', GT), new Quintuple<>(null, null, null, null, null)), 1);
-        aeq(pc.compare(new Quintuple<>("bye", 3, true, 'a', null), new Quintuple<>("hi", 3, true, 'a', GT)), -1);
-        aeq(pc.compare(new Quintuple<>("bye", 3, true, 'a', null), new Quintuple<>("hi", 4, true, 'a', GT)), -1);
-        aeq(pc.compare(new Quintuple<>("bye", 3, true, 'a', null), new Quintuple<>("hi", 3, true, 'a', null)), -1);
-        aeq(pc.compare(new Quintuple<>("bye", 3, true, 'a', null), new Quintuple<>("bye", 3, true, 'a', GT)), -1);
-        aeq(pc.compare(new Quintuple<>("bye", 3, true, 'a', null), new Quintuple<>("bye", 4, true, 'a', GT)), -1);
-        aeq(pc.compare(new Quintuple<>("bye", 3, true, 'a', null), new Quintuple<>("bye", 3, true, 'a', null)), 0);
-        aeq(pc.compare(new Quintuple<>("bye", 3, true, 'a', null), new Quintuple<>(null, 3, true, 'a', GT)), 1);
-        aeq(pc.compare(new Quintuple<>("bye", 3, true, 'a', null), new Quintuple<>(null, 4, true, 'a', GT)), 1);
-        aeq(pc.compare(new Quintuple<>("bye", 3, true, 'a', null), new Quintuple<>(null, null, null, null, null)), 1);
-        aeq(pc.compare(new Quintuple<>(null, 3, true, 'a', GT), new Quintuple<>("hi", 3, true, 'a', GT)), -1);
-        aeq(pc.compare(new Quintuple<>(null, 3, true, 'a', GT), new Quintuple<>("hi", 4, true, 'a', GT)), -1);
-        aeq(pc.compare(new Quintuple<>(null, 3, true, 'a', GT), new Quintuple<>("hi", 3, true, 'a', null)), -1);
-        aeq(pc.compare(new Quintuple<>(null, 3, true, 'a', GT), new Quintuple<>("bye", 3, true, 'a', GT)), -1);
-        aeq(pc.compare(new Quintuple<>(null, 3, true, 'a', GT), new Quintuple<>("bye", 4, true, 'a', GT)), -1);
-        aeq(pc.compare(new Quintuple<>(null, 3, true, 'a', GT), new Quintuple<>("bye", 3, true, 'a', null)), -1);
-        aeq(pc.compare(new Quintuple<>(null, 3, true, 'a', GT), new Quintuple<>(null, 3, true, 'a', GT)), 0);
-        aeq(pc.compare(new Quintuple<>(null, 3, true, 'a', GT), new Quintuple<>(null, 4, true, 'a', GT)), -1);
-        aeq(pc.compare(new Quintuple<>(null, 3, true, 'a', GT), new Quintuple<>(null, null, null, null, null)), 1);
-        aeq(pc.compare(new Quintuple<>(null, 4, true, 'a', GT), new Quintuple<>("hi", 3, true, 'a', GT)), -1);
-        aeq(pc.compare(new Quintuple<>(null, 4, true, 'a', GT), new Quintuple<>("hi", 4, true, 'a', GT)), -1);
-        aeq(pc.compare(new Quintuple<>(null, 4, true, 'a', GT), new Quintuple<>("hi", 3, true, 'a', null)), -1);
-        aeq(pc.compare(new Quintuple<>(null, 4, true, 'a', GT), new Quintuple<>("bye", 3, true, 'a', GT)), -1);
-        aeq(pc.compare(new Quintuple<>(null, 4, true, 'a', GT), new Quintuple<>("bye", 4, true, 'a', GT)), -1);
-        aeq(pc.compare(new Quintuple<>(null, 4, true, 'a', GT), new Quintuple<>("bye", 3, true, 'a', null)), -1);
-        aeq(pc.compare(new Quintuple<>(null, 4, true, 'a', GT), new Quintuple<>(null, 3, true, 'a', GT)), 1);
-        aeq(pc.compare(new Quintuple<>(null, 4, true, 'a', GT), new Quintuple<>(null, 4, true, 'a', GT)), 0);
-        aeq(pc.compare(new Quintuple<>(null, 4, true, 'a', GT), new Quintuple<>(null, null, null, null, null)), 1);
-        aeq(pc.compare(new Quintuple<>(null, null, null, null, null), new Quintuple<>("hi", 3, true, 'a', GT)), -1);
-        aeq(pc.compare(new Quintuple<>(null, null, null, null, null), new Quintuple<>("hi", 4, true, 'a', GT)), -1);
-        aeq(pc.compare(new Quintuple<>(null, null, null, null, null), new Quintuple<>("hi", 3, true, 'a', null)), -1);
-        aeq(pc.compare(new Quintuple<>(null, null, null, null, null), new Quintuple<>("bye", 3, true, 'a', GT)), -1);
-        aeq(pc.compare(new Quintuple<>(null, null, null, null, null), new Quintuple<>("bye", 4, true, 'a', GT)), -1);
-        aeq(pc.compare(new Quintuple<>(null, null, null, null, null), new Quintuple<>("bye", 3, true, 'a', null)), -1);
-        aeq(pc.compare(new Quintuple<>(null, null, null, null, null), new Quintuple<>(null, 3, true, 'a', GT)), -1);
-        aeq(pc.compare(new Quintuple<>(null, null, null, null, null), new Quintuple<>(null, 4, true, 'a', GT)), -1);
-        aeq(pc.compare(
-                new Quintuple<>(null, null, null, null, null),
-                new Quintuple<>(null, null, null, null, null)
-        ), 0);
+        QuintupleComparator_compare_helper("hi", 3, true, 'a', ">", "hi", 3, true, 'a', ">", 0);
+        QuintupleComparator_compare_helper("hi", 3, true, 'a', ">", "hi", 4, true, 'a', ">", -1);
+        QuintupleComparator_compare_helper("hi", 3, true, 'a', ">", "hi", 3, true, 'a', "null", 1);
+        QuintupleComparator_compare_helper("hi", 3, true, 'a', ">", "bye", 3, true, 'a', ">", 1);
+        QuintupleComparator_compare_helper("hi", 3, true, 'a', ">", "bye", 4, true, 'a', ">", 1);
+        QuintupleComparator_compare_helper("hi", 3, true, 'a', ">", "bye", 3, true, 'a', "null", 1);
+        QuintupleComparator_compare_helper("hi", 3, true, 'a', ">", null, 3, true, 'a', ">", 1);
+        QuintupleComparator_compare_helper("hi", 3, true, 'a', ">", null, 4, true, 'a', ">", 1);
+        QuintupleComparator_compare_helper("hi", 3, true, 'a', ">", null, null, null, null, "null", 1);
+        QuintupleComparator_compare_helper("hi", 4, true, 'a', ">", "hi", 3, true, 'a', ">", 1);
+        QuintupleComparator_compare_helper("hi", 4, true, 'a', ">", "hi", 4, true, 'a', ">", 0);
+        QuintupleComparator_compare_helper("hi", 4, true, 'a', ">", "hi", 3, true, 'a', "null", 1);
+        QuintupleComparator_compare_helper("hi", 4, true, 'a', ">", "bye", 3, true, 'a', ">", 1);
+        QuintupleComparator_compare_helper("hi", 4, true, 'a', ">", "bye", 4, true, 'a', ">", 1);
+        QuintupleComparator_compare_helper("hi", 4, true, 'a', ">", "bye", 3, true, 'a', "null", 1);
+        QuintupleComparator_compare_helper("hi", 4, true, 'a', ">", null, 3, true, 'a', ">", 1);
+        QuintupleComparator_compare_helper("hi", 4, true, 'a', ">", null, 4, true, 'a', ">", 1);
+        QuintupleComparator_compare_helper("hi", 4, true, 'a', ">", null, null, null, null, "null", 1);
+        QuintupleComparator_compare_helper("hi", 3, true, 'a', "null", "hi", 3, true, 'a', ">", -1);
+        QuintupleComparator_compare_helper("hi", 3, true, 'a', "null", "hi", 4, true, 'a', ">", -1);
+        QuintupleComparator_compare_helper("hi", 3, true, 'a', "null", "hi", 3, true, 'a', "null", 0);
+        QuintupleComparator_compare_helper("hi", 3, true, 'a', "null", "bye", 3, true, 'a', ">", 1);
+        QuintupleComparator_compare_helper("hi", 3, true, 'a', "null", "bye", 4, true, 'a', ">", 1);
+        QuintupleComparator_compare_helper("hi", 3, true, 'a', "null", "bye", 3, true, 'a', "null", 1);
+        QuintupleComparator_compare_helper("hi", 3, true, 'a', "null", null, 3, true, 'a', ">", 1);
+        QuintupleComparator_compare_helper("hi", 3, true, 'a', "null", null, 4, true, 'a', ">", 1);
+        QuintupleComparator_compare_helper("hi", 3, true, 'a', "null", null, null, null, null, "null", 1);
+        QuintupleComparator_compare_helper("bye", 3, true, 'a', ">", "hi", 3, true, 'a', ">", -1);
+        QuintupleComparator_compare_helper("bye", 3, true, 'a', ">", "hi", 4, true, 'a', ">", -1);
+        QuintupleComparator_compare_helper("bye", 3, true, 'a', ">", "hi", 3, true, 'a', "null", -1);
+        QuintupleComparator_compare_helper("bye", 3, true, 'a', ">", "bye", 3, true, 'a', ">", 0);
+        QuintupleComparator_compare_helper("bye", 3, true, 'a', ">", "bye", 4, true, 'a', ">", -1);
+        QuintupleComparator_compare_helper("bye", 3, true, 'a', ">", "bye", 3, true, 'a', "null", 1);
+        QuintupleComparator_compare_helper("bye", 3, true, 'a', ">", null, 3, true, 'a', ">", 1);
+        QuintupleComparator_compare_helper("bye", 3, true, 'a', ">", null, 4, true, 'a', ">", 1);
+        QuintupleComparator_compare_helper("bye", 3, true, 'a', ">", null, null, null, null, "null", 1);
+        QuintupleComparator_compare_helper("bye", 4, true, 'a', ">", "hi", 3, true, 'a', ">", -1);
+        QuintupleComparator_compare_helper("bye", 4, true, 'a', ">", "hi", 4, true, 'a', ">", -1);
+        QuintupleComparator_compare_helper("bye", 4, true, 'a', ">", "hi", 3, true, 'a', "null", -1);
+        QuintupleComparator_compare_helper("bye", 4, true, 'a', ">", "bye", 3, true, 'a', "null", 1);
+        QuintupleComparator_compare_helper("bye", 4, true, 'a', ">", "bye", 4, true, 'a', ">", 0);
+        QuintupleComparator_compare_helper("bye", 4, true, 'a', ">", "bye", 3, true, 'a', "null", 1);
+        QuintupleComparator_compare_helper("bye", 4, true, 'a', ">", null, 3, true, 'a', ">", 1);
+        QuintupleComparator_compare_helper("bye", 4, true, 'a', ">", null, 4, true, 'a', ">", 1);
+        QuintupleComparator_compare_helper("bye", 4, true, 'a', ">", null, null, null, null, "null", 1);
+        QuintupleComparator_compare_helper("bye", 3, true, 'a', "null", "hi", 3, true, 'a', ">", -1);
+        QuintupleComparator_compare_helper("bye", 3, true, 'a', "null", "hi", 4, true, 'a', ">", -1);
+        QuintupleComparator_compare_helper("bye", 3, true, 'a', "null", "hi", 3, true, 'a', "null", -1);
+        QuintupleComparator_compare_helper("bye", 3, true, 'a', "null", "bye", 3, true, 'a', ">", -1);
+        QuintupleComparator_compare_helper("bye", 3, true, 'a', "null", "bye", 4, true, 'a', ">", -1);
+        QuintupleComparator_compare_helper("bye", 3, true, 'a', "null", "bye", 3, true, 'a', "null", 0);
+        QuintupleComparator_compare_helper("bye", 3, true, 'a', "null", null, 3, true, 'a', ">", 1);
+        QuintupleComparator_compare_helper("bye", 3, true, 'a', "null", null, 4, true, 'a', ">", 1);
+        QuintupleComparator_compare_helper("bye", 3, true, 'a', "null", null, null, null, null, "null", 1);
+        QuintupleComparator_compare_helper(null, 3, true, 'a', ">", "hi", 3, true, 'a', ">", -1);
+        QuintupleComparator_compare_helper(null, 3, true, 'a', ">", "hi", 4, true, 'a', ">", -1);
+        QuintupleComparator_compare_helper(null, 3, true, 'a', ">", "hi", 3, true, 'a', "null", -1);
+        QuintupleComparator_compare_helper(null, 3, true, 'a', ">", "bye", 3, true, 'a', ">", -1);
+        QuintupleComparator_compare_helper(null, 3, true, 'a', ">", "bye", 4, true, 'a', ">", -1);
+        QuintupleComparator_compare_helper(null, 3, true, 'a', ">", "bye", 3, true, 'a', "null", -1);
+        QuintupleComparator_compare_helper(null, 3, true, 'a', ">", null, 3, true, 'a', ">", 0);
+        QuintupleComparator_compare_helper(null, 3, true, 'a', ">", null, 4, true, 'a', ">", -1);
+        QuintupleComparator_compare_helper(null, 3, true, 'a', ">", null, null, null, null, "null", 1);
+        QuintupleComparator_compare_helper(null, 4, true, 'a', ">", "hi", 3, true, 'a', ">", -1);
+        QuintupleComparator_compare_helper(null, 4, true, 'a', ">", "hi", 4, true, 'a', ">", -1);
+        QuintupleComparator_compare_helper(null, 4, true, 'a', ">", "hi", 3, true, 'a', "null", -1);
+        QuintupleComparator_compare_helper(null, 4, true, 'a', ">", "bye", 3, true, 'a', ">", -1);
+        QuintupleComparator_compare_helper(null, 4, true, 'a', ">", "bye", 4, true, 'a', ">", -1);
+        QuintupleComparator_compare_helper(null, 4, true, 'a', ">", "bye", 3, true, 'a', "null", -1);
+        QuintupleComparator_compare_helper(null, 4, true, 'a', ">", null, 3, true, 'a', ">", 1);
+        QuintupleComparator_compare_helper(null, 4, true, 'a', ">", null, 4, true, 'a', ">", 0);
+        QuintupleComparator_compare_helper(null, 4, true, 'a', ">", null, null, null, null, "null", 1);
+        QuintupleComparator_compare_helper(null, null, null, null, "null", "hi", 3, true, 'a', ">", -1);
+        QuintupleComparator_compare_helper(null, null, null, null, "null", "hi", 4, true, 'a', ">", -1);
+        QuintupleComparator_compare_helper(null, null, null, null, "null", "hi", 3, true, 'a', "null", -1);
+        QuintupleComparator_compare_helper(null, null, null, null, "null", "bye", 3, true, 'a', ">", -1);
+        QuintupleComparator_compare_helper(null, null, null, null, "null", "bye", 4, true, 'a', ">", -1);
+        QuintupleComparator_compare_helper(null, null, null, null, "null", "bye", 3, true, 'a', "null", -1);
+        QuintupleComparator_compare_helper(null, null, null, null, "null", null, 3, true, 'a', ">", -1);
+        QuintupleComparator_compare_helper(null, null, null, null, "null", null, 4, true, 'a', ">", -1);
+        QuintupleComparator_compare_helper(null, null, null, null, "null", null, null, null, null, "null", 0);
     }
 }

@@ -11,6 +11,22 @@ import static mho.wheels.ordering.Ordering.*;
 import static mho.wheels.testing.Testing.*;
 
 public class SextupleTest {
+    private static final Sextuple.SextupleComparator<
+                String,
+                Integer,
+                Boolean,
+                Character,
+                Ordering,
+                Double
+                > PC = new Sextuple.SextupleComparator<>(
+                    Comparator.nullsFirst(Comparator.<String>naturalOrder()),
+                    Comparator.nullsFirst(Comparator.<Integer>naturalOrder()),
+                    Comparator.nullsFirst(Comparator.<Boolean>naturalOrder()),
+                    Comparator.nullsFirst(Comparator.<Character>naturalOrder()),
+                    Comparator.nullsFirst(Comparator.<Ordering>naturalOrder()),
+                    Comparator.nullsFirst(Comparator.<Double>naturalOrder())
+                );
+
     private static <A, B, C, D, E, F> void constructor_helper(A a, B b, C c, D d, E e, F f, @NotNull String output) {
         aeq(new Sextuple<>(a, b, c, d, e, f), output);
     }
@@ -194,199 +210,128 @@ public class SextupleTest {
         equals_helper(null, null, null, null, "null", null, 0.5, false);
     }
 
+    private static void SextupleComparator_compare_helper(
+            String pa,
+            Integer pb,
+            Boolean pc,
+            Character pd,
+            @NotNull String pe,
+            Double pf,
+            String qa,
+            Integer qb,
+            Boolean qc,
+            Character qd,
+            @NotNull String qe,
+            Double qf,
+            int output
+    ) {
+        aeq(
+                PC.compare(
+                        new Sextuple<>(
+                                pa,
+                                pb,
+                                pc,
+                                pd,
+                                Readers.readWithNullsStrict(Readers::readOrderingStrict).apply(pe).get(),
+                                pf
+                        ),
+                        new Sextuple<>(
+                                qa,
+                                qb,
+                                qc,
+                                qd,
+                                Readers.readWithNullsStrict(Readers::readOrderingStrict).apply(qe).get(),
+                                qf
+                        )
+                ),
+                output
+        );
+    }
+
     @Test
     public void testSextupleComparator_compare() {
-        Sextuple.SextupleComparator<
-                String,
-                Integer,
-                Boolean,
-                Character,
-                Ordering,
-                Double
-                > pc = new Sextuple.SextupleComparator<>(
-                    Comparator.nullsFirst(Comparator.<String>naturalOrder()),
-                    Comparator.nullsFirst(Comparator.<Integer>naturalOrder()),
-                    Comparator.nullsFirst(Comparator.<Boolean>naturalOrder()),
-                    Comparator.nullsFirst(Comparator.<Character>naturalOrder()),
-                    Comparator.nullsFirst(Comparator.<Ordering>naturalOrder()),
-                    Comparator.nullsFirst(Comparator.<Double>naturalOrder())
-                );
-        aeq(pc.compare(new Sextuple<>("hi", 3, true, 'a', GT, 0.5), new Sextuple<>("hi", 3, true, 'a', GT, 0.5)), 0);
-        aeq(pc.compare(new Sextuple<>("hi", 3, true, 'a', GT, 0.5), new Sextuple<>("hi", 4, true, 'a', GT, 0.5)), -1);
-        aeq(pc.compare(new Sextuple<>("hi", 3, true, 'a', GT, 0.5), new Sextuple<>("hi", 3, true, 'a', GT, null)), 1);
-        aeq(pc.compare(new Sextuple<>("hi", 3, true, 'a', GT, 0.5), new Sextuple<>("bye", 3, true, 'a', GT, 0.5)), 1);
-        aeq(pc.compare(new Sextuple<>("hi", 3, true, 'a', GT, 0.5), new Sextuple<>("bye", 4, true, 'a', GT, 0.5)), 1);
-        aeq(pc.compare(new Sextuple<>("hi", 3, true, 'a', GT, 0.5), new Sextuple<>("bye", 3, true, 'a', GT, null)), 1);
-        aeq(pc.compare(new Sextuple<>("hi", 3, true, 'a', GT, 0.5), new Sextuple<>(null, 3, true, 'a', GT, 0.5)), 1);
-        aeq(pc.compare(new Sextuple<>("hi", 3, true, 'a', GT, 0.5), new Sextuple<>(null, 4, true, 'a', GT, 0.5)), 1);
-        aeq(pc.compare(
-                new Sextuple<>("hi", 3, true, 'a', GT, 0.5),
-                new Sextuple<>(null, null, null, null, null, null)
-        ), 1);
-        aeq(pc.compare(new Sextuple<>("hi", 4, true, 'a', GT, 0.5), new Sextuple<>("hi", 3, true, 'a', GT, 0.5)), 1);
-        aeq(pc.compare(new Sextuple<>("hi", 4, true, 'a', GT, 0.5), new Sextuple<>("hi", 4, true, 'a', GT, 0.5)), 0);
-        aeq(pc.compare(new Sextuple<>("hi", 4, true, 'a', GT, 0.5), new Sextuple<>("hi", 3, true, 'a', GT, null)), 1);
-        aeq(pc.compare(new Sextuple<>("hi", 4, true, 'a', GT, 0.5), new Sextuple<>("bye", 3, true, 'a', GT, 0.5)), 1);
-        aeq(pc.compare(new Sextuple<>("hi", 4, true, 'a', GT, 0.5), new Sextuple<>("bye", 4, true, 'a', GT, 0.5)), 1);
-        aeq(pc.compare(new Sextuple<>("hi", 4, true, 'a', GT, 0.5), new Sextuple<>("bye", 3, true, 'a', GT, null)), 1);
-        aeq(pc.compare(new Sextuple<>("hi", 4, true, 'a', GT, 0.5), new Sextuple<>(null, 3, true, 'a', GT, 0.5)), 1);
-        aeq(pc.compare(new Sextuple<>("hi", 4, true, 'a', GT, 0.5), new Sextuple<>(null, 4, true, 'a', GT, 0.5)), 1);
-        aeq(pc.compare(
-                new Sextuple<>("hi", 4, true, 'a', GT, 0.5),
-                new Sextuple<>(null, null, null, null, null, null)
-        ), 1);
-        aeq(pc.compare(new Sextuple<>("hi", 3, true, 'a', GT, null), new Sextuple<>("hi", 3, true, 'a', GT, 0.5)), -1);
-        aeq(pc.compare(new Sextuple<>("hi", 3, true, 'a', GT, null), new Sextuple<>("hi", 4, true, 'a', GT, 0.5)), -1);
-        aeq(pc.compare(new Sextuple<>("hi", 3, true, 'a', GT, null), new Sextuple<>("hi", 3, true, 'a', GT, null)), 0);
-        aeq(pc.compare(new Sextuple<>("hi", 3, true, 'a', GT, null), new Sextuple<>("bye", 3, true, 'a', GT, 0.5)), 1);
-        aeq(pc.compare(new Sextuple<>("hi", 3, true, 'a', GT, null), new Sextuple<>("bye", 4, true, 'a', GT, 0.5)), 1);
-        aeq(pc.compare(
-                new Sextuple<>("hi", 3, true, 'a', GT, null),
-                new Sextuple<>("bye", 3, true, 'a', GT, null)
-        ), 1);
-        aeq(pc.compare(new Sextuple<>("hi", 3, true, 'a', GT, null), new Sextuple<>(null, 3, true, 'a', GT, 0.5)), 1);
-        aeq(pc.compare(new Sextuple<>("hi", 3, true, 'a', GT, null), new Sextuple<>(null, 4, true, 'a', GT, 0.5)), 1);
-        aeq(pc.compare(
-                new Sextuple<>("hi", 3, true, 'a', GT, null),
-                new Sextuple<>(null, null, null, null, null, null)
-        ), 1);
-        aeq(pc.compare(new Sextuple<>("bye", 3, true, 'a', GT, 0.5), new Sextuple<>("hi", 3, true, 'a', GT, 0.5)), -1);
-        aeq(pc.compare(new Sextuple<>("bye", 3, true, 'a', GT, 0.5), new Sextuple<>("hi", 4, true, 'a', GT, 0.5)), -1);
-        aeq(pc.compare(new Sextuple<>(
-                "bye", 3, true, 'a', GT, 0.5),
-                new Sextuple<>("hi", 3, true, 'a', GT, null)
-        ), -1);
-        aeq(pc.compare(new Sextuple<>("bye", 3, true, 'a', GT, 0.5), new Sextuple<>("bye", 3, true, 'a', GT, 0.5)), 0);
-        aeq(pc.compare(
-                new Sextuple<>("bye", 3, true, 'a', GT, 0.5),
-                new Sextuple<>("bye", 4, true, 'a', GT, 0.5)
-        ), -1);
-        aeq(pc.compare(
-                new Sextuple<>("bye", 3, true, 'a', GT, 0.5),
-                new Sextuple<>("bye", 3, true, 'a', GT, null)
-        ), 1);
-        aeq(pc.compare(new Sextuple<>("bye", 3, true, 'a', GT, 0.5), new Sextuple<>(null, 3, true, 'a', GT, 0.5)), 1);
-        aeq(pc.compare(new Sextuple<>("bye", 3, true, 'a', GT, 0.5), new Sextuple<>(null, 4, true, 'a', GT, 0.5)), 1);
-        aeq(pc.compare(
-                new Sextuple<>("bye", 3, true, 'a', GT, 0.5),
-                new Sextuple<>(null, null, null, null, null, null)
-        ), 1);
-        aeq(pc.compare(new Sextuple<>("bye", 4, true, 'a', GT, 0.5), new Sextuple<>("hi", 3, true, 'a', GT, 0.5)), -1);
-        aeq(pc.compare(new Sextuple<>("bye", 4, true, 'a', GT, 0.5), new Sextuple<>("hi", 4, true, 'a', GT, 0.5)), -1);
-        aeq(pc.compare(
-                new Sextuple<>("bye", 4, true, 'a', GT, 0.5),
-                new Sextuple<>("hi", 3, true, 'a', GT, null)
-        ), -1);
-        aeq(pc.compare(
-                new Sextuple<>("bye", 4, true, 'a', GT, 0.5),
-                new Sextuple<>("bye", 3, true, 'a', GT, null)
-        ), 1);
-        aeq(pc.compare(new Sextuple<>("bye", 4, true, 'a', GT, 0.5), new Sextuple<>("bye", 4, true, 'a', GT, 0.5)), 0);
-        aeq(pc.compare(
-                new Sextuple<>("bye", 4, true, 'a', GT, 0.5),
-                new Sextuple<>("bye", 3, true, 'a', GT, null)
-        ), 1);
-        aeq(pc.compare(new Sextuple<>("bye", 4, true, 'a', GT, 0.5), new Sextuple<>(null, 3, true, 'a', GT, null)), 1);
-        aeq(pc.compare(new Sextuple<>("bye", 4, true, 'a', GT, 0.5), new Sextuple<>(null, 4, true, 'a', GT, null)), 1);
-        aeq(pc.compare(
-                new Sextuple<>("bye", 4, true, 'a', GT, 0.5),
-                new Sextuple<>(null, null, null, null, null, null)
-        ), 1);
-        aeq(pc.compare(
-                new Sextuple<>("bye", 3, true, 'a', GT, null),
-                new Sextuple<>("hi", 3, true, 'a', GT, 0.5)
-        ), -1);
-        aeq(pc.compare(
-                new Sextuple<>("bye", 3, true, 'a', GT, null),
-                new Sextuple<>("hi", 4, true, 'a', GT, 0.5)
-        ), -1);
-        aeq(pc.compare(new Sextuple<>(
-                "bye", 3, true, 'a', GT, null),
-                new Sextuple<>("hi", 3, true, 'a', GT, null)
-        ), -1);
-        aeq(pc.compare(
-                new Sextuple<>("bye", 3, true, 'a', GT, null),
-                new Sextuple<>("bye", 3, true, 'a', GT, 0.5)
-        ), -1);
-        aeq(pc.compare(
-                new Sextuple<>("bye", 3, true, 'a', GT, null),
-                new Sextuple<>("bye", 4, true, 'a', GT, 0.5)
-        ), -1);
-        aeq(pc.compare(
-                new Sextuple<>("bye", 3, true, 'a', GT, null),
-                new Sextuple<>("bye", 3, true, 'a', GT, null)
-        ), 0);
-        aeq(pc.compare(new Sextuple<>("bye", 3, true, 'a', GT, null), new Sextuple<>(null, 3, true, 'a', GT, 0.5)), 1);
-        aeq(pc.compare(new Sextuple<>("bye", 3, true, 'a', GT, null), new Sextuple<>(null, 4, true, 'a', GT, 0.5)), 1);
-        aeq(pc.compare(
-                new Sextuple<>("bye", 3, true, 'a', GT, null),
-                new Sextuple<>(null, null, null, null, null, null)
-        ), 1);
-        aeq(pc.compare(new Sextuple<>(null, 3, true, 'a', GT, 0.5), new Sextuple<>("hi", 3, true, 'a', GT, 0.5)), -1);
-        aeq(pc.compare(new Sextuple<>(null, 3, true, 'a', GT, 0.5), new Sextuple<>("hi", 4, true, 'a', GT, 0.5)), -1);
-        aeq(pc.compare(new Sextuple<>(null, 3, true, 'a', GT, 0.5), new Sextuple<>("hi", 3, true, 'a', GT, null)), -1);
-        aeq(pc.compare(new Sextuple<>(null, 3, true, 'a', GT, 0.5), new Sextuple<>("bye", 3, true, 'a', GT, 0.5)), -1);
-        aeq(pc.compare(new Sextuple<>(null, 3, true, 'a', GT, 0.5), new Sextuple<>("bye", 4, true, 'a', GT, 0.5)), -1);
-        aeq(pc.compare(
-                new Sextuple<>(null, 3, true, 'a', GT, 0.5),
-                new Sextuple<>("bye", 3, true, 'a', GT, null)
-        ), -1);
-        aeq(pc.compare(new Sextuple<>(null, 3, true, 'a', GT, 0.5), new Sextuple<>(null, 3, true, 'a', GT, 0.5)), 0);
-        aeq(pc.compare(new Sextuple<>(null, 3, true, 'a', GT, 0.5), new Sextuple<>(null, 4, true, 'a', GT, 0.5)), -1);
-        aeq(pc.compare(
-                new Sextuple<>(null, 3, true, 'a', GT, 0.5),
-                new Sextuple<>(null, null, null, null, null, null)
-        ), 1);
-        aeq(pc.compare(new Sextuple<>(null, 4, true, 'a', GT, 0.5), new Sextuple<>("hi", 3, true, 'a', GT, 0.5)), -1);
-        aeq(pc.compare(new Sextuple<>(null, 4, true, 'a', GT, 0.5), new Sextuple<>("hi", 4, true, 'a', GT, 0.5)), -1);
-        aeq(pc.compare(new Sextuple<>(null, 4, true, 'a', GT, 0.5), new Sextuple<>("hi", 3, true, 'a', GT, null)), -1);
-        aeq(pc.compare(new Sextuple<>(null, 4, true, 'a', GT, 0.5), new Sextuple<>("bye", 3, true, 'a', GT, 0.5)), -1);
-        aeq(pc.compare(new Sextuple<>(null, 4, true, 'a', GT, 0.5), new Sextuple<>("bye", 4, true, 'a', GT, 0.5)), -1);
-        aeq(pc.compare(
-                new Sextuple<>(null, 4, true, 'a', GT, 0.5),
-                new Sextuple<>("bye", 3, true, 'a', GT, null)
-        ), -1);
-        aeq(pc.compare(new Sextuple<>(null, 4, true, 'a', GT, 0.5), new Sextuple<>(null, 3, true, 'a', GT, 0.5)), 1);
-        aeq(pc.compare(new Sextuple<>(null, 4, true, 'a', GT, 0.5), new Sextuple<>(null, 4, true, 'a', GT, 0.5)), 0);
-        aeq(pc.compare(
-                new Sextuple<>(null, 4, true, 'a', GT, 0.5),
-                new Sextuple<>(null, null, null, null, null, null)
-        ), 1);
-        aeq(pc.compare(
-                new Sextuple<>(null, null, null, null, null, null),
-                new Sextuple<>("hi", 3, true, 'a', GT, 0.5)
-        ), -1);
-        aeq(pc.compare(
-                new Sextuple<>(null, null, null, null, null, null),
-                new Sextuple<>("hi", 4, true, 'a', GT, 0.5)
-        ), -1);
-        aeq(pc.compare(
-                new Sextuple<>(null, null, null, null, null, null),
-                new Sextuple<>("hi", 3, true, 'a', GT, null)
-        ), -1);
-        aeq(pc.compare(
-                new Sextuple<>(null, null, null, null, null, null),
-                new Sextuple<>("bye", 3, true, 'a', GT, 0.5)
-        ), -1);
-        aeq(pc.compare(
-                new Sextuple<>(null, null, null, null, null, null),
-                new Sextuple<>("bye", 4, true, 'a', GT, 0.5)
-        ), -1);
-        aeq(pc.compare(
-                new Sextuple<>(null, null, null, null, null, null),
-                new Sextuple<>("bye", 3, true, 'a', GT, null)
-        ), -1);
-        aeq(pc.compare(
-                new Sextuple<>(null, null, null, null, null, null),
-                new Sextuple<>(null, 3, true, 'a', GT, 0.5)
-        ), -1);
-        aeq(pc.compare(
-                new Sextuple<>(null, null, null, null, null, null),
-                new Sextuple<>(null, 4, true, 'a', GT, 0.5)
-        ), -1);
-        aeq(pc.compare(
-                new Sextuple<>(null, null, null, null, null, null),
-                new Sextuple<>(null, null, null, null, null, null)
-        ), 0);
+        SextupleComparator_compare_helper("hi", 3, true, 'a', ">", 0.5, "hi", 3, true, 'a', ">", 0.5, 0);
+        SextupleComparator_compare_helper("hi", 3, true, 'a', ">", 0.5, "hi", 4, true, 'a', ">", 0.5, -1);
+        SextupleComparator_compare_helper("hi", 3, true, 'a', ">", 0.5, "hi", 3, true, 'a', ">", null, 1);
+        SextupleComparator_compare_helper("hi", 3, true, 'a', ">", 0.5, "bye", 3, true, 'a', ">", 0.5, 1);
+        SextupleComparator_compare_helper("hi", 3, true, 'a', ">", 0.5, "bye", 4, true, 'a', ">", 0.5, 1);
+        SextupleComparator_compare_helper("hi", 3, true, 'a', ">", 0.5, "bye", 3, true, 'a', ">", null, 1);
+        SextupleComparator_compare_helper("hi", 3, true, 'a', ">", 0.5, null, 3, true, 'a', ">", 0.5, 1);
+        SextupleComparator_compare_helper("hi", 3, true, 'a', ">", 0.5, null, 4, true, 'a', ">", 0.5, 1);
+        SextupleComparator_compare_helper("hi", 3, true, 'a', ">", 0.5, null, null, null, null, "null", null, 1);
+        SextupleComparator_compare_helper("hi", 4, true, 'a', ">", 0.5, "hi", 3, true, 'a', ">", 0.5, 1);
+        SextupleComparator_compare_helper("hi", 4, true, 'a', ">", 0.5, "hi", 4, true, 'a', ">", 0.5, 0);
+        SextupleComparator_compare_helper("hi", 4, true, 'a', ">", 0.5, "hi", 3, true, 'a', ">", null, 1);
+        SextupleComparator_compare_helper("hi", 4, true, 'a', ">", 0.5, "bye", 3, true, 'a', ">", 0.5, 1);
+        SextupleComparator_compare_helper("hi", 4, true, 'a', ">", 0.5, "bye", 4, true, 'a', ">", 0.5, 1);
+        SextupleComparator_compare_helper("hi", 4, true, 'a', ">", 0.5, "bye", 3, true, 'a', ">", null, 1);
+        SextupleComparator_compare_helper("hi", 4, true, 'a', ">", 0.5, null, 3, true, 'a', ">", 0.5, 1);
+        SextupleComparator_compare_helper("hi", 4, true, 'a', ">", 0.5, null, 4, true, 'a', ">", 0.5, 1);
+        SextupleComparator_compare_helper("hi", 4, true, 'a', ">", 0.5, null, null, null, null, "null", null, 1);
+        SextupleComparator_compare_helper("hi", 3, true, 'a', ">", null, "hi", 3, true, 'a', ">", 0.5, -1);
+        SextupleComparator_compare_helper("hi", 3, true, 'a', ">", null, "hi", 4, true, 'a', ">", 0.5, -1);
+        SextupleComparator_compare_helper("hi", 3, true, 'a', ">", null, "hi", 3, true, 'a', ">", null, 0);
+        SextupleComparator_compare_helper("hi", 3, true, 'a', ">", null, "bye", 3, true, 'a', ">", 0.5, 1);
+        SextupleComparator_compare_helper("hi", 3, true, 'a', ">", null, "bye", 4, true, 'a', ">", 0.5, 1);
+        SextupleComparator_compare_helper("hi", 3, true, 'a', ">", null, "bye", 3, true, 'a', ">", null, 1);
+        SextupleComparator_compare_helper("hi", 3, true, 'a', ">", null, null, 3, true, 'a', ">", 0.5, 1);
+        SextupleComparator_compare_helper("hi", 3, true, 'a', ">", null, null, 4, true, 'a', ">", 0.5, 1);
+        SextupleComparator_compare_helper("hi", 3, true, 'a', ">", null, null, null, null, null, "null", null, 1);
+        SextupleComparator_compare_helper("bye", 3, true, 'a', ">", 0.5, "hi", 3, true, 'a', ">", 0.5, -1);
+        SextupleComparator_compare_helper("bye", 3, true, 'a', ">", 0.5, "hi", 4, true, 'a', ">", 0.5, -1);
+        SextupleComparator_compare_helper("bye", 3, true, 'a', ">", 0.5, "hi", 3, true, 'a', ">", null, -1);
+        SextupleComparator_compare_helper("bye", 3, true, 'a', ">", 0.5, "bye", 3, true, 'a', ">", 0.5, 0);
+        SextupleComparator_compare_helper("bye", 3, true, 'a', ">", 0.5, "bye", 4, true, 'a', ">", 0.5, -1);
+        SextupleComparator_compare_helper("bye", 3, true, 'a', ">", 0.5, "bye", 3, true, 'a', ">", null, 1);
+        SextupleComparator_compare_helper("bye", 3, true, 'a', ">", 0.5, null, 3, true, 'a', ">", 0.5, 1);
+        SextupleComparator_compare_helper("bye", 3, true, 'a', ">", 0.5, null, 4, true, 'a', ">", 0.5, 1);
+        SextupleComparator_compare_helper("bye", 3, true, 'a', ">", 0.5, null, null, null, null, "null", null, 1);
+        SextupleComparator_compare_helper("bye", 4, true, 'a', ">", 0.5, "hi", 3, true, 'a', ">", 0.5, -1);
+        SextupleComparator_compare_helper("bye", 4, true, 'a', ">", 0.5, "hi", 4, true, 'a', ">", 0.5, -1);
+        SextupleComparator_compare_helper("bye", 4, true, 'a', ">", 0.5, "hi", 3, true, 'a', ">", null, -1);
+        SextupleComparator_compare_helper("bye", 4, true, 'a', ">", 0.5, "bye", 3, true, 'a', ">", null, 1);
+        SextupleComparator_compare_helper("bye", 4, true, 'a', ">", 0.5, "bye", 4, true, 'a', ">", 0.5, 0);
+        SextupleComparator_compare_helper("bye", 4, true, 'a', ">", 0.5, "bye", 3, true, 'a', ">", null, 1);
+        SextupleComparator_compare_helper("bye", 4, true, 'a', ">", 0.5, null, 3, true, 'a', ">", null, 1);
+        SextupleComparator_compare_helper("bye", 4, true, 'a', ">", 0.5, null, 4, true, 'a', ">", null, 1);
+        SextupleComparator_compare_helper("bye", 4, true, 'a', ">", 0.5, null, null, null, null, "null", null, 1);
+        SextupleComparator_compare_helper("bye", 3, true, 'a', ">", null, "hi", 3, true, 'a', ">", 0.5, -1);
+        SextupleComparator_compare_helper("bye", 3, true, 'a', ">", null, "hi", 4, true, 'a', ">", 0.5, -1);
+        SextupleComparator_compare_helper("bye", 3, true, 'a', ">", null, "hi", 3, true, 'a', ">", null, -1);
+        SextupleComparator_compare_helper("bye", 3, true, 'a', ">", null, "bye", 3, true, 'a', ">", 0.5, -1);
+        SextupleComparator_compare_helper("bye", 3, true, 'a', ">", null, "bye", 4, true, 'a', ">", 0.5, -1);
+        SextupleComparator_compare_helper("bye", 3, true, 'a', ">", null, "bye", 3, true, 'a', ">", null, 0);
+        SextupleComparator_compare_helper("bye", 3, true, 'a', ">", null, null, 3, true, 'a', ">", 0.5, 1);
+        SextupleComparator_compare_helper("bye", 3, true, 'a', ">", null, null, 4, true, 'a', ">", 0.5, 1);
+        SextupleComparator_compare_helper("bye", 3, true, 'a', ">", null, null, null, null, null, "null", null, 1);
+        SextupleComparator_compare_helper(null, 3, true, 'a', ">", 0.5, "hi", 3, true, 'a', ">", 0.5, -1);
+        SextupleComparator_compare_helper(null, 3, true, 'a', ">", 0.5, "hi", 4, true, 'a', ">", 0.5, -1);
+        SextupleComparator_compare_helper(null, 3, true, 'a', ">", 0.5, "hi", 3, true, 'a', ">", null, -1);
+        SextupleComparator_compare_helper(null, 3, true, 'a', ">", 0.5, "bye", 3, true, 'a', ">", 0.5, -1);
+        SextupleComparator_compare_helper(null, 3, true, 'a', ">", 0.5, "bye", 4, true, 'a', ">", 0.5, -1);
+        SextupleComparator_compare_helper(null, 3, true, 'a', ">", 0.5, "bye", 3, true, 'a', ">", null, -1);
+        SextupleComparator_compare_helper(null, 3, true, 'a', ">", 0.5, null, 3, true, 'a', ">", 0.5, 0);
+        SextupleComparator_compare_helper(null, 3, true, 'a', ">", 0.5, null, 4, true, 'a', ">", 0.5, -1);
+        SextupleComparator_compare_helper(null, 3, true, 'a', ">", 0.5, null, null, null, null, "null", null, 1);
+        SextupleComparator_compare_helper(null, 4, true, 'a', ">", 0.5, "hi", 3, true, 'a', ">", 0.5, -1);
+        SextupleComparator_compare_helper(null, 4, true, 'a', ">", 0.5, "hi", 4, true, 'a', ">", 0.5, -1);
+        SextupleComparator_compare_helper(null, 4, true, 'a', ">", 0.5, "hi", 3, true, 'a', ">", null, -1);
+        SextupleComparator_compare_helper(null, 4, true, 'a', ">", 0.5, "bye", 3, true, 'a', ">", 0.5, -1);
+        SextupleComparator_compare_helper(null, 4, true, 'a', ">", 0.5, "bye", 4, true, 'a', ">", 0.5, -1);
+        SextupleComparator_compare_helper(null, 4, true, 'a', ">", 0.5, "bye", 3, true, 'a', ">", null, -1);
+        SextupleComparator_compare_helper(null, 4, true, 'a', ">", 0.5, null, 3, true, 'a', ">", 0.5, 1);
+        SextupleComparator_compare_helper(null, 4, true, 'a', ">", 0.5, null, 4, true, 'a', ">", 0.5, 0);
+        SextupleComparator_compare_helper(null, 4, true, 'a', ">", 0.5, null, null, null, null, "null", null, 1);
+        SextupleComparator_compare_helper(null, null, null, null, "null", null, "hi", 3, true, 'a', ">", 0.5, -1);
+        SextupleComparator_compare_helper(null, null, null, null, "null", null, "hi", 4, true, 'a', ">", 0.5, -1);
+        SextupleComparator_compare_helper(null, null, null, null, "null", null, "hi", 3, true, 'a', ">", null, -1);
+        SextupleComparator_compare_helper(null, null, null, null, "null", null, "bye", 3, true, 'a', ">", 0.5, -1);
+        SextupleComparator_compare_helper(null, null, null, null, "null", null, "bye", 4, true, 'a', ">", 0.5, -1);
+        SextupleComparator_compare_helper(null, null, null, null, "null", null, "bye", 3, true, 'a', ">", null, -1);
+        SextupleComparator_compare_helper(null, null, null, null, "null", null, null, 3, true, 'a', ">", 0.5, -1);
+        SextupleComparator_compare_helper(null, null, null, null, "null", null, null, 4, true, 'a', ">", 0.5, -1);
+        SextupleComparator_compare_helper(
+                null, null, null, null, "null", null, null, null, null, null, "null", null, 0
+        );
     }
 }

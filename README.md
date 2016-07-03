@@ -42,9 +42,9 @@ Progress
 | NullableOptional            | ✔       | ✔       | ✔     | ✔     | ✔          |
 | Pair                        | ✔       | ✔       | ✔     | ✘     | ✘          |
 | Quadruple                   | ✔       | ✔       | ✔     | ✘     | ✘          |
-| Quintuple                   | ✔       | ✔       | ✘     | ✘     | ✘          |
-| Septuple                    | ✔       | ✔       | ✘     | ✘     | ✘          |
-| Sextuple                    | ✔       | ✔       | ✘     | ✘     | ✘          |
+| Quintuple                   | ✔       | ✔       | ✔     | ✘     | ✘          |
+| Septuple                    | ✔       | ✔       | ✔     | ✘     | ✘          |
+| Sextuple                    | ✔       | ✔       | ✔     | ✘     | ✘          |
 | Triple                      | ✔       | ✔       | ✔     | ✘     | ✘          |
 | Demos                       | ✘       | ✘       | ✘     | ✘     | ✘          |
 | Testing                     | ✘       | ✘       | ✘     | ✘     | ✘          |
