@@ -790,14 +790,14 @@ public strictfp class RandomProviderTest {
         aeq(meanOfIntegers(sample), sampleMean);
     }
 
-    private static void positiveIntegersGeometric_helper(int mean, @NotNull String output, double sampleMean) {
-        geometricHelper(P.withScale(mean).positiveIntegersGeometric(), output, sampleMean);
+    private static void positiveIntegersGeometric_helper(int scale, @NotNull String output, double sampleMean) {
+        geometricHelper(P.withScale(scale).positiveIntegersGeometric(), output, sampleMean);
         P.reset();
     }
 
-    private static void positiveIntegersGeometric_fail_helper(int mean) {
+    private static void positiveIntegersGeometric_fail_helper(int scale) {
         try {
-            P.withScale(mean).positiveIntegersGeometric();
+            P.withScale(scale).positiveIntegersGeometric();
             fail();
         } catch (IllegalStateException ignored) {}
         finally {
@@ -819,14 +819,14 @@ public strictfp class RandomProviderTest {
         positiveIntegersGeometric_fail_helper(-1);
     }
 
-    private static void negativeIntegersGeometric_helper(int mean, @NotNull String output, double sampleMean) {
-        geometricHelper(P.withScale(mean).negativeIntegersGeometric(), output, sampleMean);
+    private static void negativeIntegersGeometric_helper(int scale, @NotNull String output, double sampleMean) {
+        geometricHelper(P.withScale(scale).negativeIntegersGeometric(), output, sampleMean);
         P.reset();
     }
 
-    private static void negativeIntegersGeometric_fail_helper(int mean) {
+    private static void negativeIntegersGeometric_fail_helper(int scale) {
         try {
-            P.withScale(mean).negativeIntegersGeometric();
+            P.withScale(scale).negativeIntegersGeometric();
             fail();
         } catch (IllegalStateException ignored) {}
         finally {
@@ -848,14 +848,14 @@ public strictfp class RandomProviderTest {
         negativeIntegersGeometric_fail_helper(-1);
     }
 
-    private static void naturalIntegersGeometric_helper(int mean, @NotNull String output, double sampleMean) {
-        geometricHelper(P.withScale(mean).naturalIntegersGeometric(), output, sampleMean);
+    private static void naturalIntegersGeometric_helper(int scale, @NotNull String output, double sampleMean) {
+        geometricHelper(P.withScale(scale).naturalIntegersGeometric(), output, sampleMean);
         P.reset();
     }
 
-    private static void naturalIntegersGeometric_fail_helper(int mean) {
+    private static void naturalIntegersGeometric_fail_helper(int scale) {
         try {
-            P.withScale(mean).naturalIntegersGeometric();
+            P.withScale(scale).naturalIntegersGeometric();
             fail();
         } catch (IllegalStateException ignored) {}
         finally {
@@ -879,20 +879,20 @@ public strictfp class RandomProviderTest {
     }
 
     private static void nonzeroIntegersGeometric_helper(
-            int mean,
+            int scale,
             @NotNull String output,
             double sampleMean,
             double sampleAbsMean
     ) {
-        List<Integer> xs = toList(take(DEFAULT_SAMPLE_SIZE, P.withScale(mean).nonzeroIntegersGeometric()));
+        List<Integer> xs = toList(take(DEFAULT_SAMPLE_SIZE, P.withScale(scale).nonzeroIntegersGeometric()));
         geometricHelper(xs, output, sampleMean);
         aeq(meanOfIntegers(toList(map(Math::abs, xs))), sampleAbsMean);
         P.reset();
     }
 
-    private static void nonzeroIntegersGeometric_fail_helper(int mean) {
+    private static void nonzeroIntegersGeometric_fail_helper(int scale) {
         try {
-            P.withScale(mean).nonzeroIntegersGeometric();
+            P.withScale(scale).nonzeroIntegersGeometric();
             fail();
         } catch (IllegalStateException ignored) {}
         finally {
@@ -956,9 +956,9 @@ public strictfp class RandomProviderTest {
         P.reset();
     }
 
-    private static void integersGeometric_fail_helper(int mean) {
+    private static void integersGeometric_fail_helper(int scale) {
         try {
-            P.withScale(mean).integersGeometric();
+            P.withScale(scale).integersGeometric();
             fail();
         } catch (IllegalStateException ignored) {}
         finally {
@@ -981,14 +981,14 @@ public strictfp class RandomProviderTest {
         integersGeometric_fail_helper(Integer.MAX_VALUE);
     }
 
-    private static void rangeUpGeometric_helper(int mean, int a, @NotNull String output, double sampleMean) {
-        geometricHelper(P.withScale(mean).rangeUpGeometric(a), output, sampleMean);
+    private static void rangeUpGeometric_helper(int scale, int a, @NotNull String output, double sampleMean) {
+        geometricHelper(P.withScale(scale).rangeUpGeometric(a), output, sampleMean);
         P.reset();
     }
 
-    private static void rangeUpGeometric_fail_helper(int mean, int a) {
+    private static void rangeUpGeometric_fail_helper(int scale, int a) {
         try {
-            P.withScale(mean).rangeUpGeometric(a);
+            P.withScale(scale).rangeUpGeometric(a);
             fail();
         } catch (IllegalStateException ignored) {}
         finally {
@@ -1022,14 +1022,14 @@ public strictfp class RandomProviderTest {
         rangeUpGeometric_fail_helper(Integer.MAX_VALUE - 5, -10);
     }
 
-    private static void rangeDownGeometric_helper(int mean, int a, @NotNull String output, double sampleMean) {
-        geometricHelper(P.withScale(mean).rangeDownGeometric(a), output, sampleMean);
+    private static void rangeDownGeometric_helper(int scale, int a, @NotNull String output, double sampleMean) {
+        geometricHelper(P.withScale(scale).rangeDownGeometric(a), output, sampleMean);
         P.reset();
     }
 
-    private static void rangeDownGeometric_fail_helper(int mean, int a) {
+    private static void rangeDownGeometric_fail_helper(int scale, int a) {
         try {
-            P.withScale(mean).rangeDownGeometric(a);
+            P.withScale(scale).rangeDownGeometric(a);
             fail();
         } catch (IllegalStateException ignored) {}
         finally {
