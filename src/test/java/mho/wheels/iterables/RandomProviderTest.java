@@ -1531,26 +1531,26 @@ public strictfp class RandomProviderTest {
     }
 
     private static void positiveBinaryFractions_helper(
-            int meanMantissaBitSize,
-            int meanExponentSize,
+            int scale,
+            int secondaryScale,
             @NotNull String output,
             double sampleMean,
-            double mantissaBitSizeMean,
+            double mantissaMeanBitLength,
             double exponentMean
     ) {
         binaryFractionHelper(
-                P.withScale(meanMantissaBitSize).withSecondaryScale(meanExponentSize).positiveBinaryFractions(),
+                P.withScale(scale).withSecondaryScale(secondaryScale).positiveBinaryFractions(),
                 output,
                 sampleMean,
-                mantissaBitSizeMean,
+                mantissaMeanBitLength,
                 exponentMean
         );
         P.reset();
     }
 
-    private static void positiveBinaryFractions_fail_helper(int meanMantissaBitSize, int meanExponentSize) {
+    private static void positiveBinaryFractions_fail_helper(int scale, int secondaryScale) {
         try {
-            P.withScale(meanMantissaBitSize).withSecondaryScale(meanExponentSize).positiveBinaryFractions();
+            P.withScale(scale).withSecondaryScale(secondaryScale).positiveBinaryFractions();
             fail();
         } catch (IllegalStateException ignored) {}
         finally {
@@ -1598,26 +1598,26 @@ public strictfp class RandomProviderTest {
     }
 
     private static void negativeBinaryFractions_helper(
-            int meanMantissaBitSize,
-            int meanExponentSize,
+            int scale,
+            int secondaryScale,
             @NotNull String output,
             double sampleMean,
-            double mantissaBitSizeMean,
+            double mantissaMeanBitLength,
             double exponentMean
     ) {
         binaryFractionHelper(
-                P.withScale(meanMantissaBitSize).withSecondaryScale(meanExponentSize).negativeBinaryFractions(),
+                P.withScale(scale).withSecondaryScale(secondaryScale).negativeBinaryFractions(),
                 output,
                 sampleMean,
-                mantissaBitSizeMean,
+                mantissaMeanBitLength,
                 exponentMean
         );
         P.reset();
     }
 
-    private static void negativeBinaryFractions_fail_helper(int meanMantissaBitSize, int meanExponentSize) {
+    private static void negativeBinaryFractions_fail_helper(int scale, int secondaryScale) {
         try {
-            P.withScale(meanMantissaBitSize).withSecondaryScale(meanExponentSize).negativeBinaryFractions();
+            P.withScale(scale).withSecondaryScale(secondaryScale).negativeBinaryFractions();
             fail();
         } catch (IllegalStateException ignored) {}
         finally {
@@ -1665,26 +1665,26 @@ public strictfp class RandomProviderTest {
     }
 
     private static void nonzeroBinaryFractions_helper(
-            int meanMantissaBitSize,
-            int meanExponentSize,
+            int scale,
+            int secondaryScale,
             @NotNull String output,
             double sampleMean,
-            double mantissaBitSizeMean,
+            double mantissaMeanBitLength,
             double exponentMean
     ) {
         binaryFractionHelper(
-                P.withScale(meanMantissaBitSize).withSecondaryScale(meanExponentSize).nonzeroBinaryFractions(),
+                P.withScale(scale).withSecondaryScale(secondaryScale).nonzeroBinaryFractions(),
                 output,
                 sampleMean,
-                mantissaBitSizeMean,
+                mantissaMeanBitLength,
                 exponentMean
         );
         P.reset();
     }
 
-    private static void nonzeroBinaryFractions_fail_helper(int meanMantissaBitSize, int meanExponentSize) {
+    private static void nonzeroBinaryFractions_fail_helper(int scale, int secondaryScale) {
         try {
-            P.withScale(meanMantissaBitSize).withSecondaryScale(meanExponentSize).nonzeroBinaryFractions();
+            P.withScale(scale).withSecondaryScale(secondaryScale).nonzeroBinaryFractions();
             fail();
         } catch (IllegalStateException ignored) {}
         finally {
@@ -1732,26 +1732,26 @@ public strictfp class RandomProviderTest {
     }
 
     private static void binaryFractions_helper(
-            int meanMantissaBitSize,
-            int meanExponentSize,
+            int scale,
+            int secondaryScale,
             @NotNull String output,
             double sampleMean,
-            double mantissaBitSizeMean,
+            double mantissaMeanBitLength,
             double exponentMean
     ) {
         binaryFractionHelper(
-                P.withScale(meanMantissaBitSize).withSecondaryScale(meanExponentSize).binaryFractions(),
+                P.withScale(scale).withSecondaryScale(secondaryScale).binaryFractions(),
                 output,
                 sampleMean,
-                mantissaBitSizeMean,
+                mantissaMeanBitLength,
                 exponentMean
         );
         P.reset();
     }
 
-    private static void binaryFractions_fail_helper(int meanMantissaBitSize, int meanExponentSize) {
+    private static void binaryFractions_fail_helper(int scale, int secondaryScale) {
         try {
-            P.withScale(meanMantissaBitSize).withSecondaryScale(meanExponentSize).binaryFractions();
+            P.withScale(scale).withSecondaryScale(secondaryScale).binaryFractions();
             fail();
         } catch (IllegalStateException ignored) {}
         finally {
@@ -1804,14 +1804,14 @@ public strictfp class RandomProviderTest {
             @NotNull String a,
             @NotNull String output,
             double sampleMean,
-            double mantissaBitSizeMean,
+            double mantissaMeanBitLength,
             double exponentMean
     ) {
         binaryFractionHelper(
                 P.withScale(scale).withSecondaryScale(secondaryScale).rangeUp(BinaryFraction.readStrict(a).get()),
                 output,
                 sampleMean,
-                mantissaBitSizeMean,
+                mantissaMeanBitLength,
                 exponentMean
         );
         P.reset();
@@ -2087,14 +2087,14 @@ public strictfp class RandomProviderTest {
             @NotNull String a,
             @NotNull String output,
             double sampleMean,
-            double mantissaBitSizeMean,
+            double mantissaMeanBitLength,
             double exponentMean
     ) {
         binaryFractionHelper(
                 P.withScale(scale).withSecondaryScale(secondaryScale).rangeDown(BinaryFraction.readStrict(a).get()),
                 output,
                 sampleMean,
-                mantissaBitSizeMean,
+                mantissaMeanBitLength,
                 exponentMean
         );
         P.reset();
@@ -2365,22 +2365,19 @@ public strictfp class RandomProviderTest {
     }
 
     private static void range_BinaryFraction_BinaryFraction_helper(
-            int meanDivisionSize,
+            int scale,
             @NotNull String a,
             @NotNull String b,
             @NotNull String output,
             double sampleMean,
-            double mantissaBitSizeMean,
+            double mantissaMeanBitLength,
             double exponentMean
     ) {
         binaryFractionHelper(
-                P.withScale(meanDivisionSize).range(
-                        BinaryFraction.readStrict(a).get(),
-                        BinaryFraction.readStrict(b).get()
-                ),
+                P.withScale(scale).range(BinaryFraction.readStrict(a).get(), BinaryFraction.readStrict(b).get()),
                 output,
                 sampleMean,
-                mantissaBitSizeMean,
+                mantissaMeanBitLength,
                 exponentMean
         );
         P.reset();
