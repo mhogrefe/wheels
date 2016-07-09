@@ -1348,7 +1348,7 @@ public final strictfp class RandomProvider extends IterableProvider {
         }
         if (a < 1 && scale >= Integer.MAX_VALUE + a) {
             throw new IllegalStateException("this must have a scale less than Integer.MAX_VALUE + a, which is " +
-                    (Integer.MAX_VALUE + a));
+                    (Integer.MAX_VALUE + a) + ". Invalid scale: " + scale);
         }
         return filterInfinite(j -> j >= a, map(i -> i + a - 1, withScale(scale - a + 1).positiveIntegersGeometric()));
     }
@@ -1372,9 +1372,9 @@ public final strictfp class RandomProvider extends IterableProvider {
             throw new IllegalStateException("this must have a scale less than a, which is " + a + ". Invalid scale: " +
                     scale);
         }
-        if (a > -1 && scale <= a - Integer.MAX_VALUE) {
+        if (a >= 0 && scale <= a - Integer.MAX_VALUE) {
             throw new IllegalStateException("this must have a scale greater than a - Integer.MAX_VALUE, which is " +
-                    (a - Integer.MAX_VALUE));
+                    (a - Integer.MAX_VALUE) + ". Invalid scale: " + scale);
         }
         return filterInfinite(j -> j <= a, map(i -> a - i + 1, withScale(a - scale + 1).positiveIntegersGeometric()));
     }
