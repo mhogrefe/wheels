@@ -2509,10 +2509,10 @@ public final strictfp class RandomProvider extends IterableProvider {
                 if (bdScale == 0) {
                     unscaled = is1.next();
                 } else {
-                    int unscaledBitSize = is2.next();
+                    int unscaledBitLength = is2.next();
                     do {
-                        unscaled = nextBigIntegerPow2(unscaledBitSize);
-                        unscaled = unscaled.setBit(unscaledBitSize - 1);
+                        unscaled = nextBigIntegerPow2(unscaledBitLength);
+                        unscaled = unscaled.setBit(unscaledBitLength - 1);
                     } while (unscaled.mod(BigInteger.TEN).equals(BigInteger.ZERO));
                 }
                 return new BigDecimal(unscaled, bdScale);
@@ -2596,10 +2596,10 @@ public final strictfp class RandomProvider extends IterableProvider {
                 if (bdScale == 0) {
                     unscaled = is1.next();
                 } else {
-                    int unscaledBitSize = is2.next();
+                    int unscaledBitLength = is2.next();
                     do {
-                        unscaled = nextBigIntegerPow2(unscaledBitSize);
-                        unscaled = unscaled.setBit(unscaledBitSize - 1);
+                        unscaled = nextBigIntegerPow2(unscaledBitLength);
+                        unscaled = unscaled.setBit(unscaledBitLength - 1);
                     } while (unscaled.mod(BigInteger.TEN).equals(BigInteger.ZERO));
                 }
                 return new BigDecimal(bs.next() ? unscaled : unscaled.negate(), bdScale);

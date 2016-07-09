@@ -1067,28 +1067,28 @@ public strictfp class RandomProviderTest {
             @NotNull Iterable<BigInteger> xs,
             @NotNull String output,
             double sampleMean,
-            double bitSizeMean
+            double meanBitLength
     ) {
         List<BigInteger> sample = toList(take(DEFAULT_SAMPLE_SIZE, xs));
         aeqitLimitLog(TINY_LIMIT, sample, output);
         aeqMapLog(topSampleCount(DEFAULT_TOP_COUNT, sample), output);
         aeq(meanOfBigIntegers(sample), sampleMean);
-        aeq(meanOfIntegers(toList(map(x -> x.abs().bitLength(), sample))), bitSizeMean);
+        aeq(meanOfIntegers(toList(map(x -> x.abs().bitLength(), sample))), meanBitLength);
     }
 
     private static void positiveBigIntegers_helper(
-            int meanBitSize,
+            int scale,
             @NotNull String output,
             double sampleMean,
-            double bitSizeMean
+            double meanBitLength
     ) {
-        bigIntegerHelper(P.withScale(meanBitSize).positiveBigIntegers(), output, sampleMean, bitSizeMean);
+        bigIntegerHelper(P.withScale(scale).positiveBigIntegers(), output, sampleMean, meanBitLength);
         P.reset();
     }
 
-    private static void positiveBigIntegers_fail_helper(int meanBitSize) {
+    private static void positiveBigIntegers_fail_helper(int meanBitLength) {
         try {
-            P.withScale(meanBitSize).positiveBigIntegers();
+            P.withScale(meanBitLength).positiveBigIntegers();
             fail();
         } catch (IllegalStateException ignored) {}
         finally {
@@ -1126,23 +1126,23 @@ public strictfp class RandomProviderTest {
     }
 
     private static void negativeBigIntegers_helper(
-            int meanBitSize,
+            int scale,
             @NotNull String output,
             double sampleMean,
-            double bitSizeMean
+            double meanBitLength
     ) {
         bigIntegerHelper(
-                P.withScale(meanBitSize).negativeBigIntegers(),
+                P.withScale(scale).negativeBigIntegers(),
                 output,
                 sampleMean,
-                bitSizeMean
+                meanBitLength
         );
         P.reset();
     }
 
-    private static void negativeBigIntegers_fail_helper(int meanBitSize) {
+    private static void negativeBigIntegers_fail_helper(int scale) {
         try {
-            P.withScale(meanBitSize).negativeBigIntegers();
+            P.withScale(scale).negativeBigIntegers();
             fail();
         } catch (IllegalStateException ignored) {}
         finally {
@@ -1195,18 +1195,18 @@ public strictfp class RandomProviderTest {
     }
 
     private static void naturalBigIntegers_helper(
-            int meanBitSize,
+            int scale,
             @NotNull String output,
             double sampleMean,
-            double bitSizeMean
+            double meanBitLength
     ) {
-        bigIntegerHelper(P.withScale(meanBitSize).naturalBigIntegers(), output, sampleMean, bitSizeMean);
+        bigIntegerHelper(P.withScale(scale).naturalBigIntegers(), output, sampleMean, meanBitLength);
         P.reset();
     }
 
-    private static void naturalBigIntegers_fail_helper(int meanBitSize) {
+    private static void naturalBigIntegers_fail_helper(int scale) {
         try {
-            P.withScale(meanBitSize).naturalBigIntegers();
+            P.withScale(scale).naturalBigIntegers();
             fail();
         } catch (IllegalStateException ignored) {}
         finally {
@@ -1240,18 +1240,18 @@ public strictfp class RandomProviderTest {
     }
 
     private static void nonzeroBigIntegers_helper(
-            int meanBitSize,
+            int scale,
             @NotNull String output,
             double sampleMean,
-            double bitSizeMean
+            double meanBitLength
     ) {
-        bigIntegerHelper(P.withScale(meanBitSize).nonzeroBigIntegers(), output, sampleMean, bitSizeMean);
+        bigIntegerHelper(P.withScale(scale).nonzeroBigIntegers(), output, sampleMean, meanBitLength);
         P.reset();
     }
 
-    private static void nonzeroBigIntegers_fail_helper(int meanBitSize) {
+    private static void nonzeroBigIntegers_fail_helper(int scale) {
         try {
-            P.withScale(meanBitSize).nonzeroBigIntegers();
+            P.withScale(scale).nonzeroBigIntegers();
             fail();
         } catch (IllegalStateException ignored) {}
         finally {
@@ -1279,23 +1279,23 @@ public strictfp class RandomProviderTest {
     }
 
     private static void bigIntegers_helper(
-            int meanBitSize,
+            int scale,
             @NotNull String output,
             double sampleMean,
-            double bitSizeMean
+            double meanBitLength
     ) {
         bigIntegerHelper(
-                P.withScale(meanBitSize).bigIntegers(),
+                P.withScale(scale).bigIntegers(),
                 output,
                 sampleMean,
-                bitSizeMean
+                meanBitLength
         );
         P.reset();
     }
 
-    private static void bigIntegers_fail_helper(int meanBitSize) {
+    private static void bigIntegers_fail_helper(int scale) {
         try {
-            P.withScale(meanBitSize).bigIntegers();
+            P.withScale(scale).bigIntegers();
             fail();
         } catch (IllegalStateException ignored) {}
         finally {
@@ -1319,19 +1319,19 @@ public strictfp class RandomProviderTest {
     }
 
     private static void rangeUp_BigInteger_helper(
-            int meanBitSize,
+            int scale,
             int a,
             @NotNull String output,
             double sampleMean,
-            double bitSizeMean
+            double meanBitLength
     ) {
-        bigIntegerHelper(P.withScale(meanBitSize).rangeUp(BigInteger.valueOf(a)), output, sampleMean, bitSizeMean);
+        bigIntegerHelper(P.withScale(scale).rangeUp(BigInteger.valueOf(a)), output, sampleMean, meanBitLength);
         P.reset();
     }
 
-    private static void rangeUp_BigInteger_fail_helper(int meanBitSize, int a) {
+    private static void rangeUp_BigInteger_fail_helper(int scale, int a) {
         try {
-            P.withScale(meanBitSize).rangeUp(BigInteger.valueOf(a));
+            P.withScale(scale).rangeUp(BigInteger.valueOf(a));
             fail();
         } catch (IllegalStateException ignored) {}
         finally {
@@ -1412,24 +1412,24 @@ public strictfp class RandomProviderTest {
     }
 
     private static void rangeDown_BigInteger_helper(
-            int meanBitSize,
+            int scale,
             int a,
             @NotNull String output,
             double sampleMean,
-            double bitSizeMean
+            double meanBitLength
     ) {
         bigIntegerHelper(
-                P.withScale(meanBitSize).rangeDown(BigInteger.valueOf(a)),
+                P.withScale(scale).rangeDown(BigInteger.valueOf(a)),
                 output,
                 sampleMean,
-                bitSizeMean
+                meanBitLength
         );
         P.reset();
     }
 
-    private static void rangeDown_BigInteger_fail_helper(int meanBitSize, int a) {
+    private static void rangeDown_BigInteger_fail_helper(int scale, int a) {
         try {
-            P.withScale(meanBitSize).rangeDown(BigInteger.valueOf(a));
+            P.withScale(scale).rangeDown(BigInteger.valueOf(a));
             fail();
         } catch (IllegalStateException ignored) {}
         finally {
@@ -1519,14 +1519,14 @@ public strictfp class RandomProviderTest {
             @NotNull Iterable<BinaryFraction> xs,
             @NotNull String output,
             double sampleMean,
-            double mantissaBitSizeMean,
+            double meanMantissaBitLength,
             double exponentMean
     ) {
         List<BinaryFraction> sample = toList(take(DEFAULT_SAMPLE_SIZE, xs));
         aeqitLimitLog(TINY_LIMIT, sample, output);
         aeqMapLog(topSampleCount(DEFAULT_TOP_COUNT, sample), output);
         aeq(meanOfBinaryFractions(sample), sampleMean);
-        aeq(meanOfIntegers(toList(map(x -> x.getMantissa().abs().bitLength(), sample))), mantissaBitSizeMean);
+        aeq(meanOfIntegers(toList(map(x -> x.getMantissa().abs().bitLength(), sample))), meanMantissaBitLength);
         aeq(meanOfIntegers(toList(map(x -> Math.abs(x.getExponent()), sample))), exponentMean);
     }
 

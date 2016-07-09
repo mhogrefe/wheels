@@ -18,12 +18,12 @@ import static mho.wheels.ordering.Ordering.*;
 import static mho.wheels.testing.Testing.*;
 
 public strictfp class IterableUtilsProperties extends TestProperties {
-    private static final @NotNull Comparator<BigInteger> BIG_INTEGER_BITSIZE_COMPARATOR = (x, y) -> {
+    private static final @NotNull Comparator<BigInteger> BIG_INTEGER_BIT_LENGTH_COMPARATOR = (x, y) -> {
         int c = Integer.compare(x.bitLength(), y.bitLength());
         return c == 0 ? x.compareTo(y) : c;
     };
 
-    private static final @NotNull Comparator<BigDecimal> BIG_DECIMAL_BITSIZE_COMPARATOR = (x, y) -> {
+    private static final @NotNull Comparator<BigDecimal> BIG_DECIMAL_BIT_LENGTH_COMPARATOR = (x, y) -> {
         int c = Integer.compare(x.unscaledValue().bitLength(), y.unscaledValue().bitLength());
         return c == 0 ? x.compareTo(y) : c;
     };
@@ -334,7 +334,7 @@ public strictfp class IterableUtilsProperties extends TestProperties {
         return foldl(
                 BigInteger::multiply,
                 BigInteger.ONE,
-                sort(BIG_INTEGER_BITSIZE_COMPARATOR, xs)
+                sort(BIG_INTEGER_BIT_LENGTH_COMPARATOR, xs)
         );
     }
 
@@ -373,7 +373,7 @@ public strictfp class IterableUtilsProperties extends TestProperties {
         return foldl(
                 BigDecimal::multiply,
                 BigDecimal.ONE,
-                sort(BIG_DECIMAL_BITSIZE_COMPARATOR, xs)
+                sort(BIG_DECIMAL_BIT_LENGTH_COMPARATOR, xs)
         );
     }
 
