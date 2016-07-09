@@ -32,7 +32,7 @@ public class RandomProviderDemos extends Demos {
     }
 
     private void demoConstructor_List_Integer() {
-        for (List<Integer> is : take(LIMIT, P.lists(IsaacPRNG.SIZE, P.integers()))) {
+        for (List<Integer> is : take(SMALL_LIMIT, P.lists(IsaacPRNG.SIZE, P.integers()))) {
             System.out.println("RandomProvider(" + is + ") = " + new RandomProvider(is));
         }
     }
@@ -56,7 +56,7 @@ public class RandomProviderDemos extends Demos {
     }
 
     private void demoGetSeed() {
-        for (RandomProvider rp : take(LIMIT, P.randomProviders())) {
+        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProviders())) {
             System.out.println("getSeed(" + rp + ") = " + rp.getSeed());
         }
     }
@@ -1931,15 +1931,15 @@ public class RandomProviderDemos extends Demos {
     }
 
     private void demoEquals_null() {
-        for (RandomProvider r : take(LIMIT, P.randomProviders())) {
+        for (RandomProvider rp : take(LIMIT, P.randomProviders())) {
             //noinspection ObjectEqualsNull
-            System.out.println(r + (r.equals(null) ? " = " : " ≠ ") + null);
+            System.out.println(rp + (rp.equals(null) ? " = " : " ≠ ") + null);
         }
     }
 
     private void demoHashCode() {
-        for (RandomProvider r : take(LIMIT, P.randomProviders())) {
-            System.out.println("hashCode(" + r + ") = " + r.hashCode());
+        for (RandomProvider rp : take(LIMIT, P.randomProviders())) {
+            System.out.println("hashCode(" + rp + ") = " + rp.hashCode());
         }
     }
 
