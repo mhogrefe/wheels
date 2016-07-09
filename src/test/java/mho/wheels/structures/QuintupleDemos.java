@@ -2,6 +2,8 @@ package mho.wheels.structures;
 
 import mho.wheels.testing.Demos;
 
+import java.util.List;
+
 import static mho.wheels.iterables.IterableUtils.*;
 
 @SuppressWarnings("UnusedDeclaration")
@@ -22,6 +24,12 @@ public class QuintupleDemos extends Demos {
         for (Quintuple<Integer, Integer, Integer, Integer, Integer> q :
                 take(LIMIT, P.quintuples(P.withNull(P.integers())))) {
             System.out.println("toList" + q + " = " + Quintuple.toList(q));
+        }
+    }
+
+    private void demoFromList() {
+        for (List<Integer> xs : take(LIMIT, P.lists(5, P.withNull(P.integers())))) {
+            System.out.println("fromList(" + middle(xs.toString()) + ") = " + Quintuple.fromList(xs));
         }
     }
 }

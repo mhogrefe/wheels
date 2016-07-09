@@ -2,6 +2,8 @@ package mho.wheels.structures;
 
 import mho.wheels.testing.Demos;
 
+import java.util.List;
+
 import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.testing.Testing.*;
 
@@ -24,6 +26,12 @@ public class SextupleDemos extends Demos {
         for (Sextuple<Integer, Integer, Integer, Integer, Integer, Integer> s :
                 take(MEDIUM_LIMIT, P.sextuples(P.withNull(P.integers())))) {
             System.out.println("toList" + s + " = " + Sextuple.toList(s));
+        }
+    }
+
+    private void demoFromList() {
+        for (List<Integer> xs : take(LIMIT, P.lists(6, P.withNull(P.integers())))) {
+            System.out.println("fromList(" + middle(xs.toString()) + ") = " + Sextuple.fromList(xs));
         }
     }
 }
