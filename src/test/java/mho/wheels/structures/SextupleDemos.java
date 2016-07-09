@@ -19,4 +19,11 @@ public class SextupleDemos extends Demos {
                     new Sextuple<>(s.a, s.b, s.c, s.d, s.e, s.f));
         }
     }
+
+    private void demoToList() {
+        for (Sextuple<Integer, Integer, Integer, Integer, Integer, Integer> s :
+                take(MEDIUM_LIMIT, P.sextuples(P.withNull(P.integers())))) {
+            System.out.println("toList" + s + " = " + Sextuple.toList(s));
+        }
+    }
 }

@@ -15,4 +15,10 @@ public class PairDemos extends Demos {
             System.out.println("new Pair<Integer, Integer>(" + p.a + ", " + p.b + ") = " + new Pair<>(p.a, p.b));
         }
     }
+
+    private void demoToList() {
+        for (Pair<Integer, Integer> p : take(LIMIT, P.pairs(P.withNull(P.integers())))) {
+            System.out.println("toList" + p + " = " + Pair.toList(p));
+        }
+    }
 }

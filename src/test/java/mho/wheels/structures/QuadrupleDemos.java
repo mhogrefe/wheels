@@ -16,4 +16,10 @@ public class QuadrupleDemos extends Demos {
                     ", " + q.d + ") = " + new Quadruple<>(q.a, q.b, q.c, q.d));
         }
     }
+
+    private void demoToList() {
+        for (Quadruple<Integer, Integer, Integer, Integer> q : take(LIMIT, P.quadruples(P.withNull(P.integers())))) {
+            System.out.println("toList" + q + " = " + Quadruple.toList(q));
+        }
+    }
 }

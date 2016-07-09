@@ -19,4 +19,11 @@ public class SeptupleDemos extends Demos {
                     new Septuple<>(s.a, s.b, s.c, s.d, s.e, s.f, s.g));
         }
     }
+
+    private void demoToList() {
+        for (Septuple<Integer, Integer, Integer, Integer, Integer, Integer, Integer> s :
+                take(MEDIUM_LIMIT, P.septuples(P.withNull(P.integers())))) {
+            System.out.println("toList" + s + " = " + Septuple.toList(s));
+        }
+    }
 }

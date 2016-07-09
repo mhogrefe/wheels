@@ -17,4 +17,11 @@ public class QuintupleDemos extends Demos {
                     ", " + q.c + ", " + q.d + ", " + q.e + ") = " + new Quintuple<>(q.a, q.b, q.c, q.d, q.e));
         }
     }
+
+    private void demoToList() {
+        for (Quintuple<Integer, Integer, Integer, Integer, Integer> q :
+                take(LIMIT, P.quintuples(P.withNull(P.integers())))) {
+            System.out.println("toList" + q + " = " + Quintuple.toList(q));
+        }
+    }
 }
