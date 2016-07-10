@@ -30,4 +30,16 @@ public class TripleDemos extends Demos {
             System.out.println("fromList(" + middle(xs.toString()) + ") = " + Triple.fromList(xs));
         }
     }
+
+    private void demoCompare() {
+        Iterable<
+                Pair<
+                        Triple<Integer, Integer, Integer>,
+                        Triple<Integer, Integer, Integer>
+                >
+        > ts = P.pairs(P.triples(P.integers()));
+        for (Pair<Triple<Integer, Integer, Integer>, Triple<Integer, Integer, Integer>> p : take(LIMIT, ts)) {
+            System.out.println("compare(" + p.a + ", " + p.b + ") = " + Triple.compare(p.a, p.b));
+        }
+    }
 }

@@ -34,4 +34,19 @@ public class SextupleDemos extends Demos {
             System.out.println("fromList(" + middle(xs.toString()) + ") = " + Sextuple.fromList(xs));
         }
     }
+
+    private void demoCompare() {
+        Iterable<
+                Pair<
+                        Sextuple<Integer, Integer, Integer, Integer, Integer, Integer>,
+                        Sextuple<Integer, Integer, Integer, Integer, Integer, Integer>
+                >
+        > ss = P.pairs(P.sextuples(P.integers()));
+        for (Pair<
+                Sextuple<Integer, Integer, Integer, Integer, Integer, Integer>,
+                Sextuple<Integer, Integer, Integer, Integer, Integer, Integer>
+        > p : take(LIMIT, ss)) {
+            System.out.println("compare(" + p.a + ", " + p.b + ") = " + Sextuple.compare(p.a, p.b));
+        }
+    }
 }

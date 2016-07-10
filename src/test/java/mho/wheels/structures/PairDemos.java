@@ -29,4 +29,10 @@ public class PairDemos extends Demos {
             System.out.println("fromList(" + middle(xs.toString()) + ") = " + Pair.fromList(xs));
         }
     }
+
+    private void demoCompare() {
+        for (Pair<Pair<Integer, Integer>, Pair<Integer, Integer>> p : take(LIMIT, P.pairs(P.pairs(P.integers())))) {
+            System.out.println("compare(" + p.a + ", " + p.b + ") = " + Pair.compare(p.a, p.b));
+        }
+    }
 }

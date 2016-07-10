@@ -30,4 +30,19 @@ public class QuadrupleDemos extends Demos {
             System.out.println("fromList(" + middle(xs.toString()) + ") = " + Quadruple.fromList(xs));
         }
     }
+
+    private void demoCompare() {
+        Iterable<
+                Pair<
+                        Quadruple<Integer, Integer, Integer, Integer>,
+                        Quadruple<Integer, Integer, Integer, Integer>
+                >
+        > qs = P.pairs(P.quadruples(P.integers()));
+        for (Pair<
+                Quadruple<Integer, Integer, Integer, Integer>,
+                Quadruple<Integer, Integer, Integer, Integer>
+        > p : take(LIMIT, qs)) {
+            System.out.println("compare(" + p.a + ", " + p.b + ") = " + Quadruple.compare(p.a, p.b));
+        }
+    }
 }

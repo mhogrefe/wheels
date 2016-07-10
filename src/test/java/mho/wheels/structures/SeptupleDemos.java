@@ -34,4 +34,19 @@ public class SeptupleDemos extends Demos {
             System.out.println("fromList(" + middle(xs.toString()) + ") = " + Septuple.fromList(xs));
         }
     }
+
+    private void demoCompare() {
+        Iterable<
+                Pair<
+                        Septuple<Integer, Integer, Integer, Integer, Integer, Integer, Integer>,
+                        Septuple<Integer, Integer, Integer, Integer, Integer, Integer, Integer>
+                >
+        > ss = P.pairs(P.septuples(P.integers()));
+        for (Pair<
+                Septuple<Integer, Integer, Integer, Integer, Integer, Integer, Integer>,
+                Septuple<Integer, Integer, Integer, Integer, Integer, Integer, Integer>
+        > p : take(LIMIT, ss)) {
+            System.out.println("compare(" + p.a + ", " + p.b + ") = " + Septuple.compare(p.a, p.b));
+        }
+    }
 }

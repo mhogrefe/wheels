@@ -32,4 +32,19 @@ public class QuintupleDemos extends Demos {
             System.out.println("fromList(" + middle(xs.toString()) + ") = " + Quintuple.fromList(xs));
         }
     }
+
+    private void demoCompare() {
+        Iterable<
+                Pair<
+                        Quintuple<Integer, Integer, Integer, Integer, Integer>,
+                        Quintuple<Integer, Integer, Integer, Integer, Integer>
+                >
+        > qs = P.pairs(P.quintuples(P.integers()));
+        for (Pair<
+                Quintuple<Integer, Integer, Integer, Integer, Integer>,
+                Quintuple<Integer, Integer, Integer, Integer, Integer>
+        > p : take(LIMIT, qs)) {
+            System.out.println("compare(" + p.a + ", " + p.b + ") = " + Quintuple.compare(p.a, p.b));
+        }
+    }
 }
