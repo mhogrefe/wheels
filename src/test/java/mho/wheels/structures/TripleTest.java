@@ -139,6 +139,18 @@ public class TripleTest {
         equals_helper(null, null, null, 0.5, false);
     }
 
+    private static void hashCode_helper(String a, Integer b, Boolean c, int output) {
+        aeq(new Triple<>(a, b, c).hashCode(), output);
+    }
+
+    @Test
+    public void testHashCode() {
+        hashCode_helper("hi", 3, true, 3200493);
+        hashCode_helper("hi", 3, null, 3199262);
+        hashCode_helper(null, 3, true, 1324);
+        hashCode_helper(null, null, null, 0);
+    }
+
     private static void TripleComparator_compare_helper(
             String pa,
             Integer pb,

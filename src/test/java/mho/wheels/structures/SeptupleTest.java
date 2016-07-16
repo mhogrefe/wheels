@@ -234,6 +234,38 @@ public class SeptupleTest {
         equals_helper(null, null, null, null, "null", null, null, 0.5, false);
     }
 
+    private static void hashCode_helper(
+            String a,
+            Integer b,
+            Boolean c,
+            Character d,
+            @NotNull String e,
+            Double f,
+            List<Integer> g,
+            int output
+    ) {
+        aeq(
+                new Septuple<>(
+                        a,
+                        b,
+                        c,
+                        d,
+                        Readers.readWithNullsStrict(Readers::readOrderingStrict).apply(e).get(),
+                        f,
+                        g
+                ).hashCode(),
+                output
+        );
+    }
+
+    @Test
+    public void testHashCode() {
+        hashCode_helper("hi", 3, true, 'a', ">", 0.5, x, -1748624152);
+        hashCode_helper("hi", 3, true, 'a', ">", 0.5, null, -1748625144);
+        hashCode_helper(null, 3, true, 'a', ">", 0.5, x, -1310878553);
+        hashCode_helper(null, null, null, null, "null", null, null, 0);
+    }
+
     private static void SeptupleComparator_compare_helper(
             String pa,
             Integer pb,

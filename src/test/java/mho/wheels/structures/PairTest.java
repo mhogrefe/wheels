@@ -128,6 +128,18 @@ public class PairTest {
         equals_helper(null, null, 0.5, false);
     }
 
+    private static void hashCode_helper(String a, Integer b, int output) {
+        aeq(new Pair<>(a, b).hashCode(), output);
+    }
+
+    @Test
+    public void testHashCode() {
+        hashCode_helper("hi", 3, 103202);
+        hashCode_helper("hi", null, 103199);
+        hashCode_helper(null, 3, 3);
+        hashCode_helper(null, null, 0);
+    }
+
     private static void PairComparator_compare_helper(String pa, Integer pb, String qa, Integer qb, int output) {
         aeq(PC.compare(new Pair<>(pa, pb), new Pair<>(qa, qb)), output);
     }

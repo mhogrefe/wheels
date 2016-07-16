@@ -148,6 +148,18 @@ public class QuadrupleTest {
         equals_helper(null, null, null, null, 0.5, false);
     }
 
+    private static void hashCode_helper(String a, Integer b, Boolean c, Character d, int output) {
+        aeq(new Quadruple<>(a, b, c, d).hashCode(), output);
+    }
+
+    @Test
+    public void testHashCode() {
+        hashCode_helper("hi", 3, true, 'a', 99215380);
+        hashCode_helper("hi", 3, true, null, 99215283);
+        hashCode_helper(null, 3, true, 'a', 41141);
+        hashCode_helper(null, null, null, null, 0);
+    }
+
     private static void QuadrupleComparator_compare_helper(
             String pa,
             Integer pb,

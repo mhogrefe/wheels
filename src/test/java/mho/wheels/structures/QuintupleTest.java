@@ -200,6 +200,27 @@ public class QuintupleTest {
         equals_helper(null, 3, true, 'a', ">", 0.5, false);
     }
 
+    private static void hashCode_helper(String a, Integer b, Boolean c, Character d, @NotNull String e, int output) {
+        aeq(
+                new Quintuple<>(
+                        a,
+                        b,
+                        c,
+                        d,
+                        Readers.readWithNullsStrict(Readers::readOrderingStrict).apply(e).get()
+                ).hashCode(),
+                output
+        );
+    }
+
+    @Test
+    public void testHashCode() {
+        hashCode_helper("hi", 3, true, 'a', ">", -219628792);
+        hashCode_helper("hi", 3, true, 'a', "null", -1219290516);
+        hashCode_helper(null, 3, true, 'a', ">", 1000937095);
+        hashCode_helper(null, null, null, null, "null", 0);
+    }
+
     private static void QuintupleComparator_compare_helper(
             String pa,
             Integer pb,
