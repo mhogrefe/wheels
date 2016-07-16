@@ -1426,9 +1426,9 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<BigInteger> naturalBigIntegers() {
-        Iterable<Integer> naturalBigIntegers = naturalIntegersGeometric();
+        Iterable<Integer> naturalIntegers = naturalIntegersGeometric();
         return () -> new NoRemoveIterator<BigInteger>() {
-            private final @NotNull Iterator<Integer> is = naturalBigIntegers.iterator();
+            private final @NotNull Iterator<Integer> is = naturalIntegers.iterator();
 
             @Override
             public boolean hasNext() {

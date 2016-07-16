@@ -1229,7 +1229,7 @@ public strictfp class RandomProviderTest {
         naturalBigIntegers_helper(10, "RandomProvider_naturalBigIntegers_vi", 6.216950515561165E39, 9.998042000004142);
         naturalBigIntegers_helper(
                 100,
-                "RandomProvider_naturalBigIntegers_100",
+                "RandomProvider_naturalBigIntegers_vii",
                 Double.POSITIVE_INFINITY,
                 99.9762349999981
         );
