@@ -49,4 +49,27 @@ public class SextupleDemos extends Demos {
             System.out.println("compare(" + p.a + ", " + p.b + ") = " + Sextuple.compare(p.a, p.b));
         }
     }
+
+    private void demoEquals_Sextuple() {
+        Iterable<
+                Pair<
+                        Sextuple<Integer, Integer, Integer, Integer, Integer, Integer>,
+                        Sextuple<Integer, Integer, Integer, Integer, Integer, Integer>
+                >
+        > ps = P.pairs(P.sextuples(P.withNull(P.integers())));
+        for (Pair<
+                Sextuple<Integer, Integer, Integer, Integer, Integer, Integer>,
+                Sextuple<Integer, Integer, Integer, Integer, Integer, Integer>
+        > p : take(LIMIT, ps)) {
+            System.out.println(p.a + (p.a.equals(p.b) ? " = " : " ≠ ") + p.b);
+        }
+    }
+
+    private void demoEquals_null() {
+        for (Sextuple<Integer, Integer, Integer, Integer, Integer, Integer> s :
+                take(LIMIT, P.sextuples(P.withNull(P.integers())))) {
+            //noinspection ObjectEqualsNull
+            System.out.println(s + (s.equals(null) ? " = " : " ≠ ") + null);
+        }
+    }
 }

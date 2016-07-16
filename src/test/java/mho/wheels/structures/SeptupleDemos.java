@@ -49,4 +49,27 @@ public class SeptupleDemos extends Demos {
             System.out.println("compare(" + p.a + ", " + p.b + ") = " + Septuple.compare(p.a, p.b));
         }
     }
+
+    private void demoEquals_Septuple() {
+        Iterable<
+                Pair<
+                        Septuple<Integer, Integer, Integer, Integer, Integer, Integer, Integer>,
+                        Septuple<Integer, Integer, Integer, Integer, Integer, Integer, Integer>
+                >
+        > ps = P.pairs(P.septuples(P.withNull(P.integers())));
+        for (Pair<
+                Septuple<Integer, Integer, Integer, Integer, Integer, Integer, Integer>,
+                Septuple<Integer, Integer, Integer, Integer, Integer, Integer, Integer>
+        > p : take(LIMIT, ps)) {
+            System.out.println(p.a + (p.a.equals(p.b) ? " = " : " ≠ ") + p.b);
+        }
+    }
+
+    private void demoEquals_null() {
+        for (Septuple<Integer, Integer, Integer, Integer, Integer, Integer, Integer> s :
+                take(LIMIT, P.septuples(P.withNull(P.integers())))) {
+            //noinspection ObjectEqualsNull
+            System.out.println(s + (s.equals(null) ? " = " : " ≠ ") + null);
+        }
+    }
 }

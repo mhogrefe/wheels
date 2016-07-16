@@ -35,4 +35,18 @@ public class PairDemos extends Demos {
             System.out.println("compare(" + p.a + ", " + p.b + ") = " + Pair.compare(p.a, p.b));
         }
     }
+
+    private void demoEquals_Pair() {
+        Iterable<Pair<Pair<Integer, Integer>, Pair<Integer, Integer>>> ps = P.pairs(P.pairs(P.withNull(P.integers())));
+        for (Pair<Pair<Integer, Integer>, Pair<Integer, Integer>> p : take(LIMIT, ps)) {
+            System.out.println(p.a + (p.a.equals(p.b) ? " = " : " ≠ ") + p.b);
+        }
+    }
+
+    private void demoEquals_null() {
+        for (Pair<Integer, Integer> p : take(LIMIT, P.pairs(P.withNull(P.integers())))) {
+            //noinspection ObjectEqualsNull
+            System.out.println(p + (p.equals(null) ? " = " : " ≠ ") + null);
+        }
+    }
 }

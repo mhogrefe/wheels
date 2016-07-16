@@ -39,12 +39,35 @@ public class QuintupleDemos extends Demos {
                         Quintuple<Integer, Integer, Integer, Integer, Integer>,
                         Quintuple<Integer, Integer, Integer, Integer, Integer>
                 >
-        > qs = P.pairs(P.quintuples(P.integers()));
+        > ps = P.pairs(P.quintuples(P.integers()));
         for (Pair<
                 Quintuple<Integer, Integer, Integer, Integer, Integer>,
                 Quintuple<Integer, Integer, Integer, Integer, Integer>
-        > p : take(LIMIT, qs)) {
+        > p : take(LIMIT, ps)) {
             System.out.println("compare(" + p.a + ", " + p.b + ") = " + Quintuple.compare(p.a, p.b));
+        }
+    }
+
+    private void demoEquals_Quintuple() {
+        Iterable<
+                Pair<
+                        Quintuple<Integer, Integer, Integer, Integer, Integer>,
+                        Quintuple<Integer, Integer, Integer, Integer, Integer>
+                >
+        > ps = P.pairs(P.quintuples(P.withNull(P.integers())));
+        for (Pair<
+                Quintuple<Integer, Integer, Integer, Integer, Integer>,
+                Quintuple<Integer, Integer, Integer, Integer, Integer>
+        > p : take(LIMIT, ps)) {
+            System.out.println(p.a + (p.a.equals(p.b) ? " = " : " ≠ ") + p.b);
+        }
+    }
+
+    private void demoEquals_null() {
+        for (Quintuple<Integer, Integer, Integer, Integer, Integer> q :
+                take(LIMIT, P.quintuples(P.withNull(P.integers())))) {
+            //noinspection ObjectEqualsNull
+            System.out.println(q + (q.equals(null) ? " = " : " ≠ ") + null);
         }
     }
 }

@@ -33,16 +33,28 @@ public class QuadrupleDemos extends Demos {
 
     private void demoCompare() {
         Iterable<
-                Pair<
-                        Quadruple<Integer, Integer, Integer, Integer>,
-                        Quadruple<Integer, Integer, Integer, Integer>
-                >
-        > qs = P.pairs(P.quadruples(P.integers()));
-        for (Pair<
-                Quadruple<Integer, Integer, Integer, Integer>,
-                Quadruple<Integer, Integer, Integer, Integer>
-        > p : take(LIMIT, qs)) {
+                Pair<Quadruple<Integer, Integer, Integer, Integer>, Quadruple<Integer, Integer, Integer, Integer>>
+        > ps = P.pairs(P.quadruples(P.integers()));
+        for (Pair<Quadruple<Integer, Integer, Integer, Integer>, Quadruple<Integer, Integer, Integer, Integer>> p :
+                take(LIMIT, ps)) {
             System.out.println("compare(" + p.a + ", " + p.b + ") = " + Quadruple.compare(p.a, p.b));
+        }
+    }
+
+    private void demoEquals_Quadruple() {
+        Iterable<
+                Pair<Quadruple<Integer, Integer, Integer, Integer>, Quadruple<Integer, Integer, Integer, Integer>>
+        > ps = P.pairs(P.quadruples(P.withNull(P.integers())));
+        for (Pair<Quadruple<Integer, Integer, Integer, Integer>, Quadruple<Integer, Integer, Integer, Integer>> p :
+                take(LIMIT, ps)) {
+            System.out.println(p.a + (p.a.equals(p.b) ? " = " : " ≠ ") + p.b);
+        }
+    }
+
+    private void demoEquals_null() {
+        for (Quadruple<Integer, Integer, Integer, Integer> q : take(LIMIT, P.quadruples(P.withNull(P.integers())))) {
+            //noinspection ObjectEqualsNull
+            System.out.println(q + (q.equals(null) ? " = " : " ≠ ") + null);
         }
     }
 }

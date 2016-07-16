@@ -37,9 +37,24 @@ public class TripleDemos extends Demos {
                         Triple<Integer, Integer, Integer>,
                         Triple<Integer, Integer, Integer>
                 >
-        > ts = P.pairs(P.triples(P.integers()));
-        for (Pair<Triple<Integer, Integer, Integer>, Triple<Integer, Integer, Integer>> p : take(LIMIT, ts)) {
+        > ps = P.pairs(P.triples(P.integers()));
+        for (Pair<Triple<Integer, Integer, Integer>, Triple<Integer, Integer, Integer>> p : take(LIMIT, ps)) {
             System.out.println("compare(" + p.a + ", " + p.b + ") = " + Triple.compare(p.a, p.b));
+        }
+    }
+
+    private void demoEquals_Triple() {
+        Iterable<Pair<Triple<Integer, Integer, Integer>, Triple<Integer, Integer, Integer>>> ps =
+                P.pairs(P.triples(P.withNull(P.integers())));
+        for (Pair<Triple<Integer, Integer, Integer>, Triple<Integer, Integer, Integer>> p : take(LIMIT, ps)) {
+            System.out.println(p.a + (p.a.equals(p.b) ? " = " : " ≠ ") + p.b);
+        }
+    }
+
+    private void demoEquals_null() {
+        for (Triple<Integer, Integer, Integer> t : take(LIMIT, P.triples(P.withNull(P.integers())))) {
+            //noinspection ObjectEqualsNull
+            System.out.println(t + (t.equals(null) ? " = " : " ≠ ") + null);
         }
     }
 }
