@@ -229,19 +229,66 @@ public final class Quintuple<A, B, C, D, E> {
     ) {
         if (s.length() < 2 || head(s) != '(' || last(s) != ')') return Optional.empty();
         s = middle(s);
-        String[] tokens = s.split(", ");
-        if (tokens.length != 5) return Optional.empty();
-        NullableOptional<A> oa = readA.apply(tokens[0]);
-        if (!oa.isPresent()) return Optional.empty();
-        NullableOptional<B> ob = readB.apply(tokens[1]);
-        if (!ob.isPresent()) return Optional.empty();
-        NullableOptional<C> oc = readC.apply(tokens[2]);
-        if (!oc.isPresent()) return Optional.empty();
-        NullableOptional<D> od = readD.apply(tokens[3]);
-        if (!od.isPresent()) return Optional.empty();
-        NullableOptional<E> oe = readE.apply(tokens[4]);
-        if (!oe.isPresent()) return Optional.empty();
-        return Optional.of(new Quintuple<>(oa.get(), ob.get(), oc.get(), od.get(), oe.get()));
+        A a = null;
+        B b = null;
+        C c = null;
+        D d = null;
+        E e = null;
+        StringBuilder sb = new StringBuilder();
+        int i = 0;
+        for (String token : s.split(", ")) {
+            if (sb.length() != 0) {
+                sb.append(", ");
+            }
+            sb.append(token);
+            switch (i) {
+                case 0:
+                    NullableOptional<A> oa = readA.apply(sb.toString());
+                    if (oa.isPresent()) {
+                        a = oa.get();
+                        i++;
+                        sb = new StringBuilder();
+                    }
+                    break;
+                case 1:
+                    NullableOptional<B> ob = readB.apply(sb.toString());
+                    if (ob.isPresent()) {
+                        b = ob.get();
+                        i++;
+                        sb = new StringBuilder();
+                    }
+                    break;
+                case 2:
+                    NullableOptional<C> oc = readC.apply(sb.toString());
+                    if (oc.isPresent()) {
+                        c = oc.get();
+                        i++;
+                        sb = new StringBuilder();
+                    }
+                    break;
+                case 3:
+                    NullableOptional<D> od = readD.apply(sb.toString());
+                    if (od.isPresent()) {
+                        d = od.get();
+                        i++;
+                        sb = new StringBuilder();
+                    }
+                    break;
+                case 4:
+                    NullableOptional<E> oe = readE.apply(sb.toString());
+                    if (oe.isPresent()) {
+                        e = oe.get();
+                        i++;
+                        sb = new StringBuilder();
+                    }
+                    break;
+                default:
+                    return Optional.empty();
+            }
+        }
+
+        if (i != 5) return Optional.empty();
+        return Optional.of(new Quintuple<>(a, b, c, d, e));
     }
 
     /**

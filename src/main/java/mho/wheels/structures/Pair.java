@@ -170,13 +170,39 @@ public final class Pair<A, B> {
     ) {
         if (s.length() < 2 || head(s) != '(' || last(s) != ')') return Optional.empty();
         s = middle(s);
-        String[] tokens = s.split(", ");
-        if (tokens.length != 2) return Optional.empty();
-        NullableOptional<A> oa = readA.apply(tokens[0]);
-        if (!oa.isPresent()) return Optional.empty();
-        NullableOptional<B> ob = readB.apply(tokens[1]);
-        if (!ob.isPresent()) return Optional.empty();
-        return Optional.of(new Pair<>(oa.get(), ob.get()));
+        A a = null;
+        B b = null;
+        StringBuilder sb = new StringBuilder();
+        int i = 0;
+        for (String token : s.split(", ")) {
+            if (sb.length() != 0) {
+                sb.append(", ");
+            }
+            sb.append(token);
+            switch (i) {
+                case 0:
+                    NullableOptional<A> oa = readA.apply(sb.toString());
+                    if (oa.isPresent()) {
+                        a = oa.get();
+                        i++;
+                        sb = new StringBuilder();
+                    }
+                    break;
+                case 1:
+                    NullableOptional<B> ob = readB.apply(sb.toString());
+                    if (ob.isPresent()) {
+                        b = ob.get();
+                        i++;
+                        sb = new StringBuilder();
+                    }
+                    break;
+                default:
+                    return Optional.empty();
+            }
+        }
+
+        if (i != 2) return Optional.empty();
+        return Optional.of(new Pair<>(a, b));
     }
 
     /**

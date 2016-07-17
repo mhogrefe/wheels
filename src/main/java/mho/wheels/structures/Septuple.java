@@ -269,23 +269,84 @@ public final class Septuple<A, B, C, D, E, F, G> {
     ) {
         if (s.length() < 2 || head(s) != '(' || last(s) != ')') return Optional.empty();
         s = middle(s);
-        String[] tokens = s.split(", ");
-        if (tokens.length != 7) return Optional.empty();
-        NullableOptional<A> oa = readA.apply(tokens[0]);
-        if (!oa.isPresent()) return Optional.empty();
-        NullableOptional<B> ob = readB.apply(tokens[1]);
-        if (!ob.isPresent()) return Optional.empty();
-        NullableOptional<C> oc = readC.apply(tokens[2]);
-        if (!oc.isPresent()) return Optional.empty();
-        NullableOptional<D> od = readD.apply(tokens[3]);
-        if (!od.isPresent()) return Optional.empty();
-        NullableOptional<E> oe = readE.apply(tokens[4]);
-        if (!oe.isPresent()) return Optional.empty();
-        NullableOptional<F> of = readF.apply(tokens[5]);
-        if (!of.isPresent()) return Optional.empty();
-        NullableOptional<G> og = readG.apply(tokens[6]);
-        if (!og.isPresent()) return Optional.empty();
-        return Optional.of(new Septuple<>(oa.get(), ob.get(), oc.get(), od.get(), oe.get(), of.get(), og.get()));
+        A a = null;
+        B b = null;
+        C c = null;
+        D d = null;
+        E e = null;
+        F f = null;
+        G g = null;
+        StringBuilder sb = new StringBuilder();
+        int i = 0;
+        for (String token : s.split(", ")) {
+            if (sb.length() != 0) {
+                sb.append(", ");
+            }
+            sb.append(token);
+            switch (i) {
+                case 0:
+                    NullableOptional<A> oa = readA.apply(sb.toString());
+                    if (oa.isPresent()) {
+                        a = oa.get();
+                        i++;
+                        sb = new StringBuilder();
+                    }
+                    break;
+                case 1:
+                    NullableOptional<B> ob = readB.apply(sb.toString());
+                    if (ob.isPresent()) {
+                        b = ob.get();
+                        i++;
+                        sb = new StringBuilder();
+                    }
+                    break;
+                case 2:
+                    NullableOptional<C> oc = readC.apply(sb.toString());
+                    if (oc.isPresent()) {
+                        c = oc.get();
+                        i++;
+                        sb = new StringBuilder();
+                    }
+                    break;
+                case 3:
+                    NullableOptional<D> od = readD.apply(sb.toString());
+                    if (od.isPresent()) {
+                        d = od.get();
+                        i++;
+                        sb = new StringBuilder();
+                    }
+                    break;
+                case 4:
+                    NullableOptional<E> oe = readE.apply(sb.toString());
+                    if (oe.isPresent()) {
+                        e = oe.get();
+                        i++;
+                        sb = new StringBuilder();
+                    }
+                    break;
+                case 5:
+                    NullableOptional<F> of = readF.apply(sb.toString());
+                    if (of.isPresent()) {
+                        f = of.get();
+                        i++;
+                        sb = new StringBuilder();
+                    }
+                    break;
+                case 6:
+                    NullableOptional<G> og = readG.apply(sb.toString());
+                    if (og.isPresent()) {
+                        g = og.get();
+                        i++;
+                        sb = new StringBuilder();
+                    }
+                    break;
+                default:
+                    return Optional.empty();
+            }
+        }
+
+        if (i != 7) return Optional.empty();
+        return Optional.of(new Septuple<>(a, b, c, d, e, f, g));
     }
 
     /**

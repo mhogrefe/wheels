@@ -151,6 +151,33 @@ public class TripleTest {
         hashCode_helper(null, null, null, 0);
     }
 
+    private static void readStrict_helper(@NotNull String input, @NotNull String output) {
+        aeq(
+                Triple.readStrict(
+                        input,
+                        Readers.readWithNullsStrict(Readers::readStringStrict),
+                        Readers.readWithNullsStrict(Readers::readIntegerStrict),
+                        Readers.readWithNullsStrict(Readers::readBooleanStrict)
+                ),
+                output
+        );
+    }
+
+    @Test
+    public void testReadStrict() {
+        readStrict_helper("(hi, 3, true)", "Optional[(hi, 3, true)]");
+        readStrict_helper("(hi, 3, null)", "Optional[(hi, 3, null)]");
+        readStrict_helper("(null, 3, true)", "Optional[(null, 3, true)]");
+        readStrict_helper("(null, null, null)", "Optional[(null, null, null)]");
+
+        readStrict_helper("hi, 3, true", "Optional.empty");
+        readStrict_helper("(hi, 3, True)", "Optional.empty");
+        readStrict_helper("(hi, 3, true", "Optional.empty");
+        readStrict_helper("hi, 3, true)", "Optional.empty");
+        readStrict_helper("(hi,3,true)", "Optional.empty");
+        readStrict_helper("null", "Optional.empty");
+    }
+
     private static void TripleComparator_compare_helper(
             String pa,
             Integer pb,

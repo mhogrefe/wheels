@@ -160,6 +160,34 @@ public class QuadrupleTest {
         hashCode_helper(null, null, null, null, 0);
     }
 
+    private static void readStrict_helper(@NotNull String input, @NotNull String output) {
+        aeq(
+                Quadruple.readStrict(
+                        input,
+                        Readers.readWithNullsStrict(Readers::readStringStrict),
+                        Readers.readWithNullsStrict(Readers::readIntegerStrict),
+                        Readers.readWithNullsStrict(Readers::readBooleanStrict),
+                        Readers.readWithNullsStrict(Readers::readCharacterStrict)
+                ),
+                output
+        );
+    }
+
+    @Test
+    public void testReadStrict() {
+        readStrict_helper("(hi, 3, true, a)", "Optional[(hi, 3, true, a)]");
+        readStrict_helper("(hi, 3, true, null)", "Optional[(hi, 3, true, null)]");
+        readStrict_helper("(null, 3, true, a)", "Optional[(null, 3, true, a)]");
+        readStrict_helper("(null, null, null, null)", "Optional[(null, null, null, null)]");
+
+        readStrict_helper("hi, 3, true, a", "Optional.empty");
+        readStrict_helper("(hi, 3, true, 'a')", "Optional.empty");
+        readStrict_helper("(hi, 3, true, a", "Optional.empty");
+        readStrict_helper("hi, 3, true, a)", "Optional.empty");
+        readStrict_helper("(hi,3,true,a)", "Optional.empty");
+        readStrict_helper("null", "Optional.empty");
+    }
+
     private static void QuadrupleComparator_compare_helper(
             String pa,
             Integer pb,

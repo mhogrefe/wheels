@@ -5,6 +5,7 @@ import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
 
 import java.util.Comparator;
+import java.util.Optional;
 
 import static mho.wheels.testing.Testing.*;
 
@@ -138,6 +139,32 @@ public class PairTest {
         hashCode_helper("hi", null, 103199);
         hashCode_helper(null, 3, 3);
         hashCode_helper(null, null, 0);
+    }
+
+    private static void readStrict_helper(@NotNull String input, @NotNull String output) {
+        aeq(
+                Pair.readStrict(
+                        input,
+                        Readers.readWithNullsStrict(Readers::readStringStrict),
+                        Readers.readWithNullsStrict(Readers::readIntegerStrict)
+                ),
+                output
+        );
+    }
+
+    @Test
+    public void testReadStrict() {
+        readStrict_helper("(hi, 3)", "Optional[(hi, 3)]");
+        readStrict_helper("(hi, null)", "Optional[(hi, null)]");
+        readStrict_helper("(null, 3)", "Optional[(null, 3)]");
+        readStrict_helper("(null, null)", "Optional[(null, null)]");
+
+        readStrict_helper("hi, 3", "Optional.empty");
+        readStrict_helper("(hi, 3.0)", "Optional.empty");
+        readStrict_helper("(hi, 3", "Optional.empty");
+        readStrict_helper("hi, 3)", "Optional.empty");
+        readStrict_helper("(hi,3)", "Optional.empty");
+        readStrict_helper("null", "Optional.empty");
     }
 
     private static void PairComparator_compare_helper(String pa, Integer pb, String qa, Integer qb, int output) {

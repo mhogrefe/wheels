@@ -207,7 +207,7 @@ public class QuintupleTest {
                         b,
                         c,
                         d,
-                        Readers.readWithNullsStrict(Readers::readOrderingStrict).apply(e).get()
+                        Readers.readWithNullsStrict(Readers::readBigDecimalStrict).apply(e).get()
                 ).hashCode(),
                 output
         );
@@ -215,10 +215,39 @@ public class QuintupleTest {
 
     @Test
     public void testHashCode() {
-        hashCode_helper("hi", 3, true, 'a', ">", -219628792);
+        hashCode_helper("hi", 3, true, 'a', "1E+1", -1219290486);
         hashCode_helper("hi", 3, true, 'a', "null", -1219290516);
-        hashCode_helper(null, 3, true, 'a', ">", 1000937095);
+        hashCode_helper(null, 3, true, 'a', "1E+1", 1275401);
         hashCode_helper(null, null, null, null, "null", 0);
+    }
+
+    private static void readStrict_helper(@NotNull String input, @NotNull String output) {
+        aeq(
+                Quintuple.readStrict(
+                        input,
+                        Readers.readWithNullsStrict(Readers::readStringStrict),
+                        Readers.readWithNullsStrict(Readers::readIntegerStrict),
+                        Readers.readWithNullsStrict(Readers::readBooleanStrict),
+                        Readers.readWithNullsStrict(Readers::readCharacterStrict),
+                        Readers.readWithNullsStrict(Readers::readOrderingStrict)
+                ),
+                output
+        );
+    }
+
+    @Test
+    public void testReadStrict() {
+        readStrict_helper("(hi, 3, true, a, >)", "Optional[(hi, 3, true, a, >)]");
+        readStrict_helper("(hi, 3, true, a, null)", "Optional[(hi, 3, true, a, null)]");
+        readStrict_helper("(null, 3, true, a, >)", "Optional[(null, 3, true, a, >)]");
+        readStrict_helper("(null, null, null, null, null)", "Optional[(null, null, null, null, null)]");
+
+        readStrict_helper("hi, 3, true, a, >", "Optional.empty");
+        readStrict_helper("(hi, 3, true, a, GT)", "Optional.empty");
+        readStrict_helper("(hi, 3, true, a, >", "Optional.empty");
+        readStrict_helper("hi, 3, true, a, >)", "Optional.empty");
+        readStrict_helper("(hi,3,true,a,>)", "Optional.empty");
+        readStrict_helper("null", "Optional.empty");
     }
 
     private static void QuintupleComparator_compare_helper(

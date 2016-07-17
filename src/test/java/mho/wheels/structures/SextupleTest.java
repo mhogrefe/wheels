@@ -225,7 +225,7 @@ public class SextupleTest {
                         b,
                         c,
                         d,
-                        Readers.readWithNullsStrict(Readers::readOrderingStrict).apply(e).get(),
+                        Readers.readWithNullsStrict(Readers::readBigDecimalStrict).apply(e).get(),
                         f
                 ).hashCode(),
                 output
@@ -234,10 +234,40 @@ public class SextupleTest {
 
     @Test
     public void testHashCode() {
-        hashCode_helper("hi", 3, true, 'a', ">", 0.5, -1441880584);
-        hashCode_helper("hi", 3, true, 'a', ">", null, 1781442040);
-        hashCode_helper(null, 3, true, 'a', ">", 0.5, 2035923545);
+        hashCode_helper("hi", 3, true, 'a', "1E+1", 0.5, 1928345270);
+        hashCode_helper("hi", 3, true, 'a', "1E+1", null, 856700598);
+        hashCode_helper(null, 3, true, 'a', "1E+1", 0.5, 1111182103);
         hashCode_helper(null, null, null, null, "null", null, 0);
+    }
+
+    private static void readStrict_helper(@NotNull String input, @NotNull String output) {
+        aeq(
+                Sextuple.readStrict(
+                        input,
+                        Readers.readWithNullsStrict(Readers::readStringStrict),
+                        Readers.readWithNullsStrict(Readers::readIntegerStrict),
+                        Readers.readWithNullsStrict(Readers::readBooleanStrict),
+                        Readers.readWithNullsStrict(Readers::readCharacterStrict),
+                        Readers.readWithNullsStrict(Readers::readOrderingStrict),
+                        Readers.readWithNullsStrict(Readers::readDoubleStrict)
+                ),
+                output
+        );
+    }
+
+    @Test
+    public void testReadStrict() {
+        readStrict_helper("(hi, 3, true, a, >, 0.5)", "Optional[(hi, 3, true, a, >, 0.5)]");
+        readStrict_helper("(hi, 3, true, a, >, null)", "Optional[(hi, 3, true, a, >, null)]");
+        readStrict_helper("(null, 3, true, a, >, 0.5)", "Optional[(null, 3, true, a, >, 0.5)]");
+        readStrict_helper("(null, null, null, null, null, null)", "Optional[(null, null, null, null, null, null)]");
+
+        readStrict_helper("hi, 3, true, a, >, 0.5", "Optional.empty");
+        readStrict_helper("(hi, 3, true, a, >, 0.50)", "Optional.empty");
+        readStrict_helper("(hi, 3, true, a, >, 0.5", "Optional.empty");
+        readStrict_helper("hi, 3, true, a, >, 0.5)", "Optional.empty");
+        readStrict_helper("(hi,3,true,a,>,0.5)", "Optional.empty");
+        readStrict_helper("null", "Optional.empty");
     }
 
     private static void SextupleComparator_compare_helper(

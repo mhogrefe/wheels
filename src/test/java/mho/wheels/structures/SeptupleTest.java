@@ -250,7 +250,7 @@ public class SeptupleTest {
                         b,
                         c,
                         d,
-                        Readers.readWithNullsStrict(Readers::readOrderingStrict).apply(e).get(),
+                        Readers.readWithNullsStrict(Readers::readBigDecimalStrict).apply(e).get(),
                         f,
                         g
                 ).hashCode(),
@@ -260,10 +260,42 @@ public class SeptupleTest {
 
     @Test
     public void testHashCode() {
-        hashCode_helper("hi", 3, true, 'a', ">", 0.5, x, -1748624152);
-        hashCode_helper("hi", 3, true, 'a', ">", 0.5, null, -1748625144);
-        hashCode_helper(null, 3, true, 'a', ">", 0.5, x, -1310878553);
+        hashCode_helper("hi", 3, true, 'a', "1E+1", 0.5, x, -350837782);
+        hashCode_helper("hi", 3, true, 'a', "1E+1", 0.5, null, -350838774);
+        hashCode_helper(null, 3, true, 'a', "1E+1", 0.5, x, 86907817);
         hashCode_helper(null, null, null, null, "null", null, null, 0);
+    }
+
+    private static void readStrict_helper(@NotNull String input, @NotNull String output) {
+        aeq(
+                Septuple.readStrict(
+                        input,
+                        Readers.readWithNullsStrict(Readers::readStringStrict),
+                        Readers.readWithNullsStrict(Readers::readIntegerStrict),
+                        Readers.readWithNullsStrict(Readers::readBooleanStrict),
+                        Readers.readWithNullsStrict(Readers::readCharacterStrict),
+                        Readers.readWithNullsStrict(Readers::readOrderingStrict),
+                        Readers.readWithNullsStrict(Readers::readDoubleStrict),
+                        Readers.readWithNullsStrict(Readers.readListStrict(Readers::readIntegerStrict))
+                ),
+                output
+        );
+    }
+
+    @Test
+    public void testReadStrict() {
+        readStrict_helper("(hi, 3, true, a, >, 0.5, [1, 0])", "Optional[(hi, 3, true, a, >, 0.5, [1, 0])]");
+        readStrict_helper("(hi, 3, true, a, >, 0.5, null)", "Optional[(hi, 3, true, a, >, 0.5, null)]");
+        readStrict_helper("(null, 3, true, a, >, 0.5, [1, 0])", "Optional[(null, 3, true, a, >, 0.5, [1, 0])]");
+        readStrict_helper("(null, null, null, null, null, null, null)",
+                "Optional[(null, null, null, null, null, null, null)]");
+
+        readStrict_helper("hi, 3, true, a, >, 0.5, [1, 0]", "Optional.empty");
+        readStrict_helper("(hi, 3, true, a, >, 0.5, [1, null])", "Optional.empty");
+        readStrict_helper("(hi, 3, true, a, >, 0.5, [1, 0]", "Optional.empty");
+        readStrict_helper("hi, 3, true, a, >, 0.5, [1, 0])", "Optional.empty");
+        readStrict_helper("(hi,3,true,a,>,0.5,[1, 0])", "Optional.empty");
+        readStrict_helper("null", "Optional.empty");
     }
 
     private static void SeptupleComparator_compare_helper(

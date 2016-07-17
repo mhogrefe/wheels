@@ -191,15 +191,48 @@ public final class Triple<A, B, C> {
     ) {
         if (s.length() < 2 || head(s) != '(' || last(s) != ')') return Optional.empty();
         s = middle(s);
-        String[] tokens = s.split(", ");
-        if (tokens.length != 3) return Optional.empty();
-        NullableOptional<A> oa = readA.apply(tokens[0]);
-        if (!oa.isPresent()) return Optional.empty();
-        NullableOptional<B> ob = readB.apply(tokens[1]);
-        if (!ob.isPresent()) return Optional.empty();
-        NullableOptional<C> oc = readC.apply(tokens[2]);
-        if (!oc.isPresent()) return Optional.empty();
-        return Optional.of(new Triple<>(oa.get(), ob.get(), oc.get()));
+        A a = null;
+        B b = null;
+        C c = null;
+        StringBuilder sb = new StringBuilder();
+        int i = 0;
+        for (String token : s.split(", ")) {
+            if (sb.length() != 0) {
+                sb.append(", ");
+            }
+            sb.append(token);
+            switch (i) {
+                case 0:
+                    NullableOptional<A> oa = readA.apply(sb.toString());
+                    if (oa.isPresent()) {
+                        a = oa.get();
+                        i++;
+                        sb = new StringBuilder();
+                    }
+                    break;
+                case 1:
+                    NullableOptional<B> ob = readB.apply(sb.toString());
+                    if (ob.isPresent()) {
+                        b = ob.get();
+                        i++;
+                        sb = new StringBuilder();
+                    }
+                    break;
+                case 2:
+                    NullableOptional<C> oc = readC.apply(sb.toString());
+                    if (oc.isPresent()) {
+                        c = oc.get();
+                        i++;
+                        sb = new StringBuilder();
+                    }
+                    break;
+                default:
+                    return Optional.empty();
+            }
+        }
+
+        if (i != 3) return Optional.empty();
+        return Optional.of(new Triple<>(a, b, c));
     }
 
     /**
