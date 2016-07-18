@@ -57,4 +57,10 @@ public class QuadrupleDemos extends Demos {
             System.out.println(q + (q.equals(null) ? " = " : " ≠ ") + null);
         }
     }
+
+    private void demoHashCode() {
+        for (Quadruple<Integer, Integer, Integer, Integer> q : take(LIMIT, P.quadruples(P.withNull(P.integers())))) {
+            System.out.println("hashCode" + q + " = " + q.hashCode());
+        }
+    }
 }

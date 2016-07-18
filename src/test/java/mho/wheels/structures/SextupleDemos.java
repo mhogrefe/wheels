@@ -72,4 +72,11 @@ public class SextupleDemos extends Demos {
             System.out.println(s + (s.equals(null) ? " = " : " ≠ ") + null);
         }
     }
+
+    private void demoHashCode() {
+        for (Sextuple<Integer, Integer, Integer, Integer, Integer, Integer> q :
+                take(LIMIT, P.sextuples(P.withNull(P.integers())))) {
+            System.out.println("hashCode" + q + " = " + q.hashCode());
+        }
+    }
 }

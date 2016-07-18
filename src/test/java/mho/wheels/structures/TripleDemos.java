@@ -57,4 +57,10 @@ public class TripleDemos extends Demos {
             System.out.println(t + (t.equals(null) ? " = " : " ≠ ") + null);
         }
     }
+
+    private void demoHashCode() {
+        for (Triple<Integer, Integer, Integer> t : take(LIMIT, P.triples(P.withNull(P.integers())))) {
+            System.out.println("hashCode" + t + " = " + t.hashCode());
+        }
+    }
 }

@@ -72,4 +72,11 @@ public class SeptupleDemos extends Demos {
             System.out.println(s + (s.equals(null) ? " = " : " ≠ ") + null);
         }
     }
+
+    private void demoHashCode() {
+        for (Septuple<Integer, Integer, Integer, Integer, Integer, Integer, Integer> q :
+                take(LIMIT, P.septuples(P.withNull(P.integers())))) {
+            System.out.println("hashCode" + q + " = " + q.hashCode());
+        }
+    }
 }

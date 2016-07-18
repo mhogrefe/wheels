@@ -49,4 +49,10 @@ public class PairDemos extends Demos {
             System.out.println(p + (p.equals(null) ? " = " : " ≠ ") + null);
         }
     }
+
+    private void demoHashCode() {
+        for (Pair<Integer, Integer> p : take(LIMIT, P.pairs(P.withNull(P.integers())))) {
+            System.out.println("hashCode" + p + " = " + p.hashCode());
+        }
+    }
 }

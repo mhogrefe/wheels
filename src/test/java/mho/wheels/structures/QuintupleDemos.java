@@ -70,4 +70,11 @@ public class QuintupleDemos extends Demos {
             System.out.println(q + (q.equals(null) ? " = " : " ≠ ") + null);
         }
     }
+
+    private void demoHashCode() {
+        for (Quintuple<Integer, Integer, Integer, Integer, Integer> q :
+                take(LIMIT, P.quintuples(P.withNull(P.integers())))) {
+            System.out.println("hashCode" + q + " = " + q.hashCode());
+        }
+    }
 }
