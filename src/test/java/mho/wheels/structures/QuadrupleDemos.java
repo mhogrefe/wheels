@@ -1,13 +1,18 @@
 package mho.wheels.structures;
 
+import mho.wheels.io.Readers;
 import mho.wheels.testing.Demos;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
 import static mho.wheels.iterables.IterableUtils.*;
+import static mho.wheels.testing.Testing.nicePrint;
 
 @SuppressWarnings("UnusedDeclaration")
 public class QuadrupleDemos extends Demos {
+    private static final @NotNull String NULLABLE_INTEGER_QUADRUPLE_CHARS = " (),-0123456789lnu";
+
     public QuadrupleDemos(boolean useRandom) {
         super(useRandom);
     }
@@ -61,6 +66,36 @@ public class QuadrupleDemos extends Demos {
     private void demoHashCode() {
         for (Quadruple<Integer, Integer, Integer, Integer> q : take(LIMIT, P.quadruples(P.withNull(P.integers())))) {
             System.out.println("hashCode" + q + " = " + q.hashCode());
+        }
+    }
+
+    private void demoReadStrict() {
+        for (String s : take(LIMIT, P.strings())) {
+            System.out.println(
+                    "readStrict(" + nicePrint(s) + ") = " +
+                    Quadruple.readStrict(
+                            s,
+                            Readers.readWithNullsStrict(Readers::readIntegerStrict),
+                            Readers.readWithNullsStrict(Readers::readIntegerStrict),
+                            Readers.readWithNullsStrict(Readers::readIntegerStrict),
+                            Readers.readWithNullsStrict(Readers::readIntegerStrict)
+                    )
+            );
+        }
+    }
+
+    private void demoReadStrict_targeted() {
+        for (String s : take(LIMIT, P.strings(NULLABLE_INTEGER_QUADRUPLE_CHARS))) {
+            System.out.println(
+                    "readStrict(" + nicePrint(s) + ") = " +
+                    Quadruple.readStrict(
+                            s,
+                            Readers.readWithNullsStrict(Readers::readIntegerStrict),
+                            Readers.readWithNullsStrict(Readers::readIntegerStrict),
+                            Readers.readWithNullsStrict(Readers::readIntegerStrict),
+                            Readers.readWithNullsStrict(Readers::readIntegerStrict)
+                    )
+            );
         }
     }
 }

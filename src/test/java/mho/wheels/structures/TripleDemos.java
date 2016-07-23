@@ -1,13 +1,18 @@
 package mho.wheels.structures;
 
+import mho.wheels.io.Readers;
 import mho.wheels.testing.Demos;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
 import static mho.wheels.iterables.IterableUtils.*;
+import static mho.wheels.testing.Testing.nicePrint;
 
 @SuppressWarnings("UnusedDeclaration")
 public class TripleDemos extends Demos {
+    private static final @NotNull String NULLABLE_INTEGER_TRIPLE_CHARS = " (),-0123456789lnu";
+
     public TripleDemos(boolean useRandom) {
         super(useRandom);
     }
@@ -61,6 +66,34 @@ public class TripleDemos extends Demos {
     private void demoHashCode() {
         for (Triple<Integer, Integer, Integer> t : take(LIMIT, P.triples(P.withNull(P.integers())))) {
             System.out.println("hashCode" + t + " = " + t.hashCode());
+        }
+    }
+
+    private void demoReadStrict() {
+        for (String s : take(LIMIT, P.strings())) {
+            System.out.println(
+                    "readStrict(" + nicePrint(s) + ") = " +
+                    Triple.readStrict(
+                            s,
+                            Readers.readWithNullsStrict(Readers::readIntegerStrict),
+                            Readers.readWithNullsStrict(Readers::readIntegerStrict),
+                            Readers.readWithNullsStrict(Readers::readIntegerStrict)
+                    )
+            );
+        }
+    }
+
+    private void demoReadStrict_targeted() {
+        for (String s : take(LIMIT, P.strings(NULLABLE_INTEGER_TRIPLE_CHARS))) {
+            System.out.println(
+                    "readStrict(" + nicePrint(s) + ") = " +
+                    Triple.readStrict(
+                            s,
+                            Readers.readWithNullsStrict(Readers::readIntegerStrict),
+                            Readers.readWithNullsStrict(Readers::readIntegerStrict),
+                            Readers.readWithNullsStrict(Readers::readIntegerStrict)
+                    )
+            );
         }
     }
 }

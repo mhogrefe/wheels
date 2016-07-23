@@ -1,13 +1,18 @@
 package mho.wheels.structures;
 
+import mho.wheels.io.Readers;
 import mho.wheels.testing.Demos;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
 import static mho.wheels.iterables.IterableUtils.*;
+import static mho.wheels.testing.Testing.*;
 
 @SuppressWarnings("UnusedDeclaration")
 public class PairDemos extends Demos {
+    private static final @NotNull String NULLABLE_INTEGER_PAIR_CHARS = " (),-0123456789lnu";
+
     public PairDemos(boolean useRandom) {
         super(useRandom);
     }
@@ -53,6 +58,32 @@ public class PairDemos extends Demos {
     private void demoHashCode() {
         for (Pair<Integer, Integer> p : take(LIMIT, P.pairs(P.withNull(P.integers())))) {
             System.out.println("hashCode" + p + " = " + p.hashCode());
+        }
+    }
+
+    private void demoReadStrict() {
+        for (String s : take(LIMIT, P.strings())) {
+            System.out.println(
+                    "readStrict(" + nicePrint(s) + ") = " +
+                    Pair.readStrict(
+                            s,
+                            Readers.readWithNullsStrict(Readers::readIntegerStrict),
+                            Readers.readWithNullsStrict(Readers::readIntegerStrict)
+                    )
+            );
+        }
+    }
+
+    private void demoReadStrict_targeted() {
+        for (String s : take(LIMIT, P.strings(NULLABLE_INTEGER_PAIR_CHARS))) {
+            System.out.println(
+                    "readStrict(" + nicePrint(s) + ") = " +
+                    Pair.readStrict(
+                            s,
+                            Readers.readWithNullsStrict(Readers::readIntegerStrict),
+                            Readers.readWithNullsStrict(Readers::readIntegerStrict)
+                    )
+            );
         }
     }
 }
