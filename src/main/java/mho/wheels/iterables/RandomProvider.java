@@ -1467,7 +1467,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      * {@code BigInteger}s with that bit size; the sign is also chosen uniformly. Does not support removal.
      *
      * <ul>
-     *  <li>{@code this} must have a positive scale.</li>
+     *  <li>{@code this} must have a positive scale. The scale cannot be {@code Integer.MAX_VALUE}.</li>
      *  <li>The result is an infinite, non-removable {@code Iterable} containing {@code BigInteger}s.</li>
      * </ul>
      *
