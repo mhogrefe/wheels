@@ -1510,8 +1510,8 @@ public final strictfp class RandomProvider extends IterableProvider {
                 a.signum() == -1 ? BigInteger.ONE.subtract(a) : BigInteger.ONE.shiftLeft(absBitLength).subtract(a)
         );
         return () -> new NoRemoveIterator<BigInteger>() {
-            private final @NotNull Iterator<Integer> is = rangeUpGeometric.iterator();
-            private final @NotNull Iterator<BigInteger> is2 = bigIntegersBounded.iterator();
+            private final @NotNull Iterator<Integer> bitLengths = rangeUpGeometric.iterator();
+            private final @NotNull Iterator<BigInteger> offsets = bigIntegersBounded.iterator();
 
             @Override
             public boolean hasNext() {
@@ -1520,27 +1520,27 @@ public final strictfp class RandomProvider extends IterableProvider {
 
             @Override
             public @NotNull BigInteger next() {
-                int size = is.next();
+                int bitLength = bitLengths.next();
                 BigInteger i;
-                if (size != absBitLength) {
-                    if (size == 0) {
+                if (bitLength != absBitLength) {
+                    if (bitLength == 0) {
                         i = BigInteger.ZERO;
                     } else {
-                        i = nextBigIntegerPow2(size);
-                        boolean mostSignificantBit = i.testBit(size - 1);
+                        i = nextBigIntegerPow2(bitLength);
+                        boolean mostSignificantBit = i.testBit(bitLength - 1);
                         if (!mostSignificantBit) {
-                            i = i.setBit(size - 1);
-                            if (size < absBitLength && a.signum() == -1) {
+                            i = i.setBit(bitLength - 1);
+                            if (bitLength < absBitLength && a.signum() == -1) {
                                 i = i.negate();
                             }
                         }
                     }
                 } else {
                     if (a.signum() != -1) {
-                        i = is2.next().add(a);
+                        i = offsets.next().add(a);
                     } else {
                         BigInteger b = BigInteger.ONE.shiftLeft(absBitLength - 1);
-                        BigInteger x = is2.next();
+                        BigInteger x = offsets.next();
                         i = lt(x, b) ? x.add(b) : b.negate().subtract(x.subtract(b));
                     }
                 }
