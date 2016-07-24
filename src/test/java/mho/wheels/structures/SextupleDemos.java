@@ -1,10 +1,13 @@
 package mho.wheels.structures;
 
 import mho.wheels.io.Readers;
+import mho.wheels.ordering.Ordering;
 import mho.wheels.testing.Demos;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 
 import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.testing.Testing.*;
@@ -115,6 +118,122 @@ public class SextupleDemos extends Demos {
                             Readers.readWithNullsStrict(Readers::readIntegerStrict)
                     )
             );
+        }
+    }
+
+    private void demoSextupleComparator_compare() {
+        Iterable<
+                Pair<
+                        Pair<
+                                Sextuple<Integer, Integer, Integer, Integer, Integer, Integer>,
+                                Sextuple<Integer, Integer, Integer, Integer, Integer, Integer>
+                                >,
+                        Sextuple<
+                                List<Integer>,
+                                List<Integer>,
+                                List<Integer>,
+                                List<Integer>,
+                                List<Integer>,
+                                List<Integer>
+                                >
+                        >
+                > ps = P.dependentPairs(
+                P.pairs(P.sextuples(P.withNull(P.integersGeometric()))),
+                p -> P.sextuples(
+                        EP.permutationsFinite(toList(nub(concat(Sextuple.toList(p.a), Sextuple.toList(p.b)))))
+                )
+        );
+        for (Pair<
+                Pair<
+                        Sextuple<Integer, Integer, Integer, Integer, Integer, Integer>,
+                        Sextuple<Integer, Integer, Integer, Integer, Integer, Integer>
+                >,
+                Sextuple<List<Integer>, List<Integer>, List<Integer>, List<Integer>, List<Integer>, List<Integer>>
+        > p : take(MEDIUM_LIMIT, ps)) {
+            Comparator<Integer> aComparator = (x, y) -> {
+                int xIndex = p.b.a.indexOf(x);
+                if (xIndex == -1) {
+                    throw new IllegalArgumentException("undefined");
+                }
+                int yIndex = p.b.a.indexOf(y);
+                if (yIndex == -1) {
+                    throw new IllegalArgumentException("undefined");
+                }
+                return Integer.compare(xIndex, yIndex);
+            };
+            Comparator<Integer> bComparator = (x, y) -> {
+                int xIndex = p.b.b.indexOf(x);
+                if (xIndex == -1) {
+                    throw new IllegalArgumentException("undefined");
+                }
+                int yIndex = p.b.b.indexOf(y);
+                if (yIndex == -1) {
+                    throw new IllegalArgumentException("undefined");
+                }
+                return Integer.compare(xIndex, yIndex);
+            };
+            Comparator<Integer> cComparator = (x, y) -> {
+                int xIndex = p.b.c.indexOf(x);
+                if (xIndex == -1) {
+                    throw new IllegalArgumentException("undefined");
+                }
+                int yIndex = p.b.c.indexOf(y);
+                if (yIndex == -1) {
+                    throw new IllegalArgumentException("undefined");
+                }
+                return Integer.compare(xIndex, yIndex);
+            };
+            Comparator<Integer> dComparator = (x, y) -> {
+                int xIndex = p.b.d.indexOf(x);
+                if (xIndex == -1) {
+                    throw new IllegalArgumentException("undefined");
+                }
+                int yIndex = p.b.d.indexOf(y);
+                if (yIndex == -1) {
+                    throw new IllegalArgumentException("undefined");
+                }
+                return Integer.compare(xIndex, yIndex);
+            };
+            Comparator<Integer> eComparator = (x, y) -> {
+                int xIndex = p.b.e.indexOf(x);
+                if (xIndex == -1) {
+                    throw new IllegalArgumentException("undefined");
+                }
+                int yIndex = p.b.e.indexOf(y);
+                if (yIndex == -1) {
+                    throw new IllegalArgumentException("undefined");
+                }
+                return Integer.compare(xIndex, yIndex);
+            };
+            Comparator<Integer> fComparator = (x, y) -> {
+                int xIndex = p.b.f.indexOf(x);
+                if (xIndex == -1) {
+                    throw new IllegalArgumentException("undefined");
+                }
+                int yIndex = p.b.f.indexOf(y);
+                if (yIndex == -1) {
+                    throw new IllegalArgumentException("undefined");
+                }
+                return Integer.compare(xIndex, yIndex);
+            };
+            System.out.println("new SextupleComparator(" +
+                    intercalate(" < ", map(Objects::toString, p.b.a)) + ", " +
+                    intercalate(" < ", map(Objects::toString, p.b.b)) + ", " +
+                    intercalate(" < ", map(Objects::toString, p.b.c)) + ", " +
+                    intercalate(" < ", map(Objects::toString, p.b.d)) + ", " +
+                    intercalate(" < ", map(Objects::toString, p.b.e)) + ", " +
+                    intercalate(" < ", map(Objects::toString, p.b.f)) +
+                    "): " + p.a.a + " " +
+                    Ordering.fromInt(
+                            new Sextuple.SextupleComparator<>(
+                                    aComparator,
+                                    bComparator,
+                                    cComparator,
+                                    dComparator,
+                                    eComparator,
+                                    fComparator
+                            ).compare(p.a.a, p.a.b)
+                    ) + " " + p.a.b);
         }
     }
 }

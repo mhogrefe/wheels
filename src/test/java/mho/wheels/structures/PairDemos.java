@@ -1,10 +1,13 @@
 package mho.wheels.structures;
 
 import mho.wheels.io.Readers;
+import mho.wheels.ordering.Ordering;
 import mho.wheels.testing.Demos;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 
 import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.testing.Testing.*;
@@ -84,6 +87,45 @@ public class PairDemos extends Demos {
                             Readers.readWithNullsStrict(Readers::readIntegerStrict)
                     )
             );
+        }
+    }
+
+    private void demoPairComparator_compare() {
+        Iterable<Pair<Pair<Pair<Integer, Integer>, Pair<Integer, Integer>>, Pair<List<Integer>, List<Integer>>>> ps =
+                P.dependentPairs(
+                        P.pairs(P.pairs(P.withNull(P.integersGeometric()))),
+                        p -> P.pairs(EP.permutationsFinite(toList(nub(concat(Pair.toList(p.a), Pair.toList(p.b))))))
+                );
+        for (Pair<Pair<Pair<Integer, Integer>, Pair<Integer, Integer>>, Pair<List<Integer>, List<Integer>>> p :
+                take(LIMIT, ps)) {
+            Comparator<Integer> aComparator = (x, y) -> {
+                int xIndex = p.b.a.indexOf(x);
+                if (xIndex == -1) {
+                    throw new IllegalArgumentException("undefined");
+                }
+                int yIndex = p.b.a.indexOf(y);
+                if (yIndex == -1) {
+                    throw new IllegalArgumentException("undefined");
+                }
+                return Integer.compare(xIndex, yIndex);
+            };
+            Comparator<Integer> bComparator = (x, y) -> {
+                int xIndex = p.b.b.indexOf(x);
+                if (xIndex == -1) {
+                    throw new IllegalArgumentException("undefined");
+                }
+                int yIndex = p.b.b.indexOf(y);
+                if (yIndex == -1) {
+                    throw new IllegalArgumentException("undefined");
+                }
+                return Integer.compare(xIndex, yIndex);
+            };
+            System.out.println("new PairComparator(" +
+                    intercalate(" < ", map(Objects::toString, p.b.a)) + ", " +
+                    intercalate(" < ", map(Objects::toString, p.b.b)) +
+                    "): " + p.a.a + " " +
+                    Ordering.fromInt(new Pair.PairComparator<>(aComparator, bComparator).compare(p.a.a, p.a.b)) + " " +
+                    p.a.b);
         }
     }
 }

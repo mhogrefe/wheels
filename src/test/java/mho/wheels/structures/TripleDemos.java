@@ -1,12 +1,16 @@
 package mho.wheels.structures;
 
 import mho.wheels.io.Readers;
+import mho.wheels.ordering.Ordering;
 import mho.wheels.testing.Demos;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 
 import static mho.wheels.iterables.IterableUtils.*;
+import static mho.wheels.testing.Testing.EP;
 import static mho.wheels.testing.Testing.nicePrint;
 
 @SuppressWarnings("UnusedDeclaration")
@@ -94,6 +98,64 @@ public class TripleDemos extends Demos {
                             Readers.readWithNullsStrict(Readers::readIntegerStrict)
                     )
             );
+        }
+    }
+
+    private void demoTripleComparator_compare() {
+        Iterable<
+                Pair<
+                        Pair<Triple<Integer, Integer, Integer>, Triple<Integer, Integer, Integer>>,
+                        Triple<List<Integer>, List<Integer>, List<Integer>>
+                >
+        > ps = P.dependentPairs(
+                P.pairs(P.triples(P.withNull(P.integersGeometric()))),
+                p -> P.triples(EP.permutationsFinite(toList(nub(concat(Triple.toList(p.a), Triple.toList(p.b))))))
+        );
+        for (Pair<
+                Pair<Triple<Integer, Integer, Integer>, Triple<Integer, Integer, Integer>>,
+                Triple<List<Integer>, List<Integer>, List<Integer>>
+        > p : take(LIMIT, ps)) {
+            Comparator<Integer> aComparator = (x, y) -> {
+                int xIndex = p.b.a.indexOf(x);
+                if (xIndex == -1) {
+                    throw new IllegalArgumentException("undefined");
+                }
+                int yIndex = p.b.a.indexOf(y);
+                if (yIndex == -1) {
+                    throw new IllegalArgumentException("undefined");
+                }
+                return Integer.compare(xIndex, yIndex);
+            };
+            Comparator<Integer> bComparator = (x, y) -> {
+                int xIndex = p.b.b.indexOf(x);
+                if (xIndex == -1) {
+                    throw new IllegalArgumentException("undefined");
+                }
+                int yIndex = p.b.b.indexOf(y);
+                if (yIndex == -1) {
+                    throw new IllegalArgumentException("undefined");
+                }
+                return Integer.compare(xIndex, yIndex);
+            };
+            Comparator<Integer> cComparator = (x, y) -> {
+                int xIndex = p.b.c.indexOf(x);
+                if (xIndex == -1) {
+                    throw new IllegalArgumentException("undefined");
+                }
+                int yIndex = p.b.c.indexOf(y);
+                if (yIndex == -1) {
+                    throw new IllegalArgumentException("undefined");
+                }
+                return Integer.compare(xIndex, yIndex);
+            };
+            System.out.println("new TripleComparator(" +
+                    intercalate(" < ", map(Objects::toString, p.b.a)) + ", " +
+                    intercalate(" < ", map(Objects::toString, p.b.b)) + ", " +
+                    intercalate(" < ", map(Objects::toString, p.b.c)) +
+                    "): " + p.a.a + " " +
+                    Ordering.fromInt(
+                            new Triple.TripleComparator<>(aComparator, bComparator, cComparator).compare(p.a.a, p.a.b)
+                    ) + " " + p.a.b);
         }
     }
 }
