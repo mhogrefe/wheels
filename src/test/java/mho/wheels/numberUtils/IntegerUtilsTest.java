@@ -569,7 +569,7 @@ public class IntegerUtilsTest {
                 " false, false, false, false, false, false, false, false, false, false, false, false, false, false," +
                 " false, false, false, false, false, false, false, false, false, false, false, false, false, false," +
                 " false, false, false, false, false, false, false, false, false, true, true, false, true, false," +
-                 " false, true]");
+                " false, true]");
 
         bigEndianBitsPadded_int_BigInteger_fail_helper(8, "-1");
         bigEndianBitsPadded_int_BigInteger_fail_helper(-1, "8");
