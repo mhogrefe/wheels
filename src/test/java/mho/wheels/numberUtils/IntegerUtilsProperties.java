@@ -469,6 +469,9 @@ public class IntegerUtilsProperties extends TestProperties {
             assertEquals(p, bits, reverse(bigEndianBitsPadded(p.b, p.a)));
             assertFalse(p, any(b -> b == null, bits));
             assertEquals(p, bits.size(), p.b);
+            for (int i = 32; i < bits.size(); i++) {
+                assertFalse(p, bits.get(i));
+            }
         }
 
         ps = map(
@@ -647,6 +650,9 @@ public class IntegerUtilsProperties extends TestProperties {
             assertEquals(p, bits, reverse(bitsPadded(p.b, p.a)));
             assertTrue(p, all(b -> b != null, bits));
             assertEquals(p, bits.size(), p.b);
+            for (int i = 32; i < bits.size(); i++) {
+                assertFalse(p, bits.get(bits.size() - i - 1));
+            }
         }
 
         ps = map(

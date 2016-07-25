@@ -206,7 +206,7 @@ public class IntegerUtils {
      * <ul>
      *  <li>{@code length} cannot be negative.</li>
      *  <li>{@code n} cannot be negative.</li>
-     *  <li>The result contains no nulls.</li>
+     *  <li>All bits in the result apart from the first 31 are false.</li>
      * </ul>
      *
      * Result length is {@code length}
@@ -320,7 +320,7 @@ public class IntegerUtils {
      * <ul>
      *  <li>{@code length} cannot be negative.</li>
      *  <li>{@code n} cannot be negative.</li>
-     *  <li>The result contains no nulls.</li>
+     *  <li>All bits in the result apart from the last 31 are false.</li>
      * </ul>
      *
      * Result length is {@code length}

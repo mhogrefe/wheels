@@ -181,6 +181,7 @@ public class IntegerUtilsTest {
         isPowerOfTwo_int_helper(3, false);
         isPowerOfTwo_int_helper(13, false);
         isPowerOfTwo_int_helper(100, false);
+        isPowerOfTwo_int_helper(Integer.MAX_VALUE, false);
 
         isPowerOfTwo_int_fail_helper(0);
         isPowerOfTwo_int_fail_helper(-5);
@@ -208,6 +209,7 @@ public class IntegerUtilsTest {
         isPowerOfTwo_long_helper(3L, false);
         isPowerOfTwo_long_helper(13L, false);
         isPowerOfTwo_long_helper(100L, false);
+        isPowerOfTwo_long_helper(Long.MAX_VALUE, false);
 
         isPowerOfTwo_long_fail_helper(0);
         isPowerOfTwo_long_fail_helper(-5);
@@ -342,6 +344,9 @@ public class IntegerUtilsTest {
         bits_int_helper(1, "[true]");
         bits_int_helper(6, "[false, true, true]");
         bits_int_helper(105, "[true, false, false, true, false, true, true]");
+        bits_int_helper(Integer.MAX_VALUE,
+                "[true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true," +
+                " true, true, true, true, true, true, true, true, true, true, true, true, true, true, true]");
 
         bits_int_fail_helper(-1);
     }
@@ -390,6 +395,18 @@ public class IntegerUtilsTest {
         bitsPadded_int_int_helper(1, 104, "[false]");
         bitsPadded_int_int_helper(1, 105, "[true]");
         bitsPadded_int_int_helper(0, 104, "[]");
+        bitsPadded_int_int_helper(100, 105,
+                "[true, false, false, true, false, true, true, false, false, false, false, false, false, false," +
+                " false, false, false, false, false, false, false, false, false, false, false, false, false, false," +
+                " false, false, false, false, false, false, false, false, false, false, false, false, false, false," +
+                " false, false, false, false, false, false, false, false, false, false, false, false, false, false," +
+                " false, false, false, false, false, false, false, false, false, false, false, false, false, false," +
+                " false, false, false, false, false, false, false, false, false, false, false, false, false, false," +
+                " false, false, false, false, false, false, false, false, false, false, false, false, false, false," +
+                " false, false]");
+        bitsPadded_int_int_helper(31, Integer.MAX_VALUE,
+                "[true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true," +
+                " true, true, true, true, true, true, true, true, true, true, true, true, true, true, true]");
 
         bitsPadded_int_int_fail_helper(8, -1);
         bitsPadded_int_int_fail_helper(-1, 8);
@@ -418,6 +435,15 @@ public class IntegerUtilsTest {
         bitsPadded_int_BigInteger_helper(1, "104", "[false]");
         bitsPadded_int_BigInteger_helper(1, "105", "[true]");
         bitsPadded_int_BigInteger_helper(0, "104", "[]");
+        bitsPadded_int_BigInteger_helper(100, "105",
+                "[true, false, false, true, false, true, true, false, false, false, false, false, false, false," +
+                " false, false, false, false, false, false, false, false, false, false, false, false, false, false," +
+                " false, false, false, false, false, false, false, false, false, false, false, false, false, false," +
+                " false, false, false, false, false, false, false, false, false, false, false, false, false, false," +
+                " false, false, false, false, false, false, false, false, false, false, false, false, false, false," +
+                " false, false, false, false, false, false, false, false, false, false, false, false, false, false," +
+                " false, false, false, false, false, false, false, false, false, false, false, false, false, false," +
+                " false, false]");
 
         bitsPadded_int_BigInteger_fail_helper(8, "-1");
         bitsPadded_int_BigInteger_fail_helper(-1, "8");
@@ -440,6 +466,9 @@ public class IntegerUtilsTest {
         bigEndianBits_int_helper(1, "[true]");
         bigEndianBits_int_helper(6, "[true, true, false]");
         bigEndianBits_int_helper(105, "[true, true, false, true, false, false, true]");
+        bigEndianBits_int_helper(Integer.MAX_VALUE,
+                "[true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true," +
+                " true, true, true, true, true, true, true, true, true, true, true, true, true, true, true]");
 
         bigEndianBits_int_fail_helper(-1);
     }
@@ -488,6 +517,18 @@ public class IntegerUtilsTest {
         bigEndianBitsPadded_int_int_helper(1, 104, "[false]");
         bigEndianBitsPadded_int_int_helper(1, 105, "[true]");
         bigEndianBitsPadded_int_int_helper(0, 104, "[]");
+        bigEndianBitsPadded_int_int_helper(100, 105,
+                "[false, false, false, false, false, false, false, false, false, false, false, false, false, false," +
+                " false, false, false, false, false, false, false, false, false, false, false, false, false, false," +
+                " false, false, false, false, false, false, false, false, false, false, false, false, false, false," +
+                " false, false, false, false, false, false, false, false, false, false, false, false, false, false," +
+                " false, false, false, false, false, false, false, false, false, false, false, false, false, false," +
+                " false, false, false, false, false, false, false, false, false, false, false, false, false, false," +
+                " false, false, false, false, false, false, false, false, false, true, true, false, true, false," +
+                " false, true]");
+        bigEndianBitsPadded_int_int_helper(31, Integer.MAX_VALUE,
+                "[true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true," +
+                " true, true, true, true, true, true, true, true, true, true, true, true, true, true, true]");
 
         bigEndianBitsPadded_int_int_fail_helper(8, -1);
         bigEndianBitsPadded_int_int_fail_helper(-1, 8);
@@ -520,6 +561,15 @@ public class IntegerUtilsTest {
         bigEndianBitsPadded_int_BigInteger_helper(1, "104", "[false]");
         bigEndianBitsPadded_int_BigInteger_helper(1, "105", "[true]");
         bigEndianBitsPadded_int_BigInteger_helper(0, "104", "[]");
+        bigEndianBitsPadded_int_BigInteger_helper(100, "105",
+                "[false, false, false, false, false, false, false, false, false, false, false, false, false, false," +
+                " false, false, false, false, false, false, false, false, false, false, false, false, false, false," +
+                " false, false, false, false, false, false, false, false, false, false, false, false, false, false," +
+                " false, false, false, false, false, false, false, false, false, false, false, false, false, false," +
+                " false, false, false, false, false, false, false, false, false, false, false, false, false, false," +
+                " false, false, false, false, false, false, false, false, false, false, false, false, false, false," +
+                " false, false, false, false, false, false, false, false, false, true, true, false, true, false," +
+                 " false, true]");
 
         bigEndianBitsPadded_int_BigInteger_fail_helper(8, "-1");
         bigEndianBitsPadded_int_BigInteger_fail_helper(-1, "8");
