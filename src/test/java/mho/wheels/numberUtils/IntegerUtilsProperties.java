@@ -744,7 +744,7 @@ public class IntegerUtilsProperties extends TestProperties {
         compareImplementations("bigEndianBitsPadded(int, BigInteger)", take(LIMIT, ps), functions, v -> P.reset());
     }
 
-    private static @NotNull BigInteger fromBits_alt(@NotNull Iterable<Boolean> xs) {
+    private static @NotNull BigInteger fromBits_alt(@NotNull List<Boolean> xs) {
         BigInteger n = BigInteger.ZERO;
         for (int i : select(xs, ExhaustiveProvider.INSTANCE.rangeUpIncreasing(0))) {
             n = n.setBit(i);
@@ -753,7 +753,7 @@ public class IntegerUtilsProperties extends TestProperties {
     }
 
     private void propertiesFromBits() {
-        initialize("fromBits(Iterable<Boolean>)");
+        initialize("fromBits(List<Boolean>)");
         for (List<Boolean> bs : take(LIMIT, P.lists(P.booleans()))) {
             BigInteger i = fromBits(bs);
             assertEquals(bs, fromBits_alt(bs), i);
@@ -783,7 +783,7 @@ public class IntegerUtilsProperties extends TestProperties {
         functions.put("alt", IntegerUtilsProperties::fromBits_alt);
         functions.put("standard", IntegerUtils::fromBits);
         compareImplementations(
-                "fromBits(Iterable<Boolean>)",
+                "fromBits(List<Boolean>)",
                 take(LIMIT, P.lists(P.booleans())),
                 functions,
                 v -> P.reset()
@@ -795,7 +795,7 @@ public class IntegerUtilsProperties extends TestProperties {
     }
 
     private void propertiesFromBigEndianBits() {
-        initialize("fromBigEndianBits(Iterable<Boolean>)");
+        initialize("fromBigEndianBits(List<Boolean>)");
         for (List<Boolean> bs : take(LIMIT, P.lists(P.booleans()))) {
             BigInteger i = fromBigEndianBits(bs);
             assertEquals(bs, fromBigEndianBits_simplest(bs), i);
@@ -821,7 +821,7 @@ public class IntegerUtilsProperties extends TestProperties {
         functions.put("simplest", IntegerUtilsProperties::fromBigEndianBits_simplest);
         functions.put("standard", IntegerUtils::fromBigEndianBits);
         compareImplementations(
-                "fromBigEndianBits(Iterable<Boolean>)",
+                "fromBigEndianBits(List<Boolean>)",
                 take(LIMIT, P.lists(P.booleans())),
                 functions,
                 v -> P.reset()
@@ -1657,7 +1657,7 @@ public class IntegerUtilsProperties extends TestProperties {
             }
         };
         for (List<Integer> is : take(LIMIT, P.lists(P.range(0, 1)))) {
-            assertEquals(is, fromDigits(2, is), fromBits(map(digitsToBits, is)));
+            assertEquals(is, fromDigits(2, is), fromBits(toList(map(digitsToBits, is))));
         }
 
         Iterable<Pair<List<Integer>, Integer>> psFail = filterInfinite(
@@ -1728,7 +1728,7 @@ public class IntegerUtilsProperties extends TestProperties {
             throw new IllegalArgumentException();
         };
         for (List<BigInteger> is : take(LIMIT, P.lists(P.range(BigInteger.ZERO, BigInteger.ONE)))) {
-            assertEquals(is, fromDigits(TWO, is), fromBits(map(digitsToBits, is)));
+            assertEquals(is, fromDigits(TWO, is), fromBits(toList(map(digitsToBits, is))));
         }
 
         Iterable<Pair<List<BigInteger>, BigInteger>> psFail = filterInfinite(
@@ -1803,7 +1803,7 @@ public class IntegerUtilsProperties extends TestProperties {
             }
         };
         for (List<Integer> is : take(LIMIT, P.lists(P.range(0, 1)))) {
-            assertEquals(is, fromBigEndianDigits(2, is), fromBigEndianBits(map(digitsToBits, is)));
+            assertEquals(is, fromBigEndianDigits(2, is), fromBigEndianBits(toList(map(digitsToBits, is))));
         }
 
         Iterable<Pair<List<Integer>, Integer>> psFail = filterInfinite(
@@ -1879,7 +1879,7 @@ public class IntegerUtilsProperties extends TestProperties {
             throw new IllegalArgumentException();
         };
         for (List<BigInteger> is : take(LIMIT, P.lists(P.range(BigInteger.ZERO, BigInteger.ONE)))) {
-            assertEquals(is, fromBigEndianDigits(TWO, is), fromBigEndianBits(map(digitsToBits, is)));
+            assertEquals(is, fromBigEndianDigits(TWO, is), fromBigEndianBits(toList(map(digitsToBits, is))));
         }
 
         Iterable<Pair<List<BigInteger>, BigInteger>> psFail = filterInfinite(
@@ -2174,7 +2174,7 @@ public class IntegerUtilsProperties extends TestProperties {
         int outputSize = max(xBits.size(), yBits.size()) * 3;
         Iterable<Iterable<Boolean>> xChunks = map(w -> w, chunk(2, concat(xBits, repeat(false))));
         Iterable<Iterable<Boolean>> yChunks = map(Arrays::asList, concat(yBits, repeat(false)));
-        return fromBits(take(outputSize, concat(ExhaustiveProvider.INSTANCE.choose(yChunks, xChunks))));
+        return fromBits(toList(take(outputSize, concat(ExhaustiveProvider.INSTANCE.choose(yChunks, xChunks)))));
     }
 
     private void propertiesSquareRootMux() {
@@ -2215,7 +2215,7 @@ public class IntegerUtilsProperties extends TestProperties {
         List<Boolean> bits = bits(n);
         Iterable<Boolean> xMask = cycle(Arrays.asList(false, true, true));
         Iterable<Boolean> yMask = cycle(Arrays.asList(true, false, false));
-        return new Pair<>(fromBits(select(xMask, bits)), fromBits(select(yMask, bits)));
+        return new Pair<>(fromBits(toList(select(xMask, bits))), fromBits(toList(select(yMask, bits))));
     }
 
     private void propertiesSquareRootDemux() {
@@ -2252,7 +2252,7 @@ public class IntegerUtilsProperties extends TestProperties {
         if (xs.isEmpty()) return BigInteger.ZERO;
         Iterable<Boolean> muxedBits = IterableUtils.mux(toList(map(x -> concat(bits(x), repeat(false)), reverse(xs))));
         int outputSize = maximum(map(BigInteger::bitLength, xs)) * xs.size();
-        return fromBits(take(outputSize, muxedBits));
+        return fromBits(toList(take(outputSize, muxedBits)));
     }
 
     private void propertiesMux() {
@@ -2302,7 +2302,7 @@ public class IntegerUtilsProperties extends TestProperties {
         if (n.equals(BigInteger.ZERO)) {
             return toList(replicate(size, BigInteger.ZERO));
         }
-        return reverse(IterableUtils.map(IntegerUtils::fromBits, IterableUtils.demux(size, bits(n))));
+        return reverse(IterableUtils.map(xs -> IntegerUtils.fromBits(toList(xs)), IterableUtils.demux(size, bits(n))));
     }
 
     private static @NotNull List<BigInteger> demux_alt2(int size, @NotNull BigInteger n) {

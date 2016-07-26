@@ -379,25 +379,24 @@ public class IntegerUtils {
     }
 
     /**
-     * Builds a {@code BigInteger} from an {@code Iterable} of bits in little-endian order (least significant bits
-     * first). Trailing zero (false) bits are permitted. Zero may be represented by an empty {@code Iterable}.
+     * Builds a {@code BigInteger} from a {@code List} of bits in little-endian order (least significant bits first).
+     * Trailing zero (false) bits are permitted. Zero may be represented by an empty {@code List}.
      *
      * <ul>
-     *  <li>{@code bits} must be finite and every element must be non-null.</li>
+     *  <li>Every element in {@code bits} must be non-null.</li>
      *  <li>The result is non-negative.</li>
      * </ul>
      *
-     * @param bits an {@code Iterable} of bits in little-endian order
+     * @param bits a {@code List} of bits in little-endian order
      * @return The {@code BigInteger} represented by {@code bits}
      */
-    public static @NotNull BigInteger fromBits(@NotNull Iterable<Boolean> bits) {
-        List<Boolean> bitsList = toList(bits);
-        byte[] bytes = new byte[bitsList.size() / 8 + 1]; // if bits.size() is a multiple of 8, we get an extra zero to
-        int byteIndex = bytes.length;                     // the left which ensures a positive sign
-        for (int i = 0; i < bitsList.size(); i++) {
+    public static @NotNull BigInteger fromBits(@NotNull List<Boolean> bits) {
+        byte[] bytes = new byte[bits.size() / 8 + 1]; // if bits.size() is a multiple of 8, we get an extra zero to the
+        int byteIndex = bytes.length;                 // left which ensures a positive sign
+        for (int i = 0; i < bits.size(); i++) {
             int j = i % 8;
             if (j == 0) byteIndex--;
-            if (bitsList.get(i)) {
+            if (bits.get(i)) {
                 bytes[byteIndex] |= 1 << j;
             }
         }
@@ -405,26 +404,25 @@ public class IntegerUtils {
     }
 
     /**
-     * Builds a {@code BigInteger} from an {@code Iterable} of bits in big-endian order (most significant bits first).
-     * Leading zero (false) bits are permitted. Zero may be represented by an empty {@code Iterable}.
+     * Builds a {@code BigInteger} from a {@code List} of bits in big-endian order (most significant bits first).
+     * Leading zero (false) bits are permitted. Zero may be represented by an empty {@code List}.
      *
      * <ul>
-     *  <li>{@code bits} must be finite and every element must be non-null.</li>
+     *  <li>Every element in {@code bits} must be non-null.</li>
      *  <li>The result is non-negative.</li>
      * </ul>
      *
-     * @param bits an {@code Iterable} of bits in big-endian order
+     * @param bits a {@code List} of bits in big-endian order
      * @return The {@code BigInteger} represented by {@code bits}
      */
-    public static @NotNull BigInteger fromBigEndianBits(@NotNull Iterable<Boolean> bits) {
-        List<Boolean> bitsList = toList(bits);
-        byte[] bytes = new byte[bitsList.size() / 8 + 1]; // if bits.size() is a multiple of 8, we get an extra zero to
+    public static @NotNull BigInteger fromBigEndianBits(@NotNull List<Boolean> bits) {
+        byte[] bytes = new byte[bits.size() / 8 + 1]; // if bits.size() is a multiple of 8, we get an extra zero to
         int byteIndex = bytes.length;                     // the left which ensures a positive sign
-        int limit = bitsList.size() - 1;
-        for (int i = 0; i < bitsList.size(); i++) {
+        int limit = bits.size() - 1;
+        for (int i = 0; i < bits.size(); i++) {
             int j = i % 8;
             if (j == 0) byteIndex--;
-            if (bitsList.get(limit - i)) {
+            if (bits.get(limit - i)) {
                 bytes[byteIndex] |= 1 << j;
             }
         }
@@ -1182,7 +1180,7 @@ public class IntegerUtils {
         List<Boolean> yBits = bits(y);
         int xBitSize = xBits.size();
         int yBitSize = yBits.size();
-        return fromBits(() -> new Iterator<Boolean>() {
+        return fromBits(toList(() -> new Iterator<Boolean>() {
             private int ix = 0;
             private int iy = 0;
             private int counter = 0;
@@ -1206,7 +1204,7 @@ public class IntegerUtils {
                 }
                 return bit;
             }
-        });
+        }));
     }
 
     /**
