@@ -7,8 +7,8 @@ import java.util.List;
 
 import static mho.wheels.iterables.IterableUtils.filterInfinite;
 import static mho.wheels.iterables.IterableUtils.take;
-import static mho.wheels.testing.Testing.assertEquals;
-import static mho.wheels.testing.Testing.fail;
+import static mho.wheels.testing.Testing.*;
+import static mho.wheels.testing.Testing.propertiesHashCodeHelper;
 
 public class SeptupleProperties extends TestProperties {
     private static final @NotNull String NULLABLE_INTEGER_SEPTUPLE_CHARS = " (),-0123456789lnu";
@@ -22,6 +22,9 @@ public class SeptupleProperties extends TestProperties {
         propertiesConstructor();
         propertiesToList();
         propertiesFromList();
+        propertiesCompare();
+        propertiesEquals();
+        propertiesHashCode();
     }
 
     private void propertiesConstructor() {
@@ -75,5 +78,25 @@ public class SeptupleProperties extends TestProperties {
                 fail(xs);
             } catch (IllegalArgumentException ignored) {}
         }
+    }
+
+    private void propertiesCompare() {
+        initialize("compare(Septuple<A, B, C, D, E, F, G>, Septuple<A, B, C, D, E, F, G>)");
+        propertiesCompareToHelper(
+                LIMIT,
+                P,
+                (x, y) -> Septuple.compare(x, y).toInt(),
+                p -> p.septuples(p.integers())
+        );
+    }
+
+    private void propertiesEquals() {
+        initialize("equals(Object)");
+        propertiesEqualsHelper(LIMIT, P, p -> p.septuples(p.integers()));
+    }
+
+    private void propertiesHashCode() {
+        initialize("hashCode()");
+        propertiesHashCodeHelper(LIMIT, P, p -> p.septuples(p.integers()));
     }
 }

@@ -7,8 +7,8 @@ import java.util.List;
 
 import static mho.wheels.iterables.IterableUtils.filterInfinite;
 import static mho.wheels.iterables.IterableUtils.take;
-import static mho.wheels.testing.Testing.assertEquals;
-import static mho.wheels.testing.Testing.fail;
+import static mho.wheels.testing.Testing.*;
+import static mho.wheels.testing.Testing.propertiesHashCodeHelper;
 
 public class PairProperties extends TestProperties {
     private static final @NotNull String NULLABLE_INTEGER_PAIR_CHARS = " (),-0123456789lnu";
@@ -22,6 +22,9 @@ public class PairProperties extends TestProperties {
         propertiesConstructor();
         propertiesToList();
         propertiesFromList();
+        propertiesCompare();
+        propertiesEquals();
+        propertiesHashCode();
     }
 
     private void propertiesConstructor() {
@@ -57,5 +60,20 @@ public class PairProperties extends TestProperties {
                 fail(xs);
             } catch (IllegalArgumentException ignored) {}
         }
+    }
+
+    private void propertiesCompare() {
+        initialize("compare(Pair<A, B>, Pair<A, B>)");
+        propertiesCompareToHelper(LIMIT, P, (x, y) -> Pair.compare(x, y).toInt(), p -> p.pairs(p.integers()));
+    }
+
+    private void propertiesEquals() {
+        initialize("equals(Object)");
+        propertiesEqualsHelper(LIMIT, P, p -> p.pairs(p.integers()));
+    }
+
+    private void propertiesHashCode() {
+        initialize("hashCode()");
+        propertiesHashCodeHelper(LIMIT, P, p -> p.pairs(p.integers()));
     }
 }

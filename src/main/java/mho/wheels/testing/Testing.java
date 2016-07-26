@@ -648,6 +648,36 @@ public strictfp class Testing {
         }
     }
 
+    public static <T> void propertiesCompareToHelper(
+            int limit,
+            @NotNull IterableProvider ip,
+            @NotNull Comparator<T> comparator,
+            @NotNull Function<IterableProvider, Iterable<T>> fxs
+    ) {
+        IterableProvider iq = ip.deepCopy();
+        IterableProvider ir = ip.deepCopy();
+        for (Pair<T, T> p : take(limit, zip(fxs.apply(ip), fxs.apply(iq)))) {
+            assertTrue(p, eq(comparator, p.a, p.b));
+        }
+
+        ip.reset();
+        iq.reset();
+        for (Pair<T, T> p : take(limit, EP.pairs(fxs.apply(ip), fxs.apply(iq)))) {
+            int compare = comparator.compare(p.a, p.b);
+            assertTrue(p, compare == 0 || compare == 1 || compare == -1);
+            antiSymmetric((x, y) -> le(comparator, x, y), p);
+            assertTrue(p, le(comparator, p.a, p.b) || le(comparator, p.b, p.a));
+            antiCommutative(comparator::compare, c -> -c, p);
+        }
+
+        ip.reset();
+        iq.reset();
+        ir.reset();
+        for (Triple<T, T, T> t : take(limit, EP.triples(fxs.apply(ip), fxs.apply(iq), fxs.apply(ir)))) {
+            transitive((x, y) -> le(comparator, x, y), t);
+        }
+    }
+
     public static <T extends Comparable<T>> void propertiesCompareToHelper(
             int limit,
             @NotNull IterableProvider ip,

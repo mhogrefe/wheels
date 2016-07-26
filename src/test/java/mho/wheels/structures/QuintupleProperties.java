@@ -7,8 +7,8 @@ import java.util.List;
 
 import static mho.wheels.iterables.IterableUtils.filterInfinite;
 import static mho.wheels.iterables.IterableUtils.take;
-import static mho.wheels.testing.Testing.assertEquals;
-import static mho.wheels.testing.Testing.fail;
+import static mho.wheels.testing.Testing.*;
+import static mho.wheels.testing.Testing.propertiesHashCodeHelper;
 
 public class QuintupleProperties extends TestProperties {
     private static final @NotNull String NULLABLE_INTEGER_QUINTUPLE_CHARS = " (),-0123456789lnu";
@@ -22,6 +22,9 @@ public class QuintupleProperties extends TestProperties {
         propertiesConstructor();
         propertiesToList();
         propertiesFromList();
+        propertiesCompare();
+        propertiesEquals();
+        propertiesHashCode();
     }
 
     private void propertiesConstructor() {
@@ -68,5 +71,25 @@ public class QuintupleProperties extends TestProperties {
                 fail(xs);
             } catch (IllegalArgumentException ignored) {}
         }
+    }
+
+    private void propertiesCompare() {
+        initialize("compare(Quintuple<A, B, C, D, E>, Quintuple<A, B, C, D, E>)");
+        propertiesCompareToHelper(
+                LIMIT,
+                P,
+                (x, y) -> Quintuple.compare(x, y).toInt(),
+                p -> p.quintuples(p.integers())
+        );
+    }
+
+    private void propertiesEquals() {
+        initialize("equals(Object)");
+        propertiesEqualsHelper(LIMIT, P, p -> p.quintuples(p.integers()));
+    }
+
+    private void propertiesHashCode() {
+        initialize("hashCode()");
+        propertiesHashCodeHelper(LIMIT, P, p -> p.quintuples(p.integers()));
     }
 }
