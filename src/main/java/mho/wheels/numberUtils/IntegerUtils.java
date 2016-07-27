@@ -431,8 +431,7 @@ public class IntegerUtils {
 
     /**
      * Returns the digits of a non-negative {@code int}. The {@code Iterable} returned is little-endian; the least-
-     * significant digits come first. Zero gives an empty {@code Iterable}. There are no trailing zero digits. Does not
-     * support removal.
+     * significant digits come first. Zero gives an empty {@code Iterable}. There are no trailing zero digits.
      *
      * <ul>
      *  <li>{@code base} must be at least 2.</li>
@@ -475,7 +474,6 @@ public class IntegerUtils {
     /**
      * Returns the digits of a non-negative {@code BigInteger}. The {@code Iterable} returned is little-endian; the
      * least-significant digits come first. Zero gives an empty {@code Iterable}. There are no trailing zero digits.
-     * Does not support removal.
      *
      * <ul>
      *  <li>{@code base} must be at least 2.</li>
@@ -518,7 +516,7 @@ public class IntegerUtils {
     /**
      * Returns the lowest {@code n} digits of a non-negative {@code int}. The {@code Iterable} returned is little-
      * endian; the least-significant digits come first. It is exactly {@code n} digits long, and left-padded with
-     * zeroes if necessary. Does not support removal.
+     * zeroes if necessary.
      *
      * <ul>
      *  <li>{@code length} cannot be negative.</li>
@@ -565,7 +563,7 @@ public class IntegerUtils {
     /**
      * Returns the lowest {@code n} digits of a non-negative {@code int}. The {@code Iterable} returned is little-
      * endian; the least-significant digits come first. It is exactly {@code n} digits long, and left-padded with
-     * zeroes if necessary. Does not support removal.
+     * zeroes if necessary.
      *
      * <ul>
      *  <li>{@code length} cannot be negative.</li>
