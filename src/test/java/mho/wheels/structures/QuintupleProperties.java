@@ -1,5 +1,6 @@
 package mho.wheels.structures;
 
+import mho.wheels.io.Readers;
 import mho.wheels.testing.TestProperties;
 import org.jetbrains.annotations.NotNull;
 
@@ -25,6 +26,8 @@ public class QuintupleProperties extends TestProperties {
         propertiesCompare();
         propertiesEquals();
         propertiesHashCode();
+        propertiesReadStrict();
+        propertiesToString();
     }
 
     private void propertiesConstructor() {
@@ -91,5 +94,43 @@ public class QuintupleProperties extends TestProperties {
     private void propertiesHashCode() {
         initialize("hashCode()");
         propertiesHashCodeHelper(LIMIT, P, p -> p.quintuples(p.integers()));
+    }
+
+    private void propertiesReadStrict() {
+        initialize("readStrict(String)");
+        propertiesReadHelper(
+                LIMIT,
+                P,
+                NULLABLE_INTEGER_QUINTUPLE_CHARS,
+                P.quintuples(P.withNull(P.integers())),
+                s -> Quintuple.readStrict(
+                        s,
+                        Readers.readWithNullsStrict(Readers::readIntegerStrict),
+                        Readers.readWithNullsStrict(Readers::readIntegerStrict),
+                        Readers.readWithNullsStrict(Readers::readIntegerStrict),
+                        Readers.readWithNullsStrict(Readers::readIntegerStrict),
+                        Readers.readWithNullsStrict(Readers::readIntegerStrict)
+                ),
+                q -> {},
+                false,
+                true
+        );
+    }
+
+    private void propertiesToString() {
+        initialize("toString()");
+        propertiesToStringHelper(
+                LIMIT,
+                NULLABLE_INTEGER_QUINTUPLE_CHARS,
+                P.quintuples(P.withNull(P.integers())),
+                s -> Quintuple.readStrict(
+                        s,
+                        Readers.readWithNullsStrict(Readers::readIntegerStrict),
+                        Readers.readWithNullsStrict(Readers::readIntegerStrict),
+                        Readers.readWithNullsStrict(Readers::readIntegerStrict),
+                        Readers.readWithNullsStrict(Readers::readIntegerStrict),
+                        Readers.readWithNullsStrict(Readers::readIntegerStrict)
+                )
+        );
     }
 }

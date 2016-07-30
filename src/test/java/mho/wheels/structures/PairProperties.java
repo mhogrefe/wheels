@@ -1,5 +1,6 @@
 package mho.wheels.structures;
 
+import mho.wheels.io.Readers;
 import mho.wheels.testing.TestProperties;
 import org.jetbrains.annotations.NotNull;
 
@@ -25,6 +26,8 @@ public class PairProperties extends TestProperties {
         propertiesCompare();
         propertiesEquals();
         propertiesHashCode();
+        propertiesReadStrict();
+        propertiesToString();
     }
 
     private void propertiesConstructor() {
@@ -75,5 +78,37 @@ public class PairProperties extends TestProperties {
     private void propertiesHashCode() {
         initialize("hashCode()");
         propertiesHashCodeHelper(LIMIT, P, p -> p.pairs(p.integers()));
+    }
+
+    private void propertiesReadStrict() {
+        initialize("readStrict(String)");
+        propertiesReadHelper(
+                LIMIT,
+                P,
+                NULLABLE_INTEGER_PAIR_CHARS,
+                P.pairs(P.withNull(P.integers())),
+                s -> Pair.readStrict(
+                        s,
+                        Readers.readWithNullsStrict(Readers::readIntegerStrict),
+                        Readers.readWithNullsStrict(Readers::readIntegerStrict)
+                ),
+                p -> {},
+                false,
+                true
+        );
+    }
+
+    private void propertiesToString() {
+        initialize("toString()");
+        propertiesToStringHelper(
+                LIMIT,
+                NULLABLE_INTEGER_PAIR_CHARS,
+                P.pairs(P.withNull(P.integers())),
+                s -> Pair.readStrict(
+                        s,
+                        Readers.readWithNullsStrict(Readers::readIntegerStrict),
+                        Readers.readWithNullsStrict(Readers::readIntegerStrict)
+                )
+        );
     }
 }

@@ -1,5 +1,6 @@
 package mho.wheels.structures;
 
+import mho.wheels.io.Readers;
 import mho.wheels.testing.TestProperties;
 import org.jetbrains.annotations.NotNull;
 
@@ -25,6 +26,8 @@ public class SeptupleProperties extends TestProperties {
         propertiesCompare();
         propertiesEquals();
         propertiesHashCode();
+        propertiesReadStrict();
+        propertiesToString();
     }
 
     private void propertiesConstructor() {
@@ -98,5 +101,47 @@ public class SeptupleProperties extends TestProperties {
     private void propertiesHashCode() {
         initialize("hashCode()");
         propertiesHashCodeHelper(LIMIT, P, p -> p.septuples(p.integers()));
+    }
+
+    private void propertiesReadStrict() {
+        initialize("readStrict(String)");
+        propertiesReadHelper(
+                LIMIT,
+                P,
+                NULLABLE_INTEGER_SEPTUPLE_CHARS,
+                P.septuples(P.withNull(P.integers())),
+                s -> Septuple.readStrict(
+                        s,
+                        Readers.readWithNullsStrict(Readers::readIntegerStrict),
+                        Readers.readWithNullsStrict(Readers::readIntegerStrict),
+                        Readers.readWithNullsStrict(Readers::readIntegerStrict),
+                        Readers.readWithNullsStrict(Readers::readIntegerStrict),
+                        Readers.readWithNullsStrict(Readers::readIntegerStrict),
+                        Readers.readWithNullsStrict(Readers::readIntegerStrict),
+                        Readers.readWithNullsStrict(Readers::readIntegerStrict)
+                ),
+                s -> {},
+                false,
+                true
+        );
+    }
+
+    private void propertiesToString() {
+        initialize("toString()");
+        propertiesToStringHelper(
+                LIMIT,
+                NULLABLE_INTEGER_SEPTUPLE_CHARS,
+                P.septuples(P.withNull(P.integers())),
+                s -> Septuple.readStrict(
+                        s,
+                        Readers.readWithNullsStrict(Readers::readIntegerStrict),
+                        Readers.readWithNullsStrict(Readers::readIntegerStrict),
+                        Readers.readWithNullsStrict(Readers::readIntegerStrict),
+                        Readers.readWithNullsStrict(Readers::readIntegerStrict),
+                        Readers.readWithNullsStrict(Readers::readIntegerStrict),
+                        Readers.readWithNullsStrict(Readers::readIntegerStrict),
+                        Readers.readWithNullsStrict(Readers::readIntegerStrict)
+                )
+        );
     }
 }
