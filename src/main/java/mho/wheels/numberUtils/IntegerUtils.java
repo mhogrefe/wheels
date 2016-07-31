@@ -551,10 +551,9 @@ public class IntegerUtils {
                 n >>= log;
             }
         } else {
-            int remaining = n;
             for (int i = 0; i < length; i++) {
-                digits.add(remaining % base);
-                remaining /= base;
+                digits.add(n % base);
+                n /= base;
             }
         }
         return digits;
