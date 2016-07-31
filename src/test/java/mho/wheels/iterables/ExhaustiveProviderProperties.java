@@ -2679,19 +2679,16 @@ public class ExhaustiveProviderProperties extends TestProperties {
             Iterable<String> permutations = EP.stringPermutations(s);
             testNoRemove(TINY_LIMIT, permutations);
             if (s.length() < 10) {
-                Comparator<Character> sComparator = new ListBasedComparator<>(toList(s));
+                Comparator<Character> cComparator = new ListBasedComparator<>(toList(s));
                 testHasNext(permutations);
                 List<String> permutationsList = toList(permutations);
-                assertEquals(s, head(permutationsList), sort(sComparator, s));
-                assertEquals(s, last(permutationsList), reverse(sort(sComparator, s)));
+                assertEquals(s, head(permutationsList), sort(cComparator, s));
+                assertEquals(s, last(permutationsList), reverse(sort(cComparator, s)));
                 assertEquals(s, permutationsList.size(), MathUtils.permutationCount(toList(s)).intValueExact());
                 String sorted = sort(s);
                 assertTrue(s, all(p -> sort(p).equals(sorted), permutationsList));
                 assertTrue(s, unique(permutationsList));
-                assertTrue(
-                        s,
-                        increasing(new LexComparator<>(sComparator), map(IterableUtils::fromString, permutationsList))
-                );
+                assertTrue(s, increasing(new StringLexComparator(cComparator), permutationsList));
             }
         }
 
@@ -3627,13 +3624,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
             if (lt(stringsLength, BigInteger.valueOf(LIMIT))) {
                 List<String> stringsList = toList(EP.stringsLex(p.b, p.a));
                 assertTrue(p, unique(stringsList));
-                assertTrue(
-                        p,
-                        increasing(
-                                new LexComparator<>(new ListBasedComparator<>(toList(p.a))),
-                                map(IterableUtils::toList, stringsList)
-                        )
-                );
+                assertTrue(p, increasing(new StringLexComparator(new StringBasedComparator(p.a)), stringsList));
             }
         }
 
@@ -5681,13 +5672,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
                 List<String> stringsList = toList(EP.distinctStringsLex(p.b, p.a));
                 assertTrue(p, unique(stringsList));
                 assertTrue(p, all(IterableUtils::unique, stringsList));
-                assertTrue(
-                        p,
-                        increasing(
-                                new LexComparator<>(new ListBasedComparator<>(toList(p.a))),
-                                map(IterableUtils::toList, stringsList)
-                        )
-                );
+                assertTrue(p, increasing(new StringLexComparator(new StringBasedComparator(p.a)), stringsList));
                 BigInteger limit = BigInteger.valueOf(p.a.length()).pow(p.b);
                 if (lt(limit, BigInteger.valueOf(LIMIT))) {
                     assertTrue(
@@ -5791,13 +5776,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
             if (lt(stringsLength, BigInteger.valueOf(LIMIT))) {
                 List<String> stringsList = toList(EP.distinctStringsLex(s));
                 assertTrue(s, unique(stringsList));
-                assertTrue(
-                        s,
-                        increasing(
-                                new LexComparator<>(new ListBasedComparator<>(toList(s))),
-                                map(IterableUtils::toList, stringsList)
-                        )
-                );
+                assertTrue(s, increasing(new StringLexComparator(new StringBasedComparator(s)), stringsList));
             }
         }
     }
@@ -5889,13 +5868,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
             if (lt(stringsLength, BigInteger.valueOf(LIMIT))) {
                 List<String> stringsList = toList(EP.distinctStringsLexAtLeast(p.b, p.a));
                 assertTrue(p, unique(stringsList));
-                assertTrue(
-                        p,
-                        increasing(
-                                new LexComparator<>(new ListBasedComparator<>(toList(p.a))),
-                                map(IterableUtils::toList, stringsList)
-                        )
-                );
+                assertTrue(p, increasing(new StringLexComparator(new StringBasedComparator(p.a)), stringsList));
             }
         }
 
@@ -7415,7 +7388,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
     }
 
     private void propertiesStringBagsShortlex() {
-        initialize("stringsShortlex(String)");
+        initialize("stringBagsShortlex(String)");
         for (String s : take(LIMIT, P.withScale(4).strings())) {
             Iterable<String> strings = EP.stringBagsShortlex(s);
             testNoRemove(TINY_LIMIT, strings);

@@ -4087,7 +4087,7 @@ public class RandomProviderProperties extends TestProperties {
     }
 
     private void propertiesStringSubsets_int() {
-        initialize("distinctStrings(int)");
+        initialize("stringSubsets(int)");
         Iterable<Pair<RandomProvider, Integer>> ps = filterInfinite(
                 p -> p.a.getScale() > p.b,
                 P.pairs(

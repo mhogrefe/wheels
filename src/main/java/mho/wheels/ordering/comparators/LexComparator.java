@@ -71,13 +71,15 @@ public final class LexComparator<T extends Comparable<T>> implements Comparator<
         Iterator<T> ysi = ys.iterator();
         while (xsi.hasNext()) {
             if (!ysi.hasNext()) return 1;
-            Ordering elementOrdering;
+            int elementCompare;
             if (elementComparator.isPresent()) {
-                elementOrdering = Ordering.compare(elementComparator.get(), xsi.next(), ysi.next());
+                elementCompare = elementComparator.get().compare(xsi.next(), ysi.next());
             } else {
-                elementOrdering = Ordering.compare(xsi.next(), ysi.next());
+                elementCompare = xsi.next().compareTo(ysi.next());
             }
-            if (elementOrdering != EQ) return elementOrdering.toInt();
+            if (elementCompare != 0) {
+                return elementCompare;
+            }
         }
         return ysi.hasNext() ? -1 : 0;
     }

@@ -78,13 +78,15 @@ public final class ShortlexComparator<T extends Comparable<T>> implements Compar
         xsi = xs.iterator();
         ysi = ys.iterator();
         while (xsi.hasNext()) {
-            Ordering elementOrdering;
+            int elementCompare;
             if (elementComparator.isPresent()) {
-                elementOrdering = Ordering.compare(elementComparator.get(), xsi.next(), ysi.next());
+                elementCompare = elementComparator.get().compare(xsi.next(), ysi.next());
             } else {
-                elementOrdering = Ordering.compare(xsi.next(), ysi.next());
+                elementCompare = xsi.next().compareTo(ysi.next());
             }
-            if (elementOrdering != EQ) return elementOrdering.toInt();
+            if (elementCompare != 0) {
+                return elementCompare;
+            }
         }
         return 0;
     }
