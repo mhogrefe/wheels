@@ -656,6 +656,10 @@ public class IntegerUtilsTest {
         digits_int_int_helper(10, 187, "[7, 8, 1]");
         digits_int_int_helper(12, 187, "[7, 3, 1]");
         digits_int_int_helper(57, 187, "[16, 3]");
+        digits_int_int_helper(Integer.MAX_VALUE, 0, "[]");
+        digits_int_int_helper(Integer.MAX_VALUE, 187, "[187]");
+        digits_int_int_helper(Integer.MAX_VALUE, Integer.MAX_VALUE - 1, "[2147483646]");
+        digits_int_int_helper(Integer.MAX_VALUE, Integer.MAX_VALUE, "[0, 1]");
 
         digits_int_int_fail_helper(1, 10);
         digits_int_int_fail_helper(0, 10);
