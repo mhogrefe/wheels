@@ -1,12 +1,9 @@
 package mho.wheels.ordering.comparators;
 
-import mho.wheels.ordering.Ordering;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Comparator;
 import java.util.Optional;
-
-import static mho.wheels.ordering.Ordering.EQ;
 
 /**
  * Compares two {@code String}s via shortlex order. First the lengths of the {@code String}s are compared. If one is

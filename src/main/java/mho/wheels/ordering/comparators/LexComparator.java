@@ -1,13 +1,10 @@
 package mho.wheels.ordering.comparators;
 
-import mho.wheels.ordering.Ordering;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.Optional;
-
-import static mho.wheels.ordering.Ordering.EQ;
 
 /**
  * Compares two {@code Iterable}s lexicographically (by "dictionary order"). This {@code Comparator} looks at the
