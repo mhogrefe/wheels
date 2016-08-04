@@ -44,6 +44,12 @@ public class WithNullComparator<T extends Comparable<T>> implements Comparator<T
      * neither is null and a {@code nonNullComparator} is provided, it is used to compare them; otherwise, they are
      * compared by their natural ordering.
      *
+     * <ul>
+     *  <ul>{@code x} may be any value.</ul>
+     *  <ul>{@code y} may be any value.</ul>
+     *  <li>The result may be –1, 0, or 1.</li>
+     * </ul>
+     *
      * @param x the first value
      * @param y the second value
      * @return –1, 0, 1, depending on whether {@code x} is less than, equal to, or greater than {@code y}, respectively
