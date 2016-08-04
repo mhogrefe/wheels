@@ -776,6 +776,10 @@ public class IntegerUtilsTest {
         digitsPadded_int_int_int_helper(8, 2, 187, "[1, 1, 0, 1, 1, 1, 0, 1]");
         digitsPadded_int_int_int_helper(8, 3, 187, "[1, 2, 2, 0, 2, 0, 0, 0]");
         digitsPadded_int_int_int_helper(8, 57, 187, "[16, 3, 0, 0, 0, 0, 0, 0]");
+        digitsPadded_int_int_int_helper(1, Integer.MAX_VALUE, 0, "[0]");
+        digitsPadded_int_int_int_helper(1, Integer.MAX_VALUE, 187, "[187]");
+        digitsPadded_int_int_int_helper(1, Integer.MAX_VALUE, Integer.MAX_VALUE - 1, "[2147483646]");
+        digitsPadded_int_int_int_helper(2, Integer.MAX_VALUE, Integer.MAX_VALUE, "[0, 1]");
 
         digitsPadded_int_int_int_fail_helper(3, 1, 10);
         digitsPadded_int_int_int_fail_helper(3, 0, 10);
@@ -904,6 +908,10 @@ public class IntegerUtilsTest {
         bigEndianDigits_int_int_helper(10, 187, "[1, 8, 7]");
         bigEndianDigits_int_int_helper(12, 187, "[1, 3, 7]");
         bigEndianDigits_int_int_helper(57, 187, "[3, 16]");
+        bigEndianDigits_int_int_helper(Integer.MAX_VALUE, 0, "[]");
+        bigEndianDigits_int_int_helper(Integer.MAX_VALUE, 187, "[187]");
+        bigEndianDigits_int_int_helper(Integer.MAX_VALUE, Integer.MAX_VALUE - 1, "[2147483646]");
+        bigEndianDigits_int_int_helper(Integer.MAX_VALUE, Integer.MAX_VALUE, "[1, 0]");
 
         bigEndianDigits_int_int_fail_helper(1, 10);
         bigEndianDigits_int_int_fail_helper(0, 10);
@@ -1020,6 +1028,10 @@ public class IntegerUtilsTest {
         bigEndianDigitsPadded_int_int_int_helper(8, 2, 187, "[1, 0, 1, 1, 1, 0, 1, 1]");
         bigEndianDigitsPadded_int_int_int_helper(8, 3, 187, "[0, 0, 0, 2, 0, 2, 2, 1]");
         bigEndianDigitsPadded_int_int_int_helper(8, 57, 187, "[0, 0, 0, 0, 0, 0, 3, 16]");
+        bigEndianDigitsPadded_int_int_int_helper(1, Integer.MAX_VALUE, 0, "[0]");
+        bigEndianDigitsPadded_int_int_int_helper(1, Integer.MAX_VALUE, 187, "[187]");
+        bigEndianDigitsPadded_int_int_int_helper(1, Integer.MAX_VALUE, Integer.MAX_VALUE - 1, "[2147483646]");
+        bigEndianDigitsPadded_int_int_int_helper(2, Integer.MAX_VALUE, Integer.MAX_VALUE, "[1, 0]");
 
         bigEndianDigitsPadded_int_int_int_fail_helper(3, 1, 10);
         bigEndianDigitsPadded_int_int_int_fail_helper(3, 0, 10);
