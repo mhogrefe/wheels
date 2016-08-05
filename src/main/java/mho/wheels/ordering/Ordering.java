@@ -15,7 +15,7 @@ public enum Ordering {
             case EQ: return EQ;
             case GT: return LT;
         }
-        return null;
+        throw new IllegalStateException("unreachable");
     }
 
     public static Ordering fromInt(int i) {
@@ -30,7 +30,7 @@ public enum Ordering {
             case EQ: return 0;
             case GT: return 1;
         }
-        return 0; //doesn't happen
+        throw new IllegalStateException("unreachable");
     }
 
     public @NotNull String toString() {
@@ -39,7 +39,7 @@ public enum Ordering {
             case EQ: return "=";
             case GT: return ">";
         }
-        return ""; //doesn't happen
+        throw new IllegalStateException("unreachable");
     }
 
     public static @NotNull <T extends Comparable<T>> Ordering compare(@NotNull T a, @NotNull T b) {
