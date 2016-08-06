@@ -604,6 +604,16 @@ public strictfp class Testing {
         }
     }
 
+    public static <T> void testCompareToHelper(@NotNull Comparator<T> comparator, @NotNull List<T> xs) {
+        for (int i = 0; i < xs.size(); i++) {
+            T xsi = xs.get(i);
+            for (int j = 0; j < xs.size(); j++) {
+                T xsj = xs.get(j);
+                assertEquals(new Pair<>(xsi, xsj), compare(i, j), compare(comparator, xsi, xsj));
+            }
+        }
+    }
+
     public static <T> void propertiesEqualsHelper(
             int limit,
             @NotNull IterableProvider ip,
