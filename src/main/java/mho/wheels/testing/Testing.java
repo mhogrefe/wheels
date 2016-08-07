@@ -501,7 +501,7 @@ public strictfp class Testing {
     }
 
     public static <T> void antiSymmetric(@NotNull BiPredicate<T, T> relation, @NotNull Pair<T, T> p) {
-        assertTrue(p, (relation.test(p.a, p.b) ^ relation.test(p.b, p.a)) || p.a.equals(p.b));
+        assertTrue(p, (relation.test(p.a, p.b) != relation.test(p.b, p.a)) || Objects.equals(p.a, p.b));
     }
 
     public static <T> void transitive(@NotNull BiPredicate<T, T> relation, @NotNull Triple<T, T, T> t) {
