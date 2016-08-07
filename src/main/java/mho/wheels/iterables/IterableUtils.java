@@ -1873,6 +1873,110 @@ public final strictfp class IterableUtils {
         return new Pair<>(min, max);
     }
 
+    public static <A, B extends Comparable<B>> A argmin(@NotNull Function<A, B> f, @NotNull Iterable<A> as) {
+        boolean first = true;
+        A argmin = null;
+        B minimum = null;
+        for (A a : as) {
+            if (first) {
+                first = false;
+                argmin = a;
+                minimum = f.apply(a);
+            } else {
+                B b = f.apply(a);
+                if (lt(b, minimum)) {
+                    minimum = b;
+                    argmin = a;
+                }
+            }
+        }
+        if (first) {
+            throw new IllegalArgumentException("");
+        } else {
+            return argmin;
+        }
+    }
+
+    public static <A, B extends Comparable<B>> A argmax(@NotNull Function<A, B> f, @NotNull Iterable<A> as) {
+        boolean first = true;
+        A argmax = null;
+        B maximum = null;
+        for (A a : as) {
+            if (first) {
+                first = false;
+                argmax = a;
+                maximum = f.apply(a);
+            } else {
+                B b = f.apply(a);
+                if (gt(b, maximum)) {
+                    maximum = b;
+                    argmax = a;
+                }
+            }
+        }
+        if (first) {
+            throw new IllegalArgumentException("");
+        } else {
+            return argmax;
+        }
+    }
+
+    public static <A, B> A argmin(
+            @NotNull Comparator<B> comparator,
+            @NotNull Function<A, B> f,
+            @NotNull Iterable<A> as
+    ) {
+        boolean first = true;
+        A argmin = null;
+        B minimum = null;
+        for (A a : as) {
+            if (first) {
+                first = false;
+                argmin = a;
+                minimum = f.apply(a);
+            } else {
+                B b = f.apply(a);
+                if (lt(comparator, b, minimum)) {
+                    minimum = b;
+                    argmin = a;
+                }
+            }
+        }
+        if (first) {
+            throw new IllegalArgumentException("");
+        } else {
+            return argmin;
+        }
+    }
+
+    public static <A, B> A argmax(
+            @NotNull Comparator<B> comparator,
+            @NotNull Function<A, B> f,
+            @NotNull Iterable<A> as
+    ) {
+        boolean first = true;
+        A argmax = null;
+        B maximum = null;
+        for (A a : as) {
+            if (first) {
+                first = false;
+                argmax = a;
+                maximum = f.apply(a);
+            } else {
+                B b = f.apply(a);
+                if (gt(comparator, b, maximum)) {
+                    maximum = b;
+                    argmax = a;
+                }
+            }
+        }
+        if (first) {
+            throw new IllegalArgumentException("");
+        } else {
+            return argmax;
+        }
+    }
+
     public static @NotNull <A, B> Iterable<B> scanl(
             @NotNull BiFunction<B, A, B> f,
             @Nullable B z,
