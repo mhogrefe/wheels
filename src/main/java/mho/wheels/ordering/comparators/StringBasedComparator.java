@@ -21,6 +21,11 @@ public class StringBasedComparator implements Comparator<Character> {
      * are not comparable. The {@code String} can have repetitions, in which case only the first occurrence of a
      * {@code Character} is considered.
      *
+     * <ul>
+     *  <li>{@code s} cannot be null.</li>
+     *  <li>Any {@code StringBasedComparator} may be constructed with this constructor.</li>
+     * </ul>
+     *
      * @param s a {@code String}
      */
     public StringBasedComparator(@NotNull String s) {
@@ -51,6 +56,14 @@ public class StringBasedComparator implements Comparator<Character> {
      */
     @Override
     public int compare(Character x, Character y) {
-        return x == y ? 0 : Integer.compare(indexMap.get(x), indexMap.get(y));
+        Integer xi = indexMap.get(x);
+        if (xi == null) {
+            throw new IllegalArgumentException("This comparator cannot compare the character " + x + ".");
+        }
+        Integer yi = indexMap.get(y);
+        if (yi == null) {
+            throw new IllegalArgumentException("This comparator cannot compare the character " + y + ".");
+        }
+        return x == y ? 0 : Integer.compare(xi, yi);
     }
 }

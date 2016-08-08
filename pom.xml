@@ -61,6 +61,8 @@
                         <include>**/FloatingPointUtilsProperties.java</include>
                         <include>**/IntegerUtilsTest.java</include>
                         <include>**/IntegerUtilsProperties.java</include>
+                        <include>**/ListBasedComparatorTest.java</include>
+                        <include>**/StringBasedComparatorTest.java</include>
                         <include>**/WithNullComparatorTest.java</include>
                         <include>**/WithNullComparatorProperties.java</include>
                         <include>**/OrderingTest.java</include>

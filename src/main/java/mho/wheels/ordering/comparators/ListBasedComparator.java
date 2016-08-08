@@ -2,10 +2,7 @@ package mho.wheels.ordering.comparators;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Compares two values by an ordering specified by a list.
@@ -23,6 +20,11 @@ public class ListBasedComparator<T> implements Comparator<T> {
      * defines the {@code Character} ordering 'b' < 'c' < 'a', and all other {@code Character}s are not comparable. The
      * list can have repetitions, in which case only the first occurrence of a value is considered. The list may also
      * contain nulls.
+     *
+     * <ul>
+     *  <li>{@code list} cannot be null.</li>
+     *  <li>Any {@code ListBasedComparator} may be constructed with this constructor.</li>
+     * </ul>
      *
      * @param list a list of values
      */
@@ -53,6 +55,14 @@ public class ListBasedComparator<T> implements Comparator<T> {
      */
     @Override
     public int compare(T x, T y) {
-        return x == y ? 0 : Integer.compare(indexMap.get(x), indexMap.get(y));
+        Integer xi = indexMap.get(x);
+        if (xi == null) {
+            throw new IllegalArgumentException("This comparator cannot compare the value " + x + ".");
+        }
+        Integer yi = indexMap.get(y);
+        if (yi == null) {
+            throw new IllegalArgumentException("This comparator cannot compare the value " + y + ".");
+        }
+        return x == y ? 0 : Integer.compare(xi, yi);
     }
 }
