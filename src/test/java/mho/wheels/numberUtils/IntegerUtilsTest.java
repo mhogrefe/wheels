@@ -1153,6 +1153,10 @@ public class IntegerUtilsTest {
         fromDigits_int_Iterable_Integer_helper(10, "[9, 5, 1, 4, 1, 3]", "314159");
         fromDigits_int_Iterable_Integer_helper(70, "[8, 0, 20, 5, 43]", "1034243008");
         fromDigits_int_Iterable_Integer_helper(70, "[]", "0");
+        fromDigits_int_Iterable_Integer_helper(Integer.MAX_VALUE, "[]", "0");
+        fromDigits_int_Iterable_Integer_helper(Integer.MAX_VALUE, "[187]", "187");
+        fromDigits_int_Iterable_Integer_helper(Integer.MAX_VALUE, "[2147483646]", "2147483646");
+        fromDigits_int_Iterable_Integer_helper(Integer.MAX_VALUE, "[0, 1]", "2147483647");
 
         fromDigits_int_Iterable_Integer_fail_helper(2, "[0, null]");
         fromDigits_int_Iterable_Integer_fail_helper(1, "[1, 2, 3]");
@@ -1220,6 +1224,10 @@ public class IntegerUtilsTest {
         fromBigEndianDigits_int_Iterable_Integer_helper(10, "[3, 1, 4, 1, 5, 9]", "314159");
         fromBigEndianDigits_int_Iterable_Integer_helper(70, "[43, 5, 20, 0, 8]", "1034243008");
         fromBigEndianDigits_int_Iterable_Integer_helper(70, "[]", "0");
+        fromBigEndianDigits_int_Iterable_Integer_helper(Integer.MAX_VALUE, "[]", "0");
+        fromBigEndianDigits_int_Iterable_Integer_helper(Integer.MAX_VALUE, "[187]", "187");
+        fromBigEndianDigits_int_Iterable_Integer_helper(Integer.MAX_VALUE, "[2147483646]", "2147483646");
+        fromBigEndianDigits_int_Iterable_Integer_helper(Integer.MAX_VALUE, "[1, 0]", "2147483647");
 
         fromBigEndianDigits_int_Iterable_Integer_fail_helper(1, "[1, 2, 3]");
         fromBigEndianDigits_int_Iterable_Integer_fail_helper(0, "[1, 2, 3]");
