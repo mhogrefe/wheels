@@ -30,9 +30,9 @@ Progress
 | FloatingPointUtils          | ✔       | ✔       | ✔     | ✔     | ✔          |
 | IntegerUtils                | ✔       | ✔       | ✔     | ✔     | ✔          |
 | LexComparator               | ✔       | ✔       | ✘     | ✘     | ✘          |
-| ListBasedComparator         | ✔       | ✔       | ✔     | ✘     | ✘          |
+| ListBasedComparator         | ✔       | ✔       | ✔     | ✔     | ✘          |
 | ShortlexComparator          | ✔       | ✔       | ✘     | ✘     | ✘          |
-| StringBasedComparator       | ✔       | ✔       | ✔     | ✘     | ✘          |
+| StringBasedComparator       | ✔       | ✔       | ✔     | ✔     | ✘          |
 | StringLexComparator         | ✔       | ✔       | ✘     | ✘     | ✘          |
 | StringShortlexComparator    | ✔       | ✔       | ✘     | ✘     | ✘          |
 | WithNullComparator          | ✔       | ✔       | ✔     | ✔     | ✔          |
