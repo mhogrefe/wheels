@@ -27,16 +27,14 @@ public class WithNullComparatorTest {
         new WithNullComparator<>(ODDS_BEFORE_EVENS);
     }
 
+    private static void compare_helper(@NotNull WithNullComparator<Integer> comparator, @NotNull String list) {
+        Testing.testCompareToHelper(comparator, readIntegerListWithNulls(list));
+    }
+
     @Test
     public void testCompare() {
-        Testing.testCompareToHelper(
-                new WithNullComparator<>(),
-                readIntegerListWithNulls("[null, -3, -2, -1, 0, 1, 2, 3]")
-        );
-        Testing.testCompareToHelper(
-                new WithNullComparator<>(ODDS_BEFORE_EVENS),
-                readIntegerListWithNulls("[null, -3, -1, 1, 3, -2, 0, 2]")
-        );
+        compare_helper(new WithNullComparator<>(), "[null, -3, -2, -1, 0, 1, 2, 3]");
+        compare_helper(new WithNullComparator<>(ODDS_BEFORE_EVENS), "[null, -3, -1, 1, 3, -2, 0, 2]");
     }
 
     private static @NotNull List<Integer> readIntegerListWithNulls(@NotNull String s) {

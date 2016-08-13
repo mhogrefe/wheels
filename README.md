@@ -29,7 +29,7 @@ Progress
 | BigDecimalUtils             | ✔       | ✔       | ✔     | ✔     | ✔          |
 | FloatingPointUtils          | ✔       | ✔       | ✔     | ✔     | ✔          |
 | IntegerUtils                | ✔       | ✔       | ✔     | ✔     | ✔          |
-| LexComparator               | ✔       | ✔       | ✘     | ✘     | ✘          |
+| LexComparator               | ✔       | ✔       | ✔     | ✘     | ✘          |
 | ListBasedComparator         | ✔       | ✔       | ✔     | ✔     | ✔          |
 | ShortlexComparator          | ✔       | ✔       | ✘     | ✘     | ✘          |
 | StringBasedComparator       | ✔       | ✔       | ✔     | ✔     | ✔          |
