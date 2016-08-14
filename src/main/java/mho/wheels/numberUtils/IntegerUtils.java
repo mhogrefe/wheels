@@ -908,7 +908,7 @@ public class IntegerUtils {
      * Converts an {@code int} to a {@code String} in any base greater than 1. If the base is 36 or less, the digits
      * are '0' through '9' followed by 'A' through 'Z'. If the base is greater than 36, the digits are written in
      * decimal and each digit is surrounded by parentheses. Zero is represented by "0" if the base is 36 or less, or
-     * "(0)" otherwise. In every other case there are no leading zeroes.
+     * "(0)" otherwise. In every other case there are no leading zeros.
      *
      * <ul>
      *  <li>{@code base} must be at least 2.</li>

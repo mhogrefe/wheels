@@ -1338,6 +1338,7 @@ public class IntegerUtilsTest {
         toStringBase_int_int_helper(36, 0, "0");
         toStringBase_int_int_helper(88, 0, "(0)");
         toStringBase_int_int_helper(100, 0, "(0)");
+        toStringBase_int_int_helper(Integer.MAX_VALUE, 0, "(0)");
         toStringBase_int_int_helper(2, 524393454, "11111010000011001101111101110");
         toStringBase_int_int_helper(3, 524393454, "1100112201221120210");
         toStringBase_int_int_helper(4, 524393454, "133100121233232");
@@ -1347,6 +1348,7 @@ public class IntegerUtilsTest {
         toStringBase_int_int_helper(36, 524393454, "8O7KKU");
         toStringBase_int_int_helper(88, 524393454, "(8)(65)(44)(8)(46)");
         toStringBase_int_int_helper(100, 524393454, "(5)(24)(39)(34)(54)");
+        toStringBase_int_int_helper(Integer.MAX_VALUE, 524393454, "(524393454)");
         toStringBase_int_int_helper(2, -524393454, "-11111010000011001101111101110");
         toStringBase_int_int_helper(3, -524393454, "-1100112201221120210");
         toStringBase_int_int_helper(4, -524393454, "-133100121233232");
@@ -1356,6 +1358,17 @@ public class IntegerUtilsTest {
         toStringBase_int_int_helper(36, -524393454, "-8O7KKU");
         toStringBase_int_int_helper(88, -524393454, "-(8)(65)(44)(8)(46)");
         toStringBase_int_int_helper(100, -524393454, "-(5)(24)(39)(34)(54)");
+        toStringBase_int_int_helper(Integer.MAX_VALUE, -524393454, "-(524393454)");
+        toStringBase_int_int_helper(2, Integer.MAX_VALUE, "1111111111111111111111111111111");
+        toStringBase_int_int_helper(3, Integer.MAX_VALUE, "12112122212110202101");
+        toStringBase_int_int_helper(4, Integer.MAX_VALUE, "1333333333333333");
+        toStringBase_int_int_helper(10, Integer.MAX_VALUE, "2147483647");
+        toStringBase_int_int_helper(12, Integer.MAX_VALUE, "4BB2308A7");
+        toStringBase_int_int_helper(16, Integer.MAX_VALUE, "7FFFFFFF");
+        toStringBase_int_int_helper(36, Integer.MAX_VALUE, "ZIK0ZJ");
+        toStringBase_int_int_helper(88, Integer.MAX_VALUE, "(35)(71)(21)(31)(23)");
+        toStringBase_int_int_helper(100, Integer.MAX_VALUE, "(21)(47)(48)(36)(47)");
+        toStringBase_int_int_helper(Integer.MAX_VALUE, Integer.MAX_VALUE, "(1)(0)");
 
         toStringBase_int_int_fail_helper(1, 524393454);
         toStringBase_int_int_fail_helper(0, 524393454);
