@@ -33,7 +33,7 @@ Progress
 | ListBasedComparator         | ✔       | ✔       | ✔     | ✔     | ✔          |
 | ShortlexComparator          | ✔       | ✔       | ✘     | ✘     | ✘          |
 | StringBasedComparator       | ✔       | ✔       | ✔     | ✔     | ✔          |
-| StringLexComparator         | ✔       | ✔       | ✔     | ✘     | ✘          |
+| StringLexComparator         | ✔       | ✔       | ✔     | ✔     | ✘          |
 | StringShortlexComparator    | ✔       | ✔       | ✘     | ✘     | ✘          |
 | WithNullComparator          | ✔       | ✔       | ✔     | ✔     | ✔          |
 | Ordering                    | ✔       | ✘       | ✘     | ✘     | ✘          |
