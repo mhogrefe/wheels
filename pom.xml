@@ -62,6 +62,7 @@
                         <include>**/IntegerUtilsTest.java</include>
                         <include>**/IntegerUtilsProperties.java</include>
                         <include>**/LexComparatorTest.java</include>
+                        <include>**/LexComparatorProperties.java</include>
                         <include>**/ListBasedComparatorTest.java</include>
                         <include>**/ListBasedComparatorProperties.java</include>
                         <include>**/StringBasedComparatorTest.java</include>
