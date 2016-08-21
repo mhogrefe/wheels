@@ -7,8 +7,8 @@ import org.junit.Test;
 
 import java.util.Comparator;
 
-import static mho.wheels.ordering.Ordering.*;
-import static mho.wheels.testing.Testing.*;
+import static mho.wheels.ordering.Ordering.GT;
+import static mho.wheels.testing.Testing.aeq;
 
 public class SextupleTest {
     private static final Sextuple.SextupleComparator<

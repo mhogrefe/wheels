@@ -9,9 +9,7 @@ import java.math.BigInteger;
 import java.util.List;
 import java.util.Optional;
 
-import static mho.wheels.iterables.IterableUtils.iterate;
-import static mho.wheels.iterables.IterableUtils.take;
-import static mho.wheels.iterables.IterableUtils.toList;
+import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.math.BinaryFraction.*;
 import static mho.wheels.math.BinaryFraction.sum;
 import static mho.wheels.testing.Testing.*;

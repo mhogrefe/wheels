@@ -4,10 +4,7 @@ import mho.wheels.structures.Pair;
 import mho.wheels.testing.TestProperties;
 
 import static mho.wheels.iterables.IterableUtils.*;
-import static mho.wheels.iterables.IterableUtils.take;
-import static mho.wheels.testing.Testing.TINY_LIMIT;
-import static mho.wheels.testing.Testing.fail;
-import static mho.wheels.testing.Testing.propertiesCompareToHelper;
+import static mho.wheels.testing.Testing.*;
 
 public class StringBasedComparatorProperties extends TestProperties {
     public StringBasedComparatorProperties() {

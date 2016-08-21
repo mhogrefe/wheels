@@ -12,7 +12,7 @@ import java.util.Optional;
 import static mho.wheels.structures.NullableOptional.*;
 import static mho.wheels.testing.Testing.aeq;
 import static mho.wheels.testing.Testing.testEqualsHelper;
-import static org.junit.Assert.*;
+import static org.junit.Assert.fail;
 
 public class NullableOptionalTest {
     @Test

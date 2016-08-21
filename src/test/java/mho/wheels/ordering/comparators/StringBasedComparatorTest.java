@@ -5,8 +5,6 @@ import mho.wheels.testing.Testing;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
 
-import java.util.Collections;
-
 import static org.junit.Assert.fail;
 
 public class StringBasedComparatorTest {

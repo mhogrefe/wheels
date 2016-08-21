@@ -10,8 +10,8 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
-import static mho.wheels.ordering.Ordering.*;
-import static mho.wheels.testing.Testing.*;
+import static mho.wheels.ordering.Ordering.GT;
+import static mho.wheels.testing.Testing.aeq;
 
 public class SeptupleTest {
     private static final Septuple.SeptupleComparator<

@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import java.util.Comparator;
 
-import static mho.wheels.testing.Testing.*;
+import static mho.wheels.testing.Testing.aeq;
 
 public class QuadrupleTest {
     private static final Quadruple.QuadrupleComparator<String, Integer, Boolean, Character> PC =

@@ -9,7 +9,6 @@ import java.util.List;
 import static mho.wheels.iterables.IterableUtils.filterInfinite;
 import static mho.wheels.iterables.IterableUtils.take;
 import static mho.wheels.testing.Testing.*;
-import static mho.wheels.testing.Testing.propertiesHashCodeHelper;
 
 public class SextupleProperties extends TestProperties {
     private static final @NotNull String NULLABLE_INTEGER_SEXTUPLE_CHARS = " (),-0123456789lnu";

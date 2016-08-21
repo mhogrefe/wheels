@@ -5,9 +5,8 @@ import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
 
 import java.util.Comparator;
-import java.util.Optional;
 
-import static mho.wheels.testing.Testing.*;
+import static mho.wheels.testing.Testing.aeq;
 
 public class PairTest {
     private static final Pair.PairComparator<String, Integer> PC = new Pair.PairComparator<>(

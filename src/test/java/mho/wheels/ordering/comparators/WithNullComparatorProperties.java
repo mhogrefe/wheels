@@ -5,7 +5,8 @@ import mho.wheels.testing.TestProperties;
 import java.util.List;
 
 import static mho.wheels.iterables.IterableUtils.*;
-import static mho.wheels.testing.Testing.*;
+import static mho.wheels.testing.Testing.TINY_LIMIT;
+import static mho.wheels.testing.Testing.propertiesCompareToHelper;
 
 public class WithNullComparatorProperties extends TestProperties {
     public WithNullComparatorProperties() {

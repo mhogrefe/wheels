@@ -8,7 +8,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static mho.wheels.iterables.IterableUtils.*;
-import static mho.wheels.testing.Testing.*;
+import static mho.wheels.testing.Testing.MEDIUM_LIMIT;
 
 @SuppressWarnings("UnusedDeclaration")
 public class LexComparatorDemos extends Demos {

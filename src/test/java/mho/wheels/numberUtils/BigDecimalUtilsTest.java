@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import static mho.wheels.numberUtils.BigDecimalUtils.*;
 import static mho.wheels.testing.Testing.aeq;
-import static org.junit.Assert.*;
+import static org.junit.Assert.fail;
 
 public class BigDecimalUtilsTest {
     @Test

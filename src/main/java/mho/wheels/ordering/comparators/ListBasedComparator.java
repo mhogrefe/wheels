@@ -2,7 +2,10 @@ package mho.wheels.ordering.comparators;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Compares two values by an ordering specified by a list.

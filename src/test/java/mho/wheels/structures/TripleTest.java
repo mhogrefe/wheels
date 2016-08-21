@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import java.util.Comparator;
 
-import static mho.wheels.testing.Testing.*;
+import static mho.wheels.testing.Testing.aeq;
 
 public class TripleTest {
     private static final Triple.TripleComparator<String, Integer, Boolean> PC = new Triple.TripleComparator<>(

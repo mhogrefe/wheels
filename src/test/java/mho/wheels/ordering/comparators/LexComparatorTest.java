@@ -11,7 +11,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import static mho.wheels.iterables.IterableUtils.*;
+import static mho.wheels.iterables.IterableUtils.map;
+import static mho.wheels.iterables.IterableUtils.toList;
 import static org.junit.Assert.fail;
 
 public class LexComparatorTest {

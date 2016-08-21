@@ -11,8 +11,6 @@ import java.util.Objects;
 
 import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.testing.Testing.*;
-import static mho.wheels.testing.Testing.EP;
-import static mho.wheels.testing.Testing.nicePrint;
 
 @SuppressWarnings("UnusedDeclaration")
 public class QuintupleDemos extends Demos {

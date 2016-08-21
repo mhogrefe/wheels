@@ -6,9 +6,7 @@ import mho.wheels.testing.TestProperties;
 import java.util.List;
 
 import static mho.wheels.iterables.IterableUtils.*;
-import static mho.wheels.testing.Testing.TINY_LIMIT;
-import static mho.wheels.testing.Testing.fail;
-import static mho.wheels.testing.Testing.propertiesCompareToHelper;
+import static mho.wheels.testing.Testing.*;
 
 public class ListBasedComparatorProperties extends TestProperties {
     public ListBasedComparatorProperties() {
