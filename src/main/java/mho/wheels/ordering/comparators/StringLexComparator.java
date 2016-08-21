@@ -61,7 +61,14 @@ public class StringLexComparator implements Comparator<String> {
     @Override
     public int compare(@NotNull String s, @NotNull String t) {
         if (!characterComparator.isPresent()) {
-            return s.compareTo(t);
+            int c = s.compareTo(t);
+            if (c > 0) {
+                return 1;
+            } else if (c < 0) {
+                return -1;
+            } else {
+                return 0;
+            }
         }
         //noinspection StringEquality
         if (s == t) return 0;

@@ -68,6 +68,7 @@
                         <include>**/StringBasedComparatorTest.java</include>
                         <include>**/StringBasedComparatorProperties.java</include>
                         <include>**/StringLexComparatorTest.java</include>
+                        <include>**/StringLexComparatorProperties.java</include>
                         <include>**/WithNullComparatorTest.java</include>
                         <include>**/WithNullComparatorProperties.java</include>
                         <include>**/OrderingTest.java</include>
