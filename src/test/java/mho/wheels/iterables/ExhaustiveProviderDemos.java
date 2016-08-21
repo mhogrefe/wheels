@@ -2369,8 +2369,8 @@ public class ExhaustiveProviderDemos extends Demos {
                 P.prefixPermutations(EP.withNull(EP.naturalIntegers()))
         );
         for (List<Iterable<Integer>> xss : take(MEDIUM_LIMIT, xsss)) {
-            String xsString = middle(toList(map(Testing::its, xss)).toString());
-            System.out.println("choose(" + xsString + ") = " + its(EP.choose(xss)));
+            String xssString = middle(toList(map(Testing::its, xss)).toString());
+            System.out.println("choose(" + xssString + ") = " + its(EP.choose(xss)));
         }
     }
 

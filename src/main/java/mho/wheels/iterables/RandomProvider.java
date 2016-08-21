@@ -4283,7 +4283,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      *
      * <ul>
      *  <li>{@code this} may be any {@code RandomProvider}.</li>
-     *  <li>Every element of {@code xss} must be infinite.</li>
+     *  <li>{@code xss} cannot be empty. Every element of {@code xss} must be infinite.</li>
      *  <li>The result is infinite.</li>
      * </ul>
      *

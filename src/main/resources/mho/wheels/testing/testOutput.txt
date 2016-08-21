@@ -81821,7 +81821,7 @@ RandomProvider_eithers_vi map 6
 30450: <, null>
 30133: <, -3>
 
-RandomProvider_choose_i list 21
+RandomProvider_choose_Iterable_Iterable_i list 21
 1
 2
 1
@@ -81844,11 +81844,11 @@ RandomProvider_choose_i list 21
 1
 ...
 
-RandomProvider_choose_i map 2
+RandomProvider_choose_Iterable_Iterable_i map 2
 500745: 1
 499255: 2
 
-RandomProvider_choose_ii list 21
+RandomProvider_choose_Iterable_Iterable_ii list 21
 1
 1
 1
@@ -81871,11 +81871,11 @@ RandomProvider_choose_ii list 21
 1
 ...
 
-RandomProvider_choose_ii map 2
+RandomProvider_choose_Iterable_Iterable_ii map 2
 667157: 1
 332843: 2
 
-RandomProvider_choose_iii list 21
+RandomProvider_choose_Iterable_Iterable_iii list 21
 1
 1
 1
@@ -81898,11 +81898,11 @@ RandomProvider_choose_iii list 21
 2
 ...
 
-RandomProvider_choose_iii map 2
+RandomProvider_choose_Iterable_Iterable_iii map 2
 909228: 1
 90772: 2
 
-RandomProvider_choose_iv list 21
+RandomProvider_choose_Iterable_Iterable_iv list 21
 3
 1
 2
@@ -81925,7 +81925,7 @@ RandomProvider_choose_iv list 21
 3
 ...
 
-RandomProvider_choose_iv map 6
+RandomProvider_choose_Iterable_Iterable_iv map 6
 167097: 3
 166824: 1
 166735: null
@@ -81933,7 +81933,7 @@ RandomProvider_choose_iv map 6
 166476: -2
 166385: -3
 
-RandomProvider_choose_v list 21
+RandomProvider_choose_Iterable_Iterable_v list 21
 3
 2
 -2
@@ -81956,7 +81956,7 @@ null
 2
 ...
 
-RandomProvider_choose_v map 6
+RandomProvider_choose_Iterable_Iterable_v map 6
 222480: 3
 221874: 2
 221653: 1
@@ -81964,7 +81964,7 @@ RandomProvider_choose_v map 6
 111244: -3
 111060: -2
 
-RandomProvider_choose_vi list 21
+RandomProvider_choose_Iterable_Iterable_vi list 21
 3
 2
 2
@@ -81987,13 +81987,103 @@ RandomProvider_choose_vi list 21
 3
 ...
 
-RandomProvider_choose_vi map 6
+RandomProvider_choose_Iterable_Iterable_vi map 6
 303798: 3
 302606: 2
 302512: 1
 30501: -2
 30450: null
 30133: -3
+
+RandomProvider_choose_Iterable_i list 21
+10
+10
+10
+1
+10
+10
+1
+10
+10
+10
+10
+10
+10
+10
+10
+10
+1
+10
+10
+1
+...
+
+RandomProvider_choose_Iterable_i map 2
+500035: 1
+499965: 10
+
+RandomProvider_choose_Iterable_ii list 21
+11
+12
+10
+11
+11
+11
+11
+1
+11
+1
+11
+1
+1
+12
+11
+1
+1
+1
+11
+1
+...
+
+RandomProvider_choose_Iterable_ii map 4
+499598: 1
+166919: 10
+166855: 12
+166628: 11
+
+RandomProvider_choose_Iterable_iii list 21
+11
+null
+2
+11
+11
+11
+10
+11
+103
+10
+3
+11
+10
+3
+10
+103
+10
+103
+10
+3
+...
+
+RandomProvider_choose_Iterable_iii map 9
+167392: 10
+166491: 11
+111242: 1
+110914: 3
+110700: 2
+83505: 103
+83368: 100
+83337: 102
+83051: null
 
 RandomProvider_cartesianProduct_i list 21
 [0]

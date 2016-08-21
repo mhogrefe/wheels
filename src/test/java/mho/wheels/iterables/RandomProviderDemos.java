@@ -1654,7 +1654,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private void demoChoose() {
+    private void demoChoose_Iterable_Iterable() {
         Iterable<Triple<RandomProvider, Iterable<Integer>, Iterable<Integer>>> ts = P.triples(
                 filterInfinite(rp -> rp.getScale() > 0, P.randomProvidersDefaultSecondaryAndTertiaryScale()),
                 P.prefixPermutations(EP.naturalIntegers()),
@@ -1663,6 +1663,17 @@ public class RandomProviderDemos extends Demos {
         for (Triple<RandomProvider, Iterable<Integer>, Iterable<Integer>> t : take(MEDIUM_LIMIT, ts)) {
             System.out.println("choose(" + t.a + ", " + its(t.b) + ", " + its(t.c) + ") = " +
                     its(t.a.choose(t.b, t.c)));
+        }
+    }
+
+    private void demoChoose_Iterable() {
+        Iterable<Pair<RandomProvider, List<Iterable<Integer>>>> ps = P.pairs(
+                P.randomProvidersDefaultSecondaryAndTertiaryScale(),
+                P.withScale(4).listsAtLeast(1, P.prefixPermutations(EP.naturalIntegers()))
+        );
+        for (Pair<RandomProvider, List<Iterable<Integer>>> p : take(MEDIUM_LIMIT, ps)) {
+            String xssString = toList(map(Testing::its, p.b)).toString();
+            System.out.println("choose(" + p.a + ", " + xssString + ") = " + its(p.a.choose(p.b)));
         }
     }
 

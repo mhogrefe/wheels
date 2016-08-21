@@ -192,7 +192,8 @@ public class RandomProviderProperties extends TestProperties {
         propertiesStringSubsetsAtLeast_int_String();
         propertiesStringSubsetsAtLeast_int();
         propertiesEithers();
-        propertiesChoose();
+        propertiesChoose_Iterable_Iterable();
+        propertiesChoose_Iterable();
         propertiesCartesianProduct();
         propertiesRepeatingIterables();
         propertiesRepeatingIterablesDistinctAtLeast();
@@ -4439,7 +4440,7 @@ public class RandomProviderProperties extends TestProperties {
         }
     }
 
-    private void propertiesChoose() {
+    private void propertiesChoose_Iterable_Iterable() {
         initialize("choose(Iterable<A>, Iterable<B>)");
         Iterable<Triple<RandomProvider, Iterable<Integer>, Iterable<Integer>>> ts = P.triples(
                 filterInfinite(rp -> rp.getScale() > 0, P.randomProvidersDefaultSecondaryAndTertiaryScale()),
@@ -4483,6 +4484,35 @@ public class RandomProviderProperties extends TestProperties {
             try {
                 toList(t.a.choose(t.b, t.c));
                 fail(t);
+            } catch (NoSuchElementException ignored) {}
+        }
+    }
+
+    private void propertiesChoose_Iterable() {
+        initialize("choose(List<Iterable<T>>)");
+        Iterable<Pair<RandomProvider, List<Iterable<Integer>>>> ps = P.pairs(
+                P.randomProvidersDefaultSecondaryAndTertiaryScale(),
+                P.listsAtLeast(1, P.prefixPermutations(EP.naturalIntegers()))
+        );
+        for (Pair<RandomProvider, List<Iterable<Integer>>> p : take(LIMIT, ps)) {
+            simpleTest(p.a, p.a.choose(p.b), i -> true);
+        }
+
+        for (RandomProvider rp : take(LIMIT, P.randomProviders())) {
+            try {
+                toList(rp.choose(Collections.emptyList()));
+                fail(rp);
+            } catch (IllegalArgumentException ignored) {}
+        }
+
+        Iterable<Pair<RandomProvider, List<Iterable<Integer>>>> psFail = P.pairs(
+                filterInfinite(rp -> rp.getScale() > 0, P.randomProvidersDefaultSecondaryAndTertiaryScale()),
+                P.listsAtLeast(1, map(xs -> xs, P.lists(P.integersGeometric())))
+        );
+        for (Pair<RandomProvider, List<Iterable<Integer>>> p : take(LIMIT, psFail)) {
+            try {
+                toList(p.a.choose(p.b));
+                fail(p);
             } catch (NoSuchElementException ignored) {}
         }
     }

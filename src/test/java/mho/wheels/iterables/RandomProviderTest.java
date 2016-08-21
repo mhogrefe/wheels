@@ -10048,7 +10048,12 @@ public strictfp class RandomProviderTest {
         eithers_fail_helper(-1, P.naturalIntegers(), P.negativeIntegers());
     }
 
-    private static void choose_helper(int scale, @NotNull String as, @NotNull String bs, @NotNull String output) {
+    private static void choose_Iterable_Iterable_helper(
+            int scale,
+            @NotNull String as,
+            @NotNull String bs,
+            @NotNull String output
+    ) {
         List<Integer> sample = toList(
                 take(
                         DEFAULT_SAMPLE_SIZE,
@@ -10063,7 +10068,11 @@ public strictfp class RandomProviderTest {
         P.reset();
     }
 
-    private static void choose_fail_helper(int scale, @NotNull Iterable<Integer> as, @NotNull Iterable<Integer> bs) {
+    private static void choose_Iterable_Iterable_fail_helper(
+            int scale,
+            @NotNull Iterable<Integer> as,
+            @NotNull Iterable<Integer> bs
+    ) {
         try {
             toList(P.withScale(scale).choose(as, bs));
             fail();
@@ -10074,19 +10083,55 @@ public strictfp class RandomProviderTest {
     }
 
     @Test
-    public void testChoose() {
-        choose_helper(1, "[1]", "[2]", "RandomProvider_choose_i");
-        choose_helper(2, "[1]", "[2]", "RandomProvider_choose_ii");
-        choose_helper(10, "[1]", "[2]", "RandomProvider_choose_iii");
-        choose_helper(1, "[1, 2, 3]", "[null, -2, -3]", "RandomProvider_choose_iv");
-        choose_helper(2, "[1, 2, 3]", "[null, -2, -3]", "RandomProvider_choose_v");
-        choose_helper(10, "[1, 2, 3]", "[null, -2, -3]", "RandomProvider_choose_vi");
+    public void testChoose_Iterable_Iterable() {
+        choose_Iterable_Iterable_helper(1, "[1]", "[2]", "RandomProvider_choose_Iterable_Iterable_i");
+        choose_Iterable_Iterable_helper(2, "[1]", "[2]", "RandomProvider_choose_Iterable_Iterable_ii");
+        choose_Iterable_Iterable_helper(10, "[1]", "[2]", "RandomProvider_choose_Iterable_Iterable_iii");
+        choose_Iterable_Iterable_helper(1, "[1, 2, 3]", "[null, -2, -3]",
+                "RandomProvider_choose_Iterable_Iterable_iv");
+        choose_Iterable_Iterable_helper(2, "[1, 2, 3]", "[null, -2, -3]", "RandomProvider_choose_Iterable_Iterable_v");
+        choose_Iterable_Iterable_helper(10, "[1, 2, 3]", "[null, -2, -3]",
+                "RandomProvider_choose_Iterable_Iterable_vi");
 
-        choose_fail_helper(1, Arrays.asList(-1, -2, -3), P.naturalIntegers());
-        choose_fail_helper(1, P.naturalIntegers(), Arrays.asList(-1, -2, -3));
-        choose_fail_helper(1, Arrays.asList(1, 2, 3), Arrays.asList(-1, -2, -3));
-        choose_fail_helper(0, P.naturalIntegers(), P.negativeIntegers());
-        choose_fail_helper(-1, P.naturalIntegers(), P.negativeIntegers());
+        choose_Iterable_Iterable_fail_helper(1, Arrays.asList(-1, -2, -3), P.naturalIntegers());
+        choose_Iterable_Iterable_fail_helper(1, P.naturalIntegers(), Arrays.asList(-1, -2, -3));
+        choose_Iterable_Iterable_fail_helper(1, Arrays.asList(1, 2, 3), Arrays.asList(-1, -2, -3));
+        choose_Iterable_Iterable_fail_helper(0, P.naturalIntegers(), P.negativeIntegers());
+        choose_Iterable_Iterable_fail_helper(-1, P.naturalIntegers(), P.negativeIntegers());
+    }
+
+    private static void choose_Iterable_helper(@NotNull String input, @NotNull String output) {
+        List<Integer> sample = toList(
+                take(
+                        DEFAULT_SAMPLE_SIZE,
+                        P.choose(toList(map(xs -> P.uniformSample(xs), readIntegerListWithNullsListsWithNulls(input))))
+                )
+        );
+        aeqitLimitLog(TINY_LIMIT, sample, output);
+        aeqMapLog(topSampleCount(DEFAULT_TOP_COUNT, sample), output);
+        P.reset();
+    }
+
+    private static void choose_Iterable_fail_helper(@NotNull List<Iterable<Integer>> input) {
+        try {
+            toList(P.choose(input));
+            fail();
+        } catch (IllegalArgumentException | NullPointerException | NoSuchElementException ignored) {}
+        finally {
+            P.reset();
+        }
+    }
+
+    @Test
+    public void testChoose_Iterable() {
+        choose_Iterable_helper("[[1], [10]]", "RandomProvider_choose_Iterable_i");
+        choose_Iterable_helper("[[1], [10, 11, 12]]", "RandomProvider_choose_Iterable_ii");
+        choose_Iterable_helper("[[1, 2, 3], [10, 11], [100, null, 102, 103]]", "RandomProvider_choose_Iterable_iii");
+
+        choose_Iterable_fail_helper(Collections.emptyList());
+        choose_Iterable_fail_helper(Arrays.asList(P.uniformSample(Arrays.asList(1, 2, 3)), null));
+        choose_Iterable_fail_helper(Arrays.asList(P.uniformSample(Arrays.asList(1, 2, 3)), Collections.emptyList()));
+        choose_Iterable_fail_helper(Arrays.asList(P.uniformSample(Arrays.asList(1, 2, 3)), Arrays.asList(4, 5, 6)));
     }
 
     private static void cartesianProduct_helper(@NotNull String xss, @NotNull String output) {
