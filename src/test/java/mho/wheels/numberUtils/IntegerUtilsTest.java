@@ -1372,6 +1372,8 @@ public class IntegerUtilsTest {
 
         toStringBase_int_int_fail_helper(1, 524393454);
         toStringBase_int_int_fail_helper(0, 524393454);
+        toStringBase_int_int_fail_helper(1, 0);
+        toStringBase_int_int_fail_helper(0, 0);
     }
 
     private static void toStringBase_BigInteger_BigInteger_helper(
@@ -1421,6 +1423,8 @@ public class IntegerUtilsTest {
 
         toStringBase_BigInteger_BigInteger_fail_helper("1", "524393454");
         toStringBase_BigInteger_BigInteger_fail_helper("0", "524393454");
+        toStringBase_BigInteger_BigInteger_fail_helper("1", "0");
+        toStringBase_BigInteger_BigInteger_fail_helper("0", "0");
     }
 
     private static void fromStringBase_int_String_helper(int base, @NotNull String s, @NotNull String output) {
