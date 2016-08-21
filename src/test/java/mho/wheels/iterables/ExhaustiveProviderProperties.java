@@ -314,7 +314,8 @@ public class ExhaustiveProviderProperties extends TestProperties {
         propertiesEithers();
         propertiesChooseSquareRootOrder();
         propertiesChooseLogarithmicOrder();
-        propertiesChoose();
+        propertiesChoose_Iterable_Iterable();
+        propertiesChoose_Iterable();
         propertiesCartesianProduct();
         propertiesRepeatingIterables();
         propertiesRepeatingIterablesDistinctAtLeast();
@@ -10219,12 +10220,9 @@ public class ExhaustiveProviderProperties extends TestProperties {
         }
     }
 
-    private void propertiesChoose() {
+    private void propertiesChoose_Iterable_Iterable() {
         initialize("choose(Iterable<T>, Iterable<T>)");
-        Iterable<Pair<List<Integer>, List<Integer>>> ps = P.pairs(
-                P.withScale(4).lists(P.withNull(P.integersGeometric()))
-        );
-        for (Pair<List<Integer>, List<Integer>> p : take(LIMIT, ps)) {
+        for (Pair<List<Integer>, List<Integer>> p : take(LIMIT, P.pairs(P.lists(P.withNull(P.integersGeometric()))))) {
             Iterable<Integer> chosen = EP.choose(p.a, p.b);
             testNoRemove(chosen);
             testHasNext(chosen);
@@ -10247,6 +10245,35 @@ public class ExhaustiveProviderProperties extends TestProperties {
                 assertEquals(p, head(chosenList), head(p.a));
             }
             assertTrue(p, all(i -> elem(i, p.a) || elem(i, p.b), chosenList));
+        }
+    }
+
+    private void propertiesChoose_Iterable() {
+        initialize("choose(<List<Iterable<T>>)");
+        for (List<List<Integer>> xss : take(LIMIT, P.lists(P.lists(P.withNull(P.integersGeometric()))))) {
+            Iterable<Integer> chosen = EP.choose(toList(map(xs -> xs, xss)));
+            testNoRemove(chosen);
+            testHasNext(chosen);
+            List<Integer> chosenList = toList(chosen);
+            if (!xss.isEmpty() && !head(xss).isEmpty()) {
+                assertEquals(xss, head(chosenList), head(head(xss)));
+            }
+            assertEquals(xss, chosenList.size(), sumInteger(toList(map(List::size, xss))));
+            assertTrue(xss, all(i -> any(xs -> elem(i, xs), xss), chosenList));
+        }
+
+        Iterable<List<Iterable<Integer>>> xsss = P.withScale(4).listsAtLeast(
+                1,
+                P.prefixPermutations(EP.withNull(EP.naturalIntegers()))
+        );
+        for (List<Iterable<Integer>> xss : take(LIMIT, xsss)) {
+            Iterable<Integer> chosen = EP.choose(xss);
+            testNoRemove(TINY_LIMIT, chosen);
+            List<Integer> chosenList = toList(take(TINY_LIMIT, chosen));
+            if (!isEmpty(head(xsss))) {
+                assertEquals(xss, head(chosenList), head(head(xss)));
+            }
+            assertTrue(xss, all(i -> any(xs -> elem(i, xs), xss), chosenList));
         }
     }
 

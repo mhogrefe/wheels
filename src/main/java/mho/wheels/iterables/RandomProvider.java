@@ -4243,7 +4243,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      *  <li>The result contains {@code Either}s.</li>
      * </ul>
      *
-     * Length is |{@code as}|+|{@code bs}|
+     * Length is infinite
      *
      * @param as the first {@code Iterable}
      * @param bs the second {@code Iterable}
@@ -4276,6 +4276,25 @@ public final strictfp class RandomProvider extends IterableProvider {
                 }
             }
         };
+    }
+
+    /**
+     * An {@code Iterable} that generates all elements from a list of {@code Iterable}s. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>Every element of {@code xss} must be infinite.</li>
+     *  <li>The result is infinite.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param xss the list of {@code Iterable}s
+     * @param <T> the type of the {@code Iterable}s' elements
+     * @return all elements of {@code xss}
+     */
+    public @NotNull <T> Iterable<T> choose(@NotNull List<Iterable<T>> xss) {
+        return map(Iterator::next, uniformSample(toList(map(Iterable::iterator, xss))));
     }
 
     /**

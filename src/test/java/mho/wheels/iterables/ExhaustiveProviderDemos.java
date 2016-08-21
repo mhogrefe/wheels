@@ -2335,7 +2335,7 @@ public class ExhaustiveProviderDemos extends Demos {
         }
     }
 
-    private void demoChoose_finite() {
+    private void demoChoose_Iterable_Iterable_finite() {
         Iterable<Pair<List<Integer>, List<Integer>>> ps = P.pairs(
                 P.withScale(4).lists(P.withNull(P.integersGeometric()))
         );
@@ -2344,12 +2344,33 @@ public class ExhaustiveProviderDemos extends Demos {
         }
     }
 
-    private void demoChoose_infinite() {
+    private void demoChoose_Iterable_Iterable_infinite() {
         Iterable<Pair<Iterable<Integer>, Iterable<Integer>>> ps = P.pairs(
                 P.prefixPermutations(EP.withNull(EP.naturalIntegers()))
         );
         for (Pair<Iterable<Integer>, Iterable<Integer>> p : take(MEDIUM_LIMIT, ps)) {
             System.out.println("choose(" + its(p.a) + ", " + its(p.b) + ") = " + its(EP.choose(p.a, p.b)));
+        }
+    }
+
+    private void demoChoose_Iterable_finite() {
+        Iterable<List<List<Integer>>> xsss = P.withScale(4).lists(
+                P.withScale(4).lists(P.withNull(P.integersGeometric()))
+        );
+        for (List<List<Integer>> xss : take(LIMIT, xsss)) {
+            String xsString = middle(xss.toString());
+            System.out.println("choose(" + xsString + ") = " + its(EP.choose(toList(map(xs -> xs, xss)))));
+        }
+    }
+
+    private void demoChoose_Iterable_infinite() {
+        Iterable<List<Iterable<Integer>>> xsss = P.withScale(4).listsAtLeast(
+                1,
+                P.prefixPermutations(EP.withNull(EP.naturalIntegers()))
+        );
+        for (List<Iterable<Integer>> xss : take(MEDIUM_LIMIT, xsss)) {
+            String xsString = middle(toList(map(Testing::its, xss)).toString());
+            System.out.println("choose(" + xsString + ") = " + its(EP.choose(xss)));
         }
     }
 

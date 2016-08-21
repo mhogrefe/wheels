@@ -35461,7 +35461,7 @@ ExhaustiveProvider_chooseLogarithmicOrder_ix list 21
 15
 ...
 
-ExhaustiveProvider_choose_i list 8
+ExhaustiveProvider_choose_Iterable_Iterable_i list 8
 1
 -1
 2
@@ -35471,7 +35471,7 @@ ExhaustiveProvider_choose_i list 8
 4
 -4
 
-ExhaustiveProvider_choose_ii list 8
+ExhaustiveProvider_choose_Iterable_Iterable_ii list 8
 1
 -1
 2
@@ -35481,7 +35481,7 @@ null
 4
 -4
 
-ExhaustiveProvider_choose_iii list 6
+ExhaustiveProvider_choose_Iterable_Iterable_iii list 6
 1
 -1
 2
@@ -35489,7 +35489,7 @@ ExhaustiveProvider_choose_iii list 6
 -3
 -4
 
-ExhaustiveProvider_choose_iv list 6
+ExhaustiveProvider_choose_Iterable_Iterable_iv list 6
 1
 -1
 2
@@ -35497,15 +35497,15 @@ ExhaustiveProvider_choose_iv list 6
 3
 4
 
-ExhaustiveProvider_choose_v list 4
+ExhaustiveProvider_choose_Iterable_Iterable_v list 4
 1
 2
 3
 4
 
-ExhaustiveProvider_choose_vi list 0
+ExhaustiveProvider_choose_Iterable_Iterable_vi list 0
 
-ExhaustiveProvider_choose_vii list 21
+ExhaustiveProvider_choose_Iterable_Iterable_vii list 21
 0
 -1
 1
@@ -35528,7 +35528,7 @@ ExhaustiveProvider_choose_vii list 21
 15
 ...
 
-ExhaustiveProvider_choose_viii list 21
+ExhaustiveProvider_choose_Iterable_Iterable_viii list 21
 -1
 0
 -2
@@ -35551,7 +35551,7 @@ ExhaustiveProvider_choose_viii list 21
 15
 ...
 
-ExhaustiveProvider_choose_ix list 21
+ExhaustiveProvider_choose_Iterable_Iterable_ix list 21
 1
 -1
 2
@@ -35573,6 +35573,47 @@ ExhaustiveProvider_choose_ix list 21
 10
 -10
 ...
+
+ExhaustiveProvider_choose_Iterable_i list 0
+
+ExhaustiveProvider_choose_Iterable_ii list 0
+
+ExhaustiveProvider_choose_Iterable_iii list 6
+1
+-1
+2
+-2
+3
+-3
+
+ExhaustiveProvider_choose_Iterable_iv list 7
+1
+-1
+2
+-2
+3
+-3
+-4
+
+ExhaustiveProvider_choose_Iterable_v list 7
+1
+-1
+2
+-2
+3
+-3
+4
+
+ExhaustiveProvider_choose_Iterable_vi list 9
+1
+10
+100
+2
+11
+null
+3
+102
+103
 
 ExhaustiveProvider_cartesianProduct_i list 1
 []

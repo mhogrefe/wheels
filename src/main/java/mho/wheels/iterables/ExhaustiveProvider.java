@@ -6773,6 +6773,24 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
+     * Returns an {@code Iterable} containing all elements from a list of {@code Iterable}s. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code xss} cannot contain nulls.</li>
+     *  <li>The result is not null.</li>
+     * </ul>
+     *
+     * Length is ∑<sub>x∈{@code xss}</sub>|x|
+     *
+     * @param xss the {@code Iterable}s
+     * @param <T> the type of the {@code Iterables}' elements
+     * @return all elements from {@code xss}
+     */
+    public @NotNull <T> Iterable<T> choose(@NotNull List<Iterable<T>> xss) {
+        return concat(map(xs -> xs, transpose(xss)));
+    }
+
+    /**
      * Given a {@code List} of {@code Integer}s, generates the Cartesian product of the indices [0, ..., i–1] for each
      * element i.
      *

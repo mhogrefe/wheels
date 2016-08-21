@@ -6437,24 +6437,55 @@ public strictfp class ExhaustiveProviderTest {
                 "ExhaustiveProvider_chooseLogarithmicOrder_ix");
     }
 
-    private static void choose_helper(@NotNull String as, @NotNull String bs, @NotNull String output) {
+    private static void choose_Iterable_Iterable_helper(
+            @NotNull String as,
+            @NotNull String bs,
+            @NotNull String output
+    ) {
         aeqitLog(EP.choose(readIntegerListWithNulls(as), readIntegerListWithNulls(bs)), output);
     }
 
     @Test
-    public void testChoose() {
-        choose_helper("[1, 2, 3, 4]", "[-1, -2, -3, -4]", "ExhaustiveProvider_choose_i");
-        choose_helper("[1, 2, null, 4]", "[-1, -2, -3, -4]", "ExhaustiveProvider_choose_ii");
-        choose_helper("[1, 2]", "[-1, -2, -3, -4]", "ExhaustiveProvider_choose_iii");
-        choose_helper("[1, 2, 3, 4]", "[-1, -2]", "ExhaustiveProvider_choose_iv");
-        choose_helper("[]", "[1, 2, 3, 4]", "ExhaustiveProvider_choose_v");
-        choose_helper("[]", "[]", "ExhaustiveProvider_choose_vi");
+    public void testChoose_Iterable_Iterable() {
+        choose_Iterable_Iterable_helper("[1, 2, 3, 4]", "[-1, -2, -3, -4]",
+                "ExhaustiveProvider_choose_Iterable_Iterable_i");
+        choose_Iterable_Iterable_helper("[1, 2, null, 4]", "[-1, -2, -3, -4]",
+                "ExhaustiveProvider_choose_Iterable_Iterable_ii");
+        choose_Iterable_Iterable_helper("[1, 2]", "[-1, -2, -3, -4]",
+                "ExhaustiveProvider_choose_Iterable_Iterable_iii");
+        choose_Iterable_Iterable_helper("[1, 2, 3, 4]", "[-1, -2]", "ExhaustiveProvider_choose_Iterable_Iterable_iv");
+        choose_Iterable_Iterable_helper("[]", "[1, 2, 3, 4]", "ExhaustiveProvider_choose_Iterable_Iterable_v");
+        choose_Iterable_Iterable_helper("[]", "[]", "ExhaustiveProvider_choose_Iterable_Iterable_vi");
         simpleProviderHelper(EP.choose(EP.naturalIntegers(), Arrays.asList(-1, -2, -3, -4)),
-                "ExhaustiveProvider_choose_vii");
+                "ExhaustiveProvider_choose_Iterable_Iterable_vii");
         simpleProviderHelper(EP.choose(Arrays.asList(-1, -2, -3, -4), EP.naturalIntegers()),
-                "ExhaustiveProvider_choose_viii");
+                "ExhaustiveProvider_choose_Iterable_Iterable_viii");
         simpleProviderHelper(EP.choose(EP.positiveIntegers(), EP.negativeIntegers()),
-                "ExhaustiveProvider_choose_ix");
+                "ExhaustiveProvider_choose_Iterable_Iterable_ix");
+    }
+
+    private static void choose_Iterable_helper(@NotNull String input, @NotNull String output) {
+        aeqitLog(EP.choose(toList(map(is -> is, readIntegerListWithNullsLists(input)))), output);
+    }
+
+    private static void choose_Iterable_fail_helper(@NotNull String input) {
+        try {
+            toList(EP.choose(toList(map(is -> is, readIntegerListWithNullsListsWithNulls(input)))));
+            fail();
+        } catch (NullPointerException ignored) {}
+    }
+
+    @Test
+    public void choose_Iterable() {
+        choose_Iterable_helper("[]", "ExhaustiveProvider_choose_Iterable_i");
+        choose_Iterable_helper("[[]]", "ExhaustiveProvider_choose_Iterable_ii");
+        choose_Iterable_helper("[[1, 2, 3], [-1, -2, -3]]", "ExhaustiveProvider_choose_Iterable_iii");
+        choose_Iterable_helper("[[1, 2, 3], [-1, -2, -3, -4]]", "ExhaustiveProvider_choose_Iterable_iv");
+        choose_Iterable_helper("[[1, 2, 3, 4], [-1, -2, -3]]", "ExhaustiveProvider_choose_Iterable_v");
+        choose_Iterable_helper("[[1, 2, 3], [10, 11], [100, null, 102, 103]]",
+                "ExhaustiveProvider_choose_Iterable_vi");
+
+        choose_Iterable_fail_helper("[[1, 2], null]");
     }
 
     private static void cartesianProduct_helper(@NotNull String input, @NotNull String output) {

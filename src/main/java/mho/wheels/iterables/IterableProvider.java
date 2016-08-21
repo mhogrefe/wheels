@@ -2796,6 +2796,14 @@ public abstract strictfp class IterableProvider {
     }
 
     /**
+     * Given a list of {@code Iterable}s, generates an {@code Iterable} containing the elements of all of them.
+     *
+     * @param xss the {@code Iterable}s
+     * @param <T> the type of the {@code Iterables}' elements
+     */
+    public abstract @NotNull <T> Iterable<T> choose(@NotNull List<Iterable<T>> xss);
+
+    /**
      * Generates the Cartesian product of a {@code List} of {@code List}s, that is, all possible {@code List}s such
      * that the ith element of the {@code List} comes from the ith input {@code List}.
      *
