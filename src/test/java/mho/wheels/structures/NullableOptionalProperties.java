@@ -26,6 +26,7 @@ public class NullableOptionalProperties extends TestProperties {
         propertiesFromOptional_Integer();
         propertiesOrElse();
         propertiesMap();
+        propertiesToOptional_Integer();
         propertiesEquals();
         propertiesHashCode_Integer();
         propertiesToString_Integer();
@@ -64,11 +65,7 @@ public class NullableOptionalProperties extends TestProperties {
             NullableOptional<Integer> noi = fromOptional(oi);
             assertEquals(oi, oi.isPresent(), noi.isPresent());
             //noinspection Convert2MethodRef
-            inverse(
-                    (Optional<Integer> n) -> fromOptional(n),
-                    (NullableOptional<Integer> m) -> m.isPresent() ? Optional.of(m.get()) : Optional.empty(),
-                    oi
-            );
+            inverse((Optional<Integer> n) -> fromOptional(n), (NullableOptional<Integer> m) -> m.toOptional(), oi);
             assertEquals(oi, oi.toString(), noi.toString().substring("Nullable".length()));
         }
 
@@ -129,6 +126,23 @@ public class NullableOptionalProperties extends TestProperties {
                 p.a.map(p.b);
                 fail(p);
             } catch (IllegalArgumentException ignored) {}
+        }
+    }
+
+    private void propertiesToOptional_Integer() {
+        initialize("toOptional()");
+        for (NullableOptional<Integer> noi : take(LIMIT, P.nullableOptionals(P.integers()))) {
+            Optional<Integer> oi = noi.toOptional();
+            assertEquals(noi, oi.isPresent(), noi.isPresent());
+            //noinspection Convert2MethodRef
+            inverse((NullableOptional<Integer> n) -> n.toOptional(), (Optional<Integer> m) -> fromOptional(m), noi);
+            assertEquals(noi, noi.toString(), "Nullable" + oi.toString());
+        }
+
+        for (NullableOptional<Integer> noi : take(LIMIT, P.nonEmptyNullableOptionals(P.integers()))) {
+            Optional<Integer> oi = noi.toOptional();
+            assertNotNull(noi, oi.get());
+            assertEquals(noi, noi.get(), oi.get());
         }
     }
 

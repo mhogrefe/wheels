@@ -123,6 +123,26 @@ public class NullableOptionalTest {
         map_fail_helper("NullableOptional[null]", 1, 3);
     }
 
+    private static void toOptional_helper(@NotNull String input, @NotNull String output) {
+        aeq(readNullableOptionalInteger(input).toOptional(), output);
+    }
+
+    private static void toOptional_fail_helper(@NotNull String input) {
+        try {
+            readNullableOptionalInteger(input).toOptional();
+            fail();
+        } catch (NullPointerException ignored) {}
+    }
+
+    @Test
+    public void testToOptional() {
+        toOptional_helper("NullableOptional[1]", "Optional[1]");
+        toOptional_helper("NullableOptional[-5]", "Optional[-5]");
+        toOptional_helper("NullableOptional.empty", "Optional.empty");
+
+        toOptional_fail_helper("NullableOptional[null]");
+    }
+
     @Test
     public void testEquals() {
         testEqualsHelper(

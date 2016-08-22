@@ -136,6 +136,26 @@ public class NullableOptional<T> {
     }
 
     /**
+     * Converts {@code this} to an {@code Optional<T>}. If {@code x} is null, an exception is thrown.
+     *
+     * <ul>
+     *  <li>{@code this} cannot contain null.</li>
+     *  <li>The result is not null.</li>
+     * </ul>
+     *
+     * @return the {@code Optional} equivalent of {@code this}
+     */
+    public @NotNull Optional<T> toOptional() {
+        if (!present) {
+            return Optional.empty();
+        } else if (x == null) {
+            throw new NullPointerException();
+        } else {
+            return Optional.of(x);
+        }
+    }
+
+    /**
      * Determines whether {@code this} is equal to {@code that}.
      *
      * <ul>
