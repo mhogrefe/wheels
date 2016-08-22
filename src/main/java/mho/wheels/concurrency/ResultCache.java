@@ -43,10 +43,6 @@ public class ResultCache<A, B> {
             synchronized (this) {
                 Pair<Integer, Long> costPair = costMap.remove(input);
                 int seconds = (int) (costPair.b / 1000);
-                if (seconds > 0) {
-                    System.out.println(">> Cached result reused: " + input + ", " + seconds + " second" +
-                            (seconds == 1 ? "" : "s"));
-                }
                 costMap.put(input, new Pair<>(costPair.a + 1, costPair.b));
                 long cost = costPair.b * costPair.a;
                 costQueue.remove(new Pair<>(cost, input));

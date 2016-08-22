@@ -15,6 +15,7 @@ import org.junit.Test;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.*;
+import java.util.function.Function;
 
 import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.testing.Testing.*;
@@ -33,57 +34,107 @@ public strictfp class RandomProviderTest {
     public void initialize() {
         P = RandomProvider.example();
         Q = new RandomProvider(toList(replicate(IsaacPRNG.SIZE, 0)));
-        R = new RandomProvider(toList(IterableUtils.range(1, IsaacPRNG.SIZE)));
+        R = new RandomProvider(toList(ExhaustiveProvider.INSTANCE.rangeIncreasing(1, IsaacPRNG.SIZE)));
     }
 
     @Test
     public void testConstructor() {
-        RandomProvider provider = new RandomProvider();
-        aeq(provider.getScale(), 32);
-        aeq(provider.getSecondaryScale(), 8);
-        aeq(provider.getTertiaryScale(), 2);
+        RandomProvider rp = new RandomProvider();
+        rp.validate();
+        aeq(rp.getScale(), 32);
+        aeq(rp.getSecondaryScale(), 8);
+        aeq(rp.getTertiaryScale(), 2);
+    }
+
+    private static void constructor_List_Integer_helper(@NotNull List<Integer> input, @NotNull String output) {
+        RandomProvider rp = new RandomProvider(input);
+        rp.validate();
+        aeq(rp, output);
+    }
+
+    private static void constructor_List_Integer_fail_helper(@NotNull String input) {
+        try {
+            new RandomProvider(readIntegerListWithNulls(input));
+            fail();
+        } catch (IllegalArgumentException | NullPointerException ignored) {}
     }
 
     @Test
-    public void testConstructor_int() {
-        aeq(Q, "RandomProvider[@-7948823947390831374, 32, 8, 2]");
-        aeq(R, "RandomProvider[@2449928962525148503, 32, 8, 2]");
-        aeq(
-                new RandomProvider(toList(IterableUtils.rangeBy(-1, -1, -IsaacPRNG.SIZE))),
-                "RandomProvider[@3417306423260907531, 32, 8, 2]"
-        );
+    public void testConstructor_List_Integer() {
+        constructor_List_Integer_helper(toList(replicate(IsaacPRNG.SIZE, 0)),
+                "RandomProvider[@-7948823947390831374, 32, 8, 2]");
+        constructor_List_Integer_helper(toList(ExhaustiveProvider.INSTANCE.rangeIncreasing(1, IsaacPRNG.SIZE)),
+                "RandomProvider[@2449928962525148503, 32, 8, 2]");
+        constructor_List_Integer_helper(toList(ExhaustiveProvider.INSTANCE.rangeDecreasing(-IsaacPRNG.SIZE, -1)),
+                "RandomProvider[@3417306423260907531, 32, 8, 2]");
+
+        constructor_List_Integer_fail_helper("[]");
+        constructor_List_Integer_fail_helper("[1, 2, 3]");
     }
 
     @Test
     public void testExample() {
-        aeq(RandomProvider.example(), "RandomProvider[@-8800290164235921060, 32, 8, 2]");
+        RandomProvider rp = RandomProvider.example();
+        rp.validate();
+        aeq(rp, "RandomProvider[@-8800290164235921060, 32, 8, 2]");
+    }
+
+    private static void getScale_helper(@NotNull RandomProvider rp, int scale) {
+        aeq(rp.getScale(), scale);
+    }
+
+    private static void getScale_helper(int scale) {
+        aeq(new RandomProvider().withScale(scale).getScale(), scale);
     }
 
     @Test
     public void testGetScale() {
-        aeq(P.getScale(), 32);
-        aeq(new RandomProvider().withScale(100).getScale(), 100);
-        aeq(new RandomProvider().withScale(3).getScale(), 3);
+        getScale_helper(P, 32);
+        getScale_helper(100);
+        getScale_helper(3);
+        getScale_helper(-3);
+    }
+
+    private static void getSecondaryScale_helper(@NotNull RandomProvider rp, int secondaryScale) {
+        aeq(rp.getSecondaryScale(), secondaryScale);
+    }
+
+    private static void getSecondaryScale_helper(int secondaryScale) {
+        aeq(new RandomProvider().withSecondaryScale(secondaryScale).getSecondaryScale(), secondaryScale);
     }
 
     @Test
     public void testGetSecondaryScale() {
-        aeq(P.getSecondaryScale(), 8);
-        aeq(new RandomProvider().withSecondaryScale(100).getSecondaryScale(), 100);
-        aeq(new RandomProvider().withSecondaryScale(3).getSecondaryScale(), 3);
+        getSecondaryScale_helper(P, 8);
+        getSecondaryScale_helper(100);
+        getSecondaryScale_helper(3);
+        getSecondaryScale_helper(-3);
+    }
+
+    private static void getTertiaryScale_helper(@NotNull RandomProvider rp, int tertiaryScale) {
+        aeq(rp.getTertiaryScale(), tertiaryScale);
+    }
+
+    private static void getTertiaryScale_helper(int tertiaryScale) {
+        aeq(new RandomProvider().withTertiaryScale(tertiaryScale).getTertiaryScale(), tertiaryScale);
     }
 
     @Test
     public void testGetTertiaryScale() {
-        aeq(P.getTertiaryScale(), 2);
-        aeq(new RandomProvider().withTertiaryScale(100).getTertiaryScale(), 100);
-        aeq(new RandomProvider().withTertiaryScale(3).getTertiaryScale(), 3);
+        getTertiaryScale_helper(P, 2);
+        getTertiaryScale_helper(100);
+        getTertiaryScale_helper(3);
+        getTertiaryScale_helper(-3);
+    }
+
+    private static void getSeed_helper(@NotNull RandomProvider rp, @NotNull String seed) {
+        aeq(rp.getSeed(), seed);
     }
 
     @Test
     public void testGetSeed() {
-        aeq(
-                P.getSeed(),
+        getSeed_helper(
+                P,
                 "[-1740315277, -1661427768, 842676458, -1268128447, -121858045, 1559496322, -581535260, -1819723670," +
                 " -334232530, 244755020, -534964695, 301563516, -1795957210, 1451814771, 1299826235, -666749112," +
                 " -1729602324, -565031294, 1897952431, 1118663606, -299718943, -1499922009, -837624734, 1439650052," +
@@ -117,8 +168,8 @@ public strictfp class RandomProviderTest {
                 " -270682579, 44310291, 564559440, 957643125, 1374924466, 962420298, 1319979537, 1206138289," +
                 " -948832823, -909756549, -664108386, -1355112330, -125435854, -1502071736, -790593389]"
         );
-        aeq(
-                Q.getSeed(),
+        getSeed_helper(
+                Q,
                 "[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0," +
                 " 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0," +
                 " 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0," +
@@ -128,8 +179,8 @@ public strictfp class RandomProviderTest {
                 " 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0," +
                 " 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]"
         );
-        aeq(
-                R.getSeed(),
+        getSeed_helper(
+                R,
                 "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27," +
                 " 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51," +
                 " 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75," +
@@ -144,40 +195,62 @@ public strictfp class RandomProviderTest {
                 " 233, 234, 235, 236, 237, 238, 239, 240, 241, 242, 243, 244, 245, 246, 247, 248, 249, 250, 251," +
                 " 252, 253, 254, 255, 256]"
         );
-        try {
-            new RandomProvider(Collections.emptyList());
-            fail();
-        } catch (IllegalArgumentException ignored) {}
-        try {
-            new RandomProvider(Arrays.asList(1, 2, 3));
-            fail();
-        } catch (IllegalArgumentException ignored) {}
+    }
+
+    private static void withScale_helper(@NotNull RandomProvider rp, int scale, @NotNull String output) {
+        RandomProvider s = rp.withScale(scale);
+        s.validate();
+        aeq(s, output);
     }
 
     @Test
     public void testWithScale() {
-        aeq(P.withScale(100), "RandomProvider[@-8800290164235921060, 100, 8, 2]");
-        aeq(Q.withScale(3), "RandomProvider[@-7948823947390831374, 3, 8, 2]");
-        aeq(R.withScale(0), "RandomProvider[@2449928962525148503, 0, 8, 2]");
+        withScale_helper(P, 100, "RandomProvider[@-8800290164235921060, 100, 8, 2]");
+        withScale_helper(Q, 3, "RandomProvider[@-7948823947390831374, 3, 8, 2]");
+        withScale_helper(R, 0, "RandomProvider[@2449928962525148503, 0, 8, 2]");
+        withScale_helper(R, -3, "RandomProvider[@2449928962525148503, -3, 8, 2]");
+    }
+
+    private static void withSecondaryScale_helper(
+            @NotNull RandomProvider rp,
+            int secondaryScale,
+            @NotNull String output
+    ) {
+        RandomProvider s = rp.withSecondaryScale(secondaryScale);
+        s.validate();
+        aeq(s, output);
     }
 
     @Test
     public void testWithSecondaryScale() {
-        aeq(P.withSecondaryScale(100), "RandomProvider[@-8800290164235921060, 32, 100, 2]");
-        aeq(Q.withSecondaryScale(3), "RandomProvider[@-7948823947390831374, 32, 3, 2]");
-        aeq(R.withSecondaryScale(0), "RandomProvider[@2449928962525148503, 32, 0, 2]");
+        withSecondaryScale_helper(P, 100, "RandomProvider[@-8800290164235921060, 32, 100, 2]");
+        withSecondaryScale_helper(Q, 3, "RandomProvider[@-7948823947390831374, 32, 3, 2]");
+        withSecondaryScale_helper(R, 0, "RandomProvider[@2449928962525148503, 32, 0, 2]");
+        withSecondaryScale_helper(R, -3, "RandomProvider[@2449928962525148503, 32, -3, 2]");
+    }
+
+    private static void withTertiaryScale_helper(
+            @NotNull RandomProvider rp,
+            int tertiaryScale,
+            @NotNull String output
+    ) {
+        RandomProvider s = rp.withTertiaryScale(tertiaryScale);
+        s.validate();
+        aeq(s, output);
     }
 
     @Test
     public void testWithTertiaryScale() {
-        aeq(P.withTertiaryScale(100), "RandomProvider[@-8800290164235921060, 32, 8, 100]");
-        aeq(Q.withTertiaryScale(3), "RandomProvider[@-7948823947390831374, 32, 8, 3]");
-        aeq(R.withTertiaryScale(0), "RandomProvider[@2449928962525148503, 32, 8, 0]");
+        withTertiaryScale_helper(P, 100, "RandomProvider[@-8800290164235921060, 32, 8, 100]");
+        withTertiaryScale_helper(Q, 3, "RandomProvider[@-7948823947390831374, 32, 8, 3]");
+        withTertiaryScale_helper(R, 0, "RandomProvider[@2449928962525148503, 32, 8, 0]");
+        withTertiaryScale_helper(R, -3, "RandomProvider[@2449928962525148503, 32, 8, -3]");
     }
 
     @Test
     public void testCopy() {
         RandomProvider copy = P.copy();
+        copy.validate();
         assertEquals(P, copy);
         head(P.integers());
         assertEquals(P, copy);
@@ -186,6 +259,7 @@ public strictfp class RandomProviderTest {
     @Test
     public void testDeepCopy() {
         RandomProvider copy = P.deepCopy();
+        copy.validate();
         assertEquals(P, copy);
         head(P.integers());
         assertNotEquals(P, copy);
@@ -201,17 +275,23 @@ public strictfp class RandomProviderTest {
         assertNotEquals(P, original);
         assertNotEquals(PDependent, dependent);
         P.reset();
+        P.validate();
         assertEquals(P, original);
         assertEquals(PDependent, dependent);
     }
 
+    private static void getId_helper(@NotNull RandomProvider rp, long id) {
+        aeq(rp.getId(), id);
+    }
+
     @Test
     public void testGetId() {
-        aeq(P.getId(), -8800290164235921060L);
-        head(P.integers());
-        aeq(P.getId(), -6220528511995005615L);
-        aeq(Q.getId(), -7948823947390831374L);
-        aeq(R.getId(), 2449928962525148503L);
+        getId_helper(P, -8800290164235921060L);
+        head(P.integers()); // change P state
+        getId_helper(P, -6220528511995005615L);
+        getId_helper(Q, -7948823947390831374L);
+        getId_helper(R, 2449928962525148503L);
+        P.reset();
     }
 
     private static <T> void simpleProviderHelper(@NotNull Iterable<T> xs, @NotNull String output) {
@@ -253,8 +333,11 @@ public strictfp class RandomProviderTest {
 
     @Test
     public void testUniformSample_Iterable() {
-        uniformSample_Iterable_helper("[3, 1, 4, 1]", "RandomProvider_uniformSample_Iterable_i");
-        uniformSample_Iterable_helper("[3, 1, null, 1]", "RandomProvider_uniformSample_Iterable_ii");
+        uniformSample_Iterable_helper("[5]", "RandomProvider_uniformSample_Iterable_i");
+        uniformSample_Iterable_helper("[1, 2, 3]", "RandomProvider_uniformSample_Iterable_ii");
+        uniformSample_Iterable_helper("[3, 1, 4, 1]", "RandomProvider_uniformSample_Iterable_iii");
+        uniformSample_Iterable_helper("[3, 1, null, 1]", "RandomProvider_uniformSample_Iterable_iv");
+
         uniformSample_Iterable_fail_helper("[]");
     }
 
@@ -275,7 +358,10 @@ public strictfp class RandomProviderTest {
 
     @Test
     public void testUniformSample_String() {
-        uniformSample_String_helper("hello", "RandomProvider_uniformSample_String");
+        uniformSample_String_helper("c", "RandomProvider_uniformSample_String_i");
+        uniformSample_String_helper("abc", "RandomProvider_uniformSample_String_ii");
+        uniformSample_String_helper("hello", "RandomProvider_uniformSample_String_iii");
+
         uniformSample_String_fail_helper("");
     }
 
@@ -532,20 +618,28 @@ public strictfp class RandomProviderTest {
         P.reset();
     }
 
+    private static void range_byte_byte_fail_helper(int a, int b) {
+        try {
+            P.range((byte) a, (byte) b);
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+    }
+
     @Test
     public void testRange_byte_byte() {
         range_byte_byte_helper(10, 20, "RandomProvider_range_byte_byte_i");
         range_byte_byte_helper(10, 10, "RandomProvider_range_byte_byte_ii");
-        range_byte_byte_helper((byte) 10, (byte) 9, "RandomProvider_range_byte_byte_iii");
-        range_byte_byte_helper(-20, -10, "RandomProvider_range_byte_byte_iv");
-        range_byte_byte_helper(-20, -20, "RandomProvider_range_byte_byte_v");
-        range_byte_byte_helper((byte) -20, (byte) -21, "RandomProvider_range_byte_byte_vi");
-        range_byte_byte_helper(0, 0, "RandomProvider_range_byte_byte_vii");
-        range_byte_byte_helper(0, 10, "RandomProvider_range_byte_byte_viii");
-        range_byte_byte_helper(-5, 0, "RandomProvider_range_byte_byte_ix");
-        range_byte_byte_helper(-5, 10, "RandomProvider_range_byte_byte_x");
-        range_byte_byte_helper(-10, 5, "RandomProvider_range_byte_byte_xi");
-        range_byte_byte_helper(5, -10, "RandomProvider_range_byte_byte_xii");
+        range_byte_byte_helper(-20, -10, "RandomProvider_range_byte_byte_iii");
+        range_byte_byte_helper(-20, -20, "RandomProvider_range_byte_byte_iv");
+        range_byte_byte_helper(0, 0, "RandomProvider_range_byte_byte_v");
+        range_byte_byte_helper(0, 10, "RandomProvider_range_byte_byte_vi");
+        range_byte_byte_helper(-5, 0, "RandomProvider_range_byte_byte_vii");
+        range_byte_byte_helper(-5, 10, "RandomProvider_range_byte_byte_viii");
+        range_byte_byte_helper(-10, 5, "RandomProvider_range_byte_byte_ix");
+
+        range_byte_byte_fail_helper(10, 9);
+        range_byte_byte_fail_helper(-20, -21);
+        range_byte_byte_fail_helper(5, -10);
     }
 
     private static void range_short_short_helper(int a, int b, @NotNull String output) {
@@ -553,20 +647,28 @@ public strictfp class RandomProviderTest {
         P.reset();
     }
 
+    private static void range_short_short_fail_helper(int a, int b) {
+        try {
+            P.range((short) a, (short) b);
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+    }
+
     @Test
     public void testRange_short_short() {
         range_short_short_helper(10, 20, "RandomProvider_range_short_short_i");
         range_short_short_helper(10, 10, "RandomProvider_range_short_short_ii");
-        range_short_short_helper((short) 10, (short) 9, "RandomProvider_range_short_short_iii");
-        range_short_short_helper(-20, -10, "RandomProvider_range_short_short_iv");
-        range_short_short_helper(-20, -20, "RandomProvider_range_short_short_v");
-        range_short_short_helper((short) -20, (short) -21, "RandomProvider_range_short_short_vi");
-        range_short_short_helper(0, 0, "RandomProvider_range_short_short_vii");
-        range_short_short_helper(0, 10, "RandomProvider_range_short_short_viii");
-        range_short_short_helper(-5, 0, "RandomProvider_range_short_short_ix");
-        range_short_short_helper(-5, 10, "RandomProvider_range_short_short_x");
-        range_short_short_helper(-10, 5, "RandomProvider_range_short_short_xi");
-        range_short_short_helper(5, -10, "RandomProvider_range_short_short_xii");
+        range_short_short_helper(-20, -10, "RandomProvider_range_short_short_iii");
+        range_short_short_helper(-20, -20, "RandomProvider_range_short_short_iv");
+        range_short_short_helper(0, 0, "RandomProvider_range_short_short_v");
+        range_short_short_helper(0, 10, "RandomProvider_range_short_short_vi");
+        range_short_short_helper(-5, 0, "RandomProvider_range_short_short_vii");
+        range_short_short_helper(-5, 10, "RandomProvider_range_short_short_viii");
+        range_short_short_helper(-10, 5, "RandomProvider_range_short_short_ix");
+
+        range_short_short_fail_helper(10, 9);
+        range_short_short_fail_helper(-20, -21);
+        range_short_short_fail_helper(5, -10);
     }
 
     private static void range_int_int_helper(int a, int b, @NotNull String output) {
@@ -574,20 +676,28 @@ public strictfp class RandomProviderTest {
         P.reset();
     }
 
+    private static void range_int_int_fail_helper(int a, int b) {
+        try {
+            P.range(a, b);
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+    }
+
     @Test
     public void testRange_int_int() {
         range_int_int_helper(10, 20, "RandomProvider_range_int_int_i");
         range_int_int_helper(10, 10, "RandomProvider_range_int_int_ii");
-        range_int_int_helper(10, 9, "RandomProvider_range_int_int_iii");
-        range_int_int_helper(-20, -10, "RandomProvider_range_int_int_iv");
-        range_int_int_helper(-20, -20, "RandomProvider_range_int_int_v");
-        range_int_int_helper(-20, -21, "RandomProvider_range_int_int_vi");
-        range_int_int_helper(0, 0, "RandomProvider_range_int_int_vii");
-        range_int_int_helper(0, 10, "RandomProvider_range_int_int_viii");
-        range_int_int_helper(-5, 0, "RandomProvider_range_int_int_ix");
-        range_int_int_helper(-5, 10, "RandomProvider_range_int_int_x");
-        range_int_int_helper(-10, 5, "RandomProvider_range_int_int_xi");
-        range_int_int_helper(5, -10, "RandomProvider_range_int_int_xii");
+        range_int_int_helper(-20, -10, "RandomProvider_range_int_int_iii");
+        range_int_int_helper(-20, -20, "RandomProvider_range_int_int_iv");
+        range_int_int_helper(0, 0, "RandomProvider_range_int_int_v");
+        range_int_int_helper(0, 10, "RandomProvider_range_int_int_vi");
+        range_int_int_helper(-5, 0, "RandomProvider_range_int_int_vii");
+        range_int_int_helper(-5, 10, "RandomProvider_range_int_int_viii");
+        range_int_int_helper(-10, 5, "RandomProvider_range_int_int_ix");
+
+        range_int_int_fail_helper(10, 9);
+        range_int_int_fail_helper(-20, -21);
+        range_int_int_fail_helper(5, -10);
     }
 
     private static void range_long_long_helper(long a, long b, @NotNull String output) {
@@ -595,20 +705,28 @@ public strictfp class RandomProviderTest {
         aeqitLimitLog(TINY_LIMIT, P.range(a, b), output);
     }
 
+    private static void range_long_long_fail_helper(long a, long b) {
+        try {
+            P.range(a, b);
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+    }
+
     @Test
     public void testRange_long_long() {
         range_long_long_helper(10L, 20L, "RandomProvider_range_long_long_i");
         range_long_long_helper(10L, 10L, "RandomProvider_range_long_long_ii");
-        range_long_long_helper(10L, 9L, "RandomProvider_range_long_long_iii");
-        range_long_long_helper(-20L, -10L, "RandomProvider_range_long_long_iv");
-        range_long_long_helper(-20L, -20L, "RandomProvider_range_long_long_v");
-        range_long_long_helper(-20L, -21L, "RandomProvider_range_long_long_vi");
-        range_long_long_helper(0L, 0L, "RandomProvider_range_long_long_vii");
-        range_long_long_helper(0L, 10L, "RandomProvider_range_long_long_viii");
-        range_long_long_helper(-5L, 0L, "RandomProvider_range_long_long_ix");
-        range_long_long_helper(-5L, 10L, "RandomProvider_range_long_long_x");
-        range_long_long_helper(-10L, 5L, "RandomProvider_range_long_long_xii");
-        range_long_long_helper(5L, -10L, "RandomProvider_range_long_long_xiii");
+        range_long_long_helper(-20L, -10L, "RandomProvider_range_long_long_iii");
+        range_long_long_helper(-20L, -20L, "RandomProvider_range_long_long_iv");
+        range_long_long_helper(0L, 0L, "RandomProvider_range_long_long_v");
+        range_long_long_helper(0L, 10L, "RandomProvider_range_long_long_vi");
+        range_long_long_helper(-5L, 0L, "RandomProvider_range_long_long_vii");
+        range_long_long_helper(-5L, 10L, "RandomProvider_range_long_long_viii");
+        range_long_long_helper(-10L, 5L, "RandomProvider_range_long_long_ix");
+
+        range_long_long_fail_helper(10L, 9L);
+        range_long_long_fail_helper(-20L, -21L);
+        range_long_long_fail_helper(5L, -10L);
     }
 
     private static void range_BigInteger_BigInteger_helper(int a, int b, @NotNull String output) {
@@ -616,20 +734,28 @@ public strictfp class RandomProviderTest {
         P.reset();
     }
 
+    private static void range_BigInteger_BigInteger_fail_helper(int a, int b) {
+        try {
+            P.range(BigInteger.valueOf(a), BigInteger.valueOf(b));
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+    }
+
     @Test
     public void testRange_BigInteger_BigInteger() {
         range_BigInteger_BigInteger_helper(10, 20, "RandomProvider_range_BigInteger_BigInteger_i");
         range_BigInteger_BigInteger_helper(10, 10, "RandomProvider_range_BigInteger_BigInteger_ii");
-        range_BigInteger_BigInteger_helper(10, 9, "RandomProvider_range_BigInteger_BigInteger_iii");
-        range_BigInteger_BigInteger_helper(-20, -10, "RandomProvider_range_BigInteger_BigInteger_iv");
-        range_BigInteger_BigInteger_helper(-20, -20, "RandomProvider_range_BigInteger_BigInteger_v");
-        range_BigInteger_BigInteger_helper(-20, -21, "RandomProvider_range_BigInteger_BigInteger_vi");
-        range_BigInteger_BigInteger_helper(0, 0, "RandomProvider_range_BigInteger_BigInteger_vii");
-        range_BigInteger_BigInteger_helper(0, 10, "RandomProvider_range_BigInteger_BigInteger_viii");
-        range_BigInteger_BigInteger_helper(-5, 0, "RandomProvider_range_BigInteger_BigInteger_ix");
-        range_BigInteger_BigInteger_helper(-5, 10, "RandomProvider_range_BigInteger_BigInteger_x");
-        range_BigInteger_BigInteger_helper(-10, 5, "RandomProvider_range_BigInteger_BigInteger_xi");
-        range_BigInteger_BigInteger_helper(5, -10, "RandomProvider_range_BigInteger_BigInteger_xii");
+        range_BigInteger_BigInteger_helper(-20, -10, "RandomProvider_range_BigInteger_BigInteger_iii");
+        range_BigInteger_BigInteger_helper(-20, -20, "RandomProvider_range_BigInteger_BigInteger_iv");
+        range_BigInteger_BigInteger_helper(0, 0, "RandomProvider_range_BigInteger_BigInteger_v");
+        range_BigInteger_BigInteger_helper(0, 10, "RandomProvider_range_BigInteger_BigInteger_vi");
+        range_BigInteger_BigInteger_helper(-5, 0, "RandomProvider_range_BigInteger_BigInteger_vii");
+        range_BigInteger_BigInteger_helper(-5, 10, "RandomProvider_range_BigInteger_BigInteger_viii");
+        range_BigInteger_BigInteger_helper(-10, 5, "RandomProvider_range_BigInteger_BigInteger_ix");
+
+        range_BigInteger_BigInteger_fail_helper(10, 9);
+        range_BigInteger_BigInteger_fail_helper(-20, -21);
+        range_BigInteger_BigInteger_fail_helper(5, -10);
     }
 
     private static void range_char_char_helper(char a, char b, @NotNull String output) {
@@ -637,12 +763,20 @@ public strictfp class RandomProviderTest {
         P.reset();
     }
 
+    private static void range_char_char_fail_helper(char a, char b) {
+        try {
+            P.range(a, b);
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+    }
+
     @Test
     public void testRange_char_char() {
         range_char_char_helper('a', 'z', "RandomProvider_range_char_char_i");
         range_char_char_helper('a', 'a', "RandomProvider_range_char_char_ii");
         range_char_char_helper('!', '9', "RandomProvider_range_char_char_iii");
-        range_char_char_helper('a', 'A', "RandomProvider_range_char_char_iv");
+
+        range_char_char_fail_helper('a', 'A');
     }
 
     private static void geometricHelper(
@@ -656,14 +790,14 @@ public strictfp class RandomProviderTest {
         aeq(meanOfIntegers(sample), sampleMean);
     }
 
-    private static void positiveIntegersGeometric_helper(int mean, @NotNull String output, double sampleMean) {
-        geometricHelper(P.withScale(mean).positiveIntegersGeometric(), output, sampleMean);
+    private static void positiveIntegersGeometric_helper(int scale, @NotNull String output, double sampleMean) {
+        geometricHelper(P.withScale(scale).positiveIntegersGeometric(), output, sampleMean);
         P.reset();
     }
 
-    private static void positiveIntegersGeometric_fail_helper(int mean) {
+    private static void positiveIntegersGeometric_fail_helper(int scale) {
         try {
-            P.withScale(mean).positiveIntegersGeometric();
+            P.withScale(scale).positiveIntegersGeometric();
             fail();
         } catch (IllegalStateException ignored) {}
         finally {
@@ -679,19 +813,20 @@ public strictfp class RandomProviderTest {
         positiveIntegersGeometric_helper(5, "RandomProvider_positiveIntegersGeometric_iv", 5.004360000008482);
         positiveIntegersGeometric_helper(10, "RandomProvider_positiveIntegersGeometric_v", 9.996188000005418);
         positiveIntegersGeometric_helper(100, "RandomProvider_positiveIntegersGeometric_vi", 99.9640719999968);
+
         positiveIntegersGeometric_fail_helper(1);
         positiveIntegersGeometric_fail_helper(0);
         positiveIntegersGeometric_fail_helper(-1);
     }
 
-    private static void negativeIntegersGeometric_helper(int mean, @NotNull String output, double sampleMean) {
-        geometricHelper(P.withScale(mean).negativeIntegersGeometric(), output, sampleMean);
+    private static void negativeIntegersGeometric_helper(int scale, @NotNull String output, double sampleMean) {
+        geometricHelper(P.withScale(scale).negativeIntegersGeometric(), output, sampleMean);
         P.reset();
     }
 
-    private static void negativeIntegersGeometric_fail_helper(int mean) {
+    private static void negativeIntegersGeometric_fail_helper(int scale) {
         try {
-            P.withScale(mean).negativeIntegersGeometric();
+            P.withScale(scale).negativeIntegersGeometric();
             fail();
         } catch (IllegalStateException ignored) {}
         finally {
@@ -707,19 +842,20 @@ public strictfp class RandomProviderTest {
         negativeIntegersGeometric_helper(5, "RandomProvider_negativeIntegersGeometric_iv", -5.004360000008482);
         negativeIntegersGeometric_helper(10, "RandomProvider_negativeIntegersGeometric_v", -9.996188000005418);
         negativeIntegersGeometric_helper(100, "RandomProvider_negativeIntegersGeometric_vi", -99.9640719999968);
+
         negativeIntegersGeometric_fail_helper(1);
         negativeIntegersGeometric_fail_helper(0);
         negativeIntegersGeometric_fail_helper(-1);
     }
 
-    private static void naturalIntegersGeometric_helper(int mean, @NotNull String output, double sampleMean) {
-        geometricHelper(P.withScale(mean).naturalIntegersGeometric(), output, sampleMean);
+    private static void naturalIntegersGeometric_helper(int scale, @NotNull String output, double sampleMean) {
+        geometricHelper(P.withScale(scale).naturalIntegersGeometric(), output, sampleMean);
         P.reset();
     }
 
-    private static void naturalIntegersGeometric_fail_helper(int mean) {
+    private static void naturalIntegersGeometric_fail_helper(int scale) {
         try {
-            P.withScale(mean).naturalIntegersGeometric();
+            P.withScale(scale).naturalIntegersGeometric();
             fail();
         } catch (IllegalStateException ignored) {}
         finally {
@@ -736,26 +872,27 @@ public strictfp class RandomProviderTest {
         naturalIntegersGeometric_helper(5, "RandomProvider_naturalIntegersGeometric_v", 5.005650000005037);
         naturalIntegersGeometric_helper(10, "RandomProvider_naturalIntegersGeometric_vi", 9.996028000004106);
         naturalIntegersGeometric_helper(100, "RandomProvider_naturalIntegersGeometric_vii", 99.96387799999758);
+
         naturalIntegersGeometric_fail_helper(0);
         naturalIntegersGeometric_fail_helper(-1);
         naturalIntegersGeometric_fail_helper(Integer.MAX_VALUE);
     }
 
     private static void nonzeroIntegersGeometric_helper(
-            int mean,
+            int scale,
             @NotNull String output,
             double sampleMean,
             double sampleAbsMean
     ) {
-        List<Integer> xs = toList(take(DEFAULT_SAMPLE_SIZE, P.withScale(mean).nonzeroIntegersGeometric()));
+        List<Integer> xs = toList(take(DEFAULT_SAMPLE_SIZE, P.withScale(scale).nonzeroIntegersGeometric()));
         geometricHelper(xs, output, sampleMean);
         aeq(meanOfIntegers(toList(map(Math::abs, xs))), sampleAbsMean);
         P.reset();
     }
 
-    private static void nonzeroIntegersGeometric_fail_helper(int mean) {
+    private static void nonzeroIntegersGeometric_fail_helper(int scale) {
         try {
-            P.withScale(mean).nonzeroIntegersGeometric();
+            P.withScale(scale).nonzeroIntegersGeometric();
             fail();
         } catch (IllegalStateException ignored) {}
         finally {
@@ -801,6 +938,7 @@ public strictfp class RandomProviderTest {
                 -0.14496700000000257,
                 99.97359300000046
         );
+
         nonzeroIntegersGeometric_fail_helper(1);
         nonzeroIntegersGeometric_fail_helper(0);
         nonzeroIntegersGeometric_fail_helper(-1);
@@ -818,9 +956,9 @@ public strictfp class RandomProviderTest {
         P.reset();
     }
 
-    private static void integersGeometric_fail_helper(int mean) {
+    private static void integersGeometric_fail_helper(int scale) {
         try {
-            P.withScale(mean).integersGeometric();
+            P.withScale(scale).integersGeometric();
             fail();
         } catch (IllegalStateException ignored) {}
         finally {
@@ -837,19 +975,20 @@ public strictfp class RandomProviderTest {
         integersGeometric_helper(5, "RandomProvider_integersGeometric_v", 0.003408000000000304, 4.9993930000049955);
         integersGeometric_helper(10, "RandomProvider_integersGeometric_vi", 0.010864000000000018, 9.983633000004563);
         integersGeometric_helper(100, "RandomProvider_integersGeometric_vii", -0.1466660000000059, 99.86606600000295);
+
         integersGeometric_fail_helper(0);
         integersGeometric_fail_helper(-1);
         integersGeometric_fail_helper(Integer.MAX_VALUE);
     }
 
-    private static void rangeUpGeometric_helper(int mean, int a, @NotNull String output, double sampleMean) {
-        geometricHelper(P.withScale(mean).rangeUpGeometric(a), output, sampleMean);
+    private static void rangeUpGeometric_helper(int scale, int a, @NotNull String output, double sampleMean) {
+        geometricHelper(P.withScale(scale).rangeUpGeometric(a), output, sampleMean);
         P.reset();
     }
 
-    private static void rangeUpGeometric_fail_helper(int mean, int a) {
+    private static void rangeUpGeometric_fail_helper(int scale, int a) {
         try {
-            P.withScale(mean).rangeUpGeometric(a);
+            P.withScale(scale).rangeUpGeometric(a);
             fail();
         } catch (IllegalStateException ignored) {}
         finally {
@@ -877,19 +1016,20 @@ public strictfp class RandomProviderTest {
                 "RandomProvider_rangeUpGeometric_viii",
                 -2.1474836470149984E9
         );
+
         rangeUpGeometric_fail_helper(5, 5);
         rangeUpGeometric_fail_helper(4, 5);
         rangeUpGeometric_fail_helper(Integer.MAX_VALUE - 5, -10);
     }
 
-    private static void rangeDownGeometric_helper(int mean, int a, @NotNull String output, double sampleMean) {
-        geometricHelper(P.withScale(mean).rangeDownGeometric(a), output, sampleMean);
+    private static void rangeDownGeometric_helper(int scale, int a, @NotNull String output, double sampleMean) {
+        geometricHelper(P.withScale(scale).rangeDownGeometric(a), output, sampleMean);
         P.reset();
     }
 
-    private static void rangeDownGeometric_fail_helper(int mean, int a) {
+    private static void rangeDownGeometric_fail_helper(int scale, int a) {
         try {
-            P.withScale(mean).rangeDownGeometric(a);
+            P.withScale(scale).rangeDownGeometric(a);
             fail();
         } catch (IllegalStateException ignored) {}
         finally {
@@ -917,6 +1057,7 @@ public strictfp class RandomProviderTest {
                 "RandomProvider_rangeDownGeometric_viii",
                 -2.147483647372161E9
         );
+
         rangeDownGeometric_fail_helper(5, 5);
         rangeDownGeometric_fail_helper(6, 5);
         rangeDownGeometric_fail_helper(-5, Integer.MIN_VALUE);
@@ -926,28 +1067,28 @@ public strictfp class RandomProviderTest {
             @NotNull Iterable<BigInteger> xs,
             @NotNull String output,
             double sampleMean,
-            double bitSizeMean
+            double meanBitLength
     ) {
         List<BigInteger> sample = toList(take(DEFAULT_SAMPLE_SIZE, xs));
         aeqitLimitLog(TINY_LIMIT, sample, output);
         aeqMapLog(topSampleCount(DEFAULT_TOP_COUNT, sample), output);
         aeq(meanOfBigIntegers(sample), sampleMean);
-        aeq(meanOfIntegers(toList(map(x -> x.abs().bitLength(), sample))), bitSizeMean);
+        aeq(meanOfIntegers(toList(map(x -> x.abs().bitLength(), sample))), meanBitLength);
     }
 
     private static void positiveBigIntegers_helper(
-            int meanBitSize,
+            int scale,
             @NotNull String output,
             double sampleMean,
-            double bitSizeMean
+            double meanBitLength
     ) {
-        bigIntegerHelper(P.withScale(meanBitSize).positiveBigIntegers(), output, sampleMean, bitSizeMean);
+        bigIntegerHelper(P.withScale(scale).positiveBigIntegers(), output, sampleMean, meanBitLength);
         P.reset();
     }
 
-    private static void positiveBigIntegers_fail_helper(int meanBitSize) {
+    private static void positiveBigIntegers_fail_helper(int meanBitLength) {
         try {
-            P.withScale(meanBitSize).positiveBigIntegers();
+            P.withScale(meanBitLength).positiveBigIntegers();
             fail();
         } catch (IllegalStateException ignored) {}
         finally {
@@ -978,29 +1119,30 @@ public strictfp class RandomProviderTest {
                 Double.POSITIVE_INFINITY,
                 99.9771549999987
         );
+
         positiveBigIntegers_fail_helper(1);
         positiveBigIntegers_fail_helper(0);
         positiveBigIntegers_fail_helper(-1);
     }
 
     private static void negativeBigIntegers_helper(
-            int meanBitSize,
+            int scale,
             @NotNull String output,
             double sampleMean,
-            double bitSizeMean
+            double meanBitLength
     ) {
         bigIntegerHelper(
-                P.withScale(meanBitSize).negativeBigIntegers(),
+                P.withScale(scale).negativeBigIntegers(),
                 output,
                 sampleMean,
-                bitSizeMean
+                meanBitLength
         );
         P.reset();
     }
 
-    private static void negativeBigIntegers_fail_helper(int meanBitSize) {
+    private static void negativeBigIntegers_fail_helper(int scale) {
         try {
-            P.withScale(meanBitSize).negativeBigIntegers();
+            P.withScale(scale).negativeBigIntegers();
             fail();
         } catch (IllegalStateException ignored) {}
         finally {
@@ -1046,24 +1188,25 @@ public strictfp class RandomProviderTest {
                 Double.NEGATIVE_INFINITY,
                 99.9771549999987
         );
+
         negativeBigIntegers_fail_helper(1);
         negativeBigIntegers_fail_helper(0);
         negativeBigIntegers_fail_helper(-1);
     }
 
     private static void naturalBigIntegers_helper(
-            int meanBitSize,
+            int scale,
             @NotNull String output,
             double sampleMean,
-            double bitSizeMean
+            double meanBitLength
     ) {
-        bigIntegerHelper(P.withScale(meanBitSize).naturalBigIntegers(), output, sampleMean, bitSizeMean);
+        bigIntegerHelper(P.withScale(scale).naturalBigIntegers(), output, sampleMean, meanBitLength);
         P.reset();
     }
 
-    private static void naturalBigIntegers_fail_helper(int meanBitSize) {
+    private static void naturalBigIntegers_fail_helper(int scale) {
         try {
-            P.withScale(meanBitSize).naturalBigIntegers();
+            P.withScale(scale).naturalBigIntegers();
             fail();
         } catch (IllegalStateException ignored) {}
         finally {
@@ -1086,28 +1229,29 @@ public strictfp class RandomProviderTest {
         naturalBigIntegers_helper(10, "RandomProvider_naturalBigIntegers_vi", 6.216950515561165E39, 9.998042000004142);
         naturalBigIntegers_helper(
                 100,
-                "RandomProvider_naturalBigIntegers_100",
+                "RandomProvider_naturalBigIntegers_vii",
                 Double.POSITIVE_INFINITY,
                 99.9762349999981
         );
+
         naturalBigIntegers_fail_helper(0);
         naturalBigIntegers_fail_helper(-1);
         naturalBigIntegers_fail_helper(Integer.MAX_VALUE);
     }
 
     private static void nonzeroBigIntegers_helper(
-            int meanBitSize,
+            int scale,
             @NotNull String output,
             double sampleMean,
-            double bitSizeMean
+            double meanBitLength
     ) {
-        bigIntegerHelper(P.withScale(meanBitSize).nonzeroBigIntegers(), output, sampleMean, bitSizeMean);
+        bigIntegerHelper(P.withScale(scale).nonzeroBigIntegers(), output, sampleMean, meanBitLength);
         P.reset();
     }
 
-    private static void nonzeroBigIntegers_fail_helper(int meanBitSize) {
+    private static void nonzeroBigIntegers_fail_helper(int scale) {
         try {
-            P.withScale(meanBitSize).nonzeroBigIntegers();
+            P.withScale(scale).nonzeroBigIntegers();
             fail();
         } catch (IllegalStateException ignored) {}
         finally {
@@ -1128,29 +1272,30 @@ public strictfp class RandomProviderTest {
                 9.995175000005379
         );
         nonzeroBigIntegers_helper(100, "RandomProvider_nonzeroBigIntegers_vi", Double.NaN, 99.9676500000014);
+
         nonzeroBigIntegers_fail_helper(1);
         nonzeroBigIntegers_fail_helper(0);
         nonzeroBigIntegers_fail_helper(-1);
     }
 
     private static void bigIntegers_helper(
-            int meanBitSize,
+            int scale,
             @NotNull String output,
             double sampleMean,
-            double bitSizeMean
+            double meanBitLength
     ) {
         bigIntegerHelper(
-                P.withScale(meanBitSize).bigIntegers(),
+                P.withScale(scale).bigIntegers(),
                 output,
                 sampleMean,
-                bitSizeMean
+                meanBitLength
         );
         P.reset();
     }
 
-    private static void bigIntegers_fail_helper(int meanBitSize) {
+    private static void bigIntegers_fail_helper(int scale) {
         try {
-            P.withScale(meanBitSize).bigIntegers();
+            P.withScale(scale).bigIntegers();
             fail();
         } catch (IllegalStateException ignored) {}
         finally {
@@ -1167,25 +1312,26 @@ public strictfp class RandomProviderTest {
         bigIntegers_helper(5, "RandomProvider_bigIntegers_v", 5.6936067849711536E16, 5.009217000005041);
         bigIntegers_helper(10, "RandomProvider_bigIntegers_vi", -3.800274840387793E39, 9.993747000004165);
         bigIntegers_helper(100, "RandomProvider_bigIntegers_vii", Double.NaN, 99.96628299999787);
+
         bigIntegers_fail_helper(0);
         bigIntegers_fail_helper(-1);
         bigIntegers_fail_helper(Integer.MAX_VALUE);
     }
 
     private static void rangeUp_BigInteger_helper(
-            int meanBitSize,
+            int scale,
             int a,
             @NotNull String output,
             double sampleMean,
-            double bitSizeMean
+            double meanBitLength
     ) {
-        bigIntegerHelper(P.withScale(meanBitSize).rangeUp(BigInteger.valueOf(a)), output, sampleMean, bitSizeMean);
+        bigIntegerHelper(P.withScale(scale).rangeUp(BigInteger.valueOf(a)), output, sampleMean, meanBitLength);
         P.reset();
     }
 
-    private static void rangeUp_BigInteger_fail_helper(int meanBitSize, int a) {
+    private static void rangeUp_BigInteger_fail_helper(int scale, int a) {
         try {
-            P.withScale(meanBitSize).rangeUp(BigInteger.valueOf(a));
+            P.withScale(scale).rangeUp(BigInteger.valueOf(a));
             fail();
         } catch (IllegalStateException ignored) {}
         finally {
@@ -1259,30 +1405,31 @@ public strictfp class RandomProviderTest {
                 6.216950512238074E39,
                 9.998103000004235
         );
+
         rangeUp_BigInteger_fail_helper(4, 10);
         rangeUp_BigInteger_fail_helper(3, 10);
         rangeUp_BigInteger_fail_helper(Integer.MAX_VALUE, -10);
     }
 
     private static void rangeDown_BigInteger_helper(
-            int meanBitSize,
+            int scale,
             int a,
             @NotNull String output,
             double sampleMean,
-            double bitSizeMean
+            double meanBitLength
     ) {
         bigIntegerHelper(
-                P.withScale(meanBitSize).rangeDown(BigInteger.valueOf(a)),
+                P.withScale(scale).rangeDown(BigInteger.valueOf(a)),
                 output,
                 sampleMean,
-                bitSizeMean
+                meanBitLength
         );
         P.reset();
     }
 
-    private static void rangeDown_BigInteger_fail_helper(int meanBitSize, int a) {
+    private static void rangeDown_BigInteger_fail_helper(int scale, int a) {
         try {
-            P.withScale(meanBitSize).rangeDown(BigInteger.valueOf(a));
+            P.withScale(scale).rangeDown(BigInteger.valueOf(a));
             fail();
         } catch (IllegalStateException ignored) {}
         finally {
@@ -1362,6 +1509,7 @@ public strictfp class RandomProviderTest {
                 -7.070705170732308E21,
                 10.006835999993193
         );
+
         rangeDown_BigInteger_fail_helper(4, -10);
         rangeDown_BigInteger_fail_helper(3, -10);
         rangeDown_BigInteger_fail_helper(Integer.MAX_VALUE, 10);
@@ -1371,38 +1519,38 @@ public strictfp class RandomProviderTest {
             @NotNull Iterable<BinaryFraction> xs,
             @NotNull String output,
             double sampleMean,
-            double mantissaBitSizeMean,
+            double meanMantissaBitLength,
             double exponentMean
     ) {
         List<BinaryFraction> sample = toList(take(DEFAULT_SAMPLE_SIZE, xs));
         aeqitLimitLog(TINY_LIMIT, sample, output);
         aeqMapLog(topSampleCount(DEFAULT_TOP_COUNT, sample), output);
         aeq(meanOfBinaryFractions(sample), sampleMean);
-        aeq(meanOfIntegers(toList(map(x -> x.getMantissa().abs().bitLength(), sample))), mantissaBitSizeMean);
+        aeq(meanOfIntegers(toList(map(x -> x.getMantissa().abs().bitLength(), sample))), meanMantissaBitLength);
         aeq(meanOfIntegers(toList(map(x -> Math.abs(x.getExponent()), sample))), exponentMean);
     }
 
     private static void positiveBinaryFractions_helper(
-            int meanMantissaBitSize,
-            int meanExponentSize,
+            int scale,
+            int secondaryScale,
             @NotNull String output,
             double sampleMean,
-            double mantissaBitSizeMean,
+            double mantissaMeanBitLength,
             double exponentMean
     ) {
         binaryFractionHelper(
-                P.withScale(meanMantissaBitSize).withSecondaryScale(meanExponentSize).positiveBinaryFractions(),
+                P.withScale(scale).withSecondaryScale(secondaryScale).positiveBinaryFractions(),
                 output,
                 sampleMean,
-                mantissaBitSizeMean,
+                mantissaMeanBitLength,
                 exponentMean
         );
         P.reset();
     }
 
-    private static void positiveBinaryFractions_fail_helper(int meanMantissaBitSize, int meanExponentSize) {
+    private static void positiveBinaryFractions_fail_helper(int scale, int secondaryScale) {
         try {
-            P.withScale(meanMantissaBitSize).withSecondaryScale(meanExponentSize).positiveBinaryFractions();
+            P.withScale(scale).withSecondaryScale(secondaryScale).positiveBinaryFractions();
             fail();
         } catch (IllegalStateException ignored) {}
         finally {
@@ -1444,31 +1592,32 @@ public strictfp class RandomProviderTest {
                 99.91674399999913,
                 10.005905000005157
         );
+
         positiveBinaryFractions_fail_helper(1, 1);
         positiveBinaryFractions_fail_helper(2, 0);
     }
 
     private static void negativeBinaryFractions_helper(
-            int meanMantissaBitSize,
-            int meanExponentSize,
+            int scale,
+            int secondaryScale,
             @NotNull String output,
             double sampleMean,
-            double mantissaBitSizeMean,
+            double mantissaMeanBitLength,
             double exponentMean
     ) {
         binaryFractionHelper(
-                P.withScale(meanMantissaBitSize).withSecondaryScale(meanExponentSize).negativeBinaryFractions(),
+                P.withScale(scale).withSecondaryScale(secondaryScale).negativeBinaryFractions(),
                 output,
                 sampleMean,
-                mantissaBitSizeMean,
+                mantissaMeanBitLength,
                 exponentMean
         );
         P.reset();
     }
 
-    private static void negativeBinaryFractions_fail_helper(int meanMantissaBitSize, int meanExponentSize) {
+    private static void negativeBinaryFractions_fail_helper(int scale, int secondaryScale) {
         try {
-            P.withScale(meanMantissaBitSize).withSecondaryScale(meanExponentSize).negativeBinaryFractions();
+            P.withScale(scale).withSecondaryScale(secondaryScale).negativeBinaryFractions();
             fail();
         } catch (IllegalStateException ignored) {}
         finally {
@@ -1510,31 +1659,32 @@ public strictfp class RandomProviderTest {
                 99.91674399999913,
                 10.005905000005157
         );
+
         negativeBinaryFractions_fail_helper(1, 1);
         negativeBinaryFractions_fail_helper(2, 0);
     }
 
     private static void nonzeroBinaryFractions_helper(
-            int meanMantissaBitSize,
-            int meanExponentSize,
+            int scale,
+            int secondaryScale,
             @NotNull String output,
             double sampleMean,
-            double mantissaBitSizeMean,
+            double mantissaMeanBitLength,
             double exponentMean
     ) {
         binaryFractionHelper(
-                P.withScale(meanMantissaBitSize).withSecondaryScale(meanExponentSize).nonzeroBinaryFractions(),
+                P.withScale(scale).withSecondaryScale(secondaryScale).nonzeroBinaryFractions(),
                 output,
                 sampleMean,
-                mantissaBitSizeMean,
+                mantissaMeanBitLength,
                 exponentMean
         );
         P.reset();
     }
 
-    private static void nonzeroBinaryFractions_fail_helper(int meanMantissaBitSize, int meanExponentSize) {
+    private static void nonzeroBinaryFractions_fail_helper(int scale, int secondaryScale) {
         try {
-            P.withScale(meanMantissaBitSize).withSecondaryScale(meanExponentSize).nonzeroBinaryFractions();
+            P.withScale(scale).withSecondaryScale(secondaryScale).nonzeroBinaryFractions();
             fail();
         } catch (IllegalStateException ignored) {}
         finally {
@@ -1576,31 +1726,32 @@ public strictfp class RandomProviderTest {
                 99.89809500000158,
                 10.005882000004926
         );
+
         nonzeroBinaryFractions_fail_helper(1, 1);
         nonzeroBinaryFractions_fail_helper(2, 0);
     }
 
     private static void binaryFractions_helper(
-            int meanMantissaBitSize,
-            int meanExponentSize,
+            int scale,
+            int secondaryScale,
             @NotNull String output,
             double sampleMean,
-            double mantissaBitSizeMean,
+            double mantissaMeanBitLength,
             double exponentMean
     ) {
         binaryFractionHelper(
-                P.withScale(meanMantissaBitSize).withSecondaryScale(meanExponentSize).binaryFractions(),
+                P.withScale(scale).withSecondaryScale(secondaryScale).binaryFractions(),
                 output,
                 sampleMean,
-                mantissaBitSizeMean,
+                mantissaMeanBitLength,
                 exponentMean
         );
         P.reset();
     }
 
-    private static void binaryFractions_fail_helper(int meanMantissaBitSize, int meanExponentSize) {
+    private static void binaryFractions_fail_helper(int scale, int secondaryScale) {
         try {
-            P.withScale(meanMantissaBitSize).withSecondaryScale(meanExponentSize).binaryFractions();
+            P.withScale(scale).withSecondaryScale(secondaryScale).binaryFractions();
             fail();
         } catch (IllegalStateException ignored) {}
         finally {
@@ -1642,6 +1793,7 @@ public strictfp class RandomProviderTest {
                 99.8870699999952,
                 9.98571900000396
         );
+
         binaryFractions_fail_helper(1, 0);
         binaryFractions_fail_helper(0, 1);
     }
@@ -1652,14 +1804,14 @@ public strictfp class RandomProviderTest {
             @NotNull String a,
             @NotNull String output,
             double sampleMean,
-            double mantissaBitSizeMean,
+            double mantissaMeanBitLength,
             double exponentMean
     ) {
         binaryFractionHelper(
-                P.withScale(scale).withSecondaryScale(secondaryScale).rangeUp(BinaryFraction.read(a).get()),
+                P.withScale(scale).withSecondaryScale(secondaryScale).rangeUp(BinaryFraction.readStrict(a).get()),
                 output,
                 sampleMean,
-                mantissaBitSizeMean,
+                mantissaMeanBitLength,
                 exponentMean
         );
         P.reset();
@@ -1671,7 +1823,7 @@ public strictfp class RandomProviderTest {
             @NotNull String a
     ) {
         try {
-            P.withScale(scale).withSecondaryScale(secondaryScale).rangeUp(BinaryFraction.read(a).get());
+            P.withScale(scale).withSecondaryScale(secondaryScale).rangeUp(BinaryFraction.readStrict(a).get());
             fail();
         } catch (IllegalStateException ignored) {}
         finally {
@@ -1924,6 +2076,7 @@ public strictfp class RandomProviderTest {
                 36.9378720000084,
                 23.766452999822757
         );
+
         rangeUp_BinaryFraction_fail_helper(1, 0, "0");
         rangeUp_BinaryFraction_fail_helper(0, 1, "0");
     }
@@ -1934,14 +2087,14 @@ public strictfp class RandomProviderTest {
             @NotNull String a,
             @NotNull String output,
             double sampleMean,
-            double mantissaBitSizeMean,
+            double mantissaMeanBitLength,
             double exponentMean
     ) {
         binaryFractionHelper(
-                P.withScale(scale).withSecondaryScale(secondaryScale).rangeDown(BinaryFraction.read(a).get()),
+                P.withScale(scale).withSecondaryScale(secondaryScale).rangeDown(BinaryFraction.readStrict(a).get()),
                 output,
                 sampleMean,
-                mantissaBitSizeMean,
+                mantissaMeanBitLength,
                 exponentMean
         );
         P.reset();
@@ -1953,7 +2106,7 @@ public strictfp class RandomProviderTest {
             @NotNull String a
     ) {
         try {
-            P.withScale(scale).withSecondaryScale(secondaryScale).rangeDown(BinaryFraction.read(a).get());
+            P.withScale(scale).withSecondaryScale(secondaryScale).rangeDown(BinaryFraction.readStrict(a).get());
             fail();
         } catch (IllegalStateException ignored) {}
         finally {
@@ -2206,24 +2359,25 @@ public strictfp class RandomProviderTest {
                 37.07091300000956,
                 23.789788999822175
         );
+
         rangeDown_BinaryFraction_fail_helper(1, 0, "0");
         rangeDown_BinaryFraction_fail_helper(0, 1, "0");
     }
 
     private static void range_BinaryFraction_BinaryFraction_helper(
-            int meanDivisionSize,
+            int scale,
             @NotNull String a,
             @NotNull String b,
             @NotNull String output,
             double sampleMean,
-            double mantissaBitSizeMean,
+            double mantissaMeanBitLength,
             double exponentMean
     ) {
         binaryFractionHelper(
-                P.withScale(meanDivisionSize).range(BinaryFraction.read(a).get(), BinaryFraction.read(b).get()),
+                P.withScale(scale).range(BinaryFraction.readStrict(a).get(), BinaryFraction.readStrict(b).get()),
                 output,
                 sampleMean,
-                mantissaBitSizeMean,
+                mantissaMeanBitLength,
                 exponentMean
         );
         P.reset();
@@ -2235,9 +2389,12 @@ public strictfp class RandomProviderTest {
             @NotNull String b
     ) {
         try {
-            P.withScale(meanDivisionSize).range(BinaryFraction.read(a).get(), BinaryFraction.read(b).get());
+            P.withScale(meanDivisionSize).range(
+                    BinaryFraction.readStrict(a).get(),
+                    BinaryFraction.readStrict(b).get()
+            );
             fail();
-        } catch (IllegalStateException ignored) {}
+        } catch (IllegalStateException | IllegalArgumentException ignored) {}
         finally {
             P.reset();
         }
@@ -2328,36 +2485,9 @@ public strictfp class RandomProviderTest {
         );
         range_BinaryFraction_BinaryFraction_helper(
                 1,
-                "11",
-                "1",
-                "RandomProvider_range_BinaryFraction_BinaryFraction_x",
-                0.0,
-                0.0,
-                0.0
-        );
-        range_BinaryFraction_BinaryFraction_helper(
-                8,
-                "11",
-                "1",
-                "RandomProvider_range_BinaryFraction_BinaryFraction_xi",
-                0.0,
-                0.0,
-                0.0
-        );
-        range_BinaryFraction_BinaryFraction_helper(
-                32,
-                "11",
-                "1",
-                "RandomProvider_range_BinaryFraction_BinaryFraction_xii",
-                0.0,
-                0.0,
-                0.0
-        );
-        range_BinaryFraction_BinaryFraction_helper(
-                1,
                 "-11",
                 "-1",
-                "RandomProvider_range_BinaryFraction_BinaryFraction_xiii",
+                "RandomProvider_range_BinaryFraction_BinaryFraction_x",
                 -5.99957030201959,
                 3.041002999989865,
                 0.8979999999976223
@@ -2366,7 +2496,7 @@ public strictfp class RandomProviderTest {
                 8,
                 "-11",
                 "-1",
-                "RandomProvider_range_BinaryFraction_BinaryFraction_xiv",
+                "RandomProvider_range_BinaryFraction_BinaryFraction_xi",
                 -6.000382811731497,
                 9.872120000001026,
                 7.265317000023163
@@ -2375,7 +2505,7 @@ public strictfp class RandomProviderTest {
                 32,
                 "-11",
                 "-1",
-                "RandomProvider_range_BinaryFraction_BinaryFraction_xv",
+                "RandomProvider_range_BinaryFraction_BinaryFraction_xii",
                 -5.993683169675392,
                 33.930533000025925,
                 31.118525000020508
@@ -2384,79 +2514,52 @@ public strictfp class RandomProviderTest {
                 1,
                 "-11",
                 "-11",
+                "RandomProvider_range_BinaryFraction_BinaryFraction_xiii",
+                -11.000000000125029,
+                4.000000000031672,
+                0.0
+        );
+        range_BinaryFraction_BinaryFraction_helper(
+                8,
+                "-11",
+                "-11",
+                "RandomProvider_range_BinaryFraction_BinaryFraction_xiv",
+                -11.000000000125029,
+                4.000000000031672,
+                0.0
+        );
+        range_BinaryFraction_BinaryFraction_helper(
+                32,
+                "-11",
+                "-11",
+                "RandomProvider_range_BinaryFraction_BinaryFraction_xv",
+                -11.000000000125029,
+                4.000000000031672,
+                0.0
+        );
+        range_BinaryFraction_BinaryFraction_helper(
+                1,
+                "0",
+                "0",
                 "RandomProvider_range_BinaryFraction_BinaryFraction_xvi",
-                -11.000000000125029,
-                4.000000000031672,
+                0.0,
+                0.0,
                 0.0
         );
         range_BinaryFraction_BinaryFraction_helper(
                 8,
-                "-11",
-                "-11",
+                "0",
+                "0",
                 "RandomProvider_range_BinaryFraction_BinaryFraction_xvii",
-                -11.000000000125029,
-                4.000000000031672,
+                0.0,
+                0.0,
                 0.0
         );
         range_BinaryFraction_BinaryFraction_helper(
                 32,
-                "-11",
-                "-11",
+                "0",
+                "0",
                 "RandomProvider_range_BinaryFraction_BinaryFraction_xviii",
-                -11.000000000125029,
-                4.000000000031672,
-                0.0
-        );
-        range_BinaryFraction_BinaryFraction_helper(
-                1,
-                "-1",
-                "-11",
-                "RandomProvider_range_BinaryFraction_BinaryFraction_xix",
-                0.0,
-                0.0,
-                0.0
-        );
-        range_BinaryFraction_BinaryFraction_helper(
-                8,
-                "-1",
-                "-11",
-                "RandomProvider_range_BinaryFraction_BinaryFraction_xx",
-                0.0,
-                0.0,
-                0.0
-        );
-        range_BinaryFraction_BinaryFraction_helper(
-                32,
-                "-1",
-                "-11",
-                "RandomProvider_range_BinaryFraction_BinaryFraction_xxi",
-                0.0,
-                0.0,
-                0.0
-        );
-        range_BinaryFraction_BinaryFraction_helper(
-                1,
-                "0",
-                "0",
-                "RandomProvider_range_BinaryFraction_BinaryFraction_xxii",
-                0.0,
-                0.0,
-                0.0
-        );
-        range_BinaryFraction_BinaryFraction_helper(
-                8,
-                "0",
-                "0",
-                "RandomProvider_range_BinaryFraction_BinaryFraction_xxiii",
-                0.0,
-                0.0,
-                0.0
-        );
-        range_BinaryFraction_BinaryFraction_helper(
-                32,
-                "0",
-                "0",
-                "RandomProvider_range_BinaryFraction_BinaryFraction_xxiv",
                 0.0,
                 0.0,
                 0.0
@@ -2465,7 +2568,7 @@ public strictfp class RandomProviderTest {
                 1,
                 "0",
                 "11",
-                "RandomProvider_range_BinaryFraction_BinaryFraction_xxv",
+                "RandomProvider_range_BinaryFraction_BinaryFraction_xix",
                 5.500143323903409,
                 3.3425789999888273,
                 1.332903999990955
@@ -2474,7 +2577,7 @@ public strictfp class RandomProviderTest {
                 8,
                 "0",
                 "11",
-                "RandomProvider_range_BinaryFraction_BinaryFraction_xxvi",
+                "RandomProvider_range_BinaryFraction_BinaryFraction_xx",
                 5.506818198260208,
                 10.507393999999584,
                 8.069741000021585
@@ -2483,7 +2586,7 @@ public strictfp class RandomProviderTest {
                 32,
                 "0",
                 "11",
-                "RandomProvider_range_BinaryFraction_BinaryFraction_xxvii",
+                "RandomProvider_range_BinaryFraction_BinaryFraction_xxi",
                 5.496573980658701,
                 34.57617900002571,
                 32.06209300002209
@@ -2492,7 +2595,7 @@ public strictfp class RandomProviderTest {
                 1,
                 "-1",
                 "11",
-                "RandomProvider_range_BinaryFraction_BinaryFraction_xxviii",
+                "RandomProvider_range_BinaryFraction_BinaryFraction_xxii",
                 5.0041785453242,
                 2.6294259999877116,
                 0.4159939999985251
@@ -2501,7 +2604,7 @@ public strictfp class RandomProviderTest {
                 8,
                 "-1",
                 "11",
-                "RandomProvider_range_BinaryFraction_BinaryFraction_xxix",
+                "RandomProvider_range_BinaryFraction_BinaryFraction_xxiii",
                 4.9984930497873075,
                 8.580130000010076,
                 6.434966000015122
@@ -2510,7 +2613,7 @@ public strictfp class RandomProviderTest {
                 32,
                 "-1",
                 "11",
-                "RandomProvider_range_BinaryFraction_BinaryFraction_xxx",
+                "RandomProvider_range_BinaryFraction_BinaryFraction_xxiv",
                 4.999216990832369,
                 32.37837700003206,
                 30.164890000018275
@@ -2519,7 +2622,7 @@ public strictfp class RandomProviderTest {
                 1,
                 "5 >> 20",
                 "1",
-                "RandomProvider_range_BinaryFraction_BinaryFraction_xxxi",
+                "RandomProvider_range_BinaryFraction_BinaryFraction_xxv",
                 0.4997954880458359,
                 19.500193000030965,
                 20.501135000022167
@@ -2528,7 +2631,7 @@ public strictfp class RandomProviderTest {
                 8,
                 "5 >> 20",
                 "1",
-                "RandomProvider_range_BinaryFraction_BinaryFraction_xxxii",
+                "RandomProvider_range_BinaryFraction_BinaryFraction_xxvi",
                 0.5002054052455298,
                 26.88661500001311,
                 27.885368000000607
@@ -2537,7 +2640,7 @@ public strictfp class RandomProviderTest {
                 32,
                 "5 >> 20",
                 "1",
-                "RandomProvider_range_BinaryFraction_BinaryFraction_xxxiii",
+                "RandomProvider_range_BinaryFraction_BinaryFraction_xxvii",
                 0.5002069628278691,
                 51.01174300001681,
                 52.01118400001777
@@ -2546,7 +2649,7 @@ public strictfp class RandomProviderTest {
                 1,
                 "1",
                 "5 << 20",
-                "RandomProvider_range_BinaryFraction_BinaryFraction_xxxiv",
+                "RandomProvider_range_BinaryFraction_BinaryFraction_xxviii",
                 2619927.4664051863,
                 21.896850000033783,
                 1.5024889999887836
@@ -2555,7 +2658,7 @@ public strictfp class RandomProviderTest {
                 8,
                 "1",
                 "5 << 20",
-                "RandomProvider_range_BinaryFraction_BinaryFraction_xxxv",
+                "RandomProvider_range_BinaryFraction_BinaryFraction_xxix",
                 2622974.6827238556,
                 29.287213999973005,
                 8.10811100002023
@@ -2564,14 +2667,16 @@ public strictfp class RandomProviderTest {
                 32,
                 "1",
                 "5 << 20",
-                "RandomProvider_range_BinaryFraction_BinaryFraction_xxxvi",
+                "RandomProvider_range_BinaryFraction_BinaryFraction_xxx",
                 2621934.787841631,
                 53.410762000035774,
                 32.06946100002204
         );
+
         range_BinaryFraction_BinaryFraction_fail_helper(0, "0", "1");
         range_BinaryFraction_BinaryFraction_fail_helper(-1, "0", "1");
         range_BinaryFraction_BinaryFraction_fail_helper(Integer.MAX_VALUE, "0", "1");
+        range_BinaryFraction_BinaryFraction_fail_helper(1, "1", "0");
     }
 
     @Test
@@ -2698,6 +2803,7 @@ public strictfp class RandomProviderTest {
         rangeUp_float_helper(-Float.MAX_VALUE, "RandomProvider_rangeUp_float_xvi", -5.4709615E33f);
         rangeUp_float_helper(Float.POSITIVE_INFINITY, "RandomProvider_rangeUp_float_xvii", Float.POSITIVE_INFINITY);
         rangeUp_float_helper(Float.NEGATIVE_INFINITY, "RandomProvider_rangeUp_float_xviii", -5.471121E33f);
+
         rangeUp_float_fail_helper(Float.NaN);
     }
 
@@ -2737,6 +2843,7 @@ public strictfp class RandomProviderTest {
                 "RandomProvider_rangeDown_float_xviii",
                 Float.NEGATIVE_INFINITY
         );
+
         rangeDown_float_fail_helper(Float.NaN);
     }
 
@@ -2749,7 +2856,7 @@ public strictfp class RandomProviderTest {
         try {
             P.range(a, b);
             fail();
-        } catch (ArithmeticException ignored) {}
+        } catch (ArithmeticException | IllegalArgumentException ignored) {}
     }
 
     @Test
@@ -2818,15 +2925,11 @@ public strictfp class RandomProviderTest {
                 "RandomProvider_range_float_float_xix",
                 Float.NEGATIVE_INFINITY
         );
-        range_float_float_helper(1.0f, -1.0f, "RandomProvider_range_float_float_xx", 0.0f);
-        range_float_float_helper(
-                Float.POSITIVE_INFINITY,
-                Float.NEGATIVE_INFINITY,
-                "RandomProvider_range_float_float_xxi",
-                0.0f
-        );
-        range_float_float_helper(Float.POSITIVE_INFINITY, 1.0f, "RandomProvider_range_float_float_xxii", 0.0f);
-        range_float_float_helper(1.0f, Float.NEGATIVE_INFINITY, "RandomProvider_range_float_float_xxiii", 0.0f);
+        range_float_float_helper(0.0f, 0.0f, "RandomProvider_range_float_float_xx", 0.0f);
+        range_float_float_helper(0.0f, -0.0f, "RandomProvider_range_float_float_xxi", 0.0f);
+        range_float_float_helper(-0.0f, 0.0f, "RandomProvider_range_float_float_xxii", 0.0f);
+        range_float_float_helper(-0.0f, -0.0f, "RandomProvider_range_float_float_xxiii", 0.0f);
+
         range_float_float_fail_helper(Float.NaN, 1.0f);
         range_float_float_fail_helper(Float.NaN, Float.POSITIVE_INFINITY);
         range_float_float_fail_helper(Float.NaN, Float.NEGATIVE_INFINITY);
@@ -2834,6 +2937,7 @@ public strictfp class RandomProviderTest {
         range_float_float_fail_helper(Float.POSITIVE_INFINITY, Float.NaN);
         range_float_float_fail_helper(Float.NEGATIVE_INFINITY, Float.NaN);
         range_float_float_fail_helper(Float.NaN, Float.NaN);
+        range_float_float_fail_helper(1.0f, 0.0f);
     }
 
     private static void rangeUp_double_helper(double a, @NotNull String output, double sampleMean) {
@@ -2876,6 +2980,7 @@ public strictfp class RandomProviderTest {
                 "RandomProvider_rangeUp_double_xviii",
                 -3.959346934339273E303
         );
+
         rangeUp_double_fail_helper(Double.NaN);
     }
 
@@ -2919,6 +3024,7 @@ public strictfp class RandomProviderTest {
                 "RandomProvider_rangeDown_double_xviii",
                 Double.NEGATIVE_INFINITY
         );
+
         rangeDown_double_fail_helper(Double.NaN);
     }
 
@@ -2931,7 +3037,7 @@ public strictfp class RandomProviderTest {
         try {
             P.range(a, b);
             fail();
-        } catch (ArithmeticException ignored) {}
+        } catch (ArithmeticException | IllegalArgumentException ignored) {}
     }
 
     @Test
@@ -3000,15 +3106,11 @@ public strictfp class RandomProviderTest {
                 "RandomProvider_range_double_double_xix",
                 Double.NEGATIVE_INFINITY
         );
-        range_double_double_helper(1.0, -1.0, "RandomProvider_range_double_double_xx", 0.0);
-        range_double_double_helper(
-                Double.POSITIVE_INFINITY,
-                Double.NEGATIVE_INFINITY,
-                "RandomProvider_range_double_double_xxi",
-                0.0
-        );
-        range_double_double_helper(Double.POSITIVE_INFINITY, 1.0, "RandomProvider_range_double_double_xxii", 0.0);
-        range_double_double_helper(1.0, Double.NEGATIVE_INFINITY, "RandomProvider_range_double_double_xxiii", 0.0);
+        range_double_double_helper(0.0, 0.0, "RandomProvider_range_double_double_xx", 0.0);
+        range_double_double_helper(0.0, -0.0, "RandomProvider_range_double_double_xxi", 0.0);
+        range_double_double_helper(-0.0, 0.0, "RandomProvider_range_double_double_xxii", 0.0);
+        range_double_double_helper(-0.0, -0.0, "RandomProvider_range_double_double_xxiii", 0.0);
+
         range_double_double_fail_helper(Double.NaN, 1.0);
         range_double_double_fail_helper(Double.NaN, Double.POSITIVE_INFINITY);
         range_double_double_fail_helper(Double.NaN, Double.NEGATIVE_INFINITY);
@@ -3016,6 +3118,7 @@ public strictfp class RandomProviderTest {
         range_double_double_fail_helper(Double.POSITIVE_INFINITY, Double.NaN);
         range_double_double_fail_helper(Double.NEGATIVE_INFINITY, Double.NaN);
         range_double_double_fail_helper(Double.NaN, Double.NaN);
+        range_double_double_fail_helper(1.0f, 0.0f);
     }
 
     private static void rangeUpUniform_float_helper(float a, @NotNull String output, float sampleMean) {
@@ -3115,7 +3218,7 @@ public strictfp class RandomProviderTest {
         try {
             P.rangeUniform(a, b);
             fail();
-        } catch (ArithmeticException ignored) {}
+        } catch (ArithmeticException | IllegalArgumentException ignored) {}
     }
 
     @Test
@@ -3142,7 +3245,10 @@ public strictfp class RandomProviderTest {
         rangeUniform_float_float_helper(0.0f, 1.0f, "RandomProvider_rangeUniform_float_float_x", 0.50023586f);
         rangeUniform_float_float_helper(-1.0f, 1.0f, "RandomProvider_rangeUniform_float_float_xi", -3.822554E-4f);
         rangeUniform_float_float_helper(1.0f, 1.0f, "RandomProvider_rangeUniform_float_float_xii", 1.0090389f);
-        rangeUniform_float_float_helper(1.0f, -1.0f, "RandomProvider_rangeUniform_float_float_xiii", 0.0f);
+        rangeUniform_float_float_helper(0.0f, 0.0f, "RandomProvider_rangeUniform_float_float_xiii", 0.0f);
+        rangeUniform_float_float_helper(0.0f, -0.0f, "RandomProvider_rangeUniform_float_float_xiv", 0.0f);
+        rangeUniform_float_float_helper(-0.0f, 0.0f, "RandomProvider_rangeUniform_float_float_xv", 0.0f);
+        rangeUniform_float_float_helper(-0.0f, -0.0f, "RandomProvider_rangeUniform_float_float_xvi", 0.0f);
 
         rangeUniform_float_float_fail_helper(Float.POSITIVE_INFINITY, 1.0f);
         rangeUniform_float_float_fail_helper(Float.NEGATIVE_INFINITY, 1.0f);
@@ -3150,6 +3256,7 @@ public strictfp class RandomProviderTest {
         rangeUniform_float_float_fail_helper(1.0f, Float.POSITIVE_INFINITY);
         rangeUniform_float_float_fail_helper(1.0f, Float.NEGATIVE_INFINITY);
         rangeUniform_float_float_fail_helper(1.0f, Float.NaN);
+        rangeUniform_float_float_fail_helper(1.0f, 0.0f);
     }
 
     private static void rangeUpUniform_double_helper(double a, @NotNull String output, double sampleMean) {
@@ -3278,6 +3385,7 @@ public strictfp class RandomProviderTest {
                 "RandomProvider_rangeDownUniform_double_xvi",
                 Double.NEGATIVE_INFINITY
         );
+
         rangeDownUniform_double_fail_helper(Double.POSITIVE_INFINITY);
         rangeDownUniform_double_fail_helper(Double.NEGATIVE_INFINITY);
         rangeDownUniform_double_fail_helper(Double.NaN);
@@ -3297,7 +3405,7 @@ public strictfp class RandomProviderTest {
         try {
             P.rangeUniform(a, b);
             fail();
-        } catch (ArithmeticException ignored) {}
+        } catch (ArithmeticException | IllegalArgumentException ignored) {}
     }
 
     @Test
@@ -3364,7 +3472,10 @@ public strictfp class RandomProviderTest {
                 "RandomProvider_rangeUniform_double_double_xii",
                 1.000000000007918
         );
-        rangeUniform_double_double_helper(1.0, -1.0, "RandomProvider_rangeUniform_double_double_xiii", 0.0);
+        rangeUniform_double_double_helper(0.0, 0.0, "RandomProvider_rangeUniform_double_double_xiii", 0.0);
+        rangeUniform_double_double_helper(0.0, -0.0, "RandomProvider_rangeUniform_double_double_xiv", 0.0);
+        rangeUniform_double_double_helper(-0.0, 0.0, "RandomProvider_rangeUniform_double_double_xv", 0.0);
+        rangeUniform_double_double_helper(-0.0, -0.0, "RandomProvider_rangeUniform_double_double_xvi", 0.0);
 
         rangeUniform_double_double_fail_helper(Double.POSITIVE_INFINITY, 1.0);
         rangeUniform_double_double_fail_helper(Double.NEGATIVE_INFINITY, 1.0);
@@ -3372,6 +3483,7 @@ public strictfp class RandomProviderTest {
         rangeUniform_double_double_fail_helper(1.0, Double.POSITIVE_INFINITY);
         rangeUniform_double_double_fail_helper(1.0, Double.NEGATIVE_INFINITY);
         rangeUniform_double_double_fail_helper(1.0, Double.NaN);
+        rangeUniform_double_double_fail_helper(1.0, 0.0);
     }
 
     private static void bigDecimalHelper(
@@ -3451,6 +3563,7 @@ public strictfp class RandomProviderTest {
                 99.91674399999913,
                 10.005905000005157
         );
+
         positiveBigDecimals_fail_helper(1, 1);
         positiveBigDecimals_fail_helper(2, 0);
     }
@@ -3517,6 +3630,7 @@ public strictfp class RandomProviderTest {
                 99.91674399999913,
                 10.005905000005157
         );
+
         negativeBigDecimals_fail_helper(1, 1);
         negativeBigDecimals_fail_helper(2, 0);
     }
@@ -3583,6 +3697,7 @@ public strictfp class RandomProviderTest {
                 99.9163349999983,
                 10.004244000004174
         );
+
         nonzeroBigDecimals_fail_helper(1, 1);
         nonzeroBigDecimals_fail_helper(2, 0);
     }
@@ -3649,6 +3764,7 @@ public strictfp class RandomProviderTest {
                 99.91854699999466,
                 10.00440500000418
         );
+
         bigDecimals_fail_helper(0, 1);
         bigDecimals_fail_helper(2, 0);
     }
@@ -3715,6 +3831,7 @@ public strictfp class RandomProviderTest {
                 99.93904899999788,
                 10.005566000005233
         );
+
         positiveCanonicalBigDecimals_fail_helper(1, 1);
         positiveCanonicalBigDecimals_fail_helper(2, 0);
     }
@@ -3781,6 +3898,7 @@ public strictfp class RandomProviderTest {
                 99.93904899999788,
                 10.005566000005233
         );
+
         negativeCanonicalBigDecimals_fail_helper(1, 1);
         negativeCanonicalBigDecimals_fail_helper(2, 0);
     }
@@ -3847,6 +3965,7 @@ public strictfp class RandomProviderTest {
                 99.93122599999683,
                 10.008305000004126
         );
+
         nonzeroCanonicalBigDecimals_fail_helper(1, 1);
         nonzeroCanonicalBigDecimals_fail_helper(2, 0);
     }
@@ -3913,6 +4032,7 @@ public strictfp class RandomProviderTest {
                 99.93086299999682,
                 10.008105000004125
         );
+
         canonicalBigDecimals_fail_helper(1, 1);
         canonicalBigDecimals_fail_helper(2, 0);
     }
@@ -4492,6 +4612,7 @@ public strictfp class RandomProviderTest {
                 98.06712599995508,
                 15.959104999996125
         );
+
         rangeUp_BigDecimal_fail_helper(1, 1, "0");
         rangeUp_BigDecimal_fail_helper(2, 0, "0");
     }
@@ -5071,6 +5192,7 @@ public strictfp class RandomProviderTest {
                 98.11771199995576,
                 15.959104999996125
         );
+
         rangeDown_BigDecimal_fail_helper(1, 1, "0");
         rangeDown_BigDecimal_fail_helper(2, 0, "0");
     }
@@ -5106,7 +5228,7 @@ public strictfp class RandomProviderTest {
             P.withScale(scale).withSecondaryScale(secondaryScale)
                     .range(Readers.readBigDecimalStrict(a).get(), Readers.readBigDecimalStrict(b).get());
             fail();
-        } catch (IllegalStateException ignored) {}
+        } catch (IllegalStateException | IllegalArgumentException ignored) {}
         finally {
             P.reset();
         }
@@ -5714,38 +5836,10 @@ public strictfp class RandomProviderTest {
                 27.0739779999554,
                 7.996049000016875
         );
-        range_BigDecimal_BigDecimal_helper(
-                1,
-                1,
-                "5",
-                "3",
-                "RandomProvider_range_BigDecimal_BigDecimal_lxx",
-                0.0,
-                0.0,
-                0.0
-        );
-        range_BigDecimal_BigDecimal_helper(
-                5,
-                3,
-                "5",
-                "3",
-                "RandomProvider_range_BigDecimal_BigDecimal_lxxi",
-                0.0,
-                0.0,
-                0.0
-        );
-        range_BigDecimal_BigDecimal_helper(
-                32,
-                8,
-                "5",
-                "3",
-                "RandomProvider_range_BigDecimal_BigDecimal_lxxii",
-                0.0,
-                0.0,
-                0.0
-        );
+
         range_BigDecimal_BigDecimal_fail_helper(0, 1, "0", "1");
         range_BigDecimal_BigDecimal_fail_helper(1, 0, "0", "1");
+        range_BigDecimal_BigDecimal_fail_helper(1, 1, "5", "3");
     }
 
     private static void rangeUpCanonical_BigDecimal_helper(
@@ -6325,6 +6419,7 @@ public strictfp class RandomProviderTest {
                 71.79637100000163,
                 7.9745270000163195
         );
+
         rangeUpCanonical_BigDecimal_fail_helper(1, 1, "0");
         rangeUpCanonical_BigDecimal_fail_helper(2, 0, "0");
     }
@@ -6906,6 +7001,7 @@ public strictfp class RandomProviderTest {
                 71.84684600000809,
                 7.9745270000163195
         );
+
         rangeDownCanonical_BigDecimal_fail_helper(1, 1, "0");
         rangeDownCanonical_BigDecimal_fail_helper(2, 0, "0");
     }
@@ -6941,7 +7037,7 @@ public strictfp class RandomProviderTest {
             P.withScale(scale).withSecondaryScale(secondaryScale)
                     .rangeCanonical(Readers.readBigDecimalStrict(a).get(), Readers.readBigDecimalStrict(b).get());
             fail();
-        } catch (IllegalStateException ignored) {}
+        } catch (IllegalStateException | IllegalArgumentException ignored) {}
         finally {
             P.reset();
         }
@@ -7549,38 +7645,10 @@ public strictfp class RandomProviderTest {
                 1.000000000007918,
                 0.0
         );
-        rangeCanonical_BigDecimal_BigDecimal_helper(
-                1,
-                1,
-                "5",
-                "3",
-                "RandomProvider_rangeCanonical_BigDecimal_BigDecimal_lxi",
-                0.0,
-                0.0,
-                0.0
-        );
-        rangeCanonical_BigDecimal_BigDecimal_helper(
-                5,
-                3,
-                "5",
-                "3",
-                "RandomProvider_rangeCanonical_BigDecimal_BigDecimal_lxii",
-                0.0,
-                0.0,
-                0.0
-        );
-        rangeCanonical_BigDecimal_BigDecimal_helper(
-                32,
-                8,
-                "5",
-                "3",
-                "RandomProvider_rangeCanonical_BigDecimal_BigDecimal_lxiii",
-                0.0,
-                0.0,
-                0.0
-        );
+
         rangeCanonical_BigDecimal_BigDecimal_fail_helper(0, 1, "0", "1");
         rangeCanonical_BigDecimal_BigDecimal_fail_helper(1, 0, "0", "1");
+        rangeCanonical_BigDecimal_BigDecimal_fail_helper(1, 1, "5", "3");
     }
 
     private static void withElement_helper(
@@ -7597,6 +7665,17 @@ public strictfp class RandomProviderTest {
         P.reset();
     }
 
+    private static void withElement_fail_helper(
+            int scale,
+            @NotNull Iterable<Integer> input,
+            @Nullable Integer element
+    ) {
+        try {
+            toList(P.withScale(scale).withElement(element, input));
+            fail();
+        } catch (IllegalArgumentException | IllegalStateException ignored) {}
+    }
+
     @Test
     public void testWithElement() {
         withElement_helper(2, "[1]", null, "RandomProvider_withElement_i", 0.4992549999935604);
@@ -7606,14 +7685,8 @@ public strictfp class RandomProviderTest {
         withElement_helper(8, "[null, 2, 3]", 10, "RandomProvider_withElement_v", 0.12480700000010415);
         withElement_helper(32, "[null, 2, 3]", 10, "RandomProvider_withElement_vi", 0.031218000000010567);
 
-        try {
-            toList(P.withElement(null, readIntegerListWithNulls("[1, 2, 3]")));
-            fail();
-        } catch (IllegalArgumentException ignored) {}
-        try {
-            P.withScale(1).withElement(null, cycle(readIntegerListWithNulls("[1, 2, 3]")));
-            fail();
-        } catch (IllegalStateException ignored) {}
+        withElement_fail_helper(32, Arrays.asList(1, 2, 3), null);
+        withElement_fail_helper(1, cycle(Arrays.asList(1, 2, 3)), null);
     }
 
     private static void withNull_helper(
@@ -7629,6 +7702,13 @@ public strictfp class RandomProviderTest {
         P.reset();
     }
 
+    private static void withNull_fail_helper(int scale, @NotNull Iterable<Integer> input) {
+        try {
+            toList(P.withScale(scale).withNull(input));
+            fail();
+        } catch (IllegalArgumentException | IllegalStateException ignored) {}
+    }
+
     @Test
     public void testWithNull() {
         withNull_helper(2, "[1]", "RandomProvider_withNull_i", 0.4992549999935604);
@@ -7638,14 +7718,8 @@ public strictfp class RandomProviderTest {
         withNull_helper(8, "[1, 2, 3]", "RandomProvider_withNull_v", 0.12480700000010415);
         withNull_helper(32, "[1, 2, 3]", "RandomProvider_withNull_vi", 0.031218000000010567);
 
-        try {
-            toList(P.withNull(readIntegerListWithNulls("[1, 2, 3]")));
-            fail();
-        } catch (IllegalArgumentException ignored) {}
-        try {
-            P.withScale(1).withNull(cycle(readIntegerListWithNulls("[1, 2, 3]")));
-            fail();
-        } catch (IllegalStateException ignored) {}
+        withNull_fail_helper(32, Arrays.asList(1, 2, 3));
+        withNull_fail_helper(1, cycle(Arrays.asList(1, 2, 3)));
     }
 
     private static void optionalsHelper(
@@ -7661,6 +7735,13 @@ public strictfp class RandomProviderTest {
         P.reset();
     }
 
+    private static void optionals_fail_helper(int scale, @NotNull Iterable<Integer> input) {
+        try {
+            toList(P.withScale(scale).optionals(input));
+            fail();
+        } catch (IllegalArgumentException | IllegalStateException ignored) {}
+    }
+
     @Test
     public void testOptionals() {
         optionalsHelper(2, "[1]", "RandomProvider_optionals_i", 0.4992549999935604);
@@ -7670,14 +7751,8 @@ public strictfp class RandomProviderTest {
         optionalsHelper(8, "[1, 2, 3]", "RandomProvider_optionals_v", 0.12480700000010415);
         optionalsHelper(32, "[1, 2, 3]", "RandomProvider_optionals_vi", 0.031218000000010567);
 
-        try {
-            toList(P.optionals(readIntegerListWithNulls("[1, 2, 3]")));
-            fail();
-        } catch (IllegalArgumentException ignored) {}
-        try {
-            P.withScale(1).optionals(cycle(readIntegerListWithNulls("[1, 2, 3]")));
-            fail();
-        } catch (IllegalStateException ignored) {}
+        optionals_fail_helper(32, Arrays.asList(1, 2, 3));
+        optionals_fail_helper(1, cycle(Arrays.asList(1, 2, 3)));
     }
 
     private static void nullableOptionals_helper(
@@ -7694,6 +7769,13 @@ public strictfp class RandomProviderTest {
         P.reset();
     }
 
+    private static void nullableOptionals_fail_helper(int scale, @NotNull Iterable<Integer> input) {
+        try {
+            toList(P.withScale(scale).nullableOptionals(input));
+            fail();
+        } catch (IllegalArgumentException | IllegalStateException ignored) {}
+    }
+
     @Test
     public void testNullableOptionals() {
         nullableOptionals_helper(2, "[1]", "RandomProvider_nullableOptionals_i", 0.4992549999935604);
@@ -7703,53 +7785,38 @@ public strictfp class RandomProviderTest {
         nullableOptionals_helper(8, "[null, 2, 3]", "RandomProvider_nullableOptionals_v", 0.12480700000010415);
         nullableOptionals_helper(32, "[null, 2, 3]", "RandomProvider_nullableOptionals_vi", 0.031218000000010567);
 
+        nullableOptionals_fail_helper(32, Arrays.asList(1, 2, 3));
+        nullableOptionals_fail_helper(1, cycle(Arrays.asList(1, 2, 3)));
+    }
+
+    private static <A, B> void dependentPairsInfinite_fail_helper(
+            @NotNull Iterable<A> xs,
+            @NotNull Function<A, Iterable<B>> f
+    ) {
         try {
-            toList(P.nullableOptionals(readIntegerListWithNulls("[1, 2, 3]")));
+            toList(P.dependentPairsInfinite(xs, f));
             fail();
-        } catch (IllegalArgumentException ignored) {}
-        try {
-            P.withScale(1).nullableOptionals(cycle(readIntegerListWithNulls("[1, 2, 3]")));
-            fail();
-        } catch (IllegalStateException ignored) {}
+        } catch (NoSuchElementException | NullPointerException ignored) {}
     }
 
     @Test
     public void dependentPairsInfiniteTest() {
         aeqitLimitLog(
                 TINY_LIMIT,
-                P.dependentPairsInfinite(P.range(1, 5), i -> P.strings(i, charsToString(range('a', 'z')))),
+                P.dependentPairsInfinite(
+                        P.range(1, 5),
+                        i -> P.strings(i, charsToString(ExhaustiveProvider.INSTANCE.rangeIncreasing('a', 'z')))
+                ),
                 "RandomProvider_dependentPairsInfinite"
         );
         P.reset();
 
-        try {
-            toList(P.dependentPairsInfinite(P.range(1, 5), i -> null));
-            fail();
-        } catch (NullPointerException ignored) {}
-
-        try {
-            toList(
-                    P.dependentPairsInfinite(
-                            ExhaustiveProvider.INSTANCE.range(1, 5),
-                            i -> P.strings(i, charsToString(range('a', 'z')))
-                    )
-            );
-            fail();
-        } catch (NoSuchElementException ignored) {}
-
-        try {
-            toList(
-                    P.dependentPairsInfinite(
-                            P.range(1, 5),
-                            i -> ExhaustiveProvider.INSTANCE.range('a', 'z')
-                    )
-            );
-            fail();
-        } catch (NoSuchElementException ignored) {}
-    }
-
-    private static void shuffle_helper(@NotNull String input, @NotNull String output) {
-        shuffle_helper(readIntegerListWithNulls(input), output);
+        dependentPairsInfinite_fail_helper(P.range(1, 5), i -> null);
+        dependentPairsInfinite_fail_helper(
+                ExhaustiveProvider.INSTANCE.range(1, 5),
+                i -> P.strings(i, charsToString(ExhaustiveProvider.INSTANCE.rangeIncreasing('a', 'z')))
+        );
+        dependentPairsInfinite_fail_helper(P.range(1, 5), i -> ExhaustiveProvider.INSTANCE.range('a', 'z'));
     }
 
     private static void shuffle_helper(@NotNull List<Integer> input, @NotNull String output) {
@@ -7757,6 +7824,10 @@ public strictfp class RandomProviderTest {
         P.shuffle(xs);
         aeqit(xs, output);
         P.reset();
+    }
+
+    private static void shuffle_helper(@NotNull String input, @NotNull String output) {
+        shuffle_helper(readIntegerListWithNulls(input), output);
     }
 
     @Test
@@ -7770,7 +7841,8 @@ public strictfp class RandomProviderTest {
         shuffle_helper("[2, 2, 2, 2]", "[2, 2, 2, 2]");
         shuffle_helper("[3, 1, 4, 1]", "[1, 1, 3, 4]");
         shuffle_helper("[3, 1, null, 1]", "[1, 1, 3, null]");
-        shuffle_helper(toList(IterableUtils.range(1, 10)), "[10, 4, 1, 9, 8, 7, 5, 2, 3, 6]");
+
+        shuffle_helper(toList(ExhaustiveProvider.INSTANCE.rangeIncreasing(1, 10)), "[10, 4, 1, 9, 8, 7, 5, 2, 3, 6]");
     }
 
     private static void permutationsFinite_helper(@NotNull String input, @NotNull String output) {
@@ -7795,7 +7867,9 @@ public strictfp class RandomProviderTest {
         permutationsFinite_helper("[2, 2, 2, 2]", "RandomProvider_permutationsFinite_vii");
         permutationsFinite_helper("[3, 1, 4, 1]", "RandomProvider_permutationsFinite_viii");
         permutationsFinite_helper("[3, 1, null, 1]", "RandomProvider_permutationsFinite_ix");
-        permutationsFinite_helper(toList(IterableUtils.range(1, 10)), "RandomProvider_permutationsFinite_x");
+
+        permutationsFinite_helper(toList(ExhaustiveProvider.INSTANCE.rangeIncreasing(1, 10)),
+                "RandomProvider_permutationsFinite_x");
     }
 
     private static void stringPermutations_helper(@NotNull String input, @NotNull String output) {
@@ -7901,6 +7975,7 @@ public strictfp class RandomProviderTest {
         prefixPermutations_helper(1, repeat(1), "RandomProvider_prefixPermutations_xxxiv");
         prefixPermutations_helper(2, repeat(1), "RandomProvider_prefixPermutations_xxxv");
         prefixPermutations_helper(4, repeat(1), "RandomProvider_prefixPermutations_xxxvi");
+
         prefixPermutations_fail_helper(0, "[1, 2, 3]");
         prefixPermutations_fail_helper(-1, "[1, 2, 3]");
     }
@@ -8064,6 +8139,7 @@ public strictfp class RandomProviderTest {
         lists_Iterable_helper(1, repeat(1), "RandomProvider_lists_Iterable_xxv", 1.0008359999977228);
         lists_Iterable_helper(2, repeat(1), "RandomProvider_lists_Iterable_xxvi", 2.0020969999891216);
         lists_Iterable_helper(4, repeat(1), "RandomProvider_lists_Iterable_xxvii", 4.004359999991779);
+
         lists_Iterable_fail_helper(1, Collections.emptyList());
         lists_Iterable_fail_helper(1, Arrays.asList(1, 2, 3));
         lists_Iterable_fail_helper(0, P.integers());
@@ -8107,6 +8183,7 @@ public strictfp class RandomProviderTest {
         strings_String_helper(1, "Mississippi", "RandomProvider_strings_String_x", 0.9996679999977037);
         strings_String_helper(2, "Mississippi", "RandomProvider_strings_String_xi", 2.0026269999890762);
         strings_String_helper(4, "Mississippi", "RandomProvider_strings_String_xii", 4.0051349999917525);
+
         strings_String_fail_helper(1, "");
         strings_String_fail_helper(0, "abc");
         strings_String_fail_helper(-1, "abc");
@@ -8135,6 +8212,7 @@ public strictfp class RandomProviderTest {
         strings_helper(1, "RandomProvider_strings_i", 1.0006389999976706);
         strings_helper(2, "RandomProvider_strings_ii", 2.0037019999891394);
         strings_helper(4, "RandomProvider_strings_iii", 4.00571499999147);
+
         strings_fail_helper(0);
         strings_fail_helper(-1);
     }
@@ -8374,6 +8452,7 @@ public strictfp class RandomProviderTest {
         stringsAtLeast_int_helper(2, 1, "RandomProvider_stringsAtLeast_int_i", 1.999585999979838);
         stringsAtLeast_int_helper(5, 3, "RandomProvider_stringsAtLeast_int_ii", 5.00315899999616);
         stringsAtLeast_int_helper(32, 8, "RandomProvider_stringsAtLeast_int_iii", 32.008717000021356);
+
         stringsAtLeast_int_fail_helper(5, 5);
         stringsAtLeast_int_fail_helper(4, 5);
     }
@@ -9471,6 +9550,7 @@ public strictfp class RandomProviderTest {
         stringBagsAtLeast_int_helper(2, 1, "RandomProvider_stringBagsAtLeast_int_i", 1.999585999979838);
         stringBagsAtLeast_int_helper(5, 3, "RandomProvider_stringBagsAtLeast_int_ii", 5.00315899999616);
         stringBagsAtLeast_int_helper(32, 8, "RandomProvider_stringBagsAtLeast_int_iii", 32.008717000021356);
+
         stringBagsAtLeast_int_fail_helper(5, 5);
         stringBagsAtLeast_int_fail_helper(4, 5);
     }
@@ -9968,7 +10048,12 @@ public strictfp class RandomProviderTest {
         eithers_fail_helper(-1, P.naturalIntegers(), P.negativeIntegers());
     }
 
-    private static void choose_helper(int scale, @NotNull String as, @NotNull String bs, @NotNull String output) {
+    private static void choose_Iterable_Iterable_helper(
+            int scale,
+            @NotNull String as,
+            @NotNull String bs,
+            @NotNull String output
+    ) {
         List<Integer> sample = toList(
                 take(
                         DEFAULT_SAMPLE_SIZE,
@@ -9983,7 +10068,11 @@ public strictfp class RandomProviderTest {
         P.reset();
     }
 
-    private static void choose_fail_helper(int scale, @NotNull Iterable<Integer> as, @NotNull Iterable<Integer> bs) {
+    private static void choose_Iterable_Iterable_fail_helper(
+            int scale,
+            @NotNull Iterable<Integer> as,
+            @NotNull Iterable<Integer> bs
+    ) {
         try {
             toList(P.withScale(scale).choose(as, bs));
             fail();
@@ -9994,19 +10083,55 @@ public strictfp class RandomProviderTest {
     }
 
     @Test
-    public void testChoose() {
-        choose_helper(1, "[1]", "[2]", "RandomProvider_choose_i");
-        choose_helper(2, "[1]", "[2]", "RandomProvider_choose_ii");
-        choose_helper(10, "[1]", "[2]", "RandomProvider_choose_iii");
-        choose_helper(1, "[1, 2, 3]", "[null, -2, -3]", "RandomProvider_choose_iv");
-        choose_helper(2, "[1, 2, 3]", "[null, -2, -3]", "RandomProvider_choose_v");
-        choose_helper(10, "[1, 2, 3]", "[null, -2, -3]", "RandomProvider_choose_vi");
+    public void testChoose_Iterable_Iterable() {
+        choose_Iterable_Iterable_helper(1, "[1]", "[2]", "RandomProvider_choose_Iterable_Iterable_i");
+        choose_Iterable_Iterable_helper(2, "[1]", "[2]", "RandomProvider_choose_Iterable_Iterable_ii");
+        choose_Iterable_Iterable_helper(10, "[1]", "[2]", "RandomProvider_choose_Iterable_Iterable_iii");
+        choose_Iterable_Iterable_helper(1, "[1, 2, 3]", "[null, -2, -3]",
+                "RandomProvider_choose_Iterable_Iterable_iv");
+        choose_Iterable_Iterable_helper(2, "[1, 2, 3]", "[null, -2, -3]", "RandomProvider_choose_Iterable_Iterable_v");
+        choose_Iterable_Iterable_helper(10, "[1, 2, 3]", "[null, -2, -3]",
+                "RandomProvider_choose_Iterable_Iterable_vi");
 
-        choose_fail_helper(1, Arrays.asList(-1, -2, -3), P.naturalIntegers());
-        choose_fail_helper(1, P.naturalIntegers(), Arrays.asList(-1, -2, -3));
-        choose_fail_helper(1, Arrays.asList(1, 2, 3), Arrays.asList(-1, -2, -3));
-        choose_fail_helper(0, P.naturalIntegers(), P.negativeIntegers());
-        choose_fail_helper(-1, P.naturalIntegers(), P.negativeIntegers());
+        choose_Iterable_Iterable_fail_helper(1, Arrays.asList(-1, -2, -3), P.naturalIntegers());
+        choose_Iterable_Iterable_fail_helper(1, P.naturalIntegers(), Arrays.asList(-1, -2, -3));
+        choose_Iterable_Iterable_fail_helper(1, Arrays.asList(1, 2, 3), Arrays.asList(-1, -2, -3));
+        choose_Iterable_Iterable_fail_helper(0, P.naturalIntegers(), P.negativeIntegers());
+        choose_Iterable_Iterable_fail_helper(-1, P.naturalIntegers(), P.negativeIntegers());
+    }
+
+    private static void choose_Iterable_helper(@NotNull String input, @NotNull String output) {
+        List<Integer> sample = toList(
+                take(
+                        DEFAULT_SAMPLE_SIZE,
+                        P.choose(toList(map(xs -> P.uniformSample(xs), readIntegerListWithNullsListsWithNulls(input))))
+                )
+        );
+        aeqitLimitLog(TINY_LIMIT, sample, output);
+        aeqMapLog(topSampleCount(DEFAULT_TOP_COUNT, sample), output);
+        P.reset();
+    }
+
+    private static void choose_Iterable_fail_helper(@NotNull List<Iterable<Integer>> input) {
+        try {
+            toList(P.choose(input));
+            fail();
+        } catch (IllegalArgumentException | NullPointerException | NoSuchElementException ignored) {}
+        finally {
+            P.reset();
+        }
+    }
+
+    @Test
+    public void testChoose_Iterable() {
+        choose_Iterable_helper("[[1], [10]]", "RandomProvider_choose_Iterable_i");
+        choose_Iterable_helper("[[1], [10, 11, 12]]", "RandomProvider_choose_Iterable_ii");
+        choose_Iterable_helper("[[1, 2, 3], [10, 11], [100, null, 102, 103]]", "RandomProvider_choose_Iterable_iii");
+
+        choose_Iterable_fail_helper(Collections.emptyList());
+        choose_Iterable_fail_helper(Arrays.asList(P.uniformSample(Arrays.asList(1, 2, 3)), null));
+        choose_Iterable_fail_helper(Arrays.asList(P.uniformSample(Arrays.asList(1, 2, 3)), Collections.emptyList()));
+        choose_Iterable_fail_helper(Arrays.asList(P.uniformSample(Arrays.asList(1, 2, 3)), Arrays.asList(4, 5, 6)));
     }
 
     private static void cartesianProduct_helper(@NotNull String xss, @NotNull String output) {
@@ -10105,6 +10230,7 @@ public strictfp class RandomProviderTest {
                 P.positiveIntegersGeometric(),
                 "RandomProvider_repeatingIterablesDistinctAtLeast_iii"
         );
+
         repeatingIterablesDistinctAtLeast_fail_helper(1, 1, P.positiveIntegers());
         repeatingIterablesDistinctAtLeast_fail_helper(1, -1, P.positiveIntegers());
     }
@@ -10726,42 +10852,42 @@ public strictfp class RandomProviderTest {
         stringsWithSubstrings_Iterable_String_String_helper(
                 2,
                 P.uniformSample(Collections.singletonList("")),
-                charsToString(range('a', 'z')),
+                charsToString(ExhaustiveProvider.INSTANCE.rangeIncreasing('a', 'z')),
                 "RandomProvider_stringsWithSubstrings_Iterable_String_String_i",
                 2.0001649999875575
         );
         stringsWithSubstrings_Iterable_String_String_helper(
                 16,
                 P.uniformSample(Collections.singletonList("")),
-                charsToString(range('a', 'z')),
+                charsToString(ExhaustiveProvider.INSTANCE.rangeIncreasing('a', 'z')),
                 "RandomProvider_stringsWithSubstrings_Iterable_String_String_ii",
                 15.980978999996648
         );
         stringsWithSubstrings_Iterable_String_String_helper(
                 2,
                 P.uniformSample(Collections.singletonList("cat")),
-                charsToString(range('a', 'z')),
+                charsToString(ExhaustiveProvider.INSTANCE.rangeIncreasing('a', 'z')),
                 "RandomProvider_stringsWithSubstrings_Iterable_String_String_iii",
                 5.000164999985253
         );
         stringsWithSubstrings_Iterable_String_String_helper(
                 16,
                 P.uniformSample(Collections.singletonList("cat")),
-                charsToString(range('a', 'z')),
+                charsToString(ExhaustiveProvider.INSTANCE.rangeIncreasing('a', 'z')),
                 "RandomProvider_stringsWithSubstrings_Iterable_String_String_iv",
                 18.980979000012418
         );
         stringsWithSubstrings_Iterable_String_String_helper(
                 2,
                 map(f -> Float.toString(f), P.floats()),
-                charsToString(range('0', '9')),
+                charsToString(ExhaustiveProvider.INSTANCE.rangeIncreasing('0', '9')),
                 "RandomProvider_stringsWithSubstrings_Iterable_String_String_v",
                 14.31768299994003
         );
         stringsWithSubstrings_Iterable_String_String_helper(
                 16,
                 map(f -> Float.toString(f), P.floats()),
-                charsToString(range('0', '9')),
+                charsToString(ExhaustiveProvider.INSTANCE.rangeIncreasing('0', '9')),
                 "RandomProvider_stringsWithSubstrings_Iterable_String_String_vi",
                 28.306307000011344
         );
@@ -10769,7 +10895,7 @@ public strictfp class RandomProviderTest {
         stringsWithSubstrings_Iterable_String_String_fail_helper(
                 1,
                 P.uniformSample(Collections.singletonList("cat")),
-                charsToString(range('a', 'z'))
+                charsToString(ExhaustiveProvider.INSTANCE.rangeIncreasing('a', 'z'))
         );
     }
 
@@ -10839,6 +10965,7 @@ public strictfp class RandomProviderTest {
                 "RandomProvider_stringsWithSubstrings_Iterable_String_vi",
                 28.30002600001155
         );
+
         stringsWithSubstrings_Iterable_String_fail_helper(1, P.uniformSample(Collections.singletonList("cat")));
     }
 
@@ -10899,6 +11026,7 @@ public strictfp class RandomProviderTest {
                 "RandomProvider_randomProvidersDefaultSecondaryAndTertiaryScale_i");
         randomProvidersDefaultSecondaryAndTertiaryScale_helper(8,
                 "RandomProvider_randomProvidersDefaultSecondaryAndTertiaryScale_ii");
+
         randomProvidersDefaultSecondaryAndTertiaryScale_fail_helper(0);
         randomProvidersDefaultSecondaryAndTertiaryScale_fail_helper(-1);
     }
@@ -10929,6 +11057,7 @@ public strictfp class RandomProviderTest {
     public void testRandomProvidersDefaultTertiaryScale() {
         randomProvidersDefaultTertiaryScale_helper(1, 10, "RandomProvider_randomProvidersDefaultTertiaryScale_i");
         randomProvidersDefaultTertiaryScale_helper(8, 5, "RandomProvider_randomProvidersDefaultTertiaryScale_ii");
+
         randomProvidersDefaultTertiaryScale_fail_helper(0, -5);
         randomProvidersDefaultTertiaryScale_fail_helper(-1, 5);
     }
@@ -10951,6 +11080,7 @@ public strictfp class RandomProviderTest {
     public void testRandomProviders() {
         randomProviders_helper(1, "RandomProvider_randomProviders_i");
         randomProviders_helper(8, "RandomProvider_randomProviders_ii");
+
         randomProviders_fail_helper(0);
         randomProviders_fail_helper(-1);
     }
@@ -10972,32 +11102,49 @@ public strictfp class RandomProviderTest {
         assertFalse(P.equals("hello"));
     }
 
+    private static void hashCode_helper(
+            @NotNull RandomProvider rp,
+            int scale,
+            int secondaryScale,
+            int tertiaryScale,
+            int output
+    ) {
+        aeq(
+                rp.withScale(scale).withSecondaryScale(secondaryScale).withTertiaryScale(tertiaryScale).hashCode(),
+                output
+        );
+    }
+
     @Test
     public void testHashCode() {
-        aeq(P.hashCode(), -1291053760);
-        aeq(Q.withScale(3).withSecondaryScale(0).withTertiaryScale(-1).hashCode(), 1656156693);
-        aeq(R.withScale(0).withSecondaryScale(10).withTertiaryScale(5).hashCode(), -453720855);
+        hashCode_helper(P, 32, 8, 2, -1291053760);
+        hashCode_helper(Q, 3, 0, -1, 1656156693);
+        hashCode_helper(R, 0, 10, 5, -453720855);
+    }
+
+    private static void toString_helper(
+            @NotNull RandomProvider rp,
+            int scale,
+            int secondaryScale,
+            int tertiaryScale,
+            @NotNull String output
+    ) {
+        aeq(rp.withScale(scale).withSecondaryScale(secondaryScale).withTertiaryScale(tertiaryScale), output);
     }
 
     @Test
     public void testToString() {
-        aeq(P, "RandomProvider[@-8800290164235921060, 32, 8, 2]");
-        aeq(
-                Q.withScale(3).withSecondaryScale(0).withTertiaryScale(-1),
-                "RandomProvider[@-7948823947390831374, 3, 0, -1]"
-        );
-        aeq(
-                R.withScale(0).withSecondaryScale(10).withTertiaryScale(5),
-                "RandomProvider[@2449928962525148503, 0, 10, 5]"
-        );
+        toString_helper(P, 32, 8, 2, "RandomProvider[@-8800290164235921060, 32, 8, 2]");
+        toString_helper(Q, 3, 0, -1, "RandomProvider[@-7948823947390831374, 3, 0, -1]");
+        toString_helper(R, 0, 10, 5, "RandomProvider[@2449928962525148503, 0, 10, 5]");
     }
 
     private static double meanOfIntegers(@NotNull List<Integer> xs) {
-        return sumDouble(map(i -> (double) i / DEFAULT_SAMPLE_SIZE, xs));
+        return sumDouble(toList(map(i -> (double) i / DEFAULT_SAMPLE_SIZE, xs)));
     }
 
     private static double meanOfBigIntegers(@NotNull List<BigInteger> xs) {
-        return sumDouble(map(i -> i.doubleValue() / DEFAULT_SAMPLE_SIZE, xs));
+        return sumDouble(toList(map(i -> i.doubleValue() / DEFAULT_SAMPLE_SIZE, xs)));
     }
 
     private static @NotNull List<Integer> readIntegerListWithNulls(@NotNull String s) {
@@ -11010,19 +11157,19 @@ public strictfp class RandomProviderTest {
     }
 
     private static double meanOfBinaryFractions(@NotNull List<BinaryFraction> xs) {
-        return sumDouble(map(bf -> bf.doubleRange().a / DEFAULT_SAMPLE_SIZE, xs));
+        return sumDouble(toList(map(bf -> bf.doubleRange().a / DEFAULT_SAMPLE_SIZE, xs)));
     }
 
     private static float meanOfFloats(@NotNull List<Float> xs) {
-        return sumFloat(map(f -> f / DEFAULT_SAMPLE_SIZE, xs));
+        return sumFloat(toList(map(f -> f / DEFAULT_SAMPLE_SIZE, xs)));
     }
 
     private static double meanOfDoubles(@NotNull List<Double> xs) {
-        return sumDouble(map(d -> d / DEFAULT_SAMPLE_SIZE, xs));
+        return sumDouble(toList(map(d -> d / DEFAULT_SAMPLE_SIZE, xs)));
     }
 
     private static double meanOfBigDecimals(@NotNull List<BigDecimal> xs) {
-        return sumDouble(map(bd -> bd.doubleValue() / DEFAULT_SAMPLE_SIZE, xs));
+        return sumDouble(toList(map(bd -> bd.doubleValue() / DEFAULT_SAMPLE_SIZE, xs)));
     }
 }
 // @formatter:on

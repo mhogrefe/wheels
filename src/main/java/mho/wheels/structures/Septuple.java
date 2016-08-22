@@ -92,8 +92,39 @@ public final class Septuple<A, B, C, D, E, F, G> {
         this.g = g;
     }
 
+    /**
+     * Converts a {@code Septuple} of seven values of the same type to a {@code List}.
+     *
+     * <ul>
+     *  <li>{@code s} cannot be null.</li>
+     *  <li>The result has length 7.</li>
+     * </ul>
+     *
+     * @param s a {@code Septuple}
+     * @param <T> the type of all values of {@code s}
+     * @return a {@code List} containing the values of {@code s}
+     */
     public static <T> List<T> toList(Septuple<T, T, T, T, T, T, T> s) {
         return Arrays.asList(s.a, s.b, s.c, s.d, s.e, s.f, s.g);
+    }
+
+    /**
+     * Converts a {@code List} of seven values to a {@code Septuple}.
+     *
+     * <ul>
+     *  <li>{@code xs} must have length 7.</li>
+     *  <li>The result is not null.</li>
+     * </ul>
+     *
+     * @param xs a {@code List}
+     * @param <T> the type of the elements in {@code xs}
+     * @return a {@code Septuple} containing the values of {@code xs}
+     */
+    public static <T> Septuple<T, T, T, T, T, T, T> fromList(@NotNull List<T> xs) {
+        if (xs.size() != 7) {
+            throw new IllegalArgumentException("xs must have length 7. Invalid xs: " + xs);
+        }
+        return new Septuple<>(xs.get(0), xs.get(1), xs.get(2), xs.get(3), xs.get(4), xs.get(5), xs.get(6));
     }
 
     /**
@@ -132,10 +163,7 @@ public final class Septuple<A, B, C, D, E, F, G> {
             E extends Comparable<E>,
             F extends Comparable<F>,
             G extends Comparable<G>
-            > Ordering compare(
-            @NotNull Septuple<A, B, C, D, E, F, G> p,
-            @NotNull Septuple<A, B, C, D, E, F, G> q
-    ) {
+            > Ordering compare(@NotNull Septuple<A, B, C, D, E, F, G> p, @NotNull Septuple<A, B, C, D, E, F, G> q) {
         Ordering aOrdering = Ordering.compare(p.a, q.a);
         if (aOrdering != EQ) return aOrdering;
         Ordering bOrdering = Ordering.compare(p.b, q.b);
@@ -163,6 +191,7 @@ public final class Septuple<A, B, C, D, E, F, G> {
      * @param that The {@code Septuple} to be compared with {@code this}
      * @return {@code this}={@code that}
      */
+    @SuppressWarnings("ConstantConditions")
     @Override
     public boolean equals(Object that) {
         if (this == that) return true;
@@ -204,8 +233,7 @@ public final class Septuple<A, B, C, D, E, F, G> {
      * {@code "(" + a + ", " + b + ", " + c + ", " + d + ", " + e + ", " + f + ", " + g + ")"}, where {@code a},
      * {@code b}, {@code c}, {@code d}, {@code e}, {@code f}, and {@code g} are valid {@code String}s for their types.
      * {@code a}, {@code b}, {@code c}, {@code d}, {@code e}, and {@code f} must not contain the {@code String}
-     * {@code ", "}, because this will confuse the parser. If the {@code String} is invalid, the method returns
-     * {@code Optional.empty()} without throwing an exception; this aids composability.
+     * {@code ", "}, because this will confuse the parser.
      *
      * <ul>
      *  <li>{@code s} must be non-null.</li>
@@ -229,7 +257,7 @@ public final class Septuple<A, B, C, D, E, F, G> {
      * @param <G> the type of the {@code Septuple}'s seventh value
      * @return the {@code Septuple} represented by {@code s}, or an empty {@code Optional} if {@code s} is invalid
      */
-    public static @NotNull <A, B, C, D, E, F, G> Optional<Septuple<A, B, C, D, E, F, G>> read(
+    public static @NotNull <A, B, C, D, E, F, G> Optional<Septuple<A, B, C, D, E, F, G>> readStrict(
             @NotNull String s,
             @NotNull Function<String, NullableOptional<A>> readA,
             @NotNull Function<String, NullableOptional<B>> readB,
@@ -240,24 +268,85 @@ public final class Septuple<A, B, C, D, E, F, G> {
             @NotNull Function<String, NullableOptional<G>> readG
     ) {
         if (s.length() < 2 || head(s) != '(' || last(s) != ')') return Optional.empty();
-        s = tail(init(s));
-        String[] tokens = s.split(", ");
-        if (tokens.length != 7) return Optional.empty();
-        NullableOptional<A> oa = readA.apply(tokens[0]);
-        if (!oa.isPresent()) return Optional.empty();
-        NullableOptional<B> ob = readB.apply(tokens[1]);
-        if (!ob.isPresent()) return Optional.empty();
-        NullableOptional<C> oc = readC.apply(tokens[2]);
-        if (!oc.isPresent()) return Optional.empty();
-        NullableOptional<D> od = readD.apply(tokens[3]);
-        if (!od.isPresent()) return Optional.empty();
-        NullableOptional<E> oe = readE.apply(tokens[4]);
-        if (!oe.isPresent()) return Optional.empty();
-        NullableOptional<F> of = readF.apply(tokens[5]);
-        if (!of.isPresent()) return Optional.empty();
-        NullableOptional<G> og = readG.apply(tokens[6]);
-        if (!og.isPresent()) return Optional.empty();
-        return Optional.of(new Septuple<>(oa.get(), ob.get(), oc.get(), od.get(), oe.get(), of.get(), og.get()));
+        s = middle(s);
+        A a = null;
+        B b = null;
+        C c = null;
+        D d = null;
+        E e = null;
+        F f = null;
+        G g = null;
+        StringBuilder sb = new StringBuilder();
+        int i = 0;
+        for (String token : s.split(", ")) {
+            if (sb.length() != 0) {
+                sb.append(", ");
+            }
+            sb.append(token);
+            switch (i) {
+                case 0:
+                    NullableOptional<A> oa = readA.apply(sb.toString());
+                    if (oa.isPresent()) {
+                        a = oa.get();
+                        i++;
+                        sb = new StringBuilder();
+                    }
+                    break;
+                case 1:
+                    NullableOptional<B> ob = readB.apply(sb.toString());
+                    if (ob.isPresent()) {
+                        b = ob.get();
+                        i++;
+                        sb = new StringBuilder();
+                    }
+                    break;
+                case 2:
+                    NullableOptional<C> oc = readC.apply(sb.toString());
+                    if (oc.isPresent()) {
+                        c = oc.get();
+                        i++;
+                        sb = new StringBuilder();
+                    }
+                    break;
+                case 3:
+                    NullableOptional<D> od = readD.apply(sb.toString());
+                    if (od.isPresent()) {
+                        d = od.get();
+                        i++;
+                        sb = new StringBuilder();
+                    }
+                    break;
+                case 4:
+                    NullableOptional<E> oe = readE.apply(sb.toString());
+                    if (oe.isPresent()) {
+                        e = oe.get();
+                        i++;
+                        sb = new StringBuilder();
+                    }
+                    break;
+                case 5:
+                    NullableOptional<F> of = readF.apply(sb.toString());
+                    if (of.isPresent()) {
+                        f = of.get();
+                        i++;
+                        sb = new StringBuilder();
+                    }
+                    break;
+                case 6:
+                    NullableOptional<G> og = readG.apply(sb.toString());
+                    if (og.isPresent()) {
+                        g = og.get();
+                        i++;
+                        sb = new StringBuilder();
+                    }
+                    break;
+                default:
+                    return Optional.empty();
+            }
+        }
+
+        if (i != 7) return Optional.empty();
+        return Optional.of(new Septuple<>(a, b, c, d, e, f, g));
     }
 
     /**
@@ -363,8 +452,8 @@ public final class Septuple<A, B, C, D, E, F, G> {
         }
 
         /**
-         * Compares two {@code Septuple}s, returning 1, –1, or 0 if the answer is "greater than", "less than", or
-         * "equal to", respectively.
+         * Compares two {@code Septuple}s lexicographically, returning 1, –1, or 0 if the answer is "greater than",
+         * "less than", or "equal to", respectively.
          *
          * <ul>
          *  <li>{@code p} must be non-null.</li>

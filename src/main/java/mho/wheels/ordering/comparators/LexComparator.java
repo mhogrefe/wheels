@@ -1,13 +1,10 @@
 package mho.wheels.ordering.comparators;
 
-import mho.wheels.ordering.Ordering;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.Optional;
-
-import static mho.wheels.ordering.Ordering.EQ;
 
 /**
  * Compares two {@code Iterable}s lexicographically (by "dictionary order"). This {@code Comparator} looks at the
@@ -71,13 +68,15 @@ public final class LexComparator<T extends Comparable<T>> implements Comparator<
         Iterator<T> ysi = ys.iterator();
         while (xsi.hasNext()) {
             if (!ysi.hasNext()) return 1;
-            Ordering elementOrdering;
+            int elementCompare;
             if (elementComparator.isPresent()) {
-                elementOrdering = Ordering.compare(elementComparator.get(), xsi.next(), ysi.next());
+                elementCompare = elementComparator.get().compare(xsi.next(), ysi.next());
             } else {
-                elementOrdering = Ordering.compare(xsi.next(), ysi.next());
+                elementCompare = xsi.next().compareTo(ysi.next());
             }
-            if (elementOrdering != EQ) return elementOrdering.toInt();
+            if (elementCompare != 0) {
+                return elementCompare;
+            }
         }
         return ysi.hasNext() ? -1 : 0;
     }

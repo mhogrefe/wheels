@@ -65,8 +65,39 @@ public final class Quadruple<A, B, C, D> {
         this.d = d;
     }
 
+    /**
+     * Converts a {@code Quadruple} of four values of the same type to a {@code List}.
+     *
+     * <ul>
+     *  <li>{@code q} cannot be null.</li>
+     *  <li>The result has length 4.</li>
+     * </ul>
+     *
+     * @param q a {@code Quadruple}
+     * @param <T> the type of all values of {@code q}
+     * @return a {@code List} containing the values of {@code q}
+     */
     public static <T> List<T> toList(Quadruple<T, T, T, T> q) {
         return Arrays.asList(q.a, q.b, q.c, q.d);
+    }
+
+    /**
+     * Converts a {@code List} of four values to a {@code Quadruple}.
+     *
+     * <ul>
+     *  <li>{@code xs} must have length 4.</li>
+     *  <li>The result is not null.</li>
+     * </ul>
+     *
+     * @param xs a {@code List}
+     * @param <T> the type of the elements in {@code xs}
+     * @return a {@code Quadruple} containing the values of {@code xs}
+     */
+    public static <T> Quadruple<T, T, T, T> fromList(@NotNull List<T> xs) {
+        if (xs.size() != 4) {
+            throw new IllegalArgumentException("xs must have length 4. Invalid xs: " + xs);
+        }
+        return new Quadruple<>(xs.get(0), xs.get(1), xs.get(2), xs.get(3));
     }
 
     /**
@@ -96,10 +127,7 @@ public final class Quadruple<A, B, C, D> {
             B extends Comparable<B>,
             C extends Comparable<C>,
             D extends Comparable<D>
-            > Ordering compare(
-            @NotNull Quadruple<A, B, C, D> p,
-            @NotNull Quadruple<A, B, C, D> q
-    ) {
+            > Ordering compare(@NotNull Quadruple<A, B, C, D> p, @NotNull Quadruple<A, B, C, D> q) {
         Ordering aOrdering = Ordering.compare(p.a, q.a);
         if (aOrdering != EQ) return aOrdering;
         Ordering bOrdering = Ordering.compare(p.b, q.b);
@@ -155,8 +183,7 @@ public final class Quadruple<A, B, C, D> {
      * Creates a {@code Quadruple} from a {@code String}. Valid strings are of the form
      * {@code "(" + a + ", " + b + ", " + c + ", " + d + ")"}, where {@code a}, {@code b}, {@code c}, and {@code d} are
      * valid {@code String}s for their types. {@code a}, {@code b}, and {@code c} must not contain the {@code String}
-     * {@code ", "}, because this will confuse the parser. If the {@code String} is invalid, the method returns
-     * {@code Optional.empty()} without throwing an exception; this aids composability.
+     * {@code ", "}, because this will confuse the parser.
      *
      * <ul>
      *  <li>{@code s} must be non-null.</li>
@@ -174,7 +201,7 @@ public final class Quadruple<A, B, C, D> {
      * @param <D> the type of the {@code Quadruple}'s fourth value
      * @return the {@code Quadruple} represented by {@code s}, or an empty {@code Optional} if {@code s} is invalid
      */
-    public static @NotNull <A, B, C, D> Optional<Quadruple<A, B, C, D>> read(
+    public static @NotNull <A, B, C, D> Optional<Quadruple<A, B, C, D>> readStrict(
             @NotNull String s,
             @NotNull Function<String, NullableOptional<A>> readA,
             @NotNull Function<String, NullableOptional<B>> readB,
@@ -182,18 +209,58 @@ public final class Quadruple<A, B, C, D> {
             @NotNull Function<String, NullableOptional<D>> readD
     ) {
         if (s.length() < 2 || head(s) != '(' || last(s) != ')') return Optional.empty();
-        s = tail(init(s));
-        String[] tokens = s.split(", ");
-        if (tokens.length != 4) return Optional.empty();
-        NullableOptional<A> oa = readA.apply(tokens[0]);
-        if (!oa.isPresent()) return Optional.empty();
-        NullableOptional<B> ob = readB.apply(tokens[1]);
-        if (!ob.isPresent()) return Optional.empty();
-        NullableOptional<C> oc = readC.apply(tokens[2]);
-        if (!oc.isPresent()) return Optional.empty();
-        NullableOptional<D> od = readD.apply(tokens[3]);
-        if (!od.isPresent()) return Optional.empty();
-        return Optional.of(new Quadruple<>(oa.get(), ob.get(), oc.get(), od.get()));
+        s = middle(s);
+        A a = null;
+        B b = null;
+        C c = null;
+        D d = null;
+        StringBuilder sb = new StringBuilder();
+        int i = 0;
+        for (String token : s.split(", ")) {
+            if (sb.length() != 0) {
+                sb.append(", ");
+            }
+            sb.append(token);
+            switch (i) {
+                case 0:
+                    NullableOptional<A> oa = readA.apply(sb.toString());
+                    if (oa.isPresent()) {
+                        a = oa.get();
+                        i++;
+                        sb = new StringBuilder();
+                    }
+                    break;
+                case 1:
+                    NullableOptional<B> ob = readB.apply(sb.toString());
+                    if (ob.isPresent()) {
+                        b = ob.get();
+                        i++;
+                        sb = new StringBuilder();
+                    }
+                    break;
+                case 2:
+                    NullableOptional<C> oc = readC.apply(sb.toString());
+                    if (oc.isPresent()) {
+                        c = oc.get();
+                        i++;
+                        sb = new StringBuilder();
+                    }
+                    break;
+                case 3:
+                    NullableOptional<D> od = readD.apply(sb.toString());
+                    if (od.isPresent()) {
+                        d = od.get();
+                        i++;
+                        sb = new StringBuilder();
+                    }
+                    break;
+                default:
+                    return Optional.empty();
+            }
+        }
+
+        if (i != 4) return Optional.empty();
+        return Optional.of(new Quadruple<>(a, b, c, d));
     }
 
     /**
@@ -269,8 +336,8 @@ public final class Quadruple<A, B, C, D> {
         }
 
         /**
-         * Compares two {@code Quadruple}s, returning 1, –1, or 0 if the answer is "greater than", "less than", or
-         * "equal to", respectively.
+         * Compares two {@code Quadruple}s lexicographically, returning 1, –1, or 0 if the answer is "greater than",
+         * "less than", or "equal to", respectively.
          *
          * <ul>
          *  <li>{@code p} must be non-null.</li>

@@ -3,35 +3,40 @@ package mho.wheels.math;
 import mho.wheels.io.Readers;
 import mho.wheels.numberUtils.FloatingPointUtils;
 import org.jetbrains.annotations.NotNull;
-import org.junit.Assert;
 import org.junit.Test;
 
 import java.math.BigInteger;
 import java.util.List;
+import java.util.Optional;
 
-import static mho.wheels.iterables.IterableUtils.iterate;
-import static mho.wheels.iterables.IterableUtils.toList;
+import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.math.BinaryFraction.*;
 import static mho.wheels.math.BinaryFraction.sum;
 import static mho.wheels.testing.Testing.*;
+import static org.junit.Assert.fail;
 
 public strictfp class BinaryFractionTest {
+    private static void constant_helper(@NotNull BinaryFraction input, @NotNull String output) {
+        input.validate();
+        aeq(input, output);
+    }
+
     @Test
     public void testConstants() {
-        aeq(ZERO, "0");
-        aeq(ONE, "1");
-        aeq(SMALLEST_FLOAT, "1 >> 149");
-        aeq(LARGEST_SUBNORMAL_FLOAT, "8388607 >> 149");
-        aeq(SMALLEST_NORMAL_FLOAT, "1 >> 126");
-        aeq(LARGEST_FLOAT, "16777215 << 104");
-        aeq(SMALLEST_DOUBLE, "1 >> 1074");
-        aeq(LARGEST_SUBNORMAL_DOUBLE, "4503599627370495 >> 1074");
-        aeq(SMALLEST_NORMAL_DOUBLE, "1 >> 1022");
-        aeq(LARGEST_DOUBLE, "9007199254740991 << 971");
+        constant_helper(ZERO, "0");
+        constant_helper(ONE, "1");
+        constant_helper(SMALLEST_FLOAT, "1 >> 149");
+        constant_helper(LARGEST_SUBNORMAL_FLOAT, "8388607 >> 149");
+        constant_helper(SMALLEST_NORMAL_FLOAT, "1 >> 126");
+        constant_helper(LARGEST_FLOAT, "16777215 << 104");
+        constant_helper(SMALLEST_DOUBLE, "1 >> 1074");
+        constant_helper(LARGEST_SUBNORMAL_DOUBLE, "4503599627370495 >> 1074");
+        constant_helper(SMALLEST_NORMAL_DOUBLE, "1 >> 1022");
+        constant_helper(LARGEST_DOUBLE, "9007199254740991 << 971");
     }
 
     private static void getMantissa_helper(@NotNull String x, int output) {
-        aeq(read(x).get().getMantissa(), output);
+        aeq(readStrict(x).get().getMantissa(), output);
     }
 
     @Test
@@ -48,7 +53,7 @@ public strictfp class BinaryFractionTest {
     }
 
     private static void getExponent_helper(@NotNull String x, int output) {
-        aeq(read(x).get().getExponent(), output);
+        aeq(readStrict(x).get().getExponent(), output);
     }
 
     @Test
@@ -64,37 +69,46 @@ public strictfp class BinaryFractionTest {
         getExponent_helper("-5 >> 20", -20);
     }
 
-    private static void of_BigInteger_int_helper(int mantissa, int exponent, @NotNull String output) {
-        aeq(of(BigInteger.valueOf(mantissa), exponent), output);
+    private static void of_BigInteger_int_helper(@NotNull String mantissa, int exponent, @NotNull String output) {
+        BinaryFraction bf = of(Readers.readBigIntegerStrict(mantissa).get(), exponent);
+        bf.validate();
+        aeq(bf, output);
+    }
+
+    private static void of_BigInteger_int_fail_helper(@NotNull String mantissa, int exponent) {
+        try {
+            of(Readers.readBigIntegerStrict(mantissa).get(), exponent);
+            fail();
+        } catch (ArithmeticException ignored) {}
     }
 
     @Test
     public void testOf_BigInteger_int() {
-        of_BigInteger_int_helper(0, 0, "0");
-        of_BigInteger_int_helper(0, 1, "0");
-        of_BigInteger_int_helper(0, -3, "0");
-        of_BigInteger_int_helper(1, 0, "1");
-        of_BigInteger_int_helper(2, 0, "1 << 1");
-        of_BigInteger_int_helper(1, 1, "1 << 1");
-        of_BigInteger_int_helper(5, 20, "5 << 20");
-        of_BigInteger_int_helper(5, -20, "5 >> 20");
-        of_BigInteger_int_helper(100, 0, "25 << 2");
-        of_BigInteger_int_helper(-1, 0, "-1");
-        of_BigInteger_int_helper(-2, 0, "-1 << 1");
-        of_BigInteger_int_helper(-1, 1, "-1 << 1");
-        of_BigInteger_int_helper(-5, 20, "-5 << 20");
-        of_BigInteger_int_helper(-5, -20, "-5 >> 20");
-        of_BigInteger_int_helper(-100, 0, "-25 << 2");
-        of_BigInteger_int_helper(1, Integer.MAX_VALUE, "1 << 2147483647");
-        of_BigInteger_int_helper(1, Integer.MIN_VALUE, "1 >> 2147483648");
-        try {
-            of(BigInteger.valueOf(4), Integer.MAX_VALUE);
-            Assert.fail();
-        } catch (ArithmeticException ignored) {}
+        of_BigInteger_int_helper("0", 0, "0");
+        of_BigInteger_int_helper("0", 1, "0");
+        of_BigInteger_int_helper("0", -3, "0");
+        of_BigInteger_int_helper("1", 0, "1");
+        of_BigInteger_int_helper("2", 0, "1 << 1");
+        of_BigInteger_int_helper("1", 1, "1 << 1");
+        of_BigInteger_int_helper("5", 20, "5 << 20");
+        of_BigInteger_int_helper("5", -20, "5 >> 20");
+        of_BigInteger_int_helper("100", 0, "25 << 2");
+        of_BigInteger_int_helper("-1", 0, "-1");
+        of_BigInteger_int_helper("-2", 0, "-1 << 1");
+        of_BigInteger_int_helper("-1", 1, "-1 << 1");
+        of_BigInteger_int_helper("-5", 20, "-5 << 20");
+        of_BigInteger_int_helper("-5", -20, "-5 >> 20");
+        of_BigInteger_int_helper("-100", 0, "-25 << 2");
+        of_BigInteger_int_helper("1", Integer.MAX_VALUE, "1 << 2147483647");
+        of_BigInteger_int_helper("1", Integer.MIN_VALUE, "1 >> 2147483648");
+
+        of_BigInteger_int_fail_helper("4", Integer.MAX_VALUE);
     }
 
     private static void of_BigInteger_helper(int n, @NotNull String output) {
-        aeq(of(BigInteger.valueOf(n)), output);
+        BinaryFraction bf = of(BigInteger.valueOf(n));
+        bf.validate();
+        aeq(bf, output);
     }
 
     @Test
@@ -109,7 +123,9 @@ public strictfp class BinaryFractionTest {
     }
 
     private static void of_int_helper(int n, @NotNull String output) {
-        aeq(of(n), output);
+        BinaryFraction bf = of(n);
+        bf.validate();
+        aeq(bf, output);
     }
 
     @Test
@@ -124,107 +140,109 @@ public strictfp class BinaryFractionTest {
     }
 
     private static void of_float_helper(float f, @NotNull String output) {
-        aeq(of(f).get(), output);
-    }
-
-    private static void of_float_empty_helper(float f) {
-        Assert.assertFalse(of(f).isPresent());
+        Optional<BinaryFraction> bf = of(f);
+        if (bf.isPresent()) {
+            bf.get().validate();
+        }
+        aeq(bf, output);
     }
 
     @Test
     public void testOf_float() {
-        of_float_helper(0.0f, "0");
-        of_float_helper(1.0f, "1");
-        of_float_helper(0.5f, "1 >> 1");
-        of_float_helper(0.25f, "1 >> 2");
-        of_float_helper(1.0f / 3.0f, "11184811 >> 25");
-        of_float_helper(2.0f, "1 << 1");
-        of_float_helper(4.0f, "1 << 2");
-        of_float_helper(3.0f, "3");
-        of_float_helper(1.5f, "3 >> 1");
-        of_float_helper(1000.0f, "125 << 3");
-        of_float_helper(0.001f, "8589935 >> 33");
-        of_float_helper((float) Math.PI, "13176795 >> 22");
-        of_float_helper((float) Math.E, "2850325 >> 20");
-        of_float_helper(Float.MIN_VALUE, "1 >> 149");
-        of_float_helper(Float.MIN_NORMAL, "1 >> 126");
-        of_float_helper(Float.MAX_VALUE, "16777215 << 104");
-        of_float_helper(-0.0f, "0");
-        of_float_helper(-1.0f, "-1");
-        of_float_helper(-0.5f, "-1 >> 1");
-        of_float_helper(-0.25f, "-1 >> 2");
-        of_float_helper(-1.0f / 3.0f, "-11184811 >> 25");
-        of_float_helper(-2.0f, "-1 << 1");
-        of_float_helper(-4.0f, "-1 << 2");
-        of_float_helper(-3.0f, "-3");
-        of_float_helper(-1.5f, "-3 >> 1");
-        of_float_helper(-1000.0f, "-125 << 3");
-        of_float_helper(-0.001f, "-8589935 >> 33");
-        of_float_helper((float) -Math.PI, "-13176795 >> 22");
-        of_float_helper((float) -Math.E, "-2850325 >> 20");
-        of_float_helper(-Float.MIN_VALUE, "-1 >> 149");
-        of_float_helper(-Float.MIN_NORMAL, "-1 >> 126");
-        of_float_helper(-Float.MAX_VALUE, "-16777215 << 104");
-        of_float_empty_helper(Float.POSITIVE_INFINITY);
-        of_float_empty_helper(Float.NEGATIVE_INFINITY);
-        of_float_empty_helper(Float.NaN);
+        of_float_helper(0.0f, "Optional[0]");
+        of_float_helper(1.0f, "Optional[1]");
+        of_float_helper(0.5f, "Optional[1 >> 1]");
+        of_float_helper(0.25f, "Optional[1 >> 2]");
+        of_float_helper(1.0f / 3.0f, "Optional[11184811 >> 25]");
+        of_float_helper(2.0f, "Optional[1 << 1]");
+        of_float_helper(4.0f, "Optional[1 << 2]");
+        of_float_helper(3.0f, "Optional[3]");
+        of_float_helper(1.5f, "Optional[3 >> 1]");
+        of_float_helper(1000.0f, "Optional[125 << 3]");
+        of_float_helper(0.001f, "Optional[8589935 >> 33]");
+        of_float_helper((float) Math.PI, "Optional[13176795 >> 22]");
+        of_float_helper((float) Math.E, "Optional[2850325 >> 20]");
+        of_float_helper(Float.MIN_VALUE, "Optional[1 >> 149]");
+        of_float_helper(Float.MIN_NORMAL, "Optional[1 >> 126]");
+        of_float_helper(Float.MAX_VALUE, "Optional[16777215 << 104]");
+        of_float_helper(-0.0f, "Optional[0]");
+        of_float_helper(-1.0f, "Optional[-1]");
+        of_float_helper(-0.5f, "Optional[-1 >> 1]");
+        of_float_helper(-0.25f, "Optional[-1 >> 2]");
+        of_float_helper(-1.0f / 3.0f, "Optional[-11184811 >> 25]");
+        of_float_helper(-2.0f, "Optional[-1 << 1]");
+        of_float_helper(-4.0f, "Optional[-1 << 2]");
+        of_float_helper(-3.0f, "Optional[-3]");
+        of_float_helper(-1.5f, "Optional[-3 >> 1]");
+        of_float_helper(-1000.0f, "Optional[-125 << 3]");
+        of_float_helper(-0.001f, "Optional[-8589935 >> 33]");
+        of_float_helper((float) -Math.PI, "Optional[-13176795 >> 22]");
+        of_float_helper((float) -Math.E, "Optional[-2850325 >> 20]");
+        of_float_helper(-Float.MIN_VALUE, "Optional[-1 >> 149]");
+        of_float_helper(-Float.MIN_NORMAL, "Optional[-1 >> 126]");
+        of_float_helper(-Float.MAX_VALUE, "Optional[-16777215 << 104]");
+
+        of_float_helper(Float.POSITIVE_INFINITY, "Optional.empty");
+        of_float_helper(Float.NEGATIVE_INFINITY, "Optional.empty");
+        of_float_helper(Float.NaN, "Optional.empty");
     }
 
     private static void of_double_helper(double d, @NotNull String output) {
-        aeq(of(d).get(), output);
-    }
-
-    private static void of_double_empty_helper(double d) {
-        Assert.assertFalse(of(d).isPresent());
+        Optional<BinaryFraction> bf = of(d);
+        if (bf.isPresent()) {
+            bf.get().validate();
+        }
+        aeq(bf, output);
     }
 
     @Test
     public void testOfMantissaAndExponent_double() {
-        of_double_helper(0.0, "0");
-        of_double_helper(1.0, "1");
-        of_double_helper(0.5, "1 >> 1");
-        of_double_helper(0.25, "1 >> 2");
-        of_double_helper(1.0 / 3.0, "6004799503160661 >> 54");
-        of_double_helper(2.0, "1 << 1");
-        of_double_helper(4.0, "1 << 2");
-        of_double_helper(3.0, "3");
-        of_double_helper(1.5, "3 >> 1");
-        of_double_helper(1000.0, "125 << 3");
-        of_double_helper(0.001, "1152921504606847 >> 60");
-        of_double_helper(Math.PI, "884279719003555 >> 48");
-        of_double_helper(Math.E, "6121026514868073 >> 51");
-        of_double_helper(Double.MIN_VALUE, "1 >> 1074");
-        of_double_helper(Double.MIN_NORMAL, "1 >> 1022");
-        of_double_helper(Double.MAX_VALUE, "9007199254740991 << 971");
-        of_double_helper(-0.0, "0");
-        of_double_helper(-1.0, "-1");
-        of_double_helper(-0.5, "-1 >> 1");
-        of_double_helper(-0.25, "-1 >> 2");
-        of_double_helper(-1.0 / 3.0, "-6004799503160661 >> 54");
-        of_double_helper(-2.0, "-1 << 1");
-        of_double_helper(-4.0, "-1 << 2");
-        of_double_helper(-3.0, "-3");
-        of_double_helper(-1.5, "-3 >> 1");
-        of_double_helper(-1000.0, "-125 << 3");
-        of_double_helper(-0.001, "-1152921504606847 >> 60");
-        of_double_helper(-Math.PI, "-884279719003555 >> 48");
-        of_double_helper(-Math.E, "-6121026514868073 >> 51");
-        of_double_helper(-Double.MIN_VALUE, "-1 >> 1074");
-        of_double_helper(-Double.MIN_NORMAL, "-1 >> 1022");
-        of_double_helper(-Double.MAX_VALUE, "-9007199254740991 << 971");
-        of_double_empty_helper(Double.POSITIVE_INFINITY);
-        of_double_empty_helper(Double.NEGATIVE_INFINITY);
-        of_double_empty_helper(Double.NaN);
+        of_double_helper(0.0, "Optional[0]");
+        of_double_helper(1.0, "Optional[1]");
+        of_double_helper(0.5, "Optional[1 >> 1]");
+        of_double_helper(0.25, "Optional[1 >> 2]");
+        of_double_helper(1.0 / 3.0, "Optional[6004799503160661 >> 54]");
+        of_double_helper(2.0, "Optional[1 << 1]");
+        of_double_helper(4.0, "Optional[1 << 2]");
+        of_double_helper(3.0, "Optional[3]");
+        of_double_helper(1.5, "Optional[3 >> 1]");
+        of_double_helper(1000.0, "Optional[125 << 3]");
+        of_double_helper(0.001, "Optional[1152921504606847 >> 60]");
+        of_double_helper(Math.PI, "Optional[884279719003555 >> 48]");
+        of_double_helper(Math.E, "Optional[6121026514868073 >> 51]");
+        of_double_helper(Double.MIN_VALUE, "Optional[1 >> 1074]");
+        of_double_helper(Double.MIN_NORMAL, "Optional[1 >> 1022]");
+        of_double_helper(Double.MAX_VALUE, "Optional[9007199254740991 << 971]");
+        of_double_helper(-0.0, "Optional[0]");
+        of_double_helper(-1.0, "Optional[-1]");
+        of_double_helper(-0.5, "Optional[-1 >> 1]");
+        of_double_helper(-0.25, "Optional[-1 >> 2]");
+        of_double_helper(-1.0 / 3.0, "Optional[-6004799503160661 >> 54]");
+        of_double_helper(-2.0, "Optional[-1 << 1]");
+        of_double_helper(-4.0, "Optional[-1 << 2]");
+        of_double_helper(-3.0, "Optional[-3]");
+        of_double_helper(-1.5, "Optional[-3 >> 1]");
+        of_double_helper(-1000.0, "Optional[-125 << 3]");
+        of_double_helper(-0.001, "Optional[-1152921504606847 >> 60]");
+        of_double_helper(-Math.PI, "Optional[-884279719003555 >> 48]");
+        of_double_helper(-Math.E, "Optional[-6121026514868073 >> 51]");
+        of_double_helper(-Double.MIN_VALUE, "Optional[-1 >> 1074]");
+        of_double_helper(-Double.MIN_NORMAL, "Optional[-1 >> 1022]");
+        of_double_helper(-Double.MAX_VALUE, "Optional[-9007199254740991 << 971]");
+
+        of_double_helper(Double.POSITIVE_INFINITY, "Optional.empty");
+        of_double_helper(Double.NEGATIVE_INFINITY, "Optional.empty");
+        of_double_helper(Double.NaN, "Optional.empty");
     }
 
     private static void bigIntegerValueExact_helper(@NotNull String input, @NotNull String output) {
-        aeq(read(input).get().bigIntegerValueExact(), output);
+        aeq(readStrict(input).get().bigIntegerValueExact(), output);
     }
 
     private static void bigIntegerValueExact_fail_helper(@NotNull String input) {
         try {
-            read(input).get().bigIntegerValueExact();
-            Assert.fail();
+            readStrict(input).get().bigIntegerValueExact();
+            fail();
         } catch (ArithmeticException ignored) {}
     }
 
@@ -237,12 +255,17 @@ public strictfp class BinaryFractionTest {
         bigIntegerValueExact_helper("-1", "-1");
         bigIntegerValueExact_helper("-11", "-11");
         bigIntegerValueExact_helper("-5 << 20", "-5242880");
+
         bigIntegerValueExact_fail_helper("5 >> 20");
         bigIntegerValueExact_fail_helper("-5 >> 20");
     }
 
+    private static void bigDecimalValue_helper(@NotNull BinaryFraction input, @NotNull String output) {
+        aeq(input.bigDecimalValue(), output);
+    }
+
     private static void bigDecimalValue_helper(@NotNull String input, @NotNull String output) {
-        aeq(read(input).get().bigDecimalValue(), output);
+        bigDecimalValue_helper(readStrict(input).get(), output);
     }
 
     @Test
@@ -276,8 +299,12 @@ public strictfp class BinaryFractionTest {
                 "184124858368");
     }
 
+    private static void floatRange_helper(@NotNull BinaryFraction input, @NotNull String output) {
+        aeq(input.floatRange(), output);
+    }
+
     private static void floatRange_helper(@NotNull String input, @NotNull String output) {
-        aeq(read(input).get().floatRange(), output);
+        floatRange_helper(readStrict(input).get(), output);
     }
 
     @Test
@@ -296,6 +323,7 @@ public strictfp class BinaryFractionTest {
         BinaryFraction halfAboveSubnormal = subnormal.add(subnormalSuccessor).shiftRight(1);
         BinaryFraction halfBelowSubnormal = subnormal.add(subnormalPredecessor).shiftRight(1);
         BinaryFraction subnormalBoundary = LARGEST_SUBNORMAL_FLOAT.add(SMALLEST_NORMAL_FLOAT).shiftRight(1);
+
         floatRange_helper("0", "(0.0, 0.0)");
         floatRange_helper("1", "(1.0, 1.0)");
         floatRange_helper("11", "(11.0, 11.0)");
@@ -303,44 +331,53 @@ public strictfp class BinaryFractionTest {
         floatRange_helper("5 >> 20", "(4.7683716E-6, 4.7683716E-6)");
         floatRange_helper("1 << 2147483647", "(3.4028235E38, Infinity)");
         floatRange_helper("1 >> 2147483648", "(0.0, 1.4E-45)");
-        aeq(almostOne.floatRange(), "(0.99999994, 1.0)");
-        aeq(trillion.floatRange(), "(1.0E12, 1.00000006E12)");
-        aeq(pi.floatRange(), "(3.1415927, 3.1415927)");
-        aeq(halfAbovePi.floatRange(), "(3.1415927, 3.141593)");
-        aeq(halfBelowPi.floatRange(), "(3.1415925, 3.1415927)");
-        aeq(halfAboveSubnormal.floatRange(), "(1.0E-40, 1.00001E-40)");
-        aeq(halfBelowSubnormal.floatRange(), "(9.9998E-41, 1.0E-40)");
-        aeq(subnormalBoundary.floatRange(), "(1.1754942E-38, 1.17549435E-38)");
+
+        floatRange_helper(almostOne, "(0.99999994, 1.0)");
+        floatRange_helper(trillion, "(1.0E12, 1.00000006E12)");
+        floatRange_helper(pi, "(3.1415927, 3.1415927)");
+        floatRange_helper(halfAbovePi, "(3.1415927, 3.141593)");
+        floatRange_helper(halfBelowPi, "(3.1415925, 3.1415927)");
+        floatRange_helper(halfAboveSubnormal, "(1.0E-40, 1.00001E-40)");
+        floatRange_helper(halfBelowSubnormal, "(9.9998E-41, 1.0E-40)");
+        floatRange_helper(subnormalBoundary, "(1.1754942E-38, 1.17549435E-38)");
+
         floatRange_helper("-1", "(-1.0, -1.0)");
         floatRange_helper("-11", "(-11.0, -11.0)");
         floatRange_helper("-5 << 20", "(-5242880.0, -5242880.0)");
         floatRange_helper("-5 >> 20", "(-4.7683716E-6, -4.7683716E-6)");
         floatRange_helper("-1 << 2147483647", "(-Infinity, -3.4028235E38)");
         floatRange_helper("-1 >> 2147483648", "(-1.4E-45, -0.0)");
-        aeq(almostOne.negate().floatRange(), "(-1.0, -0.99999994)");
-        aeq(trillion.negate().floatRange(), "(-1.00000006E12, -1.0E12)");
-        aeq(pi.negate().floatRange(), "(-3.1415927, -3.1415927)");
-        aeq(halfAbovePi.negate().floatRange(), "(-3.141593, -3.1415927)");
-        aeq(halfBelowPi.negate().floatRange(), "(-3.1415927, -3.1415925)");
-        aeq(halfAboveSubnormal.negate().floatRange(), "(-1.00001E-40, -1.0E-40)");
-        aeq(halfBelowSubnormal.negate().floatRange(), "(-1.0E-40, -9.9998E-41)");
-        aeq(subnormalBoundary.negate().floatRange(), "(-1.17549435E-38, -1.1754942E-38)");
+
+        floatRange_helper(almostOne.negate(), "(-1.0, -0.99999994)");
+        floatRange_helper(trillion.negate(), "(-1.00000006E12, -1.0E12)");
+        floatRange_helper(pi.negate(), "(-3.1415927, -3.1415927)");
+        floatRange_helper(halfAbovePi.negate(), "(-3.141593, -3.1415927)");
+        floatRange_helper(halfBelowPi.negate(), "(-3.1415927, -3.1415925)");
+        floatRange_helper(halfAboveSubnormal.negate(), "(-1.00001E-40, -1.0E-40)");
+        floatRange_helper(halfBelowSubnormal.negate(), "(-1.0E-40, -9.9998E-41)");
+        floatRange_helper(subnormalBoundary.negate(), "(-1.17549435E-38, -1.1754942E-38)");
+
         BinaryFraction aboveNegativeMax = LARGEST_FLOAT.negate().add(ONE);
         BinaryFraction belowNegativeMax = LARGEST_FLOAT.negate().subtract(ONE);
         BinaryFraction belowMax = LARGEST_FLOAT.subtract(ONE);
         BinaryFraction aboveMax = LARGEST_FLOAT.add(ONE);
         BinaryFraction justAboveZero = SMALLEST_FLOAT.shiftRight(1);
         BinaryFraction justBelowZero = SMALLEST_FLOAT.negate().shiftRight(1);
-        aeq(aboveNegativeMax.floatRange(), "(-3.4028235E38, -3.4028233E38)");
-        aeq(belowNegativeMax.floatRange(), "(-Infinity, -3.4028235E38)");
-        aeq(belowMax.floatRange(), "(3.4028233E38, 3.4028235E38)");
-        aeq(aboveMax.floatRange(), "(3.4028235E38, Infinity)");
-        aeq(justAboveZero.floatRange(), "(0.0, 1.4E-45)");
-        aeq(justBelowZero.floatRange(), "(-1.4E-45, -0.0)");
+
+        floatRange_helper(aboveNegativeMax, "(-3.4028235E38, -3.4028233E38)");
+        floatRange_helper(belowNegativeMax, "(-Infinity, -3.4028235E38)");
+        floatRange_helper(belowMax, "(3.4028233E38, 3.4028235E38)");
+        floatRange_helper(aboveMax, "(3.4028235E38, Infinity)");
+        floatRange_helper(justAboveZero, "(0.0, 1.4E-45)");
+        floatRange_helper(justBelowZero, "(-1.4E-45, -0.0)");
+    }
+
+    private static void doubleRange_helper(@NotNull BinaryFraction input, @NotNull String output) {
+        aeq(input.doubleRange(), output);
     }
 
     private static void doubleRange_helper(@NotNull String input, @NotNull String output) {
-        aeq(read(input).get().doubleRange(), output);
+        doubleRange_helper(readStrict(input).get(), output);
     }
 
     @Test
@@ -364,6 +401,7 @@ public strictfp class BinaryFractionTest {
         BinaryFraction halfAboveSubnormal = subnormal.add(subnormalSuccessor).shiftRight(1);
         BinaryFraction halfBelowSubnormal = subnormal.add(subnormalPredecessor).shiftRight(1);
         BinaryFraction subnormalBoundary = LARGEST_SUBNORMAL_DOUBLE.add(SMALLEST_NORMAL_DOUBLE).shiftRight(1);
+
         doubleRange_helper("0", "(0.0, 0.0)");
         doubleRange_helper("1", "(1.0, 1.0)");
         doubleRange_helper("11", "(11.0, 11.0)");
@@ -371,49 +409,49 @@ public strictfp class BinaryFractionTest {
         doubleRange_helper("5 >> 20", "(4.76837158203125E-6, 4.76837158203125E-6)");
         doubleRange_helper("1 << 2147483647", "(1.7976931348623157E308, Infinity)");
         doubleRange_helper("1 >> 2147483648", "(0.0, 4.9E-324)");
-        aeq(almostOne.doubleRange(), "(0.9999999999999999, 1.0)");
-        aeq(googol.doubleRange(), "(9.999999999999998E99, 1.0E100)");
-        aeq(pi.doubleRange(), "(3.141592653589793, 3.141592653589793)");
-        aeq(halfAbovePi.doubleRange(), "(3.141592653589793, 3.1415926535897936)");
-        aeq(halfBelowPi.doubleRange(), "(3.1415926535897927, 3.141592653589793)");
-        aeq(halfAboveSubnormal.doubleRange(), "(1.0E-310, 1.00000000000005E-310)");
-        aeq(halfBelowSubnormal.doubleRange(), "(9.9999999999995E-311, 1.0E-310)");
-        aeq(subnormalBoundary.doubleRange(), "(2.225073858507201E-308, 2.2250738585072014E-308)");
+
+        doubleRange_helper(almostOne, "(0.9999999999999999, 1.0)");
+        doubleRange_helper(googol, "(9.999999999999998E99, 1.0E100)");
+        doubleRange_helper(pi, "(3.141592653589793, 3.141592653589793)");
+        doubleRange_helper(halfAbovePi, "(3.141592653589793, 3.1415926535897936)");
+        doubleRange_helper(halfBelowPi, "(3.1415926535897927, 3.141592653589793)");
+        doubleRange_helper(halfAboveSubnormal, "(1.0E-310, 1.00000000000005E-310)");
+        doubleRange_helper(halfBelowSubnormal, "(9.9999999999995E-311, 1.0E-310)");
+        doubleRange_helper(subnormalBoundary, "(2.225073858507201E-308, 2.2250738585072014E-308)");
+
         doubleRange_helper("-1", "(-1.0, -1.0)");
         doubleRange_helper("-11", "(-11.0, -11.0)");
         doubleRange_helper("-5 << 20", "(-5242880.0, -5242880.0)");
         doubleRange_helper("-5 >> 20", "(-4.76837158203125E-6, -4.76837158203125E-6)");
         doubleRange_helper("-1 << 2147483647", "(-Infinity, -1.7976931348623157E308)");
         doubleRange_helper("-1 >> 2147483648", "(-4.9E-324, -0.0)");
-        aeq(almostOne.negate().doubleRange(), "(-1.0, -0.9999999999999999)");
-        aeq(googol.negate().doubleRange(), "(-1.0E100, -9.999999999999998E99)");
-        aeq(pi.negate().doubleRange(), "(-3.141592653589793, -3.141592653589793)");
-        aeq(halfAbovePi.negate().doubleRange(), "(-3.1415926535897936, -3.141592653589793)");
-        aeq(halfBelowPi.negate().doubleRange(), "(-3.141592653589793, -3.1415926535897927)");
-        aeq(halfAboveSubnormal.negate().doubleRange(), "(-1.00000000000005E-310, -1.0E-310)");
-        aeq(halfBelowSubnormal.negate().doubleRange(), "(-1.0E-310, -9.9999999999995E-311)");
-        aeq(subnormalBoundary.negate().doubleRange(), "(-2.2250738585072014E-308, -2.225073858507201E-308)");
+
+        doubleRange_helper(almostOne.negate(), "(-1.0, -0.9999999999999999)");
+        doubleRange_helper(googol.negate(), "(-1.0E100, -9.999999999999998E99)");
+        doubleRange_helper(pi.negate(), "(-3.141592653589793, -3.141592653589793)");
+        doubleRange_helper(halfAbovePi.negate(), "(-3.1415926535897936, -3.141592653589793)");
+        doubleRange_helper(halfBelowPi.negate(), "(-3.141592653589793, -3.1415926535897927)");
+        doubleRange_helper(halfAboveSubnormal.negate(), "(-1.00000000000005E-310, -1.0E-310)");
+        doubleRange_helper(halfBelowSubnormal.negate(), "(-1.0E-310, -9.9999999999995E-311)");
+        doubleRange_helper(subnormalBoundary.negate(), "(-2.2250738585072014E-308, -2.225073858507201E-308)");
+
         BinaryFraction aboveNegativeMax = LARGEST_DOUBLE.negate().add(ONE);
         BinaryFraction belowNegativeMax = LARGEST_DOUBLE.negate().subtract(ONE);
         BinaryFraction belowMax = LARGEST_DOUBLE.subtract(ONE);
         BinaryFraction aboveMax = LARGEST_DOUBLE.add(ONE);
         BinaryFraction justAboveZero = SMALLEST_DOUBLE.shiftRight(1);
         BinaryFraction justBelowZero = SMALLEST_DOUBLE.negate().shiftRight(1);
-        aeq(aboveNegativeMax.doubleRange(), "(-1.7976931348623157E308, -1.7976931348623155E308)");
-        aeq(belowNegativeMax.doubleRange(), "(-Infinity, -1.7976931348623157E308)");
-        aeq(belowMax.doubleRange(), "(1.7976931348623155E308, 1.7976931348623157E308)");
-        aeq(aboveMax.doubleRange(), "(1.7976931348623157E308, Infinity)");
-        aeq(justAboveZero.doubleRange(), "(0.0, 4.9E-324)");
-        aeq(justBelowZero.doubleRange(), "(-4.9E-324, -0.0)");
+
+        doubleRange_helper(aboveNegativeMax, "(-1.7976931348623157E308, -1.7976931348623155E308)");
+        doubleRange_helper(belowNegativeMax, "(-Infinity, -1.7976931348623157E308)");
+        doubleRange_helper(belowMax, "(1.7976931348623155E308, 1.7976931348623157E308)");
+        doubleRange_helper(aboveMax, "(1.7976931348623157E308, Infinity)");
+        doubleRange_helper(justAboveZero, "(0.0, 4.9E-324)");
+        doubleRange_helper(justBelowZero, "(-4.9E-324, -0.0)");
     }
 
     private static void isInteger_helper(@NotNull String input, boolean output) {
-        BinaryFraction bf = read(input).get();
-        if (output) {
-            Assert.assertTrue(bf.isInteger());
-        } else {
-            Assert.assertFalse(bf.isInteger());
-        }
+        aeq(readStrict(input).get().isInteger(), output);
     }
 
     @Test
@@ -429,14 +467,43 @@ public strictfp class BinaryFractionTest {
         isInteger_helper("-5 >> 20", false);
     }
 
+    private static void isPowerOfTwo_helper(@NotNull String input, boolean output) {
+        aeq(readStrict(input).get().isPowerOfTwo(), output);
+    }
+
+    private static void isPowerOfTwo_fail_helper(@NotNull String input) {
+        try {
+            readStrict(input).get().isPowerOfTwo();
+            fail();
+        } catch (ArithmeticException ignored) {}
+    }
+
+    @Test
+    public void testIsPowerOfTwo() {
+        isPowerOfTwo_helper("1", true);
+        isPowerOfTwo_helper("1 << 3", true);
+        isPowerOfTwo_helper("1 >> 3", true);
+        isPowerOfTwo_helper("11", false);
+        isPowerOfTwo_helper("5 << 20", false);
+        isPowerOfTwo_helper("5 >> 20", false);
+
+        isPowerOfTwo_fail_helper("0");
+        isPowerOfTwo_fail_helper("-1");
+        isPowerOfTwo_fail_helper("-11");
+        isPowerOfTwo_fail_helper("-5 << 20");
+        isPowerOfTwo_fail_helper("-5 >> 20");
+    }
+
     private static void add_helper(@NotNull String x, @NotNull String y, @NotNull String output) {
-        aeq(read(x).get().add(read(y).get()), output);
+        BinaryFraction bf = readStrict(x).get().add(readStrict(y).get());
+        bf.validate();
+        aeq(bf, output);
     }
 
     private static void add_fail_helper(@NotNull String x, @NotNull String y) {
         try {
-            read(x).get().add(read(y).get());
-            Assert.fail();
+            readStrict(x).get().add(readStrict(y).get());
+            fail();
         } catch (ArithmeticException ignored) {}
     }
 
@@ -523,11 +590,14 @@ public strictfp class BinaryFractionTest {
         add_helper("-5 >> 20", "-11", "-11534341 >> 20");
         add_helper("-5 >> 20", "-5 << 20", "-5497558138885 >> 20");
         add_helper("-5 >> 20", "-5 >> 20", "-5 >> 19");
+
         add_fail_helper("1 << 2147483647", "1 << 2147483647");
     }
 
     private static void negate_helper(@NotNull String input, @NotNull String output) {
-        aeq(read(input).get().negate(), output);
+        BinaryFraction bf = readStrict(input).get().negate();
+        bf.validate();
+        aeq(bf, output);
     }
 
     @Test
@@ -544,7 +614,9 @@ public strictfp class BinaryFractionTest {
     }
 
     private static void abs_helper(@NotNull String input, @NotNull String output) {
-        aeq(read(input).get().abs(), output);
+        BinaryFraction bf = readStrict(input).get().abs();
+        bf.validate();
+        aeq(bf, output);
     }
 
     @Test
@@ -561,7 +633,7 @@ public strictfp class BinaryFractionTest {
     }
 
     private static void signum_helper(@NotNull String input, int signum) {
-        aeq(read(input).get().signum(), signum);
+        aeq(readStrict(input).get().signum(), signum);
     }
 
     @Test
@@ -578,13 +650,15 @@ public strictfp class BinaryFractionTest {
     }
 
     private static void subtract_helper(@NotNull String x, @NotNull String y, @NotNull String output) {
-        aeq(read(x).get().subtract(read(y).get()), output);
+        BinaryFraction bf = readStrict(x).get().subtract(readStrict(y).get());
+        bf.validate();
+        aeq(bf, output);
     }
 
     private static void subtract_fail_helper(@NotNull String x, @NotNull String y) {
         try {
-            read(x).get().subtract(read(y).get());
-            Assert.fail();
+            readStrict(x).get().subtract(readStrict(y).get());
+            fail();
         } catch (ArithmeticException ignored) {}
     }
 
@@ -671,17 +745,20 @@ public strictfp class BinaryFractionTest {
         subtract_helper("-5 >> 20", "-11", "11534331 >> 20");
         subtract_helper("-5 >> 20", "-5 << 20", "5497558138875 >> 20");
         subtract_helper("-5 >> 20", "-5 >> 20", "0");
+
         subtract_fail_helper("1 << 2147483647", "-1 << 2147483647");
     }
 
     private static void multiply_helper(@NotNull String x, @NotNull String y, @NotNull String output) {
-        aeq(read(x).get().multiply(read(y).get()), output);
+        BinaryFraction bf = readStrict(x).get().multiply(readStrict(y).get());
+        bf.validate();
+        aeq(bf, output);
     }
 
     private static void multiply_fail_helper(@NotNull String x, @NotNull String y) {
         try {
-            read(x).get().multiply(read(y).get());
-            Assert.fail();
+            readStrict(x).get().multiply(readStrict(y).get());
+            fail();
         } catch (ArithmeticException ignored) {}
     }
 
@@ -768,18 +845,21 @@ public strictfp class BinaryFractionTest {
         multiply_helper("-5 >> 20", "-11", "55 >> 20");
         multiply_helper("-5 >> 20", "-5 << 20", "25");
         multiply_helper("-5 >> 20", "-5 >> 20", "25 >> 40");
+
         multiply_fail_helper("1 << 2147483647", "1 << 1");
         multiply_fail_helper("1 >> 2147483648", "1 >> 1");
     }
 
     private static void shiftLeft_helper(@NotNull String input, int bits, @NotNull String output) {
-        aeq(read(input).get().shiftLeft(bits), output);
+        BinaryFraction bf = readStrict(input).get().shiftLeft(bits);
+        bf.validate();
+        aeq(bf, output);
     }
 
     private static void shiftLeft_fail_helper(@NotNull String input, int bits) {
         try {
-            read(input).get().shiftLeft(bits);
-            Assert.fail();
+            readStrict(input).get().shiftLeft(bits);
+            fail();
         } catch (ArithmeticException ignored) {}
     }
 
@@ -812,18 +892,21 @@ public strictfp class BinaryFractionTest {
         shiftLeft_helper("-5 >> 20", 0, "-5 >> 20");
         shiftLeft_helper("-5 >> 20", 5, "-5 >> 15");
         shiftLeft_helper("-5 >> 20", -5, "-5 >> 25");
+
         shiftLeft_fail_helper("1 << 2147483647", 1);
         shiftLeft_fail_helper("1 >> 2147483648", -1);
     }
 
     private static void shiftRight_helper(@NotNull String input, int bits, @NotNull String output) {
-        aeq(read(input).get().shiftRight(bits), output);
+        BinaryFraction bf = readStrict(input).get().shiftRight(bits);
+        bf.validate();
+        aeq(bf, output);
     }
 
     private static void shiftRight_fail_helper(@NotNull String input, int bits) {
         try {
-            read(input).get().shiftRight(bits);
-            Assert.fail();
+            readStrict(input).get().shiftRight(bits);
+            fail();
         } catch (ArithmeticException ignored) {}
     }
 
@@ -856,26 +939,22 @@ public strictfp class BinaryFractionTest {
         shiftRight_helper("-5 >> 20", 0, "-5 >> 20");
         shiftRight_helper("-5 >> 20", 5, "-5 >> 25");
         shiftRight_helper("-5 >> 20", -5, "-5 >> 15");
+
         shiftRight_fail_helper("1 << 2147483647", -1);
         shiftRight_fail_helper("1 >> 2147483648", 1);
     }
 
     private static void sum_helper(@NotNull String input, @NotNull String output) {
-        aeq(BinaryFraction.sum(readBinaryFractionList(input)), output);
+        BinaryFraction bf = BinaryFraction.sum(readBinaryFractionList(input));
+        bf.validate();
+        aeq(bf, output);
     }
 
-    private static void sum_null_helper(@NotNull String input) {
+    private static void sum_fail_helper(@NotNull String input) {
         try {
             sum(readBinaryFractionListWithNulls(input));
-            Assert.fail();
-        } catch (NullPointerException ignored) {}
-    }
-
-    private static void sum_arithmetic_helper(@NotNull String input) {
-        try {
-            sum(readBinaryFractionList(input));
-            Assert.fail();
-        } catch (ArithmeticException ignored) {}
+            fail();
+        } catch (ArithmeticException | NullPointerException ignored) {}
     }
 
     @Test
@@ -885,27 +964,23 @@ public strictfp class BinaryFractionTest {
         sum_helper("[1, 11, 5 << 20, 5 >> 20]", "5497570721797 >> 20");
         sum_helper("[1 << 2147483647, 1 << 2147483647, -1 << 2147483647]", "1 << 2147483647");
         sum_helper("[-1 << 2147483647, -1 << 2147483647, 1 << 2147483647]", "-1 << 2147483647");
-        sum_null_helper("[1, 11, null, 5 >> 20]");
-        sum_arithmetic_helper("[1 << 2147483647, 1 << 2147483647]");
-        sum_arithmetic_helper("[-1 << 2147483647, -1 << 2147483647]");
+
+        sum_fail_helper("[1, 11, null, 5 >> 20]");
+        sum_fail_helper("[1 << 2147483647, 1 << 2147483647]");
+        sum_fail_helper("[-1 << 2147483647, -1 << 2147483647]");
     }
 
     private static void product_helper(@NotNull String input, @NotNull String output) {
-        aeq(BinaryFraction.product(readBinaryFractionList(input)), output);
+        BinaryFraction bf = BinaryFraction.product(readBinaryFractionList(input));
+        bf.validate();
+        aeq(bf, output);
     }
 
-    private static void product_null_helper(@NotNull String input) {
+    private static void product_fail_helper(@NotNull String input) {
         try {
             product(readBinaryFractionListWithNulls(input));
-            Assert.fail();
-        } catch (NullPointerException ignored) {}
-    }
-
-    private static void product_arithmetic_helper(@NotNull String input) {
-        try {
-            product(readBinaryFractionList(input));
-            Assert.fail();
-        } catch (ArithmeticException ignored) {}
+            fail();
+        } catch (ArithmeticException | NullPointerException ignored) {}
     }
 
     @Test
@@ -915,27 +990,23 @@ public strictfp class BinaryFractionTest {
         product_helper("[1, 11, 5 << 20, 5 >> 20]", "275");
         product_helper("[1 << 2147483647, 1 << 1, 1 >> 1]", "1 << 2147483647");
         product_helper("[1 >> 2147483648, 1 >> 1, 1 << 1]", "1 >> 2147483648");
-        product_null_helper("[1, 11, null, 5 >> 20]");
-        product_arithmetic_helper("[1 << 2147483647, 1 << 1]");
-        product_arithmetic_helper("[1 >> 2147483648, 1 >> 1]");
+
+        product_fail_helper("[1, 11, null, 5 >> 20]");
+        product_fail_helper("[1 << 2147483647, 1 << 1]");
+        product_fail_helper("[1 >> 2147483648, 1 >> 1]");
     }
 
     private static void delta_helper(@NotNull String input, @NotNull String output) {
-        aeqit(delta(readBinaryFractionList(input)), output);
+        Iterable<BinaryFraction> bfs = delta(readBinaryFractionList(input));
+        take(TINY_LIMIT, bfs).forEach(BinaryFraction::validate);
+        aeqit(bfs, output);
     }
 
-    private static void delta_null_helper(@NotNull String input) {
+    private static void delta_fail_helper(@NotNull String input) {
         try {
             toList(delta(readBinaryFractionListWithNulls(input)));
-            Assert.fail();
-        } catch (NullPointerException ignored) {}
-    }
-
-    private static void delta_arithmetic_helper(@NotNull String input) {
-        try {
-            toList(delta(readBinaryFractionList(input)));
-            Assert.fail();
-        } catch (ArithmeticException ignored) {}
+            fail();
+        } catch (ArithmeticException | NullPointerException ignored) {}
     }
 
     @Test
@@ -946,13 +1017,14 @@ public strictfp class BinaryFractionTest {
                 "[-1 >> 1, -1 >> 2, -1 >> 3, -1 >> 4, -1 >> 5, -1 >> 6, -1 >> 7, -1 >> 8, -1 >> 9, -1 >> 10," +
                 " -1 >> 11, -1 >> 12, -1 >> 13, -1 >> 14, -1 >> 15, -1 >> 16, -1 >> 17, -1 >> 18, -1 >> 19," +
                 " -1 >> 20, ...]");
-        delta_null_helper("[1, 11, null, 5 >> 20]");
-        delta_arithmetic_helper("[-1 << 2147483647, 1 << 2147483647]");
-        delta_arithmetic_helper("[1 << 2147483647, -1 << 2147483647]");
+
+        delta_fail_helper("[1, 11, null, 5 >> 20]");
+        delta_fail_helper("[-1 << 2147483647, 1 << 2147483647]");
+        delta_fail_helper("[1 << 2147483647, -1 << 2147483647]");
     }
 
     private static void floor_helper(@NotNull String input, @NotNull String output) {
-        aeq(read(input).get().floor(), output);
+        aeq(readStrict(input).get().floor(), output);
     }
 
     @Test
@@ -973,7 +1045,7 @@ public strictfp class BinaryFractionTest {
     }
 
     private static void ceiling_helper(@NotNull String input, @NotNull String output) {
-        aeq(read(input).get().ceiling(), output);
+        aeq(readStrict(input).get().ceiling(), output);
     }
 
     @Test
@@ -1002,7 +1074,7 @@ public strictfp class BinaryFractionTest {
     }
 
     private static void hashCode_helper(@NotNull String input, int hashCode) {
-        aeq(read(input).get().hashCode(), hashCode);
+        aeq(readStrict(input).get().hashCode(), hashCode);
     }
 
     @Test
@@ -1023,58 +1095,59 @@ public strictfp class BinaryFractionTest {
         testCompareToHelper(readBinaryFractionList("[-5 << 20, -11, -1, -5 >> 20, 0, 5 >> 20, 1, 11, 5 << 20]"));
     }
 
-    private static void read_helper(@NotNull String input, @NotNull String output) {
-        aeq(read(input).get(), output);
-    }
-
-    private static void read_empty_helper(@NotNull String input) {
-        Assert.assertFalse(read(input).isPresent());
+    private static void readStrict_helper(@NotNull String input, @NotNull String output) {
+        Optional<BinaryFraction> obf = readStrict(input);
+        if (obf.isPresent()) {
+            obf.get().validate();
+        }
+        aeq(obf, output);
     }
 
     @Test
-    public void testRead() {
-        read_helper("0", "0");
-        read_helper("1", "1");
-        read_helper("11", "11");
-        read_helper("5 << 20", "5 << 20");
-        read_helper("5 >> 20", "5 >> 20");
-        read_helper("-1", "-1");
-        read_helper("-11", "-11");
-        read_helper("-5 << 20", "-5 << 20");
-        read_helper("-5 >> 20", "-5 >> 20");
-        read_helper("1 << 1000000000", "1 << 1000000000");
-        read_helper("1 >> 1000000000", "1 >> 1000000000");
-        read_helper("1 << 2147483647", "1 << 2147483647");
-        read_helper("1 >> 2147483648", "1 >> 2147483648");
-        read_empty_helper("");
-        read_empty_helper("a");
-        read_empty_helper("0x10");
-        read_empty_helper("0.5");
-        read_empty_helper(" ");
-        read_empty_helper(" 1");
-        read_empty_helper("1 ");
-        read_empty_helper("1 < 2");
-        read_empty_helper("1<<5");
-        read_empty_helper("1 <<");
-        read_empty_helper("<< 1");
-        read_empty_helper("2");
-        read_empty_helper("-2");
-        read_empty_helper("0 << 5");
-        read_empty_helper("0 >> 5");
-        read_empty_helper("1 << -5");
-        read_empty_helper("1 >> -5");
-        read_empty_helper("1 << 0");
-        read_empty_helper("1 >> 0");
-        read_empty_helper("2 << 1");
-        read_empty_helper("2 >> 1");
-        read_empty_helper("1 << 10000000000");
+    public void testReadStrict() {
+        readStrict_helper("0", "Optional[0]");
+        readStrict_helper("1", "Optional[1]");
+        readStrict_helper("11", "Optional[11]");
+        readStrict_helper("5 << 20", "Optional[5 << 20]");
+        readStrict_helper("5 >> 20", "Optional[5 >> 20]");
+        readStrict_helper("-1", "Optional[-1]");
+        readStrict_helper("-11", "Optional[-11]");
+        readStrict_helper("-5 << 20", "Optional[-5 << 20]");
+        readStrict_helper("-5 >> 20", "Optional[-5 >> 20]");
+        readStrict_helper("1 << 1000000000", "Optional[1 << 1000000000]");
+        readStrict_helper("1 >> 1000000000", "Optional[1 >> 1000000000]");
+        readStrict_helper("1 << 2147483647", "Optional[1 << 2147483647]");
+        readStrict_helper("1 >> 2147483648", "Optional[1 >> 2147483648]");
+
+        readStrict_helper("", "Optional.empty");
+        readStrict_helper("a", "Optional.empty");
+        readStrict_helper("0x10", "Optional.empty");
+        readStrict_helper("0.5", "Optional.empty");
+        readStrict_helper(" ", "Optional.empty");
+        readStrict_helper(" 1", "Optional.empty");
+        readStrict_helper("1 ", "Optional.empty");
+        readStrict_helper("1 < 2", "Optional.empty");
+        readStrict_helper("1<<5", "Optional.empty");
+        readStrict_helper("1 <<", "Optional.empty");
+        readStrict_helper("<< 1", "Optional.empty");
+        readStrict_helper("2", "Optional.empty");
+        readStrict_helper("-2", "Optional.empty");
+        readStrict_helper("0 << 5", "Optional.empty");
+        readStrict_helper("0 >> 5", "Optional.empty");
+        readStrict_helper("1 << -5", "Optional.empty");
+        readStrict_helper("1 >> -5", "Optional.empty");
+        readStrict_helper("1 << 0", "Optional.empty");
+        readStrict_helper("1 >> 0", "Optional.empty");
+        readStrict_helper("2 << 1", "Optional.empty");
+        readStrict_helper("2 >> 1", "Optional.empty");
+        readStrict_helper("1 << 10000000000", "Optional.empty");
     }
 
     private static @NotNull List<BinaryFraction> readBinaryFractionList(@NotNull String s) {
-        return Readers.readListStrict(BinaryFraction::read).apply(s).get();
+        return Readers.readListStrict(BinaryFraction::readStrict).apply(s).get();
     }
 
     private static @NotNull List<BinaryFraction> readBinaryFractionListWithNulls(@NotNull String s) {
-        return Readers.readListWithNullsStrict(BinaryFraction::read).apply(s).get();
+        return Readers.readListWithNullsStrict(BinaryFraction::readStrict).apply(s).get();
     }
 }

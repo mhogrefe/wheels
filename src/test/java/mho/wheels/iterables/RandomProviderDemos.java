@@ -1,6 +1,7 @@
 package mho.wheels.iterables;
 
 import mho.wheels.math.BinaryFraction;
+import mho.wheels.ordering.Ordering;
 import mho.wheels.random.IsaacPRNG;
 import mho.wheels.structures.FiniteDomainFunction;
 import mho.wheels.structures.Pair;
@@ -31,7 +32,7 @@ public class RandomProviderDemos extends Demos {
     }
 
     private void demoConstructor_List_Integer() {
-        for (List<Integer> is : take(LIMIT, P.lists(IsaacPRNG.SIZE, P.integers()))) {
+        for (List<Integer> is : take(SMALL_LIMIT, P.lists(IsaacPRNG.SIZE, P.integers()))) {
             System.out.println("RandomProvider(" + is + ") = " + new RandomProvider(is));
         }
     }
@@ -55,7 +56,7 @@ public class RandomProviderDemos extends Demos {
     }
 
     private void demoGetSeed() {
-        for (RandomProvider rp : take(LIMIT, P.randomProviders())) {
+        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProviders())) {
             System.out.println("getSeed(" + rp + ") = " + rp.getSeed());
         }
     }
@@ -340,57 +341,74 @@ public class RandomProviderDemos extends Demos {
     }
 
     private void demoRange_byte_byte() {
-        Iterable<Triple<RandomProvider, Byte, Byte>> ts = P.triples(P.randomProvidersDefault(), P.bytes(), P.bytes());
-        for (Triple<RandomProvider, Byte, Byte> p : take(LIMIT, ts)) {
+        Iterable<Triple<RandomProvider, Byte, Byte>> ts = filterInfinite(
+                t -> t.b <= t.c,
+                P.triples(P.randomProvidersDefault(), P.bytes(), P.bytes())
+        );
+        for (Triple<RandomProvider, Byte, Byte> p : take(MEDIUM_LIMIT, ts)) {
             System.out.println("range(" + p.a + ", " + p.b + ", " + p.c + ") = " + its(p.a.range(p.b, p.c)));
         }
     }
 
     private void demoRange_short_short() {
-        Iterable<Triple<RandomProvider, Short, Short>> ts = P.triples(
-                P.randomProvidersDefault(),
-                P.shorts(),
-                P.shorts()
+        Iterable<Triple<RandomProvider, Short, Short>> ts = filterInfinite(
+                t -> t.b <= t.c,
+                P.triples(
+                        P.randomProvidersDefault(),
+                        P.shorts(),
+                        P.shorts()
+                )
         );
-        for (Triple<RandomProvider, Short, Short> p : take(LIMIT, ts)) {
+        for (Triple<RandomProvider, Short, Short> p : take(MEDIUM_LIMIT, ts)) {
             System.out.println("range(" + p.a + ", " + p.b + ", " + p.c + ") = " + its(p.a.range(p.b, p.c)));
         }
     }
 
     private void demoRange_int_int() {
-        Iterable<Triple<RandomProvider, Integer, Integer>> ts = P.triples(
-                P.randomProvidersDefault(),
-                P.integers(),
-                P.integers()
+        Iterable<Triple<RandomProvider, Integer, Integer>> ts = filterInfinite(
+                t -> t.b <= t.c,
+                P.triples(
+                        P.randomProvidersDefault(),
+                        P.integers(),
+                        P.integers()
+                )
         );
-        for (Triple<RandomProvider, Integer, Integer> p : take(LIMIT, ts)) {
+        for (Triple<RandomProvider, Integer, Integer> p : take(MEDIUM_LIMIT, ts)) {
             System.out.println("range(" + p.a + ", " + p.b + ", " + p.c + ") = " + its(p.a.range(p.b, p.c)));
         }
     }
 
     private void demoRange_long_long() {
-        Iterable<Triple<RandomProvider, Long, Long>> ts = P.triples(P.randomProvidersDefault(), P.longs(), P.longs());
-        for (Triple<RandomProvider, Long, Long> p : take(LIMIT, ts)) {
+        Iterable<Triple<RandomProvider, Long, Long>> ts = filterInfinite(
+                t -> t.b <= t.c,
+                P.triples(P.randomProvidersDefault(), P.longs(), P.longs())
+        );
+        for (Triple<RandomProvider, Long, Long> p : take(MEDIUM_LIMIT, ts)) {
             System.out.println("range(" + p.a + ", " + p.b + ", " + p.c + ") = " + its(p.a.range(p.b, p.c)));
         }
     }
 
     private void demoRange_BigInteger_BigInteger() {
-        Iterable<Triple<RandomProvider, BigInteger, BigInteger>> ts = P.triples(
-                P.randomProvidersDefault(),
-                P.bigIntegers(),
-                P.bigIntegers()
+        Iterable<Triple<RandomProvider, BigInteger, BigInteger>> ts = filterInfinite(
+                t -> Ordering.le(t.b, t.c),
+                P.triples(
+                        P.randomProvidersDefault(),
+                        P.bigIntegers(),
+                        P.bigIntegers()
+                )
         );
-        for (Triple<RandomProvider, BigInteger, BigInteger> p : take(LIMIT, ts)) {
+        for (Triple<RandomProvider, BigInteger, BigInteger> p : take(MEDIUM_LIMIT, ts)) {
             System.out.println("range(" + p.a + ", " + p.b + ", " + p.c + ") = " + its(p.a.range(p.b, p.c)));
         }
     }
 
     private void demoRange_char_char() {
-        Iterable<Triple<RandomProvider, Character, Character>> ts = P.triples(
-                P.randomProvidersDefault(),
-                P.characters(),
-                P.characters()
+        Iterable<Triple<RandomProvider, Character, Character>> ts = filterInfinite(
+                t -> t.b <= t.c, P.triples(
+                        P.randomProvidersDefault(),
+                        P.characters(),
+                        P.characters()
+                )
         );
         for (Triple<RandomProvider, Character, Character> p : take(MEDIUM_LIMIT, ts)) {
             System.out.println("range(" + p.a + ", " + p.b + ", " + p.c + ") = " + cits(p.a.range(p.b, p.c)));
@@ -610,13 +628,16 @@ public class RandomProviderDemos extends Demos {
     }
 
     private void demoRange_BinaryFraction_BinaryFraction() {
-        Iterable<Triple<RandomProvider, BinaryFraction, BinaryFraction>> ts = P.triples(
-                filterInfinite(
-                        x -> x.getScale() > 0 && x.getScale() != Integer.MAX_VALUE,
-                        P.randomProvidersDefaultSecondaryAndTertiaryScale()
-                ),
-                P.binaryFractions(),
-                P.binaryFractions()
+        Iterable<Triple<RandomProvider, BinaryFraction, BinaryFraction>> ts = filterInfinite(
+                t -> Ordering.le(t.b, t.c),
+                P.triples(
+                        filterInfinite(
+                                x -> x.getScale() > 0 && x.getScale() != Integer.MAX_VALUE,
+                                P.randomProvidersDefaultSecondaryAndTertiaryScale()
+                        ),
+                        P.binaryFractions(),
+                        P.binaryFractions()
+                )
         );
         for (Triple<RandomProvider, BinaryFraction, BinaryFraction> t : take(MEDIUM_LIMIT, ts)) {
             System.out.println("range(" + t.a + ", " + t.b + ", " + t.c + ") = " + its(t.a.range(t.b, t.c)));
@@ -740,10 +761,13 @@ public class RandomProviderDemos extends Demos {
     }
 
     private void demoRange_float_float() {
-        Iterable<Triple<RandomProvider, Float, Float>> ts = P.triples(
-                P.randomProvidersDefault(),
-                filter(f -> !Float.isNaN(f), P.floats()),
-                filter(f -> !Float.isNaN(f), P.floats())
+        Iterable<Triple<RandomProvider, Float, Float>> ts = filterInfinite(
+                t -> t.b <= t.c,
+                P.triples(
+                        P.randomProvidersDefault(),
+                        filter(f -> !Float.isNaN(f), P.floats()),
+                        filter(f -> !Float.isNaN(f), P.floats())
+                )
         );
         for (Triple<RandomProvider, Float, Float> t : take(MEDIUM_LIMIT, ts)) {
             System.out.println("range(" + t.a + ", " + t.b + ", " + t.c + ") = " + its(t.a.range(t.b, t.c)));
@@ -771,10 +795,13 @@ public class RandomProviderDemos extends Demos {
     }
 
     private void demoRange_double_double() {
-        Iterable<Triple<RandomProvider, Double, Double>> ts = P.triples(
-                P.randomProvidersDefault(),
-                filter(d -> !Double.isNaN(d), P.doubles()),
-                filter(d -> !Double.isNaN(d), P.doubles())
+        Iterable<Triple<RandomProvider, Double, Double>> ts = filterInfinite(
+                t -> t.b <= t.c,
+                P.triples(
+                        P.randomProvidersDefault(),
+                        filter(d -> !Double.isNaN(d), P.doubles()),
+                        filter(d -> !Double.isNaN(d), P.doubles())
+                )
         );
         for (Triple<RandomProvider, Double, Double> t : take(MEDIUM_LIMIT, ts)) {
             System.out.println("range(" + t.a + ", " + t.b + ", " + t.c + ") = " + its(t.a.range(t.b, t.c)));
@@ -802,10 +829,13 @@ public class RandomProviderDemos extends Demos {
     }
 
     private void demoRangeUniform_float_float() {
-        Iterable<Triple<RandomProvider, Float, Float>> ts = P.triples(
-                P.randomProvidersDefault(),
-                filter(Float::isFinite, P.floats()),
-                filter(Float::isFinite, P.floats())
+        Iterable<Triple<RandomProvider, Float, Float>> ts = filterInfinite(
+                t -> t.b <= t.c,
+                P.triples(
+                        P.randomProvidersDefault(),
+                        filter(Float::isFinite, P.floats()),
+                        filter(Float::isFinite, P.floats())
+                )
         );
         for (Triple<RandomProvider, Float, Float> t : take(MEDIUM_LIMIT, ts)) {
             System.out.println("rangeUniform(" + t.a + ", " + t.b + ", " + t.c + ") = " +
@@ -834,10 +864,13 @@ public class RandomProviderDemos extends Demos {
     }
 
     private void demoRangeUniform_double_double() {
-        Iterable<Triple<RandomProvider, Double, Double>> ts = P.triples(
-                P.randomProvidersDefault(),
-                filter(Double::isFinite, P.doubles()),
-                filter(Double::isFinite, P.doubles())
+        Iterable<Triple<RandomProvider, Double, Double>> ts = filterInfinite(
+                t -> t.b <= t.c,
+                P.triples(
+                        P.randomProvidersDefault(),
+                        filter(Double::isFinite, P.doubles()),
+                        filter(Double::isFinite, P.doubles())
+                )
         );
         for (Triple<RandomProvider, Double, Double> t : take(MEDIUM_LIMIT, ts)) {
             System.out.println("rangeUniform(" + t.a + ", " + t.b + ", " + t.c + ") = " +
@@ -952,13 +985,16 @@ public class RandomProviderDemos extends Demos {
     }
 
     private void demoRange_BigDecimal_BigDecimal() {
-        Iterable<Triple<RandomProvider, BigDecimal, BigDecimal>> ts = P.triples(
-                filterInfinite(
-                        x -> x.getScale() > 0 && x.getSecondaryScale() > 0,
-                        P.randomProvidersDefaultTertiaryScale()
-                ),
-                P.bigDecimals(),
-                P.bigDecimals()
+        Iterable<Triple<RandomProvider, BigDecimal, BigDecimal>> ts = filterInfinite(
+                t -> Ordering.le(t.b, t.c),
+                P.triples(
+                        filterInfinite(
+                                x -> x.getScale() > 0 && x.getSecondaryScale() > 0,
+                                P.withScale(4).randomProvidersDefaultTertiaryScale()
+                        ),
+                        P.withScale(4).bigDecimals(),
+                        P.withScale(4).bigDecimals()
+                )
         );
         for (Triple<RandomProvider, BigDecimal, BigDecimal> t : take(MEDIUM_LIMIT, ts)) {
             System.out.println("range(" + t.a + ", " + t.b + ", " + t.c + ") = " + its(t.a.range(t.b, t.c)));
@@ -992,13 +1028,16 @@ public class RandomProviderDemos extends Demos {
     }
 
     private void demoRangeCanonical_BigDecimal_BigDecimal() {
-        Iterable<Triple<RandomProvider, BigDecimal, BigDecimal>> ts = P.triples(
-                filterInfinite(
-                        x -> x.getScale() > 0 && x.getSecondaryScale() > 0,
-                        P.randomProvidersDefaultTertiaryScale()
-                ),
-                P.bigDecimals(),
-                P.bigDecimals()
+        Iterable<Triple<RandomProvider, BigDecimal, BigDecimal>> ts = filterInfinite(
+                t -> Ordering.le(t.b, t.c),
+                P.triples(
+                        filterInfinite(
+                                x -> x.getScale() > 0 && x.getSecondaryScale() > 0,
+                                P.randomProvidersDefaultTertiaryScale()
+                        ),
+                        P.bigDecimals(),
+                        P.bigDecimals()
+                )
         );
         for (Triple<RandomProvider, BigDecimal, BigDecimal> t : take(MEDIUM_LIMIT, ts)) {
             System.out.println("rangeCanonical(" + t.a + ", " + t.b + ", " + t.c + ") = " +
@@ -1615,7 +1654,7 @@ public class RandomProviderDemos extends Demos {
         }
     }
 
-    private void demoChoose() {
+    private void demoChoose_Iterable_Iterable() {
         Iterable<Triple<RandomProvider, Iterable<Integer>, Iterable<Integer>>> ts = P.triples(
                 filterInfinite(rp -> rp.getScale() > 0, P.randomProvidersDefaultSecondaryAndTertiaryScale()),
                 P.prefixPermutations(EP.naturalIntegers()),
@@ -1624,6 +1663,17 @@ public class RandomProviderDemos extends Demos {
         for (Triple<RandomProvider, Iterable<Integer>, Iterable<Integer>> t : take(MEDIUM_LIMIT, ts)) {
             System.out.println("choose(" + t.a + ", " + its(t.b) + ", " + its(t.c) + ") = " +
                     its(t.a.choose(t.b, t.c)));
+        }
+    }
+
+    private void demoChoose_Iterable() {
+        Iterable<Pair<RandomProvider, List<Iterable<Integer>>>> ps = P.pairs(
+                P.randomProvidersDefaultSecondaryAndTertiaryScale(),
+                P.withScale(4).listsAtLeast(1, P.prefixPermutations(EP.naturalIntegers()))
+        );
+        for (Pair<RandomProvider, List<Iterable<Integer>>> p : take(MEDIUM_LIMIT, ps)) {
+            String xssString = toList(map(Testing::its, p.b)).toString();
+            System.out.println("choose(" + p.a + ", " + xssString + ") = " + its(p.a.choose(p.b)));
         }
     }
 
@@ -1892,15 +1942,15 @@ public class RandomProviderDemos extends Demos {
     }
 
     private void demoEquals_null() {
-        for (RandomProvider r : take(LIMIT, P.randomProviders())) {
+        for (RandomProvider rp : take(LIMIT, P.randomProviders())) {
             //noinspection ObjectEqualsNull
-            System.out.println(r + (r.equals(null) ? " = " : " ≠ ") + null);
+            System.out.println(rp + (rp.equals(null) ? " = " : " ≠ ") + null);
         }
     }
 
     private void demoHashCode() {
-        for (RandomProvider r : take(LIMIT, P.randomProviders())) {
-            System.out.println("hashCode(" + r + ") = " + r.hashCode());
+        for (RandomProvider rp : take(LIMIT, P.randomProviders())) {
+            System.out.println("hashCode(" + rp + ") = " + rp.hashCode());
         }
     }
 

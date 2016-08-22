@@ -192,7 +192,8 @@ public class RandomProviderProperties extends TestProperties {
         propertiesStringSubsetsAtLeast_int_String();
         propertiesStringSubsetsAtLeast_int();
         propertiesEithers();
-        propertiesChoose();
+        propertiesChoose_Iterable_Iterable();
+        propertiesChoose_Iterable();
         propertiesCartesianProduct();
         propertiesRepeatingIterables();
         propertiesRepeatingIterablesDistinctAtLeast();
@@ -774,7 +775,10 @@ public class RandomProviderProperties extends TestProperties {
 
     private void propertiesRange_byte_byte() {
         initialize("range(byte, byte)");
-        Iterable<Triple<RandomProvider, Byte, Byte>> ts = P.triples(P.randomProvidersDefault(), P.bytes(), P.bytes());
+        Iterable<Triple<RandomProvider, Byte, Byte>> ts = filterInfinite(
+                t -> t.b <= t.c,
+                P.triples(P.randomProvidersDefault(), P.bytes(), P.bytes())
+        );
         for (Triple<RandomProvider, Byte, Byte> t : take(LIMIT, ts)) {
             Iterable<Byte> bs = t.a.range(t.b, t.c);
             simpleTest(t.a, bs, b -> b >= t.b && b <= t.c);
@@ -784,14 +788,28 @@ public class RandomProviderProperties extends TestProperties {
         for (Pair<RandomProvider, Byte> p : take(LIMIT, P.pairs(P.randomProvidersDefault(), P.bytes()))) {
             aeqit(p, TINY_LIMIT, p.a.range(p.b, p.b), repeat(p.b));
         }
+
+        Iterable<Triple<RandomProvider, Byte, Byte>> tsFail = filterInfinite(
+                t -> t.b > t.c,
+                P.triples(P.randomProvidersDefault(), P.bytes(), P.bytes())
+        );
+        for (Triple<RandomProvider, Byte, Byte> t : take(LIMIT, tsFail)) {
+            try {
+                t.a.range(t.b, t.c);
+                fail(t);
+            } catch (IllegalArgumentException ignored) {}
+        }
     }
 
     private void propertiesRange_short_short() {
         initialize("range(short, short)");
-        Iterable<Triple<RandomProvider, Short, Short>> ts = P.triples(
-                P.randomProvidersDefault(),
-                P.shorts(),
-                P.shorts()
+        Iterable<Triple<RandomProvider, Short, Short>> ts = filterInfinite(
+                t -> t.b <= t.c,
+                P.triples(
+                        P.randomProvidersDefault(),
+                        P.shorts(),
+                        P.shorts()
+                )
         );
         for (Triple<RandomProvider, Short, Short> t : take(LIMIT, ts)) {
             Iterable<Short> ss = t.a.range(t.b, t.c);
@@ -802,14 +820,28 @@ public class RandomProviderProperties extends TestProperties {
         for (Pair<RandomProvider, Short> p : take(LIMIT, P.pairs(P.randomProvidersDefault(), P.shorts()))) {
             aeqit(p, TINY_LIMIT, p.a.range(p.b, p.b), repeat(p.b));
         }
+
+        Iterable<Triple<RandomProvider, Short, Short>> tsFail = filterInfinite(
+                t -> t.b > t.c,
+                P.triples(P.randomProvidersDefault(), P.shorts(), P.shorts())
+        );
+        for (Triple<RandomProvider, Short, Short> t : take(LIMIT, tsFail)) {
+            try {
+                t.a.range(t.b, t.c);
+                fail(t);
+            } catch (IllegalArgumentException ignored) {}
+        }
     }
 
     private void propertiesRange_int_int() {
         initialize("range(int, int)");
-        Iterable<Triple<RandomProvider, Integer, Integer>> ts = P.triples(
-                P.randomProvidersDefault(),
-                P.integers(),
-                P.integers()
+        Iterable<Triple<RandomProvider, Integer, Integer>> ts = filterInfinite(
+                t -> t.b <= t.c,
+                P.triples(
+                        P.randomProvidersDefault(),
+                        P.integers(),
+                        P.integers()
+                )
         );
         for (Triple<RandomProvider, Integer, Integer> t : take(LIMIT, ts)) {
             Iterable<Integer> is = t.a.range(t.b, t.c);
@@ -820,11 +852,25 @@ public class RandomProviderProperties extends TestProperties {
         for (Pair<RandomProvider, Integer> p : take(LIMIT, P.pairs(P.randomProvidersDefault(), P.integers()))) {
             aeqit(p, TINY_LIMIT, p.a.range(p.b, p.b), repeat(p.b));
         }
+
+        Iterable<Triple<RandomProvider, Integer, Integer>> tsFail = filterInfinite(
+                t -> t.b > t.c,
+                P.triples(P.randomProvidersDefault(), P.integers(), P.integers())
+        );
+        for (Triple<RandomProvider, Integer, Integer> t : take(LIMIT, tsFail)) {
+            try {
+                t.a.range(t.b, t.c);
+                fail(t);
+            } catch (IllegalArgumentException ignored) {}
+        }
     }
 
     private void propertiesRange_long_long() {
         initialize("range(long, long)");
-        Iterable<Triple<RandomProvider, Long, Long>> ts = P.triples(P.randomProvidersDefault(), P.longs(), P.longs());
+        Iterable<Triple<RandomProvider, Long, Long>> ts = filterInfinite(
+                t -> t.b <= t.c,
+                P.triples(P.randomProvidersDefault(), P.longs(), P.longs())
+        );
         for (Triple<RandomProvider, Long, Long> t : take(LIMIT, ts)) {
             Iterable<Long> ls = t.a.range(t.b, t.c);
             simpleTest(t.a, ls, l -> l >= t.b && l <= t.c);
@@ -834,15 +880,28 @@ public class RandomProviderProperties extends TestProperties {
         for (Pair<RandomProvider, Long> p : take(LIMIT, P.pairs(P.randomProvidersDefault(), P.longs()))) {
             aeqit(p, TINY_LIMIT, p.a.range(p.b, p.b), repeat(p.b));
         }
+
+        Iterable<Triple<RandomProvider, Long, Long>> tsFail = filterInfinite(
+                t -> t.b > t.c,
+                P.triples(P.randomProvidersDefault(), P.longs(), P.longs())
+        );
+        for (Triple<RandomProvider, Long, Long> t : take(LIMIT, tsFail)) {
+            try {
+                t.a.range(t.b, t.c);
+                fail(t);
+            } catch (IllegalArgumentException ignored) {}
+        }
     }
 
     private void propertiesRange_BigInteger_BigInteger() {
         initialize("range(BigInteger, BigInteger)");
-
-        Iterable<Triple<RandomProvider, BigInteger, BigInteger>> ts = P.triples(
-                P.randomProvidersDefault(),
-                P.bigIntegers(),
-                P.bigIntegers()
+        Iterable<Triple<RandomProvider, BigInteger, BigInteger>> ts = filterInfinite(
+                t -> le(t.b, t.c),
+                P.triples(
+                        P.randomProvidersDefault(),
+                        P.bigIntegers(),
+                        P.bigIntegers()
+                )
         );
         for (Triple<RandomProvider, BigInteger, BigInteger> t : take(LIMIT, ts)) {
             Iterable<BigInteger> is = t.a.range(t.b, t.c);
@@ -854,14 +913,28 @@ public class RandomProviderProperties extends TestProperties {
         for (Pair<RandomProvider, BigInteger> p : take(LIMIT, ps)) {
             aeqit(p, TINY_LIMIT, p.a.range(p.b, p.b), repeat(p.b));
         }
+
+        Iterable<Triple<RandomProvider, BigInteger, BigInteger>> tsFail = filterInfinite(
+                t -> gt(t.b, t.c),
+                P.triples(P.randomProvidersDefault(), P.bigIntegers(), P.bigIntegers())
+        );
+        for (Triple<RandomProvider, BigInteger, BigInteger> t : take(LIMIT, tsFail)) {
+            try {
+                t.a.range(t.b, t.c);
+                fail(t);
+            } catch (IllegalArgumentException ignored) {}
+        }
     }
 
     private void propertiesRange_char_char() {
         initialize("range(char, char)");
-        Iterable<Triple<RandomProvider, Character, Character>> ts = P.triples(
-                P.randomProvidersDefault(),
-                P.characters(),
-                P.characters()
+        Iterable<Triple<RandomProvider, Character, Character>> ts = filterInfinite(
+                t -> t.b <= t.c,
+                P.triples(
+                        P.randomProvidersDefault(),
+                        P.characters(),
+                        P.characters()
+                )
         );
         for (Triple<RandomProvider, Character, Character> t : take(LIMIT, ts)) {
             Iterable<Character> cs = t.a.range(t.b, t.c);
@@ -872,6 +945,17 @@ public class RandomProviderProperties extends TestProperties {
         Iterable<Pair<RandomProvider, Character>> ps = P.pairs(P.randomProvidersDefault(), P.characters());
         for (Pair<RandomProvider, Character> p : take(LIMIT, ps)) {
             aeqit(p, TINY_LIMIT, p.a.range(p.b, p.b), repeat(p.b));
+        }
+
+        Iterable<Triple<RandomProvider, Character, Character>> tsFail = filterInfinite(
+                t -> t.b > t.c,
+                P.triples(P.randomProvidersDefault(), P.characters(), P.characters())
+        );
+        for (Triple<RandomProvider, Character, Character> t : take(LIMIT, tsFail)) {
+            try {
+                t.a.range(t.b, t.c);
+                fail(t);
+            } catch (IllegalArgumentException ignored) {}
         }
     }
 
@@ -1443,13 +1527,16 @@ public class RandomProviderProperties extends TestProperties {
     private void propertiesRange_BinaryFraction_BinaryFraction() {
         initialize("range(BinaryFraction, BinaryFraction)");
 
-        Iterable<Triple<RandomProvider, BinaryFraction, BinaryFraction>> ts = P.triples(
-                filterInfinite(
-                        x -> x.getScale() > 0 && x.getScale() != Integer.MAX_VALUE,
-                        P.randomProvidersDefaultSecondaryAndTertiaryScale()
-                ),
-                P.binaryFractions(),
-                P.binaryFractions()
+        Iterable<Triple<RandomProvider, BinaryFraction, BinaryFraction>> ts = filterInfinite(
+                t -> le(t.b, t.c),
+                P.triples(
+                        filterInfinite(
+                                x -> x.getScale() > 0 && x.getScale() != Integer.MAX_VALUE,
+                                P.randomProvidersDefaultSecondaryAndTertiaryScale()
+                        ),
+                        P.binaryFractions(),
+                        P.binaryFractions()
+                )
         );
         for (Triple<RandomProvider, BinaryFraction, BinaryFraction> t : take(LIMIT, ts)) {
             Iterable<BinaryFraction> bfs = t.a.range(t.b, t.c);
@@ -1462,10 +1549,13 @@ public class RandomProviderProperties extends TestProperties {
             aeqit(p, TINY_LIMIT, p.a.range(p.b, p.b), repeat(p.b));
         }
 
-        Iterable<Triple<RandomProvider, BinaryFraction, BinaryFraction>> tsFail = P.triples(
-                filterInfinite(x -> x.getScale() < 1, P.randomProvidersDefaultSecondaryAndTertiaryScale()),
-                P.binaryFractions(),
-                P.binaryFractions()
+        Iterable<Triple<RandomProvider, BinaryFraction, BinaryFraction>> tsFail = filterInfinite(
+                t -> le(t.b, t.c),
+                P.triples(
+                        filterInfinite(x -> x.getScale() < 1, P.randomProvidersDefaultSecondaryAndTertiaryScale()),
+                        P.binaryFractions(),
+                        P.binaryFractions()
+                )
         );
         for (Triple<RandomProvider, BinaryFraction, BinaryFraction> t : take(LIMIT, tsFail)) {
             try {
@@ -1474,12 +1564,33 @@ public class RandomProviderProperties extends TestProperties {
             } catch (IllegalStateException ignored) {}
         }
 
-        tsFail = P.triples(P.randomProvidersDefault(), P.binaryFractions(), P.binaryFractions());
+        tsFail = filterInfinite(
+                t -> le(t.b, t.c),
+                P.triples(P.randomProvidersDefault(), P.binaryFractions(), P.binaryFractions())
+        );
         for (Triple<RandomProvider, BinaryFraction, BinaryFraction> t : take(LIMIT, tsFail)) {
             try {
                 t.a.withScale(Integer.MAX_VALUE).range(t.b, t.c);
                 fail(t);
             } catch (IllegalStateException ignored) {}
+        }
+
+        tsFail = filterInfinite(
+                t -> gt(t.b, t.c),
+                P.triples(
+                        filterInfinite(
+                                x -> x.getScale() > 0 && x.getScale() != Integer.MAX_VALUE,
+                                P.randomProvidersDefaultSecondaryAndTertiaryScale()
+                        ),
+                        P.binaryFractions(),
+                        P.binaryFractions()
+                )
+        );
+        for (Triple<RandomProvider, BinaryFraction, BinaryFraction> t : take(LIMIT, tsFail)) {
+            try {
+                t.a.range(t.b, t.c);
+                fail(t);
+            } catch (IllegalArgumentException ignored) {}
         }
     }
 
@@ -1645,10 +1756,13 @@ public class RandomProviderProperties extends TestProperties {
 
     private void propertiesRange_float_float() {
         initialize("range(float, float)");
-        Iterable<Triple<RandomProvider, Float, Float>> ts = P.triples(
-                P.randomProvidersDefault(),
-                filter(f -> !Float.isNaN(f), P.floats()),
-                filter(f -> !Float.isNaN(f), P.floats())
+        Iterable<Triple<RandomProvider, Float, Float>> ts = filterInfinite(
+                t -> t.b <= t.c,
+                P.triples(
+                        P.randomProvidersDefault(),
+                        filter(f -> !Float.isNaN(f), P.floats()),
+                        filter(f -> !Float.isNaN(f), P.floats())
+                )
         );
         for (Triple<RandomProvider, Float, Float> t : take(LIMIT, ts)) {
             Iterable<Float> fs = t.a.range(t.b, t.c);
@@ -1665,11 +1779,26 @@ public class RandomProviderProperties extends TestProperties {
             try {
                 p.a.range(Float.NaN, p.b);
                 fail(p);
-            } catch (ArithmeticException ignored) {}
+            } catch (ArithmeticException | IllegalArgumentException ignored) {}
             try {
                 p.a.range(p.b, Float.NaN);
                 fail(p);
             } catch (ArithmeticException ignored) {}
+        }
+
+        Iterable<Triple<RandomProvider, Float, Float>> tsFail = filterInfinite(
+                t -> t.b > t.c,
+                P.triples(
+                        P.randomProvidersDefault(),
+                        filter(f -> !Float.isNaN(f), P.floats()),
+                        filter(f -> !Float.isNaN(f), P.floats())
+                )
+        );
+        for (Triple<RandomProvider, Float, Float> t : take(LIMIT, tsFail)) {
+            try {
+                t.a.range(t.b, t.c);
+                fail(t);
+            } catch (IllegalArgumentException ignored) {}
         }
     }
 
@@ -1707,10 +1836,13 @@ public class RandomProviderProperties extends TestProperties {
 
     private void propertiesRange_double_double() {
         initialize("range(double, double)");
-        Iterable<Triple<RandomProvider, Double, Double>> ts = P.triples(
-                P.randomProvidersDefault(),
-                filter(d -> !Double.isNaN(d), P.doubles()),
-                filter(d -> !Double.isNaN(d), P.doubles())
+        Iterable<Triple<RandomProvider, Double, Double>> ts = filterInfinite(
+                t -> t.b <= t.c,
+                P.triples(
+                        P.randomProvidersDefault(),
+                        filter(d -> !Double.isNaN(d), P.doubles()),
+                        filter(d -> !Double.isNaN(d), P.doubles())
+                )
         );
         for (Triple<RandomProvider, Double, Double> t : take(LIMIT, ts)) {
             Iterable<Double> ds = t.a.range(t.b, t.c);
@@ -1727,11 +1859,26 @@ public class RandomProviderProperties extends TestProperties {
             try {
                 p.a.range(Double.NaN, p.b);
                 fail(p);
-            } catch (ArithmeticException ignored) {}
+            } catch (ArithmeticException | IllegalArgumentException ignored) {}
             try {
                 p.a.range(p.b, Double.NaN);
                 fail(p);
             } catch (ArithmeticException ignored) {}
+        }
+
+        Iterable<Triple<RandomProvider, Double, Double>> tsFail = filterInfinite(
+                t -> t.b > t.c,
+                P.triples(
+                        P.randomProvidersDefault(),
+                        filter(d -> !Double.isNaN(d), P.doubles()),
+                        filter(d -> !Double.isNaN(d), P.doubles())
+                )
+        );
+        for (Triple<RandomProvider, Double, Double> t : take(LIMIT, tsFail)) {
+            try {
+                t.a.range(t.b, t.c);
+                fail(t);
+            } catch (IllegalArgumentException ignored) {}
         }
     }
 
@@ -1761,10 +1908,12 @@ public class RandomProviderProperties extends TestProperties {
 
     private void propertiesRangeUniform_float_float() {
         initialize("rangeUniform(float, float)");
-        Iterable<Triple<RandomProvider, Float, Float>> ts = P.triples(
-                P.randomProvidersDefault(),
-                filter(Float::isFinite, P.floats()),
-                filter(Float::isFinite, P.floats())
+        Iterable<Triple<RandomProvider, Float, Float>> ts = filterInfinite(
+                t -> t.b <= t.c, P.triples(
+                        P.randomProvidersDefault(),
+                        filter(Float::isFinite, P.floats()),
+                        filter(Float::isFinite, P.floats())
+                )
         );
         for (Triple<RandomProvider, Float, Float> t : take(LIMIT, ts)) {
             Iterable<Float> fs = t.a.rangeUniform(t.b, t.c);
@@ -1811,6 +1960,20 @@ public class RandomProviderProperties extends TestProperties {
                 fail(p);
             } catch (ArithmeticException ignored) {}
         }
+
+        Iterable<Triple<RandomProvider, Float, Float>> tsFail = filterInfinite(
+                t -> t.b > t.c, P.triples(
+                        P.randomProvidersDefault(),
+                        filter(Float::isFinite, P.floats()),
+                        filter(Float::isFinite, P.floats())
+                )
+        );
+        for (Triple<RandomProvider, Float, Float> t : take(LIMIT, tsFail)) {
+            try {
+                t.a.rangeUniform(t.b, t.c);
+                fail(t);
+            } catch (IllegalArgumentException ignored) {}
+        }
     }
 
     private void propertiesRangeUpUniform_double() {
@@ -1839,10 +2002,12 @@ public class RandomProviderProperties extends TestProperties {
 
     private void propertiesRangeUniform_double_double() {
         initialize("rangeUniform(double, double)");
-        Iterable<Triple<RandomProvider, Double, Double>> ts = P.triples(
-                P.randomProvidersDefault(),
-                filter(Double::isFinite, P.doubles()),
-                filter(Double::isFinite, P.doubles())
+        Iterable<Triple<RandomProvider, Double, Double>> ts = filterInfinite(
+                t -> t.b <= t.c, P.triples(
+                        P.randomProvidersDefault(),
+                        filter(Double::isFinite, P.doubles()),
+                        filter(Double::isFinite, P.doubles())
+                )
         );
         for (Triple<RandomProvider, Double, Double> t : take(LIMIT, ts)) {
             Iterable<Double> ds = t.a.rangeUniform(t.b, t.c);
@@ -1888,6 +2053,20 @@ public class RandomProviderProperties extends TestProperties {
                 p.a.rangeUniform(p.b, Double.POSITIVE_INFINITY);
                 fail(p);
             } catch (ArithmeticException ignored) {}
+        }
+
+        Iterable<Triple<RandomProvider, Double, Double>> tsFail = filterInfinite(
+                t -> t.b > t.c, P.triples(
+                        P.randomProvidersDefault(),
+                        filter(Double::isFinite, P.doubles()),
+                        filter(Double::isFinite, P.doubles())
+                )
+        );
+        for (Triple<RandomProvider, Double, Double> t : take(LIMIT, tsFail)) {
+            try {
+                t.a.rangeUniform(t.b, t.c);
+                fail(t);
+            } catch (IllegalArgumentException ignored) {}
         }
     }
 
@@ -2224,13 +2403,16 @@ public class RandomProviderProperties extends TestProperties {
     private void propertiesRange_BigDecimal_BigDecimal() {
         initialize("range(BigDecimal, BigDecimal)");
 
-        Iterable<Triple<RandomProvider, BigDecimal, BigDecimal>> ts = P.triples(
-                filterInfinite(
-                        x -> x.getScale() > 0 && x.getSecondaryScale() > 0,
-                        P.randomProvidersDefaultTertiaryScale()
-                ),
-                P.bigDecimals(),
-                P.bigDecimals()
+        Iterable<Triple<RandomProvider, BigDecimal, BigDecimal>> ts = filterInfinite(
+                t -> le(t.b, t.c),
+                P.triples(
+                        filterInfinite(
+                                x -> x.getScale() > 0 && x.getSecondaryScale() > 0,
+                                P.randomProvidersDefaultTertiaryScale()
+                        ),
+                        P.bigDecimals(),
+                        P.bigDecimals()
+                )
         );
         for (Triple<RandomProvider, BigDecimal, BigDecimal> t : take(LIMIT, ts)) {
             Iterable<BigDecimal> bds = t.a.range(t.b, t.c);
@@ -2271,6 +2453,24 @@ public class RandomProviderProperties extends TestProperties {
                 t.a.range(t.b, t.c);
                 fail(t);
             } catch (IllegalStateException ignored) {}
+        }
+
+        tsFail = filterInfinite(
+                t -> gt(t.b, t.c),
+                P.triples(
+                        filterInfinite(
+                                x -> x.getScale() > 0 && x.getSecondaryScale() > 0,
+                                P.randomProvidersDefaultTertiaryScale()
+                        ),
+                        P.bigDecimals(),
+                        P.bigDecimals()
+                )
+        );
+        for (Triple<RandomProvider, BigDecimal, BigDecimal> t : take(LIMIT, tsFail)) {
+            try {
+                t.a.range(t.b, t.c);
+                fail(t);
+            } catch (IllegalArgumentException ignored) {}
         }
     }
 
@@ -2351,13 +2551,16 @@ public class RandomProviderProperties extends TestProperties {
     private void propertiesRangeCanonical_BigDecimal_BigDecimal() {
         initialize("rangeCanonical(BigDecimal, BigDecimal)");
 
-        Iterable<Triple<RandomProvider, BigDecimal, BigDecimal>> ts = P.triples(
-                filterInfinite(
-                        x -> x.getScale() > 0 && x.getSecondaryScale() > 0,
-                        P.randomProvidersDefaultTertiaryScale()
-                ),
-                P.bigDecimals(),
-                P.bigDecimals()
+        Iterable<Triple<RandomProvider, BigDecimal, BigDecimal>> ts = filterInfinite(
+                t -> le(t.b, t.c),
+                P.triples(
+                        filterInfinite(
+                                x -> x.getScale() > 0 && x.getSecondaryScale() > 0,
+                                P.randomProvidersDefaultTertiaryScale()
+                        ),
+                        P.bigDecimals(),
+                        P.bigDecimals()
+                )
         );
         for (Triple<RandomProvider, BigDecimal, BigDecimal> t : take(LIMIT, ts)) {
             Iterable<BigDecimal> bds = t.a.rangeCanonical(t.b, t.c);
@@ -2398,6 +2601,24 @@ public class RandomProviderProperties extends TestProperties {
                 t.a.rangeCanonical(t.b, t.c);
                 fail(t);
             } catch (IllegalStateException ignored) {}
+        }
+
+        tsFail = filterInfinite(
+                t -> gt(t.b, t.c),
+                P.triples(
+                        filterInfinite(
+                                x -> x.getScale() > 0 && x.getSecondaryScale() > 0,
+                                P.randomProvidersDefaultTertiaryScale()
+                        ),
+                        P.bigDecimals(),
+                        P.bigDecimals()
+                )
+        );
+        for (Triple<RandomProvider, BigDecimal, BigDecimal> t : take(LIMIT, tsFail)) {
+            try {
+                t.a.rangeCanonical(t.b, t.c);
+                fail(t);
+            } catch (IllegalArgumentException ignored) {}
         }
     }
 
@@ -3867,7 +4088,7 @@ public class RandomProviderProperties extends TestProperties {
     }
 
     private void propertiesStringSubsets_int() {
-        initialize("distinctStrings(int)");
+        initialize("stringSubsets(int)");
         Iterable<Pair<RandomProvider, Integer>> ps = filterInfinite(
                 p -> p.a.getScale() > p.b,
                 P.pairs(
@@ -4219,7 +4440,7 @@ public class RandomProviderProperties extends TestProperties {
         }
     }
 
-    private void propertiesChoose() {
+    private void propertiesChoose_Iterable_Iterable() {
         initialize("choose(Iterable<A>, Iterable<B>)");
         Iterable<Triple<RandomProvider, Iterable<Integer>, Iterable<Integer>>> ts = P.triples(
                 filterInfinite(rp -> rp.getScale() > 0, P.randomProvidersDefaultSecondaryAndTertiaryScale()),
@@ -4263,6 +4484,35 @@ public class RandomProviderProperties extends TestProperties {
             try {
                 toList(t.a.choose(t.b, t.c));
                 fail(t);
+            } catch (NoSuchElementException ignored) {}
+        }
+    }
+
+    private void propertiesChoose_Iterable() {
+        initialize("choose(List<Iterable<T>>)");
+        Iterable<Pair<RandomProvider, List<Iterable<Integer>>>> ps = P.pairs(
+                P.randomProvidersDefaultSecondaryAndTertiaryScale(),
+                P.listsAtLeast(1, P.prefixPermutations(EP.naturalIntegers()))
+        );
+        for (Pair<RandomProvider, List<Iterable<Integer>>> p : take(LIMIT, ps)) {
+            simpleTest(p.a, p.a.choose(p.b), i -> true);
+        }
+
+        for (RandomProvider rp : take(LIMIT, P.randomProviders())) {
+            try {
+                toList(rp.choose(Collections.emptyList()));
+                fail(rp);
+            } catch (IllegalArgumentException ignored) {}
+        }
+
+        Iterable<Pair<RandomProvider, List<Iterable<Integer>>>> psFail = P.pairs(
+                filterInfinite(rp -> rp.getScale() > 0, P.randomProvidersDefaultSecondaryAndTertiaryScale()),
+                P.listsAtLeast(1, map(xs -> xs, P.lists(P.integersGeometric())))
+        );
+        for (Pair<RandomProvider, List<Iterable<Integer>>> p : take(LIMIT, psFail)) {
+            try {
+                toList(p.a.choose(p.b));
+                fail(p);
             } catch (NoSuchElementException ignored) {}
         }
     }

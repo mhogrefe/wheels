@@ -56,8 +56,39 @@ public final class Triple<A, B, C> {
         this.c = c;
     }
 
+    /**
+     * Converts a {@code Triple} of three values of the same type to a {@code List}.
+     *
+     * <ul>
+     *  <li>{@code p} cannot be null.</li>
+     *  <li>The result has length 3.</li>
+     * </ul>
+     *
+     * @param t a {@code Triple}
+     * @param <T> the type of all values of {@code t}
+     * @return a {@code List} containing the values of {@code t}
+     */
     public static <T> List<T> toList(Triple<T, T, T> t) {
         return Arrays.asList(t.a, t.b, t.c);
+    }
+
+    /**
+     * Converts a {@code List} of three values to a {@code Triple}.
+     *
+     * <ul>
+     *  <li>{@code xs} must have length 3.</li>
+     *  <li>The result is not null.</li>
+     * </ul>
+     *
+     * @param xs a {@code List}
+     * @param <T> the type of the elements in {@code xs}
+     * @return a {@code Triple} containing the values of {@code xs}
+     */
+    public static <T> Triple<T, T, T> fromList(@NotNull List<T> xs) {
+        if (xs.size() != 3) {
+            throw new IllegalArgumentException("xs must have length 3. Invalid xs: " + xs);
+        }
+        return new Triple<>(xs.get(0), xs.get(1), xs.get(2));
     }
 
     /**
@@ -84,10 +115,7 @@ public final class Triple<A, B, C> {
             A extends Comparable<A>,
             B extends Comparable<B>,
             C extends Comparable<C>
-            > Ordering compare(
-            @NotNull Triple<A, B, C> p,
-            @NotNull Triple<A, B, C> q
-    ) {
+            > Ordering compare(@NotNull Triple<A, B, C> p, @NotNull Triple<A, B, C> q) {
         Ordering aOrdering = Ordering.compare(p.a, q.a);
         if (aOrdering != EQ) return aOrdering;
         Ordering bOrdering = Ordering.compare(p.b, q.b);
@@ -139,8 +167,7 @@ public final class Triple<A, B, C> {
      * Creates a {@code Triple} from a {@code String}. Valid strings are of the form
      * {@code "(" + a + ", " + b + ", " + c + ")"}, where {@code a}, {@code b}, and {@code c} are valid {@code String}s
      * for their types. {@code a} and {@code b} must not contain the {@code String} {@code ", "}, because this will
-     * confuse the parser. If the {@code String} is invalid, the method returns {@code Optional.empty()} without
-     * throwing an exception; this aids composability.
+     * confuse the parser.
      *
      * <ul>
      *  <li>{@code s} must be non-null.</li>
@@ -156,23 +183,56 @@ public final class Triple<A, B, C> {
      * @param <C> the type of the {@code Triple}'s third value
      * @return the {@code Triple} represented by {@code s}, or an empty {@code Optional} if {@code s} is invalid
      */
-    public static @NotNull <A, B, C> Optional<Triple<A, B, C>> read(
+    public static @NotNull <A, B, C> Optional<Triple<A, B, C>> readStrict(
             @NotNull String s,
             @NotNull Function<String, NullableOptional<A>> readA,
             @NotNull Function<String, NullableOptional<B>> readB,
             @NotNull Function<String, NullableOptional<C>> readC
     ) {
         if (s.length() < 2 || head(s) != '(' || last(s) != ')') return Optional.empty();
-        s = tail(init(s));
-        String[] tokens = s.split(", ");
-        if (tokens.length != 3) return Optional.empty();
-        NullableOptional<A> oa = readA.apply(tokens[0]);
-        if (!oa.isPresent()) return Optional.empty();
-        NullableOptional<B> ob = readB.apply(tokens[1]);
-        if (!ob.isPresent()) return Optional.empty();
-        NullableOptional<C> oc = readC.apply(tokens[2]);
-        if (!oc.isPresent()) return Optional.empty();
-        return Optional.of(new Triple<>(oa.get(), ob.get(), oc.get()));
+        s = middle(s);
+        A a = null;
+        B b = null;
+        C c = null;
+        StringBuilder sb = new StringBuilder();
+        int i = 0;
+        for (String token : s.split(", ")) {
+            if (sb.length() != 0) {
+                sb.append(", ");
+            }
+            sb.append(token);
+            switch (i) {
+                case 0:
+                    NullableOptional<A> oa = readA.apply(sb.toString());
+                    if (oa.isPresent()) {
+                        a = oa.get();
+                        i++;
+                        sb = new StringBuilder();
+                    }
+                    break;
+                case 1:
+                    NullableOptional<B> ob = readB.apply(sb.toString());
+                    if (ob.isPresent()) {
+                        b = ob.get();
+                        i++;
+                        sb = new StringBuilder();
+                    }
+                    break;
+                case 2:
+                    NullableOptional<C> oc = readC.apply(sb.toString());
+                    if (oc.isPresent()) {
+                        c = oc.get();
+                        i++;
+                        sb = new StringBuilder();
+                    }
+                    break;
+                default:
+                    return Optional.empty();
+            }
+        }
+
+        if (i != 3) return Optional.empty();
+        return Optional.of(new Triple<>(a, b, c));
     }
 
     /**
@@ -238,8 +298,8 @@ public final class Triple<A, B, C> {
         }
 
         /**
-         * Compares two {@code Triple}s, returning 1, –1, or 0 if the answer is "greater than", "less than", or "equal
-         * to", respectively.
+         * Compares two {@code Triple}s lexicographically, returning 1, –1, or 0 if the answer is "greater than", "less
+         * than", or "equal to", respectively.
          *
          * <ul>
          *  <li>{@code p} must be non-null.</li>

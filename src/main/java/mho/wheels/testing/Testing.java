@@ -446,10 +446,12 @@ public strictfp class Testing {
     public static <A, B> void compareImplementations(
             @NotNull String method,
             @NotNull Iterable<A> inputs,
-            @NotNull Map<String, Function<A, B>> functions
+            @NotNull Map<String, Function<A, B>> functions,
+            @NotNull Consumer<Void> reset
     ) {
         System.out.println("\t\tcomparing " + method + " implementations...");
         for (Map.Entry<String, Function<A, B>> entry : functions.entrySet()) {
+            reset.accept(null);
             Function<A, B> function = entry.getValue();
             long totalTime = 0;
             for (A input : inputs) {
@@ -499,7 +501,7 @@ public strictfp class Testing {
     }
 
     public static <T> void antiSymmetric(@NotNull BiPredicate<T, T> relation, @NotNull Pair<T, T> p) {
-        assertTrue(p, (relation.test(p.a, p.b) ^ relation.test(p.b, p.a)) || p.a.equals(p.b));
+        assertTrue(p, (relation.test(p.a, p.b) != relation.test(p.b, p.a)) || Objects.equals(p.a, p.b));
     }
 
     public static <T> void transitive(@NotNull BiPredicate<T, T> relation, @NotNull Triple<T, T, T> t) {
@@ -602,6 +604,16 @@ public strictfp class Testing {
         }
     }
 
+    public static <T> void testCompareToHelper(@NotNull Comparator<T> comparator, @NotNull List<T> xs) {
+        for (int i = 0; i < xs.size(); i++) {
+            T xsi = xs.get(i);
+            for (int j = 0; j < xs.size(); j++) {
+                T xsj = xs.get(j);
+                assertEquals(new Pair<>(xsi, xsj), compare(i, j), compare(comparator, xsi, xsj));
+            }
+        }
+    }
+
     public static <T> void propertiesEqualsHelper(
             int limit,
             @NotNull IterableProvider ip,
@@ -643,6 +655,36 @@ public strictfp class Testing {
             assertTrue(p, p.a.equals(p.b));
             //noinspection ConstantConditions
             assertEquals(p, p.a.hashCode(), p.b.hashCode());
+        }
+    }
+
+    public static <T> void propertiesCompareToHelper(
+            int limit,
+            @NotNull IterableProvider ip,
+            @NotNull Comparator<T> comparator,
+            @NotNull Function<IterableProvider, Iterable<T>> fxs
+    ) {
+        IterableProvider iq = ip.deepCopy();
+        IterableProvider ir = ip.deepCopy();
+        for (Pair<T, T> p : take(limit, zip(fxs.apply(ip), fxs.apply(iq)))) {
+            assertTrue(p, eq(comparator, p.a, p.b));
+        }
+
+        ip.reset();
+        iq.reset();
+        for (Pair<T, T> p : take(limit, EP.pairs(fxs.apply(ip), fxs.apply(iq)))) {
+            int compare = comparator.compare(p.a, p.b);
+            assertTrue(p, compare == 0 || compare == 1 || compare == -1);
+            antiSymmetric((x, y) -> le(comparator, x, y), p);
+            assertTrue(p, le(comparator, p.a, p.b) || le(comparator, p.b, p.a));
+            antiCommutative(comparator::compare, c -> -c, p);
+        }
+
+        ip.reset();
+        iq.reset();
+        ir.reset();
+        for (Triple<T, T, T> t : take(limit, EP.triples(fxs.apply(ip), fxs.apply(iq), fxs.apply(ir)))) {
+            transitive((x, y) -> le(comparator, x, y), t);
         }
     }
 

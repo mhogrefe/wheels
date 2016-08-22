@@ -97,6 +97,12 @@ public strictfp class BinaryFractionDemos extends Demos {
         }
     }
 
+    private void demoIsPowerOfTwo() {
+        for (BinaryFraction bf : take(LIMIT, P.positiveBinaryFractions())) {
+            System.out.println(bf + " is " + (bf.isPowerOfTwo() ? "a" : "not a") + " power of 2");
+        }
+    }
+
     private void demoAdd() {
         Iterable<Pair<BinaryFraction, BinaryFraction>> ps = filterInfinite(
                 p -> {
@@ -190,29 +196,25 @@ public strictfp class BinaryFractionDemos extends Demos {
 
     private void demoSum() {
         for (List<BinaryFraction> rs : take(LIMIT, P.withScale(4).lists(P.binaryFractions()))) {
-            String listString = tail(init(rs.toString()));
-            System.out.println("Σ(" + listString + ") = " + sum(rs));
+            System.out.println("Σ(" + middle(rs.toString()) + ") = " + sum(rs));
         }
     }
 
     private void demoProduct() {
         for (List<BinaryFraction> rs : take(LIMIT, P.withScale(4).lists(P.binaryFractions()))) {
-            String listString = tail(init(rs.toString()));
-            System.out.println("Π(" + listString + ") = " + product(rs));
+            System.out.println("Π(" + middle(rs.toString()) + ") = " + product(rs));
         }
     }
 
     private void demoDelta_finite() {
         for (List<BinaryFraction> rs : take(LIMIT, P.withScale(4).listsAtLeast(1, P.binaryFractions()))) {
-            String listString = tail(init(rs.toString()));
-            System.out.println("Δ(" + listString + ") = " + its(delta(rs)));
+            System.out.println("Δ(" + middle(rs.toString()) + ") = " + its(delta(rs)));
         }
     }
 
     private void demoDelta_infinite() {
         for (Iterable<BinaryFraction> bfs : take(MEDIUM_LIMIT, P.prefixPermutations(EP.binaryFractions()))) {
-            String listString = tail(init(its(bfs)));
-            System.out.println("Δ(" + listString + ") = " + its(delta(bfs)));
+            System.out.println("Δ(" + middle(its(bfs)) + ") = " + its(delta(bfs)));
         }
     }
 
@@ -249,19 +251,19 @@ public strictfp class BinaryFractionDemos extends Demos {
 
     private void demoCompareTo() {
         for (Pair<BinaryFraction, BinaryFraction> p : take(LIMIT, P.pairs(P.binaryFractions()))) {
-            System.out.println(p.a + " " + Ordering.compare(p.a, p.b).toChar() + " " + p.b);
+            System.out.println(p.a + " " + Ordering.compare(p.a, p.b) + " " + p.b);
         }
     }
 
-    private void demoRead() {
+    private void demoReadStrict() {
         for (String s : take(LIMIT, P.strings())) {
-            System.out.println("read(" + nicePrint(s) + ") = " + read(s));
+            System.out.println("readStrict(" + nicePrint(s) + ") = " + readStrict(s));
         }
     }
 
-    private void demoRead_targeted() {
+    private void demoReadStrict_targeted() {
         for (String s : take(LIMIT, P.strings(BINARY_FRACTION_CHARS))) {
-            System.out.println("read(" + s + ") = " + read(s));
+            System.out.println("readStrict(" + s + ") = " + readStrict(s));
         }
     }
 

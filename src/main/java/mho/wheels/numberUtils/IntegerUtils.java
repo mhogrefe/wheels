@@ -147,14 +147,12 @@ public class IntegerUtils {
     }
 
     /**
-     * Returns the bits of a non-negative {@code int}. The {@link Iterable} returned is little-endian; the
-     * least-significant bits come first. Zero gives an empty {@code Iterable}. There are no trailing unset bits. Does
-     * not support removal.
+     * Returns the bits of a non-negative {@code int}. The {@link List} returned is little-endian; the
+     * least-significant bits come first. Zero gives an empty {@code List}. There are no trailing unset bits.
      *
      * <ul>
      *  <li>{@code n} cannot be negative.</li>
-     *  <li>The result is a finite {@code Iterable}, containing no nulls. If it is non-empty, the last element is
-     *  {@code true}.</li>
+     *  <li>The result contains no nulls. If it is non-empty, the last element is {@code true}.</li>
      * </ul>
      *
      * Result length is 0 if {@code n} is 0, or ⌊log<sub>2</sub>{@code n}⌋+1 otherwise
@@ -174,14 +172,13 @@ public class IntegerUtils {
     }
 
     /**
-     * Returns the bits of a non-negative {@link BigInteger}. The {@code Iterable} returned is little-endian; the
-     * least-significant bits come first. Zero gives an empty {@code Iterable}. There are no trailing unset bits.
-     * Does not support removal.
+     * Returns the bits of a non-negative {@link BigInteger}. The {@code List} returned is little-endian; the
+     * least-significant bits come first. Zero gives an empty {@code List}. There are no trailing unset bits. Does not
+     * support removal.
      *
      * <ul>
      *  <li>{@code n} cannot be negative.</li>
-     *  <li>The result is a finite {@code Iterable}, containing no nulls. If it is non-empty, the last element is
-     *  {@code true}.</li>
+     *  <li>The result contains no nulls. If it is non-empty, the last element is {@code true}.</li>
      * </ul>
      *
      * Result length is 0 if {@code n} is 0, or ⌊log<sub>2</sub>{@code n}⌋+1 otherwise
@@ -202,14 +199,14 @@ public class IntegerUtils {
     }
 
     /**
-     * Returns the lowest {@code n} bits of a non-negative {@code int}. The {@code Iterable} returned is little-endian;
-     * the least-significant bits come first. It is exactly {@code n} bits long, and right-padded with zeroes (falses)
-     * if necessary. Does not support removal.
+     * Returns the lowest {@code n} bits of a non-negative {@code int}. The {@code List} returned is little-endian; the
+     * least-significant bits come first. It is exactly {@code n} bits long, and right-padded with zeroes (falses) if
+     * necessary. Does not support removal.
      *
      * <ul>
      *  <li>{@code length} cannot be negative.</li>
      *  <li>{@code n} cannot be negative.</li>
-     *  <li>The result is a finite {@code Iterable} containing no nulls.</li>
+     *  <li>All bits in the result apart from the first 31 are false.</li>
      * </ul>
      *
      * Result length is {@code length}
@@ -235,14 +232,14 @@ public class IntegerUtils {
     }
 
     /**
-     * Returns the lowest {@code n} bits of a non-negative {@code BigInteger}. The {@code Iterable} returned is little-
-     * endian; the least-significant bits come first. It is exactly {@code n} bits long, and right-padded with zeroes
-     * (falses) if necessary. Does not support removal.
+     * Returns the lowest {@code length} bits of a non-negative {@code BigInteger}. The {@code List} returned is
+     * little-endian; the least-significant bits come first. It is exactly {@code n} bits long, and right-padded with
+     * zeroes (falses) if necessary. Does not support removal.
      *
      * <ul>
      *  <li>{@code length} cannot be negative.</li>
      *  <li>{@code n} cannot be negative.</li>
-     *  <li>The result is a finite {@code Iterable} containing no nulls.</li>
+     *  <li>The result contains no nulls.</li>
      * </ul>
      *
      * Result length is {@code length}
@@ -267,11 +264,11 @@ public class IntegerUtils {
 
     /**
      * Returns the bits of a non-negative {@code int}. The {@code List} returned is big-endian; the most-significant
-     * bits come first. Zero gives an empty {@code Iterable}. There are no leading unset bits.
+     * bits come first. Zero gives an empty {@code List}. There are no leading unset bits.
      *
      * <ul>
      *  <li>{@code n} cannot be negative.</li>
-     *  <li>The result is contains no nulls. If it is non-empty, the first element is {@code true}.</li>
+     *  <li>The result contains no nulls. If it is non-empty, the first element is {@code true}.</li>
      * </ul>
      *
      * Result length is 0 if {@code n} is 0, or ⌊log<sub>2</sub>{@code n}⌋+1 otherwise
@@ -323,7 +320,7 @@ public class IntegerUtils {
      * <ul>
      *  <li>{@code length} cannot be negative.</li>
      *  <li>{@code n} cannot be negative.</li>
-     *  <li>The result contains no nulls.</li>
+     *  <li>All bits in the result apart from the last 31 are false.</li>
      * </ul>
      *
      * Result length is {@code length}
@@ -382,25 +379,24 @@ public class IntegerUtils {
     }
 
     /**
-     * Builds a {@code BigInteger} from an {@code Iterable} of bits in little-endian order (least significant bits
-     * first). Trailing zero (false) bits are permitted. Zero may be represented by an empty {@code Iterable}.
+     * Builds a {@code BigInteger} from a {@code List} of bits in little-endian order (least significant bits first).
+     * Trailing zero (false) bits are permitted. Zero may be represented by an empty {@code List}.
      *
      * <ul>
-     *  <li>{@code bits} must be finite and every element must be non-null.</li>
+     *  <li>Every element in {@code bits} must be non-null.</li>
      *  <li>The result is non-negative.</li>
      * </ul>
      *
-     * @param bits an {@code Iterable} of bits in little-endian order
+     * @param bits a {@code List} of bits in little-endian order
      * @return The {@code BigInteger} represented by {@code bits}
      */
-    public static @NotNull BigInteger fromBits(@NotNull Iterable<Boolean> bits) {
-        List<Boolean> bitsList = toList(bits);
-        byte[] bytes = new byte[bitsList.size() / 8 + 1]; // if bits.size() is a multiple of 8, we get an extra zero to
-        int byteIndex = bytes.length;                     // the left which ensures a positive sign
-        for (int i = 0; i < bitsList.size(); i++) {
+    public static @NotNull BigInteger fromBits(@NotNull List<Boolean> bits) {
+        byte[] bytes = new byte[bits.size() / 8 + 1]; // if bits.size() is a multiple of 8, we get an extra zero to the
+        int byteIndex = bytes.length;                 // left which ensures a positive sign
+        for (int i = 0; i < bits.size(); i++) {
             int j = i % 8;
             if (j == 0) byteIndex--;
-            if (bitsList.get(i)) {
+            if (bits.get(i)) {
                 bytes[byteIndex] |= 1 << j;
             }
         }
@@ -408,26 +404,25 @@ public class IntegerUtils {
     }
 
     /**
-     * Builds a {@code BigInteger} from an {@code Iterable} of bits in big-endian order (most significant bits first).
-     * Leading zero (false) bits are permitted. Zero may be represented by an empty {@code Iterable}.
+     * Builds a {@code BigInteger} from a {@code List} of bits in big-endian order (most significant bits first).
+     * Leading zero (false) bits are permitted. Zero may be represented by an empty {@code List}.
      *
      * <ul>
-     *  <li>{@code bits} must be finite and every element must be non-null.</li>
+     *  <li>Every element in {@code bits} must be non-null.</li>
      *  <li>The result is non-negative.</li>
      * </ul>
      *
-     * @param bits an {@code Iterable} of bits in big-endian order
+     * @param bits a {@code List} of bits in big-endian order
      * @return The {@code BigInteger} represented by {@code bits}
      */
-    public static @NotNull BigInteger fromBigEndianBits(@NotNull Iterable<Boolean> bits) {
-        List<Boolean> bitsList = toList(bits);
-        byte[] bytes = new byte[bitsList.size() / 8 + 1]; // if bits.size() is a multiple of 8, we get an extra zero to
+    public static @NotNull BigInteger fromBigEndianBits(@NotNull List<Boolean> bits) {
+        byte[] bytes = new byte[bits.size() / 8 + 1]; // if bits.size() is a multiple of 8, we get an extra zero to
         int byteIndex = bytes.length;                     // the left which ensures a positive sign
-        int limit = bitsList.size() - 1;
-        for (int i = 0; i < bitsList.size(); i++) {
+        int limit = bits.size() - 1;
+        for (int i = 0; i < bits.size(); i++) {
             int j = i % 8;
             if (j == 0) byteIndex--;
-            if (bitsList.get(limit - i)) {
+            if (bits.get(limit - i)) {
                 bytes[byteIndex] |= 1 << j;
             }
         }
@@ -436,8 +431,7 @@ public class IntegerUtils {
 
     /**
      * Returns the digits of a non-negative {@code int}. The {@code Iterable} returned is little-endian; the least-
-     * significant digits come first. Zero gives an empty {@code Iterable}. There are no trailing zero digits. Does not
-     * support removal.
+     * significant digits come first. Zero gives an empty {@code Iterable}. There are no trailing zero digits.
      *
      * <ul>
      *  <li>{@code base} must be at least 2.</li>
@@ -480,7 +474,6 @@ public class IntegerUtils {
     /**
      * Returns the digits of a non-negative {@code BigInteger}. The {@code Iterable} returned is little-endian; the
      * least-significant digits come first. Zero gives an empty {@code Iterable}. There are no trailing zero digits.
-     * Does not support removal.
      *
      * <ul>
      *  <li>{@code base} must be at least 2.</li>
@@ -523,7 +516,7 @@ public class IntegerUtils {
     /**
      * Returns the lowest {@code n} digits of a non-negative {@code int}. The {@code Iterable} returned is little-
      * endian; the least-significant digits come first. It is exactly {@code n} digits long, and left-padded with
-     * zeroes if necessary. Does not support removal.
+     * zeroes if necessary.
      *
      * <ul>
      *  <li>{@code length} cannot be negative.</li>
@@ -558,10 +551,9 @@ public class IntegerUtils {
                 n >>= log;
             }
         } else {
-            int remaining = n;
             for (int i = 0; i < length; i++) {
-                digits.add(remaining % base);
-                remaining /= base;
+                digits.add(n % base);
+                n /= base;
             }
         }
         return digits;
@@ -570,7 +562,7 @@ public class IntegerUtils {
     /**
      * Returns the lowest {@code n} digits of a non-negative {@code int}. The {@code Iterable} returned is little-
      * endian; the least-significant digits come first. It is exactly {@code n} digits long, and left-padded with
-     * zeroes if necessary. Does not support removal.
+     * zeroes if necessary.
      *
      * <ul>
      *  <li>{@code length} cannot be negative.</li>
@@ -916,7 +908,7 @@ public class IntegerUtils {
      * Converts an {@code int} to a {@code String} in any base greater than 1. If the base is 36 or less, the digits
      * are '0' through '9' followed by 'A' through 'Z'. If the base is greater than 36, the digits are written in
      * decimal and each digit is surrounded by parentheses. Zero is represented by "0" if the base is 36 or less, or
-     * "(0)" otherwise. In every other case there are no leading zeroes.
+     * "(0)" otherwise. In every other case there are no leading zeros.
      *
      * <ul>
      *  <li>{@code base} must be at least 2.</li>
@@ -1035,7 +1027,7 @@ public class IntegerUtils {
             if (head(s) != '(' || last(s) != ')' || s.contains("()")) {
                 throw new IllegalArgumentException("Improperly-formatted String: " + s);
             }
-            s = tail(init(s));
+            s = middle(s);
             digits = toList(
                     map(
                             digit -> {
@@ -1098,7 +1090,7 @@ public class IntegerUtils {
             if (head(s) != '(' || last(s) != ')' || s.contains("()")) {
                 throw new IllegalArgumentException("Improperly-formatted String: " + s);
             }
-            s = tail(init(s));
+            s = middle(s);
             digits = toList(
                     map(
                             digit -> {
@@ -1185,7 +1177,7 @@ public class IntegerUtils {
         List<Boolean> yBits = bits(y);
         int xBitSize = xBits.size();
         int yBitSize = yBits.size();
-        return fromBits(() -> new Iterator<Boolean>() {
+        return fromBits(toList(() -> new Iterator<Boolean>() {
             private int ix = 0;
             private int iy = 0;
             private int counter = 0;
@@ -1209,7 +1201,7 @@ public class IntegerUtils {
                 }
                 return bit;
             }
-        });
+        }));
     }
 
     /**

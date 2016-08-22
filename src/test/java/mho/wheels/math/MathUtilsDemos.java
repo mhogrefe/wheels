@@ -1,5 +1,6 @@
 package mho.wheels.math;
 
+import mho.wheels.iterables.ExhaustiveProvider;
 import mho.wheels.numberUtils.IntegerUtils;
 import mho.wheels.structures.FiniteDomainFunction;
 import mho.wheels.structures.Pair;
@@ -57,15 +58,13 @@ public class MathUtilsDemos extends Demos {
 
     private void demoGcd_List_BigInteger() {
         for (List<BigInteger> is : take(LIMIT, P.withScale(4).lists(P.bigIntegers()))) {
-            String listString = tail(init(is.toString()));
-            System.out.println("gcd(" + listString + ") = " + gcd(is));
+            System.out.println("gcd(" + middle(is.toString()) + ") = " + gcd(is));
         }
     }
 
     private void demoLcm_List_BigInteger() {
         for (List<BigInteger> is : take(LIMIT, P.withScale(4).listsAtLeast(1, P.positiveBigIntegers()))) {
-            String listString = tail(init(is.toString()));
-            System.out.println("lcm(" + listString + ") = " + lcm(is));
+            System.out.println("lcm(" + middle(is.toString()) + ") = " + lcm(is));
         }
     }
 
@@ -149,8 +148,7 @@ public class MathUtilsDemos extends Demos {
 
     private void demoPermutationCount() {
         for (List<Integer> xs : take(LIMIT, P.lists(P.withNull(P.integersGeometric())))) {
-            String listString = tail(init(xs.toString()));
-            System.out.println("permutationCount(" + listString + ") = " + permutationCount(xs));
+            System.out.println("permutationCount(" + middle(xs.toString()) + ") = " + permutationCount(xs));
         }
     }
 
@@ -165,7 +163,9 @@ public class MathUtilsDemos extends Demos {
         //noinspection Convert2MethodRef,RedundantCast
         Function<Pair<Integer, Integer>, Iterable<Function<Integer, BigInteger>>> fGenerator = range ->
                 map(
-                        is -> new FiniteDomainFunction<>(zip(range(range.a, range.b), is)),
+                        is -> new FiniteDomainFunction<>(
+                                zip(ExhaustiveProvider.INSTANCE.rangeIncreasing(range.a, range.b), is)
+                        ),
                         P.bags(
                                 range.b - range.a + 1,
                                 (Iterable<BigInteger>) map(i -> BigInteger.valueOf(i), P.integersGeometric())
@@ -199,7 +199,9 @@ public class MathUtilsDemos extends Demos {
         //noinspection Convert2MethodRef,RedundantCast
         Function<Pair<BigInteger, BigInteger>, Iterable<Function<BigInteger, BigInteger>>> fGenerator = range ->
                 map(
-                        is -> new FiniteDomainFunction<>(zip(range(range.a, range.b), is)),
+                        is -> new FiniteDomainFunction<>(
+                                zip(ExhaustiveProvider.INSTANCE.rangeIncreasing(range.a, range.b), is)
+                        ),
                         P.bags(
                                 range.b.intValueExact() - range.a.intValueExact() + 1,
                                 (Iterable<BigInteger>) map(i -> BigInteger.valueOf(i), P.integersGeometric())
@@ -319,6 +321,12 @@ public class MathUtilsDemos extends Demos {
         for (Pair<BigInteger, Integer> p : take(LIMIT, ps)) {
             System.out.println("largestPerfectPowerFactor(" + p.b + ", " + p.a + ") = " +
                     largestPerfectPowerFactor(p.b, p.a));
+        }
+    }
+
+    private void demoExpressAsPower() {
+        for (BigInteger i : take(LIMIT, P.rangeUp(IntegerUtils.TWO))) {
+            System.out.println("expressAsPower(" + i + ") = " + expressAsPower(i));
         }
     }
 

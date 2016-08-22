@@ -62,6 +62,12 @@ public class NullableOptionalDemos extends Demos {
         }
     }
 
+    private void demoToOptional_Integer() {
+        for (NullableOptional<Integer> noi : take(LIMIT, P.nullableOptionals(P.integers()))) {
+            System.out.println("toOptional(" + noi + ") = " + noi.toOptional());
+        }
+    }
+
     private void demoEquals_NullableOptional_Integer() {
         Iterable<Pair<NullableOptional<Integer>, NullableOptional<Integer>>> nois = P.pairs(
                 P.nullableOptionals(P.withNull(P.integers()))

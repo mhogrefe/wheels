@@ -23,14 +23,219 @@ public class ExhaustiveProviderDemos extends Demos {
 
     private void demoUniformSample_Iterable() {
         for (List<Integer> is : take(LIMIT, P.lists(P.withNull(P.integersGeometric())))) {
-            String listString = tail(init(is.toString()));
-            System.out.println("uniformSample(" + listString + ") = " + its(EP.uniformSample(is)));
+            System.out.println("uniformSample(" + middle(is.toString()) + ") = " + its(EP.uniformSample(is)));
         }
     }
 
     private void demoUniformSample_String() {
         for (String s : take(LIMIT, P.strings())) {
             System.out.println("uniformSample(" + nicePrint(s) + ") = " + cits(EP.uniformSample(s)));
+        }
+    }
+
+    private void demoRangeUpIncreasing_byte() {
+        for (byte b : take(MEDIUM_LIMIT, P.bytes())) {
+            System.out.println("rangeUpIncreasing(" + b + ") = " + its(EP.rangeUpIncreasing(b)));
+        }
+    }
+
+    private void demoRangeUpIncreasing_short() {
+        for (short s : take(MEDIUM_LIMIT, P.shorts())) {
+            System.out.println("rangeUpIncreasing(" + s + ") = " + its(EP.rangeUpIncreasing(s)));
+        }
+    }
+
+    private void demoRangeUpIncreasing_int() {
+        for (int i : take(MEDIUM_LIMIT, P.integers())) {
+            System.out.println("rangeUpIncreasing(" + i + ") = " + its(EP.rangeUpIncreasing(i)));
+        }
+    }
+
+    private void demoRangeUpIncreasing_long() {
+        for (long l : take(MEDIUM_LIMIT, P.longs())) {
+            System.out.println("rangeUpIncreasing(" + l + ") = " + its(EP.rangeUpIncreasing(l)));
+        }
+    }
+
+    private void demoRangeUpIncreasing_BigInteger() {
+        for (BigInteger i : take(MEDIUM_LIMIT, P.bigIntegers())) {
+            System.out.println("rangeUpIncreasing(" + i + ") = " + its(EP.rangeUpIncreasing(i)));
+        }
+    }
+
+    private void demoRangeUpIncreasing_char() {
+        for (char c : take(MEDIUM_LIMIT, P.characters())) {
+            System.out.println("rangeUpIncreasing(" + nicePrint(c) + ") = " + cits(EP.rangeUpIncreasing(c)));
+        }
+    }
+
+    private void demoRangeUpDecreasing_byte() {
+        for (byte b : take(MEDIUM_LIMIT, P.bytes())) {
+            System.out.println("rangeUpDecreasing(" + b + ") = " + its(EP.rangeUpDecreasing(b)));
+        }
+    }
+
+    private void demoRangeUpDecreasing_short() {
+        for (short s : take(MEDIUM_LIMIT, P.shorts())) {
+            System.out.println("rangeUpDecreasing(" + s + ") = " + its(EP.rangeUpDecreasing(s)));
+        }
+    }
+
+    private void demoRangeUpDecreasing_int() {
+        for (int i : take(MEDIUM_LIMIT, P.integers())) {
+            System.out.println("rangeUpDecreasing(" + i + ") = " + its(EP.rangeUpDecreasing(i)));
+        }
+    }
+
+    private void demoRangeUpDecreasing_long() {
+        for (long l : take(MEDIUM_LIMIT, P.longs())) {
+            System.out.println("rangeUpDecreasing(" + l + ") = " + its(EP.rangeUpDecreasing(l)));
+        }
+    }
+
+    private void demoRangeUpDecreasing_char() {
+        for (char c : take(MEDIUM_LIMIT, P.characters())) {
+            System.out.println("rangeUpDecreasing(" + nicePrint(c) + ") = " + cits(EP.rangeUpDecreasing(c)));
+        }
+    }
+
+    private void demoRangeDownIncreasing_byte() {
+        for (byte b : take(MEDIUM_LIMIT, P.bytes())) {
+            System.out.println("rangeDownIncreasing(" + b + ") = " + its(EP.rangeDownIncreasing(b)));
+        }
+    }
+
+    private void demoRangeDownIncreasing_short() {
+        for (short s : take(MEDIUM_LIMIT, P.shorts())) {
+            System.out.println("rangeDownIncreasing(" + s + ") = " + its(EP.rangeDownIncreasing(s)));
+        }
+    }
+
+    private void demoRangeDownIncreasing_int() {
+        for (int i : take(MEDIUM_LIMIT, P.integers())) {
+            System.out.println("rangeDownIncreasing(" + i + ") = " + its(EP.rangeDownIncreasing(i)));
+        }
+    }
+
+    private void demoRangeDownIncreasing_long() {
+        for (long l : take(MEDIUM_LIMIT, P.longs())) {
+            System.out.println("rangeDownIncreasing(" + l + ") = " + its(EP.rangeDownIncreasing(l)));
+        }
+    }
+
+    private void demoRangeDownIncreasing_char() {
+        for (char c : take(MEDIUM_LIMIT, P.characters())) {
+            System.out.println("rangeDownIncreasing(" + nicePrint(c) + ") = " + cits(EP.rangeDownIncreasing(c)));
+        }
+    }
+
+    private void demoRangeDownDecreasing_byte() {
+        for (byte b : take(MEDIUM_LIMIT, P.bytes())) {
+            System.out.println("rangeDownDecreasing(" + b + ") = " + its(EP.rangeDownDecreasing(b)));
+        }
+    }
+
+    private void demoRangeDownDecreasing_short() {
+        for (short s : take(MEDIUM_LIMIT, P.shorts())) {
+            System.out.println("rangeDownDecreasing(" + s + ") = " + its(EP.rangeDownDecreasing(s)));
+        }
+    }
+
+    private void demoRangeDownDecreasing_int() {
+        for (int i : take(MEDIUM_LIMIT, P.integers())) {
+            System.out.println("rangeDownDecreasing(" + i + ") = " + its(EP.rangeDownDecreasing(i)));
+        }
+    }
+
+    private void demoRangeDownDecreasing_long() {
+        for (long l : take(MEDIUM_LIMIT, P.longs())) {
+            System.out.println("rangeDownDecreasing(" + l + ") = " + its(EP.rangeDownDecreasing(l)));
+        }
+    }
+
+    private void demoRangeDownDecreasing_BigInteger() {
+        for (BigInteger i : take(MEDIUM_LIMIT, P.bigIntegers())) {
+            System.out.println("rangeDownDecreasing(" + i + ") = " + its(EP.rangeDownDecreasing(i)));
+        }
+    }
+
+    private void demoRangeDownDecreasing_char() {
+        for (char c : take(MEDIUM_LIMIT, P.characters())) {
+            System.out.println("rangeDownDecreasing(" + nicePrint(c) + ") = " + cits(EP.rangeDownDecreasing(c)));
+        }
+    }
+
+    private void demoRangeIncreasing_byte_byte() {
+        for (Pair<Byte, Byte> p : take(MEDIUM_LIMIT, P.bagPairs(P.bytes()))) {
+            System.out.println("rangeIncreasing(" + p.a + ", " + p.b + ") = " + its(EP.rangeIncreasing(p.a, p.b)));
+        }
+    }
+
+    private void demoRangeIncreasing_short_short() {
+        for (Pair<Short, Short> p : take(MEDIUM_LIMIT, P.bagPairs(P.shorts()))) {
+            System.out.println("rangeIncreasing(" + p.a + ", " + p.b + ") = " + its(EP.rangeIncreasing(p.a, p.b)));
+        }
+    }
+
+    private void demoRangeIncreasing_int_int() {
+        for (Pair<Integer, Integer> p : take(MEDIUM_LIMIT, P.bagPairs(P.integers()))) {
+            System.out.println("rangeIncreasing(" + p.a + ", " + p.b + ") = " + its(EP.rangeIncreasing(p.a, p.b)));
+        }
+    }
+
+    private void demoRangeIncreasing_long_long() {
+        for (Pair<Long, Long> p : take(MEDIUM_LIMIT, P.bagPairs(P.longs()))) {
+            System.out.println("rangeIncreasing(" + p.a + ", " + p.b + ") = " + its(EP.rangeIncreasing(p.a, p.b)));
+        }
+    }
+
+    private void demoRangeIncreasing_BigInteger_BigInteger() {
+        for (Pair<BigInteger, BigInteger> p : take(MEDIUM_LIMIT, P.bagPairs(P.bigIntegers()))) {
+            System.out.println("rangeIncreasing(" + p.a + ", " + p.b + ") = " + its(EP.rangeIncreasing(p.a, p.b)));
+        }
+    }
+
+    private void demoRangeIncreasing_char_char() {
+        for (Pair<Character, Character> p : take(MEDIUM_LIMIT, P.bagPairs(P.characters()))) {
+            System.out.println("rangeIncreasing(" + nicePrint(p.a) + ", " + nicePrint(p.b) + ") = " +
+                    cits(EP.rangeIncreasing(p.a, p.b)));
+        }
+    }
+
+    private void demoRangeDecreasing_byte_byte() {
+        for (Pair<Byte, Byte> p : take(MEDIUM_LIMIT, P.bagPairs(P.bytes()))) {
+            System.out.println("rangeDecreasing(" + p.a + ", " + p.b + ") = " + its(EP.rangeDecreasing(p.a, p.b)));
+        }
+    }
+
+    private void demoRangeDecreasing_short_short() {
+        for (Pair<Short, Short> p : take(MEDIUM_LIMIT, P.bagPairs(P.shorts()))) {
+            System.out.println("rangeDecreasing(" + p.a + ", " + p.b + ") = " + its(EP.rangeDecreasing(p.a, p.b)));
+        }
+    }
+
+    private void demoRangeDecreasing_int_int() {
+        for (Pair<Integer, Integer> p : take(MEDIUM_LIMIT, P.bagPairs(P.integers()))) {
+            System.out.println("rangeDecreasing(" + p.a + ", " + p.b + ") = " + its(EP.rangeDecreasing(p.a, p.b)));
+        }
+    }
+
+    private void demoRangeDecreasing_long_long() {
+        for (Pair<Long, Long> p : take(MEDIUM_LIMIT, P.bagPairs(P.longs()))) {
+            System.out.println("rangeDecreasing(" + p.a + ", " + p.b + ") = " + its(EP.rangeDecreasing(p.a, p.b)));
+        }
+    }
+
+    private void demoRangeDecreasing_BigInteger_BigInteger() {
+        for (Pair<BigInteger, BigInteger> p : take(MEDIUM_LIMIT, P.bagPairs(P.bigIntegers()))) {
+            System.out.println("rangeDecreasing(" + p.a + ", " + p.b + ") = " + its(EP.rangeDecreasing(p.a, p.b)));
+        }
+    }
+
+    private void demoRangeDecreasing_char_char() {
+        for (Pair<Character, Character> p : take(MEDIUM_LIMIT, P.bagPairs(P.characters()))) {
+            System.out.println("rangeDecreasing(" + nicePrint(p.a) + ", " + nicePrint(p.b) + ") = " +
+                    cits(EP.rangeDecreasing(p.a, p.b)));
         }
     }
 
@@ -64,12 +269,6 @@ public class ExhaustiveProviderDemos extends Demos {
         }
     }
 
-    private void demoRangeUp_char() {
-        for (char c : take(MEDIUM_LIMIT, P.characters())) {
-            System.out.println("rangeUp(" + nicePrint(c) + ") = " + cits(EP.rangeUp(c)));
-        }
-    }
-
     private void demoRangeDown_byte() {
         for (byte b : take(MEDIUM_LIMIT, P.bytes())) {
             System.out.println("rangeDown(" + b + ") = " + its(EP.rangeDown(b)));
@@ -100,45 +299,33 @@ public class ExhaustiveProviderDemos extends Demos {
         }
     }
 
-    private void demoRangeDown_char() {
-        for (char c : take(MEDIUM_LIMIT, P.characters())) {
-            System.out.println("rangeDown(" + nicePrint(c) + ") = " + cits(EP.rangeDown(c)));
-        }
-    }
-
     private void demoRange_byte_byte() {
-        for (Pair<Byte, Byte> p : take(MEDIUM_LIMIT, P.pairs(P.bytes()))) {
+        for (Pair<Byte, Byte> p : take(MEDIUM_LIMIT, P.bagPairs(P.bytes()))) {
             System.out.println("range(" + p.a + ", " + p.b + ") = " + its(EP.range(p.a, p.b)));
         }
     }
 
     private void demoRange_short_short() {
-        for (Pair<Short, Short> p : take(MEDIUM_LIMIT, P.pairs(P.shorts()))) {
+        for (Pair<Short, Short> p : take(MEDIUM_LIMIT, P.bagPairs(P.shorts()))) {
             System.out.println("range(" + p.a + ", " + p.b + ") = " + its(EP.range(p.a, p.b)));
         }
     }
 
     private void demoRange_int_int() {
-        for (Pair<Integer, Integer> p : take(MEDIUM_LIMIT, P.pairs(P.integers()))) {
+        for (Pair<Integer, Integer> p : take(MEDIUM_LIMIT, P.bagPairs(P.integers()))) {
             System.out.println("range(" + p.a + ", " + p.b + ") = " + its(EP.range(p.a, p.b)));
         }
     }
 
     private void demoRange_long_long() {
-        for (Pair<Long, Long> p : take(MEDIUM_LIMIT, P.pairs(P.longs()))) {
+        for (Pair<Long, Long> p : take(MEDIUM_LIMIT, P.bagPairs(P.longs()))) {
             System.out.println("range(" + p.a + ", " + p.b + ") = " + its(EP.range(p.a, p.b)));
         }
     }
 
     private void demoRange_BigInteger_BigInteger() {
-        for (Pair<BigInteger, BigInteger> p : take(MEDIUM_LIMIT, P.pairs(P.bigIntegers()))) {
+        for (Pair<BigInteger, BigInteger> p : take(MEDIUM_LIMIT, P.bagPairs(P.bigIntegers()))) {
             System.out.println("range(" + p.a + ", " + p.b + ") = " + its(EP.range(p.a, p.b)));
-        }
-    }
-
-    private void demoRange_char_char() {
-        for (Pair<Character, Character> p : take(MEDIUM_LIMIT, P.pairs(P.characters()))) {
-            System.out.println("range(" + nicePrint(p.a) + ", " + nicePrint(p.b) + ") = " + cits(EP.range(p.a, p.b)));
         }
     }
 
@@ -155,7 +342,7 @@ public class ExhaustiveProviderDemos extends Demos {
     }
 
     private void demoRange_BinaryFraction_BinaryFraction() {
-        for (Pair<BinaryFraction, BinaryFraction> p : take(MEDIUM_LIMIT, P.pairs(P.binaryFractions()))) {
+        for (Pair<BinaryFraction, BinaryFraction> p : take(MEDIUM_LIMIT, P.bagPairs(P.binaryFractions()))) {
             System.out.println("range(" + p.a + ", " + p.b + ") = " + its(EP.range(p.a, p.b)));
         }
     }
@@ -173,7 +360,7 @@ public class ExhaustiveProviderDemos extends Demos {
     }
 
     private void demoRange_float_float() {
-        for (Pair<Float, Float> p : take(MEDIUM_LIMIT, P.pairs(filter(f -> !Float.isNaN(f), P.floats())))) {
+        for (Pair<Float, Float> p : take(MEDIUM_LIMIT, P.bagPairs(filter(f -> !Float.isNaN(f), P.floats())))) {
             System.out.println("range(" + p.a + ", " + p.b + ") = " + its(EP.range(p.a, p.b)));
         }
     }
@@ -191,7 +378,7 @@ public class ExhaustiveProviderDemos extends Demos {
     }
 
     private void demoRange_double_double() {
-        for (Pair<Double, Double> p : take(MEDIUM_LIMIT, P.pairs(filter(d -> !Double.isNaN(d), P.doubles())))) {
+        for (Pair<Double, Double> p : take(MEDIUM_LIMIT, P.bagPairs(filter(d -> !Double.isNaN(d), P.doubles())))) {
             System.out.println("range(" + p.a + ", " + p.b + ") = " + its(EP.range(p.a, p.b)));
         }
     }
@@ -209,7 +396,7 @@ public class ExhaustiveProviderDemos extends Demos {
     }
 
     private void demoRange_BigDecimal_BigDecimal() {
-        for (Pair<BigDecimal, BigDecimal> p : take(MEDIUM_LIMIT, P.pairs(P.bigDecimals()))) {
+        for (Pair<BigDecimal, BigDecimal> p : take(MEDIUM_LIMIT, P.bagPairs(P.bigDecimals()))) {
             System.out.println("range(" + p.a + ", " + p.b + ") = " + its(EP.range(p.a, p.b)));
         }
     }
@@ -227,7 +414,7 @@ public class ExhaustiveProviderDemos extends Demos {
     }
 
     private void demoRangeCanonical_BigDecimal_BigDecimal() {
-        for (Pair<BigDecimal, BigDecimal> p : take(MEDIUM_LIMIT, P.pairs(P.bigDecimals()))) {
+        for (Pair<BigDecimal, BigDecimal> p : take(MEDIUM_LIMIT, P.bagPairs(P.bigDecimals()))) {
             System.out.println("rangeCanonical(" + p.a + ", " + p.b + ") = " + its(EP.rangeCanonical(p.a, p.b)));
         }
     }
@@ -240,8 +427,7 @@ public class ExhaustiveProviderDemos extends Demos {
 
     private void demoWithNull_infinite() {
         for (Iterable<Integer> xs : take(MEDIUM_LIMIT, P.prefixPermutations(EP.naturalIntegers()))) {
-            String xsString = tail(init(its(xs)));
-            System.out.println("withNull(" + xsString + ") = " + its(EP.withNull(xs)));
+            System.out.println("withNull(" + middle(xs.toString()) + ") = " + its(EP.withNull(xs)));
         }
     }
 
@@ -253,8 +439,7 @@ public class ExhaustiveProviderDemos extends Demos {
 
     private void demoNonEmptyOptionals_infinite() {
         for (Iterable<Integer> xs : take(MEDIUM_LIMIT, P.prefixPermutations(EP.naturalIntegers()))) {
-            String xsString = tail(init(its(xs)));
-            System.out.println("nonEmptyOptionals(" + xsString + ") = " + its(EP.nonEmptyOptionals(xs)));
+            System.out.println("nonEmptyOptionals(" + middle(xs.toString()) + ") = " + its(EP.nonEmptyOptionals(xs)));
         }
     }
 
@@ -266,8 +451,7 @@ public class ExhaustiveProviderDemos extends Demos {
 
     private void demoOptionals_infinite() {
         for (Iterable<Integer> xs : take(MEDIUM_LIMIT, P.prefixPermutations(EP.naturalIntegers()))) {
-            String xsString = tail(init(its(xs)));
-            System.out.println("optionals(" + xsString + ") = " + its(EP.optionals(xs)));
+            System.out.println("optionals(" + middle(xs.toString()) + ") = " + its(EP.optionals(xs)));
         }
     }
 
@@ -279,8 +463,7 @@ public class ExhaustiveProviderDemos extends Demos {
 
     private void demoNonEmptyNullableOptionals_infinite() {
         for (Iterable<Integer> xs : take(MEDIUM_LIMIT, P.prefixPermutations(EP.withNull(EP.naturalIntegers())))) {
-            String xsString = tail(init(its(xs)));
-            System.out.println("nonEmptyNullableOptionals(" + xsString + ") = " +
+            System.out.println("nonEmptyNullableOptionals(" + middle(xs.toString()) + ") = " +
                     its(EP.nonEmptyNullableOptionals(xs)));
         }
     }
@@ -293,8 +476,7 @@ public class ExhaustiveProviderDemos extends Demos {
 
     private void demoNullableOptionals_infinite() {
         for (Iterable<Integer> xs : take(MEDIUM_LIMIT, P.prefixPermutations(EP.withNull(EP.naturalIntegers())))) {
-            String xsString = tail(init(its(xs)));
-            System.out.println("nullableOptionals(" + xsString + ") = " + its(EP.nullableOptionals(xs)));
+            System.out.println("nullableOptionals(" + middle(xs.toString()) + ") = " + its(EP.nullableOptionals(xs)));
         }
     }
 
@@ -468,15 +650,15 @@ public class ExhaustiveProviderDemos extends Demos {
 
     private void demoPairsLogarithmicOrder_Iterable_finite() {
         for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
-            String listString = tail(init(xs.toString()));
-            System.out.println("pairsLogarithmicOrder(" + listString + ") = " + its(EP.pairsLogarithmicOrder(xs)));
+            System.out.println("pairsLogarithmicOrder(" + middle(xs.toString()) + ") = " +
+                    its(EP.pairsLogarithmicOrder(xs)));
         }
     }
 
     private void demoPairsLogarithmicOrder_Iterable_infinite() {
         for (Iterable<Integer> xs : take(MEDIUM_LIMIT, P.prefixPermutations(EP.withNull(EP.naturalIntegers())))) {
-            String listString = tail(init(its(xs)));
-            System.out.println("pairsLogarithmicOrder(" + listString + ") = " + its(EP.pairsLogarithmicOrder(xs)));
+            System.out.println("pairsLogarithmicOrder(" + middle(its(xs)) + ") = " +
+                    its(EP.pairsLogarithmicOrder(xs)));
         }
     }
 
@@ -502,22 +684,21 @@ public class ExhaustiveProviderDemos extends Demos {
 
     private void demoPairsSquareRootOrder_Iterable_finite() {
         for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
-            String listString = tail(init(xs.toString()));
-            System.out.println("pairsSquareRootOrder(" + listString + ") = " + its(EP.pairsSquareRootOrder(xs)));
+            System.out.println("pairsSquareRootOrder(" + middle(xs.toString()) + ") = " +
+                    its(EP.pairsSquareRootOrder(xs)));
         }
     }
 
     private void demoPairsSquareRootOrder_Iterable_infinite() {
         for (Iterable<Integer> xs : take(MEDIUM_LIMIT, P.prefixPermutations(EP.withNull(EP.naturalIntegers())))) {
-            String listString = tail(init(its(xs)));
-            System.out.println("pairsSquareRootOrder(" + listString + ") = " + its(EP.pairsSquareRootOrder(xs)));
+            System.out.println("pairsSquareRootOrder(" + middle(its(xs)) + ") = " + its(EP.pairsSquareRootOrder(xs)));
         }
     }
 
     private void demoPermutationsFinite() {
         for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
-            String listString = tail(init(xs.toString()));
-            System.out.println("permutationsFinite(" + listString + ") = " + its(EP.permutationsFinite(xs)));
+            System.out.println("permutationsFinite(" + middle(xs.toString()) + ") = " +
+                    its(EP.permutationsFinite(xs)));
         }
     }
 
@@ -529,16 +710,14 @@ public class ExhaustiveProviderDemos extends Demos {
 
     private void demoPrefixPermutations_finite() {
         for (List<Integer> xs : take(MEDIUM_LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
-            String listString = tail(init(xs.toString()));
-            System.out.println("prefixPermutations(" + listString + ") = " +
+            System.out.println("prefixPermutations(" + middle(xs.toString()) + ") = " +
                     its(map(Testing::its, EP.prefixPermutations(xs))));
         }
     }
 
     private void demoPrefixPermutations_infinite() {
         for (Iterable<Integer> xs : take(SMALL_LIMIT, P.prefixPermutations(EP.withNull(EP.naturalIntegers())))) {
-            String listString = tail(init(its(xs)));
-            System.out.println("prefixPermutations(" + listString + ") = " +
+            System.out.println("prefixPermutations(" + middle(its(xs)) + ") = " +
                     its(map(Testing::its, EP.prefixPermutations(xs))));
         }
     }
@@ -2156,7 +2335,7 @@ public class ExhaustiveProviderDemos extends Demos {
         }
     }
 
-    private void demoChoose_finite() {
+    private void demoChoose_Iterable_Iterable_finite() {
         Iterable<Pair<List<Integer>, List<Integer>>> ps = P.pairs(
                 P.withScale(4).lists(P.withNull(P.integersGeometric()))
         );
@@ -2165,7 +2344,7 @@ public class ExhaustiveProviderDemos extends Demos {
         }
     }
 
-    private void demoChoose_infinite() {
+    private void demoChoose_Iterable_Iterable_infinite() {
         Iterable<Pair<Iterable<Integer>, Iterable<Integer>>> ps = P.pairs(
                 P.prefixPermutations(EP.withNull(EP.naturalIntegers()))
         );
@@ -2174,13 +2353,33 @@ public class ExhaustiveProviderDemos extends Demos {
         }
     }
 
+    private void demoChoose_Iterable_finite() {
+        Iterable<List<List<Integer>>> xsss = P.withScale(4).lists(
+                P.withScale(4).lists(P.withNull(P.integersGeometric()))
+        );
+        for (List<List<Integer>> xss : take(LIMIT, xsss)) {
+            String xsString = middle(xss.toString());
+            System.out.println("choose(" + xsString + ") = " + its(EP.choose(toList(map(xs -> xs, xss)))));
+        }
+    }
+
+    private void demoChoose_Iterable_infinite() {
+        Iterable<List<Iterable<Integer>>> xsss = P.withScale(4).listsAtLeast(
+                1,
+                P.prefixPermutations(EP.withNull(EP.naturalIntegers()))
+        );
+        for (List<Iterable<Integer>> xss : take(MEDIUM_LIMIT, xsss)) {
+            String xssString = middle(toList(map(Testing::its, xss)).toString());
+            System.out.println("choose(" + xssString + ") = " + its(EP.choose(xss)));
+        }
+    }
+
     private void demoCartesianProduct() {
         Iterable<List<List<Integer>>> xsss = P.withScale(4).lists(
                 P.withScale(4).lists(P.withNull(P.integersGeometric()))
         );
         for (List<List<Integer>> xss : take(LIMIT, xsss)) {
-            String listString = tail(init(xss.toString()));
-            System.out.println("cartesianProduct(" + listString + ") = " + its(EP.cartesianProduct(xss)));
+            System.out.println("cartesianProduct(" + middle(xss.toString()) + ") = " + its(EP.cartesianProduct(xss)));
         }
     }
 
@@ -2190,16 +2389,14 @@ public class ExhaustiveProviderDemos extends Demos {
                 P.withScale(4).listsAtLeast(2, P.withNull(P.integersGeometric()))
         );
         for (List<Integer> xs : take(SMALL_LIMIT, xss)) {
-            String listString = tail(init(xs.toString()));
-            System.out.println("repeatingIterables(" + listString + ") = " +
+            System.out.println("repeatingIterables(" + middle(xs.toString()) + ") = " +
                     its(map(Testing::its, EP.repeatingIterables(xs))));
         }
     }
 
     private void demoRepeatingIterables_infinite() {
         for (Iterable<Integer> xs : take(SMALL_LIMIT, P.prefixPermutations(P.withNull(EP.naturalIntegers())))) {
-            String xsString = tail(init(its(xs)));
-            System.out.println("repeatingIterables(" + xsString + ") = " +
+            System.out.println("repeatingIterables(" + middle(its(xs)) + ") = " +
                     its(map(Testing::its, EP.repeatingIterables(xs))));
         }
     }
@@ -2228,8 +2425,7 @@ public class ExhaustiveProviderDemos extends Demos {
 
     private void demoSublists() {
         for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
-            String listString = tail(init(xs.toString()));
-            System.out.println("sublists(" + listString + ") = " + its(EP.sublists(xs)));
+            System.out.println("sublists(" + middle(xs.toString()) + ") = " + its(EP.sublists(xs)));
         }
     }
 

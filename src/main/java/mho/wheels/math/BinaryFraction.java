@@ -9,6 +9,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.List;
 import java.util.Optional;
 
 import static mho.wheels.iterables.IterableUtils.*;
@@ -419,6 +420,23 @@ public strictfp class BinaryFraction implements Comparable<BinaryFraction> {
     }
 
     /**
+     * Determines whether {@code this} is a power of 2.
+     *
+     * <ul>
+     *  <li>{@code this} must be positive.</li>
+     *  <li>The result may be either {@code boolean}.</li>
+     * </ul>
+     *
+     * @return whether {@code this} is a power of two
+     */
+    public boolean isPowerOfTwo() {
+        if (signum() != 1) {
+            throw new ArithmeticException("this must be positive. Invalid this: " + this);
+        }
+        return mantissa.equals(BigInteger.ONE);
+    }
+
+    /**
      * Returns the sum of {@code this} and {@code that}.
      *
      * <ul>
@@ -619,22 +637,22 @@ public strictfp class BinaryFraction implements Comparable<BinaryFraction> {
      * A correct result will be returned as long as the result doesn't overflow, even if intermediate sums would.
      *
      * <ul>
-     *  <li>{@code xs} must be finite and may not contain any nulls. The result must have an exponent less than
-     *  2<sup>31</sup> and greater than or equal to –2<sup>31</sup>.</li>
+     *  <li>{@code xs} may not contain any nulls. The result must have an exponent less than 2<sup>31</sup> and greater
+     *  than or equal to –2<sup>31</sup>.</li>
      *  <li>The result may be any {@code BinaryFraction}.</li>
      * </ul>
      *
-     * @param xs an {@code Iterable} of {@code BinaryFraction}s.
+     * @param xs {@code List} of {@code BinaryFraction}s.
      * @return Σxs
      */
-    public static @NotNull BinaryFraction sum(@NotNull Iterable<BinaryFraction> xs) {
+    public static @NotNull BinaryFraction sum(@NotNull List<BinaryFraction> xs) {
         if (any(x -> x == null, xs)) {
             throw new NullPointerException("xs may not contain any nulls. xs: " + xs);
         }
-        if (isEmpty(xs)) return ZERO;
+        if (xs.isEmpty()) return ZERO;
         int smallestExponent = minimum(map(BinaryFraction::getExponent, xs));
         return of(
-                sumBigInteger(map(x -> x.shiftRight(smallestExponent).bigIntegerValueExact(), xs)),
+                sumBigInteger(toList(map(x -> x.shiftRight(smallestExponent).bigIntegerValueExact(), xs))),
                 smallestExponent
         );
     }
@@ -644,23 +662,23 @@ public strictfp class BinaryFraction implements Comparable<BinaryFraction> {
      * correct result will be returned as long as the result doesn't overflow, even if intermediate products would.
      *
      * <ul>
-     *  <li>{@code xs} must be finite and may not contain any nulls. The result must have an exponent less than
-     *  2<sup>31</sup> and greater than or equal to –2<sup>31</sup>.</li>
+     *  <li>{@code xs} may not contain any nulls. The result must have an exponent less than 2<sup>31</sup> and greater
+     *  than or equal to –2<sup>31</sup>.</li>
      *  <li>The result may be any {@code BinaryFraction}.</li>
      * </ul>
      *
-     * @param xs an {@code Iterable} of {@code BinaryFraction}s.
+     * @param xs a {@code List} of {@code BinaryFraction}s.
      * @return Πxs
      */
-    public static @NotNull BinaryFraction product(@NotNull Iterable<BinaryFraction> xs) {
+    public static @NotNull BinaryFraction product(@NotNull List<BinaryFraction> xs) {
         if (any(x -> x == null, xs)) {
             throw new NullPointerException("xs may not contain any nulls. xs: " + xs);
         }
         if (any(x -> x == ZERO, xs)) return ZERO;
         return of(
-                productBigInteger(map(BinaryFraction::getMantissa, xs)),
+                productBigInteger(toList(map(BinaryFraction::getMantissa, xs))),
                 //BigInteger conversion protects against over- and underflow
-                sumBigInteger(map(x -> BigInteger.valueOf(x.getExponent()), xs)).intValueExact()
+                sumBigInteger(toList(map(x -> BigInteger.valueOf(x.getExponent()), xs))).intValueExact()
         );
     }
 
@@ -796,7 +814,7 @@ public strictfp class BinaryFraction implements Comparable<BinaryFraction> {
      * @param s a string representation of a {@code BinaryFraction}.
      * @return the wrapped {@code BinaryFraction} represented by {@code s}, or {@code empty} if {@code s} is invalid.
      */
-    public static @NotNull Optional<BinaryFraction> read(@NotNull String s) {
+    public static @NotNull Optional<BinaryFraction> readStrict(@NotNull String s) {
         if (s.equals("0")) return Optional.of(ZERO);
         if (s.equals("1")) return Optional.of(ONE);
         return Readers.genericReadStrict(

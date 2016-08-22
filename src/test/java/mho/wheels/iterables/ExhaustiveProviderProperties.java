@@ -96,6 +96,40 @@ public class ExhaustiveProviderProperties extends TestProperties {
 
     @Override
     protected void testBothModes() {
+        propertiesRangeUpIncreasing_byte();
+        propertiesRangeUpIncreasing_short();
+        propertiesRangeUpIncreasing_int();
+        propertiesRangeUpIncreasing_long();
+        propertiesRangeUpIncreasing_BigInteger();
+        propertiesRangeUpIncreasing_char();
+        propertiesRangeUpDecreasing_byte();
+        propertiesRangeUpDecreasing_short();
+        propertiesRangeUpDecreasing_int();
+        propertiesRangeUpDecreasing_long();
+        propertiesRangeUpDecreasing_char();
+        propertiesRangeDownIncreasing_byte();
+        propertiesRangeDownIncreasing_short();
+        propertiesRangeDownIncreasing_int();
+        propertiesRangeDownIncreasing_long();
+        propertiesRangeDownIncreasing_char();
+        propertiesRangeDownDecreasing_byte();
+        propertiesRangeDownDecreasing_short();
+        propertiesRangeDownDecreasing_int();
+        propertiesRangeDownDecreasing_long();
+        propertiesRangeDownDecreasing_BigInteger();
+        propertiesRangeDownDecreasing_char();
+        propertiesRangeIncreasing_byte_byte();
+        propertiesRangeIncreasing_short_short();
+        propertiesRangeIncreasing_int_int();
+        propertiesRangeIncreasing_long_long();
+        propertiesRangeIncreasing_BigInteger_BigInteger();
+        propertiesRangeIncreasing_char_char();
+        propertiesRangeDecreasing_byte_byte();
+        propertiesRangeDecreasing_short_short();
+        propertiesRangeDecreasing_int_int();
+        propertiesRangeDecreasing_long_long();
+        propertiesRangeDecreasing_BigInteger_BigInteger();
+        propertiesRangeDecreasing_char_char();
         propertiesUniformSample_Iterable();
         propertiesUniformSample_String();
         propertiesRangeUp_byte();
@@ -103,7 +137,6 @@ public class ExhaustiveProviderProperties extends TestProperties {
         propertiesRangeUp_int();
         propertiesRangeUp_long();
         propertiesRangeUp_BigInteger();
-        propertiesRangeUp_char();
         propertiesRangeDown_byte();
         propertiesRangeDown_short();
         propertiesRangeDown_int();
@@ -281,7 +314,8 @@ public class ExhaustiveProviderProperties extends TestProperties {
         propertiesEithers();
         propertiesChooseSquareRootOrder();
         propertiesChooseLogarithmicOrder();
-        propertiesChoose();
+        propertiesChoose_Iterable_Iterable();
+        propertiesChoose_Iterable();
         propertiesCartesianProduct();
         propertiesRepeatingIterables();
         propertiesRepeatingIterablesDistinctAtLeast();
@@ -326,6 +360,632 @@ public class ExhaustiveProviderProperties extends TestProperties {
             @NotNull Predicate<T> predicate
     ) {
         test_helper(LARGE_LIMIT, message, xs, predicate);
+    }
+
+    private void propertiesRangeUpIncreasing_byte() {
+        initialize("rangeUpIncreasing(byte)");
+        for (byte b : take(LIMIT, P.bytes())) {
+            Iterable<Byte> bs = EP.rangeUpIncreasing(b);
+            assertTrue(b, all(c -> c != null, bs));
+            testNoRemove(bs);
+            testHasNext(bs);
+            assertEquals(b, length(bs), (1 << 7) - b);
+            assertEquals(b, head(bs), b);
+            assertEquals(b, last(bs), Byte.MAX_VALUE);
+            assertTrue(b, unique(bs));
+            assertTrue(b, all(c -> c >= b, bs));
+            assertTrue(b, increasing(bs));
+        }
+    }
+
+    private void propertiesRangeUpIncreasing_short() {
+        initialize("rangeUpIncreasing(short)");
+        for (short s : take(LIMIT, P.shorts())) {
+            Iterable<Short> ss = EP.rangeUpIncreasing(s);
+            simpleTest(s, ss, t -> t >= s);
+            assertEquals(s, head(ss), s);
+            assertTrue(s, increasing(take(TINY_LIMIT, ss)));
+            if (Short.MAX_VALUE - s < 1 << 8) {
+                testHasNext(ss);
+            }
+        }
+    }
+
+    private void propertiesRangeUpIncreasing_int() {
+        initialize("rangeUpIncreasing(int)");
+        for (int i : take(LIMIT, P.integers())) {
+            Iterable<Integer> is = EP.rangeUpIncreasing(i);
+            simpleTest(i, is, j -> j >= i);
+            assertEquals(i, head(is), i);
+            assertTrue(i, increasing(take(TINY_LIMIT, is)));
+            if ((long) Integer.MAX_VALUE - i < 1L << 8) {
+                testHasNext(is);
+            }
+        }
+    }
+
+    private void propertiesRangeUpIncreasing_long() {
+        initialize("rangeUpIncreasing(long)");
+        for (long l : take(LIMIT, P.longs())) {
+            Iterable<Long> ls = EP.rangeUpIncreasing(l);
+            simpleTest(l, ls, m -> m >= l);
+            assertEquals(l, head(ls), l);
+            assertTrue(l, increasing(take(TINY_LIMIT, ls)));
+            if (lt(BigInteger.valueOf(Long.MAX_VALUE).subtract(BigInteger.valueOf(l)), BigInteger.valueOf(1 << 8))) {
+                testHasNext(ls);
+            }
+        }
+    }
+
+    private void propertiesRangeUpIncreasing_BigInteger() {
+        initialize("rangeUpIncreasing(BigInteger)");
+        for (BigInteger i : take(LIMIT, P.bigIntegers())) {
+            Iterable<BigInteger> is = EP.rangeUpIncreasing(i);
+            simpleTest(i, is, j -> ge(j, i));
+            assertEquals(i, head(is), i);
+            assertTrue(i, increasing(take(TINY_LIMIT, is)));
+        }
+    }
+
+    private void propertiesRangeUpIncreasing_char() {
+        initialize("rangeUpIncreasing(char)");
+        for (char c : take(LIMIT, P.characters())) {
+            Iterable<Character> cs = EP.rangeUpIncreasing(c);
+            simpleTest(nicePrint(c), cs, d -> d >= c);
+            assertEquals(c, head(cs), c);
+            assertTrue(nicePrint(c), increasing(take(TINY_LIMIT, cs)));
+            if (Character.MAX_VALUE - c < 1 << 8) {
+                testHasNext(cs);
+            }
+        }
+    }
+
+    private void propertiesRangeUpDecreasing_byte() {
+        initialize("rangeUpDecreasing(byte)");
+        for (byte b : take(LIMIT, P.bytes())) {
+            Iterable<Byte> bs = EP.rangeUpDecreasing(b);
+            assertTrue(b, all(c -> c != null, bs));
+            testNoRemove(bs);
+            testHasNext(bs);
+            assertEquals(b, length(bs), (1 << 7) - b);
+            assertEquals(b, head(bs), Byte.MAX_VALUE);
+            assertEquals(b, last(bs), b);
+            assertTrue(b, unique(bs));
+            assertTrue(b, all(c -> c >= b, bs));
+            assertTrue(b, decreasing(bs));
+        }
+    }
+
+    private void propertiesRangeUpDecreasing_short() {
+        initialize("rangeUpDecreasing(short)");
+        for (short s : take(LIMIT, P.shorts())) {
+            Iterable<Short> ss = EP.rangeUpDecreasing(s);
+            simpleTest(s, ss, t -> t >= s);
+            assertEquals(s, head(ss), Short.MAX_VALUE);
+            assertTrue(s, decreasing(take(TINY_LIMIT, ss)));
+            if (Short.MAX_VALUE - s < 1 << 8) {
+                testHasNext(ss);
+            }
+        }
+    }
+
+    private void propertiesRangeUpDecreasing_int() {
+        initialize("rangeUpDecreasing(int)");
+        for (int i : take(LIMIT, P.integers())) {
+            Iterable<Integer> is = EP.rangeUpDecreasing(i);
+            simpleTest(i, is, j -> j >= i);
+            assertEquals(i, head(is), Integer.MAX_VALUE);
+            assertTrue(i, decreasing(take(TINY_LIMIT, is)));
+            if ((long) Integer.MAX_VALUE - i < 1L << 8) {
+                testHasNext(is);
+            }
+        }
+    }
+
+    private void propertiesRangeUpDecreasing_long() {
+        initialize("rangeUpDecreasing(long)");
+        for (long l : take(LIMIT, P.longs())) {
+            Iterable<Long> ls = EP.rangeUpDecreasing(l);
+            simpleTest(l, ls, m -> m >= l);
+            assertEquals(l, head(ls), Long.MAX_VALUE);
+            assertTrue(l, decreasing(take(TINY_LIMIT, ls)));
+            if (lt(BigInteger.valueOf(Long.MAX_VALUE).subtract(BigInteger.valueOf(l)), BigInteger.valueOf(1 << 8))) {
+                testHasNext(ls);
+            }
+        }
+    }
+
+    private void propertiesRangeUpDecreasing_char() {
+        initialize("rangeUpDecreasing(char)");
+        for (char c : take(LIMIT, P.characters())) {
+            Iterable<Character> cs = EP.rangeUpDecreasing(c);
+            simpleTest(nicePrint(c), cs, d -> d >= c);
+            assertEquals(c, head(cs), Character.MAX_VALUE);
+            assertTrue(nicePrint(c), decreasing(take(TINY_LIMIT, cs)));
+            if (Character.MAX_VALUE - c < 1 << 8) {
+                testHasNext(cs);
+            }
+        }
+    }
+
+    private void propertiesRangeDownIncreasing_byte() {
+        initialize("rangeDownIncreasing(byte)");
+        for (byte b : take(LIMIT, P.bytes())) {
+            Iterable<Byte> bs = EP.rangeDownIncreasing(b);
+            assertTrue(b, all(c -> c != null, bs));
+            testNoRemove(bs);
+            testHasNext(bs);
+            assertEquals(b, length(bs), b + (1 << 7) + 1);
+            assertEquals(b, head(bs), Byte.MIN_VALUE);
+            assertEquals(b, last(bs), b);
+            assertTrue(b, unique(bs));
+            assertTrue(b, all(c -> c <= b, bs));
+            assertTrue(b, increasing(bs));
+        }
+    }
+
+    private void propertiesRangeDownIncreasing_short() {
+        initialize("rangeDownIncreasing(short)");
+        for (short s : take(LIMIT, P.shorts())) {
+            Iterable<Short> ss = EP.rangeDownIncreasing(s);
+            simpleTest(s, ss, t -> t <= s);
+            assertEquals(s, head(ss), Short.MIN_VALUE);
+            assertTrue(s, increasing(take(TINY_LIMIT, ss)));
+            if (s - Short.MIN_VALUE < 1 << 8) {
+                testHasNext(ss);
+            }
+        }
+    }
+
+    private void propertiesRangeDownIncreasing_int() {
+        initialize("rangeDownIncreasing(int)");
+        for (int i : take(LIMIT, P.integers())) {
+            Iterable<Integer> is = EP.rangeDownIncreasing(i);
+            simpleTest(i, is, j -> j <= i);
+            assertEquals(i, head(is), Integer.MIN_VALUE);
+            assertTrue(i, increasing(take(TINY_LIMIT, is)));
+            if ((long) i - Integer.MIN_VALUE < 1L << 8) {
+                testHasNext(is);
+            }
+        }
+    }
+
+    private void propertiesRangeDownIncreasing_long() {
+        initialize("rangeDownIncreasing(long)");
+        for (long l : take(LIMIT, P.longs())) {
+            Iterable<Long> ls = EP.rangeDownIncreasing(l);
+            simpleTest(l, ls, m -> m <= l);
+            assertEquals(l, head(ls), Long.MIN_VALUE);
+            assertTrue(l, increasing(take(TINY_LIMIT, ls)));
+            if (lt(BigInteger.valueOf(l).subtract(BigInteger.valueOf(Long.MIN_VALUE)), BigInteger.valueOf(1 << 8))) {
+                testHasNext(ls);
+            }
+        }
+    }
+
+    private void propertiesRangeDownIncreasing_char() {
+        initialize("rangeDownIncreasing(char)");
+        for (char c : take(LIMIT, P.characters())) {
+            Iterable<Character> cs = EP.rangeDownIncreasing(c);
+            simpleTest(nicePrint(c), cs, d -> d <= c);
+            assertEquals(c, head(cs), Character.MIN_VALUE);
+            assertTrue(nicePrint(c), increasing(take(TINY_LIMIT, cs)));
+            if (c < 1 << 8) {
+                testHasNext(cs);
+            }
+        }
+    }
+
+    private void propertiesRangeDownDecreasing_byte() {
+        initialize("rangeDownDecreasing(byte)");
+        for (byte b : take(LIMIT, P.bytes())) {
+            Iterable<Byte> bs = EP.rangeDownDecreasing(b);
+            assertTrue(b, all(c -> c != null, bs));
+            testNoRemove(bs);
+            testHasNext(bs);
+            assertEquals(b, length(bs), b + (1 << 7) + 1);
+            assertEquals(b, head(bs), b);
+            assertEquals(b, last(bs), Byte.MIN_VALUE);
+            assertTrue(b, unique(bs));
+            assertTrue(b, all(c -> c <= b, bs));
+            assertTrue(b, decreasing(bs));
+        }
+    }
+
+    private void propertiesRangeDownDecreasing_short() {
+        initialize("rangeDownDecreasing(short)");
+        for (short s : take(LIMIT, P.shorts())) {
+            Iterable<Short> ss = EP.rangeDownDecreasing(s);
+            simpleTest(s, ss, t -> t <= s);
+            assertEquals(s, head(ss), s);
+            assertTrue(s, decreasing(take(TINY_LIMIT, ss)));
+            if (s - Short.MIN_VALUE < 1 << 8) {
+                testHasNext(ss);
+            }
+        }
+    }
+
+    private void propertiesRangeDownDecreasing_int() {
+        initialize("rangeDownDecreasing(int)");
+        for (int i : take(LIMIT, P.integers())) {
+            Iterable<Integer> is = EP.rangeDownDecreasing(i);
+            simpleTest(i, is, j -> j <= i);
+            assertEquals(i, head(is), i);
+            assertTrue(i, decreasing(take(TINY_LIMIT, is)));
+            if ((long) i - Integer.MIN_VALUE < 1L << 8) {
+                testHasNext(is);
+            }
+        }
+    }
+
+    private void propertiesRangeDownDecreasing_long() {
+        initialize("rangeDownDecreasing(long)");
+        for (long l : take(LIMIT, P.longs())) {
+            Iterable<Long> ls = EP.rangeDownDecreasing(l);
+            simpleTest(l, ls, m -> m <= l);
+            assertEquals(l, head(ls), l);
+            assertTrue(l, decreasing(take(TINY_LIMIT, ls)));
+            if (lt(BigInteger.valueOf(l).subtract(BigInteger.valueOf(Long.MIN_VALUE)), BigInteger.valueOf(1 << 8))) {
+                testHasNext(ls);
+            }
+        }
+    }
+
+    private void propertiesRangeDownDecreasing_BigInteger() {
+        initialize("rangeDownDecreasing(BigInteger)");
+        for (BigInteger i : take(LIMIT, P.bigIntegers())) {
+            Iterable<BigInteger> is = EP.rangeDownDecreasing(i);
+            simpleTest(i, is, j -> le(j, i));
+            assertEquals(i, head(is), i);
+            assertTrue(i, decreasing(take(TINY_LIMIT, is)));
+        }
+    }
+
+    private void propertiesRangeDownDecreasing_char() {
+        initialize("rangeDownDecreasing(char)");
+        for (char c : take(LIMIT, P.characters())) {
+            Iterable<Character> cs = EP.rangeDownDecreasing(c);
+            simpleTest(nicePrint(c), cs, d -> d <= c);
+            assertEquals(c, head(cs), c);
+            assertTrue(nicePrint(c), decreasing(take(TINY_LIMIT, cs)));
+            if (c < 1 << 8) {
+                testHasNext(cs);
+            }
+        }
+    }
+
+    private void propertiesRangeIncreasing_byte_byte() {
+        initialize("rangeIncreasing(byte, byte)");
+        for (Pair<Byte, Byte> p : take(LIMIT, P.bagPairs(P.bytes()))) {
+            Iterable<Byte> bs = EP.rangeIncreasing(p.a, p.b);
+            assertTrue(p, all(b -> b != null, bs));
+            testNoRemove(bs);
+            testHasNext(bs);
+            assertEquals(p, length(bs), p.b - p.a + 1);
+            assertTrue(p, unique(bs));
+            assertEquals(p, head(bs), p.a);
+            assertEquals(p, last(bs), p.b);
+            assertTrue(p, all(b -> b >= p.a && b <= p.b, bs));
+            assertTrue(p, increasing(bs));
+            assertFalse(p, isEmpty(bs));
+        }
+
+        for (byte b : take(LIMIT, P.bytes())) {
+            aeqit(b, EP.rangeIncreasing(b, b), Collections.singletonList(b));
+            aeqit(b, TINY_LIMIT, EP.rangeIncreasing(b, Byte.MAX_VALUE), EP.rangeUpIncreasing(b));
+            aeqit(b, TINY_LIMIT, EP.rangeIncreasing(Byte.MIN_VALUE, b), EP.rangeDownIncreasing(b));
+        }
+
+        for (Pair<Byte, Byte> p : take(LIMIT, P.subsetPairs(P.bytes()))) {
+            try {
+                EP.rangeIncreasing(p.b, p.a);
+                fail(p);
+            } catch (IllegalArgumentException ignored) {}
+        }
+    }
+
+    private void propertiesRangeIncreasing_short_short() {
+        initialize("rangeIncreasing(short, short)");
+        for (Pair<Short, Short> p : take(LIMIT, P.bagPairs(P.shorts()))) {
+            Iterable<Short> ss = EP.rangeIncreasing(p.a, p.b);
+            assertEquals(p, head(ss), p.a);
+            simpleTest(p, ss, s -> s >= p.a && s <= p.b);
+            assertTrue(p, increasing(take(TINY_LIMIT, ss)));
+            assertFalse(p, isEmpty(ss));
+            if (p.b - p.a < 1 << 8) {
+                testHasNext(ss);
+            }
+        }
+
+        for (short s : take(LIMIT, P.shorts())) {
+            aeqit(s, EP.rangeIncreasing(s, s), Collections.singletonList(s));
+            aeqit(s, TINY_LIMIT, EP.rangeIncreasing(s, Short.MAX_VALUE), EP.rangeUpIncreasing(s));
+            aeqit(s, TINY_LIMIT, EP.rangeIncreasing(Short.MIN_VALUE, s), EP.rangeDownIncreasing(s));
+        }
+
+        for (Pair<Short, Short> p : take(LIMIT, P.subsetPairs(P.shorts()))) {
+            try {
+                EP.rangeIncreasing(p.b, p.a);
+                fail(p);
+            } catch (IllegalArgumentException ignored) {}
+        }
+    }
+
+    private void propertiesRangeIncreasing_int_int() {
+        initialize("rangeIncreasing(int, int)");
+        for (Pair<Integer, Integer> p : take(LIMIT, P.bagPairs(P.integers()))) {
+            Iterable<Integer> is = EP.rangeIncreasing(p.a, p.b);
+            Iterable<Integer> tis = take(TINY_LIMIT, is);
+            assertEquals(p, head(is), p.a);
+            simpleTest(p, is, i -> i >= p.a && i <= p.b);
+            assertTrue(p, increasing(take(TINY_LIMIT, tis)));
+            assertFalse(p, isEmpty(is));
+            if ((long) p.b - p.a < 1L << 8) {
+                testHasNext(is);
+            }
+        }
+
+        for (int i : take(LIMIT, P.integers())) {
+            aeqit(i, EP.rangeIncreasing(i, i), Collections.singletonList(i));
+            aeqit(i, TINY_LIMIT, EP.rangeIncreasing(i, Integer.MAX_VALUE), EP.rangeUpIncreasing(i));
+            aeqit(i, TINY_LIMIT, EP.rangeIncreasing(Integer.MIN_VALUE, i), EP.rangeDownIncreasing(i));
+        }
+
+        for (Pair<Integer, Integer> p : take(LIMIT, P.subsetPairs(P.integers()))) {
+            try {
+                EP.rangeIncreasing(p.b, p.a);
+                fail(p);
+            } catch (IllegalArgumentException ignored) {}
+        }
+    }
+
+    private void propertiesRangeIncreasing_long_long() {
+        initialize("rangeIncreasing(long, long)");
+        for (Pair<Long, Long> p : take(LIMIT, P.bagPairs(P.longs()))) {
+            Iterable<Long> ls = EP.rangeIncreasing(p.a, p.b);
+            Iterable<Long> tls = take(TINY_LIMIT, ls);
+            assertEquals(p, head(ls), p.a);
+            simpleTest(p, ls, l -> l >= p.a && l <= p.b);
+            assertTrue(p, increasing(take(TINY_LIMIT, tls)));
+            assertFalse(p, isEmpty(ls));
+            if (lt(BigInteger.valueOf(p.b).subtract(BigInteger.valueOf(p.a)), BigInteger.valueOf(1 << 8))) {
+                testHasNext(ls);
+            }
+        }
+
+        for (long l : take(LIMIT, P.longs())) {
+            aeqit(l, EP.rangeIncreasing(l, l), Collections.singletonList(l));
+            aeqit(l, TINY_LIMIT, EP.rangeIncreasing(l, Long.MAX_VALUE), EP.rangeUpIncreasing(l));
+            aeqit(l, TINY_LIMIT, EP.rangeIncreasing(Long.MIN_VALUE, l), EP.rangeDownIncreasing(l));
+        }
+
+        for (Pair<Long, Long> p : take(LIMIT, P.subsetPairs(P.longs()))) {
+            try {
+                EP.rangeIncreasing(p.b, p.a);
+                fail(p);
+            } catch (IllegalArgumentException ignored) {}
+        }
+    }
+
+    private void propertiesRangeIncreasing_BigInteger_BigInteger() {
+        initialize("rangeIncreasing(BigInteger, BigInteger)");
+        for (Pair<BigInteger, BigInteger> p : take(LIMIT, P.bagPairs(P.bigIntegers()))) {
+            Iterable<BigInteger> is = EP.rangeIncreasing(p.a, p.b);
+            Iterable<BigInteger> tis = take(TINY_LIMIT, is);
+            assertEquals(p, head(is), p.a);
+            simpleTest(p, is, i -> ge(i, p.a) && le(i, p.b));
+            assertTrue(p, increasing(take(TINY_LIMIT, tis)));
+            assertFalse(p, isEmpty(is));
+            if (lt(p.b.subtract(p.a), BigInteger.valueOf(1 << 8))) {
+                testHasNext(is);
+            }
+        }
+
+        for (BigInteger i : take(LIMIT, P.bigIntegers())) {
+            aeqit(i, EP.rangeIncreasing(i, i), Collections.singletonList(i));
+        }
+
+        for (Pair<BigInteger, BigInteger> p : take(LIMIT, P.subsetPairs(P.bigIntegers()))) {
+            try {
+                EP.rangeIncreasing(p.b, p.a);
+                fail(p);
+            } catch (IllegalArgumentException ignored) {}
+        }
+    }
+
+    private void propertiesRangeIncreasing_char_char() {
+        initialize("rangeIncreasing(char, char)");
+        for (Pair<Character, Character> p : take(LIMIT, P.bagPairs(P.characters()))) {
+            Iterable<Character> cs = EP.rangeIncreasing(p.a, p.b);
+            Iterable<Character> tcs = take(TINY_LIMIT, cs);
+            assertEquals(p, head(cs), p.a);
+            simpleTest(p, cs, c -> c >= p.a && c <= p.b);
+            assertTrue(p, increasing(tcs));
+            assertFalse(p, isEmpty(cs));
+            if (p.b - p.a < 1 << 8) {
+                testHasNext(cs);
+            }
+        }
+
+        for (char c : take(LIMIT, P.characters())) {
+            aeqit(nicePrint(c), EP.rangeIncreasing(c, c), Collections.singletonList(c));
+            aeqit(nicePrint(c), TINY_LIMIT, EP.rangeIncreasing(c, Character.MAX_VALUE), EP.rangeUpIncreasing(c));
+            aeqit(nicePrint(c), TINY_LIMIT, EP.rangeIncreasing('\0', c), EP.rangeDownIncreasing(c));
+        }
+
+        for (Pair<Character, Character> p : take(LIMIT, P.subsetPairs(P.characters()))) {
+            try {
+                EP.rangeIncreasing(p.b, p.a);
+                fail(p);
+            } catch (IllegalArgumentException ignored) {}
+        }
+    }
+
+    private void propertiesRangeDecreasing_byte_byte() {
+        initialize("rangeDecreasing(byte, byte)");
+        for (Pair<Byte, Byte> p : take(LIMIT, P.bagPairs(P.bytes()))) {
+            Iterable<Byte> bs = EP.rangeDecreasing(p.a, p.b);
+            assertTrue(p, all(b -> b != null, bs));
+            testNoRemove(bs);
+            testHasNext(bs);
+            assertEquals(p, length(bs), p.b - p.a + 1);
+            assertTrue(p, unique(bs));
+            assertEquals(p, head(bs), p.b);
+            assertEquals(p, last(bs), p.a);
+            assertTrue(p, all(b -> b >= p.a && b <= p.b, bs));
+            assertTrue(p, decreasing(bs));
+            assertFalse(p, isEmpty(bs));
+        }
+
+        for (byte b : take(LIMIT, P.bytes())) {
+            aeqit(b, EP.rangeDecreasing(b, b), Collections.singletonList(b));
+            aeqit(b, TINY_LIMIT, EP.rangeDecreasing(b, Byte.MAX_VALUE), EP.rangeUpDecreasing(b));
+            aeqit(b, TINY_LIMIT, EP.rangeDecreasing(Byte.MIN_VALUE, b), EP.rangeDownDecreasing(b));
+        }
+
+        for (Pair<Byte, Byte> p : take(LIMIT, P.subsetPairs(P.bytes()))) {
+            try {
+                EP.rangeDecreasing(p.b, p.a);
+                fail(p);
+            } catch (IllegalArgumentException ignored) {}
+        }
+    }
+
+    private void propertiesRangeDecreasing_short_short() {
+        initialize("rangeDecreasing(short, short)");
+        for (Pair<Short, Short> p : take(LIMIT, P.bagPairs(P.shorts()))) {
+            Iterable<Short> ss = EP.rangeDecreasing(p.a, p.b);
+            assertEquals(p, head(ss), p.b);
+            simpleTest(p, ss, s -> s >= p.a && s <= p.b);
+            assertTrue(p, decreasing(take(TINY_LIMIT, ss)));
+            assertFalse(p, isEmpty(ss));
+            if (p.b - p.a < 1 << 8) {
+                testHasNext(ss);
+            }
+        }
+
+        for (short s : take(LIMIT, P.shorts())) {
+            aeqit(s, EP.rangeDecreasing(s, s), Collections.singletonList(s));
+            aeqit(s, TINY_LIMIT, EP.rangeDecreasing(s, Short.MAX_VALUE), EP.rangeUpDecreasing(s));
+            aeqit(s, TINY_LIMIT, EP.rangeDecreasing(Short.MIN_VALUE, s), EP.rangeDownDecreasing(s));
+        }
+
+        for (Pair<Short, Short> p : take(LIMIT, P.subsetPairs(P.shorts()))) {
+            try {
+                EP.rangeDecreasing(p.b, p.a);
+                fail(p);
+            } catch (IllegalArgumentException ignored) {}
+        }
+    }
+
+    private void propertiesRangeDecreasing_int_int() {
+        initialize("rangeDecreasing(int, int)");
+        for (Pair<Integer, Integer> p : take(LIMIT, P.bagPairs(P.integers()))) {
+            Iterable<Integer> is = EP.rangeDecreasing(p.a, p.b);
+            Iterable<Integer> tis = take(TINY_LIMIT, is);
+            assertEquals(p, head(is), p.b);
+            simpleTest(p, is, i -> i >= p.a && i <= p.b);
+            assertTrue(p, decreasing(take(TINY_LIMIT, tis)));
+            assertFalse(p, isEmpty(is));
+            if ((long) p.b - p.a < 1L << 8) {
+                testHasNext(is);
+            }
+        }
+
+        for (int i : take(LIMIT, P.integers())) {
+            aeqit(i, EP.rangeDecreasing(i, i), Collections.singletonList(i));
+            aeqit(i, TINY_LIMIT, EP.rangeDecreasing(i, Integer.MAX_VALUE), EP.rangeUpDecreasing(i));
+            aeqit(i, TINY_LIMIT, EP.rangeDecreasing(Integer.MIN_VALUE, i), EP.rangeDownDecreasing(i));
+        }
+
+        for (Pair<Integer, Integer> p : take(LIMIT, P.subsetPairs(P.integers()))) {
+            try {
+                EP.rangeDecreasing(p.b, p.a);
+                fail(p);
+            } catch (IllegalArgumentException ignored) {}
+        }
+    }
+
+    private void propertiesRangeDecreasing_long_long() {
+        initialize("rangeDecreasing(long, long)");
+        for (Pair<Long, Long> p : take(LIMIT, P.bagPairs(P.longs()))) {
+            Iterable<Long> ls = EP.rangeDecreasing(p.a, p.b);
+            Iterable<Long> tls = take(TINY_LIMIT, ls);
+            assertEquals(p, head(ls), p.b);
+            simpleTest(p, ls, l -> l >= p.a && l <= p.b);
+            assertTrue(p, decreasing(take(TINY_LIMIT, tls)));
+            assertFalse(p, isEmpty(ls));
+            if (lt(BigInteger.valueOf(p.b).subtract(BigInteger.valueOf(p.a)), BigInteger.valueOf(1 << 8))) {
+                testHasNext(ls);
+            }
+        }
+
+        for (long l : take(LIMIT, P.longs())) {
+            aeqit(l, EP.rangeDecreasing(l, l), Collections.singletonList(l));
+            aeqit(l, TINY_LIMIT, EP.rangeDecreasing(l, Long.MAX_VALUE), EP.rangeUpDecreasing(l));
+            aeqit(l, TINY_LIMIT, EP.rangeDecreasing(Long.MIN_VALUE, l), EP.rangeDownDecreasing(l));
+        }
+
+        for (Pair<Long, Long> p : take(LIMIT, P.subsetPairs(P.longs()))) {
+            try {
+                EP.rangeDecreasing(p.b, p.a);
+                fail(p);
+            } catch (IllegalArgumentException ignored) {}
+        }
+    }
+
+    private void propertiesRangeDecreasing_BigInteger_BigInteger() {
+        initialize("rangeDecreasing(BigInteger, BigInteger)");
+        for (Pair<BigInteger, BigInteger> p : take(LIMIT, P.bagPairs(P.bigIntegers()))) {
+            Iterable<BigInteger> is = EP.rangeDecreasing(p.a, p.b);
+            Iterable<BigInteger> tis = take(TINY_LIMIT, is);
+            assertEquals(p, head(is), p.b);
+            simpleTest(p, is, i -> ge(i, p.a) && le(i, p.b));
+            assertTrue(p, decreasing(take(TINY_LIMIT, tis)));
+            assertFalse(p, isEmpty(is));
+            if (lt(p.b.subtract(p.a), BigInteger.valueOf(1 << 8))) {
+                testHasNext(is);
+            }
+        }
+
+        for (BigInteger i : take(LIMIT, P.bigIntegers())) {
+            aeqit(i, EP.rangeDecreasing(i, i), Collections.singletonList(i));
+        }
+
+        for (Pair<BigInteger, BigInteger> p : take(LIMIT, P.subsetPairs(P.bigIntegers()))) {
+            try {
+                EP.rangeDecreasing(p.b, p.a);
+                fail(p);
+            } catch (IllegalArgumentException ignored) {}
+        }
+    }
+
+    private void propertiesRangeDecreasing_char_char() {
+        initialize("rangeDecreasing(char, char)");
+        for (Pair<Character, Character> p : take(LIMIT, P.bagPairs(P.characters()))) {
+            Iterable<Character> cs = EP.rangeDecreasing(p.a, p.b);
+            Iterable<Character> tcs = take(TINY_LIMIT, cs);
+            assertEquals(p, head(cs), p.b);
+            simpleTest(p, cs, c -> c >= p.a && c <= p.b);
+            assertTrue(p, decreasing(tcs));
+            assertFalse(p, isEmpty(cs));
+            if (p.b - p.a < 1 << 8) {
+                testHasNext(cs);
+            }
+        }
+
+        for (char c : take(LIMIT, P.characters())) {
+            aeqit(nicePrint(c), EP.rangeDecreasing(c, c), Collections.singletonList(c));
+            aeqit(nicePrint(c), TINY_LIMIT, EP.rangeDecreasing(c, Character.MAX_VALUE), EP.rangeUpDecreasing(c));
+            aeqit(nicePrint(c), TINY_LIMIT, EP.rangeDecreasing('\0', c), EP.rangeDownDecreasing(c));
+        }
+
+        for (Pair<Character, Character> p : take(LIMIT, P.subsetPairs(P.characters()))) {
+            try {
+                EP.rangeDecreasing(p.b, p.a);
+                fail(p);
+            } catch (IllegalArgumentException ignored) {}
+        }
     }
 
     private void propertiesBooleans() {
@@ -656,18 +1316,6 @@ public class ExhaustiveProviderProperties extends TestProperties {
         }
     }
 
-    private void propertiesRangeUp_char() {
-        initialize("rangeUp(char)");
-        for (char c : take(LIMIT, P.characters())) {
-            Iterable<Character> cs = EP.rangeUp(c);
-            simpleTest(nicePrint(c), cs, d -> d >= c);
-            assertTrue(nicePrint(c), increasing(take(TINY_LIMIT, cs)));
-            if (Character.MAX_VALUE - c < 1 << 8) {
-                testHasNext(cs);
-            }
-        }
-    }
-
     private void propertiesRangeDown_byte() {
         initialize("rangeDown(byte)");
         for (byte b : take(LIMIT, P.bytes())) {
@@ -745,17 +1393,17 @@ public class ExhaustiveProviderProperties extends TestProperties {
 
     private void propertiesRange_byte_byte() {
         initialize("range(byte, byte)");
-        for (Pair<Byte, Byte> p : take(LIMIT, P.pairs(P.bytes()))) {
+        for (Pair<Byte, Byte> p : take(LIMIT, P.bagPairs(P.bytes()))) {
             Iterable<Byte> bs = EP.range(p.a, p.b);
             assertTrue(p, all(b -> b != null, bs));
             testNoRemove(bs);
             testHasNext(bs);
-            assertEquals(p, length(bs), p.a > p.b ? 0 : p.b - p.a + 1);
+            assertEquals(p, length(bs), p.b - p.a + 1);
             assertTrue(p, unique(bs));
             assertTrue(p, all(b -> b >= p.a && b <= p.b, bs));
             //noinspection RedundantCast
             assertTrue(p, weaklyIncreasing((Iterable<Integer>) map(Math::abs, bs)));
-            assertEquals(p, p.a > p.b, isEmpty(bs));
+            assertFalse(p, isEmpty(bs));
         }
 
         for (byte b : take(LIMIT, P.bytes())) {
@@ -763,16 +1411,23 @@ public class ExhaustiveProviderProperties extends TestProperties {
             aeqit(b, TINY_LIMIT, EP.range(b, Byte.MAX_VALUE), EP.rangeUp(b));
             aeqit(b, TINY_LIMIT, EP.range(Byte.MIN_VALUE, b), EP.rangeDown(b));
         }
+
+        for (Pair<Byte, Byte> p : take(LIMIT, P.subsetPairs(P.bytes()))) {
+            try {
+                EP.range(p.b, p.a);
+                fail(p);
+            } catch (IllegalArgumentException ignored) {}
+        }
     }
 
     private void propertiesRange_short_short() {
         initialize("range(short, short)");
-        for (Pair<Short, Short> p : take(LIMIT, P.pairs(P.shorts()))) {
+        for (Pair<Short, Short> p : take(LIMIT, P.bagPairs(P.shorts()))) {
             Iterable<Short> ss = EP.range(p.a, p.b);
             simpleTest(p, ss, s -> s >= p.a && s <= p.b);
             //noinspection RedundantCast
             assertTrue(p, weaklyIncreasing((Iterable<Integer>) map(Math::abs, take(TINY_LIMIT, ss))));
-            assertEquals(p, p.a > p.b, isEmpty(ss));
+            assertFalse(p, isEmpty(ss));
             if (p.b - p.a < 1 << 8) {
                 testHasNext(ss);
             }
@@ -783,17 +1438,24 @@ public class ExhaustiveProviderProperties extends TestProperties {
             aeqit(s, TINY_LIMIT, EP.range(s, Short.MAX_VALUE), EP.rangeUp(s));
             aeqit(s, TINY_LIMIT, EP.range(Short.MIN_VALUE, s), EP.rangeDown(s));
         }
+
+        for (Pair<Short, Short> p : take(LIMIT, P.subsetPairs(P.shorts()))) {
+            try {
+                EP.range(p.b, p.a);
+                fail(p);
+            } catch (IllegalArgumentException ignored) {}
+        }
     }
 
     private void propertiesRange_int_int() {
         initialize("range(int, int)");
-        for (Pair<Integer, Integer> p : take(LIMIT, P.pairs(P.integers()))) {
+        for (Pair<Integer, Integer> p : take(LIMIT, P.bagPairs(P.integers()))) {
             Iterable<Integer> is = EP.range(p.a, p.b);
             Iterable<Integer> tis = take(TINY_LIMIT, is);
             simpleTest(p, is, i -> i >= p.a && i <= p.b);
             //noinspection RedundantCast
             assertTrue(p, weaklyIncreasing((Iterable<Integer>) map(Math::abs, tis)));
-            assertEquals(p, p.a > p.b, isEmpty(is));
+            assertFalse(p, isEmpty(is));
             if ((long) p.b - p.a < 1L << 8) {
                 testHasNext(is);
             }
@@ -804,17 +1466,24 @@ public class ExhaustiveProviderProperties extends TestProperties {
             aeqit(i, TINY_LIMIT, EP.range(i, Integer.MAX_VALUE), EP.rangeUp(i));
             aeqit(i, TINY_LIMIT, EP.range(Integer.MIN_VALUE, i), EP.rangeDown(i));
         }
+
+        for (Pair<Integer, Integer> p : take(LIMIT, P.subsetPairs(P.integers()))) {
+            try {
+                EP.range(p.b, p.a);
+                fail(p);
+            } catch (IllegalArgumentException ignored) {}
+        }
     }
 
     private void propertiesRange_long_long() {
         initialize("range(long, long)");
-        for (Pair<Long, Long> p : take(LIMIT, P.pairs(P.longs()))) {
+        for (Pair<Long, Long> p : take(LIMIT, P.bagPairs(P.longs()))) {
             Iterable<Long> ls = EP.range(p.a, p.b);
             Iterable<Long> tls = take(TINY_LIMIT, ls);
             simpleTest(p, ls, l -> l >= p.a && l <= p.b);
             //noinspection RedundantCast
             assertTrue(p, weaklyIncreasing((Iterable<Long>) map(Math::abs, tls)));
-            assertEquals(p, p.a > p.b, isEmpty(ls));
+            assertFalse(p, isEmpty(ls));
             if (lt(BigInteger.valueOf(p.b).subtract(BigInteger.valueOf(p.a)), BigInteger.valueOf(1 << 8))) {
                 testHasNext(ls);
             }
@@ -825,16 +1494,23 @@ public class ExhaustiveProviderProperties extends TestProperties {
             aeqit(l, TINY_LIMIT, EP.range(l, Long.MAX_VALUE), EP.rangeUp(l));
             aeqit(l, TINY_LIMIT, EP.range(Long.MIN_VALUE, l), EP.rangeDown(l));
         }
+
+        for (Pair<Long, Long> p : take(LIMIT, P.subsetPairs(P.longs()))) {
+            try {
+                EP.range(p.b, p.a);
+                fail(p);
+            } catch (IllegalArgumentException ignored) {}
+        }
     }
 
     private void propertiesRange_BigInteger_BigInteger() {
         initialize("range(BigInteger, BigInteger)");
-        for (Pair<BigInteger, BigInteger> p : take(LIMIT, P.pairs(P.bigIntegers()))) {
+        for (Pair<BigInteger, BigInteger> p : take(LIMIT, P.bagPairs(P.bigIntegers()))) {
             Iterable<BigInteger> is = EP.range(p.a, p.b);
             Iterable<BigInteger> tis = take(TINY_LIMIT, is);
             simpleTest(p, is, i -> ge(i, p.a) && le(i, p.b));
             assertTrue(p, weaklyIncreasing(map(BigInteger::abs, tis)));
-            assertEquals(p, gt(p.a, p.b), isEmpty(is));
+            assertFalse(p, isEmpty(is));
             if (lt(p.b.subtract(p.a), BigInteger.valueOf(1 << 8))) {
                 testHasNext(is);
             }
@@ -843,16 +1519,23 @@ public class ExhaustiveProviderProperties extends TestProperties {
         for (BigInteger i : take(LIMIT, P.bigIntegers())) {
             aeqit(i, EP.range(i, i), Collections.singletonList(i));
         }
+
+        for (Pair<BigInteger, BigInteger> p : take(LIMIT, P.subsetPairs(P.bigIntegers()))) {
+            try {
+                EP.range(p.b, p.a);
+                fail(p);
+            } catch (IllegalArgumentException ignored) {}
+        }
     }
 
     private void propertiesRange_char_char() {
         initialize("range(char, char)");
-        for (Pair<Character, Character> p : take(LIMIT, P.pairs(P.characters()))) {
+        for (Pair<Character, Character> p : take(LIMIT, P.bagPairs(P.characters()))) {
             Iterable<Character> cs = EP.range(p.a, p.b);
             Iterable<Character> tcs = take(TINY_LIMIT, cs);
             simpleTest(p, cs, c -> c >= p.a && c <= p.b);
             assertTrue(p, increasing(tcs));
-            assertEquals(p, p.a > p.b, isEmpty(cs));
+            assertFalse(p, isEmpty(cs));
             if (p.b - p.a < 1 << 8) {
                 testHasNext(cs);
             }
@@ -862,6 +1545,13 @@ public class ExhaustiveProviderProperties extends TestProperties {
             aeqit(nicePrint(c), EP.range(c, c), Collections.singletonList(c));
             aeqit(nicePrint(c), TINY_LIMIT, EP.range(c, Character.MAX_VALUE), EP.rangeUp(c));
             aeqit(nicePrint(c), TINY_LIMIT, EP.range('\0', c), EP.rangeDown(c));
+        }
+
+        for (Pair<Character, Character> p : take(LIMIT, P.subsetPairs(P.characters()))) {
+            try {
+                EP.range(p.b, p.a);
+                fail(p);
+            } catch (IllegalArgumentException ignored) {}
         }
     }
 
@@ -903,7 +1593,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
 
     private void propertiesRange_BinaryFraction_BinaryFraction() {
         initialize("range(BinaryFraction, BinaryFraction)");
-        for (Pair<BinaryFraction, BinaryFraction> p : take(LIMIT, P.pairs(P.binaryFractions()))) {
+        for (Pair<BinaryFraction, BinaryFraction> p : take(LIMIT, P.bagPairs(P.binaryFractions()))) {
             Iterable<BinaryFraction> bfs = EP.range(p.a, p.b);
             simpleTest(p, bfs, bf -> ge(bf, p.a) && le(bf, p.b));
             assertEquals(p, gt(p.a, p.b), isEmpty(bfs));
@@ -914,6 +1604,12 @@ public class ExhaustiveProviderProperties extends TestProperties {
 
         for (BinaryFraction bf : take(LIMIT, P.binaryFractions())) {
             aeqit(bf, EP.range(bf, bf), Collections.singletonList(bf));
+        }
+
+        for (Pair<BinaryFraction, BinaryFraction> p : take(LIMIT, P.subsetPairs(P.binaryFractions()))) {
+            try {
+                EP.range(p.b, p.a);
+            } catch (IllegalArgumentException ignored) {}
         }
     }
 
@@ -995,7 +1691,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
 
     private void propertiesRange_float_float() {
         initialize("range(float, float)");
-        for (Pair<Float, Float> p : take(LIMIT, P.pairs(filter(g -> !Float.isNaN(g), P.floats())))) {
+        for (Pair<Float, Float> p : take(LIMIT, P.subsetPairs(filter(g -> !Float.isNaN(g), P.floats())))) {
             Iterable<Float> fs = EP.range(p.a, p.b);
             Pair<Float, Float> q = new Pair<>(
                     FloatingPointUtils.absNegativeZeros(p.a),
@@ -1024,6 +1720,12 @@ public class ExhaustiveProviderProperties extends TestProperties {
 
         for (float f : take(LIMIT, filter(g -> !Float.isNaN(g) && g != Float.POSITIVE_INFINITY, P.floats()))) {
             aeqit(f, TINY_LIMIT, EP.range(Float.NEGATIVE_INFINITY, f), EP.rangeDown(f));
+        }
+
+        for (Pair<Float, Float> p : take(LIMIT, P.subsetPairs(filter(g -> !Float.isNaN(g), P.floats())))) {
+            try {
+                EP.range(p.b, p.a);
+            } catch (IllegalArgumentException ignored) {}
         }
     }
 
@@ -1077,7 +1779,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
 
     private void propertiesRange_double_double() {
         initialize("range(double, double)");
-        for (Pair<Double, Double> p : take(LIMIT, P.pairs(filter(g -> !Double.isNaN(g), P.doubles())))) {
+        for (Pair<Double, Double> p : take(LIMIT, P.bagPairs(filter(g -> !Double.isNaN(g), P.doubles())))) {
             Iterable<Double> ds = EP.range(p.a, p.b);
             Pair<Double, Double> q = new Pair<>(
                     FloatingPointUtils.absNegativeZeros(p.a),
@@ -1110,6 +1812,12 @@ public class ExhaustiveProviderProperties extends TestProperties {
 
         for (double d : take(LIMIT, filter(e -> !Double.isNaN(e) && e != Double.POSITIVE_INFINITY, P.doubles()))) {
             aeqit(d, TINY_LIMIT, EP.range(Double.NEGATIVE_INFINITY, d), EP.rangeDown(d));
+        }
+
+        for (Pair<Double, Double> p : take(LIMIT, P.subsetPairs(filter(e -> !Double.isNaN(e), P.doubles())))) {
+            try {
+                EP.range(p.b, p.a);
+            } catch (IllegalArgumentException ignored) {}
         }
     }
 
@@ -1175,7 +1883,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
 
     private void propertiesRange_BigDecimal_BigDecimal() {
         initialize("range(BigDecimal, BigDecimal)");
-        for (Pair<BigDecimal, BigDecimal> p : take(LIMIT, P.pairs(P.bigDecimals()))) {
+        for (Pair<BigDecimal, BigDecimal> p : take(LIMIT, P.bagPairs(P.bigDecimals()))) {
             Iterable<BigDecimal> bds = EP.range(p.a, p.b);
             simpleTest(p, bds, bd -> ge(bd, p.a) && le(bd, p.b));
             assertEquals(p, gt(p.a, p.b), isEmpty(bds));
@@ -1183,6 +1891,12 @@ public class ExhaustiveProviderProperties extends TestProperties {
 
         for (BigDecimal bd : take(LIMIT, P.bigDecimals())) {
             all(c -> eq(c, bd), take(TINY_LIMIT, EP.range(bd, bd)));
+        }
+
+        for (Pair<BigDecimal, BigDecimal> p : take(LIMIT, P.subsetPairs(P.bigDecimals()))) {
+            try {
+                EP.range(p.b, p.a);
+            } catch (IllegalArgumentException ignored) {}
         }
     }
 
@@ -1204,7 +1918,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
 
     private void propertiesRangeCanonical_BigDecimal_BigDecimal() {
         initialize("rangeCanonical(BigDecimal, BigDecimal)");
-        for (Pair<BigDecimal, BigDecimal> p : take(LIMIT, P.pairs(P.bigDecimals()))) {
+        for (Pair<BigDecimal, BigDecimal> p : take(LIMIT, P.bagPairs(P.bigDecimals()))) {
             Iterable<BigDecimal> bds = EP.rangeCanonical(p.a, p.b);
             simpleTest(p, bds, bd -> BigDecimalUtils.isCanonical(bd) && ge(bd, p.a) && le(bd, p.b));
             assertEquals(p, gt(p.a, p.b), isEmpty(bds));
@@ -1212,6 +1926,12 @@ public class ExhaustiveProviderProperties extends TestProperties {
 
         for (BigDecimal bd : take(LIMIT, P.bigDecimals())) {
             aeqit(bd, EP.rangeCanonical(bd, bd), Collections.singletonList(BigDecimalUtils.canonicalize(bd)));
+        }
+
+        for (Pair<BigDecimal, BigDecimal> p : take(LIMIT, P.subsetPairs(P.bigDecimals()))) {
+            try {
+                EP.rangeCanonical(p.b, p.a);
+            } catch (IllegalArgumentException ignored) {}
         }
     }
 
@@ -1345,7 +2065,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
             assertTrue(p, all(q -> q != null, pairs));
             assertTrue(p, isSubsetOf(map(q -> q.a, pairs), p.a));
             assertTrue(p, isSubsetOf(map(q -> q.b, pairs), concat(p.b.range())));
-            assertEquals(p, length(pairs), sumInteger(map(i -> length(p.b.apply(i)), p.a)));
+            assertEquals(p, length(pairs), sumInteger(toList(map(i -> length(p.b.apply(i)), p.a))));
         }
 
         ps = P.dependentPairsInfinite(
@@ -1806,7 +2526,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
                 xs -> xs.size() < TINY_LIMIT,
                 P.withScale(4).lists(P.withNull(P.integersGeometric()))
         );
-        compareImplementations("pairsLogarithmicOrder(Iterable<T>)", take(LIMIT, iss), functions);
+        compareImplementations("pairsLogarithmicOrder(Iterable<T>)", take(LIMIT, iss), functions, v -> P.reset());
     }
 
     private void propertiesPairsSquareRootOrder_Iterable_Iterable() {
@@ -1908,7 +2628,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
         functions.put("simplest", ExhaustiveProviderProperties::pairsSquareRootOrder_Iterable_simplest);
         functions.put("standard", xs -> toList(EP.pairsSquareRootOrder(xs)));
         Iterable<List<Integer>> iss = P.withScale(4).lists(P.integersGeometric());
-        compareImplementations("pairsSquareRootOrder(Iterable<T>)", take(LIMIT, iss), functions);
+        compareImplementations("pairsSquareRootOrder(Iterable<T>)", take(LIMIT, iss), functions, v -> P.reset());
     }
 
     private void propertiesPermutationsFinite() {
@@ -1960,19 +2680,16 @@ public class ExhaustiveProviderProperties extends TestProperties {
             Iterable<String> permutations = EP.stringPermutations(s);
             testNoRemove(TINY_LIMIT, permutations);
             if (s.length() < 10) {
-                Comparator<Character> sComparator = new ListBasedComparator<>(toList(s));
+                Comparator<Character> cComparator = new ListBasedComparator<>(toList(s));
                 testHasNext(permutations);
                 List<String> permutationsList = toList(permutations);
-                assertEquals(s, head(permutationsList), sort(sComparator, s));
-                assertEquals(s, last(permutationsList), reverse(sort(sComparator, s)));
+                assertEquals(s, head(permutationsList), sort(cComparator, s));
+                assertEquals(s, last(permutationsList), reverse(sort(cComparator, s)));
                 assertEquals(s, permutationsList.size(), MathUtils.permutationCount(toList(s)).intValueExact());
                 String sorted = sort(s);
                 assertTrue(s, all(p -> sort(p).equals(sorted), permutationsList));
                 assertTrue(s, unique(permutationsList));
-                assertTrue(
-                        s,
-                        increasing(new LexComparator<>(sComparator), map(IterableUtils::fromString, permutationsList))
-                );
+                assertTrue(s, increasing(new StringLexComparator(cComparator), permutationsList));
             }
         }
 
@@ -2058,7 +2775,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
                                                 IntegerUtils.bigEndianDigitsPadded(size, base, i)
                                         )
                                 ),
-                                range(BigInteger.ZERO, base.pow(size).subtract(BigInteger.ONE))
+                                EP.rangeIncreasing(BigInteger.ZERO, base.pow(size).subtract(BigInteger.ONE))
                         )
                 );
         }
@@ -2142,7 +2859,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
                         P.withScale(4).naturalIntegersGeometric()
                 )
         );
-        compareImplementations("listsLex(int, List<T>)", take(LIMIT, ps), functions);
+        compareImplementations("listsLex(int, List<T>)", take(LIMIT, ps), functions, v -> P.reset());
     }
 
     private void propertiesPairsLex() {
@@ -2869,7 +3586,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
                                                 IntegerUtils.bigEndianDigitsPadded(size, base, i)
                                         )
                                 ),
-                                range(BigInteger.ZERO, base.pow(size).subtract(BigInteger.ONE))
+                                EP.rangeIncreasing(BigInteger.ZERO, base.pow(size).subtract(BigInteger.ONE))
                         )
                 );
         }
@@ -2908,13 +3625,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
             if (lt(stringsLength, BigInteger.valueOf(LIMIT))) {
                 List<String> stringsList = toList(EP.stringsLex(p.b, p.a));
                 assertTrue(p, unique(stringsList));
-                assertTrue(
-                        p,
-                        increasing(
-                                new LexComparator<>(new ListBasedComparator<>(toList(p.a))),
-                                map(IterableUtils::toList, stringsList)
-                        )
-                );
+                assertTrue(p, increasing(new StringLexComparator(new StringBasedComparator(p.a)), stringsList));
             }
         }
 
@@ -2953,7 +3664,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
                         P.withScale(4).naturalIntegersGeometric()
                 )
         );
-        compareImplementations("stringsLex(int, String)", take(LIMIT, ps), functions);
+        compareImplementations("stringsLex(int, String)", take(LIMIT, ps), functions, v -> P.reset());
     }
 
     private void propertiesListsShortlex() {
@@ -3274,7 +3985,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
                 xs -> lt(BigInteger.valueOf(xs.size()).pow(2), BigInteger.valueOf(LIMIT)),
                 P.withScale(4).lists(P.withNull(P.integersGeometric()))
         );
-        compareImplementations("pairs(Iterable<T>)", take(LIMIT, iss), functions);
+        compareImplementations("pairs(Iterable<T>)", take(LIMIT, iss), functions, v -> P.reset());
     }
 
     private void propertiesTriples_Iterable_Iterable_Iterable() {
@@ -3401,7 +4112,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
                 xs -> lt(BigInteger.valueOf(xs.size()).pow(3), BigInteger.valueOf(LIMIT)),
                 P.withScale(4).lists(P.withNull(P.integersGeometric()))
         );
-        compareImplementations("triples(Iterable<T>)", take(LIMIT, iss), functions);
+        compareImplementations("triples(Iterable<T>)", take(LIMIT, iss), functions, v -> P.reset());
     }
 
     private void propertiesQuadruples_Iterable_Iterable_Iterable_Iterable() {
@@ -3540,7 +4251,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
                 xs -> lt(BigInteger.valueOf(xs.size()).pow(4), BigInteger.valueOf(LIMIT)),
                 P.withScale(4).lists(P.withNull(P.integersGeometric()))
         );
-        compareImplementations("quadruples(Iterable<T>)", take(MEDIUM_LIMIT, iss), functions);
+        compareImplementations("quadruples(Iterable<T>)", take(MEDIUM_LIMIT, iss), functions, v -> P.reset());
     }
 
     private void propertiesQuintuples_Iterable_Iterable_Iterable_Iterable_Iterable() {
@@ -3734,7 +4445,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
                 xs -> lt(BigInteger.valueOf(xs.size()).pow(5), BigInteger.valueOf(LIMIT)),
                 P.withScale(4).lists(P.withNull(P.integersGeometric()))
         );
-        compareImplementations("quintuples(Iterable<T>)", take(MEDIUM_LIMIT, iss), functions);
+        compareImplementations("quintuples(Iterable<T>)", take(MEDIUM_LIMIT, iss), functions, v -> P.reset());
     }
 
     private void propertiesSextuples_Iterable_Iterable_Iterable_Iterable_Iterable_Iterable() {
@@ -3954,7 +4665,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
                 xs -> lt(BigInteger.valueOf(xs.size()).pow(6), BigInteger.valueOf(LIMIT)),
                 P.withScale(4).lists(P.withNull(P.integersGeometric()))
         );
-        compareImplementations("sextuples(Iterable<T>)", take(MEDIUM_LIMIT, iss), functions);
+        compareImplementations("sextuples(Iterable<T>)", take(MEDIUM_LIMIT, iss), functions, v -> P.reset());
     }
 
     private void propertiesSeptuples_Iterable_Iterable_Iterable_Iterable_Iterable_Iterable_Iterable() {
@@ -4205,7 +4916,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
                 xs -> lt(BigInteger.valueOf(xs.size()).pow(7), BigInteger.valueOf(LIMIT)),
                 P.withScale(4).lists(P.withNull(P.integersGeometric()))
         );
-        compareImplementations("septuples(Iterable<T>)", take(MEDIUM_LIMIT, iss), functions);
+        compareImplementations("septuples(Iterable<T>)", take(MEDIUM_LIMIT, iss), functions, v -> P.reset());
     }
 
     private void propertiesStrings_int_String() {
@@ -4962,13 +5673,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
                 List<String> stringsList = toList(EP.distinctStringsLex(p.b, p.a));
                 assertTrue(p, unique(stringsList));
                 assertTrue(p, all(IterableUtils::unique, stringsList));
-                assertTrue(
-                        p,
-                        increasing(
-                                new LexComparator<>(new ListBasedComparator<>(toList(p.a))),
-                                map(IterableUtils::toList, stringsList)
-                        )
-                );
+                assertTrue(p, increasing(new StringLexComparator(new StringBasedComparator(p.a)), stringsList));
                 BigInteger limit = BigInteger.valueOf(p.a.length()).pow(p.b);
                 if (lt(limit, BigInteger.valueOf(LIMIT))) {
                     assertTrue(
@@ -5072,13 +5777,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
             if (lt(stringsLength, BigInteger.valueOf(LIMIT))) {
                 List<String> stringsList = toList(EP.distinctStringsLex(s));
                 assertTrue(s, unique(stringsList));
-                assertTrue(
-                        s,
-                        increasing(
-                                new LexComparator<>(new ListBasedComparator<>(toList(s))),
-                                map(IterableUtils::toList, stringsList)
-                        )
-                );
+                assertTrue(s, increasing(new StringLexComparator(new StringBasedComparator(s)), stringsList));
             }
         }
     }
@@ -5170,13 +5869,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
             if (lt(stringsLength, BigInteger.valueOf(LIMIT))) {
                 List<String> stringsList = toList(EP.distinctStringsLexAtLeast(p.b, p.a));
                 assertTrue(p, unique(stringsList));
-                assertTrue(
-                        p,
-                        increasing(
-                                new LexComparator<>(new ListBasedComparator<>(toList(p.a))),
-                                map(IterableUtils::toList, stringsList)
-                        )
-                );
+                assertTrue(p, increasing(new StringLexComparator(new StringBasedComparator(p.a)), stringsList));
             }
         }
 
@@ -6696,7 +7389,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
     }
 
     private void propertiesStringBagsShortlex() {
-        initialize("stringsShortlex(String)");
+        initialize("stringBagsShortlex(String)");
         for (String s : take(LIMIT, P.withScale(4).strings())) {
             Iterable<String> strings = EP.stringBagsShortlex(s);
             testNoRemove(TINY_LIMIT, strings);
@@ -9527,12 +10220,9 @@ public class ExhaustiveProviderProperties extends TestProperties {
         }
     }
 
-    private void propertiesChoose() {
+    private void propertiesChoose_Iterable_Iterable() {
         initialize("choose(Iterable<T>, Iterable<T>)");
-        Iterable<Pair<List<Integer>, List<Integer>>> ps = P.pairs(
-                P.withScale(4).lists(P.withNull(P.integersGeometric()))
-        );
-        for (Pair<List<Integer>, List<Integer>> p : take(LIMIT, ps)) {
+        for (Pair<List<Integer>, List<Integer>> p : take(LIMIT, P.pairs(P.lists(P.withNull(P.integersGeometric()))))) {
             Iterable<Integer> chosen = EP.choose(p.a, p.b);
             testNoRemove(chosen);
             testHasNext(chosen);
@@ -9558,6 +10248,35 @@ public class ExhaustiveProviderProperties extends TestProperties {
         }
     }
 
+    private void propertiesChoose_Iterable() {
+        initialize("choose(<List<Iterable<T>>)");
+        for (List<List<Integer>> xss : take(LIMIT, P.lists(P.lists(P.withNull(P.integersGeometric()))))) {
+            Iterable<Integer> chosen = EP.choose(toList(map(xs -> xs, xss)));
+            testNoRemove(chosen);
+            testHasNext(chosen);
+            List<Integer> chosenList = toList(chosen);
+            if (!xss.isEmpty() && !head(xss).isEmpty()) {
+                assertEquals(xss, head(chosenList), head(head(xss)));
+            }
+            assertEquals(xss, chosenList.size(), sumInteger(toList(map(List::size, xss))));
+            assertTrue(xss, all(i -> any(xs -> elem(i, xs), xss), chosenList));
+        }
+
+        Iterable<List<Iterable<Integer>>> xsss = P.withScale(4).listsAtLeast(
+                1,
+                P.prefixPermutations(EP.withNull(EP.naturalIntegers()))
+        );
+        for (List<Iterable<Integer>> xss : take(LIMIT, xsss)) {
+            Iterable<Integer> chosen = EP.choose(xss);
+            testNoRemove(TINY_LIMIT, chosen);
+            List<Integer> chosenList = toList(take(TINY_LIMIT, chosen));
+            if (!isEmpty(head(xsss))) {
+                assertEquals(xss, head(chosenList), head(head(xss)));
+            }
+            assertTrue(xss, all(i -> any(xs -> elem(i, xs), xss), chosenList));
+        }
+    }
+
     private void propertiesCartesianProduct() {
         initialize("cartesianProduct(List<List<T>>)");
         Iterable<List<List<Integer>>> xsss = P.withScale(4).lists(
@@ -9566,7 +10285,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
         for (List<List<Integer>> xss : take(LIMIT, xsss)) {
             Iterable<List<Integer>> lists = EP.cartesianProduct(xss);
             testNoRemove(TINY_LIMIT, lists);
-            BigInteger listsLength = productBigInteger(map(xs -> BigInteger.valueOf(xs.size()), xss));
+            BigInteger listsLength = productBigInteger(toList(map(xs -> BigInteger.valueOf(xs.size()), xss)));
             if (lt(listsLength, BigInteger.valueOf(SMALL_LIMIT))) {
                 List<List<Integer>> listsList = toList(lists);
                 assertEquals(xss, listsList.size(), listsLength.intValueExact());
@@ -9583,7 +10302,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
         for (List<List<Integer>> xss : take(LIMIT, xsss)) {
             Iterable<List<Integer>> lists = EP.cartesianProduct(xss);
             testNoRemove(TINY_LIMIT, lists);
-            BigInteger listsLength = productBigInteger(map(xs -> BigInteger.valueOf(xs.size()), xss));
+            BigInteger listsLength = productBigInteger(toList(map(xs -> BigInteger.valueOf(xs.size()), xss)));
             if (lt(listsLength, BigInteger.valueOf(SMALL_LIMIT))) {
                 assertTrue(xss, unique(lists));
             }

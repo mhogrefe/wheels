@@ -18,12 +18,12 @@ import static mho.wheels.ordering.Ordering.*;
 import static mho.wheels.testing.Testing.*;
 
 public strictfp class IterableUtilsProperties extends TestProperties {
-    private static final @NotNull Comparator<BigInteger> BIG_INTEGER_BITSIZE_COMPARATOR = (x, y) -> {
+    private static final @NotNull Comparator<BigInteger> BIG_INTEGER_BIT_LENGTH_COMPARATOR = (x, y) -> {
         int c = Integer.compare(x.bitLength(), y.bitLength());
         return c == 0 ? x.compareTo(y) : c;
     };
 
-    private static final @NotNull Comparator<BigDecimal> BIG_DECIMAL_BITSIZE_COMPARATOR = (x, y) -> {
+    private static final @NotNull Comparator<BigDecimal> BIG_DECIMAL_BIT_LENGTH_COMPARATOR = (x, y) -> {
         int c = Integer.compare(x.unscaledValue().bitLength(), y.unscaledValue().bitLength());
         return c == 0 ? x.compareTo(y) : c;
     };
@@ -103,12 +103,17 @@ public strictfp class IterableUtilsProperties extends TestProperties {
         Map<String, Function<List<Integer>, List<Integer>>> functions = new LinkedHashMap<>();
         functions.put("alt", IterableUtilsProperties::unrepeat_alt);
         functions.put("standard", IterableUtils::unrepeat);
-        compareImplementations("unrepeat(List<T>)", take(LIMIT, P.lists(P.withNull(P.integers()))), functions);
+        compareImplementations(
+                "unrepeat(List<T>)",
+                take(LIMIT, P.lists(P.withNull(P.integers()))),
+                functions,
+                v -> P.reset()
+        );
     }
 
     private void propertiesSumByte() {
         initialize("");
-        System.out.println("\t\ttesting sumByte(Iterable<Byte>) properties...");
+        System.out.println("\t\ttesting sumByte(List<Byte>) properties...");
 
         propertiesFoldHelper(
                 LIMIT,
@@ -124,7 +129,7 @@ public strictfp class IterableUtilsProperties extends TestProperties {
 
     private void propertiesSumShort() {
         initialize("");
-        System.out.println("\t\ttesting sumShort(Iterable<Short>) properties...");
+        System.out.println("\t\ttesting sumShort(List<Short>) properties...");
 
         propertiesFoldHelper(
                 LIMIT,
@@ -140,21 +145,21 @@ public strictfp class IterableUtilsProperties extends TestProperties {
 
     private void propertiesSumInteger() {
         initialize("");
-        System.out.println("\t\ttesting sumInteger(Iterable<Integer>) properties...");
+        System.out.println("\t\ttesting sumInteger(List<Integer>) properties...");
 
         propertiesFoldHelper(LIMIT, P, P.integers(), (x, y) -> x + y, IterableUtils::sumInteger, i -> {}, true, true);
     }
 
     private void propertiesSumLong() {
         initialize("");
-        System.out.println("\t\ttesting sumLong(Iterable<Long>) properties...");
+        System.out.println("\t\ttesting sumLong(List<Long>) properties...");
 
         propertiesFoldHelper(LIMIT, P, P.longs(), (x, y) -> x + y, IterableUtils::sumLong, l -> {}, true, true);
     }
 
     private void propertiesSumFloat() {
         initialize("");
-        System.out.println("\t\ttesting sumFloat(Iterable<Float>) properties...");
+        System.out.println("\t\ttesting sumFloat(List<Float>) properties...");
 
         propertiesFoldHelper(LIMIT, P, P.floats(), (x, y) -> x + y, IterableUtils::sumFloat, f -> {}, true, false);
         for (List<Float> fs : take(LIMIT, P.listsWithElement(Float.NaN, P.floats()))) {
@@ -164,7 +169,7 @@ public strictfp class IterableUtilsProperties extends TestProperties {
 
     private void propertiesSumDouble() {
         initialize("");
-        System.out.println("\t\ttesting sumDouble(Iterable<Double>) properties...");
+        System.out.println("\t\ttesting sumDouble(List<Double>) properties...");
 
         propertiesFoldHelper(LIMIT, P, P.doubles(), (x, y) -> x + y, IterableUtils::sumDouble, d -> {}, true, false);
         for (List<Double> ds : take(LIMIT, P.listsWithElement(Double.NaN, P.doubles()))) {
@@ -217,15 +222,16 @@ public strictfp class IterableUtilsProperties extends TestProperties {
         functions.put("alt", IterableUtilsProperties::sumBigInteger_alt);
         functions.put("standard", IterableUtils::sumBigInteger);
         compareImplementations(
-                "sumBigInteger(Iterable<BigInteger>)",
+                "sumBigInteger(List<BigInteger>)",
                 take(LIMIT, P.lists(P.bigIntegers())),
-                functions
+                functions,
+                v -> P.reset()
         );
     }
 
     private void propertiesSumBigDecimal() {
         initialize("");
-        System.out.println("\t\ttesting sumBigDecimal(Iterable<BigDecimal>) properties...");
+        System.out.println("\t\ttesting sumBigDecimal(List<BigDecimal>) properties...");
 
         propertiesFoldHelper(
                 LIMIT,
@@ -241,7 +247,7 @@ public strictfp class IterableUtilsProperties extends TestProperties {
 
     private void propertiesProductByte() {
         initialize("");
-        System.out.println("\t\ttesting productByte(Iterable<Byte>) properties...");
+        System.out.println("\t\ttesting productByte(List<Byte>) properties...");
 
         propertiesFoldHelper(
                 LIMIT,
@@ -257,7 +263,7 @@ public strictfp class IterableUtilsProperties extends TestProperties {
 
     private void propertiesProductShort() {
         initialize("");
-        System.out.println("\t\ttesting productShort(Iterable<Short>) properties...");
+        System.out.println("\t\ttesting productShort(List<Short>) properties...");
 
         propertiesFoldHelper(
                 LIMIT,
@@ -273,7 +279,7 @@ public strictfp class IterableUtilsProperties extends TestProperties {
 
     private void propertiesProductInteger() {
         initialize("");
-        System.out.println("\t\ttesting productInteger(Iterable<Integer>) properties...");
+        System.out.println("\t\ttesting productInteger(List<Integer>) properties...");
 
         propertiesFoldHelper(
                 LIMIT,
@@ -289,14 +295,14 @@ public strictfp class IterableUtilsProperties extends TestProperties {
 
     private void propertiesProductLong() {
         initialize("");
-        System.out.println("\t\ttesting productLong(Iterable<Long>) properties...");
+        System.out.println("\t\ttesting productLong(List<Long>) properties...");
 
         propertiesFoldHelper(LIMIT, P, P.longs(), (x, y) -> x * y, IterableUtils::productLong, l -> {}, true, true);
     }
 
     private void propertiesProductFloat() {
         initialize("");
-        System.out.println("\t\ttesting productFloat(Iterable<Float>) properties...");
+        System.out.println("\t\ttesting productFloat(List<Float>) properties...");
 
         propertiesFoldHelper(LIMIT, P, P.floats(), (x, y) -> x * y, IterableUtils::productFloat, f -> {}, true, false);
         for (List<Float> fs : take(LIMIT, P.listsWithElement(Float.NaN, P.floats()))) {
@@ -306,7 +312,7 @@ public strictfp class IterableUtilsProperties extends TestProperties {
 
     private void propertiesProductDouble() {
         initialize("");
-        System.out.println("\t\ttesting productDouble(Iterable<Double>) properties...");
+        System.out.println("\t\ttesting productDouble(List<Double>) properties...");
 
         propertiesFoldHelper(
                 LIMIT,
@@ -328,12 +334,12 @@ public strictfp class IterableUtilsProperties extends TestProperties {
         return foldl(
                 BigInteger::multiply,
                 BigInteger.ONE,
-                sort(BIG_INTEGER_BITSIZE_COMPARATOR, xs)
+                sort(BIG_INTEGER_BIT_LENGTH_COMPARATOR, xs)
         );
     }
 
     private void propertiesProductBigInteger() {
-        initialize("productBigInteger(Iterable<BigInteger>)");
+        initialize("productBigInteger(List<BigInteger>)");
         propertiesFoldHelper(
                 LIMIT,
                 P,
@@ -355,9 +361,10 @@ public strictfp class IterableUtilsProperties extends TestProperties {
         functions.put("alt", IterableUtilsProperties::productBigInteger_alt);
         functions.put("standard", IterableUtils::productBigInteger);
         compareImplementations(
-                "productBigInteger(Iterable<BigInteger>)",
+                "productBigInteger(List<BigInteger>)",
                 take(LIMIT, P.lists(P.bigIntegers())),
-                functions
+                functions,
+                v -> P.reset()
         );
     }
 
@@ -366,12 +373,12 @@ public strictfp class IterableUtilsProperties extends TestProperties {
         return foldl(
                 BigDecimal::multiply,
                 BigDecimal.ONE,
-                sort(BIG_DECIMAL_BITSIZE_COMPARATOR, xs)
+                sort(BIG_DECIMAL_BIT_LENGTH_COMPARATOR, xs)
         );
     }
 
     private void propertiesProductBigDecimal() {
-        initialize("productBigDecimal(Iterable<BigDecimal>)");
+        initialize("productBigDecimal(List<BigDecimal>)");
         propertiesFoldHelper(
                 LIMIT,
                 P,
@@ -393,9 +400,10 @@ public strictfp class IterableUtilsProperties extends TestProperties {
         functions.put("alt", IterableUtilsProperties::productBigDecimal_alt);
         functions.put("standard", IterableUtils::productBigDecimal);
         compareImplementations(
-                "productBigDecimal(Iterable<BigInteger>)",
+                "productBigDecimal(List<BigInteger>)",
                 take(LIMIT, P.lists(P.bigDecimals())),
-                functions
+                functions,
+                v -> P.reset()
         );
     }
 
@@ -410,7 +418,7 @@ public strictfp class IterableUtilsProperties extends TestProperties {
             case 1:
                 return xs.get(0).signum();
             default:
-                return Integer.signum(sumBigInteger(tail(xs)).compareTo(head(xs).negate()));
+                return Integer.signum(sumBigInteger(toList(tail(xs))).compareTo(head(xs).negate()));
         }
     }
 
@@ -426,7 +434,14 @@ public strictfp class IterableUtilsProperties extends TestProperties {
             }
         }
         int j = mostComplexIndex;
-        BigInteger sum = sumBigInteger(map(xs::get, filter(i -> i != j, range(0, xs.size() - 1))));
+        BigInteger sum = sumBigInteger(
+                toList(
+                        map(
+                                xs::get,
+                                filter(i -> i != j, ExhaustiveProvider.INSTANCE.rangeIncreasing(0, xs.size() - 1))
+                        )
+                )
+        );
         return Integer.signum(sum.compareTo(xs.get(mostComplexIndex).negate()));
     }
 
@@ -513,7 +528,8 @@ public strictfp class IterableUtilsProperties extends TestProperties {
         compareImplementations(
                 "sumSignBigInteger(List<BigInteger>)",
                 take(LIMIT, P.lists(P.bigIntegers())),
-                functions
+                functions,
+                v -> P.reset()
         );
     }
 
@@ -528,7 +544,7 @@ public strictfp class IterableUtilsProperties extends TestProperties {
             case 1:
                 return xs.get(0).signum();
             default:
-                return Integer.signum(sumBigDecimal(tail(xs)).compareTo(head(xs).negate()));
+                return Integer.signum(sumBigDecimal(toList(tail(xs))).compareTo(head(xs).negate()));
         }
     }
 
@@ -544,7 +560,14 @@ public strictfp class IterableUtilsProperties extends TestProperties {
             }
         }
         int j = mostComplexIndex;
-        BigDecimal sum = sumBigDecimal(map(xs::get, filter(i -> i != j, range(0, xs.size() - 1))));
+        BigDecimal sum = sumBigDecimal(
+                toList(
+                        map(
+                                xs::get,
+                                filter(i -> i != j, ExhaustiveProvider.INSTANCE.rangeIncreasing(0, xs.size() - 1))
+                        )
+                )
+        );
         return Integer.signum(sum.compareTo(xs.get(mostComplexIndex).negate()));
     }
 
@@ -631,7 +654,8 @@ public strictfp class IterableUtilsProperties extends TestProperties {
         compareImplementations(
                 "sumSignBigDecimal(List<BigDecimal>)",
                 take(LIMIT, P.lists(P.bigDecimals())),
-                functions
+                functions,
+                v -> P.reset()
         );
     }
 

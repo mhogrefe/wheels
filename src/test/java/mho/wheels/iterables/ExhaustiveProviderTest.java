@@ -27,6 +27,636 @@ public strictfp class ExhaustiveProviderTest {
         testNoRemove(TINY_LIMIT, xs);
     }
 
+    private static void rangeUpIncreasing_byte_helper(int a, @NotNull String output) {
+        simpleProviderHelper(EP.rangeUpIncreasing((byte) a), output);
+    }
+
+    @Test
+    public void testRangeUpIncreasing_byte() {
+        rangeUpIncreasing_byte_helper(0, "ExhaustiveProvider_rangeUpIncreasing_byte_i");
+        rangeUpIncreasing_byte_helper(5, "ExhaustiveProvider_rangeUpIncreasing_byte_ii");
+        rangeUpIncreasing_byte_helper(-5, "ExhaustiveProvider_rangeUpIncreasing_byte_iii");
+        rangeUpIncreasing_byte_helper(Byte.MAX_VALUE, "ExhaustiveProvider_rangeUpIncreasing_byte_iv");
+        rangeUpIncreasing_byte_helper(Byte.MIN_VALUE, "ExhaustiveProvider_rangeUpIncreasing_byte_v");
+    }
+
+    private static void rangeUpIncreasing_short_helper(int a, @NotNull String output) {
+        simpleProviderHelper(EP.rangeUpIncreasing((short) a), output);
+    }
+
+    @Test
+    public void testRangeUpIncreasing_short() {
+        rangeUpIncreasing_short_helper(0, "ExhaustiveProvider_rangeUpIncreasing_short_i");
+        rangeUpIncreasing_short_helper(5, "ExhaustiveProvider_rangeUpIncreasing_short_ii");
+        rangeUpIncreasing_short_helper(-5, "ExhaustiveProvider_rangeUpIncreasing_short_iii");
+        rangeUpIncreasing_short_helper(Short.MAX_VALUE, "ExhaustiveProvider_rangeUpIncreasing_short_iv");
+        rangeUpIncreasing_short_helper(Short.MIN_VALUE, "ExhaustiveProvider_rangeUpIncreasing_short_v");
+    }
+
+    private static void rangeUpIncreasing_int_helper(int a, @NotNull String output) {
+        simpleProviderHelper(EP.rangeUpIncreasing(a), output);
+    }
+
+    @Test
+    public void testRangeUpIncreasing_int() {
+        rangeUpIncreasing_int_helper(0, "ExhaustiveProvider_rangeUpIncreasing_int_i");
+        rangeUpIncreasing_int_helper(5, "ExhaustiveProvider_rangeUpIncreasing_int_ii");
+        rangeUpIncreasing_int_helper(-5, "ExhaustiveProvider_rangeUpIncreasing_int_iii");
+        rangeUpIncreasing_int_helper(Integer.MAX_VALUE, "ExhaustiveProvider_rangeUpIncreasing_int_iv");
+        rangeUpIncreasing_int_helper(Integer.MIN_VALUE, "ExhaustiveProvider_rangeUpIncreasing_int_v");
+    }
+
+    private static void rangeUpIncreasing_long_helper(long a, @NotNull String output) {
+        simpleProviderHelper(EP.rangeUpIncreasing(a), output);
+    }
+
+    @Test
+    public void testRangeUpIncreasing_long() {
+        rangeUpIncreasing_long_helper(0L, "ExhaustiveProvider_rangeUpIncreasing_long_i");
+        rangeUpIncreasing_long_helper(5L, "ExhaustiveProvider_rangeUpIncreasing_long_ii");
+        rangeUpIncreasing_long_helper(-5L, "ExhaustiveProvider_rangeUpIncreasing_long_iii");
+        rangeUpIncreasing_long_helper(Long.MAX_VALUE, "ExhaustiveProvider_rangeUpIncreasing_long_iv");
+        rangeUpIncreasing_long_helper(Long.MIN_VALUE, "ExhaustiveProvider_rangeUpIncreasing_long_v");
+    }
+
+    private static void rangeUpIncreasing_BigInteger_helper(@NotNull String a, @NotNull String output) {
+        simpleProviderHelper(EP.rangeUpIncreasing(Readers.readBigIntegerStrict(a).get()), output);
+    }
+
+    @Test
+    public void testRangeUpIncreasing_BigInteger() {
+        rangeUpIncreasing_BigInteger_helper("0", "ExhaustiveProvider_rangeUpIncreasing_BigInteger_i");
+        rangeUpIncreasing_BigInteger_helper("5", "ExhaustiveProvider_rangeUpIncreasing_BigInteger_ii");
+        rangeUpIncreasing_BigInteger_helper("-5", "ExhaustiveProvider_rangeUpIncreasing_BigInteger_iii");
+    }
+
+    private static void rangeUpIncreasing_char_helper(char a, @NotNull String output) {
+        simpleProviderHelper(EP.rangeUpIncreasing(a), output);
+    }
+
+    @Test
+    public void testRangeUpIncreasing_char() {
+        rangeUpIncreasing_char_helper('\0', "ExhaustiveProvider_rangeUpIncreasing_char_i");
+        rangeUpIncreasing_char_helper('a', "ExhaustiveProvider_rangeUpIncreasing_char_ii");
+        rangeUpIncreasing_char_helper('Ш', "ExhaustiveProvider_rangeUpIncreasing_char_iii");
+        rangeUpIncreasing_char_helper(Character.MAX_VALUE, "ExhaustiveProvider_rangeUpIncreasing_char_iv");
+    }
+
+    private static void rangeUpDecreasing_byte_helper(int a, @NotNull String output) {
+        simpleProviderHelper(EP.rangeUpDecreasing((byte) a), output);
+    }
+
+    @Test
+    public void testRangeUpDecreasing_byte() {
+        rangeUpDecreasing_byte_helper(0, "ExhaustiveProvider_rangeUpDecreasing_byte_i");
+        rangeUpDecreasing_byte_helper(5, "ExhaustiveProvider_rangeUpDecreasing_byte_ii");
+        rangeUpDecreasing_byte_helper(-5, "ExhaustiveProvider_rangeUpDecreasing_byte_iii");
+        rangeUpDecreasing_byte_helper(Byte.MAX_VALUE, "ExhaustiveProvider_rangeUpDecreasing_byte_iv");
+        rangeUpDecreasing_byte_helper(Byte.MIN_VALUE, "ExhaustiveProvider_rangeUpDecreasing_byte_v");
+    }
+
+    private static void rangeUpDecreasing_short_helper(int a, @NotNull String output) {
+        simpleProviderHelper(EP.rangeUpDecreasing((short) a), output);
+    }
+
+    @Test
+    public void testRangeUpDecreasing_short() {
+        rangeUpDecreasing_short_helper(0, "ExhaustiveProvider_rangeUpDecreasing_short_i");
+        rangeUpDecreasing_short_helper(5, "ExhaustiveProvider_rangeUpDecreasing_short_ii");
+        rangeUpDecreasing_short_helper(-5, "ExhaustiveProvider_rangeUpDecreasing_short_iii");
+        rangeUpDecreasing_short_helper(Short.MAX_VALUE, "ExhaustiveProvider_rangeUpDecreasing_short_iv");
+        rangeUpDecreasing_short_helper(Short.MIN_VALUE, "ExhaustiveProvider_rangeUpDecreasing_short_v");
+    }
+
+    private static void rangeUpDecreasing_int_helper(int a, @NotNull String output) {
+        simpleProviderHelper(EP.rangeUpDecreasing(a), output);
+    }
+
+    @Test
+    public void testRangeUpDecreasing_int() {
+        rangeUpDecreasing_int_helper(0, "ExhaustiveProvider_rangeUpDecreasing_int_i");
+        rangeUpDecreasing_int_helper(5, "ExhaustiveProvider_rangeUpDecreasing_int_ii");
+        rangeUpDecreasing_int_helper(-5, "ExhaustiveProvider_rangeUpDecreasing_int_iii");
+        rangeUpDecreasing_int_helper(Integer.MAX_VALUE, "ExhaustiveProvider_rangeUpDecreasing_int_iv");
+        rangeUpDecreasing_int_helper(Integer.MIN_VALUE, "ExhaustiveProvider_rangeUpDecreasing_int_v");
+    }
+
+    private static void rangeUpDecreasing_long_helper(long a, @NotNull String output) {
+        simpleProviderHelper(EP.rangeUpDecreasing(a), output);
+    }
+
+    @Test
+    public void testRangeUpDecreasing_long() {
+        rangeUpDecreasing_long_helper(0L, "ExhaustiveProvider_rangeUpDecreasing_long_i");
+        rangeUpDecreasing_long_helper(5L, "ExhaustiveProvider_rangeUpDecreasing_long_ii");
+        rangeUpDecreasing_long_helper(-5L, "ExhaustiveProvider_rangeUpDecreasing_long_iii");
+        rangeUpDecreasing_long_helper(Long.MAX_VALUE, "ExhaustiveProvider_rangeUpDecreasing_long_iv");
+        rangeUpDecreasing_long_helper(Long.MIN_VALUE, "ExhaustiveProvider_rangeUpDecreasing_long_v");
+    }
+
+    private static void rangeUpDecreasing_char_helper(char a, @NotNull String output) {
+        simpleProviderHelper(EP.rangeUpDecreasing(a), output);
+    }
+
+    @Test
+    public void testRangeUpDecreasing_char() {
+        rangeUpDecreasing_char_helper('\0', "ExhaustiveProvider_rangeUpDecreasing_char_i");
+        rangeUpDecreasing_char_helper('a', "ExhaustiveProvider_rangeUpDecreasing_char_ii");
+        rangeUpDecreasing_char_helper('Ш', "ExhaustiveProvider_rangeUpDecreasing_char_iii");
+        rangeUpDecreasing_char_helper(Character.MAX_VALUE, "ExhaustiveProvider_rangeUpDecreasing_char_iv");
+    }
+
+    private static void rangeDownIncreasing_byte_helper(int a, @NotNull String output) {
+        simpleProviderHelper(EP.rangeDownIncreasing((byte) a), output);
+    }
+
+    @Test
+    public void testRangeDownIncreasing_byte() {
+        rangeDownIncreasing_byte_helper(0, "ExhaustiveProvider_rangeDownIncreasing_byte_i");
+        rangeDownIncreasing_byte_helper(5, "ExhaustiveProvider_rangeDownIncreasing_byte_ii");
+        rangeDownIncreasing_byte_helper(-5, "ExhaustiveProvider_rangeDownIncreasing_byte_iii");
+        rangeDownIncreasing_byte_helper(Byte.MAX_VALUE, "ExhaustiveProvider_rangeDownIncreasing_byte_iv");
+        rangeDownIncreasing_byte_helper(Byte.MIN_VALUE, "ExhaustiveProvider_rangeDownIncreasing_byte_v");
+    }
+
+    private static void rangeDownIncreasing_short_helper(int a, @NotNull String output) {
+        simpleProviderHelper(EP.rangeDownIncreasing((short) a), output);
+    }
+
+    @Test
+    public void testRangeDownIncreasing_short() {
+        rangeDownIncreasing_short_helper(0, "ExhaustiveProvider_rangeDownIncreasing_short_i");
+        rangeDownIncreasing_short_helper(5, "ExhaustiveProvider_rangeDownIncreasing_short_ii");
+        rangeDownIncreasing_short_helper(-5, "ExhaustiveProvider_rangeDownIncreasing_short_iii");
+        rangeDownIncreasing_short_helper(Short.MAX_VALUE, "ExhaustiveProvider_rangeDownIncreasing_short_iv");
+        rangeDownIncreasing_short_helper(Short.MIN_VALUE, "ExhaustiveProvider_rangeDownIncreasing_short_v");
+    }
+
+    private static void rangeDownIncreasing_int_helper(int a, @NotNull String output) {
+        simpleProviderHelper(EP.rangeDownIncreasing(a), output);
+    }
+
+    @Test
+    public void testRangeDownIncreasing_int() {
+        rangeDownIncreasing_int_helper(0, "ExhaustiveProvider_rangeDownIncreasing_int_i");
+        rangeDownIncreasing_int_helper(5, "ExhaustiveProvider_rangeDownIncreasing_int_ii");
+        rangeDownIncreasing_int_helper(-5, "ExhaustiveProvider_rangeDownIncreasing_int_iii");
+        rangeDownIncreasing_int_helper(Integer.MAX_VALUE, "ExhaustiveProvider_rangeDownIncreasing_int_iv");
+        rangeDownIncreasing_int_helper(Integer.MIN_VALUE, "ExhaustiveProvider_rangeDownIncreasing_int_v");
+    }
+
+    private static void rangeDownIncreasing_long_helper(long a, @NotNull String output) {
+        simpleProviderHelper(EP.rangeDownIncreasing(a), output);
+    }
+
+    @Test
+    public void testRangeDownIncreasing_long() {
+        rangeDownIncreasing_long_helper(0L, "ExhaustiveProvider_rangeDownIncreasing_long_i");
+        rangeDownIncreasing_long_helper(5L, "ExhaustiveProvider_rangeDownIncreasing_long_ii");
+        rangeDownIncreasing_long_helper(-5L, "ExhaustiveProvider_rangeDownIncreasing_long_iii");
+        rangeDownIncreasing_long_helper(Long.MAX_VALUE, "ExhaustiveProvider_rangeDownIncreasing_long_iv");
+        rangeDownIncreasing_long_helper(Long.MIN_VALUE, "ExhaustiveProvider_rangeDownIncreasing_long_v");
+    }
+
+    private static void rangeDownIncreasing_char_helper(char a, @NotNull String output) {
+        simpleProviderHelper(EP.rangeDownIncreasing(a), output);
+    }
+
+    @Test
+    public void testRangeDownIncreasing_char() {
+        rangeDownIncreasing_char_helper('\0', "ExhaustiveProvider_rangeDownIncreasing_char_i");
+        rangeDownIncreasing_char_helper('a', "ExhaustiveProvider_rangeDownIncreasing_char_ii");
+        rangeDownIncreasing_char_helper('Ш', "ExhaustiveProvider_rangeDownIncreasing_char_iii");
+        rangeDownIncreasing_char_helper(Character.MAX_VALUE, "ExhaustiveProvider_rangeDownIncreasing_char_iv");
+    }
+
+    private static void rangeDownDecreasing_byte_helper(int a, @NotNull String output) {
+        simpleProviderHelper(EP.rangeDownDecreasing((byte) a), output);
+    }
+
+    @Test
+    public void testRangeDownDecreasing_byte() {
+        rangeDownDecreasing_byte_helper(0, "ExhaustiveProvider_rangeDownDecreasing_byte_i");
+        rangeDownDecreasing_byte_helper(5, "ExhaustiveProvider_rangeDownDecreasing_byte_ii");
+        rangeDownDecreasing_byte_helper(-5, "ExhaustiveProvider_rangeDownDecreasing_byte_iii");
+        rangeDownDecreasing_byte_helper(Byte.MAX_VALUE, "ExhaustiveProvider_rangeDownDecreasing_byte_iv");
+        rangeDownDecreasing_byte_helper(Byte.MIN_VALUE, "ExhaustiveProvider_rangeDownDecreasing_byte_v");
+    }
+
+    private static void rangeDownDecreasing_short_helper(int a, @NotNull String output) {
+        simpleProviderHelper(EP.rangeDownDecreasing((short) a), output);
+    }
+
+    @Test
+    public void testRangeDownDecreasing_short() {
+        rangeDownDecreasing_short_helper(0, "ExhaustiveProvider_rangeDownDecreasing_short_i");
+        rangeDownDecreasing_short_helper(5, "ExhaustiveProvider_rangeDownDecreasing_short_ii");
+        rangeDownDecreasing_short_helper(-5, "ExhaustiveProvider_rangeDownDecreasing_short_iii");
+        rangeDownDecreasing_short_helper(Short.MAX_VALUE, "ExhaustiveProvider_rangeDownDecreasing_short_iv");
+        rangeDownDecreasing_short_helper(Short.MIN_VALUE, "ExhaustiveProvider_rangeDownDecreasing_short_v");
+    }
+
+    private static void rangeDownDecreasing_int_helper(int a, @NotNull String output) {
+        simpleProviderHelper(EP.rangeDownDecreasing(a), output);
+    }
+
+    @Test
+    public void testRangeDownDecreasing_int() {
+        rangeDownDecreasing_int_helper(0, "ExhaustiveProvider_rangeDownDecreasing_int_i");
+        rangeDownDecreasing_int_helper(5, "ExhaustiveProvider_rangeDownDecreasing_int_ii");
+        rangeDownDecreasing_int_helper(-5, "ExhaustiveProvider_rangeDownDecreasing_int_iii");
+        rangeDownDecreasing_int_helper(Integer.MAX_VALUE, "ExhaustiveProvider_rangeDownDecreasing_int_iv");
+        rangeDownDecreasing_int_helper(Integer.MIN_VALUE, "ExhaustiveProvider_rangeDownDecreasing_int_v");
+    }
+
+    private static void rangeDownDecreasing_long_helper(long a, @NotNull String output) {
+        simpleProviderHelper(EP.rangeDownDecreasing(a), output);
+    }
+
+    @Test
+    public void testRangeDownDecreasing_long() {
+        rangeDownDecreasing_long_helper(0L, "ExhaustiveProvider_rangeDownDecreasing_long_i");
+        rangeDownDecreasing_long_helper(5L, "ExhaustiveProvider_rangeDownDecreasing_long_ii");
+        rangeDownDecreasing_long_helper(-5L, "ExhaustiveProvider_rangeDownDecreasing_long_iii");
+        rangeDownDecreasing_long_helper(Long.MAX_VALUE, "ExhaustiveProvider_rangeDownDecreasing_long_iv");
+        rangeDownDecreasing_long_helper(Long.MIN_VALUE, "ExhaustiveProvider_rangeDownDecreasing_long_v");
+    }
+
+    private static void rangeDownDecreasing_BigInteger_helper(@NotNull String a, @NotNull String output) {
+        simpleProviderHelper(EP.rangeDownDecreasing(Readers.readBigIntegerStrict(a).get()), output);
+    }
+
+    @Test
+    public void testRangeDownDecreasing_BigInteger() {
+        rangeDownDecreasing_BigInteger_helper("0", "ExhaustiveProvider_rangeDownDecreasing_BigInteger_i");
+        rangeDownDecreasing_BigInteger_helper("5", "ExhaustiveProvider_rangeDownDecreasing_BigInteger_ii");
+        rangeDownDecreasing_BigInteger_helper("-5", "ExhaustiveProvider_rangeDownDecreasing_BigInteger_iii");
+    }
+
+    private static void rangeDownDecreasing_char_helper(char a, @NotNull String output) {
+        simpleProviderHelper(EP.rangeDownDecreasing(a), output);
+    }
+
+    @Test
+    public void testRangeDownDecreasing_char() {
+        rangeDownDecreasing_char_helper('\0', "ExhaustiveProvider_rangeDownDecreasing_char_i");
+        rangeDownDecreasing_char_helper('a', "ExhaustiveProvider_rangeDownDecreasing_char_ii");
+        rangeDownDecreasing_char_helper('Ш', "ExhaustiveProvider_rangeDownDecreasing_char_iii");
+        rangeDownDecreasing_char_helper(Character.MAX_VALUE, "ExhaustiveProvider_rangeDownDecreasing_char_iv");
+    }
+
+    private static void rangeIncreasing_byte_byte_helper(int a, int b, @NotNull String output) {
+        aeqitLog(EP.rangeIncreasing((byte) a, (byte) b), output);
+    }
+
+    private static void rangeIncreasing_byte_byte_fail_helper(int a, int b) {
+        try {
+            EP.rangeIncreasing((byte) a, (byte) b);
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+    }
+
+    @Test
+    public void testRangeIncreasing_byte_byte() {
+        rangeIncreasing_byte_byte_helper(10, 20, "ExhaustiveProvider_rangeIncreasing_byte_byte_i");
+        rangeIncreasing_byte_byte_helper(10, 10, "ExhaustiveProvider_rangeIncreasing_byte_byte_ii");
+        rangeIncreasing_byte_byte_helper(-20, -10, "ExhaustiveProvider_rangeIncreasing_byte_byte_iii");
+        rangeIncreasing_byte_byte_helper(-20, -20, "ExhaustiveProvider_rangeIncreasing_byte_byte_iv");
+        rangeIncreasing_byte_byte_helper(0, 0, "ExhaustiveProvider_rangeIncreasing_byte_byte_v");
+        rangeIncreasing_byte_byte_helper(0, 10, "ExhaustiveProvider_rangeIncreasing_byte_byte_vi");
+        rangeIncreasing_byte_byte_helper(-5, 0, "ExhaustiveProvider_rangeIncreasing_byte_byte_vii");
+        rangeIncreasing_byte_byte_helper(-5, 10, "ExhaustiveProvider_rangeIncreasing_byte_byte_viii");
+        rangeIncreasing_byte_byte_helper(-10, 5, "ExhaustiveProvider_rangeIncreasing_byte_byte_ix");
+
+        rangeIncreasing_byte_byte_fail_helper(10, 9);
+        rangeIncreasing_byte_byte_fail_helper(-20, -21);
+        rangeIncreasing_byte_byte_fail_helper(5, -10);
+    }
+
+    private static void rangeIncreasing_short_short_helper(int a, int b, @NotNull String output) {
+        aeqitLog(EP.rangeIncreasing((short) a, (short) b), output);
+    }
+
+    private static void rangeIncreasing_short_short_fail_helper(int a, int b) {
+        try {
+            EP.rangeIncreasing((short) a, (short) b);
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+    }
+
+    @Test
+    public void testRangeIncreasing_short_short() {
+        rangeIncreasing_short_short_helper(10, 20, "ExhaustiveProvider_rangeIncreasing_short_short_i");
+        rangeIncreasing_short_short_helper(10, 10, "ExhaustiveProvider_rangeIncreasing_short_short_ii");
+        rangeIncreasing_short_short_helper(-20, -10, "ExhaustiveProvider_rangeIncreasing_short_short_iii");
+        rangeIncreasing_short_short_helper(-20, -20, "ExhaustiveProvider_rangeIncreasing_short_short_iv");
+        rangeIncreasing_short_short_helper(0, 0, "ExhaustiveProvider_rangeIncreasing_short_short_v");
+        rangeIncreasing_short_short_helper(0, 10, "ExhaustiveProvider_rangeIncreasing_short_short_vi");
+        rangeIncreasing_short_short_helper(-5, 0, "ExhaustiveProvider_rangeIncreasing_short_short_vii");
+        rangeIncreasing_short_short_helper(-5, 10, "ExhaustiveProvider_rangeIncreasing_short_short_viii");
+        rangeIncreasing_short_short_helper(-10, 5, "ExhaustiveProvider_rangeIncreasing_short_short_ix");
+
+        rangeIncreasing_short_short_fail_helper(10, 9);
+        rangeIncreasing_short_short_fail_helper(-20, -21);
+        rangeIncreasing_short_short_fail_helper(5, -10);
+    }
+
+    private static void rangeIncreasing_int_int_helper(int a, int b, @NotNull String output) {
+        aeqitLog(EP.rangeIncreasing(a, b), output);
+    }
+
+    private static void rangeIncreasing_int_int_fail_helper(int a, int b) {
+        try {
+            EP.rangeIncreasing(a, b);
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+    }
+
+    @Test
+    public void testRangeIncreasing_int_int() {
+        rangeIncreasing_int_int_helper(10, 20, "ExhaustiveProvider_rangeIncreasing_int_int_i");
+        rangeIncreasing_int_int_helper(10, 10, "ExhaustiveProvider_rangeIncreasing_int_int_ii");
+        rangeIncreasing_int_int_helper(-20, -10, "ExhaustiveProvider_rangeIncreasing_int_int_iii");
+        rangeIncreasing_int_int_helper(-20, -20, "ExhaustiveProvider_rangeIncreasing_int_int_iv");
+        rangeIncreasing_int_int_helper(0, 0, "ExhaustiveProvider_rangeIncreasing_int_int_v");
+        rangeIncreasing_int_int_helper(0, 10, "ExhaustiveProvider_rangeIncreasing_int_int_vi");
+        rangeIncreasing_int_int_helper(-5, 0, "ExhaustiveProvider_rangeIncreasing_int_int_vii");
+        rangeIncreasing_int_int_helper(-5, 10, "ExhaustiveProvider_rangeIncreasing_int_int_viii");
+        rangeIncreasing_int_int_helper(-10, 5, "ExhaustiveProvider_rangeIncreasing_int_int_ix");
+
+        rangeIncreasing_int_int_fail_helper(10, 9);
+        rangeIncreasing_int_int_fail_helper(-20, -21);
+        rangeIncreasing_int_int_fail_helper(5, -10);
+    }
+
+    private static void rangeIncreasing_long_long_helper(long a, long b, @NotNull String output) {
+        aeqitLog(EP.rangeIncreasing(a, b), output);
+    }
+
+    private static void rangeIncreasing_long_long_fail_helper(long a, long b) {
+        try {
+            EP.rangeIncreasing(a, b);
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+    }
+
+    @Test
+    public void testRangeIncreasing_long_long() {
+        rangeIncreasing_long_long_helper(10L, 20L, "ExhaustiveProvider_rangeIncreasing_long_long_i");
+        rangeIncreasing_long_long_helper(10L, 10L, "ExhaustiveProvider_rangeIncreasing_long_long_ii");
+        rangeIncreasing_long_long_helper(-20L, -10L, "ExhaustiveProvider_rangeIncreasing_long_long_iii");
+        rangeIncreasing_long_long_helper(-20L, -20L, "ExhaustiveProvider_rangeIncreasing_long_long_iv");
+        rangeIncreasing_long_long_helper(0L, 0L, "ExhaustiveProvider_rangeIncreasing_long_long_v");
+        rangeIncreasing_long_long_helper(0L, 10L, "ExhaustiveProvider_rangeIncreasing_long_long_vi");
+        rangeIncreasing_long_long_helper(-5L, 0L, "ExhaustiveProvider_rangeIncreasing_long_long_vii");
+        rangeIncreasing_long_long_helper(-5L, 10L, "ExhaustiveProvider_rangeIncreasing_long_long_viii");
+        rangeIncreasing_long_long_helper(-10L, 5L, "ExhaustiveProvider_rangeIncreasing_long_long_ix");
+
+        rangeIncreasing_long_long_fail_helper(10L, 9L);
+        rangeIncreasing_long_long_fail_helper(-20L, -21L);
+        rangeIncreasing_long_long_fail_helper(5L, -10L);
+    }
+
+    private static void rangeIncreasing_BigInteger_BigInteger_helper(
+            @NotNull String a,
+            @NotNull String b,
+            @NotNull String output
+    ) {
+        aeqitLog(
+                EP.rangeIncreasing(Readers.readBigIntegerStrict(a).get(), Readers.readBigIntegerStrict(b).get()),
+                output
+        );
+    }
+
+    private static void rangeIncreasing_BigInteger_BigInteger_fail_helper(@NotNull String a, @NotNull String b) {
+        try {
+            EP.rangeIncreasing(Readers.readBigIntegerStrict(a).get(), Readers.readBigIntegerStrict(b).get());
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+    }
+
+    @Test
+    public void testRangeIncreasing_BigInteger_BigInteger() {
+        rangeIncreasing_BigInteger_BigInteger_helper("10", "20",
+                "ExhaustiveProvider_rangeIncreasing_BigInteger_BigInteger_i");
+        rangeIncreasing_BigInteger_BigInteger_helper("10", "10",
+                "ExhaustiveProvider_rangeIncreasing_BigInteger_BigInteger_ii");
+        rangeIncreasing_BigInteger_BigInteger_helper("-20", "-10",
+                "ExhaustiveProvider_rangeIncreasing_BigInteger_BigInteger_iii");
+        rangeIncreasing_BigInteger_BigInteger_helper("-20", "-20",
+                "ExhaustiveProvider_rangeIncreasing_BigInteger_BigInteger_iv");
+        rangeIncreasing_BigInteger_BigInteger_helper("0", "0",
+                "ExhaustiveProvider_rangeIncreasing_BigInteger_BigInteger_v");
+        rangeIncreasing_BigInteger_BigInteger_helper("0", "10",
+                "ExhaustiveProvider_rangeIncreasing_BigInteger_BigInteger_vi");
+        rangeIncreasing_BigInteger_BigInteger_helper("-5", "0",
+                "ExhaustiveProvider_rangeIncreasing_BigInteger_BigInteger_vii");
+        rangeIncreasing_BigInteger_BigInteger_helper("-5", "10",
+                "ExhaustiveProvider_rangeIncreasing_BigInteger_BigInteger_viii");
+        rangeIncreasing_BigInteger_BigInteger_helper("-10", "5",
+                "ExhaustiveProvider_rangeIncreasing_BigInteger_BigInteger_ix");
+
+        rangeIncreasing_BigInteger_BigInteger_fail_helper("10", "9");
+        rangeIncreasing_BigInteger_BigInteger_fail_helper("-20", "-21");
+        rangeIncreasing_BigInteger_BigInteger_fail_helper("5", "-10");
+    }
+
+    private static void rangeIncreasing_char_char_helper(char a, char b, @NotNull String output) {
+        aeqitLog(EP.rangeIncreasing(a, b), output);
+    }
+
+    private static void rangeIncreasing_char_char_fail_helper(char a, char b) {
+        try {
+            EP.rangeIncreasing(a, b);
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+    }
+
+    @Test
+    public void testRangeIncreasing_char_char() {
+        rangeIncreasing_char_char_helper('a', 'z', "ExhaustiveProvider_rangeIncreasing_char_char_i");
+        rangeIncreasing_char_char_helper('a', 'a', "ExhaustiveProvider_rangeIncreasing_char_char_ii");
+        rangeIncreasing_char_char_helper('!', '9', "ExhaustiveProvider_rangeIncreasing_char_char_iii");
+
+        rangeIncreasing_char_char_fail_helper('a', 'A');
+    }
+
+    private static void rangeDecreasing_byte_byte_helper(int a, int b, @NotNull String output) {
+        aeqitLog(EP.rangeDecreasing((byte) a, (byte) b), output);
+    }
+
+    private static void rangeDecreasing_byte_byte_fail_helper(int a, int b) {
+        try {
+            EP.rangeDecreasing((byte) a, (byte) b);
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+    }
+
+    @Test
+    public void testRangeDecreasing_byte_byte() {
+        rangeDecreasing_byte_byte_helper(10, 20, "ExhaustiveProvider_rangeDecreasing_byte_byte_i");
+        rangeDecreasing_byte_byte_helper(10, 10, "ExhaustiveProvider_rangeDecreasing_byte_byte_ii");
+        rangeDecreasing_byte_byte_helper(-20, -10, "ExhaustiveProvider_rangeDecreasing_byte_byte_iii");
+        rangeDecreasing_byte_byte_helper(-20, -20, "ExhaustiveProvider_rangeDecreasing_byte_byte_iv");
+        rangeDecreasing_byte_byte_helper(0, 0, "ExhaustiveProvider_rangeDecreasing_byte_byte_v");
+        rangeDecreasing_byte_byte_helper(0, 10, "ExhaustiveProvider_rangeDecreasing_byte_byte_vi");
+        rangeDecreasing_byte_byte_helper(-5, 0, "ExhaustiveProvider_rangeDecreasing_byte_byte_vii");
+        rangeDecreasing_byte_byte_helper(-5, 10, "ExhaustiveProvider_rangeDecreasing_byte_byte_viii");
+        rangeDecreasing_byte_byte_helper(-10, 5, "ExhaustiveProvider_rangeDecreasing_byte_byte_ix");
+
+        rangeDecreasing_byte_byte_fail_helper(10, 9);
+        rangeDecreasing_byte_byte_fail_helper(-20, -21);
+        rangeDecreasing_byte_byte_fail_helper(5, -10);
+    }
+
+    private static void rangeDecreasing_short_short_helper(int a, int b, @NotNull String output) {
+        aeqitLog(EP.rangeDecreasing((short) a, (short) b), output);
+    }
+
+    private static void rangeDecreasing_short_short_fail_helper(int a, int b) {
+        try {
+            EP.rangeDecreasing((short) a, (short) b);
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+    }
+
+    @Test
+    public void testRangeDecreasing_short_short() {
+        rangeDecreasing_short_short_helper(10, 20, "ExhaustiveProvider_rangeDecreasing_short_short_i");
+        rangeDecreasing_short_short_helper(10, 10, "ExhaustiveProvider_rangeDecreasing_short_short_ii");
+        rangeDecreasing_short_short_helper(-20, -10, "ExhaustiveProvider_rangeDecreasing_short_short_iii");
+        rangeDecreasing_short_short_helper(-20, -20, "ExhaustiveProvider_rangeDecreasing_short_short_iv");
+        rangeDecreasing_short_short_helper(0, 0, "ExhaustiveProvider_rangeDecreasing_short_short_v");
+        rangeDecreasing_short_short_helper(0, 10, "ExhaustiveProvider_rangeDecreasing_short_short_vi");
+        rangeDecreasing_short_short_helper(-5, 0, "ExhaustiveProvider_rangeDecreasing_short_short_vii");
+        rangeDecreasing_short_short_helper(-5, 10, "ExhaustiveProvider_rangeDecreasing_short_short_viii");
+        rangeDecreasing_short_short_helper(-10, 5, "ExhaustiveProvider_rangeDecreasing_short_short_ix");
+
+        rangeDecreasing_short_short_fail_helper(10, 9);
+        rangeDecreasing_short_short_fail_helper(-20, -21);
+        rangeDecreasing_short_short_fail_helper(5, -10);
+    }
+
+    private static void rangeDecreasing_int_int_helper(int a, int b, @NotNull String output) {
+        aeqitLog(EP.rangeDecreasing(a, b), output);
+    }
+
+    private static void rangeDecreasing_int_int_fail_helper(int a, int b) {
+        try {
+            EP.rangeDecreasing(a, b);
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+    }
+
+    @Test
+    public void testRangeDecreasing_int_int() {
+        rangeDecreasing_int_int_helper(10, 20, "ExhaustiveProvider_rangeDecreasing_int_int_i");
+        rangeDecreasing_int_int_helper(10, 10, "ExhaustiveProvider_rangeDecreasing_int_int_ii");
+        rangeDecreasing_int_int_helper(-20, -10, "ExhaustiveProvider_rangeDecreasing_int_int_iii");
+        rangeDecreasing_int_int_helper(-20, -20, "ExhaustiveProvider_rangeDecreasing_int_int_iv");
+        rangeDecreasing_int_int_helper(0, 0, "ExhaustiveProvider_rangeDecreasing_int_int_v");
+        rangeDecreasing_int_int_helper(0, 10, "ExhaustiveProvider_rangeDecreasing_int_int_vi");
+        rangeDecreasing_int_int_helper(-5, 0, "ExhaustiveProvider_rangeDecreasing_int_int_vii");
+        rangeDecreasing_int_int_helper(-5, 10, "ExhaustiveProvider_rangeDecreasing_int_int_viii");
+        rangeDecreasing_int_int_helper(-10, 5, "ExhaustiveProvider_rangeDecreasing_int_int_ix");
+
+        rangeDecreasing_int_int_fail_helper(10, 9);
+        rangeDecreasing_int_int_fail_helper(-20, -21);
+        rangeDecreasing_int_int_fail_helper(5, -10);
+    }
+
+    private static void rangeDecreasing_long_long_helper(long a, long b, @NotNull String output) {
+        aeqitLog(EP.rangeDecreasing(a, b), output);
+    }
+
+    private static void rangeDecreasing_long_long_fail_helper(long a, long b) {
+        try {
+            EP.rangeDecreasing(a, b);
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+    }
+
+    @Test
+    public void testRangeDecreasing_long_long() {
+        rangeDecreasing_long_long_helper(10L, 20L, "ExhaustiveProvider_rangeDecreasing_long_long_i");
+        rangeDecreasing_long_long_helper(10L, 10L, "ExhaustiveProvider_rangeDecreasing_long_long_ii");
+        rangeDecreasing_long_long_helper(-20L, -10L, "ExhaustiveProvider_rangeDecreasing_long_long_iii");
+        rangeDecreasing_long_long_helper(-20L, -20L, "ExhaustiveProvider_rangeDecreasing_long_long_iv");
+        rangeDecreasing_long_long_helper(0L, 0L, "ExhaustiveProvider_rangeDecreasing_long_long_v");
+        rangeDecreasing_long_long_helper(0L, 10L, "ExhaustiveProvider_rangeDecreasing_long_long_vi");
+        rangeDecreasing_long_long_helper(-5L, 0L, "ExhaustiveProvider_rangeDecreasing_long_long_vii");
+        rangeDecreasing_long_long_helper(-5L, 10L, "ExhaustiveProvider_rangeDecreasing_long_long_viii");
+        rangeDecreasing_long_long_helper(-10L, 5L, "ExhaustiveProvider_rangeDecreasing_long_long_ix");
+
+        rangeDecreasing_long_long_fail_helper(10L, 9L);
+        rangeDecreasing_long_long_fail_helper(-20L, -21L);
+        rangeDecreasing_long_long_fail_helper(5L, -10L);
+    }
+
+    private static void rangeDecreasing_BigInteger_BigInteger_helper(
+            @NotNull String a,
+            @NotNull String b,
+            @NotNull String output
+    ) {
+        aeqitLog(
+                EP.rangeDecreasing(Readers.readBigIntegerStrict(a).get(), Readers.readBigIntegerStrict(b).get()),
+                output
+        );
+    }
+
+    private static void rangeDecreasing_BigInteger_BigInteger_fail_helper(@NotNull String a, @NotNull String b) {
+        try {
+            EP.rangeDecreasing(Readers.readBigIntegerStrict(a).get(), Readers.readBigIntegerStrict(b).get());
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+    }
+
+    @Test
+    public void testRangeDecreasing_BigInteger_BigInteger() {
+        rangeDecreasing_BigInteger_BigInteger_helper("10", "20",
+                "ExhaustiveProvider_rangeDecreasing_BigInteger_BigInteger_i");
+        rangeDecreasing_BigInteger_BigInteger_helper("10", "10",
+                "ExhaustiveProvider_rangeDecreasing_BigInteger_BigInteger_ii");
+        rangeDecreasing_BigInteger_BigInteger_helper("-20", "-10",
+                "ExhaustiveProvider_rangeDecreasing_BigInteger_BigInteger_iii");
+        rangeDecreasing_BigInteger_BigInteger_helper("-20", "-20",
+                "ExhaustiveProvider_rangeDecreasing_BigInteger_BigInteger_iv");
+        rangeDecreasing_BigInteger_BigInteger_helper("0", "0",
+                "ExhaustiveProvider_rangeDecreasing_BigInteger_BigInteger_v");
+        rangeDecreasing_BigInteger_BigInteger_helper("0", "10",
+                "ExhaustiveProvider_rangeDecreasing_BigInteger_BigInteger_vi");
+        rangeDecreasing_BigInteger_BigInteger_helper("-5", "0",
+                "ExhaustiveProvider_rangeDecreasing_BigInteger_BigInteger_vii");
+        rangeDecreasing_BigInteger_BigInteger_helper("-5", "10",
+                "ExhaustiveProvider_rangeDecreasing_BigInteger_BigInteger_viii");
+        rangeDecreasing_BigInteger_BigInteger_helper("-10", "5",
+                "ExhaustiveProvider_rangeDecreasing_BigInteger_BigInteger_ix");
+
+        rangeDecreasing_BigInteger_BigInteger_fail_helper("10", "9");
+        rangeDecreasing_BigInteger_BigInteger_fail_helper("-20", "-21");
+        rangeDecreasing_BigInteger_BigInteger_fail_helper("5", "-10");
+    }
+
+    private static void rangeDecreasing_char_char_helper(char a, char b, @NotNull String output) {
+        aeqitLog(EP.rangeDecreasing(a, b), output);
+    }
+
+    private static void rangeDecreasing_char_char_fail_helper(char a, char b) {
+        try {
+            EP.rangeDecreasing(a, b);
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+    }
+
+    @Test
+    public void testRangeDecreasing_char_char() {
+        rangeDecreasing_char_char_helper('a', 'z', "ExhaustiveProvider_rangeDecreasing_char_char_i");
+        rangeDecreasing_char_char_helper('a', 'a', "ExhaustiveProvider_rangeDecreasing_char_char_ii");
+        rangeDecreasing_char_char_helper('!', '9', "ExhaustiveProvider_rangeDecreasing_char_char_iii");
+
+        rangeDecreasing_char_char_fail_helper('a', 'A');
+    }
+
     @Test
     public void testBooleans() {
         simpleProviderHelper(EP.booleans(), "ExhaustiveProvider_booleans");
@@ -319,18 +949,6 @@ public strictfp class ExhaustiveProviderTest {
         rangeUp_BigInteger_helper("-5", "ExhaustiveProvider_rangeUp_BigInteger_iii");
     }
 
-    private static void rangeUp_char_helper(char a, @NotNull String output) {
-        aeqitLimitLog(SMALL_LIMIT, EP.rangeUp(a), output);
-    }
-
-    @Test
-    public void testRangeUp_char() {
-        rangeUp_char_helper('\0', "ExhaustiveProvider_rangeUp_char_i");
-        rangeUp_char_helper('a', "ExhaustiveProvider_rangeUp_char_ii");
-        rangeUp_char_helper('Ш', "ExhaustiveProvider_rangeUp_char_iii");
-        rangeUp_char_helper(Character.MAX_VALUE, "ExhaustiveProvider_rangeUp_char_iv");
-    }
-
     private static void rangeDown_byte_helper(int a, @NotNull String output) {
         simpleProviderHelper(EP.rangeDown((byte) a), output);
     }
@@ -394,96 +1012,116 @@ public strictfp class ExhaustiveProviderTest {
         rangeDown_BigInteger_helper("-5", "ExhaustiveProvider_rangeDown_BigInteger_iii");
     }
 
-    private static void rangeDown_char_helper(char a, @NotNull String output) {
-        aeqitLimitLog(SMALL_LIMIT, EP.rangeDown(a), output);
-    }
-
-    @Test
-    public void testRangeDown_char() {
-        rangeDown_char_helper('\0', "ExhaustiveProvider_rangeDown_char_i");
-        rangeDown_char_helper('a', "ExhaustiveProvider_rangeDown_char_ii");
-        rangeDown_char_helper('Ш', "ExhaustiveProvider_rangeDown_char_iii");
-        rangeDown_char_helper(Character.MAX_VALUE, "ExhaustiveProvider_rangeDown_char_iv");
-    }
-
     private static void range_byte_byte_helper(int a, int b, @NotNull String output) {
         aeqitLog(EP.range((byte) a, (byte) b), output);
+    }
+
+    private static void range_byte_byte_fail_helper(int a, int b) {
+        try {
+            EP.range((byte) a, (byte) b);
+            fail();
+        } catch (IllegalArgumentException ignored) {}
     }
 
     @Test
     public void testRange_byte_byte() {
         range_byte_byte_helper(10, 20, "ExhaustiveProvider_range_byte_byte_i");
         range_byte_byte_helper(10, 10, "ExhaustiveProvider_range_byte_byte_ii");
-        range_byte_byte_helper(10, 9, "ExhaustiveProvider_range_byte_byte_iii");
-        range_byte_byte_helper(-20, -10, "ExhaustiveProvider_range_byte_byte_iv");
-        range_byte_byte_helper(-20, -20, "ExhaustiveProvider_range_byte_byte_v");
-        range_byte_byte_helper(-20, -21, "ExhaustiveProvider_range_byte_byte_vi");
-        range_byte_byte_helper(0, 0, "ExhaustiveProvider_range_byte_byte_vii");
-        range_byte_byte_helper(0, 10, "ExhaustiveProvider_range_byte_byte_viii");
-        range_byte_byte_helper(-5, 0, "ExhaustiveProvider_range_byte_byte_ix");
-        range_byte_byte_helper(-5, 10, "ExhaustiveProvider_range_byte_byte_x");
-        range_byte_byte_helper(-10, 5, "ExhaustiveProvider_range_byte_byte_xi");
-        range_byte_byte_helper(5, -10, "ExhaustiveProvider_range_byte_byte_xii");
+        range_byte_byte_helper(-20, -10, "ExhaustiveProvider_range_byte_byte_iii");
+        range_byte_byte_helper(-20, -20, "ExhaustiveProvider_range_byte_byte_iv");
+        range_byte_byte_helper(0, 0, "ExhaustiveProvider_range_byte_byte_v");
+        range_byte_byte_helper(0, 10, "ExhaustiveProvider_range_byte_byte_vi");
+        range_byte_byte_helper(-5, 0, "ExhaustiveProvider_range_byte_byte_vii");
+        range_byte_byte_helper(-5, 10, "ExhaustiveProvider_range_byte_byte_viii");
+        range_byte_byte_helper(-10, 5, "ExhaustiveProvider_range_byte_byte_ix");
+
+        range_byte_byte_fail_helper(10, 9);
+        range_byte_byte_fail_helper(-20, -21);
+        range_byte_byte_fail_helper(5, -10);
     }
 
     private static void range_short_short_helper(int a, int b, @NotNull String output) {
         aeqitLog(EP.range((short) a, (short) b), output);
     }
 
+    private static void range_short_short_fail_helper(int a, int b) {
+        try {
+            EP.range((short) a, (short) b);
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+    }
+
     @Test
     public void testRange_short_short() {
         range_short_short_helper(10, 20, "ExhaustiveProvider_range_short_short_i");
         range_short_short_helper(10, 10, "ExhaustiveProvider_range_short_short_ii");
-        range_short_short_helper(10, 9, "ExhaustiveProvider_range_short_short_iii");
-        range_short_short_helper(-20, -10, "ExhaustiveProvider_range_short_short_iv");
-        range_short_short_helper(-20, -20, "ExhaustiveProvider_range_short_short_v");
-        range_short_short_helper(-20, -21, "ExhaustiveProvider_range_short_short_vi");
-        range_short_short_helper(0, 0, "ExhaustiveProvider_range_short_short_vii");
-        range_short_short_helper(0, 10, "ExhaustiveProvider_range_short_short_viii");
-        range_short_short_helper(-5, 0, "ExhaustiveProvider_range_short_short_ix");
-        range_short_short_helper(-5, 10, "ExhaustiveProvider_range_short_short_x");
-        range_short_short_helper(-10, 5, "ExhaustiveProvider_range_short_short_xi");
-        range_short_short_helper(5, -10, "ExhaustiveProvider_range_short_short_xii");
+        range_short_short_helper(-20, -10, "ExhaustiveProvider_range_short_short_iii");
+        range_short_short_helper(-20, -20, "ExhaustiveProvider_range_short_short_iv");
+        range_short_short_helper(0, 0, "ExhaustiveProvider_range_short_short_v");
+        range_short_short_helper(0, 10, "ExhaustiveProvider_range_short_short_vi");
+        range_short_short_helper(-5, 0, "ExhaustiveProvider_range_short_short_vii");
+        range_short_short_helper(-5, 10, "ExhaustiveProvider_range_short_short_viii");
+        range_short_short_helper(-10, 5, "ExhaustiveProvider_range_short_short_ix");
+
+        range_short_short_fail_helper(10, 9);
+        range_short_short_fail_helper(-20, -21);
+        range_short_short_fail_helper(5, -10);
     }
 
     private static void range_int_int_helper(int a, int b, @NotNull String output) {
         aeqitLog(EP.range(a, b), output);
     }
 
+    private static void range_int_int_fail_helper(int a, int b) {
+        try {
+            EP.range(a, b);
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+    }
+
     @Test
     public void testRange_int_int() {
         range_int_int_helper(10, 20, "ExhaustiveProvider_range_int_int_i");
         range_int_int_helper(10, 10, "ExhaustiveProvider_range_int_int_ii");
-        range_int_int_helper(10, 9, "ExhaustiveProvider_range_int_int_iii");
-        range_int_int_helper(-20, -10, "ExhaustiveProvider_range_int_int_iv");
-        range_int_int_helper(-20, -20, "ExhaustiveProvider_range_int_int_v");
-        range_int_int_helper(-20, -21, "ExhaustiveProvider_range_int_int_vi");
-        range_int_int_helper(0, 0, "ExhaustiveProvider_range_int_int_vii");
-        range_int_int_helper(0, 10, "ExhaustiveProvider_range_int_int_viii");
-        range_int_int_helper(-5, 0, "ExhaustiveProvider_range_int_int_ix");
-        range_int_int_helper(-5, 10, "ExhaustiveProvider_range_int_int_x");
-        range_int_int_helper(-10, 5, "ExhaustiveProvider_range_int_int_xi");
-        range_int_int_helper(5, -10, "ExhaustiveProvider_range_int_int_xii");
+        range_int_int_helper(-20, -10, "ExhaustiveProvider_range_int_int_iii");
+        range_int_int_helper(-20, -20, "ExhaustiveProvider_range_int_int_iv");
+        range_int_int_helper(0, 0, "ExhaustiveProvider_range_int_int_v");
+        range_int_int_helper(0, 10, "ExhaustiveProvider_range_int_int_vi");
+        range_int_int_helper(-5, 0, "ExhaustiveProvider_range_int_int_vii");
+        range_int_int_helper(-5, 10, "ExhaustiveProvider_range_int_int_viii");
+        range_int_int_helper(-10, 5, "ExhaustiveProvider_range_int_int_ix");
+
+        range_int_int_fail_helper(10, 9);
+        range_int_int_fail_helper(-20, -21);
+        range_int_int_fail_helper(5, -10);
     }
 
     private static void range_long_long_helper(long a, long b, @NotNull String output) {
         aeqitLog(EP.range(a, b), output);
     }
 
+    private static void range_long_long_fail_helper(long a, long b) {
+        try {
+            EP.range(a, b);
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+    }
+
     @Test
     public void testRange_long_long() {
         range_long_long_helper(10L, 20L, "ExhaustiveProvider_range_long_long_i");
         range_long_long_helper(10L, 10L, "ExhaustiveProvider_range_long_long_ii");
-        range_long_long_helper(10L, 9L, "ExhaustiveProvider_range_long_long_iii");
-        range_long_long_helper(-20L, -10L, "ExhaustiveProvider_range_long_long_iv");
-        range_long_long_helper(-20L, -20L, "ExhaustiveProvider_range_long_long_v");
-        range_long_long_helper(-20L, -21L, "ExhaustiveProvider_range_long_long_vi");
-        range_long_long_helper(0L, 0L, "ExhaustiveProvider_range_long_long_vii");
-        range_long_long_helper(0L, 10L, "ExhaustiveProvider_range_long_long_viii");
-        range_long_long_helper(-5L, 0L, "ExhaustiveProvider_range_long_long_ix");
-        range_long_long_helper(-5L, 10L, "ExhaustiveProvider_range_long_long_x");
-        range_long_long_helper(-10L, 5L, "ExhaustiveProvider_range_long_long_xi");
-        range_long_long_helper(5L, -10L, "ExhaustiveProvider_range_long_long_xii");
+        range_long_long_helper(-20L, -10L, "ExhaustiveProvider_range_long_long_iii");
+        range_long_long_helper(-20L, -20L, "ExhaustiveProvider_range_long_long_iv");
+        range_long_long_helper(0L, 0L, "ExhaustiveProvider_range_long_long_v");
+        range_long_long_helper(0L, 10L, "ExhaustiveProvider_range_long_long_vi");
+        range_long_long_helper(-5L, 0L, "ExhaustiveProvider_range_long_long_vii");
+        range_long_long_helper(-5L, 10L, "ExhaustiveProvider_range_long_long_viii");
+        range_long_long_helper(-10L, 5L, "ExhaustiveProvider_range_long_long_ix");
+
+        range_long_long_fail_helper(10L, 9L);
+        range_long_long_fail_helper(-20L, -21L);
+        range_long_long_fail_helper(5L, -10L);
     }
 
     private static void range_BigInteger_BigInteger_helper(
@@ -494,32 +1132,28 @@ public strictfp class ExhaustiveProviderTest {
         aeqitLog(EP.range(Readers.readBigIntegerStrict(a).get(), Readers.readBigIntegerStrict(b).get()), output);
     }
 
+    private static void range_BigInteger_BigInteger_fail_helper(@NotNull String a, @NotNull String b) {
+        try {
+            EP.range(Readers.readBigIntegerStrict(a).get(), Readers.readBigIntegerStrict(b).get());
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+    }
+
     @Test
     public void testRange_BigInteger_BigInteger() {
         range_BigInteger_BigInteger_helper("10", "20", "ExhaustiveProvider_range_BigInteger_BigInteger_i");
         range_BigInteger_BigInteger_helper("10", "10", "ExhaustiveProvider_range_BigInteger_BigInteger_ii");
-        range_BigInteger_BigInteger_helper("10", "9", "ExhaustiveProvider_range_BigInteger_BigInteger_iii");
-        range_BigInteger_BigInteger_helper("-20", "-10", "ExhaustiveProvider_range_BigInteger_BigInteger_iv");
-        range_BigInteger_BigInteger_helper("-20", "-20", "ExhaustiveProvider_range_BigInteger_BigInteger_v");
-        range_BigInteger_BigInteger_helper("-20", "-21", "ExhaustiveProvider_range_BigInteger_BigInteger_vi");
-        range_BigInteger_BigInteger_helper("0", "0", "ExhaustiveProvider_range_BigInteger_BigInteger_vii");
-        range_BigInteger_BigInteger_helper("0", "10", "ExhaustiveProvider_range_BigInteger_BigInteger_viii");
-        range_BigInteger_BigInteger_helper("-5", "0", "ExhaustiveProvider_range_BigInteger_BigInteger_ix");
-        range_BigInteger_BigInteger_helper("-5", "10", "ExhaustiveProvider_range_BigInteger_BigInteger_x");
-        range_BigInteger_BigInteger_helper("-10", "5", "ExhaustiveProvider_range_BigInteger_BigInteger_xi");
-        range_BigInteger_BigInteger_helper("5", "-10", "ExhaustiveProvider_range_BigInteger_BigInteger_xii");
-    }
+        range_BigInteger_BigInteger_helper("-20", "-10", "ExhaustiveProvider_range_BigInteger_BigInteger_iii");
+        range_BigInteger_BigInteger_helper("-20", "-20", "ExhaustiveProvider_range_BigInteger_BigInteger_iv");
+        range_BigInteger_BigInteger_helper("0", "0", "ExhaustiveProvider_range_BigInteger_BigInteger_v");
+        range_BigInteger_BigInteger_helper("0", "10", "ExhaustiveProvider_range_BigInteger_BigInteger_vi");
+        range_BigInteger_BigInteger_helper("-5", "0", "ExhaustiveProvider_range_BigInteger_BigInteger_vii");
+        range_BigInteger_BigInteger_helper("-5", "10", "ExhaustiveProvider_range_BigInteger_BigInteger_viii");
+        range_BigInteger_BigInteger_helper("-10", "5", "ExhaustiveProvider_range_BigInteger_BigInteger_ix");
 
-    private static void range_char_char_helper(char a, char b, @NotNull String output) {
-        aeqitLog(EP.range(a, b), output);
-    }
-
-    @Test
-    public void testRange_char_char() {
-        range_char_char_helper('a', 'z', "ExhaustiveProvider_range_char_char_i");
-        range_char_char_helper('a', 'a', "ExhaustiveProvider_range_char_char_ii");
-        range_char_char_helper('a', 'A', "ExhaustiveProvider_range_char_char_iii");
-        range_char_char_helper('!', '9', "ExhaustiveProvider_range_char_char_iv");
+        range_BigInteger_BigInteger_fail_helper("10", "9");
+        range_BigInteger_BigInteger_fail_helper("-20", "-21");
+        range_BigInteger_BigInteger_fail_helper("5", "-10");
     }
 
     @Test
@@ -543,7 +1177,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void rangeUp_BinaryFraction_helper(@NotNull String a, @NotNull String output) {
-        simpleProviderHelper(EP.rangeUp(BinaryFraction.read(a).get()), output);
+        simpleProviderHelper(EP.rangeUp(BinaryFraction.readStrict(a).get()), output);
     }
 
     @Test
@@ -560,7 +1194,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void rangeDown_BinaryFraction_helper(@NotNull String a, @NotNull String output) {
-        simpleProviderHelper(EP.rangeDown(BinaryFraction.read(a).get()), output);
+        simpleProviderHelper(EP.rangeDown(BinaryFraction.readStrict(a).get()), output);
     }
 
     @Test
@@ -581,7 +1215,13 @@ public strictfp class ExhaustiveProviderTest {
             @NotNull String b,
             @NotNull String output
     ) {
-        simpleProviderHelper(EP.range(BinaryFraction.read(a).get(), BinaryFraction.read(b).get()), output);
+        simpleProviderHelper(EP.range(BinaryFraction.readStrict(a).get(), BinaryFraction.readStrict(b).get()), output);
+    }
+
+    private static void range_BinaryFraction_BinaryFraction_fail_helper(@NotNull String a, @NotNull String b) {
+        try {
+            EP.range(BinaryFraction.readStrict(a).get(), BinaryFraction.readStrict(b).get());
+        } catch (IllegalArgumentException ignored) {}
     }
 
     @Test
@@ -592,24 +1232,23 @@ public strictfp class ExhaustiveProviderTest {
                 "ExhaustiveProvider_range_BinaryFraction_BinaryFraction_ii");
         range_BinaryFraction_BinaryFraction_helper("11", "11",
                 "ExhaustiveProvider_range_BinaryFraction_BinaryFraction_iii");
-        range_BinaryFraction_BinaryFraction_helper("11", "1",
-                "ExhaustiveProvider_range_BinaryFraction_BinaryFraction_iv");
         range_BinaryFraction_BinaryFraction_helper("-11", "-1",
-                "ExhaustiveProvider_range_BinaryFraction_BinaryFraction_v");
+                "ExhaustiveProvider_range_BinaryFraction_BinaryFraction_iv");
         range_BinaryFraction_BinaryFraction_helper("-11", "-11",
-                "ExhaustiveProvider_range_BinaryFraction_BinaryFraction_vi");
-        range_BinaryFraction_BinaryFraction_helper("-1", "-11",
-                "ExhaustiveProvider_range_BinaryFraction_BinaryFraction_vii");
+                "ExhaustiveProvider_range_BinaryFraction_BinaryFraction_v");
         range_BinaryFraction_BinaryFraction_helper("0", "0",
-                "ExhaustiveProvider_range_BinaryFraction_BinaryFraction_viii");
+                "ExhaustiveProvider_range_BinaryFraction_BinaryFraction_vi");
         range_BinaryFraction_BinaryFraction_helper("0", "11",
-                "ExhaustiveProvider_range_BinaryFraction_BinaryFraction_ix");
+                "ExhaustiveProvider_range_BinaryFraction_BinaryFraction_vii");
         range_BinaryFraction_BinaryFraction_helper("-1", "11",
-                "ExhaustiveProvider_range_BinaryFraction_BinaryFraction_x");
+                "ExhaustiveProvider_range_BinaryFraction_BinaryFraction_viii");
         range_BinaryFraction_BinaryFraction_helper("5 >> 20", "1",
-                "ExhaustiveProvider_range_BinaryFraction_BinaryFraction_xi");
+                "ExhaustiveProvider_range_BinaryFraction_BinaryFraction_ix");
         range_BinaryFraction_BinaryFraction_helper("1", "5 << 20",
-                "ExhaustiveProvider_range_BinaryFraction_BinaryFraction_xii");
+                "ExhaustiveProvider_range_BinaryFraction_BinaryFraction_x");
+
+        range_BinaryFraction_BinaryFraction_fail_helper("11", "1");
+        range_BinaryFraction_BinaryFraction_fail_helper("-1", "-11");
     }
 
     @Test
@@ -730,7 +1369,7 @@ public strictfp class ExhaustiveProviderTest {
         try {
             EP.range(a, b);
             fail();
-        } catch (ArithmeticException ignored) {}
+        } catch (ArithmeticException | IllegalArgumentException ignored) {}
     }
 
     @Test
@@ -766,14 +1405,11 @@ public strictfp class ExhaustiveProviderTest {
                 "ExhaustiveProvider_range_float_float_xxiv");
         range_float_float_helper(Float.NEGATIVE_INFINITY, Float.NEGATIVE_INFINITY,
                 "ExhaustiveProvider_range_float_float_xxv");
-        range_float_float_helper(1.0f, -1.0f, "ExhaustiveProvider_range_float_float_xxvi");
-        range_float_float_helper(Float.POSITIVE_INFINITY, Float.NEGATIVE_INFINITY,
-                "ExhaustiveProvider_range_float_float_xxvii");
-        range_float_float_helper(Float.POSITIVE_INFINITY, 1.0f,
-                "ExhaustiveProvider_range_float_float_xxviii");
-        range_float_float_helper(1.0f, Float.NEGATIVE_INFINITY,
-                "ExhaustiveProvider_range_float_float_xxix");
 
+        range_float_float_fail_helper(1.0f, -1.0f);
+        range_float_float_fail_helper(Float.POSITIVE_INFINITY, Float.NEGATIVE_INFINITY);
+        range_float_float_fail_helper(Float.POSITIVE_INFINITY, 1.0f);
+        range_float_float_fail_helper(1.0f, Float.NEGATIVE_INFINITY);
         range_float_float_fail_helper(Float.NaN, 1.0f);
         range_float_float_fail_helper(Float.NaN, Float.POSITIVE_INFINITY);
         range_float_float_fail_helper(Float.NaN, Float.NEGATIVE_INFINITY);
@@ -861,7 +1497,7 @@ public strictfp class ExhaustiveProviderTest {
         try {
             EP.range(a, b);
             fail();
-        } catch (ArithmeticException ignored) {}
+        } catch (ArithmeticException | IllegalArgumentException ignored) {}
     }
 
     @Test
@@ -897,14 +1533,11 @@ public strictfp class ExhaustiveProviderTest {
                 "ExhaustiveProvider_range_double_double_xxiv");
         range_double_double_helper(Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY,
                 "ExhaustiveProvider_range_double_double_xxv");
-        range_double_double_helper(1.0f, -1.0f, "ExhaustiveProvider_range_double_double_xxvi");
-        range_double_double_helper(Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY,
-                "ExhaustiveProvider_range_double_double_xxvii");
-        range_double_double_helper(Double.POSITIVE_INFINITY, 1.0f,
-                "ExhaustiveProvider_range_double_double_xxviii");
-        range_double_double_helper(1.0f, Double.NEGATIVE_INFINITY,
-                "ExhaustiveProvider_range_double_double_xxix");
 
+        range_double_double_fail_helper(1.0f, -1.0f);
+        range_double_double_fail_helper(Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY);
+        range_double_double_fail_helper(Double.POSITIVE_INFINITY, 1.0f);
+        range_double_double_fail_helper(1.0f, Double.NEGATIVE_INFINITY);
         range_double_double_fail_helper(Double.NaN, 1.0);
         range_double_double_fail_helper(Double.NaN, Double.POSITIVE_INFINITY);
         range_double_double_fail_helper(Double.NaN, Double.NEGATIVE_INFINITY);
@@ -1024,6 +1657,12 @@ public strictfp class ExhaustiveProviderTest {
         );
     }
 
+    private static void range_BigDecimal_BigDecimal_fail_helper(@NotNull String a, @NotNull String b) {
+        try {
+            EP.range(Readers.readBigDecimalStrict(a).get(), Readers.readBigDecimalStrict(b).get());
+        } catch (IllegalArgumentException ignored) {}
+    }
+
     @Test
     public void testRange_BigDecimal_BigDecimal() {
         range_BigDecimal_BigDecimal_helper("0", "1", "ExhaustiveProvider_range_BigDecimal_BigDecimal_i");
@@ -1046,7 +1685,8 @@ public strictfp class ExhaustiveProviderTest {
         range_BigDecimal_BigDecimal_helper("0.0", "0", "ExhaustiveProvider_range_BigDecimal_BigDecimal_xviii");
         range_BigDecimal_BigDecimal_helper("0.0", "0.0", "ExhaustiveProvider_range_BigDecimal_BigDecimal_xix");
         range_BigDecimal_BigDecimal_helper("1", "1", "ExhaustiveProvider_range_BigDecimal_BigDecimal_xx");
-        range_BigDecimal_BigDecimal_helper("5", "3", "ExhaustiveProvider_range_BigDecimal_BigDecimal_xxi");
+
+        range_BigDecimal_BigDecimal_fail_helper("5", "3");
     }
 
     private static void rangeUpCanonical_BigDecimal_helper(@NotNull String a, @NotNull String output) {
@@ -1116,6 +1756,12 @@ public strictfp class ExhaustiveProviderTest {
         );
     }
 
+    private static void rangeCanonical_BigDecimal_BigDecimal_fail_helper(@NotNull String a, @NotNull String b) {
+        try {
+            EP.rangeCanonical(Readers.readBigDecimalStrict(a).get(), Readers.readBigDecimalStrict(b).get());
+        } catch (IllegalArgumentException ignored) {}
+    }
+
     @Test
     public void testRangeCanonical_BigDecimal_BigDecimal() {
         rangeCanonical_BigDecimal_BigDecimal_helper("0", "1",
@@ -1158,8 +1804,8 @@ public strictfp class ExhaustiveProviderTest {
                 "ExhaustiveProvider_rangeCanonical_BigDecimal_BigDecimal_xix");
         rangeCanonical_BigDecimal_BigDecimal_helper("1", "1",
                 "ExhaustiveProvider_rangeCanonical_BigDecimal_BigDecimal_xx");
-        rangeCanonical_BigDecimal_BigDecimal_helper("5", "3",
-                "ExhaustiveProvider_rangeCanonical_BigDecimal_BigDecimal_xxi");
+
+        rangeCanonical_BigDecimal_BigDecimal_fail_helper("5", "3");
     }
 
     private static void withNull_finite_helper(@NotNull String x, @NotNull String output) {
@@ -1642,7 +2288,7 @@ public strictfp class ExhaustiveProviderTest {
         prefixPermutations_helper("[2, 2, 2, 2]", "ExhaustiveProvider_prefixPermutations_vii");
         prefixPermutations_helper("[3, 1, 4, 1]", "ExhaustiveProvider_prefixPermutations_viii");
         prefixPermutations_helper("[3, 1, null, 1]", "ExhaustiveProvider_prefixPermutations_ix");
-        prefixPermutations_limit_helper(IterableUtils.range(1, 10), "ExhaustiveProvider_prefixPermutations_x");
+        prefixPermutations_limit_helper(EP.rangeIncreasing(1, 10), "ExhaustiveProvider_prefixPermutations_x");
         prefixPermutations_limit_helper(EP.positiveIntegers(), "ExhaustiveProvider_prefixPermutations_xi");
         prefixPermutations_limit_helper(repeat(1), "ExhaustiveProvider_prefixPermutations_xii");
     }
@@ -5791,24 +6437,55 @@ public strictfp class ExhaustiveProviderTest {
                 "ExhaustiveProvider_chooseLogarithmicOrder_ix");
     }
 
-    private static void choose_helper(@NotNull String as, @NotNull String bs, @NotNull String output) {
+    private static void choose_Iterable_Iterable_helper(
+            @NotNull String as,
+            @NotNull String bs,
+            @NotNull String output
+    ) {
         aeqitLog(EP.choose(readIntegerListWithNulls(as), readIntegerListWithNulls(bs)), output);
     }
 
     @Test
-    public void testChoose() {
-        choose_helper("[1, 2, 3, 4]", "[-1, -2, -3, -4]", "ExhaustiveProvider_choose_i");
-        choose_helper("[1, 2, null, 4]", "[-1, -2, -3, -4]", "ExhaustiveProvider_choose_ii");
-        choose_helper("[1, 2]", "[-1, -2, -3, -4]", "ExhaustiveProvider_choose_iii");
-        choose_helper("[1, 2, 3, 4]", "[-1, -2]", "ExhaustiveProvider_choose_iv");
-        choose_helper("[]", "[1, 2, 3, 4]", "ExhaustiveProvider_choose_v");
-        choose_helper("[]", "[]", "ExhaustiveProvider_choose_vi");
+    public void testChoose_Iterable_Iterable() {
+        choose_Iterable_Iterable_helper("[1, 2, 3, 4]", "[-1, -2, -3, -4]",
+                "ExhaustiveProvider_choose_Iterable_Iterable_i");
+        choose_Iterable_Iterable_helper("[1, 2, null, 4]", "[-1, -2, -3, -4]",
+                "ExhaustiveProvider_choose_Iterable_Iterable_ii");
+        choose_Iterable_Iterable_helper("[1, 2]", "[-1, -2, -3, -4]",
+                "ExhaustiveProvider_choose_Iterable_Iterable_iii");
+        choose_Iterable_Iterable_helper("[1, 2, 3, 4]", "[-1, -2]", "ExhaustiveProvider_choose_Iterable_Iterable_iv");
+        choose_Iterable_Iterable_helper("[]", "[1, 2, 3, 4]", "ExhaustiveProvider_choose_Iterable_Iterable_v");
+        choose_Iterable_Iterable_helper("[]", "[]", "ExhaustiveProvider_choose_Iterable_Iterable_vi");
         simpleProviderHelper(EP.choose(EP.naturalIntegers(), Arrays.asList(-1, -2, -3, -4)),
-                "ExhaustiveProvider_choose_vii");
+                "ExhaustiveProvider_choose_Iterable_Iterable_vii");
         simpleProviderHelper(EP.choose(Arrays.asList(-1, -2, -3, -4), EP.naturalIntegers()),
-                "ExhaustiveProvider_choose_viii");
+                "ExhaustiveProvider_choose_Iterable_Iterable_viii");
         simpleProviderHelper(EP.choose(EP.positiveIntegers(), EP.negativeIntegers()),
-                "ExhaustiveProvider_choose_ix");
+                "ExhaustiveProvider_choose_Iterable_Iterable_ix");
+    }
+
+    private static void choose_Iterable_helper(@NotNull String input, @NotNull String output) {
+        aeqitLog(EP.choose(toList(map(is -> is, readIntegerListWithNullsLists(input)))), output);
+    }
+
+    private static void choose_Iterable_fail_helper(@NotNull String input) {
+        try {
+            toList(EP.choose(toList(map(is -> is, readIntegerListWithNullsListsWithNulls(input)))));
+            fail();
+        } catch (NullPointerException ignored) {}
+    }
+
+    @Test
+    public void choose_Iterable() {
+        choose_Iterable_helper("[]", "ExhaustiveProvider_choose_Iterable_i");
+        choose_Iterable_helper("[[]]", "ExhaustiveProvider_choose_Iterable_ii");
+        choose_Iterable_helper("[[1, 2, 3], [-1, -2, -3]]", "ExhaustiveProvider_choose_Iterable_iii");
+        choose_Iterable_helper("[[1, 2, 3], [-1, -2, -3, -4]]", "ExhaustiveProvider_choose_Iterable_iv");
+        choose_Iterable_helper("[[1, 2, 3, 4], [-1, -2, -3]]", "ExhaustiveProvider_choose_Iterable_v");
+        choose_Iterable_helper("[[1, 2, 3], [10, 11], [100, null, 102, 103]]",
+                "ExhaustiveProvider_choose_Iterable_vi");
+
+        choose_Iterable_fail_helper("[[1, 2], null]");
     }
 
     private static void cartesianProduct_helper(@NotNull String input, @NotNull String output) {
@@ -6036,90 +6713,131 @@ public strictfp class ExhaustiveProviderTest {
         stringSubsetsWithChar_char_helper('#', "ExhaustiveProvider_subsetsWithChar_char_ii");
     }
 
-    //todo continue cleanup
+    private static void listsWithSublistsHelper(
+            @NotNull Iterable<List<Integer>> sublists,
+            @NotNull Iterable<Integer> xs,
+            @NotNull String output
+    ) {
+        simpleProviderHelper(EP.listsWithSublists(sublists, xs), output);
+    }
 
-    @Test
-    public void testListsWithSublists() {
-        simpleProviderHelper(EP.listsWithSublists(Collections.emptyList(), Collections.singletonList(0)),
-                "ExhaustiveProvider_listsWithSublists_i");
-        simpleProviderHelper(EP.listsWithSublists(Collections.emptyList(), Collections.emptyList()),
-                "ExhaustiveProvider_listsWithSublists_ii");
+    private static void listsWithSublistsHelper(@NotNull String sublists, @NotNull String xs, @NotNull String output) {
         simpleProviderHelper(
-                EP.listsWithSublists(Collections.singletonList(Collections.emptyList()), Collections.emptyList()),
-                "ExhaustiveProvider_listsWithSublists_iii"
+                EP.listsWithSublists(readIntegerListWithNullsLists(sublists), readIntegerList(xs)),
+                output
         );
-        simpleProviderHelper(
-                EP.listsWithSublists(Collections.singletonList(Collections.emptyList()), Collections.singletonList(0)),
-                "ExhaustiveProvider_listsWithSublists_iv"
-        );
-        simpleProviderHelper(
-                EP.listsWithSublists(Collections.singletonList(Arrays.asList(1, 0, 1)), Collections.singletonList(0)),
-                "ExhaustiveProvider_listsWithSublists_v"
-        );
-        simpleProviderHelper(
-                EP.listsWithSublists(Collections.singletonList(Arrays.asList(1, 0, 1)), EP.positiveIntegers()),
-                "ExhaustiveProvider_listsWithSublists_vi"
-        );
-        simpleProviderHelper(
-                EP.listsWithSublists(
-                        map(i -> Arrays.asList(i, i), EP.positiveIntegers()),
-                        Collections.singletonList(0)
-                ),
-                "ExhaustiveProvider_listsWithSublists_vii"
-        );
-        simpleProviderHelper(
-                EP.listsWithSublists(map(i -> Arrays.asList(i, i), EP.positiveIntegers()), EP.positiveIntegers()),
-                "ExhaustiveProvider_listsWithSublists_viii"
-        );
+    }
+
+    private static void listsWithSublists_fail_helper(@NotNull String sublists, @NotNull String xs) {
         try {
-            toList(EP.listsWithSublists(Collections.singletonList(null), Collections.singletonList(0)));
+            EP.listsWithSublists(readIntegerListWithNullsListsWithNulls(sublists), readIntegerListWithNulls(xs));
             fail();
         } catch (NullPointerException ignored) {}
     }
 
     @Test
+    public void testListsWithSublists() {
+        listsWithSublistsHelper("[]", "[0]", "ExhaustiveProvider_listsWithSublists_i");
+        listsWithSublistsHelper("[]", "[]", "ExhaustiveProvider_listsWithSublists_ii");
+        listsWithSublistsHelper("[[]]", "[]", "ExhaustiveProvider_listsWithSublists_iii");
+        listsWithSublistsHelper("[[]]", "[0]", "ExhaustiveProvider_listsWithSublists_iv");
+        listsWithSublistsHelper("[[1, 0, 1]]", "[0]", "ExhaustiveProvider_listsWithSublists_v");
+        listsWithSublistsHelper(Collections.singletonList(Arrays.asList(1, 0, 1)), EP.positiveIntegers(),
+                "ExhaustiveProvider_listsWithSublists_vi");
+        listsWithSublistsHelper(map(i -> Arrays.asList(i, i), EP.positiveIntegers()), Collections.singletonList(0),
+                "ExhaustiveProvider_listsWithSublists_vii");
+        listsWithSublistsHelper(map(i -> Arrays.asList(i, i), EP.positiveIntegers()), EP.positiveIntegers(),
+                "ExhaustiveProvider_listsWithSublists_viii");
+
+        listsWithSublists_fail_helper("[null]", "[0]");
+    }
+
+    private static void stringsWithSubstrings_Iterable_String_String_helper(
+            @NotNull Iterable<String> substrings,
+            @NotNull String s,
+            @NotNull String output
+    ) {
+        simpleProviderHelper(EP.stringsWithSubstrings(substrings, s), output);
+    }
+
+    private static void stringsWithSubstrings_Iterable_String_String_helper(
+            @NotNull String substrings,
+            @NotNull String s,
+            @NotNull String output
+    ) {
+        simpleProviderHelper(EP.stringsWithSubstrings(readStringList(substrings), s), output);
+    }
+
+    private static void stringsWithSubstrings_Iterable_String_String_fail_helper(
+            @NotNull Iterable<String> substrings,
+            @NotNull String s
+    ) {
+        try {
+            EP.stringsWithSubstrings(substrings, s);
+            fail();
+        } catch (NullPointerException | IllegalArgumentException ignored) {}
+    }
+
+    @Test
     public void testStringsWithSubstrings_Iterable_String_String() {
-        simpleProviderHelper(EP.stringsWithSubstrings(Collections.emptyList(), ""),
+        stringsWithSubstrings_Iterable_String_String_helper("[]", "",
                 "ExhaustiveProvider_stringsWithSubstrings_Iterable_String_String_i");
-        simpleProviderHelper(EP.stringsWithSubstrings(Collections.emptyList(), charsToString(range('a', 'z'))),
+        stringsWithSubstrings_Iterable_String_String_helper("[]", charsToString(EP.rangeIncreasing('a', 'z')),
                 "ExhaustiveProvider_stringsWithSubstrings_Iterable_String_String_ii");
-        simpleProviderHelper(EP.stringsWithSubstrings(Collections.singletonList(""), ""),
+        stringsWithSubstrings_Iterable_String_String_helper(Collections.singletonList(""), "",
                 "ExhaustiveProvider_stringsWithSubstrings_Iterable_String_String_iii");
-        simpleProviderHelper(
-                EP.stringsWithSubstrings(Collections.singletonList(""), charsToString(range('a', 'z'))),
+        stringsWithSubstrings_Iterable_String_String_helper(
+                Collections.singletonList(""),
+                charsToString(EP.rangeIncreasing('a', 'z')),
                 "ExhaustiveProvider_stringsWithSubstrings_Iterable_String_String_iv"
         );
-        simpleProviderHelper(
-                EP.stringsWithSubstrings(Collections.singletonList("cat"), charsToString(range('a', 'z'))),
+        stringsWithSubstrings_Iterable_String_String_helper(
+                Collections.singletonList("cat"),
+                charsToString(EP.rangeIncreasing('a', 'z')),
                 "ExhaustiveProvider_stringsWithSubstrings_Iterable_String_String_v"
         );
-        simpleProviderHelper(
-                EP.stringsWithSubstrings(
-                        map(d -> Double.toString(d), EP.positiveDoubles()),
-                        charsToString(range('a', 'z'))
-                ),
+        stringsWithSubstrings_Iterable_String_String_helper(
+                map(d -> Double.toString(d), EP.positiveDoubles()),
+                charsToString(EP.rangeIncreasing('a', 'z')),
                 "ExhaustiveProvider_stringsWithSubstrings_Iterable_String_String_vi"
         );
+
+        stringsWithSubstrings_Iterable_String_String_fail_helper(
+                Collections.singletonList(null),
+                charsToString(EP.rangeIncreasing('a', 'z'))
+        );
+    }
+
+    private static void stringsWithSubstrings_Iterable_String_helper(
+            @NotNull Iterable<String> input,
+            @NotNull String output
+    ) {
+        simpleProviderHelper(EP.stringsWithSubstrings(input), output);
+    }
+
+    private static void stringsWithSubstrings_Iterable_String_helper(@NotNull String input, @NotNull String output) {
+        simpleProviderHelper(EP.stringsWithSubstrings(readStringList(input)), output);
+    }
+
+    private static void stringsWithSubstrings_Iterable_String_fail_helper(@NotNull String input) {
         try {
-            toList(EP.stringsWithSubstrings(Collections.singletonList(null), charsToString(range('a', 'z'))));
+            toList(EP.stringsWithSubstrings(readStringListWithNulls(input)));
             fail();
         } catch (NullPointerException | IllegalArgumentException ignored) {}
     }
 
     @Test
     public void testStringsWithSubstrings_Iterable_String() {
-        simpleProviderHelper(EP.stringsWithSubstrings(Collections.emptyList()),
+        stringsWithSubstrings_Iterable_String_helper("[]",
                 "ExhaustiveProvider_stringsWithSubstrings_Iterable_String_i");
-        simpleProviderHelper(EP.stringsWithSubstrings(Collections.singletonList("")),
+        stringsWithSubstrings_Iterable_String_helper(Collections.singletonList(""),
                 "ExhaustiveProvider_stringsWithSubstrings_Iterable_String_ii");
-        simpleProviderHelper(EP.stringsWithSubstrings(Collections.singletonList("cat")),
+        stringsWithSubstrings_Iterable_String_helper("[cat]",
                 "ExhaustiveProvider_stringsWithSubstrings_Iterable_String_iii");
-        simpleProviderHelper(EP.stringsWithSubstrings(map(d -> Double.toString(d), EP.positiveDoubles())),
+        stringsWithSubstrings_Iterable_String_helper(map(d -> Double.toString(d), EP.positiveDoubles()),
                 "ExhaustiveProvider_stringsWithSubstrings_Iterable_String_iv");
-        try {
-            toList(EP.stringsWithSubstrings(Collections.singletonList(null)));
-            fail();
-        } catch (NullPointerException | IllegalArgumentException ignored) {}
+
+        stringsWithSubstrings_Iterable_String_fail_helper("[null]");
     }
 
     private static void maps_helper(@NotNull String keys, @NotNull Iterable<Integer> values, @NotNull String output) {
@@ -6163,7 +6881,9 @@ public strictfp class ExhaustiveProviderTest {
             int tertiaryScale,
             @NotNull String output
     ) {
-        simpleProviderHelper(EP.randomProvidersFixedScales(scale, secondaryScale, tertiaryScale), output);
+        Iterable<RandomProvider> rps = EP.randomProvidersFixedScales(scale, secondaryScale, tertiaryScale);
+        take(TINY_LIMIT, rps).forEach(RandomProvider::validate);
+        simpleProviderHelper(rps, output);
     }
 
     @Test
@@ -6175,24 +6895,30 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testRandomProvidersDefault() {
-        simpleProviderHelper(EP.randomProvidersDefault(), "ExhaustiveProvider_randomProvidersDefault");
+        Iterable<RandomProvider> rps = EP.randomProvidersDefault();
+        take(TINY_LIMIT, rps).forEach(RandomProvider::validate);
+        simpleProviderHelper(rps, "ExhaustiveProvider_randomProvidersDefault");
     }
 
     @Test
     public void testRandomProvidersDefaultSecondaryAndTertiaryScale() {
-        simpleProviderHelper(EP.randomProvidersDefaultSecondaryAndTertiaryScale(),
-                "ExhaustiveProvider_randomProviderDefaultSecondaryAndTertiaryScale");
+        Iterable<RandomProvider> rps = EP.randomProvidersDefaultSecondaryAndTertiaryScale();
+        take(TINY_LIMIT, rps).forEach(RandomProvider::validate);
+        simpleProviderHelper(rps, "ExhaustiveProvider_randomProviderDefaultSecondaryAndTertiaryScale");
     }
 
     @Test
     public void testRandomProvidersDefaultTertiaryScale() {
-        simpleProviderHelper(EP.randomProvidersDefaultTertiaryScale(),
-                "ExhaustiveProvider_randomProvidersDefaultTertiaryScale");
+        Iterable<RandomProvider> rps = EP.randomProvidersDefaultTertiaryScale();
+        take(TINY_LIMIT, rps).forEach(RandomProvider::validate);
+        simpleProviderHelper(rps, "ExhaustiveProvider_randomProvidersDefaultTertiaryScale");
     }
 
     @Test
     public void testRandomProviders() {
-        simpleProviderHelper(EP.randomProviders(), "ExhaustiveProvider_randomProviders");
+        Iterable<RandomProvider> rps = EP.randomProviders();
+        take(TINY_LIMIT, rps).forEach(RandomProvider::validate);
+        simpleProviderHelper(rps, "ExhaustiveProvider_randomProviders");
     }
 
     @Test
@@ -6230,6 +6956,14 @@ public strictfp class ExhaustiveProviderTest {
     private static @NotNull List<List<Integer>> readIntegerListWithNullsListsWithNulls(@NotNull String s) {
         return Readers.readListWithNullsStrict(Readers.readListWithNullsStrict(Readers::readIntegerStrict))
                 .apply(s).get();
+    }
+
+    private static @NotNull List<String> readStringList(@NotNull String s) {
+        return Readers.readListStrict(Readers::readStringStrict).apply(s).get();
+    }
+
+    private static @NotNull List<String> readStringListWithNulls(@NotNull String s) {
+        return Readers.readListWithNullsStrict(Readers::readStringStrict).apply(s).get();
     }
 }
 // @formatter:on

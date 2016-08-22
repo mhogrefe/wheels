@@ -344,6 +344,105 @@ public abstract strictfp class IterableProvider {
     }
 
     /**
+     * Generates {@code Byte}s greater than or equal to a given value, in increasing order.
+     *
+     * @param a the inclusive lower bound of the generated {@code Byte}s
+     */
+    public @NotNull Iterable<Byte> rangeUpIncreasing(byte a) {
+        return rangeUp(a);
+    }
+
+    /**
+     * Generates {@code Short}s greater than or equal to a given value, in increasing order.
+     *
+     * @param a the inclusive lower bound of the generated {@code Short}s
+     */
+    public @NotNull Iterable<Short> rangeUpIncreasing(short a) {
+        return rangeUp(a);
+    }
+
+    /**
+     * Generates {@code Integer}s greater than or equal to a given value, in increasing order.
+     *
+     * @param a the inclusive lower bound of the generated {@code Integer}s
+     */
+    public @NotNull Iterable<Integer> rangeUpIncreasing(int a) {
+        return rangeUp(a);
+    }
+
+    /**
+     * Generates {@code Long}s greater than or equal to a given value, in increasing order.
+     *
+     * @param a the inclusive lower bound of the generated {@code Long}s
+     */
+    public @NotNull Iterable<Long> rangeUpIncreasing(long a) {
+        return rangeUp(a);
+    }
+
+    /**
+     * Generates {@code BigInteger}s greater than or equal to a given value, in increasing order.
+     *
+     * @param a the inclusive lower bound of the generated {@code BigInteger}s
+     */
+    public @NotNull Iterable<BigInteger> rangeUpIncreasing(@NotNull BigInteger a) {
+        return rangeUp(a);
+    }
+
+    /**
+     * Generates {@code Character}s greater than or equal to a given value, in increasing order.
+     *
+     * @param a the inclusive lower bound of the generated {@code Character}s
+     */
+    public @NotNull Iterable<Character> rangeUpIncreasing(char a) {
+        return rangeUp(a);
+    }
+
+    /**
+     * Generates {@code Byte}s greater than or equal to a given value, in decreasing order.
+     *
+     * @param a the inclusive lower bound of the generated {@code Byte}s
+     */
+    public @NotNull Iterable<Byte> rangeUpDecreasing(byte a) {
+        return rangeUp(a);
+    }
+
+    /**
+     * Generates {@code Short}s greater than or equal to a given value, in decreasing order.
+     *
+     * @param a the inclusive lower bound of the generated {@code Short}s
+     */
+    public @NotNull Iterable<Short> rangeUpDecreasing(short a) {
+        return rangeUp(a);
+    }
+
+    /**
+     * Generates {@code Integer}s greater than or equal to a given value, in decreasing order.
+     *
+     * @param a the inclusive lower bound of the generated {@code Integer}s
+     */
+    public @NotNull Iterable<Integer> rangeUpDecreasing(int a) {
+        return rangeUp(a);
+    }
+
+    /**
+     * Generates {@code Long}s greater than or equal to a given value, in decreasing order.
+     *
+     * @param a the inclusive lower bound of the generated {@code Long}s
+     */
+    public @NotNull Iterable<Long> rangeUpDecreasing(long a) {
+        return rangeUp(a);
+    }
+
+    /**
+     * Generates {@code Character}s greater than or equal to a given value, in decreasing order.
+     *
+     * @param a the inclusive lower bound of the generated {@code Character}s
+     */
+    public @NotNull Iterable<Character> rangeUpDecreasing(char a) {
+        return rangeUp(a);
+    }
+
+    /**
      * Generates {@code Byte}s greater than or equal to a given value.
      *
      * @param a the inclusive lower bound of the generated {@code Byte}s
@@ -386,6 +485,105 @@ public abstract strictfp class IterableProvider {
     public abstract @NotNull Iterable<Character> rangeUp(char a);
 
     /**
+     * Generates {@code Byte}s less than or equal to a given value, in increasing order.
+     *
+     * @param a the inclusive upper bound of the generated {@code Byte}s
+     */
+    public @NotNull Iterable<Byte> rangeDownIncreasing(byte a) {
+        return rangeDown(a);
+    }
+
+    /**
+     * Generates {@code Short}s less than or equal to a given value, in increasing order.
+     *
+     * @param a the inclusive upper bound of the generated {@code Short}s
+     */
+    public @NotNull Iterable<Short> rangeDownIncreasing(short a) {
+        return rangeDown(a);
+    }
+
+    /**
+     * Generates {@code Integer}s less than or equal to a given value, in increasing order.
+     *
+     * @param a the inclusive upper bound of the generated {@code Integer}s
+     */
+    public @NotNull Iterable<Integer> rangeDownIncreasing(int a) {
+        return rangeDown(a);
+    }
+
+    /**
+     * Generates {@code Long}s less than or equal to a given value, in increasing order.
+     *
+     * @param a the inclusive upper bound of the generated {@code Long}s
+     */
+    public @NotNull Iterable<Long> rangeDownIncreasing(long a) {
+        return rangeDown(a);
+    }
+
+    /**
+     * Generates {@code Character}s less than or equal to a given value, in increasing order.
+     *
+     * @param a the inclusive upper bound of the generated {@code Character}s
+     */
+    public @NotNull Iterable<Character> rangeDownIncreasing(char a) {
+        return rangeDown(a);
+    }
+
+    /**
+     * Generates {@code Byte}s less than or equal to a given value, in decreasing order.
+     *
+     * @param a the inclusive upper bound of the generated {@code Byte}s
+     */
+    public @NotNull Iterable<Byte> rangeDownDecreasing(byte a) {
+        return rangeDown(a);
+    }
+
+    /**
+     * Generates {@code Short}s less than or equal to a given value, in decreasing order.
+     *
+     * @param a the inclusive upper bound of the generated {@code Short}s
+     */
+    public @NotNull Iterable<Short> rangeDownDecreasing(short a) {
+        return rangeDown(a);
+    }
+
+    /**
+     * Generates {@code Integer}s less than or equal to a given value, in decreasing order.
+     *
+     * @param a the inclusive upper bound of the generated {@code Integer}s
+     */
+    public @NotNull Iterable<Integer> rangeDownDecreasing(int a) {
+        return rangeDown(a);
+    }
+
+    /**
+     * Generates {@code Long}s less than or equal to a given value, in decreasing order.
+     *
+     * @param a the inclusive upper bound of the generated {@code Long}s
+     */
+    public @NotNull Iterable<Long> rangeDownDecreasing(long a) {
+        return rangeDown(a);
+    }
+
+    /**
+     * Generates {@code BigInteger}s less than or equal to a given value, in decreasing order.
+     *
+     * @param a the inclusive upper bound of the generated {@code BigInteger}s
+     */
+    public @NotNull Iterable<BigInteger> rangeDownDecreasing(@NotNull BigInteger a) {
+        return rangeDown(a);
+    }
+
+    /**
+     * Generates {@code Character}s less than or equal to a given value, in decreasing order.
+     *
+     * @param a the inclusive upper bound of the generated {@code Character}s
+     */
+    public @NotNull Iterable<Character> rangeDownDecreasing(char a) {
+        return rangeDown(a);
+    }
+
+    /**
      * Generates {@code Byte}s less than or equal to a given value.
      *
      * @param a the inclusive upper bound of the generated {@code Byte}s
@@ -426,6 +624,126 @@ public abstract strictfp class IterableProvider {
      * @param a the inclusive upper bound of the generated {@code Character}s
      */
     public abstract @NotNull Iterable<Character> rangeDown(char a);
+
+    /**
+     * Generates {@code Byte}s between {@code a} and {@code b}, inclusive, in increasing order.
+     *
+     * @param a the inclusive lower bound of the generated {@code Byte}s
+     * @param b the inclusive upper bound of the generated {@code Byte}s
+     */
+    public @NotNull Iterable<Byte> rangeIncreasing(byte a, byte b) {
+        return range(a, b);
+    }
+
+    /**
+     * Generates {@code Short}s between {@code a} and {@code b}, inclusive, in increasing order.
+     *
+     * @param a the inclusive lower bound of the generated {@code Short}s
+     * @param b the inclusive upper bound of the generated {@code Short}s
+     */
+    public @NotNull Iterable<Short> rangeIncreasing(short a, short b) {
+        return range(a, b);
+    }
+
+    /**
+     * Generates {@code Integer}s between {@code a} and {@code b}, inclusive, in increasing order.
+     *
+     * @param a the inclusive lower bound of the generated {@code Integer}s
+     * @param b the inclusive upper bound of the generated {@code Integer}s
+     */
+    public @NotNull Iterable<Integer> rangeIncreasing(int a, int b) {
+        return range(a, b);
+    }
+
+    /**
+     * Generates {@code Long}s between {@code a} and {@code b}, inclusive, in increasing order.
+     *
+     * @param a the inclusive lower bound of the generated {@code Long}s
+     * @param b the inclusive upper bound of the generated {@code Long}s
+     */
+    public @NotNull Iterable<Long> rangeIncreasing(long a, long b) {
+        return range(a, b);
+    }
+
+    /**
+     * Generates {@code BigInteger}s between {@code a} and {@code b}, inclusive, in increasing order.
+     *
+     * @param a the inclusive lower bound of the generated {@code BigInteger}s
+     * @param b the inclusive upper bound of the generated {@code BigInteger}s
+     */
+    public @NotNull Iterable<BigInteger> rangeIncreasing(@NotNull BigInteger a, @NotNull BigInteger b) {
+        return range(a, b);
+    }
+
+    /**
+     * Generates {@code Character}s between {@code a} and {@code b}, inclusive, in increasing order.
+     *
+     * @param a the inclusive lower bound of the generated {@code Character}s
+     * @param b the inclusive upper bound of the generated {@code Character}s
+     */
+    public @NotNull Iterable<Character> rangeIncreasing(char a, char b) {
+        return range(a, b);
+    }
+
+    /**
+     * Generates {@code Byte}s between {@code a} and {@code b}, inclusive, in decreasing order.
+     *
+     * @param a the inclusive lower bound of the generated {@code Byte}s
+     * @param b the inclusive upper bound of the generated {@code Byte}s
+     */
+    public @NotNull Iterable<Byte> rangeDecreasing(byte a, byte b) {
+        return range(a, b);
+    }
+
+    /**
+     * Generates {@code Short}s between {@code a} and {@code b}, inclusive, in decreasing order.
+     *
+     * @param a the inclusive lower bound of the generated {@code Short}s
+     * @param b the inclusive upper bound of the generated {@code Short}s
+     */
+    public @NotNull Iterable<Short> rangeDecreasing(short a, short b) {
+        return range(a, b);
+    }
+
+    /**
+     * Generates {@code Integer}s between {@code a} and {@code b}, inclusive, in decreasing order.
+     *
+     * @param a the inclusive lower bound of the generated {@code Integer}s
+     * @param b the inclusive upper bound of the generated {@code Integer}s
+     */
+    public @NotNull Iterable<Integer> rangeDecreasing(int a, int b) {
+        return range(a, b);
+    }
+
+    /**
+     * Generates {@code Long}s between {@code a} and {@code b}, inclusive, in decreasing order.
+     *
+     * @param a the inclusive lower bound of the generated {@code Long}s
+     * @param b the inclusive upper bound of the generated {@code Long}s
+     */
+    public @NotNull Iterable<Long> rangeDecreasing(long a, long b) {
+        return range(a, b);
+    }
+
+    /**
+     * Generates {@code BigInteger}s between {@code a} and {@code b}, inclusive, in decreasing order.
+     *
+     * @param a the inclusive lower bound of the generated {@code BigInteger}s
+     * @param b the inclusive upper bound of the generated {@code BigInteger}s
+     */
+    public @NotNull Iterable<BigInteger> rangeDecreasing(@NotNull BigInteger a, @NotNull BigInteger b) {
+        return range(a, b);
+    }
+
+    /**
+     * Generates {@code Character}s between {@code a} and {@code b}, inclusive, in decreasing order.
+     *
+     * @param a the inclusive lower bound of the generated {@code Character}s
+     * @param b the inclusive upper bound of the generated {@code Character}s
+     */
+    public @NotNull Iterable<Character> rangeDecreasing(char a, char b) {
+        return range(a, b);
+    }
 
     /**
      * Generates {@code Byte}s between {@code a} and {@code b}, inclusive.
@@ -2476,6 +2794,14 @@ public abstract strictfp class IterableProvider {
     public @NotNull <T> Iterable<T> choose(@NotNull Iterable<T> as, @NotNull Iterable<T> bs) {
         return map(e -> e.whichSlot() == Either.Slot.A ? e.a() : e.b(), eithers(as, bs));
     }
+
+    /**
+     * Given a list of {@code Iterable}s, generates an {@code Iterable} containing the elements of all of them.
+     *
+     * @param xss the {@code Iterable}s
+     * @param <T> the type of the {@code Iterables}' elements
+     */
+    public abstract @NotNull <T> Iterable<T> choose(@NotNull List<Iterable<T>> xss);
 
     /**
      * Generates the Cartesian product of a {@code List} of {@code List}s, that is, all possible {@code List}s such

@@ -1,13 +1,10 @@
 package mho.wheels.ordering.comparators;
 
-import mho.wheels.ordering.Ordering;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.Optional;
-
-import static mho.wheels.ordering.Ordering.EQ;
 
 /**
  * Compares two {@code Iterable}s via shortlex order. First the lengths of the {@code Iterable}s are compared. If one
@@ -78,13 +75,15 @@ public final class ShortlexComparator<T extends Comparable<T>> implements Compar
         xsi = xs.iterator();
         ysi = ys.iterator();
         while (xsi.hasNext()) {
-            Ordering elementOrdering;
+            int elementCompare;
             if (elementComparator.isPresent()) {
-                elementOrdering = Ordering.compare(elementComparator.get(), xsi.next(), ysi.next());
+                elementCompare = elementComparator.get().compare(xsi.next(), ysi.next());
             } else {
-                elementOrdering = Ordering.compare(xsi.next(), ysi.next());
+                elementCompare = xsi.next().compareTo(ysi.next());
             }
-            if (elementOrdering != EQ) return elementOrdering.toInt();
+            if (elementCompare != 0) {
+                return elementCompare;
+            }
         }
         return 0;
     }

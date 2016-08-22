@@ -35,6 +35,932 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     private ExhaustiveProvider() {}
 
     /**
+     * An {@code Iterable} that generates all {@code Byte}s greater than or equal to {@code a} in increasing order.
+     * Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code byte}.</li>
+     *  <li>The result is a non-removable {@code Iterable} containing {@code Byte}s in increasing order.</li>
+     * </ul>
+     *
+     * Length is 2<sup>7</sup>–{@code a}
+     *
+     * @param a the inclusive lower bound of the generated elements
+     * @return {@code Byte}s greater than or equal to {@code a} in increasing order
+     */
+    @Override
+    public @NotNull Iterable<Byte> rangeUpIncreasing(byte a) {
+        return rangeIncreasing(a, Byte.MAX_VALUE);
+    }
+
+    /**
+     * An {@code Iterable} that generates all {@code Short}s greater than or equal to {@code a} in increasing order.
+     * Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code short}.</li>
+     *  <li>The result is a non-removable {@code Iterable} containing {@code Short}s in increasing order.</li>
+     * </ul>
+     *
+     * Length is 2<sup>15</sup>–{@code a}
+     *
+     * @param a the inclusive lower bound of the generated elements
+     * @return {@code Short}s greater than or equal to {@code a} in increasing order
+     */
+    @Override
+    public @NotNull Iterable<Short> rangeUpIncreasing(short a) {
+        return rangeIncreasing(a, Short.MAX_VALUE);
+    }
+
+    /**
+     * An {@code Iterable} that generates all {@code Integer}s greater than or equal to {@code a} in increasing order.
+     * Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code int}.</li>
+     *  <li>The result is a non-removable {@code Iterable} containing {@code Integer}s in increasing order.</li>
+     * </ul>
+     *
+     * Length is 2<sup>31</sup>–{@code a}
+     *
+     * @param a the inclusive lower bound of the generated elements
+     * @return {@code Integer}s greater than or equal to {@code a} in increasing order
+     */
+    @Override
+    public @NotNull Iterable<Integer> rangeUpIncreasing(int a) {
+        return rangeIncreasing(a, Integer.MAX_VALUE);
+    }
+
+    /**
+     * An {@code Iterable} that generates all {@code Long}s greater than or equal to {@code a} in increasing order.
+     * Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code long}.</li>
+     *  <li>The result is a non-removable {@code Iterable} containing {@code Long}s in increasing order.</li>
+     * </ul>
+     *
+     * Length is 2<sup>63</sup>–{@code a}
+     *
+     * @param a the inclusive lower bound of the generated elements
+     * @return {@code Long}s greater than or equal to {@code a} in increasing order
+     */
+    @Override
+    public @NotNull Iterable<Long> rangeUpIncreasing(long a) {
+        return rangeIncreasing(a, Long.MAX_VALUE);
+    }
+
+    /**
+     * An {@code Iterable} that generates all {@code BigInteger}s greater than or equal to {@code a} in increasing
+     * order. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code BigInteger}.</li>
+     *  <li>The result is a non-removable {@code Iterable} containing {@code BigInteger}s in increasing order.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param a the inclusive lower bound of the generated elements
+     * @return {@code BigInteger}s greater than or equal to {@code a} in increasing order
+     */
+    @Override
+    public @NotNull Iterable<BigInteger> rangeUpIncreasing(@NotNull BigInteger a) {
+        return iterate(i -> i.add(BigInteger.ONE), a);
+    }
+
+    /**
+     * An {@code Iterable} that generates all {@code Character}s greater than or equal to {@code a} in increasing
+     * order. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code char}.</li>
+     *  <li>The result is a non-removable {@code Iterable} containing {@code Character}s in increasing order.</li>
+     * </ul>
+     *
+     * Length is 2<sup>16</sup>–{@code a}
+     *
+     * @param a the inclusive lower bound of the generated elements
+     * @return {@code Character}s greater than or equal to {@code a} in increasing order
+     */
+    @Override
+    public @NotNull Iterable<Character> rangeUpIncreasing(char a) {
+        return rangeIncreasing(a, Character.MAX_VALUE);
+    }
+
+    /**
+     * An {@code Iterable} that generates all {@code Byte}s greater than or equal to {@code a} in decreasing order.
+     * Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code byte}.</li>
+     *  <li>The result is a non-removable {@code Iterable} containing {@code Byte}s in decreasing order.</li>
+     * </ul>
+     *
+     * Length is 2<sup>7</sup>–{@code a}
+     *
+     * @param a the inclusive lower bound of the generated elements
+     * @return {@code Byte}s greater than or equal to {@code a} in decreasing order
+     */
+    @Override
+    public @NotNull Iterable<Byte> rangeUpDecreasing(byte a) {
+        return rangeDecreasing(a, Byte.MAX_VALUE);
+    }
+
+    /**
+     * An {@code Iterable} that generates all {@code Short}s greater than or equal to {@code a} in decreasing order.
+     * Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code short}.</li>
+     *  <li>The result is a non-removable {@code Iterable} containing {@code Short}s in decreasing order.</li>
+     * </ul>
+     *
+     * Length is 2<sup>15</sup>–{@code a}
+     *
+     * @param a the inclusive lower bound of the generated elements
+     * @return {@code Short}s greater than or equal to {@code a} in decreasing order
+     */
+    @Override
+    public @NotNull Iterable<Short> rangeUpDecreasing(short a) {
+        return rangeDecreasing(a, Short.MAX_VALUE);
+    }
+
+    /**
+     * An {@code Iterable} that generates all {@code Integer}s greater than or equal to {@code a} in decreasing order.
+     * Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code int}.</li>
+     *  <li>The result is a non-removable {@code Iterable} containing {@code Integer}s in decreasing order.</li>
+     * </ul>
+     *
+     * Length is 2<sup>31</sup>–{@code a}
+     *
+     * @param a the inclusive lower bound of the generated elements
+     * @return {@code Integer}s greater than or equal to {@code a} in decreasing order
+     */
+    @Override
+    public @NotNull Iterable<Integer> rangeUpDecreasing(int a) {
+        return rangeDecreasing(a, Integer.MAX_VALUE);
+    }
+
+    /**
+     * An {@code Iterable} that generates all {@code Long}s greater than or equal to {@code a} in decreasing order.
+     * Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code long}.</li>
+     *  <li>The result is a non-removable {@code Iterable} containing {@code Long}s in decreasing order.</li>
+     * </ul>
+     *
+     * Length is 2<sup>63</sup>–{@code a}
+     *
+     * @param a the inclusive lower bound of the generated elements
+     * @return {@code Long}s greater than or equal to {@code a} in decreasing order
+     */
+    @Override
+    public @NotNull Iterable<Long> rangeUpDecreasing(long a) {
+        return rangeDecreasing(a, Long.MAX_VALUE);
+    }
+
+    /**
+     * An {@code Iterable} that generates all {@code Character}s greater than or equal to {@code a} in decreasing
+     * order. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code char}.</li>
+     *  <li>The result is a non-removable {@code Iterable} containing {@code Character}s in decreasing order.</li>
+     * </ul>
+     *
+     * Length is 2<sup>16</sup>–{@code a}
+     *
+     * @param a the inclusive lower bound of the generated elements
+     * @return {@code Character}s greater than or equal to {@code a} in decreasing order
+     */
+    @Override
+    public @NotNull Iterable<Character> rangeUpDecreasing(char a) {
+        return rangeDecreasing(a, Character.MAX_VALUE);
+    }
+
+    /**
+     * An {@code Iterable} that generates all {@code Byte}s less than or equal to {@code a} in increasing order. Does
+     * not support removal.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code byte}.</li>
+     *  <li>The result is a non-removable {@code Iterable} containing {@code Byte}s in increasing order.</li>
+     * </ul>
+     *
+     * Length is {@code a}+2<sup>7</sup>+1
+     *
+     * @param a the inclusive upper bound of the generated elements
+     * @return {@code Byte}s less than or equal to {@code a} in increasing order
+     */
+    @Override
+    public @NotNull Iterable<Byte> rangeDownIncreasing(byte a) {
+        return rangeIncreasing(Byte.MIN_VALUE, a);
+    }
+
+    /**
+     * An {@code Iterable} that generates all {@code Short}s less than or equal to {@code a} in increasing order. Does
+     * not support removal.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code short}.</li>
+     *  <li>The result is a non-removable {@code Iterable} containing {@code Short}s in increasing order.</li>
+     * </ul>
+     *
+     * Length is {@code a}+2<sup>15</sup>+1
+     *
+     * @param a the inclusive upper bound of the generated elements
+     * @return {@code Short}s less than or equal to {@code a} in increasing order
+     */
+    @Override
+    public @NotNull Iterable<Short> rangeDownIncreasing(short a) {
+        return rangeIncreasing(Short.MIN_VALUE, a);
+    }
+
+    /**
+     * An {@code Iterable} that generates all {@code Integer}s less than or equal to {@code a} in increasing order.
+     * Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code int}.</li>
+     *  <li>The result is a non-removable {@code Iterable} containing {@code Integer}s in increasing order.</li>
+     * </ul>
+     *
+     * Length is {@code a}+2<sup>31</sup>+1
+     *
+     * @param a the inclusive upper bound of the generated elements
+     * @return {@code Integer}s less than or equal to {@code a} in increasing order
+     */
+    @Override
+    public @NotNull Iterable<Integer> rangeDownIncreasing(int a) {
+        return rangeIncreasing(Integer.MIN_VALUE, a);
+    }
+
+    /**
+     * An {@code Iterable} that generates all {@code Long}s less than or equal to {@code a} in increasing order. Does
+     * not support removal.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code long}.</li>
+     *  <li>The result is a non-removable {@code Iterable} containing {@code Long}s in increasing order.</li>
+     * </ul>
+     *
+     * Length is {@code a}+2<sup>63</sup>+1
+     *
+     * @param a the inclusive upper bound of the generated elements
+     * @return {@code Long}s less than or equal to {@code a} in increasing order
+     */
+    @Override
+    public @NotNull Iterable<Long> rangeDownIncreasing(long a) {
+        return rangeIncreasing(Long.MIN_VALUE, a);
+    }
+
+    /**
+     * An {@code Iterable} that generates all {@code Character}s less than or equal to {@code a} in increasing order.
+     * Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code char}.</li>
+     *  <li>The result is a non-removable {@code Iterable} containing {@code Character}s in increasing order.</li>
+     * </ul>
+     *
+     * Length is {@code a}+1
+     *
+     * @param a the inclusive upper bound of the generated elements
+     * @return {@code Character}s less than or equal to {@code a} in increasing order
+     */
+    @Override
+    public @NotNull Iterable<Character> rangeDownIncreasing(char a) {
+        return rangeIncreasing(Character.MIN_VALUE, a);
+    }
+
+    /**
+     * An {@code Iterable} that generates all {@code Byte}s less than or equal to {@code a} in decreasing order. Does
+     * not support removal.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code byte}.</li>
+     *  <li>The result is a non-removable {@code Iterable} containing {@code Byte}s in decreasing order.</li>
+     * </ul>
+     *
+     * Length is {@code a}+2<sup>7</sup>+1
+     *
+     * @param a the inclusive upper bound of the generated elements
+     * @return {@code Byte}s less than or equal to {@code a} in decreasing order
+     */
+    @Override
+    public @NotNull Iterable<Byte> rangeDownDecreasing(byte a) {
+        return rangeDecreasing(Byte.MIN_VALUE, a);
+    }
+
+    /**
+     * An {@code Iterable} that generates all {@code Short}s less than or equal to {@code a} in decreasing order. Does
+     * not support removal.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code short}.</li>
+     *  <li>The result is a non-removable {@code Iterable} containing {@code Short}s in decreasing order.</li>
+     * </ul>
+     *
+     * Length is {@code a}+2<sup>15</sup>+1
+     *
+     * @param a the inclusive upper bound of the generated elements
+     * @return {@code Short}s less than or equal to {@code a} in decreasing order
+     */
+    @Override
+    public @NotNull Iterable<Short> rangeDownDecreasing(short a) {
+        return rangeDecreasing(Short.MIN_VALUE, a);
+    }
+
+    /**
+     * An {@code Iterable} that generates all {@code Integer}s less than or equal to {@code a} in decreasing order.
+     * Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code int}.</li>
+     *  <li>The result is a non-removable {@code Iterable} containing {@code Integer}s in decreasing order.</li>
+     * </ul>
+     *
+     * Length is {@code a}+2<sup>31</sup>+1
+     *
+     * @param a the inclusive upper bound of the generated elements
+     * @return {@code Integer}s less than or equal to {@code a} in decreasing order
+     */
+    @Override
+    public @NotNull Iterable<Integer> rangeDownDecreasing(int a) {
+        return rangeDecreasing(Integer.MIN_VALUE, a);
+    }
+
+    /**
+     * An {@code Iterable} that generates all {@code Long}s less than or equal to {@code a} in decreasing order. Does
+     * not support removal.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code long}.</li>
+     *  <li>The result is a non-removable {@code Iterable} containing {@code Long}s in decreasing order.</li>
+     * </ul>
+     *
+     * Length is {@code a}+2<sup>63</sup>+1
+     *
+     * @param a the inclusive upper bound of the generated elements
+     * @return {@code Long}s less than or equal to {@code a} in decreasing order
+     */
+    @Override
+    public @NotNull Iterable<Long> rangeDownDecreasing(long a) {
+        return rangeDecreasing(Long.MIN_VALUE, a);
+    }
+
+    /**
+     * An {@code Iterable} that generates all {@code BigInteger}s less than or equal to {@code a} in decreasing order.
+     * Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code BigInteger}.</li>
+     *  <li>The result is a non-removable {@code Iterable} containing {@code BigInteger}s in decreasing order.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param a the inclusive upper bound of the generated elements
+     * @return {@code BigInteger}s less than or equal to {@code a} in decreasing order
+     */
+    @Override
+    public @NotNull Iterable<BigInteger> rangeDownDecreasing(@NotNull BigInteger a) {
+        return iterate(i -> i.subtract(BigInteger.ONE), a);
+    }
+
+    /**
+     * An {@code Iterable} that generates all {@code Character}s less than or equal to {@code a} in decreasing order.
+     * Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code char}.</li>
+     *  <li>The result is a non-removable {@code Iterable} containing {@code Character}s in decreasing order.</li>
+     * </ul>
+     *
+     * Length is {@code a}+1
+     *
+     * @param a the inclusive upper bound of the generated elements
+     * @return {@code Character}s less than or equal to {@code a} in decreasing order
+     */
+    @Override
+    public @NotNull Iterable<Character> rangeDownDecreasing(char a) {
+        return rangeDecreasing(Character.MIN_VALUE, a);
+    }
+
+    /**
+     * An {@code Iterable} that generates all {@code Byte}s between {@code a} and {@code b}, inclusive, in increasing
+     * order. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code byte}.</li>
+     *  <li>{@code b} may be any {@code byte}.</li>
+     *  <li>{@code a} must be less than or equal to {@code b}.</li>
+     *  <li>The result is a non-removable {@code Iterable} containing {@code Byte}s in increasing order.</li>
+     * </ul>
+     *
+     * Length is {@code b}–{@code a}+1
+     *
+     * @param a the inclusive lower bound of the generated elements
+     * @param b the inclusive upper bound of the generated elements
+     * @return {@code Byte}s between {@code a} and {@code b}, inclusive, in increasing order
+     */
+    @Override
+    public @NotNull Iterable<Byte> rangeIncreasing(byte a, byte b) {
+        if (a > b) {
+            throw new IllegalArgumentException("a must be less than or equal to b. a: " + a + ", b: " + b);
+        }
+        return () -> new NoRemoveIterator<Byte>() {
+            private byte x = a;
+            private boolean reachedEnd;
+
+            @Override
+            public boolean hasNext() {
+                return !reachedEnd;
+            }
+
+            @Override
+            public Byte next() {
+                if (reachedEnd) {
+                    throw new NoSuchElementException();
+                }
+                reachedEnd = x == b;
+                return x++;
+            }
+        };
+    }
+
+    /**
+     * An {@code Iterable} that generates all {@code Short}s between {@code a} and {@code b}, inclusive, in increasing
+     * order. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code short}.</li>
+     *  <li>{@code b} may be any {@code short}.</li>
+     *  <li>{@code a} must be less than or equal to {@code b}.</li>
+     *  <li>The result is a non-removable {@code Iterable} containing {@code Short}s in increasing order.</li>
+     * </ul>
+     *
+     * Length is {@code b}–{@code a}+1
+     *
+     * @param a the inclusive lower bound of the generated elements
+     * @param b the inclusive upper bound of the generated elements
+     * @return {@code Short}s between {@code a} and {@code b}, inclusive, in increasing order
+     */
+    @Override
+    public @NotNull Iterable<Short> rangeIncreasing(short a, short b) {
+        if (a > b) {
+            throw new IllegalArgumentException("a must be less than or equal to b. a: " + a + ", b: " + b);
+        }
+        return () -> new NoRemoveIterator<Short>() {
+            private short x = a;
+            private boolean reachedEnd;
+
+            @Override
+            public boolean hasNext() {
+                return !reachedEnd;
+            }
+
+            @Override
+            public Short next() {
+                if (reachedEnd) {
+                    throw new NoSuchElementException();
+                }
+                reachedEnd = x == b;
+                return x++;
+            }
+        };
+    }
+
+    /**
+     * An {@code Iterable} that generates all {@code Integer}s between {@code a} and {@code b}, inclusive, in
+     * increasing order. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code int}.</li>
+     *  <li>{@code b} may be any {@code int}.</li>
+     *  <li>{@code a} must be less than or equal to {@code b}.</li>
+     *  <li>The result is a non-removable {@code Iterable} containing {@code Integer}s in increasing order.</li>
+     * </ul>
+     *
+     * Length is {@code b}–{@code a}+1
+     *
+     * @param a the inclusive lower bound of the generated elements
+     * @param b the inclusive upper bound of the generated elements
+     * @return {@code Integer}s between {@code a} and {@code b}, inclusive, in increasing order
+     */
+    @Override
+    public @NotNull Iterable<Integer> rangeIncreasing(int a, int b) {
+        if (a > b) {
+            throw new IllegalArgumentException("a must be less than or equal to b. a: " + a + ", b: " + b);
+        }
+        return () -> new NoRemoveIterator<Integer>() {
+            private int x = a;
+            private boolean reachedEnd;
+
+            @Override
+            public boolean hasNext() {
+                return !reachedEnd;
+            }
+
+            @Override
+            public Integer next() {
+                if (reachedEnd) {
+                    throw new NoSuchElementException();
+                }
+                reachedEnd = x == b;
+                return x++;
+            }
+        };
+    }
+
+    /**
+     * An {@code Iterable} that generates all {@code Long}s between {@code a} and {@code b}, inclusive, in increasing
+     * order. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code long}.</li>
+     *  <li>{@code b} may be any {@code long}.</li>
+     *  <li>{@code a} must be less than or equal to {@code b}.</li>
+     *  <li>The result is a non-removable {@code Iterable} containing {@code Long}s in increasing order.</li>
+     * </ul>
+     *
+     * Length is {@code b}–{@code a}+1
+     *
+     * @param a the inclusive lower bound of the generated elements
+     * @param b the inclusive upper bound of the generated elements
+     * @return {@code Long}s between {@code a} and {@code b}, inclusive, in increasing order
+     */
+    @Override
+    public @NotNull Iterable<Long> rangeIncreasing(long a, long b) {
+        if (a > b) {
+            throw new IllegalArgumentException("a must be less than or equal to b. a: " + a + ", b: " + b);
+        }
+        return () -> new NoRemoveIterator<Long>() {
+            private long x = a;
+            private boolean reachedEnd;
+
+            @Override
+            public boolean hasNext() {
+                return !reachedEnd;
+            }
+
+            @Override
+            public Long next() {
+                if (reachedEnd) {
+                    throw new NoSuchElementException();
+                }
+                reachedEnd = x == b;
+                return x++;
+            }
+        };
+    }
+
+    /**
+     * An {@code Iterable} that generates all {@code BigInteger}s between {@code a} and {@code b}, inclusive, in
+     * increasing order. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code BigInteger}.</li>
+     *  <li>{@code b} may be any {@code BigInteger}.</li>
+     *  <li>{@code a} must be less than or equal to {@code b}.</li>
+     *  <li>The result is a non-removable {@code Iterable} containing {@code BigInteger}s in increasing order.</li>
+     * </ul>
+     *
+     * Length is {@code b}–{@code a}+1
+     *
+     * @param a the inclusive lower bound of the generated elements
+     * @param b the inclusive upper bound of the generated elements
+     * @return {@code BigInteger}s between {@code a} and {@code b}, inclusive, in increasing order
+     */
+    @Override
+    public @NotNull Iterable<BigInteger> rangeIncreasing(@NotNull BigInteger a, @NotNull BigInteger b) {
+        if (gt(a, b)) {
+            throw new IllegalArgumentException("a must be less than or equal to b. a: " + a + ", b: " + b);
+        }
+        return () -> new NoRemoveIterator<BigInteger>() {
+            private @NotNull BigInteger x = a;
+            private boolean reachedEnd;
+
+            @Override
+            public boolean hasNext() {
+                return !reachedEnd;
+            }
+
+            @Override
+            public @NotNull BigInteger next() {
+                if (reachedEnd) {
+                    throw new NoSuchElementException();
+                }
+                reachedEnd = x.equals(b);
+                BigInteger current = x;
+                x = x.add(BigInteger.ONE);
+                return current;
+            }
+        };
+    }
+
+    /**
+     * An {@code Iterable} that generates all {@code Character}s between {@code a} and {@code b}, inclusive, in
+     * increasing order. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code char}.</li>
+     *  <li>{@code b} may be any {@code char}.</li>
+     *  <li>{@code a} must be less than or equal to {@code b}.</li>
+     *  <li>The result is a non-removable {@code Iterable} containing {@code Character}s in increasing order.</li>
+     * </ul>
+     *
+     * Length is {@code b}–{@code a}+1
+     *
+     * @param a the inclusive lower bound of the generated elements
+     * @param b the inclusive upper bound of the generated elements
+     * @return {@code Character}s between {@code a} and {@code b}, inclusive, in increasing order
+     */
+    @Override
+    public @NotNull Iterable<Character> rangeIncreasing(char a, char b) {
+        if (a > b) {
+            throw new IllegalArgumentException("a must be less than or equal to b. a: " + a + ", b: " + b);
+        }
+        return () -> new NoRemoveIterator<Character>() {
+            private char x = a;
+            private boolean reachedEnd;
+
+            @Override
+            public boolean hasNext() {
+                return !reachedEnd;
+            }
+
+            @Override
+            public Character next() {
+                if (reachedEnd) {
+                    throw new NoSuchElementException();
+                }
+                reachedEnd = x == b;
+                return x++;
+            }
+        };
+    }
+
+    /**
+     * An {@code Iterable} that generates all {@code Byte}s between {@code a} and {@code b}, inclusive, in decreasing
+     * order. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code byte}.</li>
+     *  <li>{@code b} may be any {@code byte}.</li>
+     *  <li>{@code a} must be less than or equal to {@code b}.</li>
+     *  <li>The result is a non-removable {@code Iterable} containing {@code Byte}s in decreasing order.</li>
+     * </ul>
+     *
+     * Length is {@code b}–{@code a}+1
+     *
+     * @param a the inclusive lower bound of the generated elements
+     * @param b the inclusive upper bound of the generated elements
+     * @return {@code Byte}s between {@code a} and {@code b}, inclusive, in decreasing order
+     */
+    @Override
+    public @NotNull Iterable<Byte> rangeDecreasing(byte a, byte b) {
+        if (a > b) {
+            throw new IllegalArgumentException("a must be less than or equal to b. a: " + a + ", b: " + b);
+        }
+        return () -> new NoRemoveIterator<Byte>() {
+            private byte x = b;
+            private boolean reachedEnd;
+
+            @Override
+            public boolean hasNext() {
+                return !reachedEnd;
+            }
+
+            @Override
+            public Byte next() {
+                if (reachedEnd) {
+                    throw new NoSuchElementException();
+                }
+                reachedEnd = x == a;
+                return x--;
+            }
+        };
+    }
+
+    /**
+     * An {@code Iterable} that generates all {@code Short}s between {@code a} and {@code b}, inclusive, in decreasing
+     * order. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code short}.</li>
+     *  <li>{@code b} may be any {@code short}.</li>
+     *  <li>{@code a} must be less than or equal to {@code b}.</li>
+     *  <li>The result is a non-removable {@code Iterable} containing {@code Short}s in decreasing order.</li>
+     * </ul>
+     *
+     * Length is {@code b}–{@code a}+1
+     *
+     * @param a the inclusive lower bound of the generated elements
+     * @param b the inclusive upper bound of the generated elements
+     * @return {@code Short}s between {@code a} and {@code b}, inclusive, in decreasing order
+     */
+    @Override
+    public @NotNull Iterable<Short> rangeDecreasing(short a, short b) {
+        if (a > b) {
+            throw new IllegalArgumentException("a must be less than or equal to b. a: " + a + ", b: " + b);
+        }
+        return () -> new NoRemoveIterator<Short>() {
+            private short x = b;
+            private boolean reachedEnd;
+
+            @Override
+            public boolean hasNext() {
+                return !reachedEnd;
+            }
+
+            @Override
+            public Short next() {
+                if (reachedEnd) {
+                    throw new NoSuchElementException();
+                }
+                reachedEnd = x == a;
+                return x--;
+            }
+        };
+    }
+
+    /**
+     * An {@code Iterable} that generates all {@code Integer}s between {@code a} and {@code b}, inclusive, in
+     * decreasing order. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code int}.</li>
+     *  <li>{@code b} may be any {@code int}.</li>
+     *  <li>{@code a} must be less than or equal to {@code b}.</li>
+     *  <li>The result is a non-removable {@code Iterable} containing {@code Integer}s in decreasing order.</li>
+     * </ul>
+     *
+     * Length is {@code b}–{@code a}+1
+     *
+     * @param a the inclusive lower bound of the generated elements
+     * @param b the inclusive upper bound of the generated elements
+     * @return {@code Integer}s between {@code a} and {@code b}, inclusive, in decreasing order
+     */
+    @Override
+    public @NotNull Iterable<Integer> rangeDecreasing(int a, int b) {
+        if (a > b) {
+            throw new IllegalArgumentException("a must be less than or equal to b. a: " + a + ", b: " + b);
+        }
+        return () -> new NoRemoveIterator<Integer>() {
+            private int x = b;
+            private boolean reachedEnd;
+
+            @Override
+            public boolean hasNext() {
+                return !reachedEnd;
+            }
+
+            @Override
+            public Integer next() {
+                if (reachedEnd) {
+                    throw new NoSuchElementException();
+                }
+                reachedEnd = x == a;
+                return x--;
+            }
+        };
+    }
+
+    /**
+     * An {@code Iterable} that generates all {@code Long}s between {@code a} and {@code b}, inclusive, in decreasing
+     * order. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code long}.</li>
+     *  <li>{@code b} may be any {@code long}.</li>
+     *  <li>{@code a} must be less than or equal to {@code b}.</li>
+     *  <li>The result is a non-removable {@code Iterable} containing {@code Long}s in decreasing order.</li>
+     * </ul>
+     *
+     * Length is {@code b}–{@code a}+1
+     *
+     * @param a the inclusive lower bound of the generated elements
+     * @param b the inclusive upper bound of the generated elements
+     * @return {@code Long}s between {@code a} and {@code b}, inclusive, in decreasing order
+     */
+    @Override
+    public @NotNull Iterable<Long> rangeDecreasing(long a, long b) {
+        if (a > b) {
+            throw new IllegalArgumentException("a must be less than or equal to b. a: " + a + ", b: " + b);
+        }
+        return () -> new NoRemoveIterator<Long>() {
+            private long x = b;
+            private boolean reachedEnd;
+
+            @Override
+            public boolean hasNext() {
+                return !reachedEnd;
+            }
+
+            @Override
+            public Long next() {
+                if (reachedEnd) {
+                    throw new NoSuchElementException();
+                }
+                reachedEnd = x == a;
+                return x--;
+            }
+        };
+    }
+
+    /**
+     * An {@code Iterable} that generates all {@code BigInteger}s between {@code a} and {@code b}, inclusive, in
+     * decreasing order. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code BigInteger}.</li>
+     *  <li>{@code b} may be any {@code BigInteger}.</li>
+     *  <li>{@code a} must be less than or equal to {@code b}.</li>
+     *  <li>The result is a non-removable {@code Iterable} containing {@code BigInteger}s in decreasing order.</li>
+     * </ul>
+     *
+     * Length is {@code b}–{@code a}+1
+     *
+     * @param a the inclusive lower bound of the generated elements
+     * @param b the inclusive upper bound of the generated elements
+     * @return {@code BigInteger}s between {@code a} and {@code b}, inclusive, in decreasing order
+     */
+    @Override
+    public @NotNull Iterable<BigInteger> rangeDecreasing(@NotNull BigInteger a, @NotNull BigInteger b) {
+        if (gt(a, b)) {
+            throw new IllegalArgumentException("a must be less than or equal to b. a: " + a + ", b: " + b);
+        }
+        return () -> new NoRemoveIterator<BigInteger>() {
+            private @NotNull BigInteger x = b;
+            private boolean reachedEnd;
+
+            @Override
+            public boolean hasNext() {
+                return !reachedEnd;
+            }
+
+            @Override
+            public @NotNull BigInteger next() {
+                if (reachedEnd) {
+                    throw new NoSuchElementException();
+                }
+                reachedEnd = x.equals(a);
+                BigInteger current = x;
+                x = x.subtract(BigInteger.ONE);
+                return current;
+            }
+        };
+    }
+
+    /**
+     * An {@code Iterable} that generates all {@code Character}s between {@code a} and {@code b}, inclusive, in
+     * decreasing order. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code char}.</li>
+     *  <li>{@code b} may be any {@code char}.</li>
+     *  <li>{@code a} must be less than or equal to {@code b}.</li>
+     *  <li>The result is a non-removable {@code Iterable} containing {@code Character}s in decreasing order.</li>
+     * </ul>
+     *
+     * Length is {@code b}–{@code a}+1
+     *
+     * @param a the inclusive lower bound of the generated elements
+     * @param b the inclusive upper bound of the generated elements
+     * @return {@code Character}s between {@code a} and {@code b}, inclusive, in decreasing order
+     */
+    @Override
+    public @NotNull Iterable<Character> rangeDecreasing(char a, char b) {
+        if (a > b) {
+            throw new IllegalArgumentException("a must be less than or equal to b. a: " + a + ", b: " + b);
+        }
+        return () -> new NoRemoveIterator<Character>() {
+            private char x = b;
+            private boolean reachedEnd;
+
+            @Override
+            public boolean hasNext() {
+                return !reachedEnd;
+            }
+
+            @Override
+            public Character next() {
+                if (reachedEnd) {
+                    throw new NoSuchElementException();
+                }
+                reachedEnd = x == a;
+                return x--;
+            }
+        };
+    }
+
+    /**
      * An {@link Iterable} that generates both {@link boolean}s. Does not support removal.
      *
      * Length is 2
@@ -127,7 +1053,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Byte> bytesIncreasing() {
-        return IterableUtils.rangeUp(Byte.MIN_VALUE);
+        return rangeUpIncreasing(Byte.MIN_VALUE);
     }
 
     /**
@@ -137,7 +1063,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Short> shortsIncreasing() {
-        return IterableUtils.rangeUp(Short.MIN_VALUE);
+        return rangeUpIncreasing(Short.MIN_VALUE);
     }
 
     /**
@@ -147,7 +1073,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Integer> integersIncreasing() {
-        return IterableUtils.rangeUp(Integer.MIN_VALUE);
+        return rangeUpIncreasing(Integer.MIN_VALUE);
     }
 
     /**
@@ -157,7 +1083,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Long> longsIncreasing() {
-        return IterableUtils.rangeUp(Long.MIN_VALUE);
+        return rangeUpIncreasing(Long.MIN_VALUE);
     }
 
     /**
@@ -167,7 +1093,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Byte> positiveBytes() {
-        return IterableUtils.rangeUp((byte) 1);
+        return rangeUpIncreasing((byte) 1);
     }
 
     /**
@@ -177,7 +1103,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Short> positiveShorts() {
-        return IterableUtils.rangeUp((short) 1);
+        return rangeUpIncreasing((short) 1);
     }
 
     /**
@@ -187,7 +1113,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Integer> positiveIntegers() {
-        return IterableUtils.rangeUp(1);
+        return rangeUpIncreasing(1);
     }
 
     /**
@@ -197,7 +1123,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Long> positiveLongs() {
-        return IterableUtils.rangeUp(1L);
+        return rangeUpIncreasing(1L);
     }
 
     /**
@@ -207,7 +1133,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<BigInteger> positiveBigIntegers() {
-        return IterableUtils.rangeUp(BigInteger.ONE);
+        return rangeUpIncreasing(BigInteger.ONE);
     }
 
     /**
@@ -217,7 +1143,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Byte> negativeBytes() {
-        return IterableUtils.rangeBy((byte) -1, (byte) -1);
+        return rangeDownDecreasing((byte) -1);
     }
 
     /**
@@ -227,7 +1153,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Short> negativeShorts() {
-        return IterableUtils.rangeBy((short) -1, (short) -1);
+        return rangeDownDecreasing((short) -1);
     }
 
     /**
@@ -237,7 +1163,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Integer> negativeIntegers() {
-        return IterableUtils.rangeBy(-1, -1);
+        return rangeDownDecreasing(-1);
     }
 
     /**
@@ -247,7 +1173,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Long> negativeLongs() {
-        return IterableUtils.rangeBy(-1L, -1L);
+        return rangeDownDecreasing(-1L);
     }
 
     /**
@@ -257,7 +1183,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<BigInteger> negativeBigIntegers() {
-        return IterableUtils.rangeBy(IntegerUtils.NEGATIVE_ONE, IntegerUtils.NEGATIVE_ONE);
+        return rangeDownDecreasing(IntegerUtils.NEGATIVE_ONE);
     }
 
     /**
@@ -317,7 +1243,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Byte> naturalBytes() {
-        return IterableUtils.rangeUp((byte) 0);
+        return rangeUpIncreasing((byte) 0);
     }
 
     /**
@@ -327,7 +1253,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Short> naturalShorts() {
-        return IterableUtils.rangeUp((short) 0);
+        return rangeUpIncreasing((short) 0);
     }
 
     /**
@@ -337,7 +1263,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Integer> naturalIntegers() {
-        return IterableUtils.rangeUp(0);
+        return rangeUpIncreasing(0);
     }
 
     /**
@@ -347,7 +1273,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Long> naturalLongs() {
-        return IterableUtils.rangeUp(0L);
+        return rangeUpIncreasing(0L);
     }
 
     /**
@@ -492,12 +1418,9 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     @Override
     public @NotNull Iterable<Byte> rangeUp(byte a) {
         if (a >= 0) {
-            return IterableUtils.rangeUp(a);
+            return rangeUpIncreasing(a);
         } else {
-            return cons(
-                    (byte) 0,
-                    choose(IterableUtils.rangeUp((byte) 1), IterableUtils.rangeBy((byte) -1, (byte) -1, a))
-            );
+            return cons((byte) 0, choose(rangeUpIncreasing((byte) 1), rangeDecreasing(a, (byte) -1)));
         }
     }
 
@@ -518,12 +1441,9 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     @Override
     public @NotNull Iterable<Short> rangeUp(short a) {
         if (a >= 0) {
-            return IterableUtils.rangeUp(a);
+            return rangeUpIncreasing(a);
         } else {
-            return cons(
-                    (short) 0,
-                    choose(IterableUtils.rangeUp((short) 1), IterableUtils.rangeBy((short) -1, (short) -1, a))
-            );
+            return cons((short) 0, choose(rangeUpIncreasing((short) 1), rangeDecreasing(a, (short) -1)));
         }
     }
 
@@ -544,9 +1464,9 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     @Override
     public @NotNull Iterable<Integer> rangeUp(int a) {
         if (a >= 0) {
-            return IterableUtils.rangeUp(a);
+            return rangeUpIncreasing(a);
         } else {
-            return cons(0, choose(IterableUtils.rangeUp(1), IterableUtils.rangeBy(-1, -1, a)));
+            return cons(0, choose(rangeUpIncreasing(1), rangeDecreasing(a, -1)));
         }
     }
 
@@ -566,10 +1486,10 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Long> rangeUp(long a) {
-        if (a >= 0) {
-            return IterableUtils.rangeUp(a);
+        if (a >= 0L) {
+            return rangeUpIncreasing(a);
         } else {
-            return cons(0L,choose(IterableUtils.rangeUp(1L), IterableUtils.rangeBy(-1L, -1L, a)));
+            return cons(0L, choose(rangeUpIncreasing(1L), rangeDecreasing(a, -1L)));
         }
     }
 
@@ -590,35 +1510,21 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     @Override
     public @NotNull Iterable<BigInteger> rangeUp(@NotNull BigInteger a) {
         if (a.signum() != -1) {
-            return IterableUtils.rangeUp(a);
+            return rangeUpIncreasing(a);
         } else {
             return cons(
                     BigInteger.ZERO,
-                    choose(
-                            IterableUtils.rangeUp(BigInteger.ONE),
-                            IterableUtils.rangeBy(IntegerUtils.NEGATIVE_ONE, IntegerUtils.NEGATIVE_ONE, a)
-                    )
+                    choose(rangeUpIncreasing(BigInteger.ONE), rangeDecreasing(a, IntegerUtils.NEGATIVE_ONE))
             );
         }
     }
 
     /**
-     * An {@code Iterable} that generates all {@code Character}s greater than or equal to {@code a}. Does not support
-     * removal.
-     *
-     * <ul>
-     *  <li>{@code a} may be any {@code char}.</li>
-     *  <li>The result is a non-removable {@code Iterable} containing {@code Character}s.</li>
-     * </ul>
-     *
-     * Length is 2<sup>16</sup>–{@code a}
-     *
-     * @param a the inclusive lower bound of the generated elements
-     * @return {@code Character}s greater than or equal to {@code a}
+     * See {@link ExhaustiveProvider#rangeUpIncreasing(char)}.
      */
     @Override
     public @NotNull Iterable<Character> rangeUp(char a) {
-        return IterableUtils.rangeUp(a);
+        return rangeUpIncreasing(a);
     }
 
     /**
@@ -637,12 +1543,9 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     @Override
     public @NotNull Iterable<Byte> rangeDown(byte a) {
         if (a <= 0) {
-            return IterableUtils.rangeBy(a, (byte) -1);
+            return rangeDownDecreasing(a);
         } else {
-            return cons(
-                    (byte) 0,
-                    choose(IterableUtils.range((byte) 1, a), IterableUtils.rangeBy((byte) -1, (byte) -1))
-            );
+            return cons((byte) 0, choose(rangeIncreasing((byte) 1, a), rangeDownDecreasing((byte) -1)));
         }
     }
 
@@ -662,15 +1565,9 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     @Override
     public @NotNull Iterable<Short> rangeDown(short a) {
         if (a <= 0) {
-            return IterableUtils.rangeBy(a, (short) -1);
+            return rangeDownDecreasing(a);
         } else {
-            return cons(
-                    (short) 0,
-                    choose(
-                            IterableUtils.range((short) 1, a),
-                            IterableUtils.rangeBy((short) -1, (short) -1)
-                    )
-            );
+            return cons((short) 0, choose(rangeIncreasing((short) 1, a), rangeDownDecreasing((short) -1)));
         }
     }
 
@@ -691,9 +1588,9 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     @Override
     public @NotNull Iterable<Integer> rangeDown(int a) {
         if (a <= 0) {
-            return IterableUtils.rangeBy(a, -1);
+            return rangeDownDecreasing(a);
         } else {
-            return cons(0, choose(IterableUtils.range(1, a), IterableUtils.rangeBy(-1, -1)));
+            return cons(0, choose(rangeIncreasing(1, a), rangeDownDecreasing(-1)));
         }
     }
 
@@ -713,9 +1610,9 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     @Override
     public @NotNull Iterable<Long> rangeDown(long a) {
         if (a <= 0) {
-            return IterableUtils.rangeBy(a, -1L);
+            return rangeDownDecreasing(a);
         } else {
-            return cons(0L, choose(IterableUtils.range(1L, a), IterableUtils.rangeBy(-1L, -1L)));
+            return cons(0L, choose(rangeIncreasing(1L, a), rangeDownDecreasing(-1L)));
         }
     }
 
@@ -736,48 +1633,35 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     @Override
     public @NotNull Iterable<BigInteger> rangeDown(@NotNull BigInteger a) {
         if (a.signum() != 1) {
-            return IterableUtils.rangeBy(a, IntegerUtils.NEGATIVE_ONE);
+            return rangeDownDecreasing(a);
         } else {
             return cons(
                     BigInteger.ZERO,
-                    choose(
-                            IterableUtils.range(BigInteger.ONE, a),
-                            IterableUtils.rangeBy(IntegerUtils.NEGATIVE_ONE, IntegerUtils.NEGATIVE_ONE)
-                    )
+                    choose(rangeIncreasing(BigInteger.ONE, a), rangeDownDecreasing(IntegerUtils.NEGATIVE_ONE))
             );
         }
     }
 
     /**
-     * An {@code Iterable} that generates all {@code Character}s less than or equal to {@code a}. Does not support
-     * removal.
-     *
-     * <ul>
-     *  <li>{@code a} may be any {@code char}.</li>
-     *  <li>The result is a non-removable {@code Iterable} containing {@code Character}s.</li>
-     * </ul>
-     *
-     * Length is {@code a}+1
-     *
-     * @param a the inclusive upper bound of the generated elements
-     * @return {@code Character}s less than or equal to {@code a}
+     * See {@link ExhaustiveProvider#rangeDownIncreasing(char)}.
      */
     @Override
     public @NotNull Iterable<Character> rangeDown(char a) {
-        return IterableUtils.range('\0', a);
+        return rangeDownIncreasing(a);
     }
 
     /**
-     * An {@code Iterable} that generates all {@code Byte}s between {@code a} and {@code b}, inclusive. If
-     * {@code a}{@literal >}{@code b}, an empty {@code Iterable} is returned. Does not support removal.
+     * An {@code Iterable} that generates all {@code Byte}s between {@code a} and {@code b}, inclusive. Does not
+     * support removal.
      *
      * <ul>
      *  <li>{@code a} may be any {@code byte}.</li>
      *  <li>{@code b} may be any {@code byte}.</li>
+     *  <li>{@code a} must be less than or equal to {@code b}.</li>
      *  <li>The result is a non-removable {@code Iterable} containing {@code Byte}s.</li>
      * </ul>
      *
-     * Length is max(0, {@code b}–{@code a}+1)
+     * Length is {@code b}–{@code a}+1
      *
      * @param a the inclusive lower bound of the generated elements
      * @param b the inclusive upper bound of the generated elements
@@ -785,33 +1669,30 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Byte> range(byte a, byte b) {
-        if (a > b) return Collections.emptyList();
+        if (a > b) {
+            throw new IllegalArgumentException("a must be less than or equal to b. a: " + a + ", b: " + b);
+        }
         if (a >= 0 && b >= 0) {
-            return IterableUtils.range(a, b);
-        } else if (a < 0 && b < 0) {
-            return IterableUtils.rangeBy(b, (byte) -1, a);
+            return rangeIncreasing(a, b);
+        } else if (a <= 0 && b <= 0) {
+            return rangeDecreasing(a, b);
         } else {
-            return cons(
-                    (byte) 0,
-                    choose(
-                            IterableUtils.range((byte) 1, b),
-                            IterableUtils.rangeBy((byte) -1, (byte) -1, a)
-                    )
-            );
+            return cons((byte) 0, choose(rangeIncreasing((byte) 1, b), rangeDecreasing(a, (byte) -1)));
         }
     }
 
     /**
-     * An {@code Iterable} that generates all {@code Short}s between {@code a} and {@code b}, inclusive. If
-     * {@code a}{@literal >}{@code b}, an empty {@code Iterable} is returned. Does not support removal.
+     * An {@code Iterable} that generates all {@code Short}s between {@code a} and {@code b}, inclusive. Does not
+     * support removal.
      *
      * <ul>
      *  <li>{@code a} may be any {@code short}.</li>
      *  <li>{@code b} may be any {@code short}.</li>
+     *  <li>{@code a} must be less than or equal to {@code b}.</li>
      *  <li>The result is a non-removable {@code Iterable} containing {@code Short}s.</li>
      * </ul>
      *
-     * Length is max(0, {@code b}–{@code a}+1)
+     * Length is {@code b}–{@code a}+1
      *
      * @param a the inclusive lower bound of the generated elements
      * @param b the inclusive upper bound of the generated elements
@@ -819,33 +1700,30 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Short> range(short a, short b) {
-        if (a > b) return Collections.emptyList();
+        if (a > b) {
+            throw new IllegalArgumentException("a must be less than or equal to b. a: " + a + ", b: " + b);
+        }
         if (a >= 0 && b >= 0) {
-            return IterableUtils.range(a, b);
-        } else if (a < 0 && b < 0) {
-            return IterableUtils.rangeBy(b, (short) -1, a);
+            return rangeIncreasing(a, b);
+        } else if (a <= 0 && b <= 0) {
+            return rangeDecreasing(a, b);
         } else {
-            return cons(
-                    (short) 0,
-                    choose(
-                            IterableUtils.range((short) 1, b),
-                            IterableUtils.rangeBy((short) -1, (short) -1, a)
-                    )
-            );
+            return cons((short) 0, choose(rangeIncreasing((short) 1, b), rangeDecreasing(a, (short) -1)));
         }
     }
 
     /**
-     * An {@code Iterable} that generates all {@code Integer}s between {@code a} and {@code b}, inclusive. If
-     * {@code a}{@literal >}{@code b}, an empty {@code Iterable} is returned. Does not support removal.
+     * An {@code Iterable} that generates all {@code Integer}s between {@code a} and {@code b}, inclusive. Does not
+     * support removal.
      *
      * <ul>
      *  <li>{@code a} may be any {@code int}.</li>
      *  <li>{@code b} may be any {@code int}.</li>
+     *  <li>{@code a} must be less than or equal to {@code b}.</li>
      *  <li>The result is a non-removable {@code Iterable} containing {@code Integer}s.</li>
      * </ul>
      *
-     * Length is max(0, {@code b}–{@code a}+1)
+     * Length is {@code b}–{@code a}+1
      *
      * @param a the inclusive lower bound of the generated elements
      * @param b the inclusive upper bound of the generated elements
@@ -853,27 +1731,30 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Integer> range(int a, int b) {
-        if (a > b) return Collections.emptyList();
+        if (a > b) {
+            throw new IllegalArgumentException("a must be less than or equal to b. a: " + a + ", b: " + b);
+        }
         if (a >= 0 && b >= 0) {
-            return IterableUtils.range(a, b);
-        } else if (a < 0 && b < 0) {
-            return IterableUtils.rangeBy(b, -1, a);
+            return rangeIncreasing(a, b);
+        } else if (a <= 0 && b <= 0) {
+            return rangeDecreasing(a, b);
         } else {
-            return cons(0, choose(IterableUtils.range(1, b), IterableUtils.rangeBy(-1, -1, a)));
+            return cons(0, choose(rangeIncreasing(1, b), rangeDecreasing(a, -1)));
         }
     }
 
     /**
-     * An {@code Iterable} that generates all {@code Long}s between {@code a} and {@code b}, inclusive. If
-     * {@code a}{@literal >}{@code b}, an empty {@code Iterable} is returned. Does not support removal.
+     * An {@code Iterable} that generates all {@code Long}s between {@code a} and {@code b}, inclusive. Does not
+     * support removal.
      *
      * <ul>
      *  <li>{@code a} may be any {@code long}.</li>
      *  <li>{@code b} may be any {@code long}.</li>
+     *  <li>{@code a} must be less than or equal to {@code b}.</li>
      *  <li>The result is a non-removable {@code Iterable} containing {@code Long}s.</li>
      * </ul>
      *
-     * Length is max(0, {@code b}–{@code a}+1)
+     * Length is {@code b}–{@code a}+1
      *
      * @param a the inclusive lower bound of the generated elements
      * @param b the inclusive upper bound of the generated elements
@@ -881,23 +1762,26 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Long> range(long a, long b) {
-        if (a > b) return Collections.emptyList();
+        if (a > b) {
+            throw new IllegalArgumentException("a must be less than or equal to b. a: " + a + ", b: " + b);
+        }
         if (a >= 0 && b >= 0) {
-            return IterableUtils.range(a, b);
-        } else if (a < 0 && b < 0) {
-            return IterableUtils.rangeBy(b, (byte) -1, a);
+            return rangeIncreasing(a, b);
+        } else if (a <= 0 && b <= 0) {
+            return rangeDecreasing(a, b);
         } else {
-            return cons(0L, choose(IterableUtils.range(1L, b), IterableUtils.rangeBy(-1L, -1L, a)));
+            return cons(0L, choose(rangeIncreasing(1L, b), rangeDecreasing(a, -1L)));
         }
     }
 
     /**
-     * An {@code Iterable} that generates all {@code BigInteger}s between {@code a} and {@code b}, inclusive. If
-     * {@code a}{@literal >}{@code b}, an empty {@code Iterable} is returned. Does not support removal.
+     * An {@code Iterable} that generates all {@code BigInteger}s between {@code a} and {@code b}, inclusive. Does not
+     * support removal.
      *
      * <ul>
      *  <li>{@code a} cannot be null.</li>
      *  <li>{@code b} cannot be null.</li>
+     *  <li>{@code a} must be less than or equal to {@code b}.</li>
      *  <li>The result is a non-removable {@code Iterable} containing {@code BigInteger}s.</li>
      * </ul>
      *
@@ -909,41 +1793,27 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<BigInteger> range(@NotNull BigInteger a, @NotNull BigInteger b) {
-        if (gt(a, b)) return Collections.emptyList();
+        if (gt(a, b)) {
+            throw new IllegalArgumentException("a must be less than or equal to b. a: " + a + ", b: " + b);
+        }
         if (a.signum() != -1 && b.signum() != -1) {
-            return IterableUtils.range(a, b);
-        } else if (a.signum() == -1 && b.signum() == -1) {
-            return IterableUtils.rangeBy(b, IntegerUtils.NEGATIVE_ONE, a);
+            return rangeIncreasing(a, b);
+        } else if (a.signum() != 1 && b.signum() != 1) {
+            return rangeDecreasing(a, b);
         } else {
             return cons(
                     BigInteger.ZERO,
-                    choose(
-                            IterableUtils.range(BigInteger.ONE, b),
-                            IterableUtils.rangeBy(IntegerUtils.NEGATIVE_ONE, IntegerUtils.NEGATIVE_ONE, a)
-                    )
+                    choose(rangeIncreasing(BigInteger.ONE, b), rangeDecreasing(a, IntegerUtils.NEGATIVE_ONE))
             );
         }
     }
 
     /**
-     * An {@code Iterable} that generates all {@code Character}s between {@code a} and {@code b}, inclusive. If
-     * {@code a}{@literal >}{@code b}, an empty {@code Iterable} is returned. Does not support removal.
-     *
-     * <ul>
-     *  <li>{@code a} may be any {@code char}.</li>
-     *  <li>{@code b} may be any {@code char}.</li>
-     *  <li>The result is a non-removable {@code Iterable} containing {@code Character}s.</li>
-     * </ul>
-     *
-     * Length is max(0, {@code b}–{@code a}+1)
-     *
-     * @param a the inclusive lower bound of the generated elements
-     * @param b the inclusive upper bound of the generated elements
-     * @return {@code Character}s between {@code a} and {@code b}, inclusive
+     * See {@link ExhaustiveProvider#rangeIncreasing(char, char)}.
      */
     @Override
     public @NotNull Iterable<Character> range(char a, char b) {
-        return IterableUtils.range(a, b);
+        return rangeIncreasing(a, b);
     }
 
     /**
@@ -1042,9 +1912,12 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         return concatMap(
                 e -> map(
                         i -> BinaryFraction.of(i.shiftLeft(1).add(BigInteger.ONE), -e),
-                        IterableUtils.range(BigInteger.ZERO, BigInteger.ONE.shiftLeft(e - 1).subtract(BigInteger.ONE))
+                        INSTANCE.rangeIncreasing(
+                                BigInteger.ZERO,
+                                BigInteger.ONE.shiftLeft(e - 1).subtract(BigInteger.ONE)
+                        )
                 ),
-                IterableUtils.rangeUp(1)
+                INSTANCE.rangeUpIncreasing(1)
         );
     }
 
@@ -1055,10 +1928,11 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      * <ul>
      *  <li>{@code a} cannot be null.</li>
      *  <li>{@code b} cannot be null.</li>
+     *  <li>{@code a} must be less than or equal to {@code b}.</li>
      *  <li>The result is a non-removable {@code Iterable} containing {@code BinaryFraction}s.</li>
      * </ul>
      *
-     * Length is 0 if a{@literal >}b, 1 if a=b, and infinite otherwise
+     * Length is 1 if a=b, infinite otherwise
      *
      * @param a the inclusive lower bound of the generated elements
      * @param b the inclusive upper bound of the generated elements
@@ -1067,7 +1941,8 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     @Override
     public @NotNull Iterable<BinaryFraction> range(@NotNull BinaryFraction a, @NotNull BinaryFraction b) {
         switch (compare(a, b)) {
-            case GT: return Collections.emptyList();
+            case GT:
+                throw new IllegalArgumentException("a must be less than or equal to b. a: " + a + ", b: " + b);
             case EQ: return Collections.singletonList(a);
             case LT:
                 BinaryFraction difference = b.subtract(a);
@@ -1076,12 +1951,12 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
                 return concat(
                         map(
                                 i -> BinaryFraction.ONE.shiftLeft(blockExponent).multiply(BinaryFraction.of(i)).add(a),
-                                IterableUtils.range(BigInteger.ZERO, blockCount)
+                                rangeIncreasing(BigInteger.ZERO, blockCount)
                         ),
                         concatMap(
                                 bf -> map(
                                         j -> bf.add(BinaryFraction.of(j)).shiftLeft(blockExponent).add(a),
-                                        IterableUtils.range(BigInteger.ZERO, blockCount.subtract(BigInteger.ONE))
+                                        rangeIncreasing(BigInteger.ZERO, blockCount.subtract(BigInteger.ONE))
                                 ),
                                 positiveBinaryFractionsLessThanOne()
                         )
@@ -1098,10 +1973,9 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      *
      * Length is 2<sup>23</sup> = 8,388,608
      */
-    private static final @NotNull Iterable<Integer> FLOAT_MANTISSAS = IterableUtils.rangeBy(
-            1,
-            2,
-            1 << (FloatingPointUtils.FLOAT_FRACTION_WIDTH + 1)
+    private static final @NotNull Iterable<Integer> FLOAT_MANTISSAS = map(
+            m -> (m << 1) + 1,
+            INSTANCE.rangeIncreasing(0, (1 << FloatingPointUtils.FLOAT_FRACTION_WIDTH) - 1)
     );
 
     /**
@@ -1114,7 +1988,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
             0,
             INSTANCE.choose(
                     INSTANCE.range(1, Float.MAX_EXPONENT),
-                    IterableUtils.rangeBy(-1, -1, FloatingPointUtils.MIN_SUBNORMAL_FLOAT_EXPONENT)
+                    INSTANCE.rangeDecreasing(FloatingPointUtils.MIN_SUBNORMAL_FLOAT_EXPONENT, -1)
             )
     );
 
@@ -1208,10 +2082,9 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      *
      * Length is 2<sup>52</sup> = 4,503,599,627,370,496
      */
-    private static final @NotNull Iterable<Long> DOUBLE_MANTISSAS = IterableUtils.rangeBy(
-            1L,
-            2,
-            1L << (FloatingPointUtils.DOUBLE_FRACTION_WIDTH + 1)
+    private static final @NotNull Iterable<Long> DOUBLE_MANTISSAS = map(
+            m -> (m << 1) + 1L,
+            INSTANCE.rangeIncreasing(0L, (1L << FloatingPointUtils.DOUBLE_FRACTION_WIDTH) - 1)
     );
 
     /**
@@ -1224,7 +2097,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
             0,
             INSTANCE.choose(
                     INSTANCE.range(1, Double.MAX_EXPONENT),
-                    IterableUtils.rangeBy(-1, -1, FloatingPointUtils.MIN_SUBNORMAL_DOUBLE_EXPONENT)
+                    INSTANCE.rangeDecreasing(FloatingPointUtils.MIN_SUBNORMAL_DOUBLE_EXPONENT, -1)
             )
     );
 
@@ -1377,6 +2250,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      * <ul>
      *  <li>{@code a} cannot be {@code NaN}.</li>
      *  <li>{@code b} cannot be {@code NaN}.</li>
+     *  <li>{@code a} must be less than or equal to {@code b}.</li>
      *  <li>The result is a non-removable {@code Iterable} containing {@code Float}s which aren't {@code NaN}.</li>
      * </ul>
      *
@@ -1395,7 +2269,9 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         if (Float.isNaN(b)) {
             throw new ArithmeticException("b cannot be NaN.");
         }
-        if (a > b) return Collections.emptyList();
+        if (a > b) {
+            throw new IllegalArgumentException("a must be less than or equal to b. a: " + a + ", b: " + b);
+        }
         if (a == Float.NEGATIVE_INFINITY) return rangeDown(b);
         if (b == Float.POSITIVE_INFINITY) return rangeUp(a);
         if (a == Float.POSITIVE_INFINITY || b == Float.NEGATIVE_INFINITY) return Collections.emptyList();
@@ -1483,6 +2359,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      * <ul>
      *  <li>{@code a} cannot be {@code NaN}.</li>
      *  <li>{@code b} cannot be {@code NaN}.</li>
+     *  <li>{@code a} must be less than or equal to {@code b}.</li>
      *  <li>The result is a non-removable {@code Iterable} containing {@code Double}s which aren't {@code NaN}.</li>
      * </ul>
      *
@@ -1501,7 +2378,9 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         if (Double.isNaN(b)) {
             throw new ArithmeticException("b cannot be NaN.");
         }
-        if (a > b) return Collections.emptyList();
+        if (a > b) {
+            throw new IllegalArgumentException("a must be less than or equal to b. a: " + a + ", b: " + b);
+        }
         if (a == Double.NEGATIVE_INFINITY) return rangeDown(b);
         if (b == Double.POSITIVE_INFINITY) return rangeUp(a);
         if (a == Double.POSITIVE_INFINITY || b == Double.NEGATIVE_INFINITY) return Collections.emptyList();
@@ -1713,10 +2592,11 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      * <ul>
      *  <li>{@code a} cannot be null.</li>
      *  <li>{@code b} cannot be null.</li>
+     *  <li>{@code a} must be less than or equal to {@code b}.</li>
      *  <li>The result is a non-removable {@code Iterable} containing {@code BigDecimal}s.</li>
      * </ul>
      *
-     * Length is 0 if a{@literal >}b, 1 if a=b, and infinite otherwise
+     * Length is 1 if a=b, infinite otherwise
      *
      * @param a the inclusive lower bound of the generated elements
      * @param b the inclusive upper bound of the generated elements
@@ -1724,13 +2604,16 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<BigDecimal> range(@NotNull BigDecimal a, @NotNull BigDecimal b) {
+        if (gt(a, b)) {
+            throw new IllegalArgumentException("a must be less than or equal to b. a: " + a + ", b: " + b);
+        }
         if (eq(a, b)) {
             if (a.signum() == 0) {
                 return map(i -> new BigDecimal(BigInteger.ZERO, i), integers());
             } else {
                 return map(
                         x -> BigDecimalUtils.setPrecision(a, x),
-                        IterableUtils.rangeUp(a.stripTrailingZeros().precision())
+                        rangeUpIncreasing(a.stripTrailingZeros().precision())
                 );
             }
         }
@@ -1786,6 +2669,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      * <ul>
      *  <li>{@code a} cannot be null.</li>
      *  <li>{@code b} cannot be null.</li>
+     *  <li>{@code a} must be less than or equal to {@code b}.</li>
      *  <li>The result is a non-removable {@code Iterable} containing canonical {@code BigDecimal}s.</li>
      * </ul>
      *
@@ -1797,7 +2681,9 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<BigDecimal> rangeCanonical(@NotNull BigDecimal a, @NotNull BigDecimal b) {
-        if (gt(a, b)) return Collections.emptyList();
+        if (gt(a, b)) {
+            throw new IllegalArgumentException("a must be less than or equal to b. a: " + a + ", b: " + b);
+        }
         if (eq(a, b)) return Collections.singletonList(BigDecimalUtils.canonicalize(a));
         BigDecimal difference = BigDecimalUtils.canonicalize(b.subtract(a));
         return map(
@@ -1931,14 +2817,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
             @NotNull Iterable<A> xs,
             @NotNull Function<A, Iterable<B>> f
     ) {
-        return dependentPairsInfinite(
-                bi -> {
-                    List<BigInteger> list = IntegerUtils.demux(2, bi);
-                    return new Pair<>(list.get(0), list.get(1));
-                },
-                xs,
-                f
-        );
+        return dependentPairsInfinite(bi -> Pair.fromList(IntegerUtils.demux(2, bi)), xs, f);
     }
 
     /**
@@ -2289,7 +3168,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     @Override
     public @NotNull <T> Iterable<List<T>> permutationsFinite(@NotNull List<T> xs) {
         List<T> nub = toList(nub(xs));
-        Map<T, Integer> indexMap = toMap(zip(nub, IterableUtils.rangeUp(0)));
+        Map<T, Integer> indexMap = toMap(zip(nub, rangeUpIncreasing(0)));
         List<Integer> startingIndices = sort(map(indexMap::get, xs));
         return map(is -> toList(map(nub::get, is)), finitePermutationIndices(startingIndices));
     }
@@ -2341,7 +3220,11 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
                 }
                 prefixIndices = filter(
                         is -> is.isEmpty() || last(is) != prefixLength - 1,
-                        finitePermutationIndices(toList(IterableUtils.range(0, prefixLength - 1)))
+                        finitePermutationIndices(
+                                prefixLength == 0 ?
+                                        Collections.emptyList() :
+                                        toList(rangeIncreasing(0, prefixLength - 1))
+                        )
                 ).iterator();
             }
         };
@@ -2833,14 +3716,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull <A, B> Iterable<Pair<A, B>> pairs(@NotNull Iterable<A> as, @NotNull Iterable<B> bs) {
-        return pairsByFunction(
-                bi -> {
-                    List<BigInteger> list = IntegerUtils.demux(2, bi);
-                    return new Pair<>(list.get(0), list.get(1));
-                },
-                as,
-                bs
-        );
+        return pairsByFunction(bi -> Pair.fromList(IntegerUtils.demux(2, bi)), as, bs);
     }
 
     /**
@@ -2860,7 +3736,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     @Override
     public @NotNull <T> Iterable<Pair<T, T>> pairs(@NotNull Iterable<T> xs) {
         if (isEmpty(xs)) return Collections.emptyList();
-        return map(list -> new Pair<>(list.get(0), list.get(1)), lists(2, xs));
+        return map(Pair::fromList, lists(2, xs));
     }
 
     /**
@@ -2942,7 +3818,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     @Override
     public @NotNull <T> Iterable<Triple<T, T, T>> triples(@NotNull Iterable<T> xs) {
         if (isEmpty(xs)) return Collections.emptyList();
-        return map(list -> new Triple<>(list.get(0), list.get(1), list.get(2)), lists(3, xs));
+        return map(Triple::fromList, lists(3, xs));
     }
 
     /**
@@ -3033,7 +3909,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     @Override
     public @NotNull <T> Iterable<Quadruple<T, T, T, T>> quadruples(@NotNull Iterable<T> xs) {
         if (isEmpty(xs)) return Collections.emptyList();
-        return map(list -> new Quadruple<>(list.get(0), list.get(1), list.get(2), list.get(3)), lists(4, xs));
+        return map(Quadruple::fromList, lists(4, xs));
     }
 
     /**
@@ -3134,10 +4010,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     @Override
     public @NotNull <T> Iterable<Quintuple<T, T, T, T, T>> quintuples(@NotNull Iterable<T> xs) {
         if (isEmpty(xs)) return Collections.emptyList();
-        return map(
-                list -> new Quintuple<>(list.get(0), list.get(1), list.get(2), list.get(3), list.get(4)),
-                lists(5, xs)
-        );
+        return map(Quintuple::fromList, lists(5, xs));
     }
 
     /**
@@ -3248,10 +4121,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     @Override
     public @NotNull <T> Iterable<Sextuple<T, T, T, T, T, T>> sextuples(@NotNull Iterable<T> xs) {
         if (isEmpty(xs)) return Collections.emptyList();
-        return map(
-                list -> new Sextuple<>(list.get(0), list.get(1), list.get(2), list.get(3), list.get(4), list.get(5)),
-                lists(6, xs)
-        );
+        return map(Sextuple::fromList, lists(6, xs));
     }
 
     /**
@@ -3371,18 +4241,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     @Override
     public @NotNull <T> Iterable<Septuple<T, T, T, T, T, T, T>> septuples(@NotNull Iterable<T> xs) {
         if (isEmpty(xs)) return Collections.emptyList();
-        return map(
-                list -> new Septuple<>(
-                        list.get(0),
-                        list.get(1),
-                        list.get(2),
-                        list.get(3),
-                        list.get(4),
-                        list.get(5),
-                        list.get(6)
-                ),
-                lists(7, xs)
-        );
+        return map(Septuple::fromList, lists(7, xs));
     }
 
     /**
@@ -3477,8 +4336,11 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      * @return all lists with no repetitions of length {@code size} with elements from 0 to {@code elementCount}–1
      */
     private static @NotNull Iterable<List<Integer>> distinctListIndices(int size, int elementCount) {
+        if (size == 0) {
+            return Collections.singleton(Collections.emptyList());
+        }
         BigInteger outputSize = MathUtils.fallingFactorial(BigInteger.valueOf(elementCount), size);
-        Iterable<Integer> range = IterableUtils.range(0, size - 1);
+        Iterable<Integer> range = INSTANCE.rangeIncreasing(0, size - 1);
         return () -> new EventuallyKnownSizeIterator<List<Integer>>() {
             private final @NotNull List<Integer> list = toList(range);
             private final @NotNull boolean[] taken = new boolean[elementCount];
@@ -3561,7 +4423,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull <T> Iterable<Pair<T, T>> distinctPairsLex(@NotNull List<T> xs) {
-        return map(list -> new Pair<>(list.get(0), list.get(1)), distinctListsLex(2, xs));
+        return map(Pair::fromList, distinctListsLex(2, xs));
     }
 
     /**
@@ -3581,7 +4443,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull <T> Iterable<Triple<T, T, T>> distinctTriplesLex(@NotNull List<T> xs) {
-        return map(list -> new Triple<>(list.get(0), list.get(1), list.get(2)), distinctListsLex(3, xs));
+        return map(Triple::fromList, distinctListsLex(3, xs));
     }
 
     /**
@@ -3601,10 +4463,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull <T> Iterable<Quadruple<T, T, T, T>> distinctQuadruplesLex(@NotNull List<T> xs) {
-        return map(
-                list -> new Quadruple<>(list.get(0), list.get(1), list.get(2), list.get(3)),
-                distinctListsLex(4, xs)
-        );
+        return map(Quadruple::fromList, distinctListsLex(4, xs));
     }
 
     /**
@@ -3624,10 +4483,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull <T> Iterable<Quintuple<T, T, T, T, T>> distinctQuintuplesLex(@NotNull List<T> xs) {
-        return map(
-                list -> new Quintuple<>(list.get(0), list.get(1), list.get(2), list.get(3), list.get(4)),
-                distinctListsLex(5, xs)
-        );
+        return map(Quintuple::fromList, distinctListsLex(5, xs));
     }
 
     /**
@@ -3647,10 +4503,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull <T> Iterable<Sextuple<T, T, T, T, T, T>> distinctSextuplesLex(@NotNull List<T> xs) {
-        return map(
-                list -> new Sextuple<>(list.get(0), list.get(1), list.get(2), list.get(3), list.get(4), list.get(5)),
-                distinctListsLex(6, xs)
-        );
+        return map(Sextuple::fromList, distinctListsLex(6, xs));
     }
 
     /**
@@ -3670,18 +4523,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull <T> Iterable<Septuple<T, T, T, T, T, T, T>> distinctSeptuplesLex(@NotNull List<T> xs) {
-        return map(
-                list -> new Septuple<>(
-                        list.get(0),
-                        list.get(1),
-                        list.get(2),
-                        list.get(3),
-                        list.get(4),
-                        list.get(5),
-                        list.get(6)
-                ),
-                distinctListsLex(7, xs)
-        );
+        return map(Septuple::fromList, distinctListsLex(7, xs));
     }
 
     /**
@@ -3829,8 +4671,14 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      * {@code elementCount}–1
      */
     private static @NotNull Iterable<List<Integer>> distinctListIndicesAtLeast(int minSize, int elementCount) {
+        if (minSize > elementCount) {
+            return Collections.emptyList();
+        }
+        if (minSize == 0) {
+            return distinctListIndices(elementCount);
+        }
         BigInteger outputSize = MathUtils.numberOfArrangementsOfASet(minSize, elementCount);
-        Iterable<Integer> range = IterableUtils.range(0, minSize - 1);
+        Iterable<Integer> range = INSTANCE.rangeIncreasing(0, minSize - 1);
         return () -> new EventuallyKnownSizeIterator<List<Integer>>() {
             private final @NotNull List<Integer> list = toList(range);
             private final @NotNull boolean[] taken = new boolean[elementCount];
@@ -4004,6 +4852,9 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         if (minSize < 0) {
             throw new IllegalArgumentException("minSize cannot be negative. Invalid minSize: " + minSize);
         }
+        if (minSize > xs.size()) {
+            return Collections.emptyList();
+        }
         return concatMap(i -> distinctListsLex(i, xs), range(minSize, xs.size()));
     }
 
@@ -4155,7 +5006,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull <T> Iterable<Pair<T, T>> distinctPairs(@NotNull Iterable<T> xs) {
-        return map(list -> new Pair<>(list.get(0), list.get(1)), distinctLists(2, xs));
+        return map(Pair::fromList, distinctLists(2, xs));
     }
 
     /**
@@ -4174,7 +5025,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull <T> Iterable<Triple<T, T, T>> distinctTriples(@NotNull Iterable<T> xs) {
-        return map(list -> new Triple<>(list.get(0), list.get(1), list.get(2)), distinctLists(3, xs));
+        return map(Triple::fromList, distinctLists(3, xs));
     }
 
     /**
@@ -4193,7 +5044,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull <T> Iterable<Quadruple<T, T, T, T>> distinctQuadruples(@NotNull Iterable<T> xs) {
-        return map(list -> new Quadruple<>(list.get(0), list.get(1), list.get(2), list.get(3)), distinctLists(4, xs));
+        return map(Quadruple::fromList, distinctLists(4, xs));
     }
 
     /**
@@ -4212,10 +5063,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull <T> Iterable<Quintuple<T, T, T, T, T>> distinctQuintuples(@NotNull Iterable<T> xs) {
-        return map(
-                list -> new Quintuple<>(list.get(0), list.get(1), list.get(2), list.get(3), list.get(4)),
-                distinctLists(5, xs)
-        );
+        return map(Quintuple::fromList, distinctLists(5, xs));
     }
 
     /**
@@ -4234,10 +5082,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull <T> Iterable<Sextuple<T, T, T, T, T, T>> distinctSextuples(@NotNull Iterable<T> xs) {
-        return map(
-                list -> new Sextuple<>(list.get(0), list.get(1), list.get(2), list.get(3), list.get(4), list.get(5)),
-                distinctLists(6, xs)
-        );
+        return map(Sextuple::fromList, distinctLists(6, xs));
     }
 
     /**
@@ -4256,18 +5101,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull <T> Iterable<Septuple<T, T, T, T, T, T, T>> distinctSeptuples(@NotNull Iterable<T> xs) {
-        return map(
-                list -> new Septuple<>(
-                        list.get(0),
-                        list.get(1),
-                        list.get(2),
-                        list.get(3),
-                        list.get(4),
-                        list.get(5),
-                        list.get(6)
-                ),
-                distinctLists(7, xs)
-        );
+        return map(Septuple::fromList, distinctLists(7, xs));
     }
 
     /**
@@ -4411,7 +5245,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<Pair<T, T>> bagPairsLex(@NotNull List<T> xs) {
-        return map(list -> new Pair<>(list.get(0), list.get(1)), bagsLex(2, xs));
+        return map(Pair::fromList, bagsLex(2, xs));
     }
 
     /**
@@ -4431,7 +5265,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<Triple<T, T, T>> bagTriplesLex(@NotNull List<T> xs) {
-        return map(list -> new Triple<>(list.get(0), list.get(1), list.get(2)), bagsLex(3, xs));
+        return map(Triple::fromList, bagsLex(3, xs));
     }
 
     /**
@@ -4451,7 +5285,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<Quadruple<T, T, T, T>> bagQuadruplesLex(@NotNull List<T> xs) {
-        return map(list -> new Quadruple<>(list.get(0), list.get(1), list.get(2), list.get(3)), bagsLex(4, xs));
+        return map(Quadruple::fromList, bagsLex(4, xs));
     }
 
     /**
@@ -4473,10 +5307,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     public @NotNull <T extends Comparable<T>> Iterable<Quintuple<T, T, T, T, T>> bagQuintuplesLex(
             @NotNull List<T> xs
     ) {
-        return map(
-                list -> new Quintuple<>(list.get(0), list.get(1), list.get(2), list.get(3), list.get(4)),
-                bagsLex(5, xs)
-        );
+        return map(Quintuple::fromList, bagsLex(5, xs));
     }
 
     /**
@@ -4498,10 +5329,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     public @NotNull <T extends Comparable<T>> Iterable<Sextuple<T, T, T, T, T, T>> bagSextuplesLex(
             @NotNull List<T> xs
     ) {
-        return map(
-                list -> new Sextuple<>(list.get(0), list.get(1), list.get(2), list.get(3), list.get(4), list.get(5)),
-                bagsLex(6, xs)
-        );
+        return map(Sextuple::fromList, bagsLex(6, xs));
     }
 
     /**
@@ -4523,18 +5351,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     public @NotNull <T extends Comparable<T>> Iterable<Septuple<T, T, T, T, T, T, T>> bagSeptuplesLex(
             @NotNull List<T> xs
     ) {
-        return map(
-                list -> new Septuple<>(
-                        list.get(0),
-                        list.get(1),
-                        list.get(2),
-                        list.get(3),
-                        list.get(4),
-                        list.get(5),
-                        list.get(6)
-                ),
-                bagsLex(7, xs)
-        );
+        return map(Septuple::fromList, bagsLex(7, xs));
     }
 
     /**
@@ -4764,7 +5581,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<Pair<T, T>> bagPairs(@NotNull Iterable<T> xs) {
-        return map(list -> new Pair<>(list.get(0), list.get(1)), bags(2, xs));
+        return map(Pair::fromList, bags(2, xs));
     }
 
     /**
@@ -4783,7 +5600,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<Triple<T, T, T>> bagTriples(@NotNull Iterable<T> xs) {
-        return map(list -> new Triple<>(list.get(0), list.get(1), list.get(2)), bags(3, xs));
+        return map(Triple::fromList, bags(3, xs));
     }
 
     /**
@@ -4802,7 +5619,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<Quadruple<T, T, T, T>> bagQuadruples(@NotNull Iterable<T> xs) {
-        return map(list -> new Quadruple<>(list.get(0), list.get(1), list.get(2), list.get(3)), bags(4, xs));
+        return map(Quadruple::fromList, bags(4, xs));
     }
 
     /**
@@ -4823,10 +5640,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     public @NotNull <T extends Comparable<T>> Iterable<Quintuple<T, T, T, T, T>> bagQuintuples(
             @NotNull Iterable<T> xs
     ) {
-        return map(
-                list -> new Quintuple<>(list.get(0), list.get(1), list.get(2), list.get(3), list.get(4)),
-                bags(5, xs)
-        );
+        return map(Quintuple::fromList, bags(5, xs));
     }
 
     /**
@@ -4847,10 +5661,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     public @NotNull <T extends Comparable<T>> Iterable<Sextuple<T, T, T, T, T, T>> bagSextuples(
             @NotNull Iterable<T> xs
     ) {
-        return map(
-                list -> new Sextuple<>(list.get(0), list.get(1), list.get(2), list.get(3), list.get(4), list.get(5)),
-                bags(6, xs)
-        );
+        return map(Sextuple::fromList, bags(6, xs));
     }
 
     /**
@@ -4871,18 +5682,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     public @NotNull <T extends Comparable<T>> Iterable<Septuple<T, T, T, T, T, T, T>> bagSeptuples(
             @NotNull Iterable<T> xs
     ) {
-        return map(
-                list -> new Septuple<>(
-                        list.get(0),
-                        list.get(1),
-                        list.get(2),
-                        list.get(3),
-                        list.get(4),
-                        list.get(5),
-                        list.get(6)
-                ),
-                bags(7, xs)
-        );
+        return map(Septuple::fromList, bags(7, xs));
     }
 
     /**
@@ -4965,8 +5765,11 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      * repetitions
      */
     private static @NotNull Iterable<List<Integer>> subsetIndices(int size, int elementCount) {
+        if (size == 0) {
+            return Collections.singletonList(Collections.emptyList());
+        }
         BigInteger outputSize = MathUtils.binomialCoefficient(BigInteger.valueOf(elementCount), size);
-        Iterable<Integer> range = IterableUtils.range(0, size - 1);
+        Iterable<Integer> range = INSTANCE.rangeIncreasing(0, size - 1);
         int offset = elementCount - size;
         return () -> new EventuallyKnownSizeIterator<List<Integer>>() {
             private final @NotNull List<Integer> list = toList(range);
@@ -5042,7 +5845,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<Pair<T, T>> subsetPairsLex(@NotNull List<T> xs) {
-        return map(list -> new Pair<>(list.get(0), list.get(1)), subsetsLex(2, xs));
+        return map(Pair::fromList, subsetsLex(2, xs));
     }
 
     /**
@@ -5062,7 +5865,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<Triple<T, T, T>> subsetTriplesLex(@NotNull List<T> xs) {
-        return map(list -> new Triple<>(list.get(0), list.get(1), list.get(2)), subsetsLex(3, xs));
+        return map(Triple::fromList, subsetsLex(3, xs));
     }
 
     /**
@@ -5084,7 +5887,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     public @NotNull <T extends Comparable<T>> Iterable<Quadruple<T, T, T, T>> subsetQuadruplesLex(
             @NotNull List<T> xs
     ) {
-        return map(list -> new Quadruple<>(list.get(0), list.get(1), list.get(2), list.get(3)), subsetsLex(4, xs));
+        return map(Quadruple::fromList, subsetsLex(4, xs));
     }
 
     /**
@@ -5106,10 +5909,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     public @NotNull <T extends Comparable<T>> Iterable<Quintuple<T, T, T, T, T>> subsetQuintuplesLex(
             @NotNull List<T> xs
     ) {
-        return map(
-                list -> new Quintuple<>(list.get(0), list.get(1), list.get(2), list.get(3), list.get(4)),
-                subsetsLex(5, xs)
-        );
+        return map(Quintuple::fromList, subsetsLex(5, xs));
     }
 
     /**
@@ -5131,10 +5931,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     public @NotNull <T extends Comparable<T>> Iterable<Sextuple<T, T, T, T, T, T>> subsetSextuplesLex(
             @NotNull List<T> xs
     ) {
-        return map(
-                list -> new Sextuple<>(list.get(0), list.get(1), list.get(2), list.get(3), list.get(4), list.get(5)),
-                subsetsLex(6, xs)
-        );
+        return map(Sextuple::fromList, subsetsLex(6, xs));
     }
 
     /**
@@ -5156,18 +5953,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     public @NotNull <T extends Comparable<T>> Iterable<Septuple<T, T, T, T, T, T, T>> subsetSeptuplesLex(
             @NotNull List<T> xs
     ) {
-        return map(
-                list -> new Septuple<>(
-                        list.get(0),
-                        list.get(1),
-                        list.get(2),
-                        list.get(3),
-                        list.get(4),
-                        list.get(5),
-                        list.get(6)
-                ),
-                subsetsLex(7, xs)
-        );
+        return map(Septuple::fromList, subsetsLex(7, xs));
     }
 
     /**
@@ -5304,8 +6090,11 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      * {@code elementCount}–1
      */
     private static @NotNull Iterable<List<Integer>> subsetIndicesAtLeast(int minSize, int elementCount) {
+        if (minSize == 0) {
+            return subsetIndices(elementCount);
+        }
         BigInteger outputSize = MathUtils.subsetCount(minSize, elementCount);
-        Iterable<Integer> range = IterableUtils.range(0, minSize - 1);
+        Iterable<Integer> range = INSTANCE.rangeIncreasing(0, minSize - 1);
         int limit = elementCount - 1;
         int offset = elementCount - minSize;
         return () -> new EventuallyKnownSizeIterator<List<Integer>>() {
@@ -5426,7 +6215,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
             T first = xs.get(0);
             first.compareTo(first);
         }
-        return concatMap(i -> subsetsLex(i, xs), range(0, xs.size()));
+        return concatMap(i -> subsetsLex(i, xs), rangeIncreasing(0, xs.size()));
     }
 
     /**
@@ -5477,7 +6266,10 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         if (minSize < 0) {
             throw new IllegalArgumentException("minSize cannot be negative. Invalid minSize: " + minSize);
         }
-        return concatMap(i -> subsetsLex(i, xs), range(minSize, xs.size()));
+        if (minSize > xs.size()) {
+            return Collections.emptyList();
+        }
+        return concatMap(i -> subsetsLex(i, xs), rangeIncreasing(minSize, xs.size()));
     }
 
     /**
@@ -5622,7 +6414,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<Pair<T, T>> subsetPairs(@NotNull Iterable<T> xs) {
-        return map(list -> new Pair<>(list.get(0), list.get(1)), subsets(2, xs));
+        return map(Pair::fromList, subsets(2, xs));
     }
 
     /**
@@ -5642,7 +6434,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<Triple<T, T, T>> subsetTriples(@NotNull Iterable<T> xs) {
-        return map(list -> new Triple<>(list.get(0), list.get(1), list.get(2)), subsets(3, xs));
+        return map(Triple::fromList, subsets(3, xs));
     }
 
     /**
@@ -5664,7 +6456,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     public @NotNull <T extends Comparable<T>> Iterable<Quadruple<T, T, T, T>> subsetQuadruples(
             @NotNull Iterable<T> xs
     ) {
-        return map(list -> new Quadruple<>(list.get(0), list.get(1), list.get(2), list.get(3)), subsets(4, xs));
+        return map(Quadruple::fromList, subsets(4, xs));
     }
 
     /**
@@ -5686,10 +6478,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     public @NotNull <T extends Comparable<T>> Iterable<Quintuple<T, T, T, T, T>> subsetQuintuples(
             @NotNull Iterable<T> xs
     ) {
-        return map(
-                list -> new Quintuple<>(list.get(0), list.get(1), list.get(2), list.get(3), list.get(4)),
-                subsets(5, xs)
-        );
+        return map(Quintuple::fromList, subsets(5, xs));
     }
 
     /**
@@ -5711,10 +6500,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     public @NotNull <T extends Comparable<T>> Iterable<Sextuple<T, T, T, T, T, T>> subsetSextuples(
             @NotNull Iterable<T> xs
     ) {
-        return map(
-                list -> new Sextuple<>(list.get(0), list.get(1), list.get(2), list.get(3), list.get(4), list.get(5)),
-                subsets(6, xs)
-        );
+        return map(Sextuple::fromList, subsets(6, xs));
     }
 
     /**
@@ -5736,18 +6522,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     public @NotNull <T extends Comparable<T>> Iterable<Septuple<T, T, T, T, T, T, T>> subsetSeptuples(
             @NotNull Iterable<T> xs
     ) {
-        return map(
-                list -> new Septuple<>(
-                        list.get(0),
-                        list.get(1),
-                        list.get(2),
-                        list.get(3),
-                        list.get(4),
-                        list.get(5),
-                        list.get(6)
-                ),
-                subsets(7, xs)
-        );
+        return map(Septuple::fromList, subsets(7, xs));
     }
 
     /**
@@ -5998,6 +6773,24 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
+     * Returns an {@code Iterable} containing all elements from a list of {@code Iterable}s. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code xss} cannot contain nulls.</li>
+     *  <li>The result is not null.</li>
+     * </ul>
+     *
+     * Length is ∑<sub>x∈{@code xss}</sub>|x|
+     *
+     * @param xss the {@code Iterable}s
+     * @param <T> the type of the {@code Iterables}' elements
+     * @return all elements from {@code xss}
+     */
+    public @NotNull <T> Iterable<T> choose(@NotNull List<Iterable<T>> xss) {
+        return concat(map(xs -> xs, transpose(xss)));
+    }
+
+    /**
      * Given a {@code List} of {@code Integer}s, generates the Cartesian product of the indices [0, ..., i–1] for each
      * element i.
      *
@@ -6013,7 +6806,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     private static @NotNull Iterable<List<Integer>> cartesianProductIndices(List<Integer> listSizes) {
         //noinspection Convert2MethodRef
-        BigInteger outputSize = productBigInteger(map(i -> BigInteger.valueOf(i), listSizes));
+        BigInteger outputSize = productBigInteger(toList(map(i -> BigInteger.valueOf(i), listSizes)));
         int limit = listSizes.size() - 1;
         return () -> new EventuallyKnownSizeIterator<List<Integer>>() {
             private final @NotNull List<Integer> list = toList(replicate(listSizes.size(), 0));

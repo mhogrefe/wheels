@@ -47,8 +47,39 @@ public final class Pair<A, B> {
         this.b = b;
     }
 
+    /**
+     * Converts a {@code Pair} of two values of the same type to a {@code List}.
+     *
+     * <ul>
+     *  <li>{@code p} cannot be null.</li>
+     *  <li>The result has length 2.</li>
+     * </ul>
+     *
+     * @param p a {@code Pair}
+     * @param <T> the type of both values of {@code p}
+     * @return a {@code List} containing the values of {@code p}
+     */
     public static <T> List<T> toList(Pair<T, T> p) {
         return Arrays.asList(p.a, p.b);
+    }
+
+    /**
+     * Converts a {@code List} of two values to a {@code Pair}.
+     *
+     * <ul>
+     *  <li>{@code xs} must have length 2.</li>
+     *  <li>The result is not null.</li>
+     * </ul>
+     *
+     * @param xs a {@code List}
+     * @param <T> the type of the elements in {@code xs}
+     * @return a {@code Pair} containing the values of {@code xs}
+     */
+    public static <T> Pair<T, T> fromList(@NotNull List<T> xs) {
+        if (xs.size() != 2) {
+            throw new IllegalArgumentException("xs must have length 2. Invalid xs: " + xs);
+        }
+        return new Pair<>(xs.get(0), xs.get(1));
     }
 
     /**
@@ -118,8 +149,7 @@ public final class Pair<A, B> {
     /**
      * Creates a {@code Pair} from a {@code String}. Valid strings are of the form {@code "(" + a + ", " + b + ")"},
      * where {@code a} and {@code b} are valid {@code String}s for their types. {@code a} must not contain the
-     * {@code String} {@code ", "}, because this will confuse the parser. If the {@code String} is invalid, the method
-     * returns {@code Optional.empty()} without throwing an exception; this aids composability.
+     * {@code String} {@code ", "}, because this will confuse the parser.
      *
      * <ul>
      *  <li>{@code s} must be non-null.</li>
@@ -133,20 +163,46 @@ public final class Pair<A, B> {
      * @param <B> the type of the {@code Pair}'s second value
      * @return the {@code Pair} represented by {@code s}, or an empty {@code Optional} if {@code s} is invalid.
      */
-    public static @NotNull <A, B> Optional<Pair<A, B>> read(
+    public static @NotNull <A, B> Optional<Pair<A, B>> readStrict(
             @NotNull String s,
             @NotNull Function<String, NullableOptional<A>> readA,
             @NotNull Function<String, NullableOptional<B>> readB
     ) {
         if (s.length() < 2 || head(s) != '(' || last(s) != ')') return Optional.empty();
-        s = tail(init(s));
-        String[] tokens = s.split(", ");
-        if (tokens.length != 2) return Optional.empty();
-        NullableOptional<A> oa = readA.apply(tokens[0]);
-        if (!oa.isPresent()) return Optional.empty();
-        NullableOptional<B> ob = readB.apply(tokens[1]);
-        if (!ob.isPresent()) return Optional.empty();
-        return Optional.of(new Pair<>(oa.get(), ob.get()));
+        s = middle(s);
+        A a = null;
+        B b = null;
+        StringBuilder sb = new StringBuilder();
+        int i = 0;
+        for (String token : s.split(", ")) {
+            if (sb.length() != 0) {
+                sb.append(", ");
+            }
+            sb.append(token);
+            switch (i) {
+                case 0:
+                    NullableOptional<A> oa = readA.apply(sb.toString());
+                    if (oa.isPresent()) {
+                        a = oa.get();
+                        i++;
+                        sb = new StringBuilder();
+                    }
+                    break;
+                case 1:
+                    NullableOptional<B> ob = readB.apply(sb.toString());
+                    if (ob.isPresent()) {
+                        b = ob.get();
+                        i++;
+                        sb = new StringBuilder();
+                    }
+                    break;
+                default:
+                    return Optional.empty();
+            }
+        }
+
+        if (i != 2) return Optional.empty();
+        return Optional.of(new Pair<>(a, b));
     }
 
     /**
@@ -199,8 +255,8 @@ public final class Pair<A, B> {
         }
 
         /**
-         * Compares two {@code Pair}s, returning 1, –1, or 0 if the answer is "greater than", "less than", or
-         * "equal to", respectively.
+         * Compares two {@code Pair}s lexicographically, returning 1, –1, or 0 if the answer is "greater than",
+         * "less than", or "equal to", respectively.
          *
          * <ul>
          *  <li>{@code p} must be non-null.</li>

@@ -18,7 +18,7 @@ import java.util.function.Function;
 
 import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.ordering.Ordering.*;
-import static mho.wheels.testing.Testing.*;
+import static mho.wheels.testing.Testing.assertEquals;
 
 /**
  * <p>A {@code RandomProvider} produces {@code Iterable}s that randomly generate some set of values with a specified
@@ -77,13 +77,6 @@ public final strictfp class RandomProvider extends IterableProvider {
     private @NotNull IsaacPRNG prng;
 
     /**
-     * A list of {@code RandomProvider}s that were created from {@code this} using
-     * {@link RandomProvider#withScale(int)} and {@link RandomProvider#withSecondaryScale(int)}. Whenever {@code this}
-     * is reset with {@link RandomProvider#reset()}, the dependents are reset as well.
-     */
-    private @NotNull List<RandomProvider> dependents;
-
-    /**
      * A parameter that determines the size of some of the generated objects.
      */
     private int scale = DEFAULT_SCALE;
@@ -102,8 +95,8 @@ public final strictfp class RandomProvider extends IterableProvider {
      * Constructs a {@code RandomProvider} with a seed generated from the current system time.
      *
      * <ul>
-     *  <li>(conjecture) Any {@code RandomProvider} with default {@code scale} and {@code secondaryScale} may be
-     *  constructed with this constructor.</li>
+     *  <li>(conjecture) Any {@code RandomProvider} with default {@code scale}, {@code secondaryScale}, and
+     *  {@code tertiaryScale} may be constructed with this constructor.</li>
      * </ul>
      */
     public RandomProvider() {
@@ -113,7 +106,6 @@ public final strictfp class RandomProvider extends IterableProvider {
             seed.add(prng.nextInt());
         }
         prng = new IsaacPRNG(seed);
-        dependents = new ArrayList<>();
     }
 
     /**
@@ -121,8 +113,8 @@ public final strictfp class RandomProvider extends IterableProvider {
      *
      * <ul>
      *  <li>{@code seed} must have length {@link mho.wheels.random.IsaacPRNG#SIZE}.</li>
-     *  <li>Any {@code RandomProvider} with default {@code scale} and {@code secondaryScale} may be constructed with
-     *  this constructor.</li>
+     *  <li>Any {@code RandomProvider} with default {@code scale}, {@code secondaryScale}, and {@code tertiaryScale}
+     *  may be constructed with this constructor.</li>
      * </ul>
      *
      * @param seed the source of randomness
@@ -134,7 +126,6 @@ public final strictfp class RandomProvider extends IterableProvider {
         }
         this.seed = seed;
         prng = new IsaacPRNG(seed);
-        dependents = new ArrayList<>();
     }
 
     /**
@@ -262,7 +253,6 @@ public final strictfp class RandomProvider extends IterableProvider {
     public @NotNull RandomProvider withScale(int scale) {
         RandomProvider scaled = copy();
         scaled.scale = scale;
-        dependents.add(scaled);
         return scaled;
     }
 
@@ -282,7 +272,6 @@ public final strictfp class RandomProvider extends IterableProvider {
     public @NotNull RandomProvider withSecondaryScale(int secondaryScale) {
         RandomProvider scaled = copy();
         scaled.secondaryScale = secondaryScale;
-        dependents.add(scaled);
         return scaled;
     }
 
@@ -302,16 +291,15 @@ public final strictfp class RandomProvider extends IterableProvider {
     public @NotNull RandomProvider withTertiaryScale(int tertiaryScale) {
         RandomProvider scaled = copy();
         scaled.tertiaryScale = tertiaryScale;
-        dependents.add(scaled);
         return scaled;
     }
 
     /**
      * Put the {@code prng} back in its original state. Creating a {@code RandomProvider}, generating some values,
      * resetting, and generating the same types of values again will result in the same values. Any
-     * {@code RandomProvider}s created from {@code this} using {@link RandomProvider#withScale(int)},
-     * {@link RandomProvider#withSecondaryScale(int)}, or {@link RandomProvider#withTertiaryScale(int)} (but not
-     * {@link RandomProvider#copy} or {@link RandomProvider#deepCopy()}) is also reset.
+     * {@code RandomProvider}s created from {@code this} using {@link RandomProvider#copy},
+     * {@link RandomProvider#withScale(int)}, {@link RandomProvider#withSecondaryScale(int)}, or
+     * {@link RandomProvider#withTertiaryScale(int)} (but not {@link RandomProvider#deepCopy()}) is also reset.
      *
      * <ul>
      *  <li>{@code this} may be any {@code RandomProvider}.</li>
@@ -320,21 +308,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public void reset() {
-        resetHelper(new IsaacPRNG(seed), this);
-    }
-
-    /**
-     * A helper function for {@link RandomProvider#reset()}. Sets {@code rp}'s PRNG to {@code prng}, and do the same
-     * for all of {@code rp}'s dependents.
-     *
-     * @param prng the {@code IsaacPRNG} to reset
-     * @param rp the {@code RandomProvider} to reset
-     */
-    private static void resetHelper(@NotNull IsaacPRNG prng, @NotNull RandomProvider rp) {
-        rp.prng = prng;
-        for (RandomProvider dependent : rp.dependents) {
-            resetHelper(prng, dependent);
-        }
+        prng.setSeed(seed);
     }
 
     /**
@@ -379,7 +353,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Long> longs() {
-        return map(c -> (long) c.get(0) << 32 | c.get(1) & 0xffffffffL, chunk(2, integers()));
+        return map(c -> (long) c.get(0) << 32 | c.get(1) & 0xffffffffL, chunkInfinite(2, integers()));
     }
 
     /**
@@ -507,7 +481,11 @@ public final strictfp class RandomProvider extends IterableProvider {
         if (n == 1) {
             return repeat(0);
         } else {
-            return filterInfinite(i -> i < n, integersPow2(IntegerUtils.ceilingLog2(n)));
+            if (IntegerUtils.isPowerOfTwo(n)) {
+                return integersPow2(IntegerUtils.ceilingLog2(n));
+            } else {
+                return filterInfinite(i -> i < n, integersPow2(IntegerUtils.ceilingLog2(n)));
+            }
         }
     }
 
@@ -530,7 +508,11 @@ public final strictfp class RandomProvider extends IterableProvider {
         if (n == 1) {
             return repeat(0L);
         } else {
-            return filterInfinite(l -> l < n, longsPow2(IntegerUtils.ceilingLog2(n)));
+            if (IntegerUtils.isPowerOfTwo(n)) {
+                return longsPow2(IntegerUtils.ceilingLog2(n));
+            } else {
+                return filterInfinite(i -> i < n, longsPow2(IntegerUtils.ceilingLog2(n)));
+            }
         }
     }
 
@@ -553,7 +535,11 @@ public final strictfp class RandomProvider extends IterableProvider {
         if (n.equals(BigInteger.ONE)) {
             return repeat(BigInteger.ZERO);
         } else {
-            return filterInfinite(i -> lt(i, n), bigIntegersPow2(IntegerUtils.ceilingLog2(n)));
+            if (IntegerUtils.isPowerOfTwo(n)) {
+                return bigIntegersPow2(IntegerUtils.ceilingLog2(n));
+            } else {
+                return filterInfinite(i -> lt(i, n), bigIntegersPow2(IntegerUtils.ceilingLog2(n)));
+            }
         }
     }
 
@@ -563,7 +549,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      * <ul>
      *  <li>{@code this} may be any {@code RandomProvider}.</li>
      *  <li>{@code xs} cannot be empty.</li>
-     *  <li>The result is non-removable and either empty or infinite.</li>
+     *  <li>The result is non-removable and infinite.</li>
      * </ul>
      *
      * Length is infinite
@@ -998,41 +984,45 @@ public final strictfp class RandomProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that uniformly generates {@code Byte}s between {@code a} and {@code b}, inclusive. If
-     * {@code a}{@literal >}{@code b}, an empty {@code Iterable} is returned.
+     * An {@code Iterable} that uniformly generates {@code Byte}s between {@code a} and {@code b}, inclusive.
      *
      * <ul>
      *  <li>{@code this} may be any {@code RandomProvider}.</li>
      *  <li>{@code a} may be any {@code byte}.</li>
      *  <li>{@code b} may be any {@code byte}.</li>
-     *  <li>The result is empty, or an infinite, non-removable {@code Iterable} containing {@code Byte}s.</li>
+     *  <li>{@code a} must be less than or equal to {@code b}.</li>
+     *  <li>The result an infinite, non-removable {@code Iterable} containing {@code Byte}s.</li>
      * </ul>
      *
-     * Length is infinite if a≤b, 0 otherwise
+     * Length is infinite
      *
      * @param a the inclusive lower bound of the generated elements
      * @param b the inclusive upper bound of the generated elements
      * @return uniformly-distributed {@code Byte}s between {@code a} and {@code b}, inclusive
      */
-    //todo don't return empty list
     @Override
     public @NotNull Iterable<Byte> range(byte a, byte b) {
-        if (a > b) return Collections.emptyList();
-        return map(i -> (byte) (i + a), integersBounded((int) b - a + 1));
+        if (a > b) {
+            throw new IllegalArgumentException("a must be less than or equal to b. a: " + a + ", b: " + b);
+        } else if (a == b) {
+            return repeat(a);
+        } else {
+            return map(i -> (byte) (i + a), integersBounded((int) b - a + 1));
+        }
     }
 
     /**
-     * An {@code Iterable} that uniformly generates {@code Short}s between {@code a} and {@code b}, inclusive. If
-     * {@code a}{@literal >}{@code b}, an empty {@code Iterable} is returned.
+     * An {@code Iterable} that uniformly generates {@code Short}s between {@code a} and {@code b}, inclusive.
      *
      * <ul>
      *  <li>{@code this} may be any {@code RandomProvider}.</li>
      *  <li>{@code a} may be any {@code short}.</li>
      *  <li>{@code b} may be any {@code short}.</li>
-     *  <li>The result is empty, or an infinite, non-removable {@code Iterable} containing {@code Short}s.</li>
+     *  <li>{@code a} must be less than or equal to {@code b}.</li>
+     *  <li>The result is an infinite, non-removable {@code Iterable} containing {@code Short}s.</li>
      * </ul>
      *
-     * Length is infinite if a≤b, 0 otherwise
+     * Length is infinite
      *
      * @param a the inclusive lower bound of the generated elements
      * @param b the inclusive upper bound of the generated elements
@@ -1040,22 +1030,27 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Short> range(short a, short b) {
-        if (a > b) return Collections.emptyList();
-        return map(i -> (short) (i + a), integersBounded((int) b - a + 1));
+        if (a > b) {
+            throw new IllegalArgumentException("a must be less than or equal to b. a: " + a + ", b: " + b);
+        } else if (a == b) {
+            return repeat(a);
+        } else {
+            return map(i -> (short) (i + a), integersBounded((int) b - a + 1));
+        }
     }
 
     /**
-     * An {@code Iterable} that uniformly generates {@code Integer}s between {@code a} and {@code b}, inclusive. If
-     * {@code a}{@literal >}{@code b}, an empty {@code Iterable} is returned.
+     * An {@code Iterable} that uniformly generates {@code Integer}s between {@code a} and {@code b}, inclusive.
      *
      * <ul>
      *  <li>{@code this} may be any {@code RandomProvider}.</li>
      *  <li>{@code a} may be any {@code int}.</li>
      *  <li>{@code b} may be any {@code int}.</li>
-     *  <li>The result is empty, or an infinite, non-removable {@code Iterable} containing {@code Integer}s.</li>
+     *  <li>{@code a} must be less than or equal to {@code b}.</li>
+     *  <li>The result is an infinite, non-removable {@code Iterable} containing {@code Integer}s.</li>
      * </ul>
      *
-     * Length is infinite if a≤b, 0 otherwise
+     * Length is infinite
      *
      * @param a the inclusive lower bound of the generated elements
      * @param b the inclusive upper bound of the generated elements
@@ -1063,47 +1058,57 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Integer> range(int a, int b) {
-        if (a > b) return Collections.emptyList();
-        return map(i -> (int) (i + a), longsBounded((long) b - a + 1));
+        if (a > b) {
+            throw new IllegalArgumentException("a must be less than or equal to b. a: " + a + ", b: " + b);
+        } else if (a == b) {
+            return repeat(a);
+        } else {
+            return map(i -> (int) (i + a), longsBounded((long) b - a + 1));
+        }
     }
 
     /**
-     * An {@code Iterable} that uniformly generates {@code Long}s between {@code a} and {@code b}, inclusive. If
-     * {@code a}{@literal >}{@code b}, an empty {@code Iterable} is returned.
+     * An {@code Iterable} that uniformly generates {@code Long}s between {@code a} and {@code b}, inclusive.
      *
      * <ul>
      *  <li>{@code this} may be any {@code RandomProvider}.</li>
      *  <li>{@code a} may be any {@code long}.</li>
      *  <li>{@code b} may be any {@code long}.</li>
-     *  <li>The result is empty, or an infinite, non-removable {@code Iterable} containing {@code Long}s.</li>
+     *  <li>{@code a} must be less than or equal to {@code b}.</li>
+     *  <li>The result is an infinite, non-removable {@code Iterable} containing {@code Long}s.</li>
      * </ul>
      *
-     * Length is infinite if a≤b, 0 otherwise
+     * Length is infinite
      *
      * @param a the inclusive lower bound of the generated elements
      * @param b the inclusive upper bound of the generated elements
      * @return uniformly-distributed {@code Long}s between {@code a} and {@code b}, inclusive
      */
     public @NotNull Iterable<Long> range(long a, long b) {
-        if (a > b) return Collections.emptyList();
-        return map(
-                i -> i.add(BigInteger.valueOf(a)).longValueExact(),
-                bigIntegersBounded(BigInteger.valueOf(b).subtract(BigInteger.valueOf(a)).add(BigInteger.ONE))
-        );
+        if (a > b) {
+            throw new IllegalArgumentException("a must be less than or equal to b. a: " + a + ", b: " + b);
+        } else if (a == b) {
+            return repeat(a);
+        } else {
+            return map(
+                    i -> i.add(BigInteger.valueOf(a)).longValueExact(),
+                    bigIntegersBounded(BigInteger.valueOf(b).subtract(BigInteger.valueOf(a)).add(BigInteger.ONE))
+            );
+        }
     }
 
     /**
-     * An {@code Iterable} that uniformly generates {@code BigInteger}s between {@code a} and {@code b}, inclusive. If
-     * {@code a}{@literal >}{@code b}, an empty {@code Iterable} is returned.
+     * An {@code Iterable} that uniformly generates {@code BigInteger}s between {@code a} and {@code b}, inclusive.
      *
      * <ul>
      *  <li>{@code this} may be any {@code RandomProvider}.</li>
      *  <li>{@code a} may be any {@code BigInteger}.</li>
      *  <li>{@code b} may be any {@code BigInteger}.</li>
-     *  <li>The result is empty, or an infinite, non-removable {@code Iterable} containing {@code BigInteger}s.</li>
+     *  <li>{@code a} must be less than or equal to {@code b}.</li>
+     *  <li>The result is an infinite, non-removable {@code Iterable} containing {@code BigInteger}s.</li>
      * </ul>
      *
-     * Length is infinite if a≤b, 0 otherwise
+     * Length is infinite
      *
      * @param a the inclusive lower bound of the generated elements
      * @param b the inclusive upper bound of the generated elements
@@ -1111,22 +1116,27 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<BigInteger> range(@NotNull BigInteger a, @NotNull BigInteger b) {
-        if (gt(a, b)) return Collections.emptyList();
-        return map(i -> i.add(a), bigIntegersBounded(b.subtract(a).add(BigInteger.ONE)));
+        if (gt(a, b)) {
+            throw new IllegalArgumentException("a must be less than or equal to b. a: " + a + ", b: " + b);
+        } else if (a.equals(b)) {
+            return repeat(a);
+        } else {
+            return map(i -> i.add(a), bigIntegersBounded(b.subtract(a).add(BigInteger.ONE)));
+        }
     }
 
     /**
-     * An {@code Iterable} that uniformly generates {@code Character}s between {@code a} and {@code b}, inclusive. If
-     * {@code a}{@literal >}{@code b}, an empty {@code Iterable} is returned.
+     * An {@code Iterable} that uniformly generates {@code Character}s between {@code a} and {@code b}, inclusive.
      *
      * <ul>
      *  <li>{@code this} may be any {@code RandomProvider}.</li>
      *  <li>{@code a} may be any {@code char}.</li>
      *  <li>{@code b} may be any {@code char}.</li>
-     *  <li>The result is empty, or an infinite, non-removable {@code Iterable} containing {@code Character}s.</li>
+     *  <li>{@code a} must be less than or equal to {@code b}.</li>
+     *  <li>The result is an infinite, non-removable {@code Iterable} containing {@code Character}s.</li>
      * </ul>
      *
-     * Length is infinite if a≤b, 0 otherwise
+     * Length is infinite
      *
      * @param a the inclusive lower bound of the generated elements
      * @param b the inclusive upper bound of the generated elements
@@ -1134,8 +1144,13 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Character> range(char a, char b) {
-        if (a > b) return Collections.emptyList();
-        return map(i -> (char) (i + a), integersBounded(b - a + 1));
+        if (a > b) {
+            throw new IllegalArgumentException("a must be less than or equal to b. a: " + a + ", b: " + b);
+        } else if (a == b) {
+            return repeat(a);
+        } else {
+            return map(i -> (char) (i + a), integersBounded(b - a + 1));
+        }
     }
 
     /**
@@ -1333,7 +1348,7 @@ public final strictfp class RandomProvider extends IterableProvider {
         }
         if (a < 1 && scale >= Integer.MAX_VALUE + a) {
             throw new IllegalStateException("this must have a scale less than Integer.MAX_VALUE + a, which is " +
-                    (Integer.MAX_VALUE + a));
+                    (Integer.MAX_VALUE + a) + ". Invalid scale: " + scale);
         }
         return filterInfinite(j -> j >= a, map(i -> i + a - 1, withScale(scale - a + 1).positiveIntegersGeometric()));
     }
@@ -1357,9 +1372,9 @@ public final strictfp class RandomProvider extends IterableProvider {
             throw new IllegalStateException("this must have a scale less than a, which is " + a + ". Invalid scale: " +
                     scale);
         }
-        if (a > -1 && scale <= a - Integer.MAX_VALUE) {
+        if (a >= 0 && scale <= a - Integer.MAX_VALUE) {
             throw new IllegalStateException("this must have a scale greater than a - Integer.MAX_VALUE, which is " +
-                    (a - Integer.MAX_VALUE));
+                    (a - Integer.MAX_VALUE) + ". Invalid scale: " + scale);
         }
         return filterInfinite(j -> j <= a, map(i -> a - i + 1, withScale(a - scale + 1).positiveIntegersGeometric()));
     }
@@ -1411,9 +1426,9 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<BigInteger> naturalBigIntegers() {
-        Iterable<Integer> naturalBigIntegers = naturalIntegersGeometric();
+        Iterable<Integer> naturalIntegers = naturalIntegersGeometric();
         return () -> new NoRemoveIterator<BigInteger>() {
-            private final @NotNull Iterator<Integer> is = naturalBigIntegers.iterator();
+            private final @NotNull Iterator<Integer> is = naturalIntegers.iterator();
 
             @Override
             public boolean hasNext() {
@@ -1452,7 +1467,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      * {@code BigInteger}s with that bit size; the sign is also chosen uniformly. Does not support removal.
      *
      * <ul>
-     *  <li>{@code this} must have a positive scale.</li>
+     *  <li>{@code this} must have a positive scale. The scale cannot be {@code Integer.MAX_VALUE}.</li>
      *  <li>The result is an infinite, non-removable {@code Iterable} containing {@code BigInteger}s.</li>
      * </ul>
      *
@@ -1495,8 +1510,8 @@ public final strictfp class RandomProvider extends IterableProvider {
                 a.signum() == -1 ? BigInteger.ONE.subtract(a) : BigInteger.ONE.shiftLeft(absBitLength).subtract(a)
         );
         return () -> new NoRemoveIterator<BigInteger>() {
-            private final @NotNull Iterator<Integer> is = rangeUpGeometric.iterator();
-            private final @NotNull Iterator<BigInteger> is2 = bigIntegersBounded.iterator();
+            private final @NotNull Iterator<Integer> bitLengths = rangeUpGeometric.iterator();
+            private final @NotNull Iterator<BigInteger> offsets = bigIntegersBounded.iterator();
 
             @Override
             public boolean hasNext() {
@@ -1505,27 +1520,27 @@ public final strictfp class RandomProvider extends IterableProvider {
 
             @Override
             public @NotNull BigInteger next() {
-                int size = is.next();
+                int bitLength = bitLengths.next();
                 BigInteger i;
-                if (size != absBitLength) {
-                    if (size == 0) {
+                if (bitLength != absBitLength) {
+                    if (bitLength == 0) {
                         i = BigInteger.ZERO;
                     } else {
-                        i = nextBigIntegerPow2(size);
-                        boolean mostSignificantBit = i.testBit(size - 1);
+                        i = nextBigIntegerPow2(bitLength);
+                        boolean mostSignificantBit = i.testBit(bitLength - 1);
                         if (!mostSignificantBit) {
-                            i = i.setBit(size - 1);
-                            if (size < absBitLength && a.signum() == -1) {
+                            i = i.setBit(bitLength - 1);
+                            if (bitLength < absBitLength && a.signum() == -1) {
                                 i = i.negate();
                             }
                         }
                     }
                 } else {
                     if (a.signum() != -1) {
-                        i = is2.next().add(a);
+                        i = offsets.next().add(a);
                     } else {
                         BigInteger b = BigInteger.ONE.shiftLeft(absBitLength - 1);
-                        BigInteger x = is2.next();
+                        BigInteger x = offsets.next();
                         i = lt(x, b) ? x.add(b) : b.negate().subtract(x.subtract(b));
                     }
                 }
@@ -1702,8 +1717,8 @@ public final strictfp class RandomProvider extends IterableProvider {
     }
 
     /**
-     * <p>An {@code Iterable} that generates {@code BinaryFraction}s between {@code a} and {@code b}, inclusive. If
-     * {@code a}{@literal >}{@code b}, an empty {@code Iterable} is returned. Does not support removal.</p>
+     * <p>An {@code Iterable} that generates {@code BinaryFraction}s between {@code a} and {@code b}, inclusive. Does
+     * not support removal.</p>
      *
      * <p>Every interval with {@code BinaryFraction} bounds may be broken up into equal blocks whose length is a power
      * of 2. Consider the subdivision with the largest possible block size. We can call points that lie on the
@@ -1717,11 +1732,11 @@ public final strictfp class RandomProvider extends IterableProvider {
      *  <li>{@code this} must have a positive scale. The scale cannot be {@code Integer.MAX_VALUE}.</li>
      *  <li>{@code a} may be any {@code BinaryFraction}.</li>
      *  <li>{@code b} may be any {@code BinaryFraction}.</li>
-     *  <li>The result is empty, or an infinite, non-removable {@code Iterable} containing
-     *  {@code BinaryFraction}s.</li>
+     *  <li>{@code a} must be less than or equal to {@code b}.</li>
+     *  <li>The result is an infinite, non-removable {@code Iterable} containing {@code BinaryFraction}s.</li>
      * </ul>
      *
-     * Length is infinite if a≤b, 0 otherwise
+     * Length is infinite
      *
      * @param a the inclusive lower bound of the generated elements
      * @param b the inclusive upper bound of the generated elements
@@ -1729,9 +1744,19 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<BinaryFraction> range(@NotNull BinaryFraction a, @NotNull BinaryFraction b) {
+        if (gt(a, b)) {
+            throw new IllegalArgumentException("a must be less than or equal to b. a: " + a + ", b: " + b);
+        }
+        if (scale < 1) {
+            throw new IllegalStateException("this must have a positive scale. Invalid scale: " + scale);
+        }
+        if (scale == Integer.MAX_VALUE) {
+            throw new IllegalStateException("scale cannot be Integer.MAX_VALUE.");
+        }
+        if (a.equals(b)) {
+            return repeat(a);
+        }
         Iterable<Integer> naturalIntegersGeometric = naturalIntegersGeometric();
-        if (a.equals(b)) return repeat(a);
-        if (gt(a, b)) return Collections.emptyList();
         BinaryFraction difference = b.subtract(a);
         Iterable<BigInteger> range1 = range(BigInteger.ZERO, difference.getMantissa());
         Iterable<BigInteger> range2 = range(BigInteger.ZERO, difference.getMantissa().subtract(BigInteger.ONE));
@@ -2050,18 +2075,19 @@ public final strictfp class RandomProvider extends IterableProvider {
 
     /**
      * An {@code Iterable} that generates all {@code Float}s between {@code a} and {@code b}, inclusive, from a uniform
-     * distribution among {@code Float}s. If a≤0≤b, either positive or negative zero may be returned. If
-     * {@code a}{@literal >}{@code b}, an empty {@code Iterable} is returned. Does not support removal.
+     * distribution among {@code Float}s. If a≤0≤b, either positive or negative zero may be returned. Does not support
+     * removal.
      *
      * <ul>
      *  <li>{@code this} may be any {@code RandomProvider}.</li>
      *  <li>{@code a} cannot be {@code NaN}.</li>
      *  <li>{@code b} cannot be {@code NaN}.</li>
-     *  <li>The result is empty, or an infinite, non-removable {@code Iterable} containing {@code Float}s that are not
+     *  <li>{@code a} must be less than or equal to {@code b}.</li>
+     *  <li>The result is an infinite, non-removable {@code Iterable} containing {@code Float}s that are not
      *  {@code NaN}.</li>
      * </ul>
      *
-     * Length is infinite if a≤b, 0 otherwise
+     * Length is infinite
      *
      * @param a the inclusive lower bound of the generated elements
      * @param b the inclusive upper bound of the generated elements
@@ -2069,6 +2095,11 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Float> range(float a, float b) {
+        if ((!FloatingPointUtils.isPositiveZero(a) || !FloatingPointUtils.isNegativeZero(b)) && gt(a, b)) {
+            throw new IllegalArgumentException("a must be less than or equal to b. a: " + a + ", b: " + b);
+        } else if (a == b) {
+            return a == 0.0f ? uniformSample(Arrays.asList(0.0f, -0.0f)) : repeat(a);
+        }
         int oa = FloatingPointUtils.toOrderedRepresentation(a);
         int ob = FloatingPointUtils.toOrderedRepresentation(b);
         if (oa <= 0 && 0 <= ob) {
@@ -2138,18 +2169,19 @@ public final strictfp class RandomProvider extends IterableProvider {
 
     /**
      * An {@code Iterable} that generates all {@code Double}s between {@code a} and {@code b}, inclusive, from a
-     * uniform distribution among {@code Double}s. If a≤0≤b, either positive or negative zero may be returned. If
-     * {@code a}{@literal >}{@code b}, an empty {@code Iterable} is returned. Does not support removal.
+     * uniform distribution among {@code Double}s. If a≤0≤b, either positive or negative zero may be returned. Does not
+     * support removal.
      *
      * <ul>
      *  <li>{@code this} may be any {@code RandomProvider}.</li>
      *  <li>{@code a} cannot be {@code NaN}.</li>
      *  <li>{@code b} cannot be {@code NaN}.</li>
-     *  <li>The result is empty, or an infinite, non-removable {@code Iterable} containing {@code Double}s that are not
+     *  <li>{@code a} must be less than or equal to {@code b}.</li>
+     *  <li>The result is an infinite, non-removable {@code Iterable} containing {@code Double}s that are not
      *  {@code NaN}.</li>
      * </ul>
      *
-     * Length is infinite if a≤b, 0 otherwise
+     * Length is infinite
      *
      * @param a the inclusive lower bound of the generated elements
      * @param b the inclusive upper bound of the generated elements
@@ -2157,6 +2189,11 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Double> range(double a, double b) {
+        if ((!FloatingPointUtils.isPositiveZero(a) || !FloatingPointUtils.isNegativeZero(b)) && gt(a, b)) {
+            throw new IllegalArgumentException("a must be less than or equal to b. a: " + a + ", b: " + b);
+        } else if (a == b) {
+            return a == 0.0 ? uniformSample(Arrays.asList(0.0, -0.0)) : repeat(a);
+        }
         long oa = FloatingPointUtils.toOrderedRepresentation(a);
         long ob = FloatingPointUtils.toOrderedRepresentation(b);
         if (oa <= 0L && 0L <= ob) {
@@ -2219,18 +2256,18 @@ public final strictfp class RandomProvider extends IterableProvider {
     /**
      * An {@code Iterable} that generates all {@code Float}s between {@code a} and {@code b}, inclusive, as if reals
      * were sampled from a uniform distribution between {@code a} and {@code b} and then rounded to the nearest
-     * {@code Float}s. If {@code a}{@literal >}{@code b}, an empty {@code Iterable} is returned. Does not support
-     * removal.
+     * {@code Float}s. Does not support removal.
      *
      * <ul>
      *  <li>{@code this} may be any {@code RandomProvider}.</li>
      *  <li>{@code a} must be finite.</li>
      *  <li>{@code b} must be finite.</li>
-     *  <li>The result is empty, or an infinite, non-removable {@code Iterable} containing finite {@code Float}s that
-     *  are not negative zero.</li>
+     *  <li>{@code a} must be less than or equal to {@code b}.</li>
+     *  <li>The result is an infinite, non-removable {@code Iterable} containing finite {@code Float}s that are not
+     *  negative zero.</li>
      * </ul>
      *
-     * Length is infinite if a≤b, 0 otherwise
+     * Length is infinite
      *
      * @param a the inclusive lower bound of the generated elements
      * @param b the inclusive upper bound of the generated elements
@@ -2243,7 +2280,11 @@ public final strictfp class RandomProvider extends IterableProvider {
         if (!Float.isFinite(b)) {
             throw new ArithmeticException("b must be finite.");
         }
-        if (a > b) return Collections.emptyList();
+        if ((!FloatingPointUtils.isPositiveZero(a) || !FloatingPointUtils.isNegativeZero(b)) && gt(a, b)) {
+            throw new IllegalArgumentException("a must be less than or equal to b. a: " + a + ", b: " + b);
+        } else if (a == b) {
+            return repeat(FloatingPointUtils.absNegativeZeros(a));
+        }
         return zipWith(
                 (i, s) -> {
                     Pair<Float, Float> range = BinaryFraction.of(
@@ -2307,15 +2348,15 @@ public final strictfp class RandomProvider extends IterableProvider {
     /**
      * An {@code Iterable} that generates all {@code Double}s between {@code a} and {@code b}, inclusive, as if reals
      * were sampled from a uniform distribution between {@code a} and {@code b} and then rounded to the nearest
-     * {@code Float}s. If {@code a}{@literal >}{@code b}, an empty {@code Iterable} is returned. Does not support
-     * removal.
+     * {@code Double}s. Does not support removal.
      *
      * <ul>
      *  <li>{@code this} may be any {@code RandomProvider}.</li>
      *  <li>{@code a} must be finite.</li>
      *  <li>{@code b} must be finite.</li>
-     *  <li>The result is empty, or an infinite, non-removable {@code Iterable} containing finite {@code Double}s that
-     *  are not negative zero.</li>
+     *  <li>{@code a} must be less than or equal to {@code b}.</li>
+     *  <li>The result is an infinite, non-removable {@code Iterable} containing finite {@code Double}s that are not
+     *  negative zero.</li>
      * </ul>
      *
      * Length is infinite if a≤b, 0 otherwise
@@ -2331,7 +2372,11 @@ public final strictfp class RandomProvider extends IterableProvider {
         if (!Double.isFinite(b)) {
             throw new ArithmeticException("b must be finite.");
         }
-        if (a > b) return Collections.emptyList();
+        if ((!FloatingPointUtils.isPositiveZero(a) || !FloatingPointUtils.isNegativeZero(b)) && gt(a, b)) {
+            throw new IllegalArgumentException("a must be less than or equal to b. a: " + a + ", b: " + b);
+        } else if (a == b) {
+            return repeat(FloatingPointUtils.absNegativeZeros(a));
+        }
         return zipWith(
                 (i, s) -> {
                     Pair<Double, Double> range = BinaryFraction.of(
@@ -2464,10 +2509,10 @@ public final strictfp class RandomProvider extends IterableProvider {
                 if (bdScale == 0) {
                     unscaled = is1.next();
                 } else {
-                    int unscaledBitSize = is2.next();
+                    int unscaledBitLength = is2.next();
                     do {
-                        unscaled = nextBigIntegerPow2(unscaledBitSize);
-                        unscaled = unscaled.setBit(unscaledBitSize - 1);
+                        unscaled = nextBigIntegerPow2(unscaledBitLength);
+                        unscaled = unscaled.setBit(unscaledBitLength - 1);
                     } while (unscaled.mod(BigInteger.TEN).equals(BigInteger.ZERO));
                 }
                 return new BigDecimal(unscaled, bdScale);
@@ -2551,10 +2596,10 @@ public final strictfp class RandomProvider extends IterableProvider {
                 if (bdScale == 0) {
                     unscaled = is1.next();
                 } else {
-                    int unscaledBitSize = is2.next();
+                    int unscaledBitLength = is2.next();
                     do {
-                        unscaled = nextBigIntegerPow2(unscaledBitSize);
-                        unscaled = unscaled.setBit(unscaledBitSize - 1);
+                        unscaled = nextBigIntegerPow2(unscaledBitLength);
+                        unscaled = unscaled.setBit(unscaledBitLength - 1);
                     } while (unscaled.mod(BigInteger.TEN).equals(BigInteger.ZERO));
                 }
                 return new BigDecimal(bs.next() ? unscaled : unscaled.negate(), bdScale);
@@ -2702,10 +2747,11 @@ public final strictfp class RandomProvider extends IterableProvider {
      *  <li>{@code this} must have a positive scale and a positive secondary scale.</li>
      *  <li>{@code a} may be any {@code BigDecimal}.</li>
      *  <li>{@code b} may be any {@code BigDecimal}.</li>
-     *  <li>The result is empty, or an infinite, non-removable {@code Iterable} containing {@code BigDecimal}s.</li>
+     *  <li>{@code a} must be less than or equal to {@code b}.</li>
+     *  <li>The result is an infinite, non-removable {@code Iterable} containing {@code BigDecimal}s.</li>
      * </ul>
      *
-     * Length is infinite if a≤b, 0 otherwise
+     * Length is infinite
      *
      * @param a the inclusive lower bound of the generated elements
      * @param b the inclusive upper bound of the generated elements
@@ -2720,8 +2766,11 @@ public final strictfp class RandomProvider extends IterableProvider {
             throw new IllegalStateException("this must have a positive secondaryScale. Invalid secondaryScale: " +
                     secondaryScale);
         }
-        if (gt(a, b)) return Collections.emptyList();
-        return withScale(secondaryScale).uncanonicalize(rangeCanonical(a, b));
+        if (gt(a, b)) {
+            throw new IllegalArgumentException("a must be less than or equal to b. a: " + a + ", b: " + b);
+        } else {
+            return withScale(secondaryScale).uncanonicalize(rangeCanonical(a, b));
+        }
     }
 
     /**
@@ -2773,10 +2822,11 @@ public final strictfp class RandomProvider extends IterableProvider {
      *  <li>{@code this} must have a positive scale and a positive secondary scale.</li>
      *  <li>{@code a} may be any {@code BigDecimal}.</li>
      *  <li>{@code b} may be any {@code BigDecimal}.</li>
-     *  <li>The result is empty, or an infinite, non-removable {@code Iterable} containing {@code BigDecimal}s.</li>
+     *  <li>{@code a} must be less than or equal to {@code b}.</li>
+     *  <li>The result is an infinite, non-removable {@code Iterable} containing {@code BigDecimal}s.</li>
      * </ul>
      *
-     * Length is infinite if a≤b, 0 otherwise
+     * Length is infinite
      *
      * @param a the inclusive lower bound of the generated elements
      * @param b the inclusive upper bound of the generated elements
@@ -2791,8 +2841,11 @@ public final strictfp class RandomProvider extends IterableProvider {
             throw new IllegalStateException("this must have a positive secondaryScale. Invalid secondaryScale: " +
                     secondaryScale);
         }
-        if (gt(a, b)) return Collections.emptyList();
-        if (eq(a, b)) return repeat(BigDecimalUtils.canonicalize(a));
+        if (gt(a, b)) {
+            throw new IllegalArgumentException("a must be less than or equal to b. a: " + a + ", b: " + b);
+        } else if (eq(a, b)) {
+            return repeat(BigDecimalUtils.canonicalize(a));
+        }
         BigDecimal difference = BigDecimalUtils.canonicalize(b.subtract(a));
         return map(
                 c -> BigDecimalUtils.canonicalize(a.add(c)),
@@ -4190,7 +4243,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      *  <li>The result contains {@code Either}s.</li>
      * </ul>
      *
-     * Length is |{@code as}|+|{@code bs}|
+     * Length is infinite
      *
      * @param as the first {@code Iterable}
      * @param bs the second {@code Iterable}
@@ -4223,6 +4276,25 @@ public final strictfp class RandomProvider extends IterableProvider {
                 }
             }
         };
+    }
+
+    /**
+     * An {@code Iterable} that generates all elements from a list of {@code Iterable}s. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>{@code xss} cannot be empty. Every element of {@code xss} must be infinite.</li>
+     *  <li>The result is infinite.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param xss the list of {@code Iterable}s
+     * @param <T> the type of the {@code Iterable}s' elements
+     * @return all elements of {@code xss}
+     */
+    public @NotNull <T> Iterable<T> choose(@NotNull List<Iterable<T>> xss) {
+        return map(Iterator::next, uniformSample(toList(map(Iterable::iterator, xss))));
     }
 
     /**
@@ -4407,10 +4479,5 @@ public final strictfp class RandomProvider extends IterableProvider {
     public void validate() {
         prng.validate();
         assertEquals(this, seed.size(), IsaacPRNG.SIZE);
-        for (RandomProvider dependent : dependents) {
-            assertNotNull(this, dependent);
-            assertTrue(this, prng == dependent.prng);
-            dependent.validate();
-        }
     }
 }

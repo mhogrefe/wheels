@@ -81,6 +81,19 @@ public class IsaacPRNG {
         initialize();
     }
 
+    public void setSeed(@NotNull List<Integer> seed) {
+        a = 0;
+        b = 0;
+        c = 0;
+        count = 0;
+        state = new int[SIZE];
+        result = new int[SIZE];
+        for (int i = 0; i < seed.size(); i++) {
+            result[i] = seed.get(i);
+        }
+        initialize();
+    }
+
     public static @NotNull IsaacPRNG example() {
         return new IsaacPRNG(EXAMPLE_SEED);
     }

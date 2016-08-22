@@ -123,7 +123,7 @@ public final strictfp class FloatingPointUtils {
      * @return whether {@code d} is 0.0
      */
     public static boolean isPositiveZero(double d) {
-        return Double.doubleToLongBits(d) == 0;
+        return Double.doubleToLongBits(d) == 0L;
     }
 
     /**

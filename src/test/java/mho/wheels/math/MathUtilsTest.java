@@ -1187,6 +1187,42 @@ public class MathUtilsTest {
         largestPerfectPowerFactor_int_BigInteger_fail_helper(1, "-1");
     }
 
+    private static void expressAsPower_helper(@NotNull String input, @NotNull String output) {
+        aeq(expressAsPower(Readers.readBigIntegerStrict(input).get()), output);
+    }
+
+    private static void expressAsPower_fail_helper(@NotNull String input) {
+        try {
+            expressAsPower(Readers.readBigIntegerStrict(input).get());
+            fail();
+        } catch (ArithmeticException ignored) {}
+    }
+
+    @Test
+    public void testExpressAsPower() {
+        expressAsPower_helper("2", "(2, 1)");
+        expressAsPower_helper("3", "(3, 1)");
+        expressAsPower_helper("4", "(2, 2)");
+        expressAsPower_helper("5", "(5, 1)");
+        expressAsPower_helper("6", "(6, 1)");
+        expressAsPower_helper("7", "(7, 1)");
+        expressAsPower_helper("8", "(2, 3)");
+        expressAsPower_helper("9", "(3, 2)");
+        expressAsPower_helper("10", "(10, 1)");
+        expressAsPower_helper("64", "(2, 6)");
+        expressAsPower_helper("1000000", "(10, 6)");
+        expressAsPower_helper("1000000000039", "(1000000000039, 1)");
+        expressAsPower_helper(
+                "100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000" +
+                "00",
+                "(10, 100)"
+        );
+
+        expressAsPower_fail_helper("1");
+        expressAsPower_fail_helper("0");
+        expressAsPower_fail_helper("-1");
+    }
+
     private static void totient_int_helper(int input, int output) {
         aeq(totient(input), output);
     }

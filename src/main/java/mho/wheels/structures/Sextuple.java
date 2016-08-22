@@ -83,8 +83,39 @@ public final class Sextuple<A, B, C, D, E, F> {
         this.f = f;
     }
 
+    /**
+     * Converts a {@code Sextuple} of six values of the same type to a {@code List}.
+     *
+     * <ul>
+     *  <li>{@code s} cannot be null.</li>
+     *  <li>The result has length 6.</li>
+     * </ul>
+     *
+     * @param s a {@code Sextuple}
+     * @param <T> the type of all values of {@code s}
+     * @return a {@code List} containing the values of {@code s}
+     */
     public static <T> List<T> toList(Sextuple<T, T, T, T, T, T> s) {
         return Arrays.asList(s.a, s.b, s.c, s.d, s.e, s.f);
+    }
+
+    /**
+     * Converts a {@code List} of six values to a {@code Sextuple}.
+     *
+     * <ul>
+     *  <li>{@code xs} must have length 6.</li>
+     *  <li>The result is not null.</li>
+     * </ul>
+     *
+     * @param xs a {@code List}
+     * @param <T> the type of the elements in {@code xs}
+     * @return a {@code Sextuple} containing the values of {@code xs}
+     */
+    public static <T> Sextuple<T, T, T, T, T, T> fromList(@NotNull List<T> xs) {
+        if (xs.size() != 6) {
+            throw new IllegalArgumentException("xs must have length 6. Invalid xs: " + xs);
+        }
+        return new Sextuple<>(xs.get(0), xs.get(1), xs.get(2), xs.get(3), xs.get(4), xs.get(5));
     }
 
     /**
@@ -120,10 +151,7 @@ public final class Sextuple<A, B, C, D, E, F> {
             D extends Comparable<D>,
             E extends Comparable<E>,
             F extends Comparable<F>
-            > Ordering compare(
-            @NotNull Sextuple<A, B, C, D, E, F> p,
-            @NotNull Sextuple<A, B, C, D, E, F> q
-    ) {
+            > Ordering compare(@NotNull Sextuple<A, B, C, D, E, F> p, @NotNull Sextuple<A, B, C, D, E, F> q) {
         Ordering aOrdering = Ordering.compare(p.a, q.a);
         if (aOrdering != EQ) return aOrdering;
         Ordering bOrdering = Ordering.compare(p.b, q.b);
@@ -188,8 +216,7 @@ public final class Sextuple<A, B, C, D, E, F> {
      * {@code "(" + a + ", " + b + ", " + c + ", " + d + ", " + e + ", " + f + ")"}, where {@code a}, {@code b},
      * {@code c}, {@code d}, {@code e}, and {@code f} are valid {@code String}s for their types. {@code a}, {@code b},
      * {@code c}, {@code d}, and {@code e} must not contain the {@code String} {@code ", "}, because this will confuse
-     * the parser. If the {@code String} is invalid, the method returns {@code Optional.empty()} without throwing an
-     * exception; this aids composability.
+     * the parser.
      *
      * <ul>
      *  <li>{@code s} must be non-null.</li>
@@ -211,7 +238,7 @@ public final class Sextuple<A, B, C, D, E, F> {
      * @param <F> the type of the {@code Sextuple}'s sixth value
      * @return the {@code Sextuple} represented by {@code s}, or an empty {@code Optional} if {@code s} is invalid
      */
-    public static @NotNull <A, B, C, D, E, F> Optional<Sextuple<A, B, C, D, E, F>> read(
+    public static @NotNull <A, B, C, D, E, F> Optional<Sextuple<A, B, C, D, E, F>> readStrict(
             @NotNull String s,
             @NotNull Function<String, NullableOptional<A>> readA,
             @NotNull Function<String, NullableOptional<B>> readB,
@@ -221,22 +248,76 @@ public final class Sextuple<A, B, C, D, E, F> {
             @NotNull Function<String, NullableOptional<F>> readF
     ) {
         if (s.length() < 2 || head(s) != '(' || last(s) != ')') return Optional.empty();
-        s = tail(init(s));
-        String[] tokens = s.split(", ");
-        if (tokens.length != 6) return Optional.empty();
-        NullableOptional<A> oa = readA.apply(tokens[0]);
-        if (!oa.isPresent()) return Optional.empty();
-        NullableOptional<B> ob = readB.apply(tokens[1]);
-        if (!ob.isPresent()) return Optional.empty();
-        NullableOptional<C> oc = readC.apply(tokens[2]);
-        if (!oc.isPresent()) return Optional.empty();
-        NullableOptional<D> od = readD.apply(tokens[3]);
-        if (!od.isPresent()) return Optional.empty();
-        NullableOptional<E> oe = readE.apply(tokens[4]);
-        if (!oe.isPresent()) return Optional.empty();
-        NullableOptional<F> of = readF.apply(tokens[5]);
-        if (!of.isPresent()) return Optional.empty();
-        return Optional.of(new Sextuple<>(oa.get(), ob.get(), oc.get(), od.get(), oe.get(), of.get()));
+        s = middle(s);
+        A a = null;
+        B b = null;
+        C c = null;
+        D d = null;
+        E e = null;
+        F f = null;
+        StringBuilder sb = new StringBuilder();
+        int i = 0;
+        for (String token : s.split(", ")) {
+            if (sb.length() != 0) {
+                sb.append(", ");
+            }
+            sb.append(token);
+            switch (i) {
+                case 0:
+                    NullableOptional<A> oa = readA.apply(sb.toString());
+                    if (oa.isPresent()) {
+                        a = oa.get();
+                        i++;
+                        sb = new StringBuilder();
+                    }
+                    break;
+                case 1:
+                    NullableOptional<B> ob = readB.apply(sb.toString());
+                    if (ob.isPresent()) {
+                        b = ob.get();
+                        i++;
+                        sb = new StringBuilder();
+                    }
+                    break;
+                case 2:
+                    NullableOptional<C> oc = readC.apply(sb.toString());
+                    if (oc.isPresent()) {
+                        c = oc.get();
+                        i++;
+                        sb = new StringBuilder();
+                    }
+                    break;
+                case 3:
+                    NullableOptional<D> od = readD.apply(sb.toString());
+                    if (od.isPresent()) {
+                        d = od.get();
+                        i++;
+                        sb = new StringBuilder();
+                    }
+                    break;
+                case 4:
+                    NullableOptional<E> oe = readE.apply(sb.toString());
+                    if (oe.isPresent()) {
+                        e = oe.get();
+                        i++;
+                        sb = new StringBuilder();
+                    }
+                    break;
+                case 5:
+                    NullableOptional<F> of = readF.apply(sb.toString());
+                    if (of.isPresent()) {
+                        f = of.get();
+                        i++;
+                        sb = new StringBuilder();
+                    }
+                    break;
+                default:
+                    return Optional.empty();
+            }
+        }
+
+        if (i != 6) return Optional.empty();
+        return Optional.of(new Sextuple<>(a, b, c, d, e, f));
     }
 
     /**
@@ -332,8 +413,8 @@ public final class Sextuple<A, B, C, D, E, F> {
         }
 
         /**
-         * Compares two {@code Sextuple}s, returning 1, –1, or 0 if the answer is "greater than", "less than", or
-         * "equal to", respectively.
+         * Compares two {@code Sextuple}s lexicographically, returning 1, –1, or 0 if the answer is "greater than",
+         * "less than", or "equal to", respectively.
          *
          * <ul>
          *  <li>{@code p} must be non-null.</li>

@@ -74,8 +74,39 @@ public final class Quintuple<A, B, C, D, E> {
         this.e = e;
     }
 
+    /**
+     * Converts a {@code Quintuple} of five values of the same type to a {@code List}.
+     *
+     * <ul>
+     *  <li>{@code q} cannot be null.</li>
+     *  <li>The result has length 5.</li>
+     * </ul>
+     *
+     * @param q a {@code Quintuple}
+     * @param <T> the type of all values of {@code q}
+     * @return a {@code List} containing the values of {@code q}
+     */
     public static <T> List<T> toList(Quintuple<T, T, T, T, T> q) {
         return Arrays.asList(q.a, q.b, q.c, q.d, q.e);
+    }
+
+    /**
+     * Converts a {@code List} of five values to a {@code Quintuple}.
+     *
+     * <ul>
+     *  <li>{@code xs} must have length 5.</li>
+     *  <li>The result is not null.</li>
+     * </ul>
+     *
+     * @param xs a {@code List}
+     * @param <T> the type of the elements in {@code xs}
+     * @return a {@code Quintuple} containing the values of {@code xs}
+     */
+    public static <T> Quintuple<T, T, T, T, T> fromList(@NotNull List<T> xs) {
+        if (xs.size() != 5) {
+            throw new IllegalArgumentException("xs must have length 5. Invalid xs: " + xs);
+        }
+        return new Quintuple<>(xs.get(0), xs.get(1), xs.get(2), xs.get(3), xs.get(4));
     }
 
     /**
@@ -108,10 +139,7 @@ public final class Quintuple<A, B, C, D, E> {
             C extends Comparable<C>,
             D extends Comparable<D>,
             E extends Comparable<E>
-            > Ordering compare(
-            @NotNull Quintuple<A, B, C, D, E> p,
-            @NotNull Quintuple<A, B, C, D, E> q
-    ) {
+            > Ordering compare(@NotNull Quintuple<A, B, C, D, E> p, @NotNull Quintuple<A, B, C, D, E> q) {
         Ordering aOrdering = Ordering.compare(p.a, q.a);
         if (aOrdering != EQ) return aOrdering;
         Ordering bOrdering = Ordering.compare(p.b, q.b);
@@ -171,9 +199,7 @@ public final class Quintuple<A, B, C, D, E> {
      * Creates a {@code Quintuple} from a {@code String}. Valid strings are of the form
      * {@code "(" + a + ", " + b + ", " + c + ", " + d + ", " + e + ")"}, where {@code a}, {@code b}, {@code c},
      * {@code d}, and {@code e} are valid {@code String}s for their types. {@code a}, {@code b}, {@code c}, and
-     * {@code d} must not contain the {@code String} {@code ", "}, because this will confuse the parser. If the
-     * {@code String} is invalid, the method returns {@code Optional.empty()} without throwing an exception; this aids
-     * composability.
+     * {@code d} must not contain the {@code String} {@code ", "}, because this will confuse the parser.
      *
      * <ul>
      *  <li>{@code s} must be non-null.</li>
@@ -193,7 +219,7 @@ public final class Quintuple<A, B, C, D, E> {
      * @param <E> the type of the {@code Quintuple}'s fifth value
      * @return the {@code Quintuple} represented by {@code s}, or an empty {@code Optional} if {@code s} is invalid
      */
-    public static @NotNull <A, B, C, D, E> Optional<Quintuple<A, B, C, D, E>> read(
+    public static @NotNull <A, B, C, D, E> Optional<Quintuple<A, B, C, D, E>> readStrict(
             @NotNull String s,
             @NotNull Function<String, NullableOptional<A>> readA,
             @NotNull Function<String, NullableOptional<B>> readB,
@@ -202,20 +228,67 @@ public final class Quintuple<A, B, C, D, E> {
             @NotNull Function<String, NullableOptional<E>> readE
     ) {
         if (s.length() < 2 || head(s) != '(' || last(s) != ')') return Optional.empty();
-        s = tail(init(s));
-        String[] tokens = s.split(", ");
-        if (tokens.length != 5) return Optional.empty();
-        NullableOptional<A> oa = readA.apply(tokens[0]);
-        if (!oa.isPresent()) return Optional.empty();
-        NullableOptional<B> ob = readB.apply(tokens[1]);
-        if (!ob.isPresent()) return Optional.empty();
-        NullableOptional<C> oc = readC.apply(tokens[2]);
-        if (!oc.isPresent()) return Optional.empty();
-        NullableOptional<D> od = readD.apply(tokens[3]);
-        if (!od.isPresent()) return Optional.empty();
-        NullableOptional<E> oe = readE.apply(tokens[4]);
-        if (!oe.isPresent()) return Optional.empty();
-        return Optional.of(new Quintuple<>(oa.get(), ob.get(), oc.get(), od.get(), oe.get()));
+        s = middle(s);
+        A a = null;
+        B b = null;
+        C c = null;
+        D d = null;
+        E e = null;
+        StringBuilder sb = new StringBuilder();
+        int i = 0;
+        for (String token : s.split(", ")) {
+            if (sb.length() != 0) {
+                sb.append(", ");
+            }
+            sb.append(token);
+            switch (i) {
+                case 0:
+                    NullableOptional<A> oa = readA.apply(sb.toString());
+                    if (oa.isPresent()) {
+                        a = oa.get();
+                        i++;
+                        sb = new StringBuilder();
+                    }
+                    break;
+                case 1:
+                    NullableOptional<B> ob = readB.apply(sb.toString());
+                    if (ob.isPresent()) {
+                        b = ob.get();
+                        i++;
+                        sb = new StringBuilder();
+                    }
+                    break;
+                case 2:
+                    NullableOptional<C> oc = readC.apply(sb.toString());
+                    if (oc.isPresent()) {
+                        c = oc.get();
+                        i++;
+                        sb = new StringBuilder();
+                    }
+                    break;
+                case 3:
+                    NullableOptional<D> od = readD.apply(sb.toString());
+                    if (od.isPresent()) {
+                        d = od.get();
+                        i++;
+                        sb = new StringBuilder();
+                    }
+                    break;
+                case 4:
+                    NullableOptional<E> oe = readE.apply(sb.toString());
+                    if (oe.isPresent()) {
+                        e = oe.get();
+                        i++;
+                        sb = new StringBuilder();
+                    }
+                    break;
+                default:
+                    return Optional.empty();
+            }
+        }
+
+        if (i != 5) return Optional.empty();
+        return Optional.of(new Quintuple<>(a, b, c, d, e));
     }
 
     /**
@@ -301,8 +374,8 @@ public final class Quintuple<A, B, C, D, E> {
         }
 
         /**
-         * Compares two {@code Quintuple}s, returning 1, –1, or 0 if the answer is "greater than", "less than", or
-         * "equal to", respectively.
+         * Compares two {@code Quintuple}s lexicographically, returning 1, –1, or 0 if the answer is "greater than",
+         * "less than", or "equal to", respectively.
          *
          * <ul>
          *  <li>{@code p} must be non-null.</li>

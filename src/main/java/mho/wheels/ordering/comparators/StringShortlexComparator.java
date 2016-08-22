@@ -1,16 +1,13 @@
 package mho.wheels.ordering.comparators;
 
-import mho.wheels.ordering.Ordering;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Comparator;
 import java.util.Optional;
 
-import static mho.wheels.ordering.Ordering.EQ;
-
 /**
- * Compares two {@code String}s via shortlex order. First the lengths of the {@code Iterable}s are compared. If one
- * is shorter, it is smaller than the other in this ordering. If both are equal in length, the {@code Comparator} then
+ * Compares two {@code String}s via shortlex order. First the lengths of the {@code String}s are compared. If one is
+ * shorter, it is smaller than the other in this ordering. If both are equal in length, the {@code Comparator} then
  * looks at their {@code Character}s in parallel, left-to-right. The first pair of {@code Character}s which aren't
  * equal determine the ordering.
  */
@@ -66,13 +63,15 @@ public final class StringShortlexComparator implements Comparator<String> {
         for (int i = 0; i < s.length(); i++) {
             char sc = s.charAt(i);
             char tc = t.charAt(i);
-            Ordering characterOrdering;
+            int characterCompare;
             if (characterComparator.isPresent()) {
-                characterOrdering = Ordering.compare(characterComparator.get(), sc, tc);
+                characterCompare = characterComparator.get().compare(sc, tc);
             } else {
-                characterOrdering = Ordering.compare(sc, tc);
+                characterCompare = Character.compare(sc, tc);
             }
-            if (characterOrdering != EQ) return characterOrdering.toInt();
+            if (characterCompare != 0) {
+                return characterCompare;
+            }
         }
         return 0;
     }

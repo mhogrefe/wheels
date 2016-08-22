@@ -10,7 +10,6 @@ import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.BiFunction;
 import java.util.function.Function;
 
 import static mho.wheels.iterables.IterableUtils.*;
@@ -108,11 +107,11 @@ public class Readers {
      */
     public static @NotNull Optional<Ordering> readOrderingStrict(@NotNull String s) {
         switch (s) {
-            case "LT":
+            case "<":
                 return Optional.of(Ordering.LT);
-            case "EQ":
+            case "=":
                 return Optional.of(Ordering.EQ);
-            case "GT":
+            case ">":
                 return Optional.of(Ordering.GT);
             default:
                 return Optional.empty();
@@ -367,7 +366,7 @@ public class Readers {
             s = s.substring("Optional".length());
             if (s.equals(".empty")) return Optional.of(Optional.<T>empty());
             if (s.length() < 2 || head(s) != '[' || last(s) != ']') return Optional.empty();
-            s = tail(init(s));
+            s = middle(s);
             return read.apply(s).map(Optional::of);
         };
     }
@@ -381,7 +380,7 @@ public class Readers {
      * <ul>
      *  <li>{@code read} must be non-null.</li>
      *  <li>{@code s} must be non-null.</li>
-     *  <li>The result is must only be called on {@code String}s {@code s} such that if {@code s} is of the form
+     *  <li>The result must only be called on {@code String}s {@code s} such that if {@code s} is of the form
      *  {@code "NullableOptional[" + t + "]"}, {@code read} terminates and does not return a null on {@code t}.</li>
      * </ul>
      *
@@ -397,18 +396,32 @@ public class Readers {
             s = s.substring("NullableOptional".length());
             if (s.equals(".empty")) return Optional.of(NullableOptional.<T>empty());
             if (s.length() < 2 || head(s) != '[' || last(s) != ']') return Optional.empty();
-            s = tail(init(s));
+            s = middle(s);
             NullableOptional<T> ot = read.apply(s);
             return ot.isPresent() ? Optional.of(ot) : Optional.<NullableOptional<T>>empty();
         };
     }
 
+    /**
+     * A helper function for the list-reading functions.
+     *
+     * <ul>
+     *  <li>genericRead must be non-null.</li>
+     *  <li>The result must only be called on {@code String}s {@code s} such that if {@code s} is of the form
+     *  {@code "[a, b, c, …]"} for some {@code String}s a, b, c, …, {@code genericRead} terminates and does not return
+     *  null on any of a, b, c, … (but NullableOptional[null] is fine).</li>
+     * </ul>
+     *
+     * @param genericRead the function that reads elements of the list.
+     * @param <T> the type of the list's elements.
+     * @return a function which reads lists with elements of type {@code T}
+     */
     private static @NotNull <T> Function<String, Optional<List<T>>> genericReadListStrict(
-            @NotNull BiFunction<String, List<T>, Boolean> genericRead
+            @NotNull Function<String, NullableOptional<T>> genericRead
     ) {
         return s -> {
             if (s.length() < 2 || head(s) != '[' || last(s) != ']') return Optional.empty();
-            s = tail(init(s));
+            s = middle(s);
             if (s.isEmpty()) return Optional.of(new ArrayList<>());
             String[] tokens = s.split(", ");
             List<T> result = new ArrayList<>();
@@ -420,7 +433,11 @@ public class Readers {
                     sb.append(prefix);
                     sb.append(tokens[i]);
                     prefix = ", ";
-                    if (genericRead.apply(sb.toString(), result)) break;
+                    NullableOptional<T> elementResult = genericRead.apply(sb.toString());
+                    if (elementResult.isPresent()) {
+                        result.add(elementResult.get());
+                        break;
+                    }
                     if (i == tokens.length - 1) {
                         return Optional.empty();
                     }
@@ -451,30 +468,32 @@ public class Readers {
     public static @NotNull <T> Function<String, Optional<List<T>>> readListStrict(
             @NotNull Function<String, Optional<T>> read
     ) {
-        return genericReadListStrict(
-                (s, result) -> {
-                    Optional<T> candidate = read.apply(s);
-                    if (candidate.isPresent()) {
-                        result.add(candidate.get());
-                        return true;
-                    }
-                    return false;
-                }
-        );
+        return genericReadListStrict(s -> NullableOptional.fromOptional(read.apply(s)));
     }
 
+    /**
+     * Returns a function which reads a possibly-null-containing {@link java.util.List} from a {@code String}. Only
+     * {@code String}s which could have been emitted by {@code java.util.List#toString} are recognized. In some cases
+     * there may be ambiguity; for example, when reading {@code "[a, b, c]"} as a list of {@code String}s, both
+     * {@code ["a", "b", "c"]} and {@code ["a, b, c"]} are valid interpretations. This method stops reading each list
+     * element as soon as possible, so the first option would be returned. If {@code "null"} appears in the list, it is
+     * read as a null, even if {@code "null"} is also returned by {@link Object#toString()} on some value of type
+     * {@code T}.
+     *
+     * <ul>
+     *  <li>{@code read} must be non-null.</li>
+     *  <li>The result must be applied to {@code String}s {@code s} such that {@code read}, when applied to any
+     *  substring of {@code s} other than {@code "null"}, must terminate and not return null. (This precondition is not
+     *  checked for every substring.)</li>
+     * </ul>
+     *
+     * @param read a function which reads a {@code String} into a value of type {@code T}
+     * @param <T> the type of the {@code List}'s values
+     * @return a function which reads a {@code List} which may contain nulls.
+     */
     public static @NotNull <T> Function<String, Optional<List<T>>> readListWithNullsStrict(
             @NotNull Function<String, Optional<T>> read
     ) {
-        return genericReadListStrict(
-                (s, result) -> {
-                    NullableOptional<T> candidate = readWithNullsStrict(read).apply(s);
-                    if (candidate.isPresent()) {
-                        result.add(candidate.get());
-                        return true;
-                    }
-                    return false;
-                }
-        );
+        return genericReadListStrict(readWithNullsStrict(read));
     }
 }
