@@ -3,7 +3,7 @@ package mho.wheels.ordering.comparators;
 import mho.wheels.iterables.IterableProvider;
 import mho.wheels.testing.TestProperties;
 
-import static mho.wheels.iterables.IterableUtils.*;
+import static mho.wheels.iterables.IterableUtils.take;
 import static mho.wheels.testing.Testing.TINY_LIMIT;
 import static mho.wheels.testing.Testing.propertiesCompareToHelper;
 
