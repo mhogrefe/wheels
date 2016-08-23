@@ -65,6 +65,7 @@
                         <include>**/LexComparatorProperties.java</include>
                         <include>**/ListBasedComparatorTest.java</include>
                         <include>**/ListBasedComparatorProperties.java</include>
+                        <include>**/ShortlexComparatorTest.java</include>
                         <include>**/StringBasedComparatorTest.java</include>
                         <include>**/StringBasedComparatorProperties.java</include>
                         <include>**/StringLexComparatorTest.java</include>
