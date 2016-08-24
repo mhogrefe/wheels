@@ -1688,10 +1688,12 @@ public class IntegerUtilsTest {
         logarithmicMux_helper("5", "10", "11263");
         logarithmicMux_helper("10", "5", "671");
         logarithmicMux_helper("500000", "0", "1000000");
+        logarithmicMux_helper("100000000000000000000", "5", "6400000000000000000031");
 
         logarithmicMux_fail_helper("-5", "5");
         logarithmicMux_fail_helper("5", "-5");
         logarithmicMux_fail_helper("-5", "-5");
+        logarithmicMux_fail_helper("5", "100000000000000000000");
     }
 
     private static void logarithmicDemux_helper(@NotNull String n, @NotNull String x, @NotNull String y) {

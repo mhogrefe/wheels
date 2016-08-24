@@ -1116,7 +1116,7 @@ public class IntegerUtils {
      *
      * <ul>
      *  <li>{@code x} cannot be negative.</li>
-     *  <li>{@code y} cannot be negative.</li>
+     *  <li>{@code y} cannot be negative and must be less than 2<sup>31</sup>.</li>
      *  <li>The result is non-negative.</li>
      * </ul>
      *
@@ -1136,7 +1136,7 @@ public class IntegerUtils {
 
     /**
      * Bijectively maps one natural {@code BigInteger} to two natural {@code BigInteger}s in such a way that the second
-     * is "typically" about the base-2 log of the first. More precisely, this method is the inverse of
+     * is "typically" about the base-2 logarithm of the first. More precisely, this method is the inverse of
      * {@link mho.wheels.numberUtils.IntegerUtils#logarithmicMux}.
      *
      * <ul>
