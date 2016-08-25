@@ -1717,6 +1717,7 @@ public class IntegerUtilsTest {
         logarithmicDemux_helper("11263", "5", "10");
         logarithmicDemux_helper("671", "10", "5");
         logarithmicDemux_helper("1000000", "500000", "0");
+        logarithmicDemux_helper("6400000000000000000031", "100000000000000000000", "5");
 
         logarithmicDemux_fail_helper("-5");
     }
