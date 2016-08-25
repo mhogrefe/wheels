@@ -2177,11 +2177,40 @@ public class IntegerUtilsProperties extends TestProperties {
         return fromBits(toList(take(outputSize, concat(ExhaustiveProvider.INSTANCE.choose(yChunks, xChunks)))));
     }
 
+    private @NotNull BigInteger squareRootMux_rec(@NotNull BigInteger x, @NotNull BigInteger y) {
+        return squareRootMux_rec_helper(0, x, y);
+    }
+
+    private @NotNull BigInteger squareRootMux_rec_helper(int c, @NotNull BigInteger x, @NotNull BigInteger y) {
+        if (x.equals(BigInteger.ZERO) && y.equals(BigInteger.ZERO)) {
+            return BigInteger.ZERO;
+        }
+        BigInteger result;
+        if (c == 0) {
+            result = squareRootMux_rec_helper(2, x, y.shiftRight(1)).shiftLeft(1);
+            if (y.testBit(0)) {
+                result = result.setBit(0);
+            }
+        } else if (c == 1) {
+            result = squareRootMux_rec_helper(0, x.shiftRight(1), y).shiftLeft(1);
+            if (x.testBit(0)) {
+                result = result.setBit(0);
+            }
+        } else { //c == 2
+            result = squareRootMux_rec_helper(1, x.shiftRight(1), y).shiftLeft(1);
+            if (x.testBit(0)) {
+                result = result.setBit(0);
+            }
+        }
+        return result;
+    }
+
     private void propertiesSquareRootMux() {
         initialize("squareRootMux(BigInteger, BigInteger)");
         for (Pair<BigInteger, BigInteger> p : take(LIMIT, P.pairs(P.naturalBigIntegers()))) {
             BigInteger i = squareRootMux(p.a, p.b);
             assertEquals(p, i, squareRootMux_alt(p.a, p.b));
+            assertEquals(p, i, squareRootMux_rec(p.a, p.b));
             assertNotEquals(p, i.signum(), -1);
             assertEquals(p, squareRootDemux(i), p);
             assertTrue(p, lt(i, squareRootMux(p.a.add(BigInteger.ONE), p.b)));
@@ -2206,6 +2235,7 @@ public class IntegerUtilsProperties extends TestProperties {
     private void compareImplementationsSquareRootMux() {
         Map<String, Function<Pair<BigInteger, BigInteger>, BigInteger>> functions = new LinkedHashMap<>();
         functions.put("alt", p -> squareRootMux_alt(p.a, p.b));
+        functions.put("recursive", p -> squareRootMux_rec(p.a, p.b));
         functions.put("standard", p -> squareRootMux(p.a, p.b));
         Iterable<Pair<BigInteger, BigInteger>> ps = P.pairs(P.naturalBigIntegers());
         compareImplementations("squareRootMux(BigInteger, BigInteger)", take(LIMIT, ps), functions, v -> P.reset());

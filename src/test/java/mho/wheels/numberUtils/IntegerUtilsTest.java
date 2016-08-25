@@ -1741,6 +1741,9 @@ public class IntegerUtilsTest {
         squareRootMux_helper("5", "10", "538");
         squareRootMux_helper("10", "5", "101");
         squareRootMux_helper("7680", "76", "1000000");
+        squareRootMux_helper("5", "100000000000000000000",
+                "408122147460934661546617663009122238394934174203728183164946");
+        squareRootMux_helper("100000000000000000000", "5", "1451615365330893086667197907009");
 
         squareRootMux_fail_helper("-5", "5");
         squareRootMux_fail_helper("5", "-5");
@@ -1768,6 +1771,9 @@ public class IntegerUtilsTest {
         squareRootDemux_helper("538", "5", "10");
         squareRootDemux_helper("101", "10", "5");
         squareRootDemux_helper("1000000", "7680", "76");
+        squareRootDemux_helper("408122147460934661546617663009122238394934174203728183164946", "5",
+                "100000000000000000000");
+        squareRootDemux_helper("1451615365330893086667197907009", "100000000000000000000", "5");
 
         squareRootDemux_fail_helper("-5");
     }
