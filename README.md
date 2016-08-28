@@ -34,7 +34,7 @@ Progress
 | ShortlexComparator          | ✔       | ✔       | ✔     | ✔     | ✔          |
 | StringBasedComparator       | ✔       | ✔       | ✔     | ✔     | ✔          |
 | StringLexComparator         | ✔       | ✔       | ✔     | ✔     | ✔          |
-| StringShortlexComparator    | ✔       | ✔       | ✔     | ✔     | ✘          |
+| StringShortlexComparator    | ✔       | ✔       | ✔     | ✔     | ✔          |
 | WithNullComparator          | ✔       | ✔       | ✔     | ✔     | ✔          |
 | Ordering                    | ✔       | ✘       | ✘     | ✘     | ✘          |
 | IsaacPRNG                   | ✔       | ✘       | ✘     | ✘     | ✘          |

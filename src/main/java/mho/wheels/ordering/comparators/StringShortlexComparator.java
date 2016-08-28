@@ -70,7 +70,7 @@ public final class StringShortlexComparator implements Comparator<String> {
                 characterCompare = Character.compare(sc, tc);
             }
             if (characterCompare != 0) {
-                return characterCompare;
+                return characterCompare > 0 ? 1 : -1;
             }
         }
         return 0;

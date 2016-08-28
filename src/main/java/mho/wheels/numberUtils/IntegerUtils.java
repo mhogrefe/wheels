@@ -1266,7 +1266,7 @@ public class IntegerUtils {
         byte[] bytes = new byte[byteLength];
         int k = xs.size() - 1;
         int j = 0;
-        for (int i = bytes.length - 1; i >= 0; i--) {
+        for (int i = byteLength - 1; i >= 0; i--) {
             int b = 0;
             for (int m = 1; m < 256; m <<= 1) {
                 if (xs.get(k).testBit(j)) {
