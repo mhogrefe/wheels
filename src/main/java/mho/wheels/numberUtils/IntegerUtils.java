@@ -1288,7 +1288,7 @@ public class IntegerUtils {
      * every element of the list is "typically" about the same size. More precisely, this method is the inverse of
      * {@link mho.wheels.numberUtils.IntegerUtils#mux}. The bijection is between the naturals and lists of a fixed
      * size, not between naturals and all lists. If {@code size} is 0, the only acceptable {@code n} is 0, which maps
-     * to the empty list. The inverse of this method is {@link mho.wheels.numberUtils.IntegerUtils#mux}.
+     * to the empty list.
      *
      * <ul>
      *  <li>{@code size} cannot be negative.</li>
