@@ -41,6 +41,7 @@ public final class MathUtils {
      *  <li>{@code p} cannot be negative.</li>
      *  <li>{@code p}<sup>{@code n}</sup> must be greater than or equal to –2<sup>31</sup> and less than
      *  2<sup>31</sup>.</li>
+     *  <li>The result may be any {@code int}.</li>
      * </ul>
      *
      * @param n a number
