@@ -241,4 +241,75 @@ public class OrderingTest {
         ge_Comparator_T_T_helper(ODDS_BEFORE_EVENS, 5, 2, false);
         ge_Comparator_T_T_helper(ODDS_BEFORE_EVENS, 4, 11, true);
     }
+
+    private static void min_T_T_helper(int i, int j, int output) {
+        aeq(min(i, j), output);
+    }
+
+    @Test
+    public void testMin_T_T() {
+        min_T_T_helper(0, 0, 0);
+        min_T_T_helper(1, 2, 1);
+        min_T_T_helper(4, 3, 3);
+    }
+
+    private static void max_T_T_helper(int i, int j, int output) {
+        aeq(max(i, j), output);
+    }
+
+    @Test
+    public void testMax_T_T() {
+        max_T_T_helper(0, 0, 0);
+        max_T_T_helper(1, 2, 2);
+        max_T_T_helper(4, 3, 4);
+    }
+
+    private static void minMax_T_T_helper(int i, int j, @NotNull String output) {
+        aeq(minMax(i, j), output);
+    }
+
+    @Test
+    public void testMinMax_T_T() {
+        minMax_T_T_helper(0, 0, "(0, 0)");
+        minMax_T_T_helper(1, 2, "(1, 2)");
+        minMax_T_T_helper(4, 3, "(3, 4)");
+    }
+
+    private static void min_Comparator_T_T_helper(@NotNull Comparator<Integer> comparator, int i, int j, int output) {
+        aeq(min(comparator, i, j), output);
+    }
+
+    @Test
+    public void testMin_Comparator_T_T() {
+        min_Comparator_T_T_helper(ODDS_BEFORE_EVENS, 0, 0, 0);
+        min_Comparator_T_T_helper(ODDS_BEFORE_EVENS, 5, 2, 5);
+        min_Comparator_T_T_helper(ODDS_BEFORE_EVENS, 4, 11, 11);
+    }
+
+    private static void max_Comparator_T_T_helper(@NotNull Comparator<Integer> comparator, int i, int j, int output) {
+        aeq(max(comparator, i, j), output);
+    }
+
+    @Test
+    public void testMax_Comparator_T_T() {
+        max_Comparator_T_T_helper(ODDS_BEFORE_EVENS, 0, 0, 0);
+        max_Comparator_T_T_helper(ODDS_BEFORE_EVENS, 5, 2, 2);
+        max_Comparator_T_T_helper(ODDS_BEFORE_EVENS, 4, 11, 4);
+    }
+
+    private static void minMax_Comparator_T_T_helper(
+            @NotNull Comparator<Integer> comparator,
+            int i,
+            int j,
+            @NotNull String output
+    ) {
+        aeq(minMax(comparator, i, j), output);
+    }
+
+    @Test
+    public void testMinMax_Comparator_T_T() {
+        minMax_Comparator_T_T_helper(ODDS_BEFORE_EVENS, 0, 0, "(0, 0)");
+        minMax_Comparator_T_T_helper(ODDS_BEFORE_EVENS, 5, 2, "(5, 2)");
+        minMax_Comparator_T_T_helper(ODDS_BEFORE_EVENS, 4, 11, "(11, 4)");
+    }
 }

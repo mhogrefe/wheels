@@ -36,7 +36,7 @@ Progress
 | StringLexComparator         | ✔       | ✔       | ✔     | ✔     | ✔          |
 | StringShortlexComparator    | ✔       | ✔       | ✔     | ✔     | ✔          |
 | WithNullComparator          | ✔       | ✔       | ✔     | ✔     | ✔          |
-| Ordering                    | ✔       | ✔       | ✘     | ✘     | ✘          |
+| Ordering                    | ✔       | ✔       | ✔     | ✘     | ✘          |
 | IsaacPRNG                   | ✔       | ✘       | ✘     | ✘     | ✘          |
 | Either                      | ✘       | ✘       | ✘     | ✘     | ✘          |
 | FiniteDomainFunction        | ✔       | ✘       | ✘     | ✘     | ✘          |
