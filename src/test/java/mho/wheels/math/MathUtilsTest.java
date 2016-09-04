@@ -91,6 +91,13 @@ public class MathUtilsTest {
         aeq(gcd(x, y), output);
     }
 
+    private static void gcd_int_int_fail_helper(int x, int y) {
+        try {
+            gcd(x, y);
+            fail();
+        } catch (ArithmeticException ignored) {}
+    }
+
     @Test
     public void testGcd_int_int() {
         gcd_int_int_helper(0, 0, 0);
@@ -105,10 +112,26 @@ public class MathUtilsTest {
         gcd_int_int_helper(-12, 15, 3);
         gcd_int_int_helper(12, -15, 3);
         gcd_int_int_helper(-12, -15, 3);
+
+        gcd_int_int_helper(Integer.MIN_VALUE, 1024, 1024);
+        gcd_int_int_helper(1024, Integer.MIN_VALUE, 1024);
+        gcd_int_int_helper(Integer.MIN_VALUE, 1023, 1);
+        gcd_int_int_helper(1023, Integer.MIN_VALUE, 1);
+
+        gcd_int_int_fail_helper(0, Integer.MIN_VALUE);
+        gcd_int_int_fail_helper(Integer.MIN_VALUE, 0);
+        gcd_int_int_fail_helper(Integer.MIN_VALUE, Integer.MIN_VALUE);
     }
 
     private static void gcd_long_long_helper(long x, long y, long output) {
         aeq(gcd(x, y), output);
+    }
+
+    private static void gcd_long_long_fail_helper(long x, long y) {
+        try {
+            gcd(x, y);
+            fail();
+        } catch (ArithmeticException ignored) {}
     }
 
     @Test
@@ -125,6 +148,15 @@ public class MathUtilsTest {
         gcd_long_long_helper(-12L, 15L, 3L);
         gcd_long_long_helper(12L, -15L, 3L);
         gcd_long_long_helper(-12L, -15L, 3L);
+
+        gcd_long_long_helper(Long.MIN_VALUE, 1024L, 1024L);
+        gcd_long_long_helper(1024L, Long.MIN_VALUE, 1024L);
+        gcd_long_long_helper(Long.MIN_VALUE, 1023L, 1L);
+        gcd_long_long_helper(1023L, Long.MIN_VALUE, 1L);
+
+        gcd_long_long_fail_helper(0L, Long.MIN_VALUE);
+        gcd_long_long_fail_helper(Long.MIN_VALUE, 0L);
+        gcd_long_long_fail_helper(Long.MIN_VALUE, Long.MIN_VALUE);
     }
 
     private static void lcm_BigInteger_BigInteger_helper(

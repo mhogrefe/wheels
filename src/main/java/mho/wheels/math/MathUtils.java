@@ -83,6 +83,8 @@ public final class MathUtils {
      * <ul>
      *  <li>{@code x} may be any {@code int}.</li>
      *  <li>{@code y} may be any {@code int}.</li>
+     *  <li>{@code x} and {@code y} cannot both equal –2<sup>31</sup>. Also, if one of {@code x} and {@code y} is 0,
+     *  the other cannot be –2<sup>31</sup>.</li>
      *  <li>The result is non-negative.</li>
      * </ul>
      *
@@ -92,7 +94,22 @@ public final class MathUtils {
      */
     @SuppressWarnings("JavaDoc")
     public static int gcd(int x, int y) {
-        return nonNegativeGcd(Math.abs(x), Math.abs(y));
+        if (x == Integer.MIN_VALUE) {
+            if (y == Integer.MIN_VALUE) {
+                throw new ArithmeticException("x and y cannot both equal -2^31.");
+            } else if (y == 0) {
+                throw new ArithmeticException("If y is 0, x cannot be -2^31.");
+            } else {
+                return IntegerUtils.isPowerOfTwo(y) ? y : 1;
+            }
+        } else if (y == Integer.MIN_VALUE) {
+            if (x == 0) {
+                throw new ArithmeticException("If x is 0, y cannot be -2^31.");
+            }
+            return IntegerUtils.isPowerOfTwo(x) ? x : 1;
+        } else {
+            return nonNegativeGcd(Math.abs(x), Math.abs(y));
+        }
     }
 
     /**
@@ -121,6 +138,8 @@ public final class MathUtils {
      * <ul>
      *  <li>{@code x} may be any {@code long}.</li>
      *  <li>{@code y} may be any {@code long}.</li>
+     *  <li>{@code x} and {@code y} cannot both equal –2<sup>63</sup>. Also, if one of {@code x} and {@code y} is 0,
+     *  the other cannot be –2<sup>63</sup>.</li>
      *  <li>The result is non-negative.</li>
      * </ul>
      *
@@ -130,7 +149,22 @@ public final class MathUtils {
      */
     @SuppressWarnings("JavaDoc")
     public static long gcd(long x, long y) {
-        return nonNegativeGcd(Math.abs(x), Math.abs(y));
+        if (x == Long.MIN_VALUE) {
+            if (y == Long.MIN_VALUE) {
+                throw new ArithmeticException("x and y cannot both equal -2^63.");
+            } else if (y == 0L) {
+                throw new ArithmeticException("If y is 0, x cannot be -2^63.");
+            } else {
+                return IntegerUtils.isPowerOfTwo(y) ? y : 1L;
+            }
+        } else if (y == Long.MIN_VALUE) {
+            if (x == 0L) {
+                throw new ArithmeticException("If x is 0, y cannot be -2^63.");
+            }
+            return IntegerUtils.isPowerOfTwo(x) ? x : 1L;
+        } else {
+            return nonNegativeGcd(Math.abs(x), Math.abs(y));
+        }
     }
 
     /**

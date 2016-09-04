@@ -39,13 +39,25 @@ public class MathUtilsDemos extends Demos {
     }
 
     private void demoGcd_int_int() {
-        for (Pair<Integer, Integer> p : take(LIMIT, P.pairs(P.integers()))) {
+        Iterable<Pair<Integer, Integer>> ps = filter(
+                q -> !(q.a == Integer.MIN_VALUE && q.b == Integer.MIN_VALUE) &&
+                        !(q.a == Integer.MIN_VALUE && q.b == 0) &&
+                        !(q.a == 0 && q.b == Integer.MIN_VALUE),
+                P.pairs(P.integers())
+        );
+        for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
             System.out.println("gcd(" + p.a + ", " + p.b + ") = " + gcd(p.a, p.b));
         }
     }
 
     private void demoGcd_long_long() {
-        for (Pair<Long, Long> p : take(LIMIT, P.pairs(P.longs()))) {
+        Iterable<Pair<Long, Long>> ps = filter(
+                q -> !(q.a == Long.MIN_VALUE && q.b == Long.MIN_VALUE) &&
+                        !(q.a == Long.MIN_VALUE && q.b == 0) &&
+                        !(q.a == 0 && q.b == Long.MIN_VALUE),
+                P.pairs(P.longs())
+        );
+        for (Pair<Long, Long> p : take(LIMIT, ps)) {
             System.out.println("gcd(" + p.a + ", " + p.b + ") = " + gcd(p.a, p.b));
         }
     }

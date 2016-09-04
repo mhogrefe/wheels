@@ -192,12 +192,15 @@ public class MathUtilsProperties extends TestProperties {
     }
 
     private static int gcd_int_int_simplest(int x, int y) {
-        return BigInteger.valueOf(x).gcd(BigInteger.valueOf(y)).intValue();
+        return BigInteger.valueOf(x).gcd(BigInteger.valueOf(y)).intValueExact();
     }
 
     private static int gcd_int_int_explicit(int x, int y) {
         x = Math.abs(x);
         y = Math.abs(y);
+        if (x < 0 || y < 0) {
+            throw new ArithmeticException();
+        }
         if (x == 0) return y;
         if (y == 0) return x;
         return maximum(intersect(factors(x), factors(y)));
@@ -205,7 +208,13 @@ public class MathUtilsProperties extends TestProperties {
 
     private void propertiesGcd_int_int() {
         initialize("gcd(int, int)");
-        for (Pair<Integer, Integer> p : take(LIMIT, P.pairs(P.integers()))) {
+        Iterable<Pair<Integer, Integer>> ps = filter(
+                q -> !(q.a == Integer.MIN_VALUE && q.b == Integer.MIN_VALUE) &&
+                        !(q.a == Integer.MIN_VALUE && q.b == 0) &&
+                        !(q.a == 0 && q.b == Integer.MIN_VALUE),
+                P.pairs(P.integers())
+        );
+        for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
             int gcd = gcd(p.a, p.b);
             assertEquals(p, gcd, gcd_int_int_simplest(p.a, p.b));
             assertEquals(p, gcd, gcd_int_int_explicit(p.a, p.b));
@@ -227,11 +236,31 @@ public class MathUtilsProperties extends TestProperties {
 
         for (int i : take(LIMIT, P.integers())) {
             idempotent(j -> gcd(i, j), 1);
+        }
+
+        for (int i : take(LIMIT, filter(j -> j != Integer.MIN_VALUE, P.integers()))) {
             assertEquals(i, gcd(i, i), Math.abs(i));
+            assertEquals(i, gcd(0, i), Math.abs(i));
             assertEquals(i, gcd(i, 0), Math.abs(i));
         }
 
-        for (Triple<Integer, Integer, Integer> t : take(LIMIT, P.triples(P.integers()))) {
+        Iterable<Triple<Integer, Integer, Integer>> ts = filter(
+                t -> {
+                    int minValueCount = 0;
+                    if (t.a == Integer.MIN_VALUE) minValueCount++;
+                    if (t.b == Integer.MIN_VALUE) minValueCount++;
+                    if (t.c == Integer.MIN_VALUE) minValueCount++;
+                    return minValueCount < 2 &&
+                            (minValueCount == 0 ||
+                                    !(t.a == Integer.MIN_VALUE && t.b == 0) &&
+                                    !(t.b == Integer.MIN_VALUE && t.a == 0) &&
+                                    !(t.b == Integer.MIN_VALUE && t.c == 0) &&
+                                    !(t.c == Integer.MIN_VALUE && t.b == 0)
+                            );
+                },
+                P.triples(P.integers())
+        );
+        for (Triple<Integer, Integer, Integer> t : take(LIMIT, ts)) {
             associative(MathUtils::gcd, t);
         }
     }
@@ -245,12 +274,15 @@ public class MathUtilsProperties extends TestProperties {
     }
 
     private static long gcd_long_long_simplest(long x, long y) {
-        return BigInteger.valueOf(x).gcd(BigInteger.valueOf(y)).longValue();
+        return BigInteger.valueOf(x).gcd(BigInteger.valueOf(y)).longValueExact();
     }
 
     private static long gcd_long_long_explicit(long x, long y) {
         x = Math.abs(x);
         y = Math.abs(y);
+        if (x < 0 || y < 0) {
+            throw new ArithmeticException();
+        }
         if (x == 0) return y;
         if (y == 0) return x;
         return maximum(intersect(factors(BigInteger.valueOf(x)), factors(BigInteger.valueOf(y)))).longValue();
@@ -258,7 +290,13 @@ public class MathUtilsProperties extends TestProperties {
 
     private void propertiesGcd_long_long() {
         initialize("gcd(long, long)");
-        for (Pair<Long, Long> p : take(LIMIT, P.pairs(P.longs()))) {
+        Iterable<Pair<Long, Long>> ps = filter(
+                q -> !(q.a == Long.MIN_VALUE && q.b == Long.MIN_VALUE) &&
+                        !(q.a == Long.MIN_VALUE && q.b == 0) &&
+                        !(q.a == 0 && q.b == Long.MIN_VALUE),
+                P.pairs(P.longs())
+        );
+        for (Pair<Long, Long> p : take(LIMIT, ps)) {
             long gcd = gcd(p.a, p.b);
             assertEquals(p, gcd, gcd_long_long_simplest(p.a, p.b));
             if (Math.abs(p.a) <= Integer.MAX_VALUE && Math.abs(p.b) <= Integer.MAX_VALUE) {
@@ -282,11 +320,31 @@ public class MathUtilsProperties extends TestProperties {
 
         for (long l : take(LIMIT, P.longs())) {
             idempotent(m -> gcd(l, m), 1L);
-            assertEquals(l, gcd(l, l), Math.abs(l));
-            assertEquals(l, gcd(l, 0L), Math.abs(l));
         }
 
-        for (Triple<Long, Long, Long> t : take(LIMIT, P.triples(P.longs()))) {
+        for (long l : take(LIMIT, filter(j -> j != Integer.MIN_VALUE, P.longs()))) {
+            assertEquals(l, gcd(l, l), Math.abs(l));
+            assertEquals(l, gcd(0, l), Math.abs(l));
+            assertEquals(l, gcd(l, 0), Math.abs(l));
+        }
+
+        Iterable<Triple<Long, Long, Long>> ts = filter(
+                t -> {
+                    int minValueCount = 0;
+                    if (t.a == Long.MIN_VALUE) minValueCount++;
+                    if (t.b == Long.MIN_VALUE) minValueCount++;
+                    if (t.c == Long.MIN_VALUE) minValueCount++;
+                    return minValueCount < 2 &&
+                            (minValueCount == 0 ||
+                                    !(t.a == Long.MIN_VALUE && t.b == 0) &&
+                                    !(t.b == Long.MIN_VALUE && t.a == 0) &&
+                                    !(t.b == Long.MIN_VALUE && t.c == 0) &&
+                                    !(t.c == Long.MIN_VALUE && t.b == 0)
+                            );
+                },
+                P.triples(P.longs())
+        );
+        for (Triple<Long, Long, Long> t : take(LIMIT, ts)) {
             associative(MathUtils::gcd, t);
         }
     }
