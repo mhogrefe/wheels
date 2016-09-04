@@ -369,6 +369,7 @@ public class MathUtilsProperties extends TestProperties {
     }
 
     private static @NotNull BigInteger lcm_explicit(@NotNull BigInteger x, @NotNull BigInteger y) {
+        //noinspection SuspiciousNameCombination
         return head(orderedIntersection(iterate(n -> n.add(x), x), iterate(n -> n.add(y), y)));
     }
 
