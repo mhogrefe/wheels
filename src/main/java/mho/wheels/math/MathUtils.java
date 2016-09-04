@@ -94,6 +94,8 @@ public final class MathUtils {
      */
     @SuppressWarnings("JavaDoc")
     public static int gcd(int x, int y) {
+        x = Math.abs(x);
+        y = Math.abs(y);
         if (x == Integer.MIN_VALUE) {
             if (y == Integer.MIN_VALUE) {
                 throw new ArithmeticException("x and y cannot both equal -2^31.");
@@ -108,7 +110,7 @@ public final class MathUtils {
             }
             return IntegerUtils.isPowerOfTwo(x) ? x : 1;
         } else {
-            return nonNegativeGcd(Math.abs(x), Math.abs(y));
+            return nonNegativeGcd(x, y);
         }
     }
 
@@ -149,6 +151,8 @@ public final class MathUtils {
      */
     @SuppressWarnings("JavaDoc")
     public static long gcd(long x, long y) {
+        x = Math.abs(x);
+        y = Math.abs(y);
         if (x == Long.MIN_VALUE) {
             if (y == Long.MIN_VALUE) {
                 throw new ArithmeticException("x and y cannot both equal -2^63.");
@@ -163,7 +167,7 @@ public final class MathUtils {
             }
             return IntegerUtils.isPowerOfTwo(x) ? x : 1L;
         } else {
-            return nonNegativeGcd(Math.abs(x), Math.abs(y));
+            return nonNegativeGcd(x, y);
         }
     }
 

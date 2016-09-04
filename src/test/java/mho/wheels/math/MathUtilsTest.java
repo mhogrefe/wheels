@@ -117,6 +117,10 @@ public class MathUtilsTest {
         gcd_int_int_helper(1024, Integer.MIN_VALUE, 1024);
         gcd_int_int_helper(Integer.MIN_VALUE, 1023, 1);
         gcd_int_int_helper(1023, Integer.MIN_VALUE, 1);
+        gcd_int_int_helper(Integer.MIN_VALUE, -1024, 1024);
+        gcd_int_int_helper(-1024, Integer.MIN_VALUE, 1024);
+        gcd_int_int_helper(Integer.MIN_VALUE, -1023, 1);
+        gcd_int_int_helper(-1023, Integer.MIN_VALUE, 1);
 
         gcd_int_int_fail_helper(0, Integer.MIN_VALUE);
         gcd_int_int_fail_helper(Integer.MIN_VALUE, 0);
@@ -153,6 +157,10 @@ public class MathUtilsTest {
         gcd_long_long_helper(1024L, Long.MIN_VALUE, 1024L);
         gcd_long_long_helper(Long.MIN_VALUE, 1023L, 1L);
         gcd_long_long_helper(1023L, Long.MIN_VALUE, 1L);
+        gcd_long_long_helper(Long.MIN_VALUE, -1024L, 1024L);
+        gcd_long_long_helper(-1024L, Long.MIN_VALUE, 1024L);
+        gcd_long_long_helper(Long.MIN_VALUE, -1023L, 1L);
+        gcd_long_long_helper(-1023L, Long.MIN_VALUE, 1L);
 
         gcd_long_long_fail_helper(0L, Long.MIN_VALUE);
         gcd_long_long_fail_helper(Long.MIN_VALUE, 0L);
