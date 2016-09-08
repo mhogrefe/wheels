@@ -216,8 +216,8 @@ public final class MathUtils {
     }
 
     /**
-     * The greatest common divisor of a {@code List} of {@code BigInteger}s. The GCD of an empty {@code Iterable}, or
-     * an {@code Iterable} containing only zeros, is zero.
+     * The greatest common divisor of a {@code List} of {@code BigInteger}s. The GCD of an empty {@code List}, or a
+     * {@code List} containing only zeros, is zero.
      *
      * <ul>
      *  <li>{@code xs} cannot contain any nulls.</li>
