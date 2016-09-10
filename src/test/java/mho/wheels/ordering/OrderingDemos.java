@@ -244,6 +244,96 @@ public class OrderingDemos extends Demos {
         }
     }
 
+    private void demoMin_T_T() {
+        for (Pair<Integer, Integer> p : take(LIMIT, P.pairs(P.integersGeometric()))) {
+            System.out.println("min(" + p.a + ", " + p.b + ") = " + min(p.a, p.b));
+        }
+    }
+
+    private void demoMax_T_T() {
+        for (Pair<Integer, Integer> p : take(LIMIT, P.pairs(P.integersGeometric()))) {
+            System.out.println("max(" + p.a + ", " + p.b + ") = " + max(p.a, p.b));
+        }
+    }
+
+    private void demoMinMax_T_T() {
+        for (Pair<Integer, Integer> p : take(LIMIT, P.pairs(P.integersGeometric()))) {
+            System.out.println("minMax(" + p.a + ", " + p.b + ") = " + minMax(p.a, p.b));
+        }
+    }
+
+    private void demoMin_Comparator_T_T() {
+        Iterable<Triple<Integer, Integer, Integer>> ts = filter(
+                t -> (t.c == 0) == Objects.equals(t.a, t.b),
+                P.triples(
+                        P.withNull(P.integersGeometric()),
+                        P.withNull(P.integersGeometric()),
+                        P.withScale(4).integersGeometric()
+                )
+        );
+        for (Triple<Integer, Integer, Integer> t : take(LIMIT, ts)) {
+            Comparator<Integer> comparator = (i, j) -> {
+                if (!Objects.equals(i, t.a)) {
+                    throw new IllegalArgumentException();
+                }
+                if (!Objects.equals(j, t.b)) {
+                    throw new IllegalArgumentException();
+                }
+                return t.c;
+            };
+            System.out.println("min(" + t.a + " " + fromInt(t.c) + " " + t.b + ", " + t.a + ", " + t.b + ") = " +
+                    min(comparator, t.a, t.b));
+        }
+    }
+
+    private void demoMax_Comparator_T_T() {
+        Iterable<Triple<Integer, Integer, Integer>> ts = filter(
+                t -> (t.c == 0) == Objects.equals(t.a, t.b),
+                P.triples(
+                        P.withNull(P.integersGeometric()),
+                        P.withNull(P.integersGeometric()),
+                        P.withScale(4).integersGeometric()
+                )
+        );
+        for (Triple<Integer, Integer, Integer> t : take(LIMIT, ts)) {
+            Comparator<Integer> comparator = (i, j) -> {
+                if (!Objects.equals(i, t.a)) {
+                    throw new IllegalArgumentException();
+                }
+                if (!Objects.equals(j, t.b)) {
+                    throw new IllegalArgumentException();
+                }
+                return t.c;
+            };
+            System.out.println("max(" + t.a + " " + fromInt(t.c) + " " + t.b + ", " + t.a + ", " + t.b + ") = " +
+                    max(comparator, t.a, t.b));
+        }
+    }
+
+    private void demoMinMax_Comparator_T_T() {
+        Iterable<Triple<Integer, Integer, Integer>> ts = filter(
+                t -> (t.c == 0) == Objects.equals(t.a, t.b),
+                P.triples(
+                        P.withNull(P.integersGeometric()),
+                        P.withNull(P.integersGeometric()),
+                        P.withScale(4).integersGeometric()
+                )
+        );
+        for (Triple<Integer, Integer, Integer> t : take(LIMIT, ts)) {
+            Comparator<Integer> comparator = (i, j) -> {
+                if (!Objects.equals(i, t.a)) {
+                    throw new IllegalArgumentException();
+                }
+                if (!Objects.equals(j, t.b)) {
+                    throw new IllegalArgumentException();
+                }
+                return t.c;
+            };
+            System.out.println("minMax(" + t.a + " " + fromInt(t.c) + " " + t.b + ", " + t.a + ", " + t.b + ") = " +
+                    minMax(comparator, t.a, t.b));
+        }
+    }
+
     private void demoToString() {
         for (Ordering o : take(LIMIT, P.orderings())) {
             System.out.println(o);
