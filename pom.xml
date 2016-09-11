@@ -76,6 +76,7 @@
                         <include>**/WithNullComparatorTest.java</include>
                         <include>**/WithNullComparatorProperties.java</include>
                         <include>**/OrderingTest.java</include>
+                        <include>**/OrderingProperties.java</include>
                         <include>**/NullableOptionalTest.java</include>
                         <include>**/NullableOptionalProperties.java</include>
                         <include>**/PairTest.java</include>
