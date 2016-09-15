@@ -5,6 +5,9 @@ import mho.wheels.structures.Pair;
 import mho.wheels.structures.Triple;
 import mho.wheels.testing.TestProperties;
 
+import java.util.Comparator;
+import java.util.Objects;
+
 import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.iterables.IterableUtils.take;
 import static mho.wheels.ordering.Ordering.*;
@@ -21,6 +24,7 @@ public class OrderingProperties extends TestProperties {
         propertiesToInt();
         propertiesInvert();
         propertiesCompare_T_T();
+        propertiesCompare_Comparator_T_T();
     }
 
     private void propertiesFromInt() {
@@ -70,6 +74,31 @@ public class OrderingProperties extends TestProperties {
             if (compare(t.a, t.b) == LT && compare(t.b, t.c) == LT) {
                 assertEquals(t, compare(t.a, t.c), LT);
             }
+        }
+    }
+
+    private void propertiesCompare_Comparator_T_T() {
+        initialize("compare(Comparator, T, T)");
+        Iterable<Triple<Integer, Integer, Integer>> ts = filter(
+                t -> (t.c == 0) == Objects.equals(t.a, t.b),
+                P.triples(
+                        P.withNull(P.integersGeometric()),
+                        P.withNull(P.integersGeometric()),
+                        P.withScale(4).integersGeometric()
+                )
+        );
+        for (Triple<Integer, Integer, Integer> t : take(LIMIT, ts)) {
+            Comparator<Integer> comparator = (i, j) -> {
+                if (!Objects.equals(i, t.a)) {
+                    throw new IllegalArgumentException();
+                }
+                if (!Objects.equals(j, t.b)) {
+                    throw new IllegalArgumentException();
+                }
+                return t.c;
+            };
+            Ordering o = compare(comparator, t.a, t.b);
+            assertEquals(t, o, fromInt(comparator.compare(t.a, t.b)));
         }
     }
 }
