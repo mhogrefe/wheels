@@ -307,7 +307,7 @@ public final class MathUtils {
         List<BigInteger> halves = new ArrayList<>();
         BigInteger h = n;
         while (gt(h, IntegerUtils.TWO)) {
-            halves.add(h.and(BigInteger.ONE).equals(BigInteger.ZERO) ? h.subtract(BigInteger.ONE) : h);
+            halves.add(h.testBit(0) ? h : h.subtract(BigInteger.ONE));
             h = h.shiftRight(1);
         }
         int j = halves.size() - 1;
@@ -367,10 +367,10 @@ public final class MathUtils {
         BigInteger sf = BigInteger.ONE;
         for (BigInteger i = BigInteger.ONE; le(i, n); i = i.add(BigInteger.ONE)) {
             sf = sf.multiply(i);
-            if (i.getLowestSetBit() != 0) {
-                sf = sf.add(BigInteger.ONE);
-            } else {
+            if (i.testBit(0)) {
                 sf = sf.subtract(BigInteger.ONE);
+            } else {
+                sf = sf.add(BigInteger.ONE);
             }
         }
         return sf;
@@ -1197,7 +1197,7 @@ public final class MathUtils {
             cache.put(n, result);
             return result;
         }
-        if (n.and(BigInteger.ONE).equals(BigInteger.ONE)) {
+        if (n.testBit(0)) {
             result = Collections.emptyList();
             cache.put(n, result);
             return result;
@@ -1217,7 +1217,7 @@ public final class MathUtils {
                     } else {
                         x = x.divide(p);
                     }
-                    if (x.equals(BigInteger.ONE) || x.and(BigInteger.ONE).equals(BigInteger.ZERO)) {
+                    if (x.equals(BigInteger.ONE) || !x.testBit(0)) {
                         for (BigInteger y : inverseTotientHelper(x, cache, spfCache)) {
                             if (y.equals(BigInteger.ONE)) {
                                 elements.add(pPower);
@@ -1245,9 +1245,9 @@ public final class MathUtils {
         int limit = n.getLowestSetBit();
         for (int d = 0; d < limit; d++) {
             x = x.shiftRight(1);
-            if (x.equals(BigInteger.ONE) || x.and(BigInteger.ONE).equals(BigInteger.ZERO)) {
+            if (x.equals(BigInteger.ONE) || !x.testBit(0)) {
                 for (BigInteger y : inverseTotientHelper(x, cache, spfCache)) {
-                    if (y.and(BigInteger.ONE).equals(BigInteger.ONE)) {
+                    if (y.testBit(0)) {
                         elements.add(y.shiftLeft(d + 2));
                     }
                 }

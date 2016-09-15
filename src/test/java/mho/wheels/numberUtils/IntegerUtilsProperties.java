@@ -416,7 +416,7 @@ public class IntegerUtilsProperties extends TestProperties {
         }
         List<Boolean> bits = new ArrayList<>();
         for (BigInteger remaining = n; !remaining.equals(BigInteger.ZERO); remaining = remaining.shiftRight(1)) {
-            bits.add(!remaining.and(BigInteger.ONE).equals(BigInteger.ZERO));
+            bits.add(remaining.testBit(0));
         }
         return bits;
     }

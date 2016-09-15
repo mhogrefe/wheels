@@ -916,8 +916,7 @@ public class MathUtilsProperties extends TestProperties {
         if (i < 0) {
             throw new IllegalArgumentException("i cannot be negative. Invalid i: " + i);
         }
-        return BigInteger.valueOf(i).multiply(BigInteger.valueOf(i - 1)).shiftRight(1).and(BigInteger.ONE)
-                .equals(BigInteger.ZERO);
+        return !BigInteger.valueOf(i).multiply(BigInteger.valueOf(i - 1)).shiftRight(1).testBit(0);
     }
 
     private void propertiesReversePermutationSign() {
