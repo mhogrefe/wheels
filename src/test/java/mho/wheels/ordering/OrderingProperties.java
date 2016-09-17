@@ -25,6 +25,12 @@ public class OrderingProperties extends TestProperties {
         propertiesInvert();
         propertiesCompare_T_T();
         propertiesCompare_Comparator_T_T();
+        propertiesEq_T_T();
+        propertiesNe_T_T();
+        propertiesLt_T_T();
+        propertiesGt_T_T();
+        propertiesLe_T_T();
+        propertiesGe_T_T();
     }
 
     private void propertiesFromInt() {
@@ -99,6 +105,72 @@ public class OrderingProperties extends TestProperties {
             };
             Ordering o = compare(comparator, t.a, t.b);
             assertEquals(t, o, fromInt(comparator.compare(t.a, t.b)));
+
+            for (int i : take(TINY_LIMIT, filterInfinite(j -> !j.equals(t.a), P.integersGeometric()))) {
+                try {
+                    compare(comparator, i, t.b);
+                    fail(t);
+                } catch (IllegalArgumentException ignored) {}
+            }
+
+            for (int i : take(TINY_LIMIT, filterInfinite(j -> !j.equals(t.b), P.integersGeometric()))) {
+                try {
+                    compare(comparator, t.a, i);
+                    fail(t);
+                } catch (IllegalArgumentException ignored) {}
+            }
+        }
+    }
+
+    private void propertiesEq_T_T() {
+        initialize("eq(T, T)");
+        for (Pair<Integer, Integer> p : take(LIMIT, P.pairs(P.integersGeometric()))) {
+            boolean b = eq(p.a, p.b);
+            assertEquals(p, b, eq(p.b, p.a));
+            assertEquals(p, b, !lt(p.a, p.b) && !gt(p.a, p.b));
+        }
+    }
+
+    private void propertiesNe_T_T() {
+        initialize("ne(T, T)");
+        for (Pair<Integer, Integer> p : take(LIMIT, P.pairs(P.integersGeometric()))) {
+            boolean b = ne(p.a, p.b);
+            assertEquals(p, b, ne(p.b, p.a));
+            assertEquals(p, b, lt(p.a, p.b) || gt(p.a, p.b));
+        }
+    }
+
+    private void propertiesLt_T_T() {
+        initialize("lt(T, T)");
+        for (Pair<Integer, Integer> p : take(LIMIT, P.pairs(P.integersGeometric()))) {
+            boolean b = lt(p.a, p.b);
+            assertEquals(p, b, !eq(p.a, p.b) && !gt(p.a, p.b));
+        }
+    }
+
+    private void propertiesGt_T_T() {
+        initialize("gt(T, T)");
+        for (Pair<Integer, Integer> p : take(LIMIT, P.pairs(P.integersGeometric()))) {
+            boolean b = gt(p.a, p.b);
+            assertEquals(p, b, !eq(p.a, p.b) && !lt(p.a, p.b));
+        }
+    }
+
+    private void propertiesLe_T_T() {
+        initialize("le(T, T)");
+        for (Pair<Integer, Integer> p : take(LIMIT, P.pairs(P.integersGeometric()))) {
+            boolean b = le(p.a, p.b);
+            assertEquals(p, b, eq(p.a, p.b) || le(p.a, p.b));
+            assertEquals(p, b, ge(p.b, p.a));
+        }
+    }
+
+    private void propertiesGe_T_T() {
+        initialize("ge(T, T)");
+        for (Pair<Integer, Integer> p : take(LIMIT, P.pairs(P.integersGeometric()))) {
+            boolean b = ge(p.a, p.b);
+            assertEquals(p, b, eq(p.a, p.b) || ge(p.a, p.b));
+            assertEquals(p, b, le(p.b, p.a));
         }
     }
 }
