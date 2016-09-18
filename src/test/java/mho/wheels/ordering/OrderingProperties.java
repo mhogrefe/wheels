@@ -31,6 +31,12 @@ public class OrderingProperties extends TestProperties {
         propertiesGt_T_T();
         propertiesLe_T_T();
         propertiesGe_T_T();
+        propertiesEq_Comparator_T_T();
+        propertiesNe_Comparator_T_T();
+        propertiesLt_Comparator_T_T();
+        propertiesGt_Comparator_T_T();
+        propertiesLe_Comparator_T_T();
+        propertiesGe_Comparator_T_T();
     }
 
     private void propertiesFromInt() {
@@ -103,8 +109,7 @@ public class OrderingProperties extends TestProperties {
                 }
                 return t.c;
             };
-            Ordering o = compare(comparator, t.a, t.b);
-            assertEquals(t, o, fromInt(comparator.compare(t.a, t.b)));
+            compare(comparator, t.a, t.b);
 
             for (int i : take(TINY_LIMIT, filterInfinite(j -> !j.equals(t.a), P.integersGeometric()))) {
                 try {
@@ -176,6 +181,264 @@ public class OrderingProperties extends TestProperties {
             boolean b = ge(p.a, p.b);
             assertEquals(p, b, eq(p.a, p.b) || ge(p.a, p.b));
             assertEquals(p, b, le(p.b, p.a));
+        }
+    }
+
+    private void propertiesEq_Comparator_T_T() {
+        initialize("eq(Comparator, T, T)");
+        Iterable<Triple<Integer, Integer, Integer>> ts = filter(
+                t -> (t.c == 0) == Objects.equals(t.a, t.b),
+                P.triples(
+                        P.withNull(P.integersGeometric()),
+                        P.withNull(P.integersGeometric()),
+                        P.withScale(4).integersGeometric()
+                )
+        );
+        for (Triple<Integer, Integer, Integer> t : take(LIMIT, ts)) {
+            Comparator<Integer> comparator = (i, j) -> {
+                if (!Objects.equals(i, t.a)) {
+                    throw new IllegalArgumentException();
+                }
+                if (!Objects.equals(j, t.b)) {
+                    throw new IllegalArgumentException();
+                }
+                return t.c;
+            };
+            eq(comparator, t.a, t.b);
+
+            for (int i : take(TINY_LIMIT, filterInfinite(j -> !j.equals(t.a), P.integersGeometric()))) {
+                try {
+                    eq(comparator, i, t.b);
+                    fail(t);
+                } catch (IllegalArgumentException ignored) {}
+            }
+
+            for (int i : take(TINY_LIMIT, filterInfinite(j -> !j.equals(t.b), P.integersGeometric()))) {
+                try {
+                    eq(comparator, t.a, i);
+                    fail(t);
+                } catch (IllegalArgumentException ignored) {}
+            }
+        }
+
+        Comparator<Integer> naturalComparator = Comparator.naturalOrder();
+        for (Pair<Integer, Integer> p : take(LIMIT, P.pairs(P.integersGeometric()))) {
+            assertEquals(p, eq(naturalComparator, p.a, p.b), eq(p.a, p.b));
+        }
+    }
+
+    private void propertiesNe_Comparator_T_T() {
+        initialize("ne(Comparator, T, T)");
+        Iterable<Triple<Integer, Integer, Integer>> ts = filter(
+                t -> (t.c == 0) == Objects.equals(t.a, t.b),
+                P.triples(
+                        P.withNull(P.integersGeometric()),
+                        P.withNull(P.integersGeometric()),
+                        P.withScale(4).integersGeometric()
+                )
+        );
+        for (Triple<Integer, Integer, Integer> t : take(LIMIT, ts)) {
+            Comparator<Integer> comparator = (i, j) -> {
+                if (!Objects.equals(i, t.a)) {
+                    throw new IllegalArgumentException();
+                }
+                if (!Objects.equals(j, t.b)) {
+                    throw new IllegalArgumentException();
+                }
+                return t.c;
+            };
+            ne(comparator, t.a, t.b);
+
+            for (int i : take(TINY_LIMIT, filterInfinite(j -> !j.equals(t.a), P.integersGeometric()))) {
+                try {
+                    ne(comparator, i, t.b);
+                    fail(t);
+                } catch (IllegalArgumentException ignored) {}
+            }
+
+            for (int i : take(TINY_LIMIT, filterInfinite(j -> !j.equals(t.b), P.integersGeometric()))) {
+                try {
+                    ne(comparator, t.a, i);
+                    fail(t);
+                } catch (IllegalArgumentException ignored) {}
+            }
+        }
+
+        Comparator<Integer> naturalComparator = Comparator.naturalOrder();
+        for (Pair<Integer, Integer> p : take(LIMIT, P.pairs(P.integersGeometric()))) {
+            assertEquals(p, ne(naturalComparator, p.a, p.b), ne(p.a, p.b));
+        }
+    }
+
+    private void propertiesLt_Comparator_T_T() {
+        initialize("lt(Comparator, T, T)");
+        Iterable<Triple<Integer, Integer, Integer>> ts = filter(
+                t -> (t.c == 0) == Objects.equals(t.a, t.b),
+                P.triples(
+                        P.withNull(P.integersGeometric()),
+                        P.withNull(P.integersGeometric()),
+                        P.withScale(4).integersGeometric()
+                )
+        );
+        for (Triple<Integer, Integer, Integer> t : take(LIMIT, ts)) {
+            Comparator<Integer> comparator = (i, j) -> {
+                if (!Objects.equals(i, t.a)) {
+                    throw new IllegalArgumentException();
+                }
+                if (!Objects.equals(j, t.b)) {
+                    throw new IllegalArgumentException();
+                }
+                return t.c;
+            };
+            lt(comparator, t.a, t.b);
+
+            for (int i : take(TINY_LIMIT, filterInfinite(j -> !j.equals(t.a), P.integersGeometric()))) {
+                try {
+                    lt(comparator, i, t.b);
+                    fail(t);
+                } catch (IllegalArgumentException ignored) {}
+            }
+
+            for (int i : take(TINY_LIMIT, filterInfinite(j -> !j.equals(t.b), P.integersGeometric()))) {
+                try {
+                    lt(comparator, t.a, i);
+                    fail(t);
+                } catch (IllegalArgumentException ignored) {}
+            }
+        }
+
+        Comparator<Integer> naturalComparator = Comparator.naturalOrder();
+        for (Pair<Integer, Integer> p : take(LIMIT, P.pairs(P.integersGeometric()))) {
+            assertEquals(p, lt(naturalComparator, p.a, p.b), lt(p.a, p.b));
+        }
+    }
+
+    private void propertiesGt_Comparator_T_T() {
+        initialize("gt(Comparator, T, T)");
+        Iterable<Triple<Integer, Integer, Integer>> ts = filter(
+                t -> (t.c == 0) == Objects.equals(t.a, t.b),
+                P.triples(
+                        P.withNull(P.integersGeometric()),
+                        P.withNull(P.integersGeometric()),
+                        P.withScale(4).integersGeometric()
+                )
+        );
+        for (Triple<Integer, Integer, Integer> t : take(LIMIT, ts)) {
+            Comparator<Integer> comparator = (i, j) -> {
+                if (!Objects.equals(i, t.a)) {
+                    throw new IllegalArgumentException();
+                }
+                if (!Objects.equals(j, t.b)) {
+                    throw new IllegalArgumentException();
+                }
+                return t.c;
+            };
+            gt(comparator, t.a, t.b);
+
+            for (int i : take(TINY_LIMIT, filterInfinite(j -> !j.equals(t.a), P.integersGeometric()))) {
+                try {
+                    gt(comparator, i, t.b);
+                    fail(t);
+                } catch (IllegalArgumentException ignored) {}
+            }
+
+            for (int i : take(TINY_LIMIT, filterInfinite(j -> !j.equals(t.b), P.integersGeometric()))) {
+                try {
+                    gt(comparator, t.a, i);
+                    fail(t);
+                } catch (IllegalArgumentException ignored) {}
+            }
+        }
+
+        Comparator<Integer> naturalComparator = Comparator.naturalOrder();
+        for (Pair<Integer, Integer> p : take(LIMIT, P.pairs(P.integersGeometric()))) {
+            assertEquals(p, gt(naturalComparator, p.a, p.b), gt(p.a, p.b));
+        }
+    }
+
+    private void propertiesLe_Comparator_T_T() {
+        initialize("le(Comparator, T, T)");
+        Iterable<Triple<Integer, Integer, Integer>> ts = filter(
+                t -> (t.c == 0) == Objects.equals(t.a, t.b),
+                P.triples(
+                        P.withNull(P.integersGeometric()),
+                        P.withNull(P.integersGeometric()),
+                        P.withScale(4).integersGeometric()
+                )
+        );
+        for (Triple<Integer, Integer, Integer> t : take(LIMIT, ts)) {
+            Comparator<Integer> comparator = (i, j) -> {
+                if (!Objects.equals(i, t.a)) {
+                    throw new IllegalArgumentException();
+                }
+                if (!Objects.equals(j, t.b)) {
+                    throw new IllegalArgumentException();
+                }
+                return t.c;
+            };
+            le(comparator, t.a, t.b);
+
+            for (int i : take(TINY_LIMIT, filterInfinite(j -> !j.equals(t.a), P.integersGeometric()))) {
+                try {
+                    le(comparator, i, t.b);
+                    fail(t);
+                } catch (IllegalArgumentException ignored) {}
+            }
+
+            for (int i : take(TINY_LIMIT, filterInfinite(j -> !j.equals(t.b), P.integersGeometric()))) {
+                try {
+                    le(comparator, t.a, i);
+                    fail(t);
+                } catch (IllegalArgumentException ignored) {}
+            }
+        }
+
+        Comparator<Integer> naturalComparator = Comparator.naturalOrder();
+        for (Pair<Integer, Integer> p : take(LIMIT, P.pairs(P.integersGeometric()))) {
+            assertEquals(p, le(naturalComparator, p.a, p.b), le(p.a, p.b));
+        }
+    }
+
+    private void propertiesGe_Comparator_T_T() {
+        initialize("ge(Comparator, T, T)");
+        Iterable<Triple<Integer, Integer, Integer>> ts = filter(
+                t -> (t.c == 0) == Objects.equals(t.a, t.b),
+                P.triples(
+                        P.withNull(P.integersGeometric()),
+                        P.withNull(P.integersGeometric()),
+                        P.withScale(4).integersGeometric()
+                )
+        );
+        for (Triple<Integer, Integer, Integer> t : take(LIMIT, ts)) {
+            Comparator<Integer> comparator = (i, j) -> {
+                if (!Objects.equals(i, t.a)) {
+                    throw new IllegalArgumentException();
+                }
+                if (!Objects.equals(j, t.b)) {
+                    throw new IllegalArgumentException();
+                }
+                return t.c;
+            };
+            ge(comparator, t.a, t.b);
+
+            for (int i : take(TINY_LIMIT, filterInfinite(j -> !j.equals(t.a), P.integersGeometric()))) {
+                try {
+                    ge(comparator, i, t.b);
+                    fail(t);
+                } catch (IllegalArgumentException ignored) {}
+            }
+
+            for (int i : take(TINY_LIMIT, filterInfinite(j -> !j.equals(t.b), P.integersGeometric()))) {
+                try {
+                    ge(comparator, t.a, i);
+                    fail(t);
+                } catch (IllegalArgumentException ignored) {}
+            }
+        }
+
+        Comparator<Integer> naturalComparator = Comparator.naturalOrder();
+        for (Pair<Integer, Integer> p : take(LIMIT, P.pairs(P.integersGeometric()))) {
+            assertEquals(p, eq(naturalComparator, p.a, p.b), eq(p.a, p.b));
         }
     }
 }
