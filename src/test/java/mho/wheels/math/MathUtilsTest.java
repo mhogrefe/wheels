@@ -445,6 +445,8 @@ public class MathUtilsTest {
         numberOfArrangementsOfASet_int_int_helper(0, 10, "9864101");
         numberOfArrangementsOfASet_int_int_helper(1, 10, "9864100");
         numberOfArrangementsOfASet_int_int_helper(2, 10, "9864090");
+        numberOfArrangementsOfASet_int_int_helper(10, 10, "3628800");
+        numberOfArrangementsOfASet_int_int_helper(11, 10, "0");
         numberOfArrangementsOfASet_int_int_helper(20, 100,
                 "253686955560127297415270748212280220445147578566298142232775185987449253908386446518940485425152049" +
                 "793267407732328003493593216076399867112102621246975180800000");
