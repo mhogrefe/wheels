@@ -120,6 +120,11 @@ public class OrderingProperties extends TestProperties {
                 } catch (IllegalArgumentException ignored) {}
             }
         }
+
+        Comparator<Integer> naturalComparator = Comparator.naturalOrder();
+        for (Pair<Integer, Integer> p : take(LIMIT, P.pairs(P.integersGeometric()))) {
+            assertEquals(p, compare(naturalComparator, p.a, p.b), compare(p.a, p.b));
+        }
     }
 
     private void propertiesEq_T_T() {

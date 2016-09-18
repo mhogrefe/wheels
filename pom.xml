@@ -73,8 +73,6 @@
                         <include>**/StringLexComparatorProperties.java</include>
                         <include>**/StringShortlexComparatorTest.java</include>
                         <include>**/StringShortlexComparatorProperties.java</include>
-                        <include>**/WithNullComparatorTest.java</include>
-                        <include>**/WithNullComparatorProperties.java</include>
                         <include>**/OrderingTest.java</include>
                         <include>**/OrderingProperties.java</include>
                         <include>**/NullableOptionalTest.java</include>

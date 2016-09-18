@@ -2633,7 +2633,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
 
     private void propertiesPermutationsFinite() {
         initialize("permutationsFinite(List<T>)");
-        Comparator<Integer> comparator = new WithNullComparator<>();
+        Comparator<Integer> comparator = Comparator.nullsFirst(Comparator.naturalOrder());
         for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
             Iterable<List<Integer>> permutations = EP.permutationsFinite(xs);
             testNoRemove(TINY_LIMIT, permutations);
@@ -2707,7 +2707,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
 
     private void propertiesPrefixPermutations() {
         initialize("prefixPermutations(Iterable<T>)");
-        Comparator<Integer> comparator = new WithNullComparator<>();
+        Comparator<Integer> comparator = Comparator.nullsFirst(Comparator.naturalOrder());
         for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
             Iterable<Iterable<Integer>> permutations = EP.prefixPermutations(xs);
             testNoRemove(TINY_LIMIT, permutations);
@@ -10675,7 +10675,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
 
     private void propertiesMaps() {
         initialize("maps(List<K>, Iterable<V>)");
-        Comparator<Integer> withNullComparator = new WithNullComparator<>();
+        Comparator<Integer> withNullComparator = Comparator.nullsFirst(Comparator.naturalOrder());
         Iterable<Pair<List<Integer>, List<Integer>>> ps = P.pairs(
                 P.withScale(4).distinctLists(P.withNull(P.integersGeometric())),
                 P.withScale(4).lists(P.withNull(P.integersGeometric()))
