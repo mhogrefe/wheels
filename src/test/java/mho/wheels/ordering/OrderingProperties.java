@@ -37,6 +37,9 @@ public class OrderingProperties extends TestProperties {
         propertiesGt_Comparator_T_T();
         propertiesLe_Comparator_T_T();
         propertiesGe_Comparator_T_T();
+        propertiesMin_T_T();
+        propertiesMax_T_T();
+        propertiesMinMax_T_T();
     }
 
     private void propertiesFromInt() {
@@ -139,6 +142,10 @@ public class OrderingProperties extends TestProperties {
             assertEquals(p, b, eq(p.b, p.a));
             assertEquals(p, b, !lt(p.a, p.b) && !gt(p.a, p.b));
         }
+
+        for (int i : take(LIMIT, P.integersGeometric())) {
+            assertTrue(i, eq(i, i));
+        }
     }
 
     private void propertiesNe_T_T() {
@@ -148,6 +155,10 @@ public class OrderingProperties extends TestProperties {
             assertEquals(p, b, ne(p.b, p.a));
             assertEquals(p, b, lt(p.a, p.b) || gt(p.a, p.b));
         }
+
+        for (int i : take(LIMIT, P.integersGeometric())) {
+            assertFalse(i, ne(i, i));
+        }
     }
 
     private void propertiesLt_T_T() {
@@ -156,6 +167,10 @@ public class OrderingProperties extends TestProperties {
             boolean b = lt(p.a, p.b);
             assertEquals(p, b, !eq(p.a, p.b) && !gt(p.a, p.b));
         }
+
+        for (int i : take(LIMIT, P.integersGeometric())) {
+            assertFalse(i, lt(i, i));
+        }
     }
 
     private void propertiesGt_T_T() {
@@ -163,6 +178,10 @@ public class OrderingProperties extends TestProperties {
         for (Pair<Integer, Integer> p : take(LIMIT, P.pairs(P.integersGeometric()))) {
             boolean b = gt(p.a, p.b);
             assertEquals(p, b, !eq(p.a, p.b) && !lt(p.a, p.b));
+        }
+
+        for (int i : take(LIMIT, P.integersGeometric())) {
+            assertFalse(i, gt(i, i));
         }
     }
 
@@ -173,6 +192,10 @@ public class OrderingProperties extends TestProperties {
             assertEquals(p, b, eq(p.a, p.b) || le(p.a, p.b));
             assertEquals(p, b, ge(p.b, p.a));
         }
+
+        for (int i : take(LIMIT, P.integersGeometric())) {
+            assertTrue(i, le(i, i));
+        }
     }
 
     private void propertiesGe_T_T() {
@@ -181,6 +204,10 @@ public class OrderingProperties extends TestProperties {
             boolean b = ge(p.a, p.b);
             assertEquals(p, b, eq(p.a, p.b) || ge(p.a, p.b));
             assertEquals(p, b, le(p.b, p.a));
+        }
+
+        for (int i : take(LIMIT, P.integersGeometric())) {
+            assertTrue(i, ge(i, i));
         }
     }
 
@@ -439,6 +466,48 @@ public class OrderingProperties extends TestProperties {
         Comparator<Integer> naturalComparator = Comparator.naturalOrder();
         for (Pair<Integer, Integer> p : take(LIMIT, P.pairs(P.integersGeometric()))) {
             assertEquals(p, eq(naturalComparator, p.a, p.b), eq(p.a, p.b));
+        }
+    }
+
+    private void propertiesMin_T_T() {
+        initialize("min(T, T)");
+        for (Pair<Integer, Integer> p : take(LIMIT, P.pairs(P.integersGeometric()))) {
+            int min = min(p.a, p.b);
+            assertTrue(p, p.a.equals(min) || p.b.equals(min));
+            assertTrue(p, le(min, p.a));
+            assertTrue(p, le(min, p.b));
+        }
+
+        for (int i : take(LIMIT, P.integersGeometric())) {
+            assertEquals(i, min(i, i), i);
+        }
+    }
+
+    private void propertiesMax_T_T() {
+        initialize("max(T, T)");
+        for (Pair<Integer, Integer> p : take(LIMIT, P.pairs(P.integersGeometric()))) {
+            int max = max(p.a, p.b);
+            assertTrue(p, p.a.equals(max) || p.b.equals(max));
+            assertTrue(p, ge(max, p.a));
+            assertTrue(p, ge(max, p.b));
+        }
+
+        for (int i : take(LIMIT, P.integersGeometric())) {
+            assertEquals(i, max(i, i), i);
+        }
+    }
+
+    private void propertiesMinMax_T_T() {
+        initialize("minMax(T, T)");
+        for (Pair<Integer, Integer> p : take(LIMIT, P.pairs(P.integersGeometric()))) {
+            Pair<Integer, Integer> minMax = minMax(p.a, p.b);
+            assertEquals(p, minMax.a, min(p.a, p.b));
+            assertEquals(p, minMax.b, max(p.a, p.b));
+            assertTrue(p, le(minMax.a, minMax.b));
+        }
+
+        for (int i : take(LIMIT, P.integersGeometric())) {
+            assertEquals(i, minMax(i, i), new Pair<>(i, i));
         }
     }
 }
