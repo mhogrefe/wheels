@@ -78,8 +78,7 @@ public class OrderingProperties extends TestProperties {
         P.reset();
         Q.reset();
         for (Pair<Integer, Integer> p : take(LIMIT, EP.pairs(P.integers(), Q.integers()))) {
-            Ordering o = compare(p.a, p.b);
-            assertEquals(p, compare(p.b, p.a), o.invert());
+            antiCommutative(Ordering::compare, Ordering::invert, p);
         }
 
         P.reset();
@@ -139,8 +138,9 @@ public class OrderingProperties extends TestProperties {
         initialize("eq(T, T)");
         for (Pair<Integer, Integer> p : take(LIMIT, P.pairs(P.integersGeometric()))) {
             boolean b = eq(p.a, p.b);
-            assertEquals(p, b, eq(p.b, p.a));
             assertEquals(p, b, !lt(p.a, p.b) && !gt(p.a, p.b));
+            //noinspection Convert2MethodRef
+            commutative((x, y) -> eq(x, y), p);
         }
 
         for (int i : take(LIMIT, P.integersGeometric())) {
@@ -154,6 +154,8 @@ public class OrderingProperties extends TestProperties {
             boolean b = ne(p.a, p.b);
             assertEquals(p, b, ne(p.b, p.a));
             assertEquals(p, b, lt(p.a, p.b) || gt(p.a, p.b));
+            //noinspection Convert2MethodRef
+            commutative((x, y) -> ne(x, y), p);
         }
 
         for (int i : take(LIMIT, P.integersGeometric())) {
@@ -476,10 +478,15 @@ public class OrderingProperties extends TestProperties {
             assertTrue(p, p.a.equals(min) || p.b.equals(min));
             assertTrue(p, le(min, p.a));
             assertTrue(p, le(min, p.b));
+            commutative(Ordering::min, p);
         }
 
         for (int i : take(LIMIT, P.integersGeometric())) {
-            assertEquals(i, min(i, i), i);
+            fixedPoint(j -> min(j, j), i);
+        }
+
+        for (Triple<Integer, Integer, Integer> t : take(LIMIT, P.triples(P.integersGeometric()))) {
+            associative(Ordering::min, t);
         }
     }
 
@@ -490,10 +497,15 @@ public class OrderingProperties extends TestProperties {
             assertTrue(p, p.a.equals(max) || p.b.equals(max));
             assertTrue(p, ge(max, p.a));
             assertTrue(p, ge(max, p.b));
+            commutative(Ordering::max, p);
         }
 
         for (int i : take(LIMIT, P.integersGeometric())) {
-            assertEquals(i, max(i, i), i);
+            fixedPoint(j -> max(j, j), i);
+        }
+
+        for (Triple<Integer, Integer, Integer> t : take(LIMIT, P.triples(P.integersGeometric()))) {
+            associative(Ordering::max, t);
         }
     }
 
@@ -504,6 +516,7 @@ public class OrderingProperties extends TestProperties {
             assertEquals(p, minMax.a, min(p.a, p.b));
             assertEquals(p, minMax.b, max(p.a, p.b));
             assertTrue(p, le(minMax.a, minMax.b));
+            commutative(Ordering::minMax, p);
         }
 
         for (int i : take(LIMIT, P.integersGeometric())) {
