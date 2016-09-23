@@ -1,5 +1,6 @@
 package mho.wheels.ordering;
 
+import mho.wheels.io.Readers;
 import mho.wheels.iterables.IterableProvider;
 import mho.wheels.structures.Pair;
 import mho.wheels.structures.Triple;
@@ -40,6 +41,10 @@ public class OrderingProperties extends TestProperties {
         propertiesMin_T_T();
         propertiesMax_T_T();
         propertiesMinMax_T_T();
+        propertiesMin_Ordering_T_T();
+        propertiesMax_Ordering_T_T();
+        propertiesMinMax_Ordering_T_T();
+        propertiesToString();
     }
 
     private void propertiesFromInt() {
@@ -95,11 +100,7 @@ public class OrderingProperties extends TestProperties {
         initialize("compare(Comparator, T, T)");
         Iterable<Triple<Integer, Integer, Integer>> ts = filter(
                 t -> (t.c == 0) == Objects.equals(t.a, t.b),
-                P.triples(
-                        P.withNull(P.integersGeometric()),
-                        P.withNull(P.integersGeometric()),
-                        P.withScale(4).integersGeometric()
-                )
+                P.triples(P.withNull(P.integersGeometric()), P.withNull(P.integersGeometric()), P.integersGeometric())
         );
         for (Triple<Integer, Integer, Integer> t : take(LIMIT, ts)) {
             Comparator<Integer> comparator = (i, j) -> {
@@ -217,11 +218,7 @@ public class OrderingProperties extends TestProperties {
         initialize("eq(Comparator, T, T)");
         Iterable<Triple<Integer, Integer, Integer>> ts = filter(
                 t -> (t.c == 0) == Objects.equals(t.a, t.b),
-                P.triples(
-                        P.withNull(P.integersGeometric()),
-                        P.withNull(P.integersGeometric()),
-                        P.withScale(4).integersGeometric()
-                )
+                P.triples(P.withNull(P.integersGeometric()), P.withNull(P.integersGeometric()), P.integersGeometric())
         );
         for (Triple<Integer, Integer, Integer> t : take(LIMIT, ts)) {
             Comparator<Integer> comparator = (i, j) -> {
@@ -260,11 +257,7 @@ public class OrderingProperties extends TestProperties {
         initialize("ne(Comparator, T, T)");
         Iterable<Triple<Integer, Integer, Integer>> ts = filter(
                 t -> (t.c == 0) == Objects.equals(t.a, t.b),
-                P.triples(
-                        P.withNull(P.integersGeometric()),
-                        P.withNull(P.integersGeometric()),
-                        P.withScale(4).integersGeometric()
-                )
+                P.triples(P.withNull(P.integersGeometric()), P.withNull(P.integersGeometric()), P.integersGeometric())
         );
         for (Triple<Integer, Integer, Integer> t : take(LIMIT, ts)) {
             Comparator<Integer> comparator = (i, j) -> {
@@ -303,11 +296,7 @@ public class OrderingProperties extends TestProperties {
         initialize("lt(Comparator, T, T)");
         Iterable<Triple<Integer, Integer, Integer>> ts = filter(
                 t -> (t.c == 0) == Objects.equals(t.a, t.b),
-                P.triples(
-                        P.withNull(P.integersGeometric()),
-                        P.withNull(P.integersGeometric()),
-                        P.withScale(4).integersGeometric()
-                )
+                P.triples(P.withNull(P.integersGeometric()), P.withNull(P.integersGeometric()), P.integersGeometric())
         );
         for (Triple<Integer, Integer, Integer> t : take(LIMIT, ts)) {
             Comparator<Integer> comparator = (i, j) -> {
@@ -346,11 +335,7 @@ public class OrderingProperties extends TestProperties {
         initialize("gt(Comparator, T, T)");
         Iterable<Triple<Integer, Integer, Integer>> ts = filter(
                 t -> (t.c == 0) == Objects.equals(t.a, t.b),
-                P.triples(
-                        P.withNull(P.integersGeometric()),
-                        P.withNull(P.integersGeometric()),
-                        P.withScale(4).integersGeometric()
-                )
+                P.triples(P.withNull(P.integersGeometric()), P.withNull(P.integersGeometric()), P.integersGeometric())
         );
         for (Triple<Integer, Integer, Integer> t : take(LIMIT, ts)) {
             Comparator<Integer> comparator = (i, j) -> {
@@ -389,11 +374,7 @@ public class OrderingProperties extends TestProperties {
         initialize("le(Comparator, T, T)");
         Iterable<Triple<Integer, Integer, Integer>> ts = filter(
                 t -> (t.c == 0) == Objects.equals(t.a, t.b),
-                P.triples(
-                        P.withNull(P.integersGeometric()),
-                        P.withNull(P.integersGeometric()),
-                        P.withScale(4).integersGeometric()
-                )
+                P.triples(P.withNull(P.integersGeometric()), P.withNull(P.integersGeometric()), P.integersGeometric())
         );
         for (Triple<Integer, Integer, Integer> t : take(LIMIT, ts)) {
             Comparator<Integer> comparator = (i, j) -> {
@@ -432,11 +413,7 @@ public class OrderingProperties extends TestProperties {
         initialize("ge(Comparator, T, T)");
         Iterable<Triple<Integer, Integer, Integer>> ts = filter(
                 t -> (t.c == 0) == Objects.equals(t.a, t.b),
-                P.triples(
-                        P.withNull(P.integersGeometric()),
-                        P.withNull(P.integersGeometric()),
-                        P.withScale(4).integersGeometric()
-                )
+                P.triples(P.withNull(P.integersGeometric()), P.withNull(P.integersGeometric()), P.integersGeometric())
         );
         for (Triple<Integer, Integer, Integer> t : take(LIMIT, ts)) {
             Comparator<Integer> comparator = (i, j) -> {
@@ -522,5 +499,127 @@ public class OrderingProperties extends TestProperties {
         for (int i : take(LIMIT, P.integersGeometric())) {
             assertEquals(i, minMax(i, i), new Pair<>(i, i));
         }
+    }
+
+    private void propertiesMin_Ordering_T_T() {
+        initialize("min(Ordering, T, T)");
+        Iterable<Triple<Integer, Integer, Integer>> ts = filter(
+                t -> (t.c == 0) == Objects.equals(t.a, t.b),
+                P.triples(P.withNull(P.integersGeometric()), P.withNull(P.integersGeometric()), P.integersGeometric())
+        );
+        for (Triple<Integer, Integer, Integer> t : take(LIMIT, ts)) {
+            Comparator<Integer> comparator = (i, j) -> {
+                if (!Objects.equals(i, t.a)) {
+                    throw new IllegalArgumentException();
+                }
+                if (!Objects.equals(j, t.b)) {
+                    throw new IllegalArgumentException();
+                }
+                return t.c;
+            };
+            min(comparator, t.a, t.b);
+
+            for (int i : take(TINY_LIMIT, filterInfinite(j -> !j.equals(t.a), P.integersGeometric()))) {
+                try {
+                    min(comparator, i, t.b);
+                    fail(t);
+                } catch (IllegalArgumentException ignored) {}
+            }
+
+            for (int i : take(TINY_LIMIT, filterInfinite(j -> !j.equals(t.b), P.integersGeometric()))) {
+                try {
+                    min(comparator, t.a, i);
+                    fail(t);
+                } catch (IllegalArgumentException ignored) {}
+            }
+        }
+
+        Comparator<Integer> naturalComparator = Comparator.naturalOrder();
+        for (Pair<Integer, Integer> p : take(LIMIT, P.pairs(P.integersGeometric()))) {
+            assertEquals(p, min(naturalComparator, p.a, p.b), min(p.a, p.b));
+        }
+    }
+
+    private void propertiesMax_Ordering_T_T() {
+        initialize("max(Ordering, T, T)");
+        Iterable<Triple<Integer, Integer, Integer>> ts = filter(
+                t -> (t.c == 0) == Objects.equals(t.a, t.b),
+                P.triples(P.withNull(P.integersGeometric()), P.withNull(P.integersGeometric()), P.integersGeometric())
+        );
+        for (Triple<Integer, Integer, Integer> t : take(LIMIT, ts)) {
+            Comparator<Integer> comparator = (i, j) -> {
+                if (!Objects.equals(i, t.a)) {
+                    throw new IllegalArgumentException();
+                }
+                if (!Objects.equals(j, t.b)) {
+                    throw new IllegalArgumentException();
+                }
+                return t.c;
+            };
+            max(comparator, t.a, t.b);
+
+            for (int i : take(TINY_LIMIT, filterInfinite(j -> !j.equals(t.a), P.integersGeometric()))) {
+                try {
+                    max(comparator, i, t.b);
+                    fail(t);
+                } catch (IllegalArgumentException ignored) {}
+            }
+
+            for (int i : take(TINY_LIMIT, filterInfinite(j -> !j.equals(t.b), P.integersGeometric()))) {
+                try {
+                    max(comparator, t.a, i);
+                    fail(t);
+                } catch (IllegalArgumentException ignored) {}
+            }
+        }
+
+        Comparator<Integer> naturalComparator = Comparator.naturalOrder();
+        for (Pair<Integer, Integer> p : take(LIMIT, P.pairs(P.integersGeometric()))) {
+            assertEquals(p, max(naturalComparator, p.a, p.b), max(p.a, p.b));
+        }
+    }
+
+    private void propertiesMinMax_Ordering_T_T() {
+        initialize("minMax(Ordering, T, T)");
+        Iterable<Triple<Integer, Integer, Integer>> ts = filter(
+                t -> (t.c == 0) == Objects.equals(t.a, t.b),
+                P.triples(P.withNull(P.integersGeometric()), P.withNull(P.integersGeometric()), P.integersGeometric())
+        );
+        for (Triple<Integer, Integer, Integer> t : take(LIMIT, ts)) {
+            Comparator<Integer> comparator = (i, j) -> {
+                if (!Objects.equals(i, t.a)) {
+                    throw new IllegalArgumentException();
+                }
+                if (!Objects.equals(j, t.b)) {
+                    throw new IllegalArgumentException();
+                }
+                return t.c;
+            };
+            minMax(comparator, t.a, t.b);
+
+            for (int i : take(TINY_LIMIT, filterInfinite(j -> !j.equals(t.a), P.integersGeometric()))) {
+                try {
+                    minMax(comparator, i, t.b);
+                    fail(t);
+                } catch (IllegalArgumentException ignored) {}
+            }
+
+            for (int i : take(TINY_LIMIT, filterInfinite(j -> !j.equals(t.b), P.integersGeometric()))) {
+                try {
+                    minMax(comparator, t.a, i);
+                    fail(t);
+                } catch (IllegalArgumentException ignored) {}
+            }
+        }
+
+        Comparator<Integer> naturalComparator = Comparator.naturalOrder();
+        for (Pair<Integer, Integer> p : take(LIMIT, P.pairs(P.integersGeometric()))) {
+            assertEquals(p, minMax(naturalComparator, p.a, p.b), minMax(p.a, p.b));
+        }
+    }
+
+    private void propertiesToString() {
+        initialize("toString()");
+        propertiesToStringHelper(LIMIT, "<=>", P.orderings(), Readers::readOrderingStrict);
     }
 }
