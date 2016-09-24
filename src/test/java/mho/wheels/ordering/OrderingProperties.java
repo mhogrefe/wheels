@@ -1,10 +1,10 @@
 package mho.wheels.ordering;
 
-import mho.wheels.io.Readers;
 import mho.wheels.iterables.IterableProvider;
 import mho.wheels.structures.Pair;
 import mho.wheels.structures.Triple;
 import mho.wheels.testing.TestProperties;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Comparator;
 import java.util.Objects;
@@ -15,6 +15,8 @@ import static mho.wheels.ordering.Ordering.*;
 import static mho.wheels.testing.Testing.*;
 
 public class OrderingProperties extends TestProperties {
+    private static final @NotNull String ORDERING_CHARS = "<=>";
+
     public OrderingProperties() {
         super("Ordering");
     }
@@ -44,6 +46,7 @@ public class OrderingProperties extends TestProperties {
         propertiesMin_Ordering_T_T();
         propertiesMax_Ordering_T_T();
         propertiesMinMax_Ordering_T_T();
+        propertiesReadStrict();
         propertiesToString();
     }
 
@@ -618,8 +621,13 @@ public class OrderingProperties extends TestProperties {
         }
     }
 
+    private void propertiesReadStrict() {
+        initialize("readStrict(String)");
+        propertiesReadHelper(LIMIT, P, ORDERING_CHARS, P.orderings(), Ordering::readStrict, o -> {}, false, true);
+    }
+
     private void propertiesToString() {
         initialize("toString()");
-        propertiesToStringHelper(LIMIT, "<=>", P.orderings(), Readers::readOrderingStrict);
+        propertiesToStringHelper(LIMIT, "<=>", P.orderings(), Ordering::readStrict);
     }
 }

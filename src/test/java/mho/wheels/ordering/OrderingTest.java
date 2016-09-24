@@ -32,7 +32,7 @@ public class OrderingTest {
     }
 
     private static void toInt_helper(@NotNull String input, int output) {
-        aeq(Readers.readOrderingStrict(input).get().toInt(), output);
+        aeq(Ordering.readStrict(input).get().toInt(), output);
     }
 
     @Test
@@ -43,7 +43,7 @@ public class OrderingTest {
     }
 
     private static void invert_helper(@NotNull String input, @NotNull String output) {
-        aeq(Readers.readOrderingStrict(input).get().invert(), output);
+        aeq(Ordering.readStrict(input).get().invert(), output);
     }
 
     @Test
@@ -311,5 +311,23 @@ public class OrderingTest {
         minMax_Comparator_T_T_helper(ODDS_BEFORE_EVENS, 0, 0, "(0, 0)");
         minMax_Comparator_T_T_helper(ODDS_BEFORE_EVENS, 5, 2, "(5, 2)");
         minMax_Comparator_T_T_helper(ODDS_BEFORE_EVENS, 4, 11, "(11, 4)");
+    }
+
+    private static void readStrict_helper(@NotNull String input, @NotNull String output) {
+        aeq(readStrict(input), output);
+    }
+
+    @Test
+    public void testReadStrict() {
+        readStrict_helper("<", "Optional[<]");
+        readStrict_helper("=", "Optional[=]");
+        readStrict_helper(">", "Optional[>]");
+
+        readStrict_helper(" <", "Optional.empty");
+        readStrict_helper("eq", "Optional.empty");
+        readStrict_helper("gt ", "Optional.empty");
+        readStrict_helper("GT ", "Optional.empty");
+        readStrict_helper("", "Optional.empty");
+        readStrict_helper("dsfs<fgd", "Optional.empty");
     }
 }

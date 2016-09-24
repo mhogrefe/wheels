@@ -5,6 +5,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Comparator;
+import java.util.Optional;
 
 /**
  * An enumeration consisting of the elements {@code LT} (less than), {@code EQ} (equal to), and {@code GT} (greater
@@ -468,6 +469,31 @@ public enum Ordering {
     @SuppressWarnings("JavaDoc")
     public static <T> Pair<T, T> minMax(@NotNull Comparator<T> comparator, T a, T b) {
         return lt(comparator, a, b) ? new Pair<>(a, b) : new Pair<>(b, a);
+    }
+
+    /**
+     * Reads an {@link Ordering} from a {@code String}.
+     *
+     * <ul>
+     *  <li>{@code s} must be non-null.</li>
+     *  <li>The result is non-null.</li>
+     * </ul>
+     *
+     * @param s the input {@code String}
+     * @return the {@code Ordering} represented by {@code s}, or {@code Optional.empty} if {@code s} does not represent
+     * an {@code Ordering}
+     */
+    public static @NotNull Optional<Ordering> readStrict(@NotNull String s) {
+        switch (s) {
+            case "<":
+                return Optional.of(Ordering.LT);
+            case "=":
+                return Optional.of(Ordering.EQ);
+            case ">":
+                return Optional.of(Ordering.GT);
+            default:
+                return Optional.empty();
+        }
     }
 
     /**

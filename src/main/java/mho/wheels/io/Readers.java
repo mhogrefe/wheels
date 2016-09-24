@@ -94,31 +94,6 @@ public class Readers {
     }
 
     /**
-     * Reads an {@link Ordering} from a {@code String}.
-     *
-     * <ul>
-     *  <li>{@code s} must be non-null.</li>
-     *  <li>The result is non-null.</li>
-     * </ul>
-     *
-     * @param s the input {@code String}
-     * @return the {@code Ordering} represented by {@code s}, or {@code Optional.empty} if {@code s} does not represent
-     * an {@code Ordering}
-     */
-    public static @NotNull Optional<Ordering> readOrderingStrict(@NotNull String s) {
-        switch (s) {
-            case "<":
-                return Optional.of(Ordering.LT);
-            case "=":
-                return Optional.of(Ordering.EQ);
-            case ">":
-                return Optional.of(Ordering.GT);
-            default:
-                return Optional.empty();
-        }
-    }
-
-    /**
      * Reads a {@link java.math.RoundingMode} from a {@code String}.
      *
      * <ul>

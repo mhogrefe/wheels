@@ -17,7 +17,6 @@ import static mho.wheels.testing.Testing.nicePrint;
 @SuppressWarnings("UnusedDeclaration")
 public class ReadersDemos extends Demos {
     private static final @NotNull String BOOLEAN_CHARS = "aeflrstu";
-    private static final @NotNull String ORDERING_CHARS = "<=>";
     private static final @NotNull String ROUNDING_MODE_CHARS = "ACDEFGHILNOPRSUVWY_";
     private static final @NotNull String INTEGRAL_CHARS = "-0123456789";
     private static final @NotNull String FLOATING_POINT_CHARS = "-.0123456789EINafinty";
@@ -58,18 +57,6 @@ public class ReadersDemos extends Demos {
     private void demoReadBooleanStrict_targeted() {
         for (String s : take(LIMIT, P.strings(BOOLEAN_CHARS))) {
             System.out.println("readBooleanStrict(" + s + ") = " + readBooleanStrict(s));
-        }
-    }
-
-    private void demoReadOrderingStrict() {
-        for (String s : take(LIMIT, P.strings())) {
-            System.out.println("readOrderingStrict(" + nicePrint(s) + ") = " + readOrderingStrict(s));
-        }
-    }
-
-    private void demoReadOrderingStrict_targeted() {
-        for (String s : take(LIMIT, P.strings(ORDERING_CHARS))) {
-            System.out.println("readOrderingStrict(" + s + ") = " + readOrderingStrict(s));
         }
     }
 

@@ -3,15 +3,19 @@ package mho.wheels.ordering;
 import mho.wheels.structures.Pair;
 import mho.wheels.structures.Triple;
 import mho.wheels.testing.Demos;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Comparator;
 import java.util.Objects;
 
 import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.ordering.Ordering.*;
+import static mho.wheels.testing.Testing.nicePrint;
 
 @SuppressWarnings("UnusedDeclaration")
 public class OrderingDemos extends Demos {
+    private static final @NotNull String ORDERING_CHARS = "<=>";
+
     public OrderingDemos(boolean useRandom) {
         super(useRandom);
     }
@@ -331,6 +335,18 @@ public class OrderingDemos extends Demos {
             };
             System.out.println("minMax(" + t.a + " " + fromInt(t.c) + " " + t.b + ", " + t.a + ", " + t.b + ") = " +
                     minMax(comparator, t.a, t.b));
+        }
+    }
+
+    private void demoReadOrderingStrict() {
+        for (String s : take(LIMIT, P.strings())) {
+            System.out.println("readOrderingStrict(" + nicePrint(s) + ") = " + readStrict(s));
+        }
+    }
+
+    private void demoReadOrderingStrict_targeted() {
+        for (String s : take(LIMIT, P.strings(ORDERING_CHARS))) {
+            System.out.println("readOrderingStrict(" + s + ") = " + readStrict(s));
         }
     }
 

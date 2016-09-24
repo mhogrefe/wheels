@@ -102,24 +102,6 @@ public class ReadersTest {
         readBooleanStrict_helper("0", "Optional.empty");
     }
 
-    private static void readOrderingStrict_helper(@NotNull String input, @NotNull String output) {
-        aeq(readOrderingStrict(input), output);
-    }
-
-    @Test
-    public void testReadOrderingStrict() {
-        readOrderingStrict_helper("<", "Optional[<]");
-        readOrderingStrict_helper("=", "Optional[=]");
-        readOrderingStrict_helper(">", "Optional[>]");
-
-        readOrderingStrict_helper(" <", "Optional.empty");
-        readOrderingStrict_helper("eq", "Optional.empty");
-        readOrderingStrict_helper("gt ", "Optional.empty");
-        readOrderingStrict_helper("GT ", "Optional.empty");
-        readOrderingStrict_helper("", "Optional.empty");
-        readOrderingStrict_helper("dsfs<fgd", "Optional.empty");
-    }
-
     private static void readRoundingModeStrict_helper(@NotNull String input, @NotNull String output) {
         aeq(readRoundingModeStrict(input), output);
     }

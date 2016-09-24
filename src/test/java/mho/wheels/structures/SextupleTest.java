@@ -90,8 +90,8 @@ public class SextupleTest {
     ) {
         aeq(
                 Sextuple.compare(
-                        new Sextuple<>(pa, pb, pc, pd, Readers.readOrderingStrict(pe).get(), pf),
-                        new Sextuple<>(qa, qb, qc, qd, Readers.readOrderingStrict(qe).get(), qf)
+                        new Sextuple<>(pa, pb, pc, pd, Ordering.readStrict(pe).get(), pf),
+                        new Sextuple<>(qa, qb, qc, qd, Ordering.readStrict(qe).get(), qf)
                 ),
                 output
         );
@@ -138,7 +138,7 @@ public class SextupleTest {
                         pb,
                         pc,
                         pd,
-                        Readers.readWithNullsStrict(Readers::readOrderingStrict).apply(pe).get(),
+                        Readers.readWithNullsStrict(Ordering::readStrict).apply(pe).get(),
                         pf
                 ).equals(
                         new Sextuple<>(
@@ -146,7 +146,7 @@ public class SextupleTest {
                                 qb,
                                 qc,
                                 qd,
-                                Readers.readWithNullsStrict(Readers::readOrderingStrict).apply(qe).get(),
+                                Readers.readWithNullsStrict(Ordering::readStrict).apply(qe).get(),
                                 qf
                         )
                 ),
@@ -170,7 +170,7 @@ public class SextupleTest {
                         pb,
                         pc,
                         pd,
-                        Readers.readWithNullsStrict(Readers::readOrderingStrict).apply(pe).get(),
+                        Readers.readWithNullsStrict(Ordering::readStrict).apply(pe).get(),
                         pf
                 ).equals(x),
                 output
@@ -248,7 +248,7 @@ public class SextupleTest {
                         Readers.readWithNullsStrict(Readers::readIntegerStrict),
                         Readers.readWithNullsStrict(Readers::readBooleanStrict),
                         Readers.readWithNullsStrict(Readers::readCharacterStrict),
-                        Readers.readWithNullsStrict(Readers::readOrderingStrict),
+                        Readers.readWithNullsStrict(Ordering::readStrict),
                         Readers.readWithNullsStrict(Readers::readDoubleStrict)
                 ),
                 output
@@ -292,7 +292,7 @@ public class SextupleTest {
                                 pb,
                                 pc,
                                 pd,
-                                Readers.readWithNullsStrict(Readers::readOrderingStrict).apply(pe).get(),
+                                Readers.readWithNullsStrict(Ordering::readStrict).apply(pe).get(),
                                 pf
                         ),
                         new Sextuple<>(
@@ -300,7 +300,7 @@ public class SextupleTest {
                                 qb,
                                 qc,
                                 qd,
-                                Readers.readWithNullsStrict(Readers::readOrderingStrict).apply(qe).get(),
+                                Readers.readWithNullsStrict(Ordering::readStrict).apply(qe).get(),
                                 qf
                         )
                 ),
