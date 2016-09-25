@@ -1744,68 +1744,6 @@ public final strictfp class IterableUtils {
         }
     }
 
-    public static <T extends Comparable<T>> T minimum(@NotNull Iterable<T> xs) {
-        return foldl1(Ordering::min, xs);
-    }
-
-    public static <T extends Comparable<T>> T maximum(@NotNull Iterable<T> xs) {
-        return foldl1(Ordering::max, xs);
-    }
-
-    public static <T extends Comparable<T>> Pair<T, T> minimumMaximum(@NotNull Iterable<T> xs) {
-        T min = null;
-        T max = null;
-        boolean first = true;
-        for (T x : xs) {
-            if (first) {
-                min = x;
-                max = x;
-                first = false;
-            } else {
-                if (lt(x, min)) {
-                    min = x;
-                } else if (gt(x, max)) {
-                    max = x;
-                }
-            }
-        }
-        if (first) {
-            throw new IllegalArgumentException();
-        }
-        return new Pair<>(min, max);
-    }
-
-    public static <T> T minimum(@NotNull Comparator<T> comparator, @NotNull Iterable<T> xs) {
-        return foldl1((x, y) -> min(comparator, x, y), xs);
-    }
-
-    public static <T> T maximum(@NotNull Comparator<T> comparator, @NotNull Iterable<T> xs) {
-        return foldl1((x, y) -> max(comparator, x, y), xs);
-    }
-
-    public static <T> Pair<T, T> minimumMaximum(@NotNull Comparator<T> comparator, @NotNull Iterable<T> xs) {
-        T min = null;
-        T max = null;
-        boolean first = true;
-        for (T x : xs) {
-            if (first) {
-                min = x;
-                max = x;
-                first = false;
-            } else {
-                if (lt(comparator, x, min)) {
-                    min = x;
-                } else if (gt(comparator, x, max)) {
-                    max = x;
-                }
-            }
-        }
-        if (first) {
-            throw new IllegalArgumentException();
-        }
-        return new Pair<>(min, max);
-    }
-
     public static char minimum(@NotNull String s) {
         return foldl1(Ordering::min, fromString(s));
     }

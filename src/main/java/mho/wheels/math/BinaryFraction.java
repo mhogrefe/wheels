@@ -650,7 +650,7 @@ public strictfp class BinaryFraction implements Comparable<BinaryFraction> {
             throw new NullPointerException("xs may not contain any nulls. xs: " + xs);
         }
         if (xs.isEmpty()) return ZERO;
-        int smallestExponent = minimum(map(BinaryFraction::getExponent, xs));
+        int smallestExponent = Ordering.minimum(map(BinaryFraction::getExponent, xs));
         return of(
                 sumBigInteger(toList(map(x -> x.shiftRight(smallestExponent).bigIntegerValueExact(), xs))),
                 smallestExponent
