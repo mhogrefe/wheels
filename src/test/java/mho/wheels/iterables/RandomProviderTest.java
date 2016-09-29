@@ -7653,22 +7653,23 @@ public strictfp class RandomProviderTest {
 
     private static void withElement_helper(
             int scale,
-            @NotNull String input,
             @Nullable Integer element,
+            @NotNull String input,
             @NotNull String output,
             double elementFrequency
     ) {
         Iterable<Integer> xs = P.withScale(scale).withElement(element, cycle(readIntegerListWithNulls(input)));
         List<Integer> sample = toList(take(DEFAULT_SAMPLE_SIZE, xs));
         aeqitLimitLog(TINY_LIMIT, sample, output);
+        aeqMapLog(topSampleCount(DEFAULT_TOP_COUNT, sample), output);
         aeq(meanOfIntegers(toList(map(x -> Objects.equals(x, element) ? 1 : 0, sample))), elementFrequency);
         P.reset();
     }
 
     private static void withElement_fail_helper(
             int scale,
-            @NotNull Iterable<Integer> input,
-            @Nullable Integer element
+            @Nullable Integer element,
+            @NotNull Iterable<Integer> input
     ) {
         try {
             toList(P.withScale(scale).withElement(element, input));
@@ -7678,15 +7679,15 @@ public strictfp class RandomProviderTest {
 
     @Test
     public void testWithElement() {
-        withElement_helper(2, "[1]", null, "RandomProvider_withElement_i", 0.4992549999935604);
-        withElement_helper(8, "[1]", null, "RandomProvider_withElement_ii", 0.12480700000010415);
-        withElement_helper(32, "[1]", null, "RandomProvider_withElement_iii", 0.031218000000010567);
-        withElement_helper(2, "[null, 2, 3]", 10, "RandomProvider_withElement_iv", 0.4992549999935604);
-        withElement_helper(8, "[null, 2, 3]", 10, "RandomProvider_withElement_v", 0.12480700000010415);
-        withElement_helper(32, "[null, 2, 3]", 10, "RandomProvider_withElement_vi", 0.031218000000010567);
+        withElement_helper(2, null, "[1]", "RandomProvider_withElement_i", 0.4992549999935604);
+        withElement_helper(8, null, "[1]", "RandomProvider_withElement_ii", 0.12480700000010415);
+        withElement_helper(32, null, "[1]", "RandomProvider_withElement_iii", 0.031218000000010567);
+        withElement_helper(2, 10, "[null, 2, 3]", "RandomProvider_withElement_iv", 0.4992549999935604);
+        withElement_helper(8, 10, "[null, 2, 3]", "RandomProvider_withElement_v", 0.12480700000010415);
+        withElement_helper(32, 10, "[null, 2, 3]", "RandomProvider_withElement_vi", 0.031218000000010567);
 
-        withElement_fail_helper(32, Arrays.asList(1, 2, 3), null);
-        withElement_fail_helper(1, cycle(Arrays.asList(1, 2, 3)), null);
+        withElement_fail_helper(32, null, Arrays.asList(1, 2, 3));
+        withElement_fail_helper(1, null, cycle(Arrays.asList(1, 2, 3)));
     }
 
     private static void withNull_helper(

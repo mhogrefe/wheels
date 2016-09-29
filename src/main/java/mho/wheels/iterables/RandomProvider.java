@@ -2895,7 +2895,7 @@ public final strictfp class RandomProvider extends IterableProvider {
                 if (is.next() == 1) {
                     return x;
                 } else if (!xsi.hasNext()) {
-                    throw new IllegalArgumentException();
+                    throw new IllegalArgumentException("xs must be infinite.");
                 } else {
                     return xsi.next();
                 }
