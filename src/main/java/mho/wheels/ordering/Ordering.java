@@ -239,6 +239,7 @@ public enum Ordering {
      *  <li>The result may be either {@code boolean}.</li>
      * </ul>
      *
+     * @param comparator the {@code Comparator} used to compare {@code a} and {@code b}
      * @param a the first value
      * @param b the second value
      * @param <T> the type of {@code a} and {@code b}
@@ -259,6 +260,7 @@ public enum Ordering {
      *  <li>The result may be either {@code boolean}.</li>
      * </ul>
      *
+     * @param comparator the {@code Comparator} used to compare {@code a} and {@code b}
      * @param a the first value
      * @param b the second value
      * @param <T> the type of {@code a} and {@code b}
@@ -279,6 +281,7 @@ public enum Ordering {
      *  <li>The result may be either {@code boolean}.</li>
      * </ul>
      *
+     * @param comparator the {@code Comparator} used to compare {@code a} and {@code b}
      * @param a the first value
      * @param b the second value
      * @param <T> the type of {@code a} and {@code b}
@@ -299,6 +302,7 @@ public enum Ordering {
      *  <li>The result may be either {@code boolean}.</li>
      * </ul>
      *
+     * @param comparator the {@code Comparator} used to compare {@code a} and {@code b}
      * @param a the first value
      * @param b the second value
      * @param <T> the type of {@code a} and {@code b}
@@ -319,6 +323,7 @@ public enum Ordering {
      *  <li>The result may be either {@code boolean}.</li>
      * </ul>
      *
+     * @param comparator the {@code Comparator} used to compare {@code a} and {@code b}
      * @param a the first value
      * @param b the second value
      * @param <T> the type of {@code a} and {@code b}
@@ -339,6 +344,7 @@ public enum Ordering {
      *  <li>The result may be either {@code boolean}.</li>
      * </ul>
      *
+     * @param comparator the {@code Comparator} used to compare {@code a} and {@code b}
      * @param a the first value
      * @param b the second value
      * @param <T> the type of {@code a} and {@code b}
@@ -419,6 +425,7 @@ public enum Ordering {
      *  <li>The result may be any {@code T}.</li>
      * </ul>
      *
+     * @param comparator the {@code Comparator} used to compare {@code a} and {@code b}
      * @param a the first value
      * @param b the second value
      * @param <T> the type of {@code a} and {@code b}
@@ -440,6 +447,7 @@ public enum Ordering {
      *  <li>The result may be any {@code T}.</li>
      * </ul>
      *
+     * @param comparator the {@code Comparator} used to compare {@code a} and {@code b}
      * @param a the first value
      * @param b the second value
      * @param <T> the type of {@code a} and {@code b}
@@ -461,6 +469,7 @@ public enum Ordering {
      *  <li>The result may be any {@code T}.</li>
      * </ul>
      *
+     * @param comparator the {@code Comparator} used to compare {@code a} and {@code b}
      * @param a the first value
      * @param b the second value
      * @param <T> the type of {@code a} and {@code b}
@@ -472,15 +481,58 @@ public enum Ordering {
         return lt(comparator, a, b) ? new Pair<>(a, b) : new Pair<>(b, a);
     }
 
-    public static <T extends Comparable<T>> T minimum(@NotNull Iterable<T> xs) {
+    /**
+     * Returns the smallest element of {@code xs} with respect to the default {@code Comparator} of type {@code T}.
+     *
+     * <ul>
+     *  <li>{@code xs} cannot be empty or infinite and cannot contain nulls.</li>
+     *  <li>Every pair of elements in {@code xs} must be comparable by their default comparator.</li>
+     *  <li>The result is not null.</li>
+     * </ul>
+     *
+     * @param xs an {@code Iterable} of elements
+     * @param <T> the type of elements in {@code xs}
+     * @return min({@code xs})
+     */
+    @SuppressWarnings("JavaDoc")
+    public static @NotNull <T extends Comparable<T>> T minimum(@NotNull Iterable<T> xs) {
         return IterableUtils.foldl1(Ordering::min, xs);
     }
 
-    public static <T extends Comparable<T>> T maximum(@NotNull Iterable<T> xs) {
+    /**
+     * Returns the largest element of {@code xs} with respect to the default {@code Comparator} of type {@code T}.
+     *
+     * <ul>
+     *  <li>{@code xs} cannot be empty or infinite and cannot contain nulls.</li>
+     *  <li>Every pair of elements in {@code xs} must be comparable by their default comparator.</li>
+     *  <li>The result is not null.</li>
+     * </ul>
+     *
+     * @param xs an {@code Iterable} of elements
+     * @param <T> the type of elements in {@code xs}
+     * @return max({@code xs})
+     */
+    @SuppressWarnings("JavaDoc")
+    public static @NotNull <T extends Comparable<T>> T maximum(@NotNull Iterable<T> xs) {
         return IterableUtils.foldl1(Ordering::max, xs);
     }
 
-    public static <T extends Comparable<T>> Pair<T, T> minimumMaximum(@NotNull Iterable<T> xs) {
+    /**
+     * Returns the smallest and largest elements of {@code xs} with respect to the default {@code Comparator} of type
+     * {@code T}.
+     *
+     * <ul>
+     *  <li>{@code xs} cannot be empty or infinite and cannot contain nulls.</li>
+     *  <li>Every pair of elements in {@code xs} must be comparable by their default comparator.</li>
+     *  <li>The result is not null and neither of its elements is null.</li>
+     * </ul>
+     *
+     * @param xs an {@code Iterable} of elements
+     * @param <T> the type of elements in {@code xs}
+     * @return (min({@code xs}), max({@code xs}))
+     */
+    @SuppressWarnings("JavaDoc")
+    public static @NotNull <T extends Comparable<T>> Pair<T, T> minimumMaximum(@NotNull Iterable<T> xs) {
         T min = null;
         T max = null;
         boolean first = true;
@@ -503,14 +555,62 @@ public enum Ordering {
         return new Pair<>(min, max);
     }
 
+    /**
+     * Returns the smallest element of {@code xs} with respect to {@code comparator}.
+     *
+     * <ul>
+     *  <li>{@code comparator} cannot be null.</li>
+     *  <li>{@code xs} cannot be empty or infinite and cannot contain nulls.</li>
+     *  <li>Every pair of elements in {@code xs} must be comparable by {@code comparator}.</li>
+     *  <li>The result may be any {@code T}.</li>
+     * </ul>
+     *
+     * @param comparator the {@code Comparator} used to compare the elements of {@code xs}
+     * @param xs an {@code Iterable} of elements
+     * @param <T> the type of elements in {@code xs}
+     * @return min<sub>{@code comparator}</sub>({@code xs})
+     */
+    @SuppressWarnings("JavaDoc")
     public static <T> T minimum(@NotNull Comparator<T> comparator, @NotNull Iterable<T> xs) {
         return IterableUtils.foldl1((x, y) -> min(comparator, x, y), xs);
     }
 
+    /**
+     * Returns the largest element of {@code xs} with respect to {@code comparator}.
+     *
+     * <ul>
+     *  <li>{@code comparator} cannot be null.</li>
+     *  <li>{@code xs} cannot be empty or infinite and cannot contain nulls.</li>
+     *  <li>Every pair of elements in {@code xs} must be comparable by {@code comparator}.</li>
+     *  <li>The result may be any {@code T}.</li>
+     * </ul>
+     *
+     * @param comparator the {@code Comparator} used to compare the elements of {@code xs}
+     * @param xs an {@code Iterable} of elements
+     * @param <T> the type of elements in {@code xs}
+     * @return max<sub>{@code comparator}</sub>({@code xs})
+     */
+    @SuppressWarnings("JavaDoc")
     public static <T> T maximum(@NotNull Comparator<T> comparator, @NotNull Iterable<T> xs) {
         return IterableUtils.foldl1((x, y) -> max(comparator, x, y), xs);
     }
 
+    /**
+     * Returns the smallest and largest elements of {@code xs} with respect to {@code comparator}.
+     *
+     * <ul>
+     *  <li>{@code comparator} cannot be null.</li>
+     *  <li>{@code xs} cannot be empty or infinite and cannot contain nulls.</li>
+     *  <li>Every pair of elements in {@code xs} must be comparable by {@code comparator}.</li>
+     *  <li>The result is not null and neither of its elements is null.</li>
+     * </ul>
+     *
+     * @param comparator the {@code Comparator} used to compare the elements of {@code xs}
+     * @param xs an {@code Iterable} of elements
+     * @param <T> the type of elements in {@code xs}
+     * @return (min<sub>{@code comparator}</sub>({@code xs}), max<sub>{@code comparator}</sub>({@code xs}))
+     */
+    @SuppressWarnings("JavaDoc")
     public static <T> Pair<T, T> minimumMaximum(@NotNull Comparator<T> comparator, @NotNull Iterable<T> xs) {
         T min = null;
         T max = null;
