@@ -5,9 +5,11 @@ import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
 
 import java.util.Comparator;
+import java.util.List;
 
 import static mho.wheels.ordering.Ordering.*;
 import static mho.wheels.testing.Testing.*;
+import static org.junit.Assert.fail;
 
 public class OrderingTest {
     private static final @NotNull Comparator<Integer> ODDS_BEFORE_EVENS = (i, j) -> {
@@ -313,6 +315,69 @@ public class OrderingTest {
         minMax_Comparator_T_T_helper(ODDS_BEFORE_EVENS, 4, 11, "(11, 4)");
     }
 
+    private static void minimum_Iterable_T_helper(@NotNull String xs, int output) {
+        aeq(minimum(readIntegerList(xs)), output);
+    }
+
+    private static void minimum_Iterable_T_fail_helper(@NotNull String xs) {
+        try {
+            minimum(readIntegerListWithNulls(xs));
+            fail();
+        } catch (IllegalArgumentException | NullPointerException | IllegalStateException ignored) {}
+    }
+
+    @Test
+    public void testMinimum_Iterable_T() {
+        minimum_Iterable_T_helper("[1]", 1);
+        minimum_Iterable_T_helper("[5, 2, 11, 4]", 2);
+
+        minimum_Iterable_T_fail_helper("[]");
+        minimum_Iterable_T_fail_helper("[null]");
+        minimum_Iterable_T_fail_helper("[5, 2, 11, null]");
+    }
+
+    private static void maximum_Iterable_T_helper(@NotNull String xs, int output) {
+        aeq(maximum(readIntegerList(xs)), output);
+    }
+
+    private static void maximum_Iterable_T_fail_helper(@NotNull String xs) {
+        try {
+            maximum(readIntegerListWithNulls(xs));
+            fail();
+        } catch (IllegalArgumentException | NullPointerException | IllegalStateException ignored) {}
+    }
+
+    @Test
+    public void testMaximum_Iterable_T() {
+        maximum_Iterable_T_helper("[1]", 1);
+        maximum_Iterable_T_helper("[5, 2, 11, 4]", 11);
+
+        maximum_Iterable_T_fail_helper("[]");
+        maximum_Iterable_T_fail_helper("[null]");
+        maximum_Iterable_T_fail_helper("[5, 2, 11, null]");
+    }
+
+    private static void minimumMaximum_Iterable_T_helper(@NotNull String xs, @NotNull String output) {
+        aeq(minimumMaximum(readIntegerList(xs)), output);
+    }
+
+    private static void minimumMaximum_Iterable_T_fail_helper(@NotNull String xs) {
+        try {
+            minimumMaximum(readIntegerListWithNulls(xs));
+            fail();
+        } catch (IllegalArgumentException | NullPointerException | IllegalStateException ignored) {}
+    }
+
+    @Test
+    public void testMinimumMaximum_Iterable_T() {
+        minimumMaximum_Iterable_T_helper("[1]", "(1, 1)");
+        minimumMaximum_Iterable_T_helper("[5, 2, 11, 4]", "(2, 11)");
+
+        minimumMaximum_Iterable_T_fail_helper("[]");
+        minimumMaximum_Iterable_T_fail_helper("[null]");
+        minimumMaximum_Iterable_T_fail_helper("[5, 2, 11, null]");
+    }
+
     private static void readStrict_helper(@NotNull String input, @NotNull String output) {
         aeq(readStrict(input), output);
     }
@@ -329,5 +394,13 @@ public class OrderingTest {
         readStrict_helper("GT ", "Optional.empty");
         readStrict_helper("", "Optional.empty");
         readStrict_helper("dsfs<fgd", "Optional.empty");
+    }
+
+    private static @NotNull List<Integer> readIntegerList(@NotNull String s) {
+        return Readers.readListStrict(Readers::readIntegerStrict).apply(s).get();
+    }
+
+    private static @NotNull List<Integer> readIntegerListWithNulls(@NotNull String s) {
+        return Readers.readListWithNullsStrict(Readers::readIntegerStrict).apply(s).get();
     }
 }
