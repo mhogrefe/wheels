@@ -1256,4 +1256,86 @@ public final class MathUtils {
         cache.put(n, elements);
         return elements;
     }
+
+    //todo document
+    public static @NotNull Iterable<Integer> greedyNormalSequence(int base) {
+        return () -> new Iterator<Integer>() {
+            private @NotNull List<Map<List<Integer>, Integer>> frequencyMaps;
+            private @NotNull List<Integer> minimumFrequencies;
+            private @NotNull List<Integer> digitsSoFar;
+            {
+                frequencyMaps = new ArrayList<>();
+                frequencyMaps.add(new HashMap<>());
+                minimumFrequencies = new ArrayList<>();
+                minimumFrequencies.add(0);
+                digitsSoFar = new ArrayList<>();
+            }
+
+            @Override
+            public boolean hasNext() {
+                return true;
+            }
+
+            @Override
+            public Integer next() {
+                int currentSize = digitsSoFar.size();
+                frequencyMaps.add(new HashMap<>());
+                minimumFrequencies.add(0);
+                int maxPoints = 0;
+                int bestDigit = 0;
+                for (int i = 0; i < base; i++) {
+                    int points = 0;
+                    for (int length = 1; length <= currentSize + 1; length++) {
+                        List<Integer> segment = new ArrayList<>();
+                        for (int j = currentSize - length + 1; j < currentSize; j++) {
+                            segment.add(digitsSoFar.get(j));
+                        }
+                        segment.add(i);
+                        Integer frequency = frequencyMaps.get(length).get(segment);
+                        if (frequency == null) {
+                            frequency = 0;
+                        }
+                        if (Objects.equals(frequency, minimumFrequencies.get(length))) {
+                            points++;
+                        }
+                    }
+                    if (points > maxPoints) {
+                        maxPoints = points;
+                        bestDigit = i;
+                    }
+                }
+                for (int length = 1; length <= currentSize + 1; length++) {
+                    List<Integer> segment = new ArrayList<>();
+                    for (int j = currentSize - length + 1; j < currentSize; j++) {
+                        segment.add(digitsSoFar.get(j));
+                    }
+                    segment.add(bestDigit);
+                    Map<List<Integer>, Integer> frequencyMap = frequencyMaps.get(length);
+                    Integer frequency = frequencyMap.get(segment);
+                    if (frequency == null) {
+                        frequencyMap.put(segment, 1);
+                    } else {
+                        frequencyMap.put(segment, frequency + 1);
+                    }
+                    int minimumFrequency = minimumFrequencies.get(length);
+                    boolean minimumFrequencySeen = false;
+                    if (ceilingLog(BigInteger.valueOf(base), BigInteger.valueOf(frequencyMap.size() + 1)) <= length) {
+                        minimumFrequencySeen = true;
+                    } else {
+                        for (Map.Entry<List<Integer>, Integer> entry : frequencyMap.entrySet()) {
+                            if (entry.getValue() == minimumFrequency) {
+                                minimumFrequencySeen = true;
+                                break;
+                            }
+                        }
+                    }
+                    if (!minimumFrequencySeen) {
+                        minimumFrequencies.set(length, minimumFrequency + 1);
+                    }
+                }
+                digitsSoFar.add(bestDigit);
+                return bestDigit;
+            }
+        };
+    }
 }
