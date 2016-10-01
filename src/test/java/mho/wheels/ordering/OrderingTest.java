@@ -330,6 +330,7 @@ public class OrderingTest {
     public void testMinimum_Iterable_T() {
         minimum_Iterable_T_helper("[1]", 1);
         minimum_Iterable_T_helper("[5, 2, 11, 4]", 2);
+        minimum_Iterable_T_helper("[5, 1, 12, 4]", 1);
 
         minimum_Iterable_T_fail_helper("[]");
         minimum_Iterable_T_fail_helper("[null]");
@@ -351,6 +352,7 @@ public class OrderingTest {
     public void testMaximum_Iterable_T() {
         maximum_Iterable_T_helper("[1]", 1);
         maximum_Iterable_T_helper("[5, 2, 11, 4]", 11);
+        maximum_Iterable_T_helper("[5, 1, 12, 4]", 12);
 
         maximum_Iterable_T_fail_helper("[]");
         maximum_Iterable_T_fail_helper("[null]");
@@ -372,10 +374,95 @@ public class OrderingTest {
     public void testMinimumMaximum_Iterable_T() {
         minimumMaximum_Iterable_T_helper("[1]", "(1, 1)");
         minimumMaximum_Iterable_T_helper("[5, 2, 11, 4]", "(2, 11)");
+        minimumMaximum_Iterable_T_helper("[5, 1, 12, 4]", "(1, 12)");
 
         minimumMaximum_Iterable_T_fail_helper("[]");
         minimumMaximum_Iterable_T_fail_helper("[null]");
         minimumMaximum_Iterable_T_fail_helper("[5, 2, 11, null]");
+    }
+
+    private static void minimum_Comparator_Iterable_T_helper(
+            @NotNull Comparator<Integer> comparator,
+            @NotNull String xs,
+            int output
+    ) {
+        aeq(minimum(comparator, readIntegerList(xs)), output);
+    }
+
+    private static void minimum_Comparator_Iterable_T_fail_helper(
+            @NotNull Comparator<Integer> comparator,
+            @NotNull String xs
+    ) {
+        try {
+            minimum(comparator, readIntegerListWithNulls(xs));
+            fail();
+        } catch (IllegalArgumentException | NullPointerException | IllegalStateException ignored) {}
+    }
+
+    @Test
+    public void testMinimum_Comparator_Iterable_T() {
+        minimum_Comparator_Iterable_T_helper(ODDS_BEFORE_EVENS, "[1]", 1);
+        minimum_Comparator_Iterable_T_helper(ODDS_BEFORE_EVENS, "[5, 2, 11, 4]", 5);
+        minimum_Comparator_Iterable_T_helper(ODDS_BEFORE_EVENS, "[5, 1, 12, 4]", 1);
+
+        minimum_Comparator_Iterable_T_fail_helper(ODDS_BEFORE_EVENS, "[]");
+        minimum_Comparator_Iterable_T_fail_helper(ODDS_BEFORE_EVENS, "[5, 2, 11, null]");
+    }
+
+    private static void maximum_Comparator_Iterable_T_helper(
+            @NotNull Comparator<Integer> comparator,
+            @NotNull String xs,
+            int output
+    ) {
+        aeq(maximum(comparator, readIntegerList(xs)), output);
+    }
+
+    private static void maximum_Comparator_Iterable_T_fail_helper(
+            @NotNull Comparator<Integer> comparator,
+            @NotNull String xs
+    ) {
+        try {
+            maximum(comparator, readIntegerListWithNulls(xs));
+            fail();
+        } catch (IllegalArgumentException | NullPointerException | IllegalStateException ignored) {}
+    }
+
+    @Test
+    public void testMaximum_Comparator_Iterable_T() {
+        maximum_Comparator_Iterable_T_helper(ODDS_BEFORE_EVENS, "[1]", 1);
+        maximum_Comparator_Iterable_T_helper(ODDS_BEFORE_EVENS, "[5, 2, 11, 4]", 4);
+        maximum_Comparator_Iterable_T_helper(ODDS_BEFORE_EVENS, "[5, 1, 12, 4]", 12);
+
+        maximum_Comparator_Iterable_T_fail_helper(ODDS_BEFORE_EVENS, "[]");
+        maximum_Comparator_Iterable_T_fail_helper(ODDS_BEFORE_EVENS, "[5, 2, 11, null]");
+    }
+
+    private static void minimumMaximum_Comparator_Iterable_T_helper(
+            @NotNull Comparator<Integer> comparator,
+            @NotNull String xs,
+            @NotNull String output
+    ) {
+        aeq(minimumMaximum(comparator, readIntegerList(xs)), output);
+    }
+
+    private static void minimumMaximum_Comparator_Iterable_T_fail_helper(
+            @NotNull Comparator<Integer> comparator,
+            @NotNull String xs
+    ) {
+        try {
+            minimumMaximum(comparator, readIntegerListWithNulls(xs));
+            fail();
+        } catch (IllegalArgumentException | NullPointerException | IllegalStateException ignored) {}
+    }
+
+    @Test
+    public void testMinimumMaximum_Comparator_Iterable_T() {
+        minimumMaximum_Comparator_Iterable_T_helper(ODDS_BEFORE_EVENS, "[1]", "(1, 1)");
+        minimumMaximum_Comparator_Iterable_T_helper(ODDS_BEFORE_EVENS, "[5, 2, 11, 4]", "(5, 4)");
+        minimumMaximum_Comparator_Iterable_T_helper(ODDS_BEFORE_EVENS, "[5, 1, 12, 4]", "(1, 12)");
+
+        minimumMaximum_Comparator_Iterable_T_fail_helper(ODDS_BEFORE_EVENS, "[]");
+        minimumMaximum_Comparator_Iterable_T_fail_helper(ODDS_BEFORE_EVENS, "[5, 2, 11, null]");
     }
 
     private static void readStrict_helper(@NotNull String input, @NotNull String output) {
