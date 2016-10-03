@@ -1867,10 +1867,10 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testOptionals() {
-        optionals_helper(EP.integers(), "ExhaustiveProvider_nonOptionals_i");
-        optionals_helper(EP.strings(), "ExhaustiveProvider_nonOptionals_ii");
-        optionals_helper("[1, 2, 3]", "ExhaustiveProvider_nonOptionals_iii");
-        optionals_helper("[]", "ExhaustiveProvider_nonOptionals_iv");
+        optionals_helper(EP.integers(), "ExhaustiveProvider_optionals_i");
+        optionals_helper(EP.strings(), "ExhaustiveProvider_optionals_ii");
+        optionals_helper("[1, 2, 3]", "ExhaustiveProvider_optionals_iii");
+        optionals_helper("[]", "ExhaustiveProvider_optionals_iv");
 
         optionals_fail_helper("[1, null, 3]");
     }

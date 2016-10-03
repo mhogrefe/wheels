@@ -13123,7 +13123,7 @@ Optional[3]
 
 ExhaustiveProvider_nonEmptyOptionals_iv list 0
 
-ExhaustiveProvider_nonOptionals_i list 21
+ExhaustiveProvider_optionals_i list 21
 Optional.empty
 Optional[0]
 Optional[1]
@@ -13146,7 +13146,7 @@ Optional[9]
 Optional[-9]
 ...
 
-ExhaustiveProvider_nonOptionals_ii list 21
+ExhaustiveProvider_optionals_ii list 21
 Optional.empty
 Optional[]
 Optional[a]
@@ -13169,13 +13169,13 @@ Optional[i]
 Optional[ac]
 ...
 
-ExhaustiveProvider_nonOptionals_iii list 4
+ExhaustiveProvider_optionals_iii list 4
 Optional.empty
 Optional[1]
 Optional[2]
 Optional[3]
 
-ExhaustiveProvider_nonOptionals_iv list 1
+ExhaustiveProvider_optionals_iv list 1
 Optional.empty
 
 ExhaustiveProvider_nonEmptyNullableOptionals_i list 21
