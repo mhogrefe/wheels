@@ -427,7 +427,8 @@ public class ExhaustiveProviderDemos extends Demos {
 
     private void demoWithNull_infinite() {
         for (Iterable<Integer> xs : take(MEDIUM_LIMIT, P.prefixPermutations(EP.naturalIntegers()))) {
-            System.out.println("withNull(" + middle(xs.toString()) + ") = " + its(EP.withNull(xs)));
+            System.out.println("withNull(" + middle(IterableUtils.toString(TINY_LIMIT, xs)) + ") = " +
+                    its(EP.withNull(xs)));
         }
     }
 
@@ -439,7 +440,8 @@ public class ExhaustiveProviderDemos extends Demos {
 
     private void demoNonEmptyOptionals_infinite() {
         for (Iterable<Integer> xs : take(MEDIUM_LIMIT, P.prefixPermutations(EP.naturalIntegers()))) {
-            System.out.println("nonEmptyOptionals(" + middle(xs.toString()) + ") = " + its(EP.nonEmptyOptionals(xs)));
+            System.out.println("nonEmptyOptionals(" + middle(IterableUtils.toString(TINY_LIMIT, xs)) + ") = " +
+                    its(EP.nonEmptyOptionals(xs)));
         }
     }
 
@@ -451,7 +453,8 @@ public class ExhaustiveProviderDemos extends Demos {
 
     private void demoOptionals_infinite() {
         for (Iterable<Integer> xs : take(MEDIUM_LIMIT, P.prefixPermutations(EP.naturalIntegers()))) {
-            System.out.println("optionals(" + middle(xs.toString()) + ") = " + its(EP.optionals(xs)));
+            System.out.println("optionals(" + middle(IterableUtils.toString(TINY_LIMIT, xs)) + ") = " +
+                    its(EP.optionals(xs)));
         }
     }
 
@@ -463,7 +466,7 @@ public class ExhaustiveProviderDemos extends Demos {
 
     private void demoNonEmptyNullableOptionals_infinite() {
         for (Iterable<Integer> xs : take(MEDIUM_LIMIT, P.prefixPermutations(EP.withNull(EP.naturalIntegers())))) {
-            System.out.println("nonEmptyNullableOptionals(" + middle(xs.toString()) + ") = " +
+            System.out.println("nonEmptyNullableOptionals(" + middle(IterableUtils.toString(TINY_LIMIT, xs)) + ") = " +
                     its(EP.nonEmptyNullableOptionals(xs)));
         }
     }
@@ -476,7 +479,8 @@ public class ExhaustiveProviderDemos extends Demos {
 
     private void demoNullableOptionals_infinite() {
         for (Iterable<Integer> xs : take(MEDIUM_LIMIT, P.prefixPermutations(EP.withNull(EP.naturalIntegers())))) {
-            System.out.println("nullableOptionals(" + middle(xs.toString()) + ") = " + its(EP.nullableOptionals(xs)));
+            System.out.println("nullableOptionals(" + middle(IterableUtils.toString(TINY_LIMIT, xs)) + ") = " +
+                    its(EP.nullableOptionals(xs)));
         }
     }
 

@@ -6,11 +6,12 @@ import mho.wheels.testing.Demos;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Comparator;
+import java.util.List;
 import java.util.Objects;
 
 import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.ordering.Ordering.*;
-import static mho.wheels.testing.Testing.nicePrint;
+import static mho.wheels.testing.Testing.*;
 
 @SuppressWarnings("UnusedDeclaration")
 public class OrderingDemos extends Demos {
@@ -335,6 +336,24 @@ public class OrderingDemos extends Demos {
             };
             System.out.println("minMax(" + t.a + " " + fromInt(t.c) + " " + t.b + ", " + t.a + ", " + t.b + ") = " +
                     minMax(comparator, t.a, t.b));
+        }
+    }
+
+    private void demoMinimum_Iterable_T() {
+        for (List<Integer> xs : take(LIMIT, P.listsAtLeast(1, P.integersGeometric()))) {
+            System.out.println("minimum(" + middle(xs.toString()) + ") = " + minimum(xs));
+        }
+    }
+
+    private void demoMaximum_Iterable_T() {
+        for (List<Integer> xs : take(LIMIT, P.listsAtLeast(1, P.integersGeometric()))) {
+            System.out.println("maximum(" + middle(xs.toString()) + ") = " + maximum(xs));
+        }
+    }
+
+    private void demoMinimumMaximum_Iterable_T() {
+        for (List<Integer> xs : take(LIMIT, P.listsAtLeast(1, P.integersGeometric()))) {
+            System.out.println("minimumMaximum(" + middle(xs.toString()) + ") = " + minimumMaximum(xs));
         }
     }
 
