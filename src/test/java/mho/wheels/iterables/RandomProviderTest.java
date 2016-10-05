@@ -5,7 +5,6 @@ import mho.wheels.math.BinaryFraction;
 import mho.wheels.numberUtils.FloatingPointUtils;
 import mho.wheels.random.IsaacPRNG;
 import mho.wheels.structures.Either;
-import mho.wheels.structures.NullableOptional;
 import mho.wheels.testing.Testing;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -7688,6 +7687,7 @@ public strictfp class RandomProviderTest {
 
         withElement_fail_helper(32, null, Arrays.asList(1, 2, 3));
         withElement_fail_helper(1, null, cycle(Arrays.asList(1, 2, 3)));
+        withElement_fail_helper(-1, null, cycle(Arrays.asList(1, 2, 3)));
     }
 
     private static void withNull_helper(
@@ -7720,20 +7720,22 @@ public strictfp class RandomProviderTest {
         withNull_helper(32, "[1, 2, 3]", "RandomProvider_withNull_vi", 0.031218000000010567);
 
         withNull_fail_helper(32, Arrays.asList(1, 2, 3));
+        withNull_fail_helper(-1, Arrays.asList(1, 2, 3));
         withNull_fail_helper(1, cycle(Arrays.asList(1, 2, 3)));
     }
 
-    private static void optionalsHelper(
-            int scale,
-            @NotNull String input,
-            @NotNull String output,
-            double emptyFrequency
-    ) {
-        Iterable<Optional<Integer>> xs = P.withScale(scale).optionals(cycle(readIntegerListWithNulls(input)));
-        List<Optional<Integer>> sample = toList(take(DEFAULT_SAMPLE_SIZE, xs));
-        aeqitLimitLog(TINY_LIMIT, sample, output);
-        aeq(meanOfIntegers(toList(map(x -> x.isPresent() ? 0 : 1, sample))), emptyFrequency);
-        P.reset();
+    private static void nonEmptyOptionals_helper(@NotNull String input, @NotNull String output) {
+        simpleProviderHelper(P.nonEmptyOptionals(cycle(readIntegerListWithNulls(input))), output);
+    }
+
+    @Test
+    public void testNonEmptyOptionals() {
+        nonEmptyOptionals_helper("[1]", "RandomProvider_nonEmptyOptionals_i");
+        nonEmptyOptionals_helper("[1, 2, 3]", "RandomProvider_nonEmptyOptionals_ii");
+    }
+
+    private static void optionals_helper(int scale, @NotNull String input, @NotNull String output) {
+        simpleProviderHelper(P.withScale(scale).optionals(cycle(readIntegerListWithNulls(input))), output);
     }
 
     private static void optionals_fail_helper(int scale, @NotNull Iterable<Integer> input) {
@@ -7745,29 +7747,30 @@ public strictfp class RandomProviderTest {
 
     @Test
     public void testOptionals() {
-        optionalsHelper(2, "[1]", "RandomProvider_optionals_i", 0.4992549999935604);
-        optionalsHelper(8, "[1]", "RandomProvider_optionals_ii", 0.12480700000010415);
-        optionalsHelper(32, "[1]", "RandomProvider_optionals_iii", 0.031218000000010567);
-        optionalsHelper(2, "[1, 2, 3]", "RandomProvider_optionals_iv", 0.4992549999935604);
-        optionalsHelper(8, "[1, 2, 3]", "RandomProvider_optionals_v", 0.12480700000010415);
-        optionalsHelper(32, "[1, 2, 3]", "RandomProvider_optionals_vi", 0.031218000000010567);
+        optionals_helper(2, "[1]", "RandomProvider_optionals_i");
+        optionals_helper(8, "[1]", "RandomProvider_optionals_ii");
+        optionals_helper(32, "[1]", "RandomProvider_optionals_iii");
+        optionals_helper(2, "[1, 2, 3]", "RandomProvider_optionals_iv");
+        optionals_helper(8, "[1, 2, 3]", "RandomProvider_optionals_v");
+        optionals_helper(32, "[1, 2, 3]", "RandomProvider_optionals_vi");
 
         optionals_fail_helper(32, Arrays.asList(1, 2, 3));
+        optionals_fail_helper(-1, Arrays.asList(1, 2, 3));
         optionals_fail_helper(1, cycle(Arrays.asList(1, 2, 3)));
     }
 
-    private static void nullableOptionals_helper(
-            int scale,
-            @NotNull String input,
-            @NotNull String output,
-            double emptyFrequency
-    ) {
-        Iterable<NullableOptional<Integer>> xs = P.withScale(scale)
-                .nullableOptionals(cycle(readIntegerListWithNulls(input)));
-        List<NullableOptional<Integer>> sample = toList(take(DEFAULT_SAMPLE_SIZE, xs));
-        aeqitLimitLog(TINY_LIMIT, sample, output);
-        aeq(meanOfIntegers(toList(map(x -> x.isPresent() ? 0 : 1, sample))), emptyFrequency);
-        P.reset();
+    private static void nonEmptyNullableOptionals_helper(@NotNull String input, @NotNull String output) {
+        simpleProviderHelper(P.nonEmptyNullableOptionals(cycle(readIntegerListWithNulls(input))), output);
+    }
+
+    @Test
+    public void testNonEmptyNullableOptionals() {
+        nonEmptyNullableOptionals_helper("[1]", "RandomProvider_nonEmptyNullableOptionals_i");
+        nonEmptyNullableOptionals_helper("[1, 2, 3]", "RandomProvider_nonEmptyNullableOptionals_ii");
+    }
+
+    private static void nullableOptionals_helper(int scale, @NotNull String input, @NotNull String output) {
+        simpleProviderHelper(P.withScale(scale).nullableOptionals(cycle(readIntegerListWithNulls(input))), output);
     }
 
     private static void nullableOptionals_fail_helper(int scale, @NotNull Iterable<Integer> input) {
@@ -7779,14 +7782,15 @@ public strictfp class RandomProviderTest {
 
     @Test
     public void testNullableOptionals() {
-        nullableOptionals_helper(2, "[1]", "RandomProvider_nullableOptionals_i", 0.4992549999935604);
-        nullableOptionals_helper(8, "[1]", "RandomProvider_nullableOptionals_ii", 0.12480700000010415);
-        nullableOptionals_helper(32, "[1]", "RandomProvider_nullableOptionals_iii", 0.031218000000010567);
-        nullableOptionals_helper(2, "[null, 2, 3]", "RandomProvider_nullableOptionals_iv", 0.4992549999935604);
-        nullableOptionals_helper(8, "[null, 2, 3]", "RandomProvider_nullableOptionals_v", 0.12480700000010415);
-        nullableOptionals_helper(32, "[null, 2, 3]", "RandomProvider_nullableOptionals_vi", 0.031218000000010567);
+        nullableOptionals_helper(2, "[1]", "RandomProvider_nullableOptionals_i");
+        nullableOptionals_helper(8, "[1]", "RandomProvider_nullableOptionals_ii");
+        nullableOptionals_helper(32, "[1]", "RandomProvider_nullableOptionals_iii");
+        nullableOptionals_helper(2, "[null, 2, 3]", "RandomProvider_nullableOptionals_iv");
+        nullableOptionals_helper(8, "[null, 2, 3]", "RandomProvider_nullableOptionals_v");
+        nullableOptionals_helper(32, "[null, 2, 3]", "RandomProvider_nullableOptionals_vi");
 
         nullableOptionals_fail_helper(32, Arrays.asList(1, 2, 3));
+        nullableOptionals_fail_helper(-1, Arrays.asList(1, 2, 3));
         nullableOptionals_fail_helper(1, cycle(Arrays.asList(1, 2, 3)));
     }
 

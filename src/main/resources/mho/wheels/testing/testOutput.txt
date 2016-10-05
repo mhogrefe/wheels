@@ -67525,6 +67525,60 @@ RandomProvider_withNull_vi list 21
 2
 ...
 
+RandomProvider_nonEmptyOptionals_i list 21
+Optional[1]
+Optional[1]
+Optional[1]
+Optional[1]
+Optional[1]
+Optional[1]
+Optional[1]
+Optional[1]
+Optional[1]
+Optional[1]
+Optional[1]
+Optional[1]
+Optional[1]
+Optional[1]
+Optional[1]
+Optional[1]
+Optional[1]
+Optional[1]
+Optional[1]
+Optional[1]
+...
+
+RandomProvider_nonEmptyOptionals_i map 1
+1000000: Optional[1]
+
+RandomProvider_nonEmptyOptionals_ii list 21
+Optional[1]
+Optional[2]
+Optional[3]
+Optional[1]
+Optional[2]
+Optional[3]
+Optional[1]
+Optional[2]
+Optional[3]
+Optional[1]
+Optional[2]
+Optional[3]
+Optional[1]
+Optional[2]
+Optional[3]
+Optional[1]
+Optional[2]
+Optional[3]
+Optional[1]
+Optional[2]
+...
+
+RandomProvider_nonEmptyOptionals_ii map 3
+333334: Optional[1]
+333333: Optional[2]
+333333: Optional[3]
+
 RandomProvider_optionals_i list 21
 Optional[1]
 Optional.empty
@@ -67547,6 +67601,10 @@ Optional[1]
 Optional.empty
 Optional[1]
 ...
+
+RandomProvider_optionals_i map 2
+500745: Optional[1]
+499255: Optional.empty
 
 RandomProvider_optionals_ii list 21
 Optional[1]
@@ -67571,6 +67629,10 @@ Optional[1]
 Optional[1]
 ...
 
+RandomProvider_optionals_ii map 2
+875193: Optional[1]
+124807: Optional.empty
+
 RandomProvider_optionals_iii list 21
 Optional[1]
 Optional[1]
@@ -67593,6 +67655,10 @@ Optional[1]
 Optional[1]
 Optional[1]
 ...
+
+RandomProvider_optionals_iii map 2
+968782: Optional[1]
+31218: Optional.empty
 
 RandomProvider_optionals_iv list 21
 Optional[1]
@@ -67617,6 +67683,12 @@ Optional.empty
 Optional[1]
 ...
 
+RandomProvider_optionals_iv map 4
+499255: Optional.empty
+166915: Optional[1]
+166915: Optional[2]
+166915: Optional[3]
+
 RandomProvider_optionals_v list 21
 Optional[1]
 Optional[2]
@@ -67639,6 +67711,12 @@ Optional[3]
 Optional[1]
 Optional[2]
 ...
+
+RandomProvider_optionals_v map 4
+291731: Optional[1]
+291731: Optional[2]
+291731: Optional[3]
+124807: Optional.empty
 
 RandomProvider_optionals_vi list 21
 Optional[1]
@@ -67663,6 +67741,66 @@ Optional[1]
 Optional[2]
 ...
 
+RandomProvider_optionals_vi map 4
+322928: Optional[1]
+322927: Optional[2]
+322927: Optional[3]
+31218: Optional.empty
+
+RandomProvider_nonEmptyNullableOptionals_i list 21
+NullableOptional[1]
+NullableOptional[1]
+NullableOptional[1]
+NullableOptional[1]
+NullableOptional[1]
+NullableOptional[1]
+NullableOptional[1]
+NullableOptional[1]
+NullableOptional[1]
+NullableOptional[1]
+NullableOptional[1]
+NullableOptional[1]
+NullableOptional[1]
+NullableOptional[1]
+NullableOptional[1]
+NullableOptional[1]
+NullableOptional[1]
+NullableOptional[1]
+NullableOptional[1]
+NullableOptional[1]
+...
+
+RandomProvider_nonEmptyNullableOptionals_i map 1
+1000000: NullableOptional[1]
+
+RandomProvider_nonEmptyNullableOptionals_ii list 21
+NullableOptional[1]
+NullableOptional[2]
+NullableOptional[3]
+NullableOptional[1]
+NullableOptional[2]
+NullableOptional[3]
+NullableOptional[1]
+NullableOptional[2]
+NullableOptional[3]
+NullableOptional[1]
+NullableOptional[2]
+NullableOptional[3]
+NullableOptional[1]
+NullableOptional[2]
+NullableOptional[3]
+NullableOptional[1]
+NullableOptional[2]
+NullableOptional[3]
+NullableOptional[1]
+NullableOptional[2]
+...
+
+RandomProvider_nonEmptyNullableOptionals_ii map 3
+333334: NullableOptional[1]
+333333: NullableOptional[2]
+333333: NullableOptional[3]
+
 RandomProvider_nullableOptionals_i list 21
 NullableOptional[1]
 NullableOptional.empty
@@ -67685,6 +67823,10 @@ NullableOptional[1]
 NullableOptional.empty
 NullableOptional[1]
 ...
+
+RandomProvider_nullableOptionals_i map 2
+500745: NullableOptional[1]
+499255: NullableOptional.empty
 
 RandomProvider_nullableOptionals_ii list 21
 NullableOptional[1]
@@ -67709,6 +67851,10 @@ NullableOptional[1]
 NullableOptional[1]
 ...
 
+RandomProvider_nullableOptionals_ii map 2
+875193: NullableOptional[1]
+124807: NullableOptional.empty
+
 RandomProvider_nullableOptionals_iii list 21
 NullableOptional[1]
 NullableOptional[1]
@@ -67731,6 +67877,10 @@ NullableOptional[1]
 NullableOptional[1]
 NullableOptional[1]
 ...
+
+RandomProvider_nullableOptionals_iii map 2
+968782: NullableOptional[1]
+31218: NullableOptional.empty
 
 RandomProvider_nullableOptionals_iv list 21
 NullableOptional[null]
@@ -67755,6 +67905,12 @@ NullableOptional.empty
 NullableOptional[null]
 ...
 
+RandomProvider_nullableOptionals_iv map 4
+499255: NullableOptional.empty
+166915: NullableOptional[2]
+166915: NullableOptional[3]
+166915: NullableOptional[null]
+
 RandomProvider_nullableOptionals_v list 21
 NullableOptional[null]
 NullableOptional[2]
@@ -67778,6 +67934,12 @@ NullableOptional[null]
 NullableOptional[2]
 ...
 
+RandomProvider_nullableOptionals_v map 4
+291731: NullableOptional[2]
+291731: NullableOptional[3]
+291731: NullableOptional[null]
+124807: NullableOptional.empty
+
 RandomProvider_nullableOptionals_vi list 21
 NullableOptional[null]
 NullableOptional[2]
@@ -67800,6 +67962,12 @@ NullableOptional[3]
 NullableOptional[null]
 NullableOptional[2]
 ...
+
+RandomProvider_nullableOptionals_vi map 4
+322928: NullableOptional[null]
+322927: NullableOptional[2]
+322927: NullableOptional[3]
+31218: NullableOptional.empty
 
 RandomProvider_dependentPairsInfinite list 21
 (2, ds)
