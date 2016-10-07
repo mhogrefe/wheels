@@ -496,7 +496,25 @@ public enum Ordering {
      */
     @SuppressWarnings("JavaDoc")
     public static @NotNull <T extends Comparable<T>> T minimum(@NotNull Iterable<T> xs) {
-        return IterableUtils.foldl1(Ordering::min, xs);
+        T min = null;
+        boolean first = true;
+        for (T x : xs) {
+            if (first) {
+                min = x;
+                first = false;
+            } else {
+                if (lt(x, min)) {
+                    min = x;
+                }
+            }
+        }
+        if (first) {
+            throw new IllegalArgumentException("xs cannot be empty.");
+        }
+        if (min == null) {
+            throw new NullPointerException();
+        }
+        return min;
     }
 
     /**
@@ -514,7 +532,25 @@ public enum Ordering {
      */
     @SuppressWarnings("JavaDoc")
     public static @NotNull <T extends Comparable<T>> T maximum(@NotNull Iterable<T> xs) {
-        return IterableUtils.foldl1(Ordering::max, xs);
+        T max = null;
+        boolean first = true;
+        for (T x : xs) {
+            if (first) {
+                max = x;
+                first = false;
+            } else {
+                if (gt(x, max)) {
+                    max = x;
+                }
+            }
+        }
+        if (first) {
+            throw new IllegalArgumentException("xs cannot be empty.");
+        }
+        if (max == null) {
+            throw new NullPointerException();
+        }
+        return max;
     }
 
     /**
