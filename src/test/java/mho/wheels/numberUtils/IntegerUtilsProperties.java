@@ -213,7 +213,7 @@ public class IntegerUtilsProperties extends TestProperties {
             assertEquals(i, isPowerOfTwo, 1 << ceilingLog2(i) == i);
         }
 
-        for (int i : take(LIMIT, P.withElement(0, P.negativeIntegers()))) {
+        for (int i : take(LIMIT, P.rangeDown(0))) {
             try {
                 isPowerOfTwo(i);
                 fail(i);
@@ -248,7 +248,7 @@ public class IntegerUtilsProperties extends TestProperties {
             assertEquals(l, isPowerOfTwo, 1L << ceilingLog2(l) == l);
         }
 
-        for (long l : take(LIMIT, P.withElement(0L, P.negativeLongs()))) {
+        for (long l : take(LIMIT, P.rangeDown(0L))) {
             try {
                 isPowerOfTwo(l);
                 fail(l);
@@ -279,7 +279,7 @@ public class IntegerUtilsProperties extends TestProperties {
             assertEquals(i, isPowerOfTwo, BigInteger.ONE.shiftLeft(ceilingLog2(i)).equals(i));
         }
 
-        for (BigInteger i : take(LIMIT, P.withElement(BigInteger.ZERO, P.negativeBigIntegers()))) {
+        for (BigInteger i : take(LIMIT, P.rangeDown(BigInteger.ZERO))) {
             try {
                 isPowerOfTwo(i);
                 fail(i);
@@ -313,7 +313,7 @@ public class IntegerUtilsProperties extends TestProperties {
             assertTrue(i, 1 << (ceilingLog2 - 1) < i);
         }
 
-        for (int i : take(LIMIT, P.withElement(0, P.negativeIntegers()))) {
+        for (int i : take(LIMIT, P.rangeDown(0))) {
             try {
                 ceilingLog2(i);
                 fail(i);
@@ -342,7 +342,7 @@ public class IntegerUtilsProperties extends TestProperties {
             assertTrue(l, 1L << (ceilingLog2 - 1) < l);
         }
 
-        for (long l : take(LIMIT, P.withElement(0L, P.negativeLongs()))) {
+        for (long l : take(LIMIT, P.rangeDown(0L))) {
             try {
                 ceilingLog2(l);
                 fail(l);
@@ -366,7 +366,7 @@ public class IntegerUtilsProperties extends TestProperties {
             assertTrue(i, lt(BigInteger.ONE.shiftLeft(ceilingLog2 - 1), i));
         }
 
-        for (BigInteger i : take(LIMIT, P.withElement(BigInteger.ZERO, P.negativeBigIntegers()))) {
+        for (BigInteger i : take(LIMIT, P.rangeDown(BigInteger.ZERO))) {
             try {
                 ceilingLog2(i);
                 fail(i);

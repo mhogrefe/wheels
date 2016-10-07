@@ -294,7 +294,7 @@ public strictfp class BinaryFractionProperties extends TestProperties {
             assertEquals(bf, bf.isPowerOfTwo(), ONE.shiftLeft(bf.getExponent()).equals(bf));
         }
 
-        for (BinaryFraction bf : take(LIMIT, P.withElement(ZERO, P.negativeBinaryFractions()))) {
+        for (BinaryFraction bf : take(LIMIT, P.rangeDown(ZERO))) {
             try {
                 bf.isPowerOfTwo();
                 fail(bf);

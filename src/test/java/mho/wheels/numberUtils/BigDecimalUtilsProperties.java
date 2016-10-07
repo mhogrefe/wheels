@@ -53,7 +53,7 @@ public class BigDecimalUtilsProperties extends TestProperties {
             );
         }
 
-        for (BigDecimal bd : take(LIMIT, P.withElement(BigDecimal.ZERO, P.negativeBigDecimals()))) {
+        for (BigDecimal bd : take(LIMIT, P.rangeDown(BigDecimal.ZERO))) {
             try {
                 ceilingLog10(bd);
                 fail(bd);
