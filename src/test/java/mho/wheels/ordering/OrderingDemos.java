@@ -357,6 +357,72 @@ public class OrderingDemos extends Demos {
         }
     }
 
+    private void demoMinimum_Comparator_Iterable_T() {
+        Iterable<Pair<List<Integer>, List<Integer>>> ps = P.dependentPairs(
+                P.withScale(4).listsAtLeast(1, P.withNull(P.integersGeometric())),
+                is -> P.permutationsFinite(toList(nub(is)))
+        );
+        for (Pair<List<Integer>, List<Integer>> p : take(LIMIT, ps)) {
+            Comparator<Integer> comparator = (x, y) -> {
+                Integer xIndex = p.b.indexOf(x);
+                if (xIndex == -1) {
+                    throw new IllegalArgumentException();
+                }
+                Integer yIndex = p.b.indexOf(y);
+                if (yIndex == -1) {
+                    throw new IllegalArgumentException();
+                }
+                return Integer.compare(xIndex, yIndex);
+            };
+            System.out.println(intercalate(" < ", map(Objects::toString, p.b)) + ": minimum(" +
+                    middle(p.a.toString()) + ") = " + minimum(comparator, p.a));
+        }
+    }
+
+    private void demoMaximum_Comparator_Iterable_T() {
+        Iterable<Pair<List<Integer>, List<Integer>>> ps = P.dependentPairs(
+                P.withScale(4).listsAtLeast(1, P.withNull(P.integersGeometric())),
+                is -> P.permutationsFinite(toList(nub(is)))
+        );
+        for (Pair<List<Integer>, List<Integer>> p : take(LIMIT, ps)) {
+            Comparator<Integer> comparator = (x, y) -> {
+                Integer xIndex = p.b.indexOf(x);
+                if (xIndex == -1) {
+                    throw new IllegalArgumentException();
+                }
+                Integer yIndex = p.b.indexOf(y);
+                if (yIndex == -1) {
+                    throw new IllegalArgumentException();
+                }
+                return Integer.compare(xIndex, yIndex);
+            };
+            System.out.println(intercalate(" < ", map(Objects::toString, p.b)) + ": maximum(" +
+                    middle(p.a.toString()) + ") = " + maximum(comparator, p.a));
+        }
+    }
+
+    private void demoMinimumMaximum_Comparator_Iterable_T() {
+        Iterable<Pair<List<Integer>, List<Integer>>> ps = P.dependentPairs(
+                P.withScale(4).listsAtLeast(1, P.withNull(P.integersGeometric())),
+                is -> P.permutationsFinite(toList(nub(is)))
+        );
+        for (Pair<List<Integer>, List<Integer>> p : take(LIMIT, ps)) {
+            Comparator<Integer> comparator = (x, y) -> {
+                Integer xIndex = p.b.indexOf(x);
+                if (xIndex == -1) {
+                    throw new IllegalArgumentException();
+                }
+                Integer yIndex = p.b.indexOf(y);
+                if (yIndex == -1) {
+                    throw new IllegalArgumentException();
+                }
+                return Integer.compare(xIndex, yIndex);
+            };
+            System.out.println(intercalate(" < ", map(Objects::toString, p.b)) + ": minimumMaximum(" +
+                    middle(p.a.toString()) + ") = " + minimumMaximum(comparator, p.a));
+        }
+    }
+
     private void demoReadOrderingStrict() {
         for (String s : take(LIMIT, P.strings())) {
             System.out.println("readOrderingStrict(" + nicePrint(s) + ") = " + readStrict(s));

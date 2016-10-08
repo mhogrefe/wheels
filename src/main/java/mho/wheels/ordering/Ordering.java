@@ -670,9 +670,6 @@ public enum Ordering {
         if (first) {
             throw new IllegalArgumentException("xs cannot be empty.");
         }
-        if (min == null) {
-            throw new NullPointerException();
-        }
         return new Pair<>(min, max);
     }
 
