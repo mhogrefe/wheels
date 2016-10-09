@@ -156,7 +156,6 @@ public class OrderingProperties extends TestProperties {
         initialize("ne(T, T)");
         for (Pair<Integer, Integer> p : take(LIMIT, P.pairs(P.integersGeometric()))) {
             boolean b = ne(p.a, p.b);
-            assertEquals(p, b, ne(p.b, p.a));
             assertEquals(p, b, lt(p.a, p.b) || gt(p.a, p.b));
             //noinspection Convert2MethodRef
             commutative((x, y) -> ne(x, y), p);
@@ -195,7 +194,7 @@ public class OrderingProperties extends TestProperties {
         initialize("le(T, T)");
         for (Pair<Integer, Integer> p : take(LIMIT, P.pairs(P.integersGeometric()))) {
             boolean b = le(p.a, p.b);
-            assertEquals(p, b, eq(p.a, p.b) || le(p.a, p.b));
+            assertEquals(p, b, eq(p.a, p.b) || lt(p.a, p.b));
             assertEquals(p, b, ge(p.b, p.a));
         }
 
@@ -208,7 +207,7 @@ public class OrderingProperties extends TestProperties {
         initialize("ge(T, T)");
         for (Pair<Integer, Integer> p : take(LIMIT, P.pairs(P.integersGeometric()))) {
             boolean b = ge(p.a, p.b);
-            assertEquals(p, b, eq(p.a, p.b) || ge(p.a, p.b));
+            assertEquals(p, b, eq(p.a, p.b) || gt(p.a, p.b));
             assertEquals(p, b, le(p.b, p.a));
         }
 
