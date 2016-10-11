@@ -6,8 +6,7 @@ import mho.wheels.structures.Triple;
 import mho.wheels.testing.TestProperties;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Comparator;
-import java.util.Objects;
+import java.util.*;
 
 import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.iterables.IterableUtils.take;
@@ -46,6 +45,9 @@ public class OrderingProperties extends TestProperties {
         propertiesMin_Ordering_T_T();
         propertiesMax_Ordering_T_T();
         propertiesMinMax_Ordering_T_T();
+        propertiesMinimum_Iterable_T();
+        propertiesMaximum_Iterable_T();
+        propertiesMinimumMaximum_Iterable_T();
         propertiesReadStrict();
         propertiesToString();
     }
@@ -617,6 +619,50 @@ public class OrderingProperties extends TestProperties {
         Comparator<Integer> naturalComparator = Comparator.naturalOrder();
         for (Pair<Integer, Integer> p : take(LIMIT, P.pairs(P.integersGeometric()))) {
             assertEquals(p, minMax(naturalComparator, p.a, p.b), minMax(p.a, p.b));
+        }
+    }
+
+    private void propertiesMinimum_Iterable_T() {
+        initialize("minimum(Iterable<T>)");
+        propertiesFoldHelper(LIMIT, P, P.integersGeometric(), Ordering::min, Ordering::minimum, x -> {}, false, true);
+    }
+
+    private void propertiesMaximum_Iterable_T() {
+        initialize("maximum(Iterable<T>)");
+        propertiesFoldHelper(LIMIT, P, P.integersGeometric(), Ordering::max, Ordering::maximum, x -> {}, false, true);
+    }
+
+    private void propertiesMinimumMaximum_Iterable_T() {
+        initialize("minimumMaximum(Iterable<T>)");
+        for (List<Integer> xs : take(LIMIT, P.listsAtLeast(1, P.integersGeometric()))) {
+            minimumMaximum(xs);
+        }
+
+        Iterable<Pair<List<Integer>, List<Integer>>> ps = filterInfinite(
+                q -> !q.a.equals(q.b),
+                P.dependentPairs(P.listsAtLeast(1, P.integersGeometric()), P::permutationsFinite)
+        );
+        for (Pair<List<Integer>, List<Integer>> p : take(LIMIT, ps)) {
+            assertEquals(p, minimumMaximum(p.a), minimumMaximum(p.b));
+        }
+
+        for (int x : take(LIMIT, P.integersGeometric())) {
+            assertEquals(x, minimumMaximum(Collections.singletonList(x)), new Pair<>(x, x));
+        }
+
+        for (Pair<Integer, Integer> p : take(LIMIT, P.pairs(P.integersGeometric()))) {
+            assertEquals(p, minimumMaximum(Arrays.asList(p.a, p.b)), minMax(p.a, p.b));
+        }
+
+        Iterable<List<Integer>> xsFail = filterInfinite(
+                ys -> !ys.isEmpty(),
+                P.listsWithElement(null, P.integersGeometric())
+        );
+        for (List<Integer> lxs : take(LIMIT, xsFail)) {
+            try {
+                minimumMaximum(lxs);
+                fail(lxs);
+            } catch (NullPointerException | IllegalArgumentException ignored) {}
         }
     }
 
