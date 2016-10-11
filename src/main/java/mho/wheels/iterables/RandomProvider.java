@@ -2948,6 +2948,43 @@ public final strictfp class RandomProvider extends IterableProvider {
         };
     }
 
+    //todo
+    @Override
+    public @NotNull <A, B> Iterable<Pair<A, B>> dependentPairsIdentityHash(
+            @NotNull Iterable<A> xs,
+            @NotNull Function<A, Iterable<B>> f
+    ) {
+        return dependentPairsInfiniteIdentityHash(xs, f);
+    }
+
+    //todo
+    @Override
+    public @NotNull <A, B> Iterable<Pair<A, B>> dependentPairsInfiniteIdentityHash(
+            @NotNull Iterable<A> xs,
+            @NotNull Function<A, Iterable<B>> f
+    ) {
+        return () -> new NoRemoveIterator<Pair<A, B>>() {
+            private final @NotNull Iterator<A> xsi = xs.iterator();
+            private final @NotNull Map<A, Iterator<B>> aToBs = new IdentityHashMap<>();
+
+            @Override
+            public boolean hasNext() {
+                return true;
+            }
+
+            @Override
+            public @NotNull Pair<A, B> next() {
+                A a = xsi.next();
+                Iterator<B> bs = aToBs.get(a);
+                if (bs == null) {
+                    bs = f.apply(a).iterator();
+                    aToBs.put(a, bs);
+                }
+                return new Pair<>(a, bs.next());
+            }
+        };
+    }
+
     /**
      * Shuffles a {@code List} in place using the Fisher-Yates algorithm. Every permutation is an equally likely
      * outcome.

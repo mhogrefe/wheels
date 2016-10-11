@@ -1162,6 +1162,14 @@ public abstract strictfp class IterableProvider {
         return dependentPairsInfinite(xs, f);
     }
 
+    //todo
+    public @NotNull <A, B> Iterable<Pair<A, B>> dependentPairsIdentityHash(
+            @NotNull Iterable<A> xs,
+            @NotNull Function<A, Iterable<B>> f
+    ) {
+        return dependentPairs(xs, f);
+    }
+
     /**
      * Generates pairs of values where the second value depends on the first. There must be an infinite number of
      * possible first values, and every first value must be associated with an infinite number of possible second
@@ -1176,6 +1184,14 @@ public abstract strictfp class IterableProvider {
             @NotNull Iterable<A> xs,
             @NotNull Function<A, Iterable<B>> f
     );
+
+    //todo
+    public @NotNull <A, B> Iterable<Pair<A, B>> dependentPairsInfiniteIdentityHash(
+            @NotNull Iterable<A> xs,
+            @NotNull Function<A, Iterable<B>> f
+    ) {
+        return dependentPairsInfinite(xs, f);
+    }
 
     /**
      * Generates pairs of values where the second value depends on the first and the second value grows linearly, but
