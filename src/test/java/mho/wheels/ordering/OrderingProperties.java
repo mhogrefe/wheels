@@ -42,12 +42,15 @@ public class OrderingProperties extends TestProperties {
         propertiesMin_T_T();
         propertiesMax_T_T();
         propertiesMinMax_T_T();
-        propertiesMin_Ordering_T_T();
-        propertiesMax_Ordering_T_T();
-        propertiesMinMax_Ordering_T_T();
+        propertiesMin_Comparator_T_T();
+        propertiesMax_Comparator_T_T();
+        propertiesMinMax_Comparator_T_T();
         propertiesMinimum_Iterable_T();
         propertiesMaximum_Iterable_T();
         propertiesMinimumMaximum_Iterable_T();
+        propertiesMinimum_Comparator_Iterable_T();
+        propertiesMaximum_Comparator_Iterable_T();
+        propertiesMinimumMaximum_Comparator_Iterable_T();
         propertiesReadStrict();
         propertiesToString();
     }
@@ -505,8 +508,8 @@ public class OrderingProperties extends TestProperties {
         }
     }
 
-    private void propertiesMin_Ordering_T_T() {
-        initialize("min(Ordering, T, T)");
+    private void propertiesMin_Comparator_T_T() {
+        initialize("min(Comparator, T, T)");
         Iterable<Triple<Integer, Integer, Integer>> ts = filter(
                 t -> (t.c == 0) == Objects.equals(t.a, t.b),
                 P.triples(P.withNull(P.integersGeometric()), P.withNull(P.integersGeometric()), P.integersGeometric())
@@ -544,8 +547,8 @@ public class OrderingProperties extends TestProperties {
         }
     }
 
-    private void propertiesMax_Ordering_T_T() {
-        initialize("max(Ordering, T, T)");
+    private void propertiesMax_Comparator_T_T() {
+        initialize("max(Comparator, T, T)");
         Iterable<Triple<Integer, Integer, Integer>> ts = filter(
                 t -> (t.c == 0) == Objects.equals(t.a, t.b),
                 P.triples(P.withNull(P.integersGeometric()), P.withNull(P.integersGeometric()), P.integersGeometric())
@@ -583,8 +586,8 @@ public class OrderingProperties extends TestProperties {
         }
     }
 
-    private void propertiesMinMax_Ordering_T_T() {
-        initialize("minMax(Ordering, T, T)");
+    private void propertiesMinMax_Comparator_T_T() {
+        initialize("minMax(Comparator, T, T)");
         Iterable<Triple<Integer, Integer, Integer>> ts = filter(
                 t -> (t.c == 0) == Objects.equals(t.a, t.b),
                 P.triples(P.withNull(P.integersGeometric()), P.withNull(P.integersGeometric()), P.integersGeometric())
@@ -663,6 +666,120 @@ public class OrderingProperties extends TestProperties {
                 minimumMaximum(lxs);
                 fail(lxs);
             } catch (NullPointerException | IllegalArgumentException ignored) {}
+        }
+    }
+
+    private void propertiesMinimum_Comparator_Iterable_T() {
+        initialize("mininum(Comparator, Iterable<T>)");
+        Iterable<Pair<List<Integer>, List<Integer>>> ps = P.dependentPairs(
+                P.listsAtLeast(1, P.withNull(P.integersGeometric())),
+                is -> P.permutationsFinite(toList(nub(is)))
+        );
+        for (Pair<List<Integer>, List<Integer>> p : take(LIMIT, ps)) {
+            Comparator<Integer> comparator = (x, y) -> {
+                Integer xIndex = p.b.indexOf(x);
+                if (xIndex == -1) {
+                    throw new IllegalArgumentException();
+                }
+                Integer yIndex = p.b.indexOf(y);
+                if (yIndex == -1) {
+                    throw new IllegalArgumentException();
+                }
+                return Integer.compare(xIndex, yIndex);
+            };
+            minimum(comparator, p.a);
+
+            Iterable<List<Integer>> xss = filterInfinite(
+                    ys -> !any(ys::contains, p.a),
+                    P.listsAtLeast(2, P.withNull(P.integersGeometric()))
+            );
+            for (List<Integer> xs : take(TINY_LIMIT, xss)) {
+                try {
+                    minimum(comparator, xs);
+                    fail(xs);
+                } catch (IllegalArgumentException ignored) {}
+            }
+        }
+
+        Comparator<Integer> naturalComparator = Comparator.naturalOrder();
+        for (List<Integer> xs : take(LIMIT, P.listsAtLeast(1, P.integersGeometric()))) {
+            assertEquals(xs, minimum(naturalComparator, xs), minimum(xs));
+        }
+    }
+
+    private void propertiesMaximum_Comparator_Iterable_T() {
+        initialize("maximum(Comparator, Iterable<T>)");
+        Iterable<Pair<List<Integer>, List<Integer>>> ps = P.dependentPairs(
+                P.listsAtLeast(1, P.withNull(P.integersGeometric())),
+                is -> P.permutationsFinite(toList(nub(is)))
+        );
+        for (Pair<List<Integer>, List<Integer>> p : take(LIMIT, ps)) {
+            Comparator<Integer> comparator = (x, y) -> {
+                Integer xIndex = p.b.indexOf(x);
+                if (xIndex == -1) {
+                    throw new IllegalArgumentException();
+                }
+                Integer yIndex = p.b.indexOf(y);
+                if (yIndex == -1) {
+                    throw new IllegalArgumentException();
+                }
+                return Integer.compare(xIndex, yIndex);
+            };
+            maximum(comparator, p.a);
+
+            Iterable<List<Integer>> xss = filterInfinite(
+                    ys -> !any(ys::contains, p.a),
+                    P.listsAtLeast(2, P.withNull(P.integersGeometric()))
+            );
+            for (List<Integer> xs : take(TINY_LIMIT, xss)) {
+                try {
+                    maximum(comparator, xs);
+                    fail(xs);
+                } catch (IllegalArgumentException ignored) {}
+            }
+        }
+
+        Comparator<Integer> naturalComparator = Comparator.naturalOrder();
+        for (List<Integer> xs : take(LIMIT, P.listsAtLeast(1, P.integersGeometric()))) {
+            assertEquals(xs, maximum(naturalComparator, xs), maximum(xs));
+        }
+    }
+
+    private void propertiesMinimumMaximum_Comparator_Iterable_T() {
+        initialize("minimumMaximum(Comparator, Iterable<T>)");
+        Iterable<Pair<List<Integer>, List<Integer>>> ps = P.dependentPairs(
+                P.listsAtLeast(1, P.withNull(P.integersGeometric())),
+                is -> P.permutationsFinite(toList(nub(is)))
+        );
+        for (Pair<List<Integer>, List<Integer>> p : take(LIMIT, ps)) {
+            Comparator<Integer> comparator = (x, y) -> {
+                Integer xIndex = p.b.indexOf(x);
+                if (xIndex == -1) {
+                    throw new IllegalArgumentException();
+                }
+                Integer yIndex = p.b.indexOf(y);
+                if (yIndex == -1) {
+                    throw new IllegalArgumentException();
+                }
+                return Integer.compare(xIndex, yIndex);
+            };
+            minimumMaximum(comparator, p.a);
+
+            Iterable<List<Integer>> xss = filterInfinite(
+                    ys -> !any(ys::contains, p.a),
+                    P.listsAtLeast(2, P.withNull(P.integersGeometric()))
+            );
+            for (List<Integer> xs : take(TINY_LIMIT, xss)) {
+                try {
+                    minimumMaximum(comparator, xs);
+                    fail(xs);
+                } catch (IllegalArgumentException ignored) {}
+            }
+        }
+
+        Comparator<Integer> naturalComparator = Comparator.naturalOrder();
+        for (List<Integer> xs : take(LIMIT, P.listsAtLeast(1, P.integersGeometric()))) {
+            assertEquals(xs, minimumMaximum(naturalComparator, xs), minimumMaximum(xs));
         }
     }
 
