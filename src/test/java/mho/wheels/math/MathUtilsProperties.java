@@ -2,6 +2,7 @@ package mho.wheels.math;
 
 import mho.wheels.iterables.ExhaustiveProvider;
 import mho.wheels.iterables.IterableUtils;
+import mho.wheels.iterables.NoRemoveIterator;
 import mho.wheels.numberUtils.IntegerUtils;
 import mho.wheels.structures.FiniteDomainFunction;
 import mho.wheels.structures.Pair;
@@ -11,10 +12,7 @@ import mho.wheels.testing.TestProperties;
 import org.jetbrains.annotations.NotNull;
 
 import java.math.BigInteger;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 
 import static mho.wheels.iterables.IterableUtils.*;
@@ -31,6 +29,8 @@ public class MathUtilsProperties extends TestProperties {
     protected void testConstant() {
         propertiesIntPrimes();
         propertiesPrimes();
+        propertiesThueMorse();
+        compareImplementationsThueMorse();
     }
 
     @Override
@@ -91,6 +91,84 @@ public class MathUtilsProperties extends TestProperties {
         compareImplementationsTotient_int();
         propertiesTotient_BigInteger();
         propertiesInverseTotient();
+    }
+
+    private void propertiesIntPrimes() {
+        initializeConstant("INT_PRIMES");
+        for (int p : take(LARGE_LIMIT, INT_PRIMES)) {
+            assertTrue(p, isPrime(p));
+        }
+    }
+
+    private void propertiesPrimes() {
+        initializeConstant("PRIMES");
+        for (BigInteger p : take(LARGE_LIMIT, PRIMES)) {
+            assertTrue(p, isPrime(p));
+        }
+    }
+
+    private static final @NotNull Iterable<Boolean> THUE_MORSE_APPEND = () -> new NoRemoveIterator<Boolean>() {
+        private final @NotNull List<Boolean> prefix = new ArrayList<>();
+        private int i = 0;
+        {
+            prefix.add(false);
+        }
+
+        @Override
+        public boolean hasNext() {
+            return true;
+        }
+
+        @Override
+        public @NotNull Boolean next() {
+            if (i >= prefix.size()) {
+                for (int j = 0; j < i; j++) {
+                    prefix.add(!prefix.get(j));
+                }
+            }
+            return prefix.get(i++);
+        }
+    };
+
+    private static final @NotNull Iterable<Boolean> THUE_MORSE_XOR = () -> new NoRemoveIterator<Boolean>() {
+        private boolean previous = false;
+        private @NotNull BigInteger i = BigInteger.ZERO;
+
+        @Override
+        public boolean hasNext() {
+            return true;
+        }
+
+        @Override
+        public @NotNull Boolean next() {
+            BigInteger j = i.add(BigInteger.ONE);
+            for (int k = j.bitLength() - 1; k >= 0; k--) {
+                if (i.testBit(k) != j.testBit(k)) {
+                    i = j;
+                    if ((k & 1) == 0) {
+                        previous = !previous;
+                        return !previous;
+                    } else {
+                        return previous;
+                    }
+                }
+            }
+            throw new IllegalStateException("unreachable");
+        }
+    };
+
+    private void propertiesThueMorse() {
+        initializeConstant("THUE_MORSE");
+        assertTrue("Thue-Morse", IterableUtils.equal(HUGE_LIMIT, THUE_MORSE, THUE_MORSE_APPEND));
+        assertTrue("Thue-Morse", IterableUtils.equal(HUGE_LIMIT, THUE_MORSE, THUE_MORSE_XOR));
+    }
+
+    private void compareImplementationsThueMorse() {
+        Map<String, Function<Void, Boolean>> functions = new LinkedHashMap<>();
+        functions.put("append", v -> head(take(HUGE_LIMIT, THUE_MORSE_APPEND)));
+        functions.put("xor", v -> head(take(HUGE_LIMIT, THUE_MORSE_XOR)));
+        functions.put("standard", v -> head(take(HUGE_LIMIT, THUE_MORSE)));
+        compareImplementations("THUE_MORSE", Collections.singletonList(null), functions, v -> {});
     }
 
     private static int pow_simplest(int n, int p) {
@@ -1475,20 +1553,6 @@ public class MathUtilsProperties extends TestProperties {
                 factors(i);
                 fail(i);
             } catch (IllegalArgumentException ignored) {}
-        }
-    }
-
-    private void propertiesIntPrimes() {
-        initializeConstant("intPrimes()");
-        for (int p : take(LARGE_LIMIT, intPrimes())) {
-            assertTrue(p, isPrime(p));
-        }
-    }
-
-    private void propertiesPrimes() {
-        initializeConstant("primes()");
-        for (BigInteger p : take(LARGE_LIMIT, primes())) {
-            assertTrue(p, isPrime(p));
         }
     }
 

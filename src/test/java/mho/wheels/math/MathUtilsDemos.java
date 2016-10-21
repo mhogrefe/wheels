@@ -1,6 +1,7 @@
 package mho.wheels.math;
 
 import mho.wheels.iterables.ExhaustiveProvider;
+import mho.wheels.iterables.IterableUtils;
 import mho.wheels.numberUtils.IntegerUtils;
 import mho.wheels.structures.FiniteDomainFunction;
 import mho.wheels.structures.Pair;
@@ -21,6 +22,55 @@ import static mho.wheels.testing.Testing.*;
 public class MathUtilsDemos extends Demos {
     public MathUtilsDemos(boolean useRandom) {
         super(useRandom);
+    }
+
+    private void demoIntPrimes() {
+        for (int p : take(LARGE_LIMIT, INT_PRIMES)) {
+            System.out.println(p);
+        }
+    }
+
+    private void demoPrimes() {
+        for (BigInteger p : take(LARGE_LIMIT, PRIMES)) {
+            System.out.println(p);
+        }
+    }
+
+    private void demoThueMorse() {
+        int i = 0;
+        for (boolean b : take(LARGE_LIMIT, THUE_MORSE)) {
+            System.out.print(b ? '1' : '0');
+            i++;
+            if (i % SMALL_LIMIT == 0) {
+                System.out.println();
+            }
+        }
+    }
+
+    private void demoKolakoski() {
+        int i = 0;
+        for (int j : take(LARGE_LIMIT, KOLAKOSKI)) {
+            System.out.print(j);
+            i++;
+            if (i % SMALL_LIMIT == 0) {
+                System.out.println();
+            }
+        }
+    }
+
+    private void demoLookAndSay() {
+        for (List<Integer> is : take(TINY_LIMIT, LOOK_AND_SAY)) {
+            for (int i : is) {
+                System.out.print(i);
+            }
+            System.out.println();
+        }
+    }
+
+    private void demoSylvester() {
+        for (BigInteger i : take(TINY_LIMIT, SYLVESTER)) {
+            System.out.println(i);
+        }
     }
 
     private void demoPow() {
@@ -302,18 +352,6 @@ public class MathUtilsDemos extends Demos {
         }
     }
 
-    private void demoIntPrimes() {
-        for (int p : take(LARGE_LIMIT, intPrimes())) {
-            System.out.println(p);
-        }
-    }
-
-    private void demoPrimes() {
-        for (BigInteger p : take(LARGE_LIMIT, primes())) {
-            System.out.println(p);
-        }
-    }
-
     private void demoLargestPerfectPowerFactor_int_int() {
         Iterable<Pair<Integer, Integer>> ps = P.pairsLogarithmicOrder(
                 P.positiveIntegers(),
@@ -357,6 +395,13 @@ public class MathUtilsDemos extends Demos {
     private void demoInverseTotient() {
         for (BigInteger i : take(LIMIT, P.withScale(8).positiveBigIntegers())) {
             System.out.println("inverseTotient(" + i + ") = " + inverseTotient(i));
+        }
+    }
+
+    private void demoGreedyNormalSequence() {
+        for (int i : take(TINY_LIMIT, P.rangeUpGeometric(2))) {
+            System.out.println("greedyNormalSequence(" + i + ") = " +
+                    IterableUtils.toString(SMALL_LIMIT, greedyNormalSequence(i)));
         }
     }
 }

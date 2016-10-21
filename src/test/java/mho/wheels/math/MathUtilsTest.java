@@ -1,6 +1,7 @@
 package mho.wheels.math;
 
 import mho.wheels.io.Readers;
+import mho.wheels.numberUtils.IntegerUtils;
 import mho.wheels.testing.Testing;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
@@ -9,12 +10,49 @@ import java.math.BigInteger;
 import java.util.List;
 import java.util.function.Function;
 
-import static mho.wheels.iterables.IterableUtils.toList;
+import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.math.MathUtils.*;
 import static mho.wheels.testing.Testing.*;
 import static org.junit.Assert.fail;
 
 public class MathUtilsTest {
+    @Test
+    public void testConstants() {
+        Testing.aeqitLimit(SMALL_LIMIT, INT_PRIMES,
+                "[2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97," +
+                " 101, 103, 107, 109, 113, 127, 131, 137, 139, 149, 151, 157, 163, 167, 173, 179, 181, 191, 193," +
+                " 197, 199, 211, 223, 227, 229, 233, 239, 241, 251, 257, 263, 269, 271, 277, 281, 283, 293, 307," +
+                " 311, 313, 317, 331, 337, 347, 349, 353, 359, 367, 373, 379, 383, 389, 397, 401, 409, 419, 421," +
+                " 431, 433, 439, 443, 449, 457, 461, 463, 467, 479, 487, 491, 499, 503, 509, 521, 523, 541, ...]");
+        testNoRemove(SMALL_LIMIT, INT_PRIMES);
+        Testing.aeqitLimit(SMALL_LIMIT, PRIMES,
+                "[2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97," +
+                " 101, 103, 107, 109, 113, 127, 131, 137, 139, 149, 151, 157, 163, 167, 173, 179, 181, 191, 193," +
+                " 197, 199, 211, 223, 227, 229, 233, 239, 241, 251, 257, 263, 269, 271, 277, 281, 283, 293, 307," +
+                " 311, 313, 317, 331, 337, 347, 349, 353, 359, 367, 373, 379, 383, 389, 397, 401, 409, 419, 421," +
+                " 431, 433, 439, 443, 449, 457, 461, 463, 467, 479, 487, 491, 499, 503, 509, 521, 523, 541, ...]");
+        testNoRemove(SMALL_LIMIT, PRIMES);
+
+        aeq(charsToString(map(b -> b ? '1' : '0', take(SMALL_LIMIT, THUE_MORSE))),
+            "0110100110010110100101100110100110010110011010010110100110010110100101100110100101101001100101100110");
+        testNoRemove(SMALL_LIMIT, THUE_MORSE);
+
+        aeq(charsToString(map(IntegerUtils::toDigit, take(SMALL_LIMIT, KOLAKOSKI))),
+            "1221121221221121122121121221121121221221121221211211221221121221221121121221211221221121221221121122");
+        testNoRemove(SMALL_LIMIT, KOLAKOSKI);
+
+        aeqitLimit(TINY_LIMIT / 2, map(is -> IntegerUtils.fromBigEndianDigits(10, is), LOOK_AND_SAY),
+                "[1, 11, 21, 1211, 111221, 312211, 13112221, 1113213211, 31131211131221, 13211311123113112211, ...]");
+        testNoRemove(TINY_LIMIT, LOOK_AND_SAY);
+
+        aeqitLimit(TINY_LIMIT / 2, SYLVESTER,
+                "[2, 3, 7, 43, 1807, 3263443, 10650056950807, 113423713055421844361000443," +
+                " 12864938683278671740537145998360961546653259485195807," +
+                " 16550664732451996419846819544443918001751315270637749784185138876653586863957240680891198813173764" +
+                "5185443, ...]");
+        testNoRemove(TINY_LIMIT, SYLVESTER);
+    }
+
     private static void pow_helper(int n, int p, int output) {
         aeq(pow(n, p), output);
     }
@@ -1128,30 +1166,6 @@ public class MathUtilsTest {
         factors_BigInteger_fail_helper("-1");
     }
 
-    @Test
-    public void testIntPrimes() {
-        Iterable<Integer> ps = intPrimes();
-        Testing.aeqitLimit(SMALL_LIMIT, ps,
-                "[2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97," +
-                " 101, 103, 107, 109, 113, 127, 131, 137, 139, 149, 151, 157, 163, 167, 173, 179, 181, 191, 193," +
-                " 197, 199, 211, 223, 227, 229, 233, 239, 241, 251, 257, 263, 269, 271, 277, 281, 283, 293, 307," +
-                " 311, 313, 317, 331, 337, 347, 349, 353, 359, 367, 373, 379, 383, 389, 397, 401, 409, 419, 421," +
-                " 431, 433, 439, 443, 449, 457, 461, 463, 467, 479, 487, 491, 499, 503, 509, 521, 523, 541, ...]");
-        testNoRemove(SMALL_LIMIT, ps);
-    }
-
-    @Test
-    public void testPrimes() {
-        Iterable<BigInteger> ps = primes();
-        Testing.aeqitLimit(SMALL_LIMIT, ps,
-                "[2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97," +
-                " 101, 103, 107, 109, 113, 127, 131, 137, 139, 149, 151, 157, 163, 167, 173, 179, 181, 191, 193," +
-                " 197, 199, 211, 223, 227, 229, 233, 239, 241, 251, 257, 263, 269, 271, 277, 281, 283, 293, 307," +
-                " 311, 313, 317, 331, 337, 347, 349, 353, 359, 367, 373, 379, 383, 389, 397, 401, 409, 419, 421," +
-                " 431, 433, 439, 443, 449, 457, 461, 463, 467, 479, 487, 491, 499, 503, 509, 521, 523, 541, ...]");
-        testNoRemove(SMALL_LIMIT, ps);
-    }
-
     private static void largestPerfectPowerFactor_int_int_helper(int p, int n, @NotNull String output) {
         aeq(largestPerfectPowerFactor(p, n), output);
     }
@@ -1382,6 +1396,56 @@ public class MathUtilsTest {
 
         inverseTotient_fail_helper("0");
         inverseTotient_fail_helper("-1");
+    }
+
+    private static void greedyNormalSequence_helper(int base, @NotNull String output) {
+        aeqitLimit(SMALL_LIMIT, greedyNormalSequence(base), output);
+    }
+
+    private static void greedyNormalSequence_fail_helper(int base) {
+        try {
+            greedyNormalSequence(base);
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+    }
+
+    @Test
+    public void testGreedyNormalSequence() {
+        greedyNormalSequence_helper(2,
+                "[0, 1, 0, 0, 1, 1, 0, 1, 1, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 1, 0, 1, 1, 0, 0, 1, 0," +
+                " 0, 0, 1, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 1, 1, 1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0," +
+                " 1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 0, 1, 1, 1, 0, 1, 0, 0, 0, 1, 1, 0, 1, 1, 0, 1, 0, 0, 1, 1, 1, 1, 0," +
+                " 0, ...]");
+        greedyNormalSequence_helper(3,
+                "[0, 1, 2, 0, 2, 1, 0, 0, 1, 1, 2, 2, 0, 0, 2, 1, 1, 0, 2, 2, 1, 2, 0, 1, 0, 1, 1, 1, 2, 0, 0, 0, 2," +
+                " 2, 2, 1, 0, 1, 2, 1, 0, 2, 0, 1, 1, 0, 0, 0, 1, 0, 2, 2, 0, 2, 2, 1, 1, 2, 1, 2, 2, 0, 1, 1, 1, 0," +
+                " 0, 2, 0, 0, 1, 2, 2, 1, 2, 1, 0, 0, 2, 2, 0, 1, 2, 1, 1, 0, 0, 2, 1, 2, 0, 2, 0, 1, 1, 2, 0, 1, 2," +
+                " 2, ...]");
+        greedyNormalSequence_helper(4,
+                "[0, 1, 2, 3, 0, 2, 1, 3, 1, 0, 3, 2, 0, 0, 1, 1, 2, 2, 3, 3, 0, 3, 1, 1, 0, 2, 2, 0, 3, 3, 2, 1, 0," +
+                " 0, 2, 3, 1, 3, 2, 1, 1, 3, 0, 0, 0, 1, 2, 0, 2, 0, 1, 3, 3, 1, 2, 2, 1, 0, 3, 0, 1, 0, 1, 1, 1, 2," +
+                " 3, 2, 2, 2, 3, 3, 3, 0, 2, 0, 3, 1, 3, 2, 3, 0, 0, 1, 0, 2, 1, 2, 1, 3, 2, 0, 3, 1, 2, 3, 3, 1, 0," +
+                " 0, ...]");
+        greedyNormalSequence_helper(10,
+                "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 2, 1, 3, 5, 4, 6, 8, 7, 9, 1, 0, 3, 2, 4, 7, 5, 8, 6, 9, 2, 0, 4," +
+                " 1, 5, 3, 6, 0, 7, 0, 8, 0, 9, 3, 1, 4, 2, 5, 7, 6, 1, 8, 1, 9, 4, 3, 7, 2, 6, 5, 9, 8, 2, 7, 3, 8," +
+                " 4, 9, 5, 0, 6, 2, 8, 3, 9, 6, 4, 0, 5, 1, 7, 1, 6, 3, 0, 0, 2, 9, 7, 4, 8, 5, 2, 1, 1, 3, 3, 4, 4," +
+                " 5, ...]");
+        greedyNormalSequence_helper(83,
+                "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26," +
+                " 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50," +
+                " 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74," +
+                " 75, 76, 77, 78, 79, 80, 81, 82, 0, 2, 1, 3, 5, 4, 6, 8, 7, 9, 11, 10, 12, 14, 13, 15, 17, ...]");
+        greedyNormalSequence_helper(100,
+                "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26," +
+                " 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50," +
+                " 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74," +
+                " 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98," +
+                " 99, ...]");
+
+        greedyNormalSequence_fail_helper(1);
+        greedyNormalSequence_fail_helper(0);
+        greedyNormalSequence_fail_helper(-1);
     }
 
     private static @NotNull List<BigInteger> readBigIntegerList(@NotNull String s) {

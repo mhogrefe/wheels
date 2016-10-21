@@ -1,6 +1,7 @@
 package mho.wheels.math;
 
 import mho.wheels.iterables.ExhaustiveProvider;
+import mho.wheels.iterables.NoRemoveIterator;
 import mho.wheels.numberUtils.IntegerUtils;
 import mho.wheels.structures.Pair;
 import org.jetbrains.annotations.NotNull;
@@ -25,7 +26,146 @@ public final class MathUtils {
     /**
      * A cache of small primes, generated using the Sieve of Eratosthenes algorithm.
      */
-    private static BitSet PRIME_SIEVE;
+    private static final @NotNull BitSet PRIME_SIEVE;
+    static {
+        PRIME_SIEVE = new BitSet(PRIME_SIEVE_SIZE);
+        PRIME_SIEVE.set(2, PRIME_SIEVE_SIZE - 1);
+        int multiple;
+        for (multiple = 0; multiple < PRIME_SIEVE_SIZE; multiple++) {
+            while (!PRIME_SIEVE.get(multiple) && multiple < PRIME_SIEVE_SIZE) multiple++;
+            for (int i = multiple * 2; i < PRIME_SIEVE_SIZE; i += multiple) {
+                PRIME_SIEVE.clear(i);
+            }
+        }
+    }
+
+    /**
+     * Returns all prime {@code int}s in ascending order.
+     *
+     * Length is 105,097,565
+     */
+    public static final @NotNull Iterable<Integer> INT_PRIMES;
+    static {
+        @SuppressWarnings("ConstantConditions")
+        int start = (PRIME_SIEVE_SIZE & 1) == 0 ? PRIME_SIEVE_SIZE + 1 : PRIME_SIEVE_SIZE;
+        INT_PRIMES = concat(
+                filter(PRIME_SIEVE::get, ExhaustiveProvider.INSTANCE.rangeIncreasing(2, PRIME_SIEVE_SIZE - 1)),
+                filter(MathUtils::isPrime, takeWhile(j -> j > 0, iterate(i -> i + 2, start)))
+        );
+    }
+
+    /**
+     * Returns all prime {@code BigInteger}s in ascending order.
+     *
+     * Length is infinite
+     */
+    public static final @NotNull Iterable<BigInteger> PRIMES;
+    static {
+        Iterable<BigInteger> candidates = concatMap(
+                i -> {
+                    BigInteger sixI = i.multiply(BigInteger.valueOf(6));
+                    return Arrays.asList(sixI.subtract(BigInteger.ONE), sixI.add(BigInteger.ONE));
+                },
+                ExhaustiveProvider.INSTANCE.rangeUpIncreasing(BigInteger.valueOf(PRIME_SIEVE_SIZE / 6))
+        );
+        //noinspection Convert2MethodRef
+        PRIMES = concat(map(i -> BigInteger.valueOf(i), INT_PRIMES), filterInfinite(MathUtils::isPrime, candidates));
+    }
+
+    /**
+     * The Thue-Morse sequence; the sequence obtained by starting with 0 and repeatedly appending the complement of the
+     * sequence to itself.
+     */
+    public static final @NotNull Iterable<Boolean> THUE_MORSE = () -> new NoRemoveIterator<Boolean>() {
+        private @NotNull BigInteger i = BigInteger.ZERO;
+
+        @Override
+        public boolean hasNext() {
+            return true;
+        }
+
+        @Override
+        public @NotNull Boolean next() {
+            int ones = i.bitCount();
+            i = i.add(BigInteger.ONE);
+            return ones % 2 == 1;
+        }
+    };
+
+    /**
+     * The Kolakoski sequence; the sequence beginning with [1, 2] that is its own run-length encoding.
+     */
+    public static @NotNull Iterable<Integer> KOLAKOSKI = () -> new NoRemoveIterator<Integer>() {
+        private final @NotNull List<Integer> prefix = new ArrayList<>();
+        private int i = 0;
+        private int counter = 1;
+        private boolean ones = true;
+
+        @Override
+        public boolean hasNext() {
+            return true;
+        }
+
+        @Override
+        public @NotNull Integer next() {
+            int next = ones ? 1 : 2;
+            prefix.add(next);
+            counter--;
+            if (counter == 0) {
+                i++;
+                ones = !ones;
+                counter = i == 1 ? 2 : prefix.get(i);
+            }
+            return next;
+        }
+    };
+
+    /**
+     * The look-and-say sequence. To generate this sequence, start with [1], then count the blocks of adjacent numbers
+     * in the previous term: so the second term is "one 1", or [1, 1], the third term is "two 1s", or [2, 1], the
+     * fourth term is "one 2, one 1", or [1, 2, 1, 1], and so on. Although this sequence is usually described as a
+     * sequence of integers 1, 11, 21, 1211, ..., it is implemented here as a sequence of lists of digits.
+     */
+    public static @NotNull Iterable<List<Integer>> LOOK_AND_SAY = () -> new NoRemoveIterator<List<Integer>>() {
+        private @NotNull List<Integer> preceding = new ArrayList<>();
+
+        @Override
+        public boolean hasNext() {
+            return true;
+        }
+
+        @Override
+        public @NotNull List<Integer> next() {
+            List<Integer> next = new ArrayList<>();
+            if (preceding.isEmpty()) {
+                next.add(1);
+            } else {
+                next = toList(concatMap(p -> Arrays.asList(p.b, p.a), countAdjacent(preceding)));
+            }
+            preceding = next;
+            return next;
+        }
+    };
+
+    /**
+     * The Sylvester sequence, or the sequence beginning with 1, each of whose successive terms is the product of all
+     * the previous terms plus 1.
+     */
+    public static @NotNull Iterable<BigInteger> SYLVESTER = () -> new NoRemoveIterator<BigInteger>() {
+        private @NotNull List<BigInteger> prefix = new ArrayList<>();
+
+        @Override
+        public boolean hasNext() {
+            return true;
+        }
+
+        @Override
+        public @NotNull BigInteger next() {
+            BigInteger next = productBigInteger(prefix).add(BigInteger.ONE);
+            prefix.add(next);
+            return next;
+        }
+    };
 
     /**
      * Disallow instantiation
@@ -773,22 +913,6 @@ public final class MathUtils {
     }
 
     /**
-     * Initializes the prime sieve, if it hasn't already been initialized.
-     */
-    private static void ensurePrimeSieveInitialized() {
-        if (PRIME_SIEVE != null) return;
-        PRIME_SIEVE = new BitSet(PRIME_SIEVE_SIZE);
-        PRIME_SIEVE.set(2, PRIME_SIEVE_SIZE - 1);
-        int multiple;
-        for (multiple = 0; multiple < PRIME_SIEVE_SIZE; multiple++) {
-            while (!PRIME_SIEVE.get(multiple) && multiple < PRIME_SIEVE_SIZE) multiple++;
-            for (int i = multiple * 2; i < PRIME_SIEVE_SIZE; i += multiple) {
-                PRIME_SIEVE.clear(i);
-            }
-        }
-    }
-
-    /**
      * Returns the smallest prime factor of {@code n}.
      *
      * <ul>
@@ -804,7 +928,6 @@ public final class MathUtils {
             throw new IllegalArgumentException("n must be at least 2. Invalid n: " + n);
         }
         if (n % 2 == 0) return 2;
-        ensurePrimeSieveInitialized();
         if (n < PRIME_SIEVE_SIZE && PRIME_SIEVE.get(n)) return n;
         for (int i = 3; i < PRIME_SIEVE_SIZE; i += 2) {
             int square = i * i;
@@ -833,7 +956,6 @@ public final class MathUtils {
             return BigInteger.valueOf(smallestPrimeFactor(n.intValueExact()));
         }
         if (!n.testBit(0)) return IntegerUtils.TWO;
-        ensurePrimeSieveInitialized();
         for (int i = 3; i < PRIME_SIEVE_SIZE; i += 2) {
             BigInteger bi = BigInteger.valueOf(i);
             if (gt(bi.pow(2), n)) return n;
@@ -1005,42 +1127,6 @@ public final class MathUtils {
                 toList(zipWith(BigInteger::pow, map(q -> q.a, primeFactors), exponents))
         );
         return sort(map(f, possibleExponents));
-    }
-
-    /**
-     * Returns all prime {@code int}s in ascending order.
-     *
-     * Length is 105,097,565
-     *
-     * @return prime {@code int}s
-     */
-    public static @NotNull Iterable<Integer> intPrimes() {
-        @SuppressWarnings("ConstantConditions")
-        int start = (PRIME_SIEVE_SIZE & 1) == 0 ? PRIME_SIEVE_SIZE + 1 : PRIME_SIEVE_SIZE;
-        ensurePrimeSieveInitialized();
-        return concat(
-                filter(PRIME_SIEVE::get, ExhaustiveProvider.INSTANCE.rangeIncreasing(2, PRIME_SIEVE_SIZE - 1)),
-                filter(MathUtils::isPrime, takeWhile(j -> j > 0, iterate(i -> i + 2, start)))
-        );
-    }
-
-    /**
-     * Returns all prime {@code BigInteger}s in ascending order.
-     *
-     * Length is infinite
-     *
-     * @return prime {@code BigInteger}s
-     */
-    public static @NotNull Iterable<BigInteger> primes() {
-        Iterable<BigInteger> candidates = concatMap(
-                i -> {
-                    BigInteger sixI = i.multiply(BigInteger.valueOf(6));
-                    return Arrays.asList(sixI.subtract(BigInteger.ONE), sixI.add(BigInteger.ONE));
-                },
-                ExhaustiveProvider.INSTANCE.rangeUpIncreasing(BigInteger.valueOf(PRIME_SIEVE_SIZE / 6))
-        );
-        //noinspection Convert2MethodRef
-        return concat(map(i -> BigInteger.valueOf(i), intPrimes()), filterInfinite(MathUtils::isPrime, candidates));
     }
 
     /**
@@ -1257,18 +1343,55 @@ public final class MathUtils {
         return elements;
     }
 
-    //todo document
+    /**
+     * A normal sequence is a sequence over an alphabet ∑ such that for all n, every length-n string over ∑ appears
+     * with an equal asymptotic frequency. A base-b greedy normal sequence is a sequence over the symbols 0 to b–1 that
+     * tries to be as normal as possible: that is, whenever a new digit is added, an attempt is made to keep the
+     * relative frequencies of all substrings in the sequence balanced. If several choices are the "most normal", the
+     * lowest allowed digit is added.
+     *
+     * For example, suppose that b is 10, so that our sequence contains the digits 0 to 9. We begin with the empty
+     * sequence. The first ten digits in the sequence must be distinct: otherwise, that frequencies of the length-1
+     * subsequences would be prematurely unbalanced. Going by the lowest-digit rule, the sequence begins [0, 1, 2, 3,
+     * 4, 5, 6, 7, 8, 9, ...]. Notice that every length-n subsequence appears 0 or 1 times. What should the next digit
+     * be? Again, we can default to the lowest digit rule and add 0. How about the next digit? We shouldn't add 1,
+     * because then the 2-digit subsequence [0, 1] would appear twice. But 2 is ok. Similarly, we should avoid the
+     * subsequences [1, 2], [2, 3], etc. because they have already been used. It turns out that the first 20 terms are
+     * [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 2, 1, 3, 5, 4, 6, 8, 7, 9, ...].
+     *
+     * For the next digit, let's take a closer look at the algorithm. The algorithm considers adding each digit 0 to 9,
+     * and assigns each digit a number of points. From the set of digits with maximal points, the lowest digit is
+     * selected. A point is given to digit d for each n such that adding d to the sequence would add a "rare" length-n
+     * subsequence, where a rare length-n subsequence is one whose frequency in the sequence is minimal accross all
+     * length-n subsequences.
+     *
+     * If we append a 0 to the first 20 terms, we are adding the 21 substrings "0", "90", "790", "8790", etc. This
+     * gives the digit 0 a score of 21–1 = 20, since all the substrings except for "90" are rare: "0" is rare since its
+     * frequency before adding the next digit is 2, the same as all other length-1 substrings; "790" is rare because
+     * its frequency was 0; and all of the longer substrings are rare. But "90" is not rare, because its frequency is
+     * 1, greater than the frequency of most length-2 substrings, which is 0.
+     *
+     * On the other hand, all digits from 1 to 9 get the full score of 21, so we append the lowest, which is 1.
+     *
+     * <ul>
+     *  <li>{@code base} must be at least 2.</li>
+     *  <li>The result is infinite and contains no negative numbers.</li>
+     * </ul>
+     *
+     * @param base the exclusive upper bound on the elements in the sequence
+     * @return a sequence which tries to be as normal as possible
+     */
     public static @NotNull Iterable<Integer> greedyNormalSequence(int base) {
-        return () -> new Iterator<Integer>() {
-            private @NotNull List<Map<List<Integer>, Integer>> frequencyMaps;
-            private @NotNull List<Integer> minimumFrequencies;
-            private @NotNull List<Integer> digitsSoFar;
+        if (base < 2) {
+            throw new IllegalArgumentException("base must be at least 2. Invalid base: " + base);
+        }
+        return () -> new NoRemoveIterator<Integer>() {
+            private final @NotNull List<Map<List<Integer>, Integer>> frequencyMaps = new ArrayList<>();
+            private final @NotNull List<Integer> minimumFrequencies = new ArrayList<>();
+            private final @NotNull List<Integer> digitsSoFar = new ArrayList<>();
             {
-                frequencyMaps = new ArrayList<>();
                 frequencyMaps.add(new HashMap<>());
-                minimumFrequencies = new ArrayList<>();
                 minimumFrequencies.add(0);
-                digitsSoFar = new ArrayList<>();
             }
 
             @Override

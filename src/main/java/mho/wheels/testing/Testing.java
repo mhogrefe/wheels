@@ -26,6 +26,7 @@ public strictfp class Testing {
     public static final @NotNull ExhaustiveProvider EP = ExhaustiveProvider.INSTANCE;
     public static final int DEFAULT_SAMPLE_SIZE = 1000000;
     public static final int DEFAULT_TOP_COUNT = 10;
+    public static final int HUGE_LIMIT = 1000000;
     public static final int LARGE_LIMIT = 10000;
     public static final int MEDIUM_LIMIT = 1000;
     public static final int SMALL_LIMIT = 100;
