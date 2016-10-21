@@ -77,11 +77,9 @@ public final class MathUtils {
      * sequence to itself.
      */
     public static final @NotNull Iterable<Boolean> THUE_MORSE = () -> new NoRemoveIterator<Boolean>() {
-        private final @NotNull List<Boolean> prefix = new ArrayList<>();
+        private final @NotNull BitSet sequence = new BitSet();
         private int i = 0;
-        {
-            prefix.add(false);
-        }
+        private int sequenceLength = 1;
 
         @Override
         public boolean hasNext() {
@@ -90,12 +88,12 @@ public final class MathUtils {
 
         @Override
         public @NotNull Boolean next() {
-            if (i >= prefix.size()) {
+            if (i >= sequenceLength) {
                 for (int j = 0; j < i; j++) {
-                    prefix.add(!prefix.get(j));
+                    sequence.set(sequenceLength++, !sequence.get(j));
                 }
             }
-            return prefix.get(i++);
+            return sequence.get(i++);
         }
     };
 
