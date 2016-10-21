@@ -23,6 +23,12 @@ import static mho.wheels.testing.Testing.*;
 public class MathUtilsProperties extends TestProperties {
     public MathUtilsProperties() {
         super("MathUtils");
+        // force static initialization
+        try {
+            Class.forName("mho.wheels.math.MathUtils");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -107,12 +113,8 @@ public class MathUtilsProperties extends TestProperties {
         }
     }
 
-    private static final @NotNull Iterable<Boolean> THUE_MORSE_APPEND = () -> new NoRemoveIterator<Boolean>() {
-        private final @NotNull List<Boolean> prefix = new ArrayList<>();
-        private int i = 0;
-        {
-            prefix.add(false);
-        }
+    private static final @NotNull Iterable<Boolean> THUE_MORSE_BITCOUNT = () -> new NoRemoveIterator<Boolean>() {
+        private @NotNull BigInteger i = BigInteger.ZERO;
 
         @Override
         public boolean hasNext() {
@@ -121,12 +123,9 @@ public class MathUtilsProperties extends TestProperties {
 
         @Override
         public @NotNull Boolean next() {
-            if (i >= prefix.size()) {
-                for (int j = 0; j < i; j++) {
-                    prefix.add(!prefix.get(j));
-                }
-            }
-            return prefix.get(i++);
+            int ones = i.bitCount();
+            i = i.add(BigInteger.ONE);
+            return ones % 2 == 1;
         }
     };
 
@@ -159,15 +158,15 @@ public class MathUtilsProperties extends TestProperties {
 
     private void propertiesThueMorse() {
         initializeConstant("THUE_MORSE");
-        assertTrue("Thue-Morse", IterableUtils.equal(HUGE_LIMIT, THUE_MORSE, THUE_MORSE_APPEND));
+        assertTrue("Thue-Morse", IterableUtils.equal(HUGE_LIMIT, THUE_MORSE, THUE_MORSE_BITCOUNT));
         assertTrue("Thue-Morse", IterableUtils.equal(HUGE_LIMIT, THUE_MORSE, THUE_MORSE_XOR));
     }
 
     private void compareImplementationsThueMorse() {
         Map<String, Function<Void, Boolean>> functions = new LinkedHashMap<>();
-        functions.put("append", v -> head(take(HUGE_LIMIT, THUE_MORSE_APPEND)));
-        functions.put("xor", v -> head(take(HUGE_LIMIT, THUE_MORSE_XOR)));
-        functions.put("standard", v -> head(take(HUGE_LIMIT, THUE_MORSE)));
+        functions.put("bitcount", v -> get(THUE_MORSE_BITCOUNT, HUGE_LIMIT));
+        functions.put("xor", v -> get(THUE_MORSE_XOR, HUGE_LIMIT));
+        functions.put("standard", v -> get(THUE_MORSE, HUGE_LIMIT));
         compareImplementations("THUE_MORSE", Collections.singletonList(null), functions, v -> {});
     }
 

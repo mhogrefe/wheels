@@ -77,7 +77,11 @@ public final class MathUtils {
      * sequence to itself.
      */
     public static final @NotNull Iterable<Boolean> THUE_MORSE = () -> new NoRemoveIterator<Boolean>() {
-        private @NotNull BigInteger i = BigInteger.ZERO;
+        private final @NotNull List<Boolean> prefix = new ArrayList<>();
+        private int i = 0;
+        {
+            prefix.add(false);
+        }
 
         @Override
         public boolean hasNext() {
@@ -86,9 +90,12 @@ public final class MathUtils {
 
         @Override
         public @NotNull Boolean next() {
-            int ones = i.bitCount();
-            i = i.add(BigInteger.ONE);
-            return ones % 2 == 1;
+            if (i >= prefix.size()) {
+                for (int j = 0; j < i; j++) {
+                    prefix.add(!prefix.get(j));
+                }
+            }
+            return prefix.get(i++);
         }
     };
 
