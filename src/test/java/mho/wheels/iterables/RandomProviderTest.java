@@ -7805,7 +7805,7 @@ public strictfp class RandomProviderTest {
     }
 
     @Test
-    public void dependentPairsInfiniteTest() {
+    public void testDependentPairsInfinite() {
         aeqitLimitLog(
                 TINY_LIMIT,
                 P.dependentPairsInfinite(
@@ -7822,6 +7822,61 @@ public strictfp class RandomProviderTest {
                 i -> P.strings(i, charsToString(ExhaustiveProvider.INSTANCE.rangeIncreasing('a', 'z')))
         );
         dependentPairsInfinite_fail_helper(P.range(1, 5), i -> ExhaustiveProvider.INSTANCE.range('a', 'z'));
+    }
+
+    private static <A, B> void dependentPairsInfiniteIdentityHash_fail_helper(
+            @NotNull Iterable<A> xs,
+            @NotNull Function<A, Iterable<B>> f
+    ) {
+        try {
+            toList(P.dependentPairsInfiniteIdentityHash(xs, f));
+            fail();
+        } catch (NoSuchElementException | NullPointerException ignored) {}
+    }
+
+    private static class IntNoHashCode {
+        private int i;
+
+        public IntNoHashCode(int i) {
+            this.i = i;
+        }
+
+        public int intValue() {
+            return i;
+        }
+
+        public int hashCode() {
+            throw new UnsupportedOperationException();
+        }
+
+        public @NotNull String toString() {
+            return Integer.toString(i);
+        }
+    }
+
+    @Test
+    public void testDependentPairsInfiniteIdentityHash() {
+        //noinspection Convert2MethodRef
+        aeqitLimitLog(
+                TINY_LIMIT,
+                P.dependentPairsInfiniteIdentityHash(
+                        map(i -> new IntNoHashCode(i), P.range(1, 5)),
+                        i -> P.strings(
+                                i.intValue(),
+                                charsToString(ExhaustiveProvider.INSTANCE.rangeIncreasing('a', 'z'))
+                        )
+                ),
+                "RandomProvider_dependentPairsInfinite"
+        );
+        P.reset();
+
+        //noinspection Convert2MethodRef
+        dependentPairsInfiniteIdentityHash_fail_helper(map(i -> new IntNoHashCode(i), P.range(1, 5)), i -> null);
+        //noinspection Convert2MethodRef
+        dependentPairsInfiniteIdentityHash_fail_helper(
+                map(i -> new IntNoHashCode(i), ExhaustiveProvider.INSTANCE.range(1, 5)),
+                i -> P.strings(i.intValue(), charsToString(ExhaustiveProvider.INSTANCE.rangeIncreasing('a', 'z')))
+        );
     }
 
     private static void shuffle_helper(@NotNull List<Integer> input, @NotNull String output) {
@@ -10989,6 +11044,25 @@ public strictfp class RandomProviderTest {
         maps_helper("[1, null, 3]", P.naturalIntegersGeometric(), "RandomProvider_maps_iii");
     }
 
+    private static void identityMaps_helper(
+            @NotNull String keys,
+            @NotNull Iterable<Integer> values,
+            @NotNull String output
+    ) {
+        List<IdentityHashMap<IntNoHashCode, Integer>> sample = toList(
+                take(DEFAULT_SAMPLE_SIZE, P.identityMaps(readIntNoHashCodeListWithNulls(keys), values))
+        );
+        aeqitLimitLog(TINY_LIMIT, sample, output);
+        P.reset();
+    }
+
+    @Test
+    public void testIdentityMaps() {
+        identityMaps_helper("[5]", P.naturalIntegersGeometric(), "RandomProvider_maps_i");
+        identityMaps_helper("[1, 2, 3]", P.naturalIntegersGeometric(), "RandomProvider_identityMaps_ii");
+        identityMaps_helper("[1, null, 3]", P.naturalIntegersGeometric(), "RandomProvider_identityMaps_iii");
+    }
+
     private static void randomProvidersFixedScales_helper(
             int scale,
             int secondaryScale,
@@ -11159,6 +11233,15 @@ public strictfp class RandomProviderTest {
     private static @NotNull List<List<Integer>> readIntegerListWithNullsListsWithNulls(@NotNull String s) {
         return Readers.readListWithNullsStrict(Readers.readListWithNullsStrict(Readers::readIntegerStrict))
                 .apply(s).get();
+    }
+
+    private static @NotNull List<IntNoHashCode> readIntNoHashCodeListWithNulls(@NotNull String s) {
+        return toList(
+                map(
+                        i -> i == null ? null : new IntNoHashCode(i),
+                        Readers.readListWithNullsStrict(Readers::readIntegerStrict).apply(s).get()
+                )
+        );
     }
 
     private static double meanOfBinaryFractions(@NotNull List<BinaryFraction> xs) {

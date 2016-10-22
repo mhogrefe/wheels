@@ -2792,6 +2792,64 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
 
     /**
      * Generates all pairs of values, given an infinite {@code Iterable} of possible first values of the pairs, and a
+     * function mapping each possible first value to an infinite {@code Iterable} of possible second values. There are
+     * many possible orderings of pairs; to make the ordering unique, you can specify an unpairing function–a bijective
+     * function from natural {@code BigInteger}s to pairs of natural {@code BigInteger}s. If all the input lists are
+     * unique, the output pairs are unique as well. This method differs from
+     * {@link ExhaustiveProvider#dependentPairsInfiniteIdentityHash(Function, Iterable, Function)} in that A is not
+     * required to have a hash code here.
+     *
+     * <ul>
+     *  <li>{@code unpairingFunction} must bijectively map natural {@code BigInteger}s to pairs of natural
+     *  {@code BigInteger}s, and also must have the property
+     *  {@code unpairingFunction}<sup>–1</sup>(a, b){@literal <}{@code unpairingFunction}<sup>–1</sup>(a, b+1) for all
+     *  natural a, b.</li>
+     *  <li>{@code xs} cannot be null.</li>
+     *  <li>{@code f} must terminate and not return null when applied to any element of {@code xs}. All results must be
+     *  infinite.</li>
+     *  <li>The result is non-removable and does not contain nulls.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param xs an {@code Iterable} of values
+     * @param f a function from a value of type {@code a} to an {@code Iterable} of type-{@code B} values
+     * @param <A> the type of values in the first slot, with no available hash code
+     * @param <B> the type of values in the second slot
+     * @return all possible pairs of values specified by {@code xs} and {@code f}
+     */
+    private @NotNull <A, B> Iterable<Pair<A, B>> dependentPairsInfiniteIdentityHash(
+            @NotNull Function<BigInteger, Pair<BigInteger, BigInteger>> unpairingFunction,
+            @NotNull Iterable<A> xs,
+            @NotNull Function<A, Iterable<B>> f
+    ) {
+        Iterable<BigInteger> naturalBigIntegers = naturalBigIntegers();
+        return () -> new NoRemoveIterator<Pair<A, B>>() {
+            private final @NotNull CachedIterator<A> as = new CachedIterator<>(xs);
+            private final @NotNull IdentityHashMap<A, Iterator<B>> aToBs = new IdentityHashMap<>();
+            private final @NotNull Iterator<BigInteger> indices = naturalBigIntegers.iterator();
+
+            @Override
+            public boolean hasNext() {
+                return true;
+            }
+
+            @Override
+            public @NotNull Pair<A, B> next() {
+                Pair<BigInteger, BigInteger> index = unpairingFunction.apply(indices.next());
+                A a = as.get(index.a).get();
+                Iterator<B> bs = aToBs.get(a);
+                if (bs == null) {
+                    bs = f.apply(a).iterator();
+                    aToBs.put(a, bs);
+                }
+                return new Pair<>(a, bs.next());
+            }
+        };
+    }
+
+    /**
+     * Generates all pairs of values, given an infinite {@code Iterable} of possible first values of the pairs, and a
      * function mapping each possible first value to an infinite {@code Iterable} of possible second values. The pairs
      * are traversed along a Z-curve. If all the input lists are unique, the output pairs are unique as well. This
      * method is similar to {@link ExhaustiveProvider#dependentPairs(Iterable, Function)}, but with different
@@ -2808,7 +2866,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      *
      * @param xs an {@code Iterable} of values
      * @param f a function from a value of type {@code a} to an {@code Iterable} of type-{@code B} values
-     * @param <A> the type of values in the first slot
+     * @param <A> the type of values in the first slot, with no available hash code
      * @param <B> the type of values in the second slot
      * @return all possible pairs of values specified by {@code xs} and {@code f}
      */
@@ -2818,6 +2876,36 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
             @NotNull Function<A, Iterable<B>> f
     ) {
         return dependentPairsInfinite(bi -> Pair.fromList(IntegerUtils.demux(2, bi)), xs, f);
+    }
+
+    /**
+     * Generates all pairs of values, given an infinite {@code Iterable} of possible first values of the pairs, and a
+     * function mapping each possible first value to an infinite {@code Iterable} of possible second values. The pairs
+     * are traversed along a Z-curve. If all the input lists are unique, the output pairs are unique as well. This
+     * method differs from {@link ExhaustiveProvider#dependentPairsInfiniteIdentityHash(Function, Iterable, Function)}
+     * in that A is not required to have a hash code here.
+     *
+     * <ul>
+     *  <li>{@code xs} cannot be null.</li>
+     *  <li>{@code f} must terminate and not return null when applied to any element of {@code xs}. All results must be
+     *  infinite.</li>
+     *  <li>The result is non-removable and does not contain nulls.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param xs an {@code Iterable} of values
+     * @param f a function from a value of type {@code a} to an {@code Iterable} of type-{@code B} values
+     * @param <A> the type of values in the first slot, with no available hash code
+     * @param <B> the type of values in the second slot
+     * @return all possible pairs of values specified by {@code xs} and {@code f}
+     */
+    @Override
+    public @NotNull <A, B> Iterable<Pair<A, B>> dependentPairsInfiniteIdentityHash(
+            @NotNull Iterable<A> xs,
+            @NotNull Function<A, Iterable<B>> f
+    ) {
+        return dependentPairsInfiniteIdentityHash(bi -> Pair.fromList(IntegerUtils.demux(2, bi)), xs, f);
     }
 
     /**

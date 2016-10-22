@@ -299,6 +299,14 @@ public final strictfp class IterableUtils {
         return map;
     }
 
+    public static @NotNull <A, B> IdentityHashMap<A, B> toIdentityMap(@NotNull Iterable<Pair<A, B>> ps) {
+        IdentityHashMap<A, B> map = new IdentityHashMap<>();
+        for (Pair<A, B> p : ps) {
+            map.put(p.a, p.b);
+        }
+        return map;
+    }
+
     public static @NotNull <A, B> Iterable<Pair<A, B>> fromMap(@NotNull Map<A, B> map) {
         return map(entry -> new Pair<A, B>(entry.getKey(), entry.getValue()), map.entrySet());
     }

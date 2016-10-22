@@ -2904,6 +2904,23 @@ public final strictfp class RandomProvider extends IterableProvider {
     }
 
     /**
+     * See {@link RandomProvider#dependentPairsInfinite(Iterable, Function)}
+     *
+     * @param xs an {@code Iterable} of values
+     * @param f a function from a value of type {@code a} to an {@code Iterable} of type-{@code B} values
+     * @param <A> the type of values in the first slot, with no available hash code
+     * @param <B> the type of values in the second slot
+     * @return all possible pairs of values specified by {@code xs} and {@code f}
+     */
+    @Override
+    public @NotNull <A, B> Iterable<Pair<A, B>> dependentPairsIdentityHash(
+            @NotNull Iterable<A> xs,
+            @NotNull Function<A, Iterable<B>> f
+    ) {
+        return dependentPairsInfiniteIdentityHash(xs, f);
+    }
+
+    /**
      * Generates all pairs of values, given a list of possible first values of the pairs, and a function mapping each
      * possible first value to a list of possible second values.
      *
@@ -2948,16 +2965,25 @@ public final strictfp class RandomProvider extends IterableProvider {
         };
     }
 
-    //todo
-    @Override
-    public @NotNull <A, B> Iterable<Pair<A, B>> dependentPairsIdentityHash(
-            @NotNull Iterable<A> xs,
-            @NotNull Function<A, Iterable<B>> f
-    ) {
-        return dependentPairsInfiniteIdentityHash(xs, f);
-    }
-
-    //todo
+    /**
+     * Generates all pairs of values, given a list of possible first values of the pairs, and a function mapping each
+     * possible first value to a list of possible second values. This method differs from
+     * {@link RandomProvider#dependentPairsInfinite(Iterable, Function)} in that A doesn't need to have a hash code.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>{@code xs} must be infinite.</li>
+     *  <li>{@code f} must terminate and not return null when applied to any element of {@code xs}. All results must be
+     *  infinite.</li>
+     *  <li>The result is infinite, non-removable and does not contain nulls.</li>
+     * </ul>
+     *
+     * @param xs an {@code Iterable} of values
+     * @param f a function from a value of type {@code a} to an {@code Iterable} of type-{@code B} values
+     * @param <A> the type of values in the first slot, with no available hash code
+     * @param <B> the type of values in the second slot
+     * @return all possible pairs of values specified by {@code xs} and {@code f}
+     */
     @Override
     public @NotNull <A, B> Iterable<Pair<A, B>> dependentPairsInfiniteIdentityHash(
             @NotNull Iterable<A> xs,

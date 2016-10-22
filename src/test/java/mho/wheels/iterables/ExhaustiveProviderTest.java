@@ -1979,6 +1979,67 @@ public strictfp class ExhaustiveProviderTest {
         dependentPairsInfinite_fail_helper(cycle(Arrays.asList(1, 0)), i -> Collections.singletonList("a"));
     }
 
+    private static <A, B> void dependentPairsInfiniteIdentityHash_helper(
+            @NotNull Iterable<A> xs,
+            @NotNull Function<A, Iterable<B>> f,
+            @NotNull String output
+    ) {
+        simpleProviderHelper(EP.dependentPairsInfiniteIdentityHash(xs, f), output);
+    }
+
+    private static <A, B> void dependentPairsInfiniteIdentityHash_fail_helper(
+            @NotNull Iterable<A> xs,
+            @NotNull Function<A, Iterable<B>> f
+    ) {
+        try {
+            toList(EP.dependentPairsInfiniteIdentityHash(xs, f));
+            fail();
+        } catch (NullPointerException | IllegalArgumentException | NoSuchElementException ignored) {}
+    }
+
+    private static class IntNoHashCode {
+        private int i;
+
+        public IntNoHashCode(int i) {
+            this.i = i;
+        }
+
+        public int intValue() {
+            return i;
+        }
+
+        public int hashCode() {
+            throw new UnsupportedOperationException();
+        }
+
+        public @NotNull String toString() {
+            return Integer.toString(i);
+        }
+    }
+
+    @Test
+    public void testDependentPairsInfiniteIdentityHash() {
+        dependentPairsInfiniteIdentityHash_helper(
+                map(IntNoHashCode::new, EP.naturalIntegers()),
+                i -> EP.naturalBigIntegers(),
+                "ExhaustiveProvider_dependentPairsInfinite_i"
+        );
+        Function<IntNoHashCode, Iterable<String>> f = i -> {
+            switch (i.intValue()) {
+                case 0: return repeat("beep");
+                case 1: return cycle(Arrays.asList("a", "b"));
+            }
+            throw new IllegalArgumentException();
+        };
+
+        List<IntNoHashCode> is = Arrays.asList(new IntNoHashCode(1), new IntNoHashCode(0));
+        dependentPairsInfiniteIdentityHash_helper(cycle(is), f, "ExhaustiveProvider_dependentPairsInfinite_ii");
+
+        dependentPairsInfiniteIdentityHash_fail_helper(cycle(is), i -> null);
+        dependentPairsInfiniteIdentityHash_fail_helper(is, f);
+        dependentPairsInfiniteIdentityHash_fail_helper(cycle(is), i -> Collections.singletonList("a"));
+    }
+
     private static <A, B> void dependentPairsInfiniteLogarithmicOrder_helper(
             @NotNull Iterable<A> xs,
             @NotNull Function<A, Iterable<B>> f,
@@ -6875,6 +6936,45 @@ public strictfp class ExhaustiveProviderTest {
         maps_helper("[1, null, 3]", EP.positiveIntegers(), "ExhaustiveProvider_maps_xx");
     }
 
+    private static void identityMaps_helper(
+            @NotNull String keys,
+            @NotNull Iterable<Integer> values,
+            @NotNull String output
+    ) {
+        simpleProviderHelper(EP.identityMaps(readIntNoHashCodeListWithNulls(keys), values), output);
+    }
+
+    private static void identityMaps_helper(@NotNull String keys, @NotNull String values, @NotNull String output) {
+        maps_helper(keys, readIntegerListWithNulls(values), output);
+    }
+
+    @Test
+    public void testIdentityMaps() {
+        identityMaps_helper("[]", "[]", "ExhaustiveProvider_maps_i");
+        identityMaps_helper("[]", "[4]", "ExhaustiveProvider_maps_ii");
+        identityMaps_helper("[]", "[1, 2, 3]", "ExhaustiveProvider_maps_iii");
+        identityMaps_helper("[]", "[1, null, 3]", "ExhaustiveProvider_maps_iv");
+        identityMaps_helper("[]", EP.positiveIntegers(), "ExhaustiveProvider_maps_v");
+
+        identityMaps_helper("[4]", "[]", "ExhaustiveProvider_maps_vi");
+        identityMaps_helper("[4]", "[4]", "ExhaustiveProvider_maps_vii");
+        identityMaps_helper("[4]", "[1, 2, 3]", "ExhaustiveProvider_maps_viii");
+        identityMaps_helper("[4]", "[1, null, 3]", "ExhaustiveProvider_maps_ix");
+        identityMaps_helper("[4]", EP.positiveIntegers(), "ExhaustiveProvider_maps_x");
+
+        identityMaps_helper("[1, 2, 3]", "[]", "ExhaustiveProvider_maps_xi");
+        identityMaps_helper("[1, 2, 3]", "[4]", "ExhaustiveProvider_maps_xii");
+        identityMaps_helper("[1, 2, 3]", "[1, 2, 3]", "ExhaustiveProvider_maps_xiii");
+        identityMaps_helper("[1, 2, 3]", "[1, null, 3]", "ExhaustiveProvider_maps_xiv");
+        identityMaps_helper("[1, 2, 3]", EP.positiveIntegers(), "ExhaustiveProvider_identityMaps_xv");
+
+        identityMaps_helper("[1, null, 3]", "[]", "ExhaustiveProvider_maps_xvi");
+        identityMaps_helper("[1, null, 3]", "[4]", "ExhaustiveProvider_maps_xvii");
+        identityMaps_helper("[1, null, 3]", "[1, 2, 3]", "ExhaustiveProvider_maps_xviii");
+        identityMaps_helper("[1, null, 3]", "[1, null, 3]", "ExhaustiveProvider_maps_xix");
+        identityMaps_helper("[1, null, 3]", EP.positiveIntegers(), "ExhaustiveProvider_identityMaps_xx");
+    }
+
     private static void randomProvidersFixedScales_helper(
             int scale,
             int secondaryScale,
@@ -6947,6 +7047,15 @@ public strictfp class ExhaustiveProviderTest {
 
     private static @NotNull List<Integer> readIntegerListWithNulls(@NotNull String s) {
         return Readers.readListWithNullsStrict(Readers::readIntegerStrict).apply(s).get();
+    }
+
+    private static @NotNull List<IntNoHashCode> readIntNoHashCodeListWithNulls(@NotNull String s) {
+        return toList(
+                map(
+                        i -> i == null ? null : new IntNoHashCode(i),
+                        Readers.readListWithNullsStrict(Readers::readIntegerStrict).apply(s).get()
+                )
+        );
     }
 
     private static @NotNull List<List<Integer>> readIntegerListWithNullsLists(@NotNull String s) {
