@@ -8,6 +8,8 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Comparator;
 import java.util.Optional;
 
+import static mho.wheels.iterables.IterableUtils.*;
+
 /**
  * An enumeration consisting of the elements {@code LT} (less than), {@code EQ} (equal to), and {@code GT} (greater
  * than). Ordering-related utilities are also provided.
@@ -611,7 +613,7 @@ public enum Ordering {
      */
     @SuppressWarnings("JavaDoc")
     public static <T> T minimum(@NotNull Comparator<T> comparator, @NotNull Iterable<T> xs) {
-        return IterableUtils.foldl1((x, y) -> min(comparator, x, y), xs);
+        return foldl1((x, y) -> min(comparator, x, y), xs);
     }
 
     /**
@@ -631,7 +633,7 @@ public enum Ordering {
      */
     @SuppressWarnings("JavaDoc")
     public static <T> T maximum(@NotNull Comparator<T> comparator, @NotNull Iterable<T> xs) {
-        return IterableUtils.foldl1((x, y) -> max(comparator, x, y), xs);
+        return foldl1((x, y) -> max(comparator, x, y), xs);
     }
 
     /**
@@ -669,6 +671,73 @@ public enum Ordering {
         }
         if (first) {
             throw new IllegalArgumentException("xs cannot be empty.");
+        }
+        return new Pair<>(min, max);
+    }
+
+    public static char minimum(@NotNull String s) {
+        return foldl1(Ordering::min, fromString(s));
+    }
+
+    public static char maximum(@NotNull String s) {
+        return foldl1(Ordering::max, fromString(s));
+    }
+
+    public static @NotNull Pair<Character, Character> minimumMaximum(@NotNull String s) {
+        char min = '\0';
+        char max = '\0';
+        boolean first = true;
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (first) {
+                min = c;
+                max = c;
+                first = false;
+            } else {
+                if (lt(c, min)) {
+                    min = c;
+                } else if (gt(c, max)) {
+                    max = c;
+                }
+            }
+        }
+        if (first) {
+            throw new IllegalArgumentException("s cannot be empty.");
+        }
+        return new Pair<>(min, max);
+    }
+
+    public static char minimum(@NotNull Comparator<Character> comparator, @NotNull String s) {
+        return foldl1((x, y) -> min(comparator, x, y), fromString(s));
+    }
+
+    public static char maximum(@NotNull Comparator<Character> comparator, @NotNull String s) {
+        return foldl1((x, y) -> max(comparator, x, y), fromString(s));
+    }
+
+    public static @NotNull Pair<Character, Character> minimumMaximum(
+            @NotNull Comparator<Character> comparator,
+            @NotNull String s
+    ) {
+        char min = '\0';
+        char max = '\0';
+        boolean first = true;
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (first) {
+                min = c;
+                max = c;
+                first = false;
+            } else {
+                if (lt(comparator, c, min)) {
+                    min = c;
+                } else if (gt(comparator, c, max)) {
+                    max = c;
+                }
+            }
+        }
+        if (first) {
+            throw new IllegalArgumentException("s cannot be empty.");
         }
         return new Pair<>(min, max);
     }
