@@ -1,6 +1,5 @@
 package mho.wheels.ordering;
 
-import mho.wheels.iterables.IterableUtils;
 import mho.wheels.structures.Pair;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
