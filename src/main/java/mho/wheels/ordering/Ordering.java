@@ -675,14 +675,50 @@ public enum Ordering {
         return new Pair<>(min, max);
     }
 
+    /**
+     * Returns the smallest {@code char} of {@code s} with respect to the default {@code char} ordering.
+     *
+     * <ul>
+     *  <li>{@code s} cannot be empty.</li>
+     *  <li>The result may be any {@code char}.</li>
+     * </ul>
+     *
+     * @param s a {@code String}
+     * @return min({@code s})
+     */
+    @SuppressWarnings("JavaDoc")
     public static char minimum(@NotNull String s) {
         return foldl1(Ordering::min, fromString(s));
     }
 
+    /**
+     * Returns the largest {@code char} of {@code s} with respect to the default {@code char} ordering.
+     *
+     * <ul>
+     *  <li>{@code s} cannot be empty.</li>
+     *  <li>The result may be any {@code char}.</li>
+     * </ul>
+     *
+     * @param s a {@code String}
+     * @return max({@code s})
+     */
+    @SuppressWarnings("JavaDoc")
     public static char maximum(@NotNull String s) {
         return foldl1(Ordering::max, fromString(s));
     }
 
+    /**
+     * Returns the smallest and largest {@code char}s of {@code s} with respect to the default {@code char} ordering.
+     *
+     * <ul>
+     *  <li>{@code s} cannot be empty.</li>
+     *  <li>The result is not null and neither of its elements is null.</li>
+     * </ul>
+     *
+     * @param s a {@code String}
+     * @return (min({@code xs}), max({@code xs}))
+     */
+    @SuppressWarnings("JavaDoc")
     public static @NotNull Pair<Character, Character> minimumMaximum(@NotNull String s) {
         char min = '\0';
         char max = '\0';
@@ -707,14 +743,58 @@ public enum Ordering {
         return new Pair<>(min, max);
     }
 
+    /**
+     * Returns the smallest {@code char} of {@code s} with respect to {@code comparator}.
+     *
+     * <ul>
+     *  <li>{@code comparator} cannot be null.</li>
+     *  <li>{@code s} cannot be empty.</li>
+     *  <li>Every pair of {@code char}s in {@code s} must be comparable by {@code comparator}.</li>
+     *  <li>The result may be any {@code char}.</li>
+     * </ul>
+     *
+     * @param comparator the {@code Comparator} used to compare the {@code char}s of {@code s}
+     * @param s a {@code String}
+     * @return min<sub>{@code comparator}</sub>({@code s})
+     */
+    @SuppressWarnings("JavaDoc")
     public static char minimum(@NotNull Comparator<Character> comparator, @NotNull String s) {
         return foldl1((x, y) -> min(comparator, x, y), fromString(s));
     }
 
+    /**
+     * Returns the largest {@code char} of {@code s} with respect to {@code comparator}.
+     *
+     * <ul>
+     *  <li>{@code comparator} cannot be null.</li>
+     *  <li>{@code s} cannot be empty.</li>
+     *  <li>Every pair of {@code char}s in {@code s} must be comparable by {@code comparator}.</li>
+     *  <li>The result may be any {@code char}.</li>
+     * </ul>
+     *
+     * @param comparator the {@code Comparator} used to compare the {@code char}s of {@code s}
+     * @param s a {@code String}
+     * @return max<sub>{@code comparator}</sub>({@code s})
+     */
     public static char maximum(@NotNull Comparator<Character> comparator, @NotNull String s) {
         return foldl1((x, y) -> max(comparator, x, y), fromString(s));
     }
 
+    /**
+     * Returns the smallest and largest {@code char}s of {@code s} with respect to {@code comparator}.
+     *
+     * <ul>
+     *  <li>{@code comparator} cannot be null.</li>
+     *  <li>{@code s} cannot be empty.</li>
+     *  <li>Every pair of {@code char}s in {@code s} must be comparable by {@code comparator}.</li>
+     *  <li>The result is not null and neither of its elements is null.</li>
+     * </ul>
+     *
+     * @param comparator the {@code Comparator} used to compare the {@code char}s of {@code s}
+     * @param s a {@code String}
+     * @return (min<sub>{@code comparator}</sub>({@code xs}), max<sub>{@code comparator}</sub>({@code xs}))
+     */
+    @SuppressWarnings("JavaDoc")
     public static @NotNull Pair<Character, Character> minimumMaximum(
             @NotNull Comparator<Character> comparator,
             @NotNull String s
