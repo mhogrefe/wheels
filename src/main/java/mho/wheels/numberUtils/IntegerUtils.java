@@ -200,7 +200,7 @@ public class IntegerUtils {
 
     /**
      * Returns the lowest {@code n} bits of a non-negative {@code int}. The {@code List} returned is little-endian; the
-     * least-significant bits come first. It is exactly {@code n} bits long, and right-padded with zeroes (falses) if
+     * least-significant bits come first. It is exactly {@code n} bits long, and right-padded with zeros (falses) if
      * necessary. Does not support removal.
      *
      * <ul>
@@ -234,7 +234,7 @@ public class IntegerUtils {
     /**
      * Returns the lowest {@code length} bits of a non-negative {@code BigInteger}. The {@code List} returned is
      * little-endian; the least-significant bits come first. It is exactly {@code n} bits long, and right-padded with
-     * zeroes (falses) if necessary. Does not support removal.
+     * zeros (falses) if necessary. Does not support removal.
      *
      * <ul>
      *  <li>{@code length} cannot be negative.</li>
@@ -314,7 +314,7 @@ public class IntegerUtils {
 
     /**
      * Returns the lowest {@code n} bits of a non-negative {@code int}. The {@code List} returned is big-endian; the
-     * most-significant bits come first. It is exactly {@code n} bits long, and left-padded with zeroes (falses) if
+     * most-significant bits come first. It is exactly {@code n} bits long, and left-padded with zeros (falses) if
      * necessary.
      *
      * <ul>
@@ -349,7 +349,7 @@ public class IntegerUtils {
 
     /**
      * Returns the lowest {@code n} bits of a non-negative {@code BigInteger}. The {@code List} returned is big-endian;
-     * the most-significant bits come first. It is exactly {@code n} bits long, and left-padded with zeroes (falses) if
+     * the most-significant bits come first. It is exactly {@code n} bits long, and left-padded with zeros (falses) if
      * necessary.
      *
      * <ul>
@@ -515,8 +515,8 @@ public class IntegerUtils {
 
     /**
      * Returns the lowest {@code n} digits of a non-negative {@code int}. The {@code Iterable} returned is little-
-     * endian; the least-significant digits come first. It is exactly {@code n} digits long, and left-padded with
-     * zeroes if necessary.
+     * endian; the least-significant digits come first. It is exactly {@code n} digits long, and left-padded with zeros
+     * if necessary.
      *
      * <ul>
      *  <li>{@code length} cannot be negative.</li>
@@ -562,7 +562,7 @@ public class IntegerUtils {
     /**
      * Returns the lowest {@code n} digits of a non-negative {@code int}. The {@code Iterable} returned is little-
      * endian; the least-significant digits come first. It is exactly {@code n} digits long, and left-padded with
-     * zeroes if necessary.
+     * zeros if necessary.
      *
      * <ul>
      *  <li>{@code length} cannot be negative.</li>
@@ -650,7 +650,7 @@ public class IntegerUtils {
 
     /**
      * Returns the lowest {@code n} digits of a non-negative {@code int}. The {@code List} returned is big-endian; the
-     * least-significant digits come first. It is exactly {@code n} digits long, and right-padded with zeroes if
+     * least-significant digits come first. It is exactly {@code n} digits long, and right-padded with zeros if
      * necessary.
      *
      * <ul>
@@ -698,7 +698,7 @@ public class IntegerUtils {
     /**
      * Returns the lowest {@code n} digits of a non-negative {@code BigInteger}. The {@code List} returned is
      * big-endian; the least-significant digits come first. It is exactly {@code n} digits long, and right-padded with
-     * zeroes if necessary.
+     * zeros if necessary.
      *
      * <ul>
      *  <li>{@code length} cannot be negative.</li>
@@ -947,7 +947,7 @@ public class IntegerUtils {
      * Converts a {@code BigInteger} to a {@code String} in any base greater than 1. If the base is 36 or less, the
      * digits are '0' through '9' followed by 'A' through 'Z'. If the base is greater than 36, the digits are written
      * in decimal and each digit is surrounded by parentheses. Zero is represented by "0" if the base is 36 or less, or
-     * "(0)" otherwise. In every other case there are no leading zeroes.
+     * "(0)" otherwise. In every other case there are no leading zeros.
      *
      * <ul>
      *  <li>{@code base} must be at least 2.</li>
@@ -986,7 +986,7 @@ public class IntegerUtils {
      * Converts a {@code String} written in some base to a number. If the base is 36 or less, the digits are '0'
      * through '9' followed by 'A' through 'Z'. If the base is greater than 36, the digits are written in decimal and
      * each digit is surrounded by parentheses (in this case, the {@code String} representing the digit cannot be empty
-     * and no leading zeroes are allowed unless the digit is 0). The empty {@code String} represents 0. Leading zeroes
+     * and no leading zeros are allowed unless the digit is 0). The empty {@code String} represents 0. Leading zeros
      * are permitted. If the {@code String} is invalid, an exception is thrown.
      *
      * <ul>
@@ -1049,7 +1049,7 @@ public class IntegerUtils {
      * Converts a {@code String} written in some base to a number. If the base is 36 or less, the digits are '0'
      * through '9' followed by 'A' through 'Z'. If the base is greater than 36, the digits are written in decimal and
      * each digit is surrounded by parentheses (in this case, the {@code String} representing the digit cannot be empty
-     * and no leading zeroes are allowed unless the digit is 0). The empty {@code String} represents 0. Leading zeroes
+     * and no leading zeros are allowed unless the digit is 0). The empty {@code String} represents 0. Leading zeros
      * are permitted. If the {@code String} is invalid, an exception is thrown.
      *
      * <ul>

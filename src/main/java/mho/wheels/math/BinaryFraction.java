@@ -160,14 +160,14 @@ public strictfp class BinaryFraction implements Comparable<BinaryFraction> {
      */
     public static @NotNull BinaryFraction of(@NotNull BigInteger mantissa, int exponent) {
         if (mantissa.equals(BigInteger.ZERO)) return ZERO;
-        int trailingZeroes = mantissa.getLowestSetBit();
-        if ((long) exponent + trailingZeroes > Integer.MAX_VALUE) {
+        int trailingZeros = mantissa.getLowestSetBit();
+        if ((long) exponent + trailingZeros > Integer.MAX_VALUE) {
             throw new ArithmeticException("The sum of exponent and the number of trailing zero bits of mantissa" +
                     " must be less than 2^31. exponent is " + exponent + " and mantissa is " + mantissa + ".");
         }
-        if (trailingZeroes != 0) {
-            mantissa = mantissa.shiftRight(trailingZeroes);
-            exponent += trailingZeroes;
+        if (trailingZeros != 0) {
+            mantissa = mantissa.shiftRight(trailingZeros);
+            exponent += trailingZeros;
         }
         return mantissa.equals(BigInteger.ONE) && exponent == 0 ? ONE : new BinaryFraction(mantissa, exponent);
     }
@@ -321,7 +321,7 @@ public strictfp class BinaryFraction implements Comparable<BinaryFraction> {
      * to each other. This method returns the pair made up of the left- and right-neighboring {@code float}s. If the
      * left-neighboring {@code float} is a zero, it is a positive zero; if the right-neighboring {@code float} is a
      * zero, it is a negative zero. The exception is when {@code this} is equal to zero; then both neighbors are
-     * positive zeroes.
+     * positive zeros.
      *
      * <ul>
      *  <li>{@code this} may be any {@code BinaryFraction}.</li>
@@ -367,7 +367,7 @@ public strictfp class BinaryFraction implements Comparable<BinaryFraction> {
      * and to each other. This method returns the pair made up of the left- and right-neighboring {@code double}s. If
      * the left-neighboring {@code double} is a zero, it is a positive zero; if the right-neighboring {@code double} is
      * a zero, it is a negative zero. The exception is when {@code this} is equal to zero; then both neighbors are
-     * positive zeroes.
+     * positive zeros.
      *
      * <ul>
      *  <li>{@code this} may be any {@code BinaryFraction}.</li>
