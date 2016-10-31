@@ -465,6 +465,66 @@ public class OrderingTest {
         minimumMaximum_Comparator_Iterable_T_fail_helper(ODDS_BEFORE_EVENS, "[5, 2, 11, null]");
     }
 
+    private static void minimum_String_helper(@NotNull String input, char output) {
+        aeq(minimum(input), output);
+    }
+
+    private static void minimum_String_fail_helper(@NotNull String input) {
+        try {
+            minimum(input);
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+    }
+
+    @Test
+    public void testMinimum_String() {
+        minimum_String_helper("hello", 'e');
+        minimum_String_helper("CAT", 'A');
+        minimum_String_helper("∞", '∞');
+
+        minimum_String_fail_helper("");
+    }
+
+    private static void maximum_String_helper(@NotNull String input, char output) {
+        aeq(maximum(input), output);
+    }
+
+    private static void maximum_String_fail_helper(@NotNull String input) {
+        try {
+            maximum(input);
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+    }
+
+    @Test
+    public void testMaximum_String() {
+        maximum_String_helper("hello", 'o');
+        maximum_String_helper("CAT", 'T');
+        maximum_String_helper("∞", '∞');
+
+        maximum_String_fail_helper("");
+    }
+
+    private static void minimumMaximum_String_helper(@NotNull String input, @NotNull String output) {
+        aeq(minimumMaximum(input), output);
+    }
+
+    private static void minimumMaximum_String_fail_helper(@NotNull String input) {
+        try {
+            minimumMaximum(input);
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+    }
+
+    @Test
+    public void testMinimumMaximum_String() {
+        minimumMaximum_String_helper("hello", "(e, o)");
+        minimumMaximum_String_helper("CAT", "(A, T)");
+        minimumMaximum_String_helper("∞", "(∞, ∞)");
+
+        minimumMaximum_String_fail_helper("");
+    }
+
     private static void readStrict_helper(@NotNull String input, @NotNull String output) {
         aeq(readStrict(input), output);
     }
