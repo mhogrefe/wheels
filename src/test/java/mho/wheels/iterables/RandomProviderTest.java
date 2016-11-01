@@ -11044,25 +11044,6 @@ public strictfp class RandomProviderTest {
         maps_helper("[1, null, 3]", P.naturalIntegersGeometric(), "RandomProvider_maps_iii");
     }
 
-    private static void identityMaps_helper(
-            @NotNull String keys,
-            @NotNull Iterable<Integer> values,
-            @NotNull String output
-    ) {
-        List<IdentityHashMap<IntNoHashCode, Integer>> sample = toList(
-                take(DEFAULT_SAMPLE_SIZE, P.identityMaps(readIntNoHashCodeListWithNulls(keys), values))
-        );
-        aeqitLimitLog(TINY_LIMIT, sample, output);
-        P.reset();
-    }
-
-    @Test
-    public void testIdentityMaps() {
-        identityMaps_helper("[5]", P.naturalIntegersGeometric(), "RandomProvider_maps_i");
-        identityMaps_helper("[1, 2, 3]", P.naturalIntegersGeometric(), "RandomProvider_identityMaps_ii");
-        identityMaps_helper("[1, null, 3]", P.naturalIntegersGeometric(), "RandomProvider_identityMaps_iii");
-    }
-
     private static void randomProvidersFixedScales_helper(
             int scale,
             int secondaryScale,

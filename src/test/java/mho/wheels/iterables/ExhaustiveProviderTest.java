@@ -6936,45 +6936,6 @@ public strictfp class ExhaustiveProviderTest {
         maps_helper("[1, null, 3]", EP.positiveIntegers(), "ExhaustiveProvider_maps_xx");
     }
 
-    private static void identityMaps_helper(
-            @NotNull String keys,
-            @NotNull Iterable<Integer> values,
-            @NotNull String output
-    ) {
-        simpleProviderHelper(EP.identityMaps(readIntNoHashCodeListWithNulls(keys), values), output);
-    }
-
-    private static void identityMaps_helper(@NotNull String keys, @NotNull String values, @NotNull String output) {
-        maps_helper(keys, readIntegerListWithNulls(values), output);
-    }
-
-    @Test
-    public void testIdentityMaps() {
-        identityMaps_helper("[]", "[]", "ExhaustiveProvider_maps_i");
-        identityMaps_helper("[]", "[4]", "ExhaustiveProvider_maps_ii");
-        identityMaps_helper("[]", "[1, 2, 3]", "ExhaustiveProvider_maps_iii");
-        identityMaps_helper("[]", "[1, null, 3]", "ExhaustiveProvider_maps_iv");
-        identityMaps_helper("[]", EP.positiveIntegers(), "ExhaustiveProvider_maps_v");
-
-        identityMaps_helper("[4]", "[]", "ExhaustiveProvider_maps_vi");
-        identityMaps_helper("[4]", "[4]", "ExhaustiveProvider_maps_vii");
-        identityMaps_helper("[4]", "[1, 2, 3]", "ExhaustiveProvider_maps_viii");
-        identityMaps_helper("[4]", "[1, null, 3]", "ExhaustiveProvider_maps_ix");
-        identityMaps_helper("[4]", EP.positiveIntegers(), "ExhaustiveProvider_maps_x");
-
-        identityMaps_helper("[1, 2, 3]", "[]", "ExhaustiveProvider_maps_xi");
-        identityMaps_helper("[1, 2, 3]", "[4]", "ExhaustiveProvider_maps_xii");
-        identityMaps_helper("[1, 2, 3]", "[1, 2, 3]", "ExhaustiveProvider_maps_xiii");
-        identityMaps_helper("[1, 2, 3]", "[1, null, 3]", "ExhaustiveProvider_maps_xiv");
-        identityMaps_helper("[1, 2, 3]", EP.positiveIntegers(), "ExhaustiveProvider_identityMaps_xv");
-
-        identityMaps_helper("[1, null, 3]", "[]", "ExhaustiveProvider_maps_xvi");
-        identityMaps_helper("[1, null, 3]", "[4]", "ExhaustiveProvider_maps_xvii");
-        identityMaps_helper("[1, null, 3]", "[1, 2, 3]", "ExhaustiveProvider_maps_xviii");
-        identityMaps_helper("[1, null, 3]", "[1, null, 3]", "ExhaustiveProvider_maps_xix");
-        identityMaps_helper("[1, null, 3]", EP.positiveIntegers(), "ExhaustiveProvider_identityMaps_xx");
-    }
-
     private static void randomProvidersFixedScales_helper(
             int scale,
             int secondaryScale,
