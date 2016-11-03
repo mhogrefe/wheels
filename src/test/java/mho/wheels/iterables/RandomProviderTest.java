@@ -11216,15 +11216,6 @@ public strictfp class RandomProviderTest {
                 .apply(s).get();
     }
 
-    private static @NotNull List<IntNoHashCode> readIntNoHashCodeListWithNulls(@NotNull String s) {
-        return toList(
-                map(
-                        i -> i == null ? null : new IntNoHashCode(i),
-                        Readers.readListWithNullsStrict(Readers::readIntegerStrict).apply(s).get()
-                )
-        );
-    }
-
     private static double meanOfBinaryFractions(@NotNull List<BinaryFraction> xs) {
         return sumDouble(toList(map(bf -> bf.doubleRange().a / DEFAULT_SAMPLE_SIZE, xs)));
     }
