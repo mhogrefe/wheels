@@ -1,6 +1,7 @@
 package mho.wheels.ordering;
 
 import mho.wheels.io.Readers;
+import mho.wheels.ordering.comparators.StringBasedComparator;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
 
@@ -19,6 +20,9 @@ public class OrderingTest {
         if (!iEven && jEven) return -1;
         return Integer.compare(i, j);
     };
+
+    private static final @NotNull Comparator<Character> VOWELS_BEFORE_CONSONANTS =
+            new StringBasedComparator("aeiouybcdfghjklmnpqrstvwxz");
 
     private static void fromInt_helper(int input, @NotNull String output) {
         aeq(fromInt(input), output);
@@ -523,6 +527,87 @@ public class OrderingTest {
         minimumMaximum_String_helper("∞", "(∞, ∞)");
 
         minimumMaximum_String_fail_helper("");
+    }
+
+    private static void minimum_Comparator_String_helper(
+            @NotNull Comparator<Character> comparator,
+            @NotNull String input,
+            char output
+    ) {
+        aeq(minimum(comparator, input), output);
+    }
+
+    private static void minimum_Comparator_String_fail_helper(
+            @NotNull Comparator<Character> comparator,
+            @NotNull String input
+    ) {
+        try {
+            minimum(comparator, input);
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+    }
+
+    @Test
+    public void testMinimum_Comparator_String() {
+        minimum_Comparator_String_helper(VOWELS_BEFORE_CONSONANTS, "hello", 'e');
+        minimum_Comparator_String_helper(VOWELS_BEFORE_CONSONANTS, "bug", 'u');
+
+        minimum_Comparator_String_fail_helper(VOWELS_BEFORE_CONSONANTS, "");
+        minimum_Comparator_String_fail_helper(VOWELS_BEFORE_CONSONANTS, "∞∞");
+    }
+
+    private static void maximum_Comparator_String_helper(
+            @NotNull Comparator<Character> comparator,
+            @NotNull String input,
+            char output
+    ) {
+        aeq(maximum(comparator, input), output);
+    }
+
+    private static void maximum_Comparator_String_fail_helper(
+            @NotNull Comparator<Character> comparator,
+            @NotNull String input
+    ) {
+        try {
+            maximum(comparator, input);
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+    }
+
+    @Test
+    public void testMaximum_Comparator_String() {
+        maximum_Comparator_String_helper(VOWELS_BEFORE_CONSONANTS, "hello", 'l');
+        maximum_Comparator_String_helper(VOWELS_BEFORE_CONSONANTS, "bug", 'g');
+
+        maximum_Comparator_String_fail_helper(VOWELS_BEFORE_CONSONANTS, "");
+        maximum_Comparator_String_fail_helper(VOWELS_BEFORE_CONSONANTS, "∞∞");
+    }
+
+    private static void minimumMaximum_Comparator_String_helper(
+            @NotNull Comparator<Character> comparator,
+            @NotNull String input,
+            @NotNull String output
+    ) {
+        aeq(minimumMaximum(comparator, input), output);
+    }
+
+    private static void minimumMaximum_Comparator_String_fail_helper(
+            @NotNull Comparator<Character> comparator,
+            @NotNull String input
+    ) {
+        try {
+            minimumMaximum(comparator, input);
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+    }
+
+    @Test
+    public void testMinimumMaximum_Comparator_String() {
+        minimumMaximum_Comparator_String_helper(VOWELS_BEFORE_CONSONANTS, "hello", "(e, l)");
+        minimumMaximum_Comparator_String_helper(VOWELS_BEFORE_CONSONANTS, "bug", "(u, g)");
+
+        minimumMaximum_Comparator_String_fail_helper(VOWELS_BEFORE_CONSONANTS, "");
+        minimumMaximum_Comparator_String_fail_helper(VOWELS_BEFORE_CONSONANTS, "∞∞");
     }
 
     private static void readStrict_helper(@NotNull String input, @NotNull String output) {
