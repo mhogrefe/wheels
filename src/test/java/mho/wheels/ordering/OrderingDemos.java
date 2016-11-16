@@ -423,6 +423,26 @@ public class OrderingDemos extends Demos {
         }
     }
 
+    private void demoMinimum_String() {
+        for (String s : take(LIMIT, P.stringsAtLeast(1))) {
+            System.out.println("minimum(" + nicePrint(s) + ") = " + nicePrint(minimum(s)));
+        }
+    }
+
+    private void demoMaximum_String() {
+        for (String s : take(LIMIT, P.stringsAtLeast(1))) {
+            System.out.println("maximum(" + nicePrint(s) + ") = " + nicePrint(maximum(s)));
+        }
+    }
+
+    private void demoMinimumMaximum_String() {
+        for (String s : take(LIMIT, P.stringsAtLeast(1))) {
+            Pair<Character, Character> result = minimumMaximum(s);
+            System.out.println("minimumMaximum(" + nicePrint(s) + ") = " +
+                    new Pair<>(nicePrint(result.a), nicePrint(result.b)));
+        }
+    }
+
     private void demoReadOrderingStrict() {
         for (String s : take(LIMIT, P.strings())) {
             System.out.println("readOrderingStrict(" + nicePrint(s) + ") = " + readStrict(s));
