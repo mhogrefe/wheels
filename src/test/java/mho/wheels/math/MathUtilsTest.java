@@ -1279,6 +1279,84 @@ public class MathUtilsTest {
         expressAsPower_fail_helper("-1");
     }
 
+    private static void root_helper(@NotNull String n, int r, @NotNull String output) {
+        aeq(root(Readers.readBigIntegerStrict(n).get(), r), output);
+    }
+
+    private static void root_fail_helper(@NotNull String n, int r) {
+        try {
+            root(Readers.readBigIntegerStrict(n).get(), r);
+            fail();
+        } catch (ArithmeticException ignored) {}
+    }
+
+    @Test
+    public void testRoot() {
+        root_helper("0", 1, "Optional[0]");
+        root_helper("0", 2, "Optional[0]");
+        root_helper("0", 3, "Optional[0]");
+        root_helper("0", 4, "Optional[0]");
+
+        root_helper("1", 1, "Optional[1]");
+        root_helper("1", 2, "Optional[1]");
+        root_helper("1", 3, "Optional[1]");
+        root_helper("1", 4, "Optional[1]");
+
+        root_helper("2", 1, "Optional[2]");
+        root_helper("2", 2, "Optional.empty");
+        root_helper("2", 3, "Optional.empty");
+        root_helper("2", 4, "Optional.empty");
+
+        root_helper("-1", 1, "Optional[-1]");
+        root_helper("-1", 3, "Optional[-1]");
+
+        root_helper("-2", 1, "Optional[-2]");
+        root_helper("-2", 3, "Optional.empty");
+
+        root_helper("1000000", 6, "Optional[10]");
+        root_helper("-125", 3, "Optional[-5]");
+
+        root_fail_helper("-1", 2);
+    }
+
+    private static void sqrt_helper(@NotNull String n, @NotNull String output) {
+        aeq(sqrt(Readers.readBigIntegerStrict(n).get()), output);
+    }
+
+    private static void sqrt_fail_helper(@NotNull String n) {
+        try {
+            sqrt(Readers.readBigIntegerStrict(n).get());
+            fail();
+        } catch (ArithmeticException ignored) {}
+    }
+
+    @Test
+    public void testSqrt() {
+        sqrt_helper("0", "Optional[0]");
+        sqrt_helper("1", "Optional[1]");
+        sqrt_helper("2", "Optional.empty");
+
+        sqrt_helper("1000000", "Optional[1000]");
+
+        sqrt_fail_helper("-1");
+    }
+
+    private static void cbrt_helper(@NotNull String n, @NotNull String output) {
+        aeq(cbrt(Readers.readBigIntegerStrict(n).get()), output);
+    }
+
+    @Test
+    public void testCbrt() {
+        cbrt_helper("0", "Optional[0]");
+        cbrt_helper("1", "Optional[1]");
+        cbrt_helper("2", "Optional.empty");
+        cbrt_helper("-1", "Optional[-1]");
+        cbrt_helper("-2", "Optional.empty");
+
+        cbrt_helper("1000000", "Optional[100]");
+        cbrt_helper("-125", "Optional[-5]");
+    }
+
     private static void totient_int_helper(int input, int output) {
         aeq(totient(input), output);
     }

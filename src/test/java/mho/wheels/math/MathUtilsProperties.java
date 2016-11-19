@@ -93,6 +93,9 @@ public class MathUtilsProperties extends TestProperties {
         propertiesLargestPerfectPowerFactor_int_int();
         propertiesLargestPerfectPowerFactor_int_BigInteger();
         propertiesExpressAsPower();
+        propertiesRoot();
+        propertiesSqrt();
+        propertiesCbrt();
         propertiesTotient_int();
         compareImplementationsTotient_int();
         propertiesTotient_BigInteger();
@@ -1667,6 +1670,81 @@ public class MathUtilsProperties extends TestProperties {
                 expressAsPower(i);
                 fail(i);
             } catch (ArithmeticException ignored) {}
+        }
+    }
+
+    private void propertiesRoot() {
+        initialize("root(BigInteger, int)");
+        Iterable<Pair<BigInteger, Integer>> ps = filterInfinite(
+                p -> (p.b & 1) != 0 || p.a.signum() != -1,
+                P.pairsSquareRootOrder(P.bigIntegers(), P.positiveIntegersGeometric())
+        );
+        for (Pair<BigInteger, Integer> p : take(LIMIT, ps)) {
+            Optional<BigInteger> oi = root(p.a, p.b);
+            if (oi.isPresent()) {
+                BigInteger i = oi.get();
+                if ((p.b & 1) == 0) {
+                    assertNotEquals(p, i.signum(), -1);
+                } else {
+                    assertEquals(p, i.signum(), p.a.signum());
+                }
+                assertEquals(p, i.pow(p.b), p.a);
+            }
+        }
+
+        for (int i : take(LIMIT, P.positiveIntegersGeometric())) {
+            assertEquals(i, root(BigInteger.ZERO, i).get(), BigInteger.ZERO);
+            assertEquals(i, root(BigInteger.ONE, i).get(), BigInteger.ONE);
+            assertEquals(i, root(IntegerUtils.NEGATIVE_ONE, (i << 1) + 1).get(), IntegerUtils.NEGATIVE_ONE);
+        }
+
+        for (Pair<BigInteger, Integer> p : take(LIMIT, P.pairs(P.bigIntegers(), P.negativeIntegers()))) {
+            try {
+                root(p.a, p.b);
+                fail(p);
+            } catch (ArithmeticException ignored) {}
+        }
+
+        Iterable<Pair<BigInteger, Integer>> psFail = P.pairs(
+                P.negativeBigIntegers(),
+                map(i -> i * 2, P.positiveIntegersGeometric())
+        );
+        for (Pair<BigInteger, Integer> p : take(LIMIT, psFail)) {
+            try {
+                root(p.a, p.b);
+                fail(p);
+            } catch (ArithmeticException ignored) {}
+        }
+    }
+
+    private void propertiesSqrt() {
+        initialize("sqrt(int)");
+        for (BigInteger i : take(LIMIT, P.naturalBigIntegers())) {
+            Optional<BigInteger> oj = sqrt(i);
+            if (oj.isPresent()) {
+                BigInteger j = oj.get();
+                assertNotEquals(i, j.signum(), -1);
+                assertEquals(i, j.pow(2), i);
+            }
+        }
+
+        for (BigInteger i : take(LIMIT, P.negativeBigIntegers())) {
+            try {
+                sqrt(i);
+                fail(i);
+            } catch (ArithmeticException ignored) {}
+        }
+    }
+
+    private void propertiesCbrt() {
+        initialize("cbrt(int)");
+        for (BigInteger i : take(LIMIT, P.bigIntegers())) {
+            Optional<BigInteger> oj = cbrt(i);
+            if (oj.isPresent()) {
+                BigInteger j = oj.get();
+                assertEquals(i, j.signum(), i.signum());
+                assertEquals(i, j.pow(3), i);
+            }
         }
     }
 

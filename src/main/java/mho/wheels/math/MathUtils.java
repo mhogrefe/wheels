@@ -1206,6 +1206,84 @@ public final class MathUtils {
     }
 
     /**
+     * If {@code n} is a perfect {@code r}th power, returns the {@code r}th root of {@code n}. Otherwise, returns
+     * empty.
+     *
+     * <ul>
+     *  <li>{@code n} may be any {@code BigInteger}.</li>
+     *  <li>{@code r} must be positive.</li>
+     *  <li>If {@code r} is even, {@code this} cannot be negative.</li>
+     *  <li>The result may be any {@code BigInteger}, or empty.</li>
+     * </ul>
+     *
+     * @param r the degree of the root extracted from {@code n}
+     * @return {@code n}<sup>1/{@code r}</sup>
+     */
+    public static @NotNull Optional<BigInteger> root(@NotNull BigInteger n, int r) {
+        if (r <= 0) {
+            throw new ArithmeticException("r must be positive. Invalid r: " + r);
+        }
+        if (n.equals(BigInteger.ONE) || r == 1) {
+            return Optional.of(n);
+        }
+        if (n.equals(BigInteger.ZERO)) {
+            return Optional.of(n);
+        }
+        BigInteger root;
+        if (n.signum() == -1) {
+            if ((r & 1) == 0) {
+                throw new ArithmeticException("If r is even, n cannot be negative. r: " + r + ", n: " + n);
+            } else {
+                root = ceilingRoot(r, n.negate()).negate();
+            }
+        } else {
+            root = ceilingRoot(r, n);
+        }
+        return root.pow(r).equals(n) ? Optional.of(root) : Optional.empty();
+    }
+
+    /**
+     * If {@code n} is a perfect square, returns the square root of {@code n}. Otherwise, returns empty.
+     *
+     * <ul>
+     *  <li>{@code n} must be non-negative.</li>
+     *  <li>The result may be any non-negative {@code BigInteger}, or empty.</li>
+     * </ul>
+     *
+     * @return sqrt({@code n})
+     */
+    @SuppressWarnings("JavaDoc")
+    public static @NotNull Optional<BigInteger> sqrt(@NotNull BigInteger n) {
+        if (n.equals(BigInteger.ZERO) || n.equals(BigInteger.ONE)) {
+            return Optional.of(n);
+        }
+        if (n.signum() == -1) {
+            throw new ArithmeticException("n cannot be negative. Invalid n: " + n);
+        }
+        BigInteger root = ceilingRoot(2, n);
+        return root.pow(2).equals(n) ? Optional.of(root) : Optional.empty();
+    }
+
+    /**
+     * If {@code n} is a perfect cibe, returns the cube root of {@code n}. Otherwise, returns empty.
+     *
+     * <ul>
+     *  <li>{@code n} cannot be null.</li>
+     *  <li>The result may be any {@code BigInteger}, or empty.</li>
+     * </ul>
+     *
+     * @return cbrt({@code n})
+     */
+    @SuppressWarnings("JavaDoc")
+    public static @NotNull Optional<BigInteger> cbrt(@NotNull BigInteger n) {
+        if (n.equals(BigInteger.ZERO) || n.equals(BigInteger.ONE)) {
+            return Optional.of(n);
+        }
+        BigInteger root = n.signum() == -1 ? ceilingRoot(3, n.negate()).negate() : ceilingRoot(3, n);
+        return root.pow(3).equals(n) ? Optional.of(root) : Optional.empty();
+    }
+
+    /**
      * Returns Euler's totient function of {@code n}, or the number of positive integers less than or equal to
      * {@code n} that are relatively prime to {@code n}.
      *

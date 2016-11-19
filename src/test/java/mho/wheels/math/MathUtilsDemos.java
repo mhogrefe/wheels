@@ -380,6 +380,28 @@ public class MathUtilsDemos extends Demos {
         }
     }
 
+    private void demoRoot() {
+        Iterable<Pair<BigInteger, Integer>> ps = filterInfinite(
+                p -> (p.b & 1) != 0 || p.a.signum() != -1,
+                P.pairsSquareRootOrder(P.bigIntegers(), P.positiveIntegersGeometric())
+        );
+        for (Pair<BigInteger, Integer> p : take(LIMIT, ps)) {
+            System.out.println("(" + p.a + ") ^ (1/" + p.b + ") = " + root(p.a, p.b));
+        }
+    }
+
+    private void demoSqrt() {
+        for (BigInteger i : take(LIMIT, P.naturalBigIntegers())) {
+            System.out.println("sqrt(" + i + ") = " + sqrt(i));
+        }
+    }
+
+    private void demoCbrt() {
+        for (BigInteger i : take(LIMIT, P.bigIntegers())) {
+            System.out.println("cbrt(" + i + ") = " + cbrt(i));
+        }
+    }
+
     private void demoTotient_int() {
         for (int i : take(LIMIT, P.positiveIntegers())) {
             System.out.println("φ(" + i + ") = " + totient(i));
