@@ -1,8 +1,10 @@
 package mho.wheels.ordering;
 
+import mho.wheels.iterables.IterableUtils;
 import mho.wheels.structures.Pair;
 import mho.wheels.structures.Triple;
 import mho.wheels.testing.Demos;
+import mho.wheels.testing.Testing;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Comparator;
@@ -440,6 +442,72 @@ public class OrderingDemos extends Demos {
             Pair<Character, Character> result = minimumMaximum(s);
             System.out.println("minimumMaximum(" + nicePrint(s) + ") = " +
                     new Pair<>(nicePrint(result.a), nicePrint(result.b)));
+        }
+    }
+
+    private void demoMinimum_Comparator_String() {
+        Iterable<Pair<String, String>> ps = P.dependentPairs(
+                P.withScale(4).stringsAtLeast(1),
+                s -> map(IterableUtils::charsToString, P.permutationsFinite(toList(nub(s))))
+        );
+        for (Pair<String, String> p : take(LIMIT, ps)) {
+            Comparator<Character> comparator = (x, y) -> {
+                Integer xIndex = p.b.indexOf(x);
+                if (xIndex == -1) {
+                    throw new IllegalArgumentException();
+                }
+                Integer yIndex = p.b.indexOf(y);
+                if (yIndex == -1) {
+                    throw new IllegalArgumentException();
+                }
+                return Integer.compare(xIndex, yIndex);
+            };
+            System.out.println(intercalate(" < ", map(Testing::nicePrint, fromString(p.b))) + ": minimum(" +
+                    nicePrint(p.a) + ") = " + nicePrint(minimum(comparator, p.a)));
+        }
+    }
+
+    private void demoMaximum_Comparator_String() {
+        Iterable<Pair<String, String>> ps = P.dependentPairs(
+                P.withScale(4).stringsAtLeast(1),
+                s -> map(IterableUtils::charsToString, P.permutationsFinite(toList(nub(s))))
+        );
+        for (Pair<String, String> p : take(LIMIT, ps)) {
+            Comparator<Character> comparator = (x, y) -> {
+                Integer xIndex = p.b.indexOf(x);
+                if (xIndex == -1) {
+                    throw new IllegalArgumentException();
+                }
+                Integer yIndex = p.b.indexOf(y);
+                if (yIndex == -1) {
+                    throw new IllegalArgumentException();
+                }
+                return Integer.compare(xIndex, yIndex);
+            };
+            System.out.println(intercalate(" < ", map(Testing::nicePrint, fromString(p.b))) + ": minimum(" +
+                    nicePrint(p.a) + ") = " + nicePrint(maximum(comparator, p.a)));
+        }
+    }
+
+    private void demoMinimumMaximum_Comparator_String() {
+        Iterable<Pair<String, String>> ps = P.dependentPairs(
+                P.withScale(4).stringsAtLeast(1),
+                s -> map(IterableUtils::charsToString, P.permutationsFinite(toList(nub(s))))
+        );
+        for (Pair<String, String> p : take(LIMIT, ps)) {
+            Comparator<Character> comparator = (x, y) -> {
+                Integer xIndex = p.b.indexOf(x);
+                if (xIndex == -1) {
+                    throw new IllegalArgumentException();
+                }
+                Integer yIndex = p.b.indexOf(y);
+                if (yIndex == -1) {
+                    throw new IllegalArgumentException();
+                }
+                return Integer.compare(xIndex, yIndex);
+            };
+            System.out.println(intercalate(" < ", map(Testing::nicePrint, fromString(p.b))) + ": minimum(" +
+                    nicePrint(p.a) + ") = " + nicePrint(minimumMaximum(comparator, p.a).toString()));
         }
     }
 
