@@ -51,6 +51,9 @@ public class OrderingProperties extends TestProperties {
         propertiesMinimum_Comparator_Iterable_T();
         propertiesMaximum_Comparator_Iterable_T();
         propertiesMinimumMaximum_Comparator_Iterable_T();
+        propertiesMinimum_String();
+        propertiesMaximum_String();
+        propertiesMinimumMaximum_String();
         propertiesReadStrict();
         propertiesToString();
     }
@@ -780,6 +783,75 @@ public class OrderingProperties extends TestProperties {
         Comparator<Integer> naturalComparator = Comparator.naturalOrder();
         for (List<Integer> xs : take(LIMIT, P.listsAtLeast(1, P.integersGeometric()))) {
             assertEquals(xs, minimumMaximum(naturalComparator, xs), minimumMaximum(xs));
+        }
+    }
+
+    private void propertiesMinimum_String() {
+        initialize("minimum(String)");
+        for (String s : take(LIMIT, P.stringsAtLeast(1))) {
+            minimum(s);
+        }
+
+        Iterable<Pair<String, String>> ps = filterInfinite(
+                q -> !q.a.equals(q.b),
+                P.dependentPairs(P.stringsAtLeast(1), P::stringPermutations)
+        );
+        for (Pair<String, String> p : take(LIMIT, ps)) {
+            assertEquals(p, minimum(p.a), minimum(p.b));
+        }
+
+        for (char c : take(LIMIT, P.characters())) {
+            assertEquals(c, minimum(Character.toString(c)), c);
+        }
+
+        for (Pair<Character, Character> p : take(LIMIT, P.pairs(P.characters()))) {
+            assertEquals(p, minimum("" + p.a + p.b), min(p.a, p.b));
+        }
+    }
+
+    private void propertiesMaximum_String() {
+        initialize("maximum(String)");
+        for (String s : take(LIMIT, P.stringsAtLeast(1))) {
+            maximum(s);
+        }
+
+        Iterable<Pair<String, String>> ps = filterInfinite(
+                q -> !q.a.equals(q.b),
+                P.dependentPairs(P.stringsAtLeast(1), P::stringPermutations)
+        );
+        for (Pair<String, String> p : take(LIMIT, ps)) {
+            assertEquals(p, maximum(p.a), maximum(p.b));
+        }
+
+        for (char c : take(LIMIT, P.characters())) {
+            assertEquals(c, maximum(Character.toString(c)), c);
+        }
+
+        for (Pair<Character, Character> p : take(LIMIT, P.pairs(P.characters()))) {
+            assertEquals(p, maximum("" + p.a + p.b), max(p.a, p.b));
+        }
+    }
+
+    private void propertiesMinimumMaximum_String() {
+        initialize("minimumMaximum(String)");
+        for (String s : take(LIMIT, P.stringsAtLeast(1))) {
+            minimumMaximum(s);
+        }
+
+        Iterable<Pair<String, String>> ps = filterInfinite(
+                q -> !q.a.equals(q.b),
+                P.dependentPairs(P.stringsAtLeast(1), P::stringPermutations)
+        );
+        for (Pair<String, String> p : take(LIMIT, ps)) {
+            assertEquals(p, minimumMaximum(p.a), minimumMaximum(p.b));
+        }
+
+        for (char c : take(LIMIT, P.characters())) {
+            assertEquals(c, minimumMaximum(Character.toString(c)), new Pair<>(c, c));
+        }
+
+        for (Pair<Character, Character> p : take(LIMIT, P.pairs(P.characters()))) {
+            assertEquals(p, minimumMaximum("" + p.a + p.b), minMax(p.a, p.b));
         }
     }
 
