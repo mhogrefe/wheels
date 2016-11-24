@@ -322,7 +322,7 @@ public final strictfp class FloatingPointUtils {
             return Optional.empty();
         }
         Pair<Float, Float> range = BinaryFraction.of(BigInteger.valueOf(mantissa), exponent).floatRange();
-        return range.a.equals(range.b) ? Optional.of(range.a) : Optional.<Float>empty();
+        return range.a.equals(range.b) ? Optional.of(range.a) : Optional.empty();
     }
 
     /**
@@ -349,7 +349,7 @@ public final strictfp class FloatingPointUtils {
             return Optional.empty();
         }
         Pair<Double, Double> range = BinaryFraction.of(BigInteger.valueOf(mantissa), exponent).doubleRange();
-        return range.a.equals(range.b) ? Optional.of(range.a) : Optional.<Double>empty();
+        return range.a.equals(range.b) ? Optional.of(range.a) : Optional.empty();
     }
 
     /**

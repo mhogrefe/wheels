@@ -64,11 +64,8 @@ public final class StringShortlexComparator implements Comparator<String> {
             char sc = s.charAt(i);
             char tc = t.charAt(i);
             int characterCompare;
-            if (characterComparator.isPresent()) {
-                characterCompare = characterComparator.get().compare(sc, tc);
-            } else {
-                characterCompare = Character.compare(sc, tc);
-            }
+            characterCompare = characterComparator.map(characterComparator -> characterComparator.compare(sc, tc))
+                    .orElseGet(() -> Character.compare(sc, tc));
             if (characterCompare != 0) {
                 return characterCompare > 0 ? 1 : -1;
             }

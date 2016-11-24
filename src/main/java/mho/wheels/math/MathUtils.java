@@ -1391,11 +1391,7 @@ public final class MathUtils {
                             if (y.equals(BigInteger.ONE)) {
                                 elements.add(pPower);
                             } else {
-                                BigInteger spf = spfCache.get(y);
-                                if (spf == null) {
-                                    spf = smallestPrimeFactor(y);
-                                    spfCache.put(y, spf);
-                                }
+                                BigInteger spf = spfCache.computeIfAbsent(y, k -> smallestPrimeFactor(y));
                                 if (gt(spf, p)) {
                                     elements.add(y.multiply(pPower));
                                 }

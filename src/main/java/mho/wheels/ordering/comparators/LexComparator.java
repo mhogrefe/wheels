@@ -69,11 +69,8 @@ public final class LexComparator<T extends Comparable<T>> implements Comparator<
         while (xsi.hasNext()) {
             if (!ysi.hasNext()) return 1;
             int elementCompare;
-            if (elementComparator.isPresent()) {
-                elementCompare = elementComparator.get().compare(xsi.next(), ysi.next());
-            } else {
-                elementCompare = xsi.next().compareTo(ysi.next());
-            }
+            elementCompare = elementComparator.map(tComparator -> tComparator.compare(xsi.next(), ysi.next()))
+                    .orElseGet(() -> xsi.next().compareTo(ysi.next()));
             if (elementCompare != 0) {
                 return elementCompare;
             }

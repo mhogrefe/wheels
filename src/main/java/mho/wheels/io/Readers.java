@@ -1,6 +1,5 @@
 package mho.wheels.io;
 
-import mho.wheels.ordering.Ordering;
 import mho.wheels.structures.NullableOptional;
 import org.jetbrains.annotations.NotNull;
 
@@ -73,7 +72,7 @@ public class Readers {
                 return Optional.empty();
             }
             if (x == null) return Optional.empty();
-            return x.toString().equals(s) ? Optional.of(x) : Optional.<T>empty();
+            return x.toString().equals(s) ? Optional.of(x) : Optional.empty();
         };
     }
 
@@ -273,7 +272,7 @@ public class Readers {
      * represent a {@code Character}
      */
     public static @NotNull Optional<Character> readCharacterStrict(@NotNull String s) {
-        return s.length() == 1 ? Optional.of(s.charAt(0)) : Optional.<Character>empty();
+        return s.length() == 1 ? Optional.of(s.charAt(0)) : Optional.empty();
     }
 
     /**
@@ -373,7 +372,7 @@ public class Readers {
             if (s.length() < 2 || head(s) != '[' || last(s) != ']') return Optional.empty();
             s = middle(s);
             NullableOptional<T> ot = read.apply(s);
-            return ot.isPresent() ? Optional.of(ot) : Optional.<NullableOptional<T>>empty();
+            return ot.isPresent() ? Optional.of(ot) : Optional.empty();
         };
     }
 

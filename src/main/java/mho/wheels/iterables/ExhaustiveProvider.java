@@ -2780,11 +2780,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
             public @NotNull Pair<A, B> next() {
                 Pair<BigInteger, BigInteger> index = unpairingFunction.apply(indices.next());
                 A a = as.get(index.a).get();
-                Iterator<B> bs = aToBs.get(a);
-                if (bs == null) {
-                    bs = f.apply(a).iterator();
-                    aToBs.put(a, bs);
-                }
+                Iterator<B> bs = aToBs.computeIfAbsent(a, k -> f.apply(a).iterator());
                 return new Pair<>(a, bs.next());
             }
         };
@@ -2796,7 +2792,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      * many possible orderings of pairs; to make the ordering unique, you can specify an unpairing function–a bijective
      * function from natural {@code BigInteger}s to pairs of natural {@code BigInteger}s. If all the input lists are
      * unique, the output pairs are unique as well. This method differs from
-     * {@link ExhaustiveProvider#dependentPairsInfiniteIdentityHash(Function, Iterable, Function)} in that A is not
+     * {@link ExhaustiveProvider#dependentPairsInfinite(Function, Iterable, Function)} in that A is not
      * required to have a hash code here.
      *
      * <ul>
@@ -2838,11 +2834,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
             public @NotNull Pair<A, B> next() {
                 Pair<BigInteger, BigInteger> index = unpairingFunction.apply(indices.next());
                 A a = as.get(index.a).get();
-                Iterator<B> bs = aToBs.get(a);
-                if (bs == null) {
-                    bs = f.apply(a).iterator();
-                    aToBs.put(a, bs);
-                }
+                Iterator<B> bs = aToBs.computeIfAbsent(a, k -> f.apply(a).iterator());
                 return new Pair<>(a, bs.next());
             }
         };
@@ -5607,9 +5599,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
                     List<T> output = toList(map(i -> cxs.get(i).get(), cumulativeIndices));
                     if (!outputSizeKnown() && cxs.knownSize().isPresent()) {
                         Optional<BigInteger> outputSize = outputSizeFunction.apply(cxs.knownSize().get());
-                        if (outputSize.isPresent()) {
-                            setOutputSize(outputSize.get());
-                        }
+                        outputSize.ifPresent(this::setOutputSize);
                     }
                     if (output.size() == 1) {
                         T first = output.get(0);
@@ -7024,9 +7014,10 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      * @param <T> the type of the elements in {@code xs}
      * @return all distinct unordered {@code List}s containing {@code x} and possibly members of {@code xs}
      */
+    @SuppressWarnings("NullableProblems")
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<List<T>> subsetsWithElement(
-            T x,
+            @NotNull T x,
             @NotNull Iterable<T> xs
     ) {
         x.compareTo(x);

@@ -10,6 +10,7 @@ import org.jetbrains.annotations.NotNull;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import static mho.wheels.iterables.IterableUtils.*;
@@ -646,7 +647,7 @@ public strictfp class BinaryFraction implements Comparable<BinaryFraction> {
      * @return Σxs
      */
     public static @NotNull BinaryFraction sum(@NotNull List<BinaryFraction> xs) {
-        if (any(x -> x == null, xs)) {
+        if (any(Objects::isNull, xs)) {
             throw new NullPointerException("xs may not contain any nulls. xs: " + xs);
         }
         if (xs.isEmpty()) return ZERO;
@@ -671,7 +672,7 @@ public strictfp class BinaryFraction implements Comparable<BinaryFraction> {
      * @return Πxs
      */
     public static @NotNull BinaryFraction product(@NotNull List<BinaryFraction> xs) {
-        if (any(x -> x == null, xs)) {
+        if (any(Objects::isNull, xs)) {
             throw new NullPointerException("xs may not contain any nulls. xs: " + xs);
         }
         if (any(x -> x == ZERO, xs)) return ZERO;
@@ -824,8 +825,7 @@ public strictfp class BinaryFraction implements Comparable<BinaryFraction> {
                         Optional<BigInteger> oMantissa = Readers.readBigIntegerStrict(s.substring(0, leftShiftIndex));
                         if (!oMantissa.isPresent()) return null;
                         Optional<Integer> oExponent = Readers.readIntegerStrict(s.substring(leftShiftIndex + 4));
-                        if (!oExponent.isPresent()) return null;
-                        return of(oMantissa.get(), oExponent.get());
+                        return oExponent.map(integer -> of(oMantissa.get(), integer)).orElse(null);
                     }
                     int rightShiftIndex = s.indexOf(" >> ");
                     if (rightShiftIndex != -1) {

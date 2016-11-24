@@ -250,6 +250,7 @@ public class ReadersDemos extends Demos {
     }
 
     private void demoReadListStrict() {
+        //noinspection Convert2MethodRef
         Iterable<Pair<Function<String, Optional<Integer>>, String>> ps = map(
                 q -> new Pair<>((Function<String, Optional<Integer>>) q.b, q.b.domain().toString()),
                 P.dependentPairsInfinite(
@@ -267,6 +268,7 @@ public class ReadersDemos extends Demos {
     }
 
     private void demoReadListWithNullsStrict() {
+        //noinspection Convert2MethodRef
         Iterable<Pair<Function<String, Optional<Integer>>, String>> ps = map(
                 q -> new Pair<>((Function<String, Optional<Integer>>) q.b, q.b.domain().toString()),
                 P.dependentPairsInfinite(
