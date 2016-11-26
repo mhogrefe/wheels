@@ -78,6 +78,7 @@ public strictfp class BinaryFractionProperties extends TestProperties {
     private void propertiesGetExponent() {
         initialize("getExponent()");
         for (BinaryFraction bf : take(LIMIT, P.binaryFractions())) {
+            //noinspection ResultOfMethodCallIgnored
             bf.getExponent();
         }
     }

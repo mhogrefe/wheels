@@ -7010,15 +7010,6 @@ public strictfp class ExhaustiveProviderTest {
         return Readers.readListWithNullsStrict(Readers::readIntegerStrict).apply(s).get();
     }
 
-    private static @NotNull List<IntNoHashCode> readIntNoHashCodeListWithNulls(@NotNull String s) {
-        return toList(
-                map(
-                        i -> i == null ? null : new IntNoHashCode(i),
-                        Readers.readListWithNullsStrict(Readers::readIntegerStrict).apply(s).get()
-                )
-        );
-    }
-
     private static @NotNull List<List<Integer>> readIntegerListWithNullsLists(@NotNull String s) {
         return Readers.readListStrict(Readers.readListWithNullsStrict(Readers::readIntegerStrict)).apply(s).get();
     }

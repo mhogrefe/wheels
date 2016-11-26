@@ -384,7 +384,7 @@ public class IntegerUtilsProperties extends TestProperties {
             List<Boolean> bits = bits(i);
             assertEquals(i, bits, bits_int_simplest(i));
             assertEquals(i, bits, reverse(bigEndianBits(i)));
-            assertTrue(i, all(b -> b != null, bits));
+            assertTrue(i, all(Objects::nonNull, bits));
             inverse(IntegerUtils::bits, (List<Boolean> bs) -> fromBits(bs).intValueExact(), i);
             assertEquals(i, bits.size(), BigInteger.valueOf(i).bitLength());
         }
@@ -427,7 +427,7 @@ public class IntegerUtilsProperties extends TestProperties {
             List<Boolean> bits = bits(i);
             assertEquals(i, bits, bits_BigInteger_alt(i));
             assertEquals(i, bits, reverse(bigEndianBits(i)));
-            assertTrue(i, all(b -> b != null, bits));
+            assertTrue(i, all(Objects::nonNull, bits));
             inverse(IntegerUtils::bits, IntegerUtils::fromBits, i);
             assertEquals(i, bits.size(), i.bitLength());
         }
@@ -467,7 +467,7 @@ public class IntegerUtilsProperties extends TestProperties {
             List<Boolean> bits = bitsPadded(p.b, p.a);
             assertEquals(p, bits, bitsPadded_int_int_simplest(p.b, p.a));
             assertEquals(p, bits, reverse(bigEndianBitsPadded(p.b, p.a)));
-            assertFalse(p, any(b -> b == null, bits));
+            assertFalse(p, any(Objects::isNull, bits));
             assertEquals(p, bits.size(), p.b);
             for (int i = 32; i < bits.size(); i++) {
                 assertFalse(p, bits.get(i));
@@ -518,7 +518,7 @@ public class IntegerUtilsProperties extends TestProperties {
         for (Pair<BigInteger, Integer> p : take(LIMIT, ps)) {
             List<Boolean> bits = bitsPadded(p.b, p.a);
             assertEquals(p, bits, reverse(bigEndianBitsPadded(p.b, p.a)));
-            assertFalse(p, any(b -> b == null, bits));
+            assertFalse(p, any(Objects::isNull, bits));
             assertEquals(p, bits.size(), p.b);
         }
 
@@ -561,7 +561,7 @@ public class IntegerUtilsProperties extends TestProperties {
             assertEquals(i, bits, bigEndianBits_int_simplest(i));
             assertEquals(i, bits, bigEndianBits_int_alt(i));
             assertEquals(i, bits, reverse(bits(i)));
-            assertTrue(i, all(b -> b != null, bits));
+            assertTrue(i, all(Objects::nonNull, bits));
             assertEquals(i, fromBigEndianBits(bits).intValueExact(), i);
             assertEquals(i, bits.size(), BigInteger.valueOf(i).bitLength());
         }
@@ -598,7 +598,7 @@ public class IntegerUtilsProperties extends TestProperties {
             List<Boolean> bits = bigEndianBits(i);
             assertEquals(i, bits, bigEndianBits_BigInteger_simplest(i));
             assertEquals(i, bits, reverse(bits(i)));
-            assertTrue(i, all(b -> b != null, bits));
+            assertTrue(i, all(Objects::nonNull, bits));
             inverse(IntegerUtils::bigEndianBits, IntegerUtils::fromBigEndianBits, i);
             assertEquals(i, bits.size(), i.bitLength());
         }
@@ -648,7 +648,7 @@ public class IntegerUtilsProperties extends TestProperties {
             assertEquals(p, bits, bigEndianBitsPadded_int_int_simplest(p.b, p.a));
             assertEquals(p, bits, bigEndianBitsPadded_int_int_alt(p.b, p.a));
             assertEquals(p, bits, reverse(bitsPadded(p.b, p.a)));
-            assertTrue(p, all(b -> b != null, bits));
+            assertTrue(p, all(Objects::nonNull, bits));
             assertEquals(p, bits.size(), p.b);
             for (int i = 32; i < bits.size(); i++) {
                 assertFalse(p, bits.get(bits.size() - i - 1));
@@ -705,7 +705,7 @@ public class IntegerUtilsProperties extends TestProperties {
             List<Boolean> bits = bigEndianBitsPadded(p.b, p.a);
             assertEquals(p, bits, bigEndianBitsPadded_int_BigInteger_alt(p.b, p.a));
             assertEquals(p, bits, reverse(bitsPadded(p.b, p.a)));
-            assertTrue(p, all(b -> b != null, bits));
+            assertTrue(p, all(Objects::nonNull, bits));
             assertEquals(p, bits.size(), p.b);
         }
 

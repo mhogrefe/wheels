@@ -255,10 +255,8 @@ public strictfp class ReadersProperties extends TestProperties {
                 q -> new Pair<>((Function<String, Optional<Integer>>) q.b, q.b.domain().toString()),
                 P.dependentPairsInfinite(
                         P.withScale(4).subsetsAtLeast(1, P.withScale(4).strings()),
-                        ss -> map(
-                                m -> new FiniteDomainFunction<>(m),
-                                P.maps(ss, P.nonEmptyOptionals(P.integers()))
-                        )
+                        ss -> map(FiniteDomainFunction::new, P.maps(ss, P.nonEmptyOptionals(P.integers()))
+)
                 )
         );
         for (Pair<Function<String, Optional<Integer>>, String> p : take(LIMIT, ps)) {
@@ -276,10 +274,7 @@ public strictfp class ReadersProperties extends TestProperties {
                 q -> new Pair<>((Function<String, Optional<Integer>>) q.b, q.b.domain().toString()),
                 P.dependentPairsInfinite(
                         P.withScale(4).subsetsAtLeast(1, P.withScale(4).strings()),
-                        ss -> map(
-                                m -> new FiniteDomainFunction<>(m),
-                                P.maps(ss, P.nonEmptyOptionals(P.integers()))
-                        )
+                        ss -> map(FiniteDomainFunction::new, P.maps(ss, P.nonEmptyOptionals(P.integers())))
                 )
         );
         for (Pair<Function<String, Optional<Integer>>, String> p : take(LIMIT, ps)) {

@@ -58,11 +58,8 @@ public strictfp class IterableUtilsDemos extends Demos {
         Iterable<Pair<Integer, List<Integer>>> ps;
         if (P instanceof ExhaustiveProvider) {
             ps = map(
-                    p -> new Pair<Integer, List<Integer>>(p.b, p.a),
-                    ((ExhaustiveProvider) P).pairsSquareRootOrder(
-                            P.lists(P.withNull(P.integers())),
-                            P.naturalIntegers()
-                    )
+                    p -> new Pair<>(p.b, p.a),
+                    P.pairsSquareRootOrder(P.lists(P.withNull(P.integers())), P.naturalIntegers())
             );
         } else {
             ps = P.pairs(P.withScale(20).naturalIntegersGeometric(), P.lists(P.integers()));
@@ -77,10 +74,7 @@ public strictfp class IterableUtilsDemos extends Demos {
         if (P instanceof ExhaustiveProvider) {
             ps = map(
                     p -> new Pair<>(p.b, cycle(p.a)),
-                    ((ExhaustiveProvider) P).pairsSquareRootOrder(
-                            P.lists(P.withNull(P.integers())),
-                            P.naturalIntegers()
-                    )
+                    P.pairsSquareRootOrder(P.lists(P.withNull(P.integers())), P.naturalIntegers())
             );
         } else {
             ps = P.pairs(

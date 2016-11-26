@@ -46,6 +46,7 @@ public class NullableOptionalProperties extends TestProperties {
     private void propertiesIsPresent_Integer() {
         initialize("isPresent()");
         for (NullableOptional<Integer> noi : take(LIMIT, P.nullableOptionals(P.withNull(P.integers())))) {
+            //noinspection ResultOfMethodCallIgnored
             noi.isPresent();
         }
     }

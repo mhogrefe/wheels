@@ -2675,7 +2675,7 @@ public class RandomProviderProperties extends TestProperties {
         for (Pair<RandomProvider, Iterable<Integer>> p : take(LIMIT, ps)) {
             List<Integer> withNull = toList(take(TINY_LIMIT, p.a.withNull(p.b)));
             testNoRemove(TINY_LIMIT, p.a.withNull(p.b));
-            List<Integer> filteredResult = toList(filter(x -> x != null, withNull));
+            List<Integer> filteredResult = toList(filter(Objects::nonNull, withNull));
             assertEquals(p, filteredResult, toList(take(filteredResult.size(), p.b)));
         }
 
@@ -2815,7 +2815,7 @@ public class RandomProviderProperties extends TestProperties {
         for (Pair<Iterable<Integer>, FiniteDomainFunction<Integer, Iterable<Integer>>> p : take(LIMIT, ps)) {
             Iterable<Pair<Integer, Integer>> pairs = RP.dependentPairsInfinite(p.a, p.b);
             testNoRemove(TINY_LIMIT, pairs);
-            assertTrue(p, all(q -> q != null, take(TINY_LIMIT, pairs)));
+            assertTrue(p, all(Objects::nonNull, take(TINY_LIMIT, pairs)));
         }
 
         Iterable<Pair<Iterable<Integer>, FiniteDomainFunction<Integer, Iterable<Integer>>>> psFail = map(
@@ -2929,7 +2929,7 @@ public class RandomProviderProperties extends TestProperties {
                 take(LIMIT, ps)) {
             Iterable<Pair<IntNoHashCode, Integer>> pairs = RP.dependentPairsInfiniteIdentityHash(p.a, p.b);
             testNoRemove(TINY_LIMIT, pairs);
-            assertTrue(p, all(q -> q != null, take(TINY_LIMIT, pairs)));
+            assertTrue(p, all(Objects::nonNull, take(TINY_LIMIT, pairs)));
         }
 
         Iterable<

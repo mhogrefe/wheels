@@ -1777,12 +1777,11 @@ public final strictfp class RandomProvider extends IterableProvider {
                 if (i == 0) {
                     return BinaryFraction.of(is2.next(), difference.getExponent()).add(a);
                 } else {
-                    Iterator<BigInteger> is4 = isMap.get(i);
-                    if (is4 == null) {
-                        is4 = range(BigInteger.ZERO, BigInteger.ONE.shiftLeft(i - 1).subtract(BigInteger.ONE))
-                                .iterator();
-                        isMap.put(i, is4);
-                    }
+                    Iterator<BigInteger> is4 = isMap.computeIfAbsent(
+                            i,
+                            k -> range(BigInteger.ZERO, BigInteger.ONE.shiftLeft(i - 1).subtract(BigInteger.ONE))
+                                    .iterator()
+                    );
                     BinaryFraction fraction = BinaryFraction.of(is4.next().shiftLeft(1).add(BigInteger.ONE), -i);
                     return fraction.add(BinaryFraction.of(is3.next())).shiftLeft(difference.getExponent()).add(a);
                 }
@@ -2642,12 +2641,11 @@ public final strictfp class RandomProvider extends IterableProvider {
                 if (normalizedScale == 0) {
                     return bs.next() ? BigDecimal.ONE.movePointRight(pow) : BigDecimal.ZERO;
                 } else {
-                    Iterator<BigInteger> ds = isMap.get(normalizedScale);
-                    if (ds == null) {
-                        ds = range(BigInteger.ONE, BigInteger.TEN.pow(normalizedScale).subtract(BigInteger.ONE))
-                                .iterator();
-                        isMap.put(normalizedScale, ds);
-                    }
+                    Iterator<BigInteger> ds = isMap.computeIfAbsent(
+                            normalizedScale,
+                            k -> range(BigInteger.ONE, BigInteger.TEN.pow(normalizedScale).subtract(BigInteger.ONE))
+                                    .iterator()
+                    );
                     BigInteger digits;
                     do {
                         digits = ds.next();
@@ -2955,11 +2953,7 @@ public final strictfp class RandomProvider extends IterableProvider {
             @Override
             public @NotNull Pair<A, B> next() {
                 A a = xsi.next();
-                Iterator<B> bs = aToBs.get(a);
-                if (bs == null) {
-                    bs = f.apply(a).iterator();
-                    aToBs.put(a, bs);
-                }
+                Iterator<B> bs = aToBs.computeIfAbsent(a, k -> f.apply(a).iterator());
                 return new Pair<>(a, bs.next());
             }
         };
@@ -3001,11 +2995,7 @@ public final strictfp class RandomProvider extends IterableProvider {
             @Override
             public @NotNull Pair<A, B> next() {
                 A a = xsi.next();
-                Iterator<B> bs = aToBs.get(a);
-                if (bs == null) {
-                    bs = f.apply(a).iterator();
-                    aToBs.put(a, bs);
-                }
+                Iterator<B> bs = aToBs.computeIfAbsent(a, k -> f.apply(a).iterator());
                 return new Pair<>(a, bs.next());
             }
         };

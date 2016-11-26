@@ -368,7 +368,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
         initialize("rangeUpIncreasing(byte)");
         for (byte b : take(LIMIT, P.bytes())) {
             Iterable<Byte> bs = EP.rangeUpIncreasing(b);
-            assertTrue(b, all(c -> c != null, bs));
+            assertTrue(b, all(Objects::nonNull, bs));
             testNoRemove(bs);
             testHasNext(bs);
             assertEquals(b, length(bs), (1 << 7) - b);
@@ -446,7 +446,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
         initialize("rangeUpDecreasing(byte)");
         for (byte b : take(LIMIT, P.bytes())) {
             Iterable<Byte> bs = EP.rangeUpDecreasing(b);
-            assertTrue(b, all(c -> c != null, bs));
+            assertTrue(b, all(Objects::nonNull, bs));
             testNoRemove(bs);
             testHasNext(bs);
             assertEquals(b, length(bs), (1 << 7) - b);
@@ -514,7 +514,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
         initialize("rangeDownIncreasing(byte)");
         for (byte b : take(LIMIT, P.bytes())) {
             Iterable<Byte> bs = EP.rangeDownIncreasing(b);
-            assertTrue(b, all(c -> c != null, bs));
+            assertTrue(b, all(Objects::nonNull, bs));
             testNoRemove(bs);
             testHasNext(bs);
             assertEquals(b, length(bs), b + (1 << 7) + 1);
@@ -582,7 +582,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
         initialize("rangeDownDecreasing(byte)");
         for (byte b : take(LIMIT, P.bytes())) {
             Iterable<Byte> bs = EP.rangeDownDecreasing(b);
-            assertTrue(b, all(c -> c != null, bs));
+            assertTrue(b, all(Objects::nonNull, bs));
             testNoRemove(bs);
             testHasNext(bs);
             assertEquals(b, length(bs), b + (1 << 7) + 1);
@@ -660,7 +660,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
         initialize("rangeIncreasing(byte, byte)");
         for (Pair<Byte, Byte> p : take(LIMIT, P.bagPairs(P.bytes()))) {
             Iterable<Byte> bs = EP.rangeIncreasing(p.a, p.b);
-            assertTrue(p, all(b -> b != null, bs));
+            assertTrue(p, all(Objects::nonNull, bs));
             testNoRemove(bs);
             testHasNext(bs);
             assertEquals(p, length(bs), p.b - p.a + 1);
@@ -827,7 +827,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
         initialize("rangeDecreasing(byte, byte)");
         for (Pair<Byte, Byte> p : take(LIMIT, P.bagPairs(P.bytes()))) {
             Iterable<Byte> bs = EP.rangeDecreasing(p.a, p.b);
-            assertTrue(p, all(b -> b != null, bs));
+            assertTrue(p, all(Objects::nonNull, bs));
             testNoRemove(bs);
             testHasNext(bs);
             assertEquals(p, length(bs), p.b - p.a + 1);
@@ -1259,7 +1259,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
         initialize("rangeUp(byte)");
         for (byte b : take(LIMIT, P.bytes())) {
             Iterable<Byte> bs = EP.rangeUp(b);
-            assertTrue(b, all(c -> c != null, bs));
+            assertTrue(b, all(Objects::nonNull, bs));
             testNoRemove(bs);
             testHasNext(bs);
             assertEquals(b, length(bs), (1 << 7) - b);
@@ -1322,7 +1322,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
         initialize("rangeDown(byte)");
         for (byte b : take(LIMIT, P.bytes())) {
             Iterable<Byte> bs = EP.rangeDown(b);
-            assertTrue(b, all(c -> c != null, bs));
+            assertTrue(b, all(Objects::nonNull, bs));
             testNoRemove(bs);
             assertEquals(b, length(bs), b + (1 << 7) + 1);
             assertTrue(b, unique(bs));
@@ -1397,7 +1397,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
         initialize("range(byte, byte)");
         for (Pair<Byte, Byte> p : take(LIMIT, P.bagPairs(P.bytes()))) {
             Iterable<Byte> bs = EP.range(p.a, p.b);
-            assertTrue(p, all(b -> b != null, bs));
+            assertTrue(p, all(Objects::nonNull, bs));
             testNoRemove(bs);
             testHasNext(bs);
             assertEquals(p, length(bs), p.b - p.a + 1);
@@ -1945,7 +1945,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
             testHasNext(withNull);
             assertFalse(xs, isEmpty(withNull));
             assertNull(xs, head(withNull));
-            assertTrue(xs, all(i -> i != null, tail(withNull)));
+            assertTrue(xs, all(Objects::nonNull, tail(withNull)));
             inverse(EP::withNull, (Iterable<Integer> wn) -> toList(tail(wn)), xs);
         }
 
@@ -1954,7 +1954,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
             testNoRemove(TINY_LIMIT, withNull);
             assertFalse(xs, isEmpty(withNull));
             assertNull(xs, head(withNull));
-            assertTrue(xs, all(i -> i != null, take(TINY_LIMIT, tail(withNull))));
+            assertTrue(xs, all(Objects::nonNull, take(TINY_LIMIT, tail(withNull))));
             aeqit(xs, TINY_LIMIT, tail(withNull), xs);
         }
     }
@@ -2064,7 +2064,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
             Iterable<Pair<Integer, Integer>> pairs = EP.dependentPairs(p.a, p.b);
             testNoRemove(pairs);
             testHasNext(pairs);
-            assertTrue(p, all(q -> q != null, pairs));
+            assertTrue(p, all(Objects::nonNull, pairs));
             assertTrue(p, isSubsetOf(map(q -> q.a, pairs), p.a));
             assertTrue(p, isSubsetOf(map(q -> q.b, pairs), concat(p.b.range())));
             assertEquals(p, length(pairs), sumInteger(toList(map(i -> length(p.b.apply(i)), p.a))));
@@ -2110,7 +2110,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
         for (Pair<Iterable<Integer>, FiniteDomainFunction<Integer, Iterable<Integer>>> p : take(LIMIT, ps2)) {
             Iterable<Pair<Integer, Integer>> pairs = EP.dependentPairs(p.a, p.b);
             testNoRemove(TINY_LIMIT, pairs);
-            assertTrue(p, all(q -> q != null, take(TINY_LIMIT, pairs)));
+            assertTrue(p, all(Objects::nonNull, take(TINY_LIMIT, pairs)));
         }
 
         Iterable<Pair<List<Integer>, FiniteDomainFunction<Integer, Iterable<Integer>>>> psFail = nub(
@@ -2154,7 +2154,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
         for (Pair<Iterable<Integer>, FiniteDomainFunction<Integer, Iterable<Integer>>> p : take(LIMIT, ps)) {
             Iterable<Pair<Integer, Integer>> pairs = EP.dependentPairsInfinite(p.a, p.b);
             testNoRemove(TINY_LIMIT, pairs);
-            assertTrue(p, all(q -> q != null, take(TINY_LIMIT, pairs)));
+            assertTrue(p, all(Objects::nonNull, take(TINY_LIMIT, pairs)));
         }
 
         if (P instanceof ExhaustiveProvider) {
@@ -2227,16 +2227,11 @@ public class ExhaustiveProviderProperties extends TestProperties {
             this.i = i;
         }
 
-        public int intValue() {
-            return i;
-        }
-
         public int hashCode() {
             throw new UnsupportedOperationException();
         }
 
-        public @NotNull
-        String toString() {
+        public @NotNull String toString() {
             return Integer.toString(i);
         }
     }
@@ -2274,7 +2269,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
                 take(LIMIT, ps)) {
             Iterable<Pair<IntNoHashCode, Integer>> pairs = EP.dependentPairsInfiniteIdentityHash(p.a, p.b);
             testNoRemove(TINY_LIMIT, pairs);
-            assertTrue(p, all(q -> q != null, take(TINY_LIMIT, pairs)));
+            assertTrue(p, all(Objects::nonNull, take(TINY_LIMIT, pairs)));
         }
 
         Iterable<
@@ -2369,7 +2364,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
         for (Pair<Iterable<Integer>, FiniteDomainFunction<Integer, Iterable<Integer>>> p : take(LIMIT, ps)) {
             Iterable<Pair<Integer, Integer>> pairs = EP.dependentPairsInfiniteLogarithmicOrder(p.a, p.b);
             testNoRemove(TINY_LIMIT, pairs);
-            assertTrue(p, all(q -> q != null, take(TINY_LIMIT, pairs)));
+            assertTrue(p, all(Objects::nonNull, take(TINY_LIMIT, pairs)));
         }
 
         if (P instanceof ExhaustiveProvider) {
@@ -2473,7 +2468,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
         for (Pair<Iterable<Integer>, FiniteDomainFunction<Integer, Iterable<Integer>>> p : take(LIMIT, ps)) {
             Iterable<Pair<Integer, Integer>> pairs = EP.dependentPairsInfiniteSquareRootOrder(p.a, p.b);
             testNoRemove(TINY_LIMIT, pairs);
-            assertTrue(p, all(q -> q != null, take(TINY_LIMIT, pairs)));
+            assertTrue(p, all(Objects::nonNull, take(TINY_LIMIT, pairs)));
         }
 
         if (P instanceof ExhaustiveProvider) {
@@ -7030,9 +7025,9 @@ public class ExhaustiveProviderProperties extends TestProperties {
                 assertTrue(
                         xs,
                         increasing(
-                                new Pair.PairComparator<>(
-                                        Comparator.<Integer>naturalOrder(),
-                                        Comparator.<Integer>naturalOrder()
+                                new Pair.PairComparator<Integer, Integer>(
+                                        Comparator.naturalOrder(),
+                                        Comparator.naturalOrder()
                                 ),
                                 pairsList
                         )
@@ -7090,10 +7085,10 @@ public class ExhaustiveProviderProperties extends TestProperties {
                 assertTrue(
                         xs,
                         increasing(
-                                new Triple.TripleComparator<>(
-                                        Comparator.<Integer>naturalOrder(),
-                                        Comparator.<Integer>naturalOrder(),
-                                        Comparator.<Integer>naturalOrder()
+                                new Triple.TripleComparator<Integer, Integer, Integer>(
+                                        Comparator.naturalOrder(),
+                                        Comparator.naturalOrder(),
+                                        Comparator.naturalOrder()
                                 ),
                                 triplesList
                         )
@@ -7155,11 +7150,11 @@ public class ExhaustiveProviderProperties extends TestProperties {
                 assertTrue(
                         xs,
                         increasing(
-                                new Quadruple.QuadrupleComparator<>(
-                                        Comparator.<Integer>naturalOrder(),
-                                        Comparator.<Integer>naturalOrder(),
-                                        Comparator.<Integer>naturalOrder(),
-                                        Comparator.<Integer>naturalOrder()
+                                new Quadruple.QuadrupleComparator<Integer, Integer, Integer, Integer>(
+                                        Comparator.naturalOrder(),
+                                        Comparator.naturalOrder(),
+                                        Comparator.naturalOrder(),
+                                        Comparator.naturalOrder()
                                 ),
                                 quadruplesList
                         )
@@ -7231,12 +7226,12 @@ public class ExhaustiveProviderProperties extends TestProperties {
                 assertTrue(
                         xs,
                         increasing(
-                                new Quintuple.QuintupleComparator<>(
-                                        Comparator.<Integer>naturalOrder(),
-                                        Comparator.<Integer>naturalOrder(),
-                                        Comparator.<Integer>naturalOrder(),
-                                        Comparator.<Integer>naturalOrder(),
-                                        Comparator.<Integer>naturalOrder()
+                                new Quintuple.QuintupleComparator<Integer, Integer, Integer, Integer, Integer>(
+                                        Comparator.naturalOrder(),
+                                        Comparator.naturalOrder(),
+                                        Comparator.naturalOrder(),
+                                        Comparator.naturalOrder(),
+                                        Comparator.naturalOrder()
                                 ),
                                 quintuplesList
                         )
@@ -7310,13 +7305,13 @@ public class ExhaustiveProviderProperties extends TestProperties {
                 assertTrue(
                         xs,
                         increasing(
-                                new Sextuple.SextupleComparator<>(
-                                        Comparator.<Integer>naturalOrder(),
-                                        Comparator.<Integer>naturalOrder(),
-                                        Comparator.<Integer>naturalOrder(),
-                                        Comparator.<Integer>naturalOrder(),
-                                        Comparator.<Integer>naturalOrder(),
-                                        Comparator.<Integer>naturalOrder()
+                                new Sextuple.SextupleComparator<Integer, Integer, Integer, Integer, Integer, Integer>(
+                                        Comparator.naturalOrder(),
+                                        Comparator.naturalOrder(),
+                                        Comparator.naturalOrder(),
+                                        Comparator.naturalOrder(),
+                                        Comparator.naturalOrder(),
+                                        Comparator.naturalOrder()
                                 ),
                                 sextuplesList
                         )
@@ -7392,14 +7387,22 @@ public class ExhaustiveProviderProperties extends TestProperties {
                 assertTrue(
                         xs,
                         increasing(
-                                new Septuple.SeptupleComparator<>(
-                                        Comparator.<Integer>naturalOrder(),
-                                        Comparator.<Integer>naturalOrder(),
-                                        Comparator.<Integer>naturalOrder(),
-                                        Comparator.<Integer>naturalOrder(),
-                                        Comparator.<Integer>naturalOrder(),
-                                        Comparator.<Integer>naturalOrder(),
-                                        Comparator.<Integer>naturalOrder()
+                                new Septuple.SeptupleComparator<
+                                        Integer,
+                                        Integer,
+                                        Integer,
+                                        Integer,
+                                        Integer,
+                                        Integer,
+                                        Integer
+                                >(
+                                        Comparator.naturalOrder(),
+                                        Comparator.naturalOrder(),
+                                        Comparator.naturalOrder(),
+                                        Comparator.naturalOrder(),
+                                        Comparator.naturalOrder(),
+                                        Comparator.naturalOrder(),
+                                        Comparator.naturalOrder()
                                 ),
                                 septuplesList
                         )
@@ -8431,9 +8434,9 @@ public class ExhaustiveProviderProperties extends TestProperties {
                 assertTrue(
                         xs,
                         increasing(
-                                new Pair.PairComparator<>(
-                                        Comparator.<Integer>naturalOrder(),
-                                        Comparator.<Integer>naturalOrder()
+                                new Pair.PairComparator<Integer, Integer>(
+                                        Comparator.naturalOrder(),
+                                        Comparator.naturalOrder()
                                 ),
                                 pairsList
                         )
@@ -8495,10 +8498,10 @@ public class ExhaustiveProviderProperties extends TestProperties {
                 assertTrue(
                         xs,
                         increasing(
-                                new Triple.TripleComparator<>(
-                                        Comparator.<Integer>naturalOrder(),
-                                        Comparator.<Integer>naturalOrder(),
-                                        Comparator.<Integer>naturalOrder()
+                                new Triple.TripleComparator<Integer, Integer, Integer>(
+                                        Comparator.naturalOrder(),
+                                        Comparator.naturalOrder(),
+                                        Comparator.naturalOrder()
                                 ),
                                 triplesList
                         )
@@ -8571,11 +8574,11 @@ public class ExhaustiveProviderProperties extends TestProperties {
                 assertTrue(
                         xs,
                         increasing(
-                                new Quadruple.QuadrupleComparator<>(
-                                        Comparator.<Integer>naturalOrder(),
-                                        Comparator.<Integer>naturalOrder(),
-                                        Comparator.<Integer>naturalOrder(),
-                                        Comparator.<Integer>naturalOrder()
+                                new Quadruple.QuadrupleComparator<Integer, Integer, Integer, Integer>(
+                                        Comparator.naturalOrder(),
+                                        Comparator.naturalOrder(),
+                                        Comparator.naturalOrder(),
+                                        Comparator.naturalOrder()
                                 ),
                                 quadruplesList
                         )
@@ -8653,12 +8656,12 @@ public class ExhaustiveProviderProperties extends TestProperties {
                 assertTrue(
                         xs,
                         increasing(
-                                new Quintuple.QuintupleComparator<>(
-                                        Comparator.<Integer>naturalOrder(),
-                                        Comparator.<Integer>naturalOrder(),
-                                        Comparator.<Integer>naturalOrder(),
-                                        Comparator.<Integer>naturalOrder(),
-                                        Comparator.<Integer>naturalOrder()
+                                new Quintuple.QuintupleComparator<Integer, Integer, Integer, Integer, Integer>(
+                                        Comparator.naturalOrder(),
+                                        Comparator.naturalOrder(),
+                                        Comparator.naturalOrder(),
+                                        Comparator.naturalOrder(),
+                                        Comparator.naturalOrder()
                                 ),
                                 quintuplesList
                         )
@@ -8739,13 +8742,13 @@ public class ExhaustiveProviderProperties extends TestProperties {
                 assertTrue(
                         xs,
                         increasing(
-                                new Sextuple.SextupleComparator<>(
-                                        Comparator.<Integer>naturalOrder(),
-                                        Comparator.<Integer>naturalOrder(),
-                                        Comparator.<Integer>naturalOrder(),
-                                        Comparator.<Integer>naturalOrder(),
-                                        Comparator.<Integer>naturalOrder(),
-                                        Comparator.<Integer>naturalOrder()
+                                new Sextuple.SextupleComparator<Integer, Integer, Integer, Integer, Integer, Integer>(
+                                        Comparator.naturalOrder(),
+                                        Comparator.naturalOrder(),
+                                        Comparator.naturalOrder(),
+                                        Comparator.naturalOrder(),
+                                        Comparator.naturalOrder(),
+                                        Comparator.naturalOrder()
                                 ),
                                 sextuplesList
                         )
@@ -8829,14 +8832,22 @@ public class ExhaustiveProviderProperties extends TestProperties {
                 assertTrue(
                         xs,
                         increasing(
-                                new Septuple.SeptupleComparator<>(
-                                        Comparator.<Integer>naturalOrder(),
-                                        Comparator.<Integer>naturalOrder(),
-                                        Comparator.<Integer>naturalOrder(),
-                                        Comparator.<Integer>naturalOrder(),
-                                        Comparator.<Integer>naturalOrder(),
-                                        Comparator.<Integer>naturalOrder(),
-                                        Comparator.<Integer>naturalOrder()
+                                new Septuple.SeptupleComparator<
+                                        Integer,
+                                        Integer,
+                                        Integer,
+                                        Integer,
+                                        Integer,
+                                        Integer,
+                                        Integer
+                                >(
+                                        Comparator.naturalOrder(),
+                                        Comparator.naturalOrder(),
+                                        Comparator.naturalOrder(),
+                                        Comparator.naturalOrder(),
+                                        Comparator.naturalOrder(),
+                                        Comparator.naturalOrder(),
+                                        Comparator.naturalOrder()
                                 ),
                                 septuplesList
                         )
