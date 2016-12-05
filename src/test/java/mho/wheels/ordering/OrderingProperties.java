@@ -1,6 +1,8 @@
 package mho.wheels.ordering;
 
 import mho.wheels.iterables.IterableProvider;
+import mho.wheels.ordering.comparators.ListBasedComparator;
+import mho.wheels.ordering.comparators.StringBasedComparator;
 import mho.wheels.structures.Pair;
 import mho.wheels.structures.Triple;
 import mho.wheels.testing.TestProperties;
@@ -54,6 +56,9 @@ public class OrderingProperties extends TestProperties {
         propertiesMinimum_String();
         propertiesMaximum_String();
         propertiesMinimumMaximum_String();
+        propertiesMinimum_Comparator_String();
+        propertiesMaximum_Comparator_String();
+        propertiesMinimumMaximum_Comparator_String();
         propertiesReadStrict();
         propertiesToString();
     }
@@ -679,17 +684,7 @@ public class OrderingProperties extends TestProperties {
                 is -> P.permutationsFinite(toList(nub(is)))
         );
         for (Pair<List<Integer>, List<Integer>> p : take(LIMIT, ps)) {
-            Comparator<Integer> comparator = (x, y) -> {
-                Integer xIndex = p.b.indexOf(x);
-                if (xIndex == -1) {
-                    throw new IllegalArgumentException();
-                }
-                Integer yIndex = p.b.indexOf(y);
-                if (yIndex == -1) {
-                    throw new IllegalArgumentException();
-                }
-                return Integer.compare(xIndex, yIndex);
-            };
+            Comparator<Integer> comparator = new ListBasedComparator<>(p.b);
             minimum(comparator, p.a);
 
             Iterable<List<Integer>> xss = filterInfinite(
@@ -717,17 +712,7 @@ public class OrderingProperties extends TestProperties {
                 is -> P.permutationsFinite(toList(nub(is)))
         );
         for (Pair<List<Integer>, List<Integer>> p : take(LIMIT, ps)) {
-            Comparator<Integer> comparator = (x, y) -> {
-                Integer xIndex = p.b.indexOf(x);
-                if (xIndex == -1) {
-                    throw new IllegalArgumentException();
-                }
-                Integer yIndex = p.b.indexOf(y);
-                if (yIndex == -1) {
-                    throw new IllegalArgumentException();
-                }
-                return Integer.compare(xIndex, yIndex);
-            };
+            Comparator<Integer> comparator = new ListBasedComparator<>(p.b);
             maximum(comparator, p.a);
 
             Iterable<List<Integer>> xss = filterInfinite(
@@ -755,17 +740,7 @@ public class OrderingProperties extends TestProperties {
                 is -> P.permutationsFinite(toList(nub(is)))
         );
         for (Pair<List<Integer>, List<Integer>> p : take(LIMIT, ps)) {
-            Comparator<Integer> comparator = (x, y) -> {
-                Integer xIndex = p.b.indexOf(x);
-                if (xIndex == -1) {
-                    throw new IllegalArgumentException();
-                }
-                Integer yIndex = p.b.indexOf(y);
-                if (yIndex == -1) {
-                    throw new IllegalArgumentException();
-                }
-                return Integer.compare(xIndex, yIndex);
-            };
+            Comparator<Integer> comparator = new ListBasedComparator<>(p.b);
             minimumMaximum(comparator, p.a);
 
             Iterable<List<Integer>> xss = filterInfinite(
@@ -852,6 +827,69 @@ public class OrderingProperties extends TestProperties {
 
         for (Pair<Character, Character> p : take(LIMIT, P.pairs(P.characters()))) {
             assertEquals(p, minimumMaximum("" + p.a + p.b), minMax(p.a, p.b));
+        }
+    }
+
+    private void propertiesMinimum_Comparator_String() {
+        initialize("minimum(Comparator, String)");
+        Iterable<Pair<String, String>> ps = P.dependentPairs(P.stringsAtLeast(1), s -> P.stringPermutations(nub(s)));
+        for (Pair<String, String> p : take(LIMIT, ps)) {
+            Comparator<Character> comparator = new StringBasedComparator(p.b);
+            minimum(comparator, p.a);
+
+            for (String s : take(TINY_LIMIT, filterInfinite(s -> !any(c -> elem(c, s), p.a), P.stringsAtLeast(2)))) {
+                try {
+                    minimum(comparator, s);
+                    fail(s);
+                } catch (IllegalArgumentException ignored) {}
+            }
+        }
+
+        Comparator<Character> naturalComparator = Comparator.naturalOrder();
+        for (String s : take(LIMIT, P.stringsAtLeast(1))) {
+            assertEquals(s, minimum(naturalComparator, s), minimum(s));
+        }
+    }
+
+    private void propertiesMaximum_Comparator_String() {
+        initialize("maximum(Comparator, String)");
+        Iterable<Pair<String, String>> ps = P.dependentPairs(P.stringsAtLeast(1), s -> P.stringPermutations(nub(s)));
+        for (Pair<String, String> p : take(LIMIT, ps)) {
+            Comparator<Character> comparator = new StringBasedComparator(p.b);
+            maximum(comparator, p.a);
+
+            for (String s : take(TINY_LIMIT, filterInfinite(s -> !any(c -> elem(c, s), p.a), P.stringsAtLeast(2)))) {
+                try {
+                    maximum(comparator, s);
+                    fail(s);
+                } catch (IllegalArgumentException ignored) {}
+            }
+        }
+
+        Comparator<Character> naturalComparator = Comparator.naturalOrder();
+        for (String s : take(LIMIT, P.stringsAtLeast(1))) {
+            assertEquals(s, maximum(naturalComparator, s), maximum(s));
+        }
+    }
+
+    private void propertiesMinimumMaximum_Comparator_String() {
+        initialize("minimumMaximum(Comparator, String)");
+        Iterable<Pair<String, String>> ps = P.dependentPairs(P.stringsAtLeast(1), s -> P.stringPermutations(nub(s)));
+        for (Pair<String, String> p : take(LIMIT, ps)) {
+            Comparator<Character> comparator = new StringBasedComparator(p.b);
+            minimumMaximum(comparator, p.a);
+
+            for (String s : take(TINY_LIMIT, filterInfinite(s -> !any(c -> elem(c, s), p.a), P.stringsAtLeast(2)))) {
+                try {
+                    minimumMaximum(comparator, s);
+                    fail(s);
+                } catch (IllegalArgumentException ignored) {}
+            }
+        }
+
+        Comparator<Character> naturalComparator = Comparator.naturalOrder();
+        for (String s : take(LIMIT, P.stringsAtLeast(1))) {
+            assertEquals(s, minimumMaximum(naturalComparator, s), minimumMaximum(s));
         }
     }
 
