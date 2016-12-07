@@ -3697,7 +3697,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
             case 0:
                 return size == 0 ? Collections.singletonList("") : Collections.emptyList();
             case 1:
-                return Collections.singletonList(replicate(size, s.charAt(0)));
+                return Collections.singletonList(replicateString(size, s.charAt(0)));
             default:
                 BigInteger base = BigInteger.valueOf(sLength);
                 return toList(
