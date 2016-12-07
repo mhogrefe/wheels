@@ -3148,7 +3148,7 @@ public class RandomProviderProperties extends TestProperties {
                 )
         );
         for (Triple<RandomProvider, Character, Integer> t : take(LIMIT, ts2)) {
-            aeqit(t, TINY_LIMIT, t.a.strings(t.c, Character.toString(t.b)), repeat(replicate(t.c, t.b.charValue())));
+            aeqit(t, TINY_LIMIT, t.a.strings(t.c, Character.toString(t.b)), repeat(replicateString(t.c, t.b)));
         }
 
         Iterable<Pair<RandomProvider, Integer>> psFail = P.pairs(P.randomProvidersDefault(), P.positiveIntegers());
@@ -3836,7 +3836,7 @@ public class RandomProviderProperties extends TestProperties {
             aeqit(
                     t,
                     TINY_LIMIT,
-                    t.a.stringBags(t.c, Character.toString(t.b)), repeat(replicate(t.c, t.b.charValue()))
+                    t.a.stringBags(t.c, Character.toString(t.b)), repeat(replicateString(t.c, t.b))
             );
         }
 

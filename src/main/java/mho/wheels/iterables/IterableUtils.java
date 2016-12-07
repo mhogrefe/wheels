@@ -1998,7 +1998,7 @@ public final strictfp class IterableUtils {
         };
     }
 
-    public static @NotNull String replicate(int n, char c) {
+    public static @NotNull String replicateString(int n, char c) {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < n; i++) {
             sb.append(c);

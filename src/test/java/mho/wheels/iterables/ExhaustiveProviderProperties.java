@@ -3729,8 +3729,8 @@ public class ExhaustiveProviderProperties extends TestProperties {
                 List<String> stringsList = toList(strings);
                 assertEquals(p, stringsLex_int_String_alt(p.b, p.a), stringsList);
                 if (!p.a.isEmpty()) {
-                    assertEquals(p, head(stringsList), replicate(p.b, head(p.a)));
-                    assertEquals(p, last(stringsList), replicate(p.b, last(p.a)));
+                    assertEquals(p, head(stringsList), replicateString(p.b, head(p.a)));
+                    assertEquals(p, last(stringsList), replicateString(p.b, last(p.a)));
                 }
                 assertEquals(p, stringsList.size(), stringsLength.intValueExact());
                 assertTrue(p, all(xs -> isSubsetOf(xs, p.a), stringsList));
@@ -3891,7 +3891,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
             testNoRemove(TINY_LIMIT, strings);
             List<String> stringsList = toList(take(TINY_LIMIT, strings));
             if (!p.a.isEmpty()) {
-                assertEquals(p, head(stringsList), replicate(p.b, head(p.a)));
+                assertEquals(p, head(stringsList), replicateString(p.b, head(p.a)));
             }
             assertTrue(p, all(s -> isSubsetOf(s, p.a), stringsList));
             assertTrue(p, all(s -> s.length() >= p.b, stringsList));
@@ -5055,8 +5055,8 @@ public class ExhaustiveProviderProperties extends TestProperties {
                 testHasNext(strings);
                 List<String> stringsList = toList(strings);
                 if (!p.a.isEmpty()) {
-                    assertEquals(p, head(stringsList), replicate(p.b, head(p.a)));
-                    assertEquals(p, last(stringsList), replicate(p.b, last(p.a)));
+                    assertEquals(p, head(stringsList), replicateString(p.b, head(p.a)));
+                    assertEquals(p, last(stringsList), replicateString(p.b, last(p.a)));
                 }
                 assertEquals(p, stringsList.size(), stringsLength.intValueExact());
                 assertTrue(p, all(xs -> isSubsetOf(xs, p.a), stringsList));
@@ -5234,7 +5234,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
             testNoRemove(TINY_LIMIT, strings);
             List<String> stringsList = toList(take(TINY_LIMIT, strings));
             if (!p.a.isEmpty()) {
-                assertEquals(p, head(stringsList), replicate(p.b, head(p.a)));
+                assertEquals(p, head(stringsList), replicateString(p.b, head(p.a)));
             }
             assertTrue(p, all(s -> isSubsetOf(s, p.a), stringsList));
             assertTrue(p, all(s -> s.length() >= p.b, stringsList));
@@ -7604,7 +7604,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
             testNoRemove(TINY_LIMIT, strings);
             List<String> stringsList = toList(take(TINY_LIMIT, strings));
             if (!p.a.isEmpty()) {
-                assertEquals(p, head(stringsList), replicate(p.b, minimum(p.a)));
+                assertEquals(p, head(stringsList), replicateString(p.b, minimum(p.a)));
             }
             assertTrue(p, all(s -> isSubsetOf(s, p.a), stringsList));
             assertTrue(p, all(s -> s.length() >= p.b, stringsList));
@@ -8081,8 +8081,8 @@ public class ExhaustiveProviderProperties extends TestProperties {
                 testHasNext(strings);
                 List<String> stringsList = toList(strings);
                 if (!p.a.isEmpty()) {
-                    assertEquals(p, head(stringsList), replicate(p.b, head(p.a)));
-                    assertEquals(p, last(stringsList), replicate(p.b, last(p.a)));
+                    assertEquals(p, head(stringsList), replicateString(p.b, head(p.a)));
+                    assertEquals(p, last(stringsList), replicateString(p.b, last(p.a)));
                 }
                 assertEquals(p, stringsList.size(), stringsLength.intValueExact());
                 assertTrue(p, all(xs -> isSubsetOf(xs, p.a), stringsList));
@@ -8277,7 +8277,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
             testNoRemove(TINY_LIMIT, strings);
             List<String> stringsList = toList(take(TINY_LIMIT, strings));
             if (!p.a.isEmpty()) {
-                assertEquals(p, head(stringsList), replicate(p.b, head(p.a)));
+                assertEquals(p, head(stringsList), replicateString(p.b, head(p.a)));
             }
             assertTrue(p, all(s -> isSubsetOf(s, p.a), stringsList));
             assertTrue(p, all(s -> s.length() >= p.b, stringsList));
