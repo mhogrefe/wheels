@@ -7446,8 +7446,8 @@ public class ExhaustiveProviderProperties extends TestProperties {
                 testHasNext(strings);
                 List<String> stringsList = toList(strings);
                 if (!p.a.isEmpty()) {
-                    assertEquals(p, head(stringsList), replicate(p.b, minimum(p.a)));
-                    assertEquals(p, last(stringsList), replicate(p.b, maximum(p.a)));
+                    assertEquals(p, head(stringsList), replicateString(p.b, minimum(p.a)));
+                    assertEquals(p, last(stringsList), replicateString(p.b, maximum(p.a)));
                 }
                 assertEquals(p, stringsList.size(), stringsLength.intValueExact());
                 assertTrue(p, all(xs -> isSubsetOf(xs, p.a), stringsList));
