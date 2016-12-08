@@ -87,7 +87,8 @@ public class BigDecimalUtilsProperties extends TestProperties {
             BigDecimal bd = setPrecision(p.a, p.b);
             assertTrue(
                     p,
-                    bd.toString().equals("0." + replicate(p.b - 1, '0')) || bd.toString().equals("0E-" + (p.b - 1))
+                    bd.toString().equals("0." + replicateString(p.b - 1, '0')) ||
+                            bd.toString().equals("0E-" + (p.b - 1))
             );
         }
 
