@@ -3890,7 +3890,7 @@ public class RandomProviderProperties extends TestProperties {
                 P.prefixPermutations(EP.naturalIntegers())
         );
         for (Pair<RandomProvider, Iterable<Integer>> p : take(LIMIT, ps)) {
-            simpleTest(p.a, p.a.bags(p.b), IterableUtils::weaklyIncreasing);
+            simpleTest(p.a, p.a.bags(p.b), Ordering::weaklyIncreasing);
         }
 
         Iterable<Pair<RandomProvider, List<Integer>>> ps2 = P.pairs(
@@ -4254,7 +4254,7 @@ public class RandomProviderProperties extends TestProperties {
                 P.withScale(4).repeatingIterables(P.naturalIntegers())
         );
         for (Pair<RandomProvider, Iterable<Integer>> p : take(LIMIT, ps)) {
-            simpleTest(p.a, p.a.subsets(p.b), IterableUtils::increasing);
+            simpleTest(p.a, p.a.subsets(p.b), Ordering::increasing);
         }
 
         Iterable<Pair<RandomProvider, List<Integer>>> ps2 = P.pairs(

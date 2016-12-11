@@ -821,6 +821,58 @@ public enum Ordering {
         return new Pair<>(min, max);
     }
 
+    public static <T extends Comparable<T>> boolean increasing(@NotNull Iterable<T> xs) {
+        //noinspection Convert2MethodRef
+        return and(adjacentPairsWith((x, y) -> lt(x, y), xs));
+    }
+
+    public static <T extends Comparable<T>> boolean decreasing(@NotNull Iterable<T> xs) {
+        //noinspection Convert2MethodRef
+        return and(adjacentPairsWith((x, y) -> gt(x, y), xs));
+    }
+
+    public static <T extends Comparable<T>> boolean weaklyIncreasing(@NotNull Iterable<T> xs) {
+        //noinspection Convert2MethodRef
+        return and(adjacentPairsWith((x, y) -> le(x, y), xs));
+    }
+
+    public static <T extends Comparable<T>> boolean weaklyDecreasing(@NotNull Iterable<T> xs) {
+        //noinspection Convert2MethodRef
+        return and(adjacentPairsWith((x, y) -> ge(x, y), xs));
+    }
+
+    public static <T extends Comparable<T>> boolean zigzagging(@NotNull Iterable<T> xs) {
+        Iterable<Pair<Ordering, Ordering>> compares = adjacentPairsWith(
+                (a, b) -> new Pair<Ordering, Ordering>(a, b),
+                adjacentPairsWith((x, y) -> compare(x, y), xs)
+        );
+        return all(p -> p.a != EQ && p.a == p.b.invert(), compares);
+    }
+
+    public static <T> boolean increasing(@NotNull Comparator<T> comparator, @NotNull Iterable<T> xs) {
+        return and(adjacentPairsWith((x, y) -> lt(comparator, x, y), xs));
+    }
+
+    public static <T> boolean decreasing(@NotNull Comparator<T> comparator, @NotNull Iterable<T> xs) {
+        return and(adjacentPairsWith((x, y) -> gt(comparator, x, y), xs));
+    }
+
+    public static <T> boolean weaklyIncreasing(@NotNull Comparator<T> comparator, @NotNull Iterable<T> xs) {
+        return and(adjacentPairsWith((x, y) -> le(comparator, x, y), xs));
+    }
+
+    public static <T> boolean weaklyDecreasing(@NotNull Comparator<T> comparator, @NotNull Iterable<T> xs) {
+        return and(adjacentPairsWith((x, y) -> ge(comparator, x, y), xs));
+    }
+
+    public static <T> boolean zigzagging(@NotNull Comparator<T> comparator, @NotNull Iterable<T> xs) {
+        Iterable<Pair<Ordering, Ordering>> compares = adjacentPairsWith(
+                (a, b) -> new Pair<Ordering, Ordering>(a, b),
+                adjacentPairsWith((x, y) -> compare(comparator, x, y), xs)
+        );
+        return all(p -> p.a != EQ && p.a == p.b.invert(), compares);
+    }
+
     /**
      * Reads an {@link Ordering} from a {@code String}.
      *

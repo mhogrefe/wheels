@@ -5,6 +5,7 @@ import mho.wheels.math.MathUtils;
 import mho.wheels.numberUtils.BigDecimalUtils;
 import mho.wheels.numberUtils.FloatingPointUtils;
 import mho.wheels.numberUtils.IntegerUtils;
+import mho.wheels.ordering.Ordering;
 import mho.wheels.ordering.comparators.*;
 import mho.wheels.structures.*;
 import mho.wheels.testing.TestProperties;
@@ -6939,7 +6940,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
                 }
                 assertEquals(p, listsList.size(), listsLength.intValueExact());
                 assertTrue(p, all(xs -> isSubsetOf(xs, p.a), listsList));
-                assertTrue(p, all(IterableUtils::weaklyIncreasing, listsList));
+                assertTrue(p, all(Ordering::weaklyIncreasing, listsList));
                 assertTrue(p, all(xs -> xs.size() == p.b, listsList));
             }
         }
@@ -6958,7 +6959,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
                     assertTrue(
                             p,
                             IterableUtils.equal(
-                                    filter(IterableUtils::weaklyIncreasing, EP.listsLex(p.b, sort(p.a))),
+                                    filter(Ordering::weaklyIncreasing, EP.listsLex(p.b, sort(p.a))),
                                     listsList
                             )
                     );
@@ -7021,7 +7022,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
             if (lt(pairsLength, BigInteger.valueOf(LIMIT))) {
                 List<Pair<Integer, Integer>> pairsList = toList(EP.bagPairsLex(xs));
                 assertTrue(xs, unique(pairsList));
-                assertTrue(xs, all(IterableUtils::weaklyIncreasing, map(Pair::toList, pairsList)));
+                assertTrue(xs, all(Ordering::weaklyIncreasing, map(Pair::toList, pairsList)));
                 assertTrue(
                         xs,
                         increasing(
@@ -7081,7 +7082,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
             if (lt(triplesLength, BigInteger.valueOf(LIMIT))) {
                 List<Triple<Integer, Integer, Integer>> triplesList = toList(EP.bagTriplesLex(xs));
                 assertTrue(xs, unique(triplesList));
-                assertTrue(xs, all(IterableUtils::weaklyIncreasing, map(Triple::toList, triplesList)));
+                assertTrue(xs, all(Ordering::weaklyIncreasing, map(Triple::toList, triplesList)));
                 assertTrue(
                         xs,
                         increasing(
@@ -7146,7 +7147,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
             if (lt(quadruplesLength, BigInteger.valueOf(LIMIT))) {
                 List<Quadruple<Integer, Integer, Integer, Integer>> quadruplesList = toList(EP.bagQuadruplesLex(xs));
                 assertTrue(xs, unique(quadruplesList));
-                assertTrue(xs, all(IterableUtils::weaklyIncreasing, map(Quadruple::toList, quadruplesList)));
+                assertTrue(xs, all(Ordering::weaklyIncreasing, map(Quadruple::toList, quadruplesList)));
                 assertTrue(
                         xs,
                         increasing(
@@ -7222,7 +7223,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
                 List<Quintuple<Integer, Integer, Integer, Integer, Integer>> quintuplesList =
                         toList(EP.bagQuintuplesLex(xs));
                 assertTrue(xs, unique(quintuplesList));
-                assertTrue(xs, all(IterableUtils::weaklyIncreasing, map(Quintuple::toList, quintuplesList)));
+                assertTrue(xs, all(Ordering::weaklyIncreasing, map(Quintuple::toList, quintuplesList)));
                 assertTrue(
                         xs,
                         increasing(
@@ -7301,7 +7302,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
                 List<Sextuple<Integer, Integer, Integer, Integer, Integer, Integer>> sextuplesList =
                         toList(EP.bagSextuplesLex(xs));
                 assertTrue(xs, unique(sextuplesList));
-                assertTrue(xs, all(IterableUtils::weaklyIncreasing, map(Sextuple::toList, sextuplesList)));
+                assertTrue(xs, all(Ordering::weaklyIncreasing, map(Sextuple::toList, sextuplesList)));
                 assertTrue(
                         xs,
                         increasing(
@@ -7383,7 +7384,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
                 List<Septuple<Integer, Integer, Integer, Integer, Integer, Integer, Integer>> septuplesList =
                         toList(EP.bagSeptuplesLex(xs));
                 assertTrue(xs, unique(septuplesList));
-                assertTrue(xs, all(IterableUtils::weaklyIncreasing, map(Septuple::toList, septuplesList)));
+                assertTrue(xs, all(Ordering::weaklyIncreasing, map(Septuple::toList, septuplesList)));
                 assertTrue(
                         xs,
                         increasing(
@@ -7506,7 +7507,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
         for (List<Integer> xs : take(LIMIT, P.withScale(4).distinctLists(P.integersGeometric()))) {
             List<List<Integer>> listsList = toList(take(TINY_LIMIT, EP.bagsShortlex(xs)));
             assertTrue(xs, unique(listsList));
-            assertTrue(xs, all(IterableUtils::weaklyIncreasing, listsList));
+            assertTrue(xs, all(Ordering::weaklyIncreasing, listsList));
             assertTrue(xs, increasing(new ShortlexComparator<>(), map(ys -> ((Iterable<Integer>) ys), listsList)));
         }
 
@@ -7560,7 +7561,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
         for (Pair<List<Integer>, Integer> p : take(LIMIT, ps)) {
             List<List<Integer>> listsList = toList(take(TINY_LIMIT, EP.bagsShortlexAtLeast(p.b, p.a)));
             assertTrue(p, unique(listsList));
-            assertTrue(p, all(IterableUtils::weaklyIncreasing, listsList));
+            assertTrue(p, all(Ordering::weaklyIncreasing, listsList));
             assertTrue(p, increasing(new ShortlexComparator<>(), map(ys -> ((Iterable<Integer>) ys), listsList)));
         }
 
@@ -7655,7 +7656,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
                 }
                 assertEquals(p, listsList.size(), listsLength.intValueExact());
                 assertTrue(p, all(xs -> isSubsetOf(xs, p.a), listsList));
-                assertTrue(p, all(IterableUtils::weaklyIncreasing, listsList));
+                assertTrue(p, all(Ordering::weaklyIncreasing, listsList));
                 assertTrue(p, all(xs -> xs.size() == p.b, listsList));
             }
         }
@@ -7682,7 +7683,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
             List<List<Integer>> listsList = toList(take(TINY_LIMIT, lists));
             assertEquals(p, head(listsList), toList(replicate(p.b, head(p.a))));
             assertTrue(p, all(xs -> isSubsetOf(xs, p.a), listsList));
-            assertTrue(p, all(IterableUtils::weaklyIncreasing, listsList));
+            assertTrue(p, all(Ordering::weaklyIncreasing, listsList));
             assertTrue(p, all(xs -> xs.size() == p.b, listsList));
             assertTrue(p, unique(listsList));
         }
@@ -7740,7 +7741,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
             if (lt(pairsLength, BigInteger.valueOf(SMALL_LIMIT))) {
                 List<Pair<Integer, Integer>> pairsList = toList(EP.bagPairs(xs));
                 assertTrue(xs, unique(pairsList));
-                assertTrue(xs, all(IterableUtils::weaklyIncreasing, map(Pair::toList, pairsList)));
+                assertTrue(xs, all(Ordering::weaklyIncreasing, map(Pair::toList, pairsList)));
             }
         }
 
@@ -7749,7 +7750,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
             testNoRemove(TINY_LIMIT, pairs);
             assertTrue(xs, unique(take(TINY_LIMIT, pairs)));
             List<Pair<Integer, Integer>> pairsList = toList(take(TINY_LIMIT, pairs));
-            assertTrue(xs, all(IterableUtils::weaklyIncreasing, map(Pair::toList, pairsList)));
+            assertTrue(xs, all(Ordering::weaklyIncreasing, map(Pair::toList, pairsList)));
             for (Pair<Integer, Integer> p : pairsList) {
                 assertTrue(xs, elem(p.a, xs));
                 assertTrue(xs, elem(p.b, xs));
@@ -7789,7 +7790,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
             if (lt(triplesLength, BigInteger.valueOf(SMALL_LIMIT))) {
                 List<Triple<Integer, Integer, Integer>> triplesList = toList(EP.bagTriples(xs));
                 assertTrue(xs, unique(triplesList));
-                assertTrue(xs, all(IterableUtils::weaklyIncreasing, map(Triple::toList, triplesList)));
+                assertTrue(xs, all(Ordering::weaklyIncreasing, map(Triple::toList, triplesList)));
             }
         }
 
@@ -7798,7 +7799,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
             testNoRemove(TINY_LIMIT, triples);
             assertTrue(xs, unique(take(TINY_LIMIT, triples)));
             List<Triple<Integer, Integer, Integer>> triplesList = toList(take(TINY_LIMIT, triples));
-            assertTrue(xs, all(IterableUtils::weaklyIncreasing, map(Triple::toList, triplesList)));
+            assertTrue(xs, all(Ordering::weaklyIncreasing, map(Triple::toList, triplesList)));
             for (Triple<Integer, Integer, Integer> t : triplesList) {
                 assertTrue(xs, elem(t.a, xs));
                 assertTrue(xs, elem(t.b, xs));
@@ -7840,7 +7841,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
             if (lt(quadruplesLength, BigInteger.valueOf(SMALL_LIMIT))) {
                 List<Quadruple<Integer, Integer, Integer, Integer>> quadruplesList = toList(EP.bagQuadruples(xs));
                 assertTrue(xs, unique(quadruplesList));
-                assertTrue(xs, all(IterableUtils::weaklyIncreasing, map(Quadruple::toList, quadruplesList)));
+                assertTrue(xs, all(Ordering::weaklyIncreasing, map(Quadruple::toList, quadruplesList)));
             }
         }
 
@@ -7849,7 +7850,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
             testNoRemove(TINY_LIMIT, quadruples);
             assertTrue(xs, unique(take(TINY_LIMIT, quadruples)));
             List<Quadruple<Integer, Integer, Integer, Integer>> quadruplesList = toList(take(TINY_LIMIT, quadruples));
-            assertTrue(xs, all(IterableUtils::weaklyIncreasing, map(Quadruple::toList, quadruplesList)));
+            assertTrue(xs, all(Ordering::weaklyIncreasing, map(Quadruple::toList, quadruplesList)));
             for (Quadruple<Integer, Integer, Integer, Integer> q : quadruplesList) {
                 assertTrue(xs, elem(q.a, xs));
                 assertTrue(xs, elem(q.b, xs));
@@ -7902,7 +7903,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
                 List<Quintuple<Integer, Integer, Integer, Integer, Integer>> quintuplesList =
                         toList(EP.bagQuintuples(xs));
                 assertTrue(xs, unique(quintuplesList));
-                assertTrue(xs, all(IterableUtils::weaklyIncreasing, map(Quintuple::toList, quintuplesList)));
+                assertTrue(xs, all(Ordering::weaklyIncreasing, map(Quintuple::toList, quintuplesList)));
             }
         }
 
@@ -7912,7 +7913,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
             assertTrue(xs, unique(take(TINY_LIMIT, quintuples)));
             List<Quintuple<Integer, Integer, Integer, Integer, Integer>> quintuplesList =
                     toList(take(TINY_LIMIT, quintuples));
-            assertTrue(xs, all(IterableUtils::weaklyIncreasing, map(Quintuple::toList, quintuplesList)));
+            assertTrue(xs, all(Ordering::weaklyIncreasing, map(Quintuple::toList, quintuplesList)));
             for (Quintuple<Integer, Integer, Integer, Integer, Integer> q : quintuplesList) {
                 assertTrue(xs, elem(q.a, xs));
                 assertTrue(xs, elem(q.b, xs));
@@ -7967,7 +7968,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
                 List<Sextuple<Integer, Integer, Integer, Integer, Integer, Integer>> sextuplesList =
                         toList(EP.bagSextuples(xs));
                 assertTrue(xs, unique(sextuplesList));
-                assertTrue(xs, all(IterableUtils::weaklyIncreasing, map(Sextuple::toList, sextuplesList)));
+                assertTrue(xs, all(Ordering::weaklyIncreasing, map(Sextuple::toList, sextuplesList)));
             }
         }
 
@@ -7977,7 +7978,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
             assertTrue(xs, unique(take(TINY_LIMIT, sextuples)));
             List<Sextuple<Integer, Integer, Integer, Integer, Integer, Integer>> sextuplesList =
                     toList(take(TINY_LIMIT, sextuples));
-            assertTrue(xs, all(IterableUtils::weaklyIncreasing, map(Sextuple::toList, sextuplesList)));
+            assertTrue(xs, all(Ordering::weaklyIncreasing, map(Sextuple::toList, sextuplesList)));
             for (Sextuple<Integer, Integer, Integer, Integer, Integer, Integer> s : sextuplesList) {
                 assertTrue(xs, elem(s.a, xs));
                 assertTrue(xs, elem(s.b, xs));
@@ -8036,7 +8037,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
                 List<Septuple<Integer, Integer, Integer, Integer, Integer, Integer, Integer>> septuplesList =
                         toList(EP.bagSeptuples(xs));
                 assertTrue(xs, unique(septuplesList));
-                assertTrue(xs, all(IterableUtils::weaklyIncreasing, map(Septuple::toList, septuplesList)));
+                assertTrue(xs, all(Ordering::weaklyIncreasing, map(Septuple::toList, septuplesList)));
             }
         }
 
@@ -8047,7 +8048,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
             assertTrue(xs, unique(take(TINY_LIMIT, septuples)));
             List<Septuple<Integer, Integer, Integer, Integer, Integer, Integer, Integer>> septuplesList =
                     toList(take(TINY_LIMIT, septuples));
-            assertTrue(xs, all(IterableUtils::weaklyIncreasing, map(Septuple::toList, septuplesList)));
+            assertTrue(xs, all(Ordering::weaklyIncreasing, map(Septuple::toList, septuplesList)));
             for (Septuple<Integer, Integer, Integer, Integer, Integer, Integer, Integer> s : septuplesList) {
                 assertTrue(xs, elem(s.a, xs));
                 assertTrue(xs, elem(s.b, xs));
@@ -8151,7 +8152,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
         for (List<Integer> xs : take(LIMIT, P.withScale(4).distinctLists(P.integersGeometric()))) {
             List<List<Integer>> listsList = toList(take(TINY_LIMIT, EP.bags(xs)));
             assertTrue(xs, unique(listsList));
-            assertTrue(xs, all(IterableUtils::weaklyIncreasing, listsList));
+            assertTrue(xs, all(Ordering::weaklyIncreasing, listsList));
         }
 
         for (Iterable<Integer> xs : take(MEDIUM_LIMIT, P.prefixPermutations(EP.naturalIntegers()))) {
@@ -8161,7 +8162,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
             assertEquals(xs, head(listsList), Collections.emptyList());
             assertTrue(xs, all(ys -> isSubsetOf(ys, xs), listsList));
             assertTrue(xs, unique(listsList));
-            assertTrue(xs, all(IterableUtils::weaklyIncreasing, listsList));
+            assertTrue(xs, all(Ordering::weaklyIncreasing, listsList));
         }
 
         for (List<Integer> xs : take(LIMIT, P.withScale(4).listsWithElement(null, P.integersGeometric()))) {
@@ -8219,7 +8220,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
         for (Pair<List<Integer>, Integer> p : take(LIMIT, ps)) {
             List<List<Integer>> listsList = toList(take(TINY_LIMIT, EP.bagsAtLeast(p.b, p.a)));
             assertTrue(p, unique(listsList));
-            assertTrue(p, all(IterableUtils::weaklyIncreasing, listsList));
+            assertTrue(p, all(Ordering::weaklyIncreasing, listsList));
         }
 
         Iterable<Pair<Iterable<Integer>, Integer>> ps2 = P.pairsLogarithmicOrder(
@@ -8234,7 +8235,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
             assertTrue(p, all(xs -> isSubsetOf(xs, p.a), listsList));
             assertTrue(p, all(xs -> xs.size() >= p.b, listsList));
             assertTrue(p, unique(listsList));
-            assertTrue(p, all(IterableUtils::weaklyIncreasing, listsList));
+            assertTrue(p, all(Ordering::weaklyIncreasing, listsList));
         }
 
         for (int i : take(LIMIT, P.positiveIntegersGeometric())) {
@@ -8347,7 +8348,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
                 }
                 assertEquals(p, listsList.size(), listsLength.intValueExact());
                 assertTrue(p, all(xs -> isSubsetOf(xs, p.a), listsList));
-                assertTrue(p, all(IterableUtils::weaklyIncreasing, listsList));
+                assertTrue(p, all(Ordering::weaklyIncreasing, listsList));
                 assertTrue(p, all(xs -> xs.size() == p.b, listsList));
             }
         }
@@ -8367,7 +8368,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
                     assertTrue(
                             p,
                             IterableUtils.equal(
-                                    filter(IterableUtils::weaklyIncreasing, EP.distinctListsLex(p.b, sort(p.a))),
+                                    filter(Ordering::weaklyIncreasing, EP.distinctListsLex(p.b, sort(p.a))),
                                     listsList
                             )
                     );
@@ -8429,7 +8430,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
             if (lt(pairsLength, BigInteger.valueOf(LIMIT))) {
                 List<Pair<Integer, Integer>> pairsList = toList(EP.subsetPairsLex(xs));
                 assertTrue(xs, unique(pairsList));
-                assertTrue(xs, all(IterableUtils::weaklyIncreasing, map(Pair::toList, pairsList)));
+                assertTrue(xs, all(Ordering::weaklyIncreasing, map(Pair::toList, pairsList)));
                 assertTrue(xs, all(IterableUtils::unique, map(Pair::toList, pairsList)));
                 assertTrue(
                         xs,
@@ -8493,7 +8494,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
             if (lt(triplesLength, BigInteger.valueOf(LIMIT))) {
                 List<Triple<Integer, Integer, Integer>> triplesList = toList(EP.subsetTriplesLex(xs));
                 assertTrue(xs, unique(triplesList));
-                assertTrue(xs, all(IterableUtils::weaklyIncreasing, map(Triple::toList, triplesList)));
+                assertTrue(xs, all(Ordering::weaklyIncreasing, map(Triple::toList, triplesList)));
                 assertTrue(xs, all(IterableUtils::unique, map(Triple::toList, triplesList)));
                 assertTrue(
                         xs,
@@ -8569,7 +8570,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
                 List<Quadruple<Integer, Integer, Integer, Integer>> quadruplesList =
                         toList(EP.subsetQuadruplesLex(xs));
                 assertTrue(xs, unique(quadruplesList));
-                assertTrue(xs, all(IterableUtils::weaklyIncreasing, map(Quadruple::toList, quadruplesList)));
+                assertTrue(xs, all(Ordering::weaklyIncreasing, map(Quadruple::toList, quadruplesList)));
                 assertTrue(xs, all(IterableUtils::unique, map(Quadruple::toList, quadruplesList)));
                 assertTrue(
                         xs,
@@ -8651,7 +8652,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
                 List<Quintuple<Integer, Integer, Integer, Integer, Integer>> quintuplesList =
                         toList(EP.subsetQuintuplesLex(xs));
                 assertTrue(xs, unique(quintuplesList));
-                assertTrue(xs, all(IterableUtils::weaklyIncreasing, map(Quintuple::toList, quintuplesList)));
+                assertTrue(xs, all(Ordering::weaklyIncreasing, map(Quintuple::toList, quintuplesList)));
                 assertTrue(xs, all(IterableUtils::unique, map(Quintuple::toList, quintuplesList)));
                 assertTrue(
                         xs,
@@ -8737,7 +8738,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
                 List<Sextuple<Integer, Integer, Integer, Integer, Integer, Integer>> sextuplesList =
                         toList(EP.subsetSextuplesLex(xs));
                 assertTrue(xs, unique(sextuplesList));
-                assertTrue(xs, all(IterableUtils::weaklyIncreasing, map(Sextuple::toList, sextuplesList)));
+                assertTrue(xs, all(Ordering::weaklyIncreasing, map(Sextuple::toList, sextuplesList)));
                 assertTrue(xs, all(IterableUtils::unique, map(Sextuple::toList, sextuplesList)));
                 assertTrue(
                         xs,
@@ -8827,7 +8828,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
                 List<Septuple<Integer, Integer, Integer, Integer, Integer, Integer, Integer>> septuplesList =
                         toList(EP.subsetSeptuplesLex(xs));
                 assertTrue(xs, unique(septuplesList));
-                assertTrue(xs, all(IterableUtils::weaklyIncreasing, map(Septuple::toList, septuplesList)));
+                assertTrue(xs, all(Ordering::weaklyIncreasing, map(Septuple::toList, septuplesList)));
                 assertTrue(xs, all(IterableUtils::unique, map(Septuple::toList, septuplesList)));
                 assertTrue(
                         xs,
@@ -8957,7 +8958,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
                 }
                 assertEquals(xs, listsList.size(), listsLength.intValueExact());
                 assertTrue(xs, all(ys -> isSubsetOf(ys, xs), listsList));
-                assertTrue(xs, all(IterableUtils::weaklyIncreasing, listsList));
+                assertTrue(xs, all(Ordering::weaklyIncreasing, listsList));
             }
         }
 
@@ -9025,7 +9026,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
                 }
                 assertEquals(p, listsList.size(), listsLength.intValueExact());
                 assertTrue(p, all(xs -> isSubsetOf(xs, p.a), listsList));
-                assertTrue(p, all(IterableUtils::weaklyIncreasing, listsList));
+                assertTrue(p, all(Ordering::weaklyIncreasing, listsList));
                 assertTrue(p, all(xs -> xs.size() >= p.b, listsList));
             }
         }
@@ -9138,7 +9139,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
                 }
                 assertEquals(xs, listsList.size(), listsLength.intValueExact());
                 assertTrue(xs, all(ys -> isSubsetOf(ys, xs), listsList));
-                assertTrue(xs, all(IterableUtils::weaklyIncreasing, listsList));
+                assertTrue(xs, all(Ordering::weaklyIncreasing, listsList));
             }
         }
 
@@ -9206,7 +9207,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
                 }
                 assertEquals(p, listsList.size(), listsLength.intValueExact());
                 assertTrue(p, all(xs -> isSubsetOf(xs, p.a), listsList));
-                assertTrue(p, all(IterableUtils::weaklyIncreasing, listsList));
+                assertTrue(p, all(Ordering::weaklyIncreasing, listsList));
                 assertTrue(p, all(xs -> xs.size() >= p.b, listsList));
             }
         }
@@ -9312,7 +9313,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
                 }
                 assertEquals(p, listsList.size(), listsLength.intValueExact());
                 assertTrue(p, all(xs -> isSubsetOf(xs, p.a), listsList));
-                assertTrue(p, all(IterableUtils::weaklyIncreasing, listsList));
+                assertTrue(p, all(Ordering::weaklyIncreasing, listsList));
                 assertTrue(p, all(xs -> xs.size() == p.b, listsList));
             }
         }
@@ -9340,7 +9341,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
             List<List<Integer>> listsList = toList(take(TINY_LIMIT, lists));
             assertEquals(p, head(listsList), sort(take(p.b, p.a)));
             assertTrue(p, all(xs -> isSubsetOf(xs, p.a), listsList));
-            assertTrue(p, all(IterableUtils::weaklyIncreasing, listsList));
+            assertTrue(p, all(Ordering::weaklyIncreasing, listsList));
             assertTrue(p, all(xs -> xs.size() == p.b, listsList));
             assertTrue(p, unique(listsList));
         }
@@ -9403,7 +9404,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
             if (lt(pairsLength, BigInteger.valueOf(SMALL_LIMIT))) {
                 List<Pair<Integer, Integer>> pairsList = toList(EP.subsetPairs(xs));
                 assertTrue(xs, unique(pairsList));
-                assertTrue(xs, all(IterableUtils::weaklyIncreasing, map(Pair::toList, pairsList)));
+                assertTrue(xs, all(Ordering::weaklyIncreasing, map(Pair::toList, pairsList)));
             }
         }
 
@@ -9412,7 +9413,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
             testNoRemove(TINY_LIMIT, pairs);
             assertTrue(xs, unique(take(TINY_LIMIT, pairs)));
             List<Pair<Integer, Integer>> pairsList = toList(take(TINY_LIMIT, pairs));
-            assertTrue(xs, all(IterableUtils::weaklyIncreasing, map(Pair::toList, pairsList)));
+            assertTrue(xs, all(Ordering::weaklyIncreasing, map(Pair::toList, pairsList)));
             assertTrue(xs, all(IterableUtils::unique, map(Pair::toList, pairsList)));
             for (Pair<Integer, Integer> p : pairsList) {
                 assertTrue(xs, elem(p.a, xs));
@@ -9461,7 +9462,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
             if (lt(triplesLength, BigInteger.valueOf(SMALL_LIMIT))) {
                 List<Triple<Integer, Integer, Integer>> triplesList = toList(EP.subsetTriples(xs));
                 assertTrue(xs, unique(triplesList));
-                assertTrue(xs, all(IterableUtils::weaklyIncreasing, map(Triple::toList, triplesList)));
+                assertTrue(xs, all(Ordering::weaklyIncreasing, map(Triple::toList, triplesList)));
             }
         }
 
@@ -9470,7 +9471,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
             testNoRemove(TINY_LIMIT, triples);
             assertTrue(xs, unique(take(TINY_LIMIT, triples)));
             List<Triple<Integer, Integer, Integer>> triplesList = toList(take(TINY_LIMIT, triples));
-            assertTrue(xs, all(IterableUtils::weaklyIncreasing, map(Triple::toList, triplesList)));
+            assertTrue(xs, all(Ordering::weaklyIncreasing, map(Triple::toList, triplesList)));
             assertTrue(xs, all(IterableUtils::unique, map(Triple::toList, triplesList)));
             for (Triple<Integer, Integer, Integer> t : triplesList) {
                 assertTrue(xs, elem(t.a, xs));
@@ -9534,7 +9535,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
             if (lt(quadruplesLength, BigInteger.valueOf(SMALL_LIMIT))) {
                 List<Quadruple<Integer, Integer, Integer, Integer>> quadruplesList = toList(EP.subsetQuadruples(xs));
                 assertTrue(xs, unique(quadruplesList));
-                assertTrue(xs, all(IterableUtils::weaklyIncreasing, map(Quadruple::toList, quadruplesList)));
+                assertTrue(xs, all(Ordering::weaklyIncreasing, map(Quadruple::toList, quadruplesList)));
             }
         }
 
@@ -9543,7 +9544,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
             testNoRemove(TINY_LIMIT, quadruples);
             assertTrue(xs, unique(take(TINY_LIMIT, quadruples)));
             List<Quadruple<Integer, Integer, Integer, Integer>> quadruplesList = toList(take(TINY_LIMIT, quadruples));
-            assertTrue(xs, all(IterableUtils::weaklyIncreasing, map(Quadruple::toList, quadruplesList)));
+            assertTrue(xs, all(Ordering::weaklyIncreasing, map(Quadruple::toList, quadruplesList)));
             assertTrue(xs, all(IterableUtils::unique, map(Quadruple::toList, quadruplesList)));
             for (Quadruple<Integer, Integer, Integer, Integer> q : quadruplesList) {
                 assertTrue(xs, elem(q.a, xs));
@@ -9611,7 +9612,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
                 List<Quintuple<Integer, Integer, Integer, Integer, Integer>> quintuplesList =
                         toList(EP.subsetQuintuples(xs));
                 assertTrue(xs, unique(quintuplesList));
-                assertTrue(xs, all(IterableUtils::weaklyIncreasing, map(Quintuple::toList, quintuplesList)));
+                assertTrue(xs, all(Ordering::weaklyIncreasing, map(Quintuple::toList, quintuplesList)));
             }
         }
 
@@ -9621,7 +9622,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
             assertTrue(xs, unique(take(TINY_LIMIT, quintuples)));
             List<Quintuple<Integer, Integer, Integer, Integer, Integer>> quintuplesList =
                     toList(take(TINY_LIMIT, quintuples));
-            assertTrue(xs, all(IterableUtils::weaklyIncreasing, map(Quintuple::toList, quintuplesList)));
+            assertTrue(xs, all(Ordering::weaklyIncreasing, map(Quintuple::toList, quintuplesList)));
             assertTrue(xs, all(IterableUtils::unique, map(Quintuple::toList, quintuplesList)));
             for (Quintuple<Integer, Integer, Integer, Integer, Integer> q : quintuplesList) {
                 assertTrue(xs, elem(q.a, xs));
@@ -9702,7 +9703,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
                 List<Sextuple<Integer, Integer, Integer, Integer, Integer, Integer>> sextuplesList =
                         toList(EP.subsetSextuples(xs));
                 assertTrue(xs, unique(sextuplesList));
-                assertTrue(xs, all(IterableUtils::weaklyIncreasing, map(Sextuple::toList, sextuplesList)));
+                assertTrue(xs, all(Ordering::weaklyIncreasing, map(Sextuple::toList, sextuplesList)));
             }
         }
 
@@ -9713,7 +9714,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
             assertTrue(xs, unique(take(TINY_LIMIT, sextuples)));
             List<Sextuple<Integer, Integer, Integer, Integer, Integer, Integer>> sextuplesList =
                     toList(take(TINY_LIMIT, sextuples));
-            assertTrue(xs, all(IterableUtils::weaklyIncreasing, map(Sextuple::toList, sextuplesList)));
+            assertTrue(xs, all(Ordering::weaklyIncreasing, map(Sextuple::toList, sextuplesList)));
             assertTrue(xs, all(IterableUtils::unique, map(Sextuple::toList, sextuplesList)));
             for (Sextuple<Integer, Integer, Integer, Integer, Integer, Integer> s : sextuplesList) {
                 assertTrue(xs, elem(s.a, xs));
@@ -9807,7 +9808,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
                 List<Septuple<Integer, Integer, Integer, Integer, Integer, Integer, Integer>> septuplesList =
                         toList(EP.subsetSeptuples(xs));
                 assertTrue(xs, unique(septuplesList));
-                assertTrue(xs, all(IterableUtils::weaklyIncreasing, map(Septuple::toList, septuplesList)));
+                assertTrue(xs, all(Ordering::weaklyIncreasing, map(Septuple::toList, septuplesList)));
             }
         }
 
@@ -9818,7 +9819,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
             assertTrue(xs, unique(take(TINY_LIMIT, septuples)));
             List<Septuple<Integer, Integer, Integer, Integer, Integer, Integer, Integer>> septuplesList =
                     toList(take(TINY_LIMIT, septuples));
-            assertTrue(xs, all(IterableUtils::weaklyIncreasing, map(Septuple::toList, septuplesList)));
+            assertTrue(xs, all(Ordering::weaklyIncreasing, map(Septuple::toList, septuplesList)));
             assertTrue(xs, all(IterableUtils::unique, map(Septuple::toList, septuplesList)));
             for (Septuple<Integer, Integer, Integer, Integer, Integer, Integer, Integer> s : septuplesList) {
                 assertTrue(xs, elem(s.a, xs));
@@ -9953,7 +9954,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
             if (lt(listsLength, BigInteger.valueOf(SMALL_LIMIT))) {
                 List<List<Integer>> listsList = toList(EP.subsets(xs));
                 assertTrue(xs, unique(listsList));
-                assertTrue(xs, all(IterableUtils::increasing, listsList));
+                assertTrue(xs, all(Ordering::increasing, listsList));
             }
         }
 
@@ -9964,7 +9965,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
             assertEquals(xs, head(listsList), Collections.emptyList());
             assertTrue(xs, all(ys -> isSubsetOf(ys, xs), listsList));
             assertTrue(xs, unique(listsList));
-            assertTrue(xs, all(IterableUtils::increasing, listsList));
+            assertTrue(xs, all(Ordering::increasing, listsList));
         }
 
         for (List<Integer> xs : take(LIMIT, P.withScale(4).listsWithElement(null, P.integersGeometric()))) {
@@ -10052,7 +10053,7 @@ public class ExhaustiveProviderProperties extends TestProperties {
             assertEquals(p, head(listsList), sort(take(p.b, p.a)));
             assertTrue(p, all(xs -> isSubsetOf(xs, p.a), listsList));
             assertTrue(p, all(xs -> xs.size() >= p.b, listsList));
-            assertTrue(p, all(IterableUtils::increasing, listsList));
+            assertTrue(p, all(Ordering::increasing, listsList));
             assertTrue(p, unique(listsList));
         }
 
