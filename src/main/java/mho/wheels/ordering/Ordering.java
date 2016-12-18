@@ -843,8 +843,8 @@ public enum Ordering {
 
     public static <T extends Comparable<T>> boolean zigzagging(@NotNull Iterable<T> xs) {
         Iterable<Pair<Ordering, Ordering>> compares = adjacentPairsWith(
-                (a, b) -> new Pair<Ordering, Ordering>(a, b),
-                adjacentPairsWith((x, y) -> compare(x, y), xs)
+                Pair::new,
+                adjacentPairsWith(Ordering::compare, xs)
         );
         return all(p -> p.a != EQ && p.a == p.b.invert(), compares);
     }
@@ -867,8 +867,60 @@ public enum Ordering {
 
     public static <T> boolean zigzagging(@NotNull Comparator<T> comparator, @NotNull Iterable<T> xs) {
         Iterable<Pair<Ordering, Ordering>> compares = adjacentPairsWith(
-                (a, b) -> new Pair<Ordering, Ordering>(a, b),
+                Pair::new,
                 adjacentPairsWith((x, y) -> compare(comparator, x, y), xs)
+        );
+        return all(p -> p.a != EQ && p.a == p.b.invert(), compares);
+    }
+
+    public static boolean increasing(@NotNull String s) {
+        //noinspection Convert2MethodRef
+        return and(adjacentPairsWith((a, b) -> lt(a, b), fromString(s)));
+    }
+
+    public static boolean decreasing(@NotNull String s) {
+        //noinspection Convert2MethodRef
+        return and(adjacentPairsWith((a, b) -> gt(a, b), fromString(s)));
+    }
+
+    public static boolean weaklyIncreasing(@NotNull String s) {
+        //noinspection Convert2MethodRef
+        return and(adjacentPairsWith((a, b) -> le(a, b), fromString(s)));
+    }
+
+    public static boolean weaklyDecreasing(@NotNull String s) {
+        //noinspection Convert2MethodRef
+        return and(adjacentPairsWith((a, b) -> ge(a, b), fromString(s)));
+    }
+
+    public static boolean zigzagging(@NotNull String s) {
+        Iterable<Pair<Ordering, Ordering>> compares = adjacentPairsWith(
+                Pair::new,
+                adjacentPairsWith(Ordering::compare, fromString(s))
+        );
+        return all(p -> p.a != EQ && p.a == p.b.invert(), compares);
+    }
+
+    public static boolean increasing(@NotNull Comparator<Character> comparator, @NotNull String s) {
+        return and(adjacentPairsWith((x, y) -> lt(comparator, x, y), fromString(s)));
+    }
+
+    public static boolean decreasing(@NotNull Comparator<Character> comparator, @NotNull String s) {
+        return and(adjacentPairsWith((x, y) -> gt(comparator, x, y), fromString(s)));
+    }
+
+    public static boolean weaklyIncreasing(@NotNull Comparator<Character> comparator, @NotNull String s) {
+        return and(adjacentPairsWith((x, y) -> le(comparator, x, y), fromString(s)));
+    }
+
+    public static boolean weaklyDecreasing(@NotNull Comparator<Character> comparator, @NotNull String s) {
+        return and(adjacentPairsWith((x, y) -> ge(comparator, x, y), fromString(s)));
+    }
+
+    public static boolean zigzagging(@NotNull Comparator<Character> comparator, @NotNull String s) {
+        Iterable<Pair<Ordering, Ordering>> compares = adjacentPairsWith(
+                Pair::new,
+                adjacentPairsWith((x, y) -> compare(comparator, x, y), fromString(s))
         );
         return all(p -> p.a != EQ && p.a == p.b.invert(), compares);
     }
