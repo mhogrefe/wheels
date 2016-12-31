@@ -821,26 +821,91 @@ public enum Ordering {
         return new Pair<>(min, max);
     }
 
+    /**
+     * Determines whether an {@code Iterable} is increasing—that is, whether each element is greater than the element
+     * preceding it.
+     *
+     * <ul>
+     *  <li>{@code xs} may not be infinite and increasing.</li>
+     *  <li>The result may be either {@code boolean}.</li>
+     * </ul>
+     *
+     * @param xs an {@code Iterable}
+     * @param <T> the type of the elements in {@code xs}
+     * @return whether {@code xs} is strictly increasing
+     */
     public static <T extends Comparable<T>> boolean increasing(@NotNull Iterable<T> xs) {
         //noinspection Convert2MethodRef
         return and(adjacentPairsWith((x, y) -> lt(x, y), xs));
     }
 
+    /**
+     * Determines whether an {@code Iterable} is decreasing—that is, whether each element is less than the element
+     * preceding it.
+     *
+     * <ul>
+     *  <li>{@code xs} may not be infinite and decreasing.</li>
+     *  <li>The result may be either {@code boolean}.</li>
+     * </ul>
+     *
+     * @param xs an {@code Iterable}
+     * @param <T> the type of the elements in {@code xs}
+     * @return whether {@code xs} is strictly decreasing
+     */
     public static <T extends Comparable<T>> boolean decreasing(@NotNull Iterable<T> xs) {
         //noinspection Convert2MethodRef
         return and(adjacentPairsWith((x, y) -> gt(x, y), xs));
     }
 
+    /**
+     * Determines whether an {@code Iterable} is weakly increasing—that is, whether each element is greater than or
+     * equal to the element preceding it.
+     *
+     * <ul>
+     *  <li>{@code xs} may not be infinite and weakly increasing.</li>
+     *  <li>The result may be either {@code boolean}.</li>
+     * </ul>
+     *
+     * @param xs an {@code Iterable}
+     * @param <T> the type of the elements in {@code xs}
+     * @return whether {@code xs} is weakly increasing
+     */
     public static <T extends Comparable<T>> boolean weaklyIncreasing(@NotNull Iterable<T> xs) {
         //noinspection Convert2MethodRef
         return and(adjacentPairsWith((x, y) -> le(x, y), xs));
     }
 
+    /**
+     * Determines whether an {@code Iterable} is weakly decreasing—that is, whether each element is less than or equal
+     * to the element preceding it.
+     *
+     * <ul>
+     *  <li>{@code xs} may not be infinite and weakly decreasing.</li>
+     *  <li>The result may be either {@code boolean}.</li>
+     * </ul>
+     *
+     * @param xs an {@code Iterable}
+     * @param <T> the type of the elements in {@code xs}
+     * @return whether {@code xs} is weakly decreasing
+     */
     public static <T extends Comparable<T>> boolean weaklyDecreasing(@NotNull Iterable<T> xs) {
         //noinspection Convert2MethodRef
         return and(adjacentPairsWith((x, y) -> ge(x, y), xs));
     }
 
+    /**
+     * Determines whether an {@code Iterable} is zigzagging—that is, whether its elements alternate between being
+     * greater than and being less than the preceding element.
+     *
+     * <ul>
+     *  <li>{@code xs} may not be infinite and zigzagging.</li>
+     *  <li>The result may be either {@code boolean}.</li>
+     * </ul>
+     *
+     * @param xs an {@code Iterable}
+     * @param <T> the type of the elements in {@code xs}
+     * @return whether {@code xs} is zigzagging
+     */
     public static <T extends Comparable<T>> boolean zigzagging(@NotNull Iterable<T> xs) {
         Iterable<Pair<Ordering, Ordering>> compares = adjacentPairsWith(
                 Pair::new,
@@ -849,22 +914,112 @@ public enum Ordering {
         return all(p -> p.a != EQ && p.a == p.b.invert(), compares);
     }
 
+    /**
+     * Determines whether an {@code Iterable} is increasing—that is, whether each element is greater than the element
+     * preceding it, according to a provided {@code Comparator}.
+     *
+     * <ul>
+     *  <li>{@code comparator} cannot be null.</li>
+     *  <li>{@code xs} cannot be null.</li>
+     *  <li>{@code xs} cannot be infinite and increasing according to {@code comparator}.</li>
+     *  <li>{@code comparator} must not throw an exception when applied to any adjacent pair of elements in
+     *  {@code xs}.</li>
+     *  <li>The result may be either {@code boolean}.</li>
+     * </ul>
+     *
+     * @param comparator the comparator used to determine whether {@code xs} is increasing
+     * @param xs an {@code Iterable}
+     * @param <T> the type of the elements in {@code xs}
+     * @return whether {@code xs} is strictly increasing
+     */
     public static <T> boolean increasing(@NotNull Comparator<T> comparator, @NotNull Iterable<T> xs) {
         return and(adjacentPairsWith((x, y) -> lt(comparator, x, y), xs));
     }
 
+    /**
+     * Determines whether an {@code Iterable} is decreasing—that is, whether each element is less than the element
+     * preceding it, according to a provided {@code Comparator}.
+     *
+     * <ul>
+     *  <li>{@code comparator} cannot be null.</li>
+     *  <li>{@code xs} cannot be null.</li>
+     *  <li>{@code xs} cannot be infinite and decreasing according to {@code comparator}.</li>
+     *  <li>{@code comparator} must not throw an exception when applied to any adjacent pair of elements in
+     *  {@code xs}.</li>
+     *  <li>The result may be either {@code boolean}.</li>
+     * </ul>
+     *
+     * @param comparator the comparator used to determine whether {@code xs} is decreasing
+     * @param xs an {@code Iterable}
+     * @param <T> the type of the elements in {@code xs}
+     * @return whether {@code xs} is strictly decreasing
+     */
     public static <T> boolean decreasing(@NotNull Comparator<T> comparator, @NotNull Iterable<T> xs) {
         return and(adjacentPairsWith((x, y) -> gt(comparator, x, y), xs));
     }
 
+    /**
+     * Determines whether an {@code Iterable} is weakly increasing—that is, whether each element is greater than or
+     * equal to the element preceding it, according to a provided {@code Comparator}.
+     *
+     * <ul>
+     *  <li>{@code comparator} cannot be null.</li>
+     *  <li>{@code xs} cannot be null.</li>
+     *  <li>{@code xs} cannot be infinite and weakly increasing according to {@code comparator}.</li>
+     *  <li>{@code comparator} must not throw an exception when applied to any adjacent pair of elements in
+     *  {@code xs}.</li>
+     *  <li>The result may be either {@code boolean}.</li>
+     * </ul>
+     *
+     * @param comparator the comparator used to determine whether {@code xs} is weakly increasing
+     * @param xs an {@code Iterable}
+     * @param <T> the type of the elements in {@code xs}
+     * @return whether {@code xs} is weakly increasing
+     */
     public static <T> boolean weaklyIncreasing(@NotNull Comparator<T> comparator, @NotNull Iterable<T> xs) {
         return and(adjacentPairsWith((x, y) -> le(comparator, x, y), xs));
     }
 
+    /**
+     * Determines whether an {@code Iterable} is weakly decreasing—that is, whether each element is less than or equal
+     * to the element preceding it, according to a provided {@code Comparator}.
+     *
+     * <ul>
+     *  <li>{@code comparator} cannot be null.</li>
+     *  <li>{@code xs} cannot be null.</li>
+     *  <li>{@code xs} cannot be infinite and weakly decreasing according to {@code comparator}.</li>
+     *  <li>{@code comparator} must not throw an exception when applied to any adjacent pair of elements in
+     *  {@code xs}.</li>
+     *  <li>The result may be either {@code boolean}.</li>
+     * </ul>
+     *
+     * @param comparator the comparator used to determine whether {@code xs} is weakly decreasing
+     * @param xs an {@code Iterable}
+     * @param <T> the type of the elements in {@code xs}
+     * @return whether {@code xs} is weakly decreasing
+     */
     public static <T> boolean weaklyDecreasing(@NotNull Comparator<T> comparator, @NotNull Iterable<T> xs) {
         return and(adjacentPairsWith((x, y) -> ge(comparator, x, y), xs));
     }
 
+    /**
+     * Determines whether an {@code Iterable} is zigzagging—that is, whether its elements alternate between being
+     * greater than and being less than the preceding element, according to a provided {@code Comparator}.
+     *
+     * <ul>
+     *  <li>{@code comparator} cannot be null.</li>
+     *  <li>{@code xs} cannot be null.</li>
+     *  <li>{@code xs} cannot be infinite and zigzagging according to {@code comparator}.</li>
+     *  <li>{@code comparator} must not throw an exception when applied to any adjacent pair of elements in
+     *  {@code xs}.</li>
+     *  <li>The result may be either {@code boolean}.</li>
+     * </ul>
+     *
+     * @param comparator the comparator used to determine whether {@code xs} is zigzagging
+     * @param xs an {@code Iterable}
+     * @param <T> the type of the elements in {@code xs}
+     * @return whether {@code xs} is zigzagging
+     */
     public static <T> boolean zigzagging(@NotNull Comparator<T> comparator, @NotNull Iterable<T> xs) {
         Iterable<Pair<Ordering, Ordering>> compares = adjacentPairsWith(
                 Pair::new,
