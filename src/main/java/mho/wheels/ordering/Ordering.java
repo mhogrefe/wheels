@@ -1028,26 +1028,86 @@ public enum Ordering {
         return all(p -> p.a != EQ && p.a == p.b.invert(), compares);
     }
 
+    /**
+     * Determines whether a {@code String} is increasing—that is, whether each character is greater than the character
+     * preceding it.
+     *
+     * <ul>
+     *  <li>{@code s} cannot be null.</li>
+     *  <li>The result may be either {@code boolean}.</li>
+     * </ul>
+     *
+     * @param s a {@code String}
+     * @return whether {@code s} is strictly increasing
+     */
     public static boolean increasing(@NotNull String s) {
         //noinspection Convert2MethodRef
         return and(adjacentPairsWith((a, b) -> lt(a, b), fromString(s)));
     }
 
+    /**
+     * Determines whether a {@code String} is decreasing—that is, whether each character is less than the character
+     * preceding it.
+     *
+     * <ul>
+     *  <li>{@code s} cannot be null.</li>
+     *  <li>The result may be either {@code boolean}.</li>
+     * </ul>
+     *
+     * @param s a {@code String}
+     * @return whether {@code s} is strictly decreasing
+     */
     public static boolean decreasing(@NotNull String s) {
         //noinspection Convert2MethodRef
         return and(adjacentPairsWith((a, b) -> gt(a, b), fromString(s)));
     }
 
+    /**
+     * Determines whether a {@code String} is weakly increasing—that is, whether each character is greater than or
+     * equal to the character preceding it.
+     *
+     * <ul>
+     *  <li>{@code s} cannot be null.</li>
+     *  <li>The result may be either {@code boolean}.</li>
+     * </ul>
+     *
+     * @param s a {@code String}
+     * @return whether {@code s} is weakly increasing
+     */
     public static boolean weaklyIncreasing(@NotNull String s) {
         //noinspection Convert2MethodRef
         return and(adjacentPairsWith((a, b) -> le(a, b), fromString(s)));
     }
 
+    /**
+     * Determines whether a {@code String} is weakly decreasing—that is, whether each character is less than or equal
+     * to the character preceding it.
+     *
+     * <ul>
+     *  <li>{@code s} cannot be null.</li>
+     *  <li>The result may be either {@code boolean}.</li>
+     * </ul>
+     *
+     * @param s a {@code String}
+     * @return whether {@code s} is weakly decreasing
+     */
     public static boolean weaklyDecreasing(@NotNull String s) {
         //noinspection Convert2MethodRef
         return and(adjacentPairsWith((a, b) -> ge(a, b), fromString(s)));
     }
 
+    /**
+     * Determines whether a {@code String} is zigzagging—that is, whether its characters alternate between being
+     * greater than and being less than the preceding character.
+     *
+     * <ul>
+     *  <li>{@code s} cannot be null.</li>
+     *  <li>The result may be either {@code boolean}.</li>
+     * </ul>
+     *
+     * @param s a {@code String}
+     * @return whether {@code s} is zigzagging
+     */
     public static boolean zigzagging(@NotNull String s) {
         Iterable<Pair<Ordering, Ordering>> compares = adjacentPairsWith(
                 Pair::new,
@@ -1056,22 +1116,102 @@ public enum Ordering {
         return all(p -> p.a != EQ && p.a == p.b.invert(), compares);
     }
 
+    /**
+     * Determines whether a {@code String} is increasing—that is, whether each character is greater than the character
+     * preceding it, according to a provided {@code Comparator}.
+     *
+     * <ul>
+     *  <li>{@code comparator} cannot be null.</li>
+     *  <li>{@code s} cannot be null.</li>
+     *  <li>{@code comparator} must not throw an exception when applied to any adjacent pair of characters in
+     *  {@code s}.</li>
+     *  <li>The result may be either {@code boolean}.</li>
+     * </ul>
+     *
+     * @param comparator the comparator used to determine whether {@code s} is increasing
+     * @param s a {@code String}
+     * @return whether {@code s} is strictly increasing
+     */
     public static boolean increasing(@NotNull Comparator<Character> comparator, @NotNull String s) {
         return and(adjacentPairsWith((x, y) -> lt(comparator, x, y), fromString(s)));
     }
 
+    /**
+     * Determines whether a {@code String} is decreasing—that is, whether each character is lessthan the character
+     * preceding it, according to a provided {@code Comparator}.
+     *
+     * <ul>
+     *  <li>{@code comparator} cannot be null.</li>
+     *  <li>{@code s} cannot be null.</li>
+     *  <li>{@code comparator} must not throw an exception when applied to any adjacent pair of characters in
+     *  {@code s}.</li>
+     *  <li>The result may be either {@code boolean}.</li>
+     * </ul>
+     *
+     * @param comparator the comparator used to determine whether {@code s} is decreasing
+     * @param s a {@code String}
+     * @return whether {@code s} is strictly decreasing
+     */
     public static boolean decreasing(@NotNull Comparator<Character> comparator, @NotNull String s) {
         return and(adjacentPairsWith((x, y) -> gt(comparator, x, y), fromString(s)));
     }
 
+    /**
+     * Determines whether a {@code String} is weakly increasing—that is, whether each character is greater than or
+     * equal to the character preceding it, according to a provided {@code Comparator}.
+     *
+     * <ul>
+     *  <li>{@code comparator} cannot be null.</li>
+     *  <li>{@code s} cannot be null.</li>
+     *  <li>{@code comparator} must not throw an exception when applied to any adjacent pair of characters in
+     *  {@code s}.</li>
+     *  <li>The result may be either {@code boolean}.</li>
+     * </ul>
+     *
+     * @param comparator the comparator used to determine whether {@code s} is weakly increasing
+     * @param s a {@code String}
+     * @return whether {@code s} is weakly increasing
+     */
     public static boolean weaklyIncreasing(@NotNull Comparator<Character> comparator, @NotNull String s) {
         return and(adjacentPairsWith((x, y) -> le(comparator, x, y), fromString(s)));
     }
 
+    /**
+     * Determines whether a {@code String} is weakly decreasing—that is, whether each character is less than or equal
+     * to the character preceding it, according to a provided {@code Comparator}.
+     *
+     * <ul>
+     *  <li>{@code comparator} cannot be null.</li>
+     *  <li>{@code s} cannot be null.</li>
+     *  <li>{@code comparator} must not throw an exception when applied to any adjacent pair of characters in
+     *  {@code s}.</li>
+     *  <li>The result may be either {@code boolean}.</li>
+     * </ul>
+     *
+     * @param comparator the comparator used to determine whether {@code s} is weakly decreasing
+     * @param s a {@code String}
+     * @return whether {@code s} is weakly decreasing
+     */
     public static boolean weaklyDecreasing(@NotNull Comparator<Character> comparator, @NotNull String s) {
         return and(adjacentPairsWith((x, y) -> ge(comparator, x, y), fromString(s)));
     }
 
+    /**
+     * Determines whether a {@code String} is zigzagging—that is, whether its characters alternate between being
+     * greater than and being less than the preceding character, according to a provided {@code Comparator}.
+     *
+     * <ul>
+     *  <li>{@code comparator} cannot be null.</li>
+     *  <li>{@code s} cannot be null.</li>
+     *  <li>{@code comparator} must not throw an exception when applied to any adjacent pair of characters in
+     *  {@code s}.</li>
+     *  <li>The result may be either {@code boolean}.</li>
+     * </ul>
+     *
+     * @param comparator the comparator used to determine whether {@code x} is zigzagging
+     * @param s a {@code String}
+     * @return whether {@code s} is zigzagging
+     */
     public static boolean zigzagging(@NotNull Comparator<Character> comparator, @NotNull String s) {
         Iterable<Pair<Ordering, Ordering>> compares = adjacentPairsWith(
                 Pair::new,
