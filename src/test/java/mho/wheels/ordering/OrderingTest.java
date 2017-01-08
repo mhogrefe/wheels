@@ -610,6 +610,285 @@ public class OrderingTest {
         minimumMaximum_Comparator_String_fail_helper(VOWELS_BEFORE_CONSONANTS, "∞∞");
     }
 
+    private static void increasing_Iterable_helper(@NotNull String input, boolean output) {
+        aeq(increasing(readIntegerList(input)), output);
+    }
+
+    private static void increasing_Iterable_fail_helper(@NotNull String input) {
+        try {
+            increasing(readIntegerListWithNulls(input));
+            fail();
+        } catch (NullPointerException | IllegalArgumentException ignored) {}
+    }
+
+    @Test
+    public void testIncreasing_Iterable() {
+        increasing_Iterable_helper("[]", true);
+        increasing_Iterable_helper("[1]", true);
+        increasing_Iterable_helper("[1, 2, 3]", true);
+        increasing_Iterable_helper("[1, 1, 2]", false);
+        increasing_Iterable_helper("[3, 2, 1]", false);
+        increasing_Iterable_helper("[3, 3, 2]", false);
+        increasing_Iterable_helper("[1, 3, 2]", false);
+
+        increasing_Iterable_fail_helper("[null, 1]");
+    }
+
+    private static void decreasing_Iterable_helper(@NotNull String input, boolean output) {
+        aeq(decreasing(readIntegerList(input)), output);
+    }
+
+    private static void decreasing_Iterable_fail_helper(@NotNull String input) {
+        try {
+            decreasing(readIntegerListWithNulls(input));
+            fail();
+        } catch (NullPointerException | IllegalArgumentException ignored) {}
+    }
+
+    @Test
+    public void testDecreasing_Iterable() {
+        decreasing_Iterable_helper("[]", true);
+        decreasing_Iterable_helper("[1]", true);
+        decreasing_Iterable_helper("[1, 2, 3]", false);
+        decreasing_Iterable_helper("[1, 1, 2]", false);
+        decreasing_Iterable_helper("[3, 2, 1]", true);
+        decreasing_Iterable_helper("[3, 3, 2]", false);
+        decreasing_Iterable_helper("[1, 3, 2]", false);
+
+        decreasing_Iterable_fail_helper("[null, 1]");
+    }
+
+    private static void weaklyIncreasing_Iterable_helper(@NotNull String input, boolean output) {
+        aeq(weaklyIncreasing(readIntegerList(input)), output);
+    }
+
+    private static void weaklyIncreasing_Iterable_fail_helper(@NotNull String input) {
+        try {
+            weaklyIncreasing(readIntegerListWithNulls(input));
+            fail();
+        } catch (NullPointerException | IllegalArgumentException ignored) {}
+    }
+
+    @Test
+    public void testWeaklyIncreasing_Iterable() {
+        weaklyIncreasing_Iterable_helper("[]", true);
+        weaklyIncreasing_Iterable_helper("[1]", true);
+        weaklyIncreasing_Iterable_helper("[1, 2, 3]", true);
+        weaklyIncreasing_Iterable_helper("[1, 1, 2]", true);
+        weaklyIncreasing_Iterable_helper("[3, 2, 1]", false);
+        weaklyIncreasing_Iterable_helper("[3, 3, 2]", false);
+        weaklyIncreasing_Iterable_helper("[1, 3, 2]", false);
+
+        weaklyIncreasing_Iterable_fail_helper("[null, 1]");
+    }
+
+    private static void weaklyDecreasing_Iterable_helper(@NotNull String input, boolean output) {
+        aeq(weaklyDecreasing(readIntegerList(input)), output);
+    }
+
+    private static void weaklyDecreasing_Iterable_fail_helper(@NotNull String input) {
+        try {
+            weaklyDecreasing(readIntegerListWithNulls(input));
+            fail();
+        } catch (NullPointerException | IllegalArgumentException ignored) {}
+    }
+
+    @Test
+    public void testWeaklyDecreasing_Iterable() {
+        weaklyDecreasing_Iterable_helper("[]", true);
+        weaklyDecreasing_Iterable_helper("[1]", true);
+        weaklyDecreasing_Iterable_helper("[1, 2, 3]", false);
+        weaklyDecreasing_Iterable_helper("[1, 1, 2]", false);
+        weaklyDecreasing_Iterable_helper("[3, 2, 1]", true);
+        weaklyDecreasing_Iterable_helper("[3, 3, 2]", true);
+        weaklyDecreasing_Iterable_helper("[1, 3, 2]", false);
+
+        weaklyDecreasing_Iterable_fail_helper("[null, 1]");
+    }
+
+    private static void zigzagging_Iterable_helper(@NotNull String input, boolean output) {
+        aeq(zigzagging(readIntegerList(input)), output);
+    }
+
+    private static void zigzagging_Iterable_fail_helper(@NotNull String input) {
+        try {
+            zigzagging(readIntegerListWithNulls(input));
+            fail();
+        } catch (NullPointerException | IllegalArgumentException ignored) {}
+    }
+
+    @Test
+    public void testZigzagging_Iterable() {
+        zigzagging_Iterable_helper("[]", true);
+        zigzagging_Iterable_helper("[1]", true);
+        zigzagging_Iterable_helper("[1, 2, 3]", false);
+        zigzagging_Iterable_helper("[1, 1, 2]", false);
+        zigzagging_Iterable_helper("[3, 2, 1]", false);
+        zigzagging_Iterable_helper("[3, 3, 2]", false);
+        zigzagging_Iterable_helper("[1, 3, 2]", true);
+        zigzagging_Iterable_helper("[1, 3, 2, 5, 4, 7, 6]", true);
+        zigzagging_Iterable_helper("[1, 3, 2, 5, 4, 7, 7]", false);
+
+        zigzagging_Iterable_fail_helper("[null, 1]");
+    }
+
+    private static void increasing_Comparator_Iterable_helper(
+            @NotNull Comparator<Integer> comparator,
+            @NotNull String input,
+            boolean output
+    ) {
+        aeq(increasing(comparator, readIntegerList(input)), output);
+    }
+
+    private static void increasing_Comparator_Iterable_fail_helper(
+            @NotNull Comparator<Integer> comparator,
+            @NotNull String input
+    ) {
+        try {
+            increasing(comparator, readIntegerListWithNulls(input));
+            fail();
+        } catch (NullPointerException | IllegalArgumentException ignored) {}
+    }
+
+    @Test
+    public void testIncreasing_Comparator_Iterable() {
+        increasing_Comparator_Iterable_helper(ODDS_BEFORE_EVENS, "[]", true);
+        increasing_Comparator_Iterable_helper(ODDS_BEFORE_EVENS, "[1]", true);
+        increasing_Comparator_Iterable_helper(ODDS_BEFORE_EVENS, "[1, 3, 2]", true);
+        increasing_Comparator_Iterable_helper(ODDS_BEFORE_EVENS, "[1, 1, 3]", false);
+        increasing_Comparator_Iterable_helper(ODDS_BEFORE_EVENS, "[2, 3, 1]", false);
+        increasing_Comparator_Iterable_helper(ODDS_BEFORE_EVENS, "[2, 2, 3]", false);
+        increasing_Comparator_Iterable_helper(ODDS_BEFORE_EVENS, "[1, 2, 3]", false);
+
+        increasing_Comparator_Iterable_fail_helper(ODDS_BEFORE_EVENS, "[null, 1]");
+    }
+
+    private static void decreasing_Comparator_Iterable_helper(
+            @NotNull Comparator<Integer> comparator,
+            @NotNull String input,
+            boolean output
+    ) {
+        aeq(decreasing(comparator, readIntegerList(input)), output);
+    }
+
+    private static void decreasing_Comparator_Iterable_fail_helper(
+            @NotNull Comparator<Integer> comparator,
+            @NotNull String input
+    ) {
+        try {
+            decreasing(comparator, readIntegerListWithNulls(input));
+            fail();
+        } catch (NullPointerException | IllegalArgumentException ignored) {}
+    }
+
+    @Test
+    public void testDecreasing_Comparator_Iterable() {
+        decreasing_Comparator_Iterable_helper(ODDS_BEFORE_EVENS, "[]", true);
+        decreasing_Comparator_Iterable_helper(ODDS_BEFORE_EVENS, "[1]", true);
+        decreasing_Comparator_Iterable_helper(ODDS_BEFORE_EVENS, "[1, 3, 2]", false);
+        decreasing_Comparator_Iterable_helper(ODDS_BEFORE_EVENS, "[1, 1, 3]", false);
+        decreasing_Comparator_Iterable_helper(ODDS_BEFORE_EVENS, "[2, 3, 1]", true);
+        decreasing_Comparator_Iterable_helper(ODDS_BEFORE_EVENS, "[2, 2, 3]", false);
+        decreasing_Comparator_Iterable_helper(ODDS_BEFORE_EVENS, "[1, 2, 3]", false);
+
+        decreasing_Comparator_Iterable_fail_helper(ODDS_BEFORE_EVENS, "[null, 1]");
+    }
+
+    private static void weaklyIncreasing_Comparator_Iterable_helper(
+            @NotNull Comparator<Integer> comparator,
+            @NotNull String input,
+            boolean output
+    ) {
+        aeq(weaklyIncreasing(comparator, readIntegerList(input)), output);
+    }
+
+    private static void weaklyIncreasing_Comparator_Iterable_fail_helper(
+            @NotNull Comparator<Integer> comparator,
+            @NotNull String input
+    ) {
+        try {
+            weaklyIncreasing(comparator, readIntegerListWithNulls(input));
+            fail();
+        } catch (NullPointerException | IllegalArgumentException ignored) {}
+    }
+
+    @Test
+    public void testWeaklyIncreasing_Comparator_Iterable() {
+        weaklyIncreasing_Comparator_Iterable_helper(ODDS_BEFORE_EVENS, "[]", true);
+        weaklyIncreasing_Comparator_Iterable_helper(ODDS_BEFORE_EVENS, "[1]", true);
+        weaklyIncreasing_Comparator_Iterable_helper(ODDS_BEFORE_EVENS, "[1, 3, 2]", true);
+        weaklyIncreasing_Comparator_Iterable_helper(ODDS_BEFORE_EVENS, "[1, 1, 3]", true);
+        weaklyIncreasing_Comparator_Iterable_helper(ODDS_BEFORE_EVENS, "[2, 3, 1]", false);
+        weaklyIncreasing_Comparator_Iterable_helper(ODDS_BEFORE_EVENS, "[2, 2, 3]", false);
+        weaklyIncreasing_Comparator_Iterable_helper(ODDS_BEFORE_EVENS, "[1, 2, 3]", false);
+
+        weaklyIncreasing_Comparator_Iterable_fail_helper(ODDS_BEFORE_EVENS, "[null, 1]");
+    }
+
+    private static void weaklyDecreasing_Comparator_Iterable_helper(
+            @NotNull Comparator<Integer> comparator,
+            @NotNull String input,
+            boolean output
+    ) {
+        aeq(weaklyDecreasing(comparator, readIntegerList(input)), output);
+    }
+
+    private static void weaklyDecreasing_Comparator_Iterable_fail_helper(
+            @NotNull Comparator<Integer> comparator,
+            @NotNull String input
+    ) {
+        try {
+            weaklyDecreasing(comparator, readIntegerListWithNulls(input));
+            fail();
+        } catch (NullPointerException | IllegalArgumentException ignored) {}
+    }
+
+    @Test
+    public void testWeaklyDecreasing_Comparator_Iterable() {
+        weaklyDecreasing_Comparator_Iterable_helper(ODDS_BEFORE_EVENS, "[]", true);
+        weaklyDecreasing_Comparator_Iterable_helper(ODDS_BEFORE_EVENS, "[1]", true);
+        weaklyDecreasing_Comparator_Iterable_helper(ODDS_BEFORE_EVENS, "[1, 3, 2]", false);
+        weaklyDecreasing_Comparator_Iterable_helper(ODDS_BEFORE_EVENS, "[1, 1, 3]", false);
+        weaklyDecreasing_Comparator_Iterable_helper(ODDS_BEFORE_EVENS, "[2, 3, 1]", true);
+        weaklyDecreasing_Comparator_Iterable_helper(ODDS_BEFORE_EVENS, "[2, 2, 3]", true);
+        weaklyDecreasing_Comparator_Iterable_helper(ODDS_BEFORE_EVENS, "[1, 2, 3]", false);
+
+        weaklyDecreasing_Comparator_Iterable_fail_helper(ODDS_BEFORE_EVENS, "[null, 1]");
+    }
+
+    private static void zigzagging_Comparator_Iterable_helper(
+            @NotNull Comparator<Integer> comparator,
+            @NotNull String input,
+            boolean output
+    ) {
+        aeq(zigzagging(comparator, readIntegerList(input)), output);
+    }
+
+    private static void zigzagging_Comparator_Iterable_fail_helper(
+            @NotNull Comparator<Integer> comparator,
+            @NotNull String input
+    ) {
+        try {
+            zigzagging(comparator, readIntegerListWithNulls(input));
+            fail();
+        } catch (NullPointerException | IllegalArgumentException ignored) {}
+    }
+
+    @Test
+    public void testZigzagging_Comparator_Iterable() {
+        zigzagging_Comparator_Iterable_helper(ODDS_BEFORE_EVENS, "[]", true);
+        zigzagging_Comparator_Iterable_helper(ODDS_BEFORE_EVENS, "[1]", true);
+        zigzagging_Comparator_Iterable_helper(ODDS_BEFORE_EVENS, "[1, 3, 2]", false);
+        zigzagging_Comparator_Iterable_helper(ODDS_BEFORE_EVENS, "[1, 1, 3]", false);
+        zigzagging_Comparator_Iterable_helper(ODDS_BEFORE_EVENS, "[2, 3, 1]", false);
+        zigzagging_Comparator_Iterable_helper(ODDS_BEFORE_EVENS, "[2, 2, 3]", false);
+        zigzagging_Comparator_Iterable_helper(ODDS_BEFORE_EVENS, "[1, 2, 3]", true);
+        zigzagging_Comparator_Iterable_helper(ODDS_BEFORE_EVENS, "[1, 2, 3, 4, 5, 6, 7]", true);
+        zigzagging_Comparator_Iterable_helper(ODDS_BEFORE_EVENS, "[1, 2, 3, 4, 5, 6, 6]", false);
+
+        zigzagging_Comparator_Iterable_fail_helper(ODDS_BEFORE_EVENS, "[null, 1]");
+    }
+
     private static void readStrict_helper(@NotNull String input, @NotNull String output) {
         aeq(readStrict(input), output);
     }
