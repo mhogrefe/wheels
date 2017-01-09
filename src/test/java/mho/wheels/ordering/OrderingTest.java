@@ -889,6 +889,240 @@ public class OrderingTest {
         zigzagging_Comparator_Iterable_fail_helper(ODDS_BEFORE_EVENS, "[null, 1]");
     }
 
+    private static void increasing_String_helper(@NotNull String input, boolean output) {
+        aeq(increasing(input), output);
+    }
+
+    @Test
+    public void testIncreasing_String() {
+        increasing_String_helper("", true);
+        increasing_String_helper("a", true);
+        increasing_String_helper("abc", true);
+        increasing_String_helper("aac", false);
+        increasing_String_helper("cba", false);
+        increasing_String_helper("ccb", false);
+        increasing_String_helper("acb", false);
+    }
+
+    private static void decreasing_String_helper(@NotNull String input, boolean output) {
+        aeq(decreasing(input), output);
+    }
+
+    @Test
+    public void testDecreasing_String() {
+        decreasing_String_helper("", true);
+        decreasing_String_helper("a", true);
+        decreasing_String_helper("abc", false);
+        decreasing_String_helper("aac", false);
+        decreasing_String_helper("cba", true);
+        decreasing_String_helper("ccb", false);
+        decreasing_String_helper("acb", false);
+    }
+
+    private static void weaklyIncreasing_String_helper(@NotNull String input, boolean output) {
+        aeq(weaklyIncreasing(input), output);
+    }
+
+    @Test
+    public void testWeaklyIncreasing_String() {
+        weaklyIncreasing_String_helper("", true);
+        weaklyIncreasing_String_helper("a", true);
+        weaklyIncreasing_String_helper("abc", true);
+        weaklyIncreasing_String_helper("aac", true);
+        weaklyIncreasing_String_helper("cba", false);
+        weaklyIncreasing_String_helper("ccb", false);
+        weaklyIncreasing_String_helper("acb", false);
+    }
+
+    private static void weaklyDecreasing_String_helper(@NotNull String input, boolean output) {
+        aeq(weaklyDecreasing(input), output);
+    }
+
+    @Test
+    public void testWeaklyDecreasing_String() {
+        weaklyDecreasing_String_helper("", true);
+        weaklyDecreasing_String_helper("a", true);
+        weaklyDecreasing_String_helper("abc", false);
+        weaklyDecreasing_String_helper("aac", false);
+        weaklyDecreasing_String_helper("cba", true);
+        weaklyDecreasing_String_helper("ccb", true);
+        weaklyDecreasing_String_helper("acb", false);
+    }
+
+    private static void zigzagging_String_helper(@NotNull String input, boolean output) {
+        aeq(zigzagging(input), output);
+    }
+
+    @Test
+    public void testZigzagging_String() {
+        zigzagging_String_helper("", true);
+        zigzagging_String_helper("a", true);
+        zigzagging_String_helper("abc", false);
+        zigzagging_String_helper("aac", false);
+        zigzagging_String_helper("cba", false);
+        zigzagging_String_helper("ccb", false);
+        zigzagging_String_helper("acb", true);
+        zigzagging_String_helper("acbedgf", true);
+        zigzagging_String_helper("acbedgg", false);
+    }
+
+    private static void increasing_Comparator_String_helper(
+            @NotNull Comparator<Character> comparator,
+            @NotNull String input,
+            boolean output
+    ) {
+        aeq(increasing(comparator, input), output);
+    }
+
+    private static void increasing_Comparator_String_fail_helper(
+            @NotNull Comparator<Character> comparator,
+            @NotNull String input
+    ) {
+        try {
+            increasing(comparator, input);
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+    }
+
+    @Test
+    public void testIncreasing_Comparator_String() {
+        increasing_Comparator_String_helper(VOWELS_BEFORE_CONSONANTS, "", true);
+        increasing_Comparator_String_helper(VOWELS_BEFORE_CONSONANTS, "a", true);
+        increasing_Comparator_String_helper(VOWELS_BEFORE_CONSONANTS, "abc", true);
+        increasing_Comparator_String_helper(VOWELS_BEFORE_CONSONANTS, "aac", false);
+        increasing_Comparator_String_helper(VOWELS_BEFORE_CONSONANTS, "cba", false);
+        increasing_Comparator_String_helper(VOWELS_BEFORE_CONSONANTS, "ccb", false);
+        increasing_Comparator_String_helper(VOWELS_BEFORE_CONSONANTS, "acb", false);
+
+        increasing_Comparator_String_fail_helper(VOWELS_BEFORE_CONSONANTS, "01");
+    }
+
+    private static void decreasing_Comparator_String_helper(
+            @NotNull Comparator<Character> comparator,
+            @NotNull String input,
+            boolean output
+    ) {
+        aeq(decreasing(comparator, input), output);
+    }
+
+    private static void decreasing_Comparator_String_fail_helper(
+            @NotNull Comparator<Character> comparator,
+            @NotNull String input
+    ) {
+        try {
+            decreasing(comparator, input);
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+    }
+
+    @Test
+    public void testDecreasing_Comparator_String() {
+        decreasing_Comparator_String_helper(VOWELS_BEFORE_CONSONANTS, "", true);
+        decreasing_Comparator_String_helper(VOWELS_BEFORE_CONSONANTS, "a", true);
+        decreasing_Comparator_String_helper(VOWELS_BEFORE_CONSONANTS, "abc", false);
+        decreasing_Comparator_String_helper(VOWELS_BEFORE_CONSONANTS, "aac", false);
+        decreasing_Comparator_String_helper(VOWELS_BEFORE_CONSONANTS, "cba", true);
+        decreasing_Comparator_String_helper(VOWELS_BEFORE_CONSONANTS, "ccb", false);
+        decreasing_Comparator_String_helper(VOWELS_BEFORE_CONSONANTS, "acb", false);
+
+        decreasing_Comparator_String_fail_helper(VOWELS_BEFORE_CONSONANTS, "01");
+    }
+
+    private static void weaklyIncreasing_Comparator_String_helper(
+            @NotNull Comparator<Character> comparator,
+            @NotNull String input,
+            boolean output
+    ) {
+        aeq(weaklyIncreasing(comparator, input), output);
+    }
+
+    private static void weaklyIncreasing_Comparator_String_fail_helper(
+            @NotNull Comparator<Character> comparator,
+            @NotNull String input
+    ) {
+        try {
+            weaklyIncreasing(comparator, input);
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+    }
+
+    @Test
+    public void testWeaklyIncreasing_Comparator_String() {
+        weaklyIncreasing_Comparator_String_helper(VOWELS_BEFORE_CONSONANTS, "", true);
+        weaklyIncreasing_Comparator_String_helper(VOWELS_BEFORE_CONSONANTS, "a", true);
+        weaklyIncreasing_Comparator_String_helper(VOWELS_BEFORE_CONSONANTS, "abc", true);
+        weaklyIncreasing_Comparator_String_helper(VOWELS_BEFORE_CONSONANTS, "aac", true);
+        weaklyIncreasing_Comparator_String_helper(VOWELS_BEFORE_CONSONANTS, "cba", false);
+        weaklyIncreasing_Comparator_String_helper(VOWELS_BEFORE_CONSONANTS, "ccb", false);
+        weaklyIncreasing_Comparator_String_helper(VOWELS_BEFORE_CONSONANTS, "acb", false);
+
+        weaklyIncreasing_Comparator_String_fail_helper(VOWELS_BEFORE_CONSONANTS, "01");
+    }
+
+    private static void weaklyDecreasing_Comparator_String_helper(
+            @NotNull Comparator<Character> comparator,
+            @NotNull String input,
+            boolean output
+    ) {
+        aeq(weaklyDecreasing(comparator, input), output);
+    }
+
+    private static void weaklyDecreasing_Comparator_String_fail_helper(
+            @NotNull Comparator<Character> comparator,
+            @NotNull String input
+    ) {
+        try {
+            weaklyDecreasing(comparator, input);
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+    }
+
+    @Test
+    public void testWeaklyDecreasing_Comparator_String() {
+        weaklyDecreasing_Comparator_String_helper(VOWELS_BEFORE_CONSONANTS, "", true);
+        weaklyDecreasing_Comparator_String_helper(VOWELS_BEFORE_CONSONANTS, "a", true);
+        weaklyDecreasing_Comparator_String_helper(VOWELS_BEFORE_CONSONANTS, "abc", false);
+        weaklyDecreasing_Comparator_String_helper(VOWELS_BEFORE_CONSONANTS, "aac", false);
+        weaklyDecreasing_Comparator_String_helper(VOWELS_BEFORE_CONSONANTS, "cba", true);
+        weaklyDecreasing_Comparator_String_helper(VOWELS_BEFORE_CONSONANTS, "ccb", true);
+        weaklyDecreasing_Comparator_String_helper(VOWELS_BEFORE_CONSONANTS, "acb", false);
+
+        weaklyDecreasing_Comparator_String_fail_helper(VOWELS_BEFORE_CONSONANTS, "01");
+    }
+
+    private static void zigzagging_Comparator_String_helper(
+            @NotNull Comparator<Character> comparator,
+            @NotNull String input,
+            boolean output
+    ) {
+        aeq(zigzagging(comparator, input), output);
+    }
+
+    private static void zigzagging_Comparator_String_fail_helper(
+            @NotNull Comparator<Character> comparator,
+            @NotNull String input
+    ) {
+        try {
+            zigzagging(comparator, input);
+            fail();
+        } catch (NullPointerException | IllegalArgumentException ignored) {}
+    }
+
+    @Test
+    public void testZigzagging_Comparator_String() {
+        zigzagging_Comparator_String_helper(VOWELS_BEFORE_CONSONANTS, "", true);
+        zigzagging_Comparator_String_helper(VOWELS_BEFORE_CONSONANTS, "a", true);
+        zigzagging_Comparator_String_helper(VOWELS_BEFORE_CONSONANTS, "abc", false);
+        zigzagging_Comparator_String_helper(VOWELS_BEFORE_CONSONANTS, "aac", false);
+        zigzagging_Comparator_String_helper(VOWELS_BEFORE_CONSONANTS, "cba", false);
+        zigzagging_Comparator_String_helper(VOWELS_BEFORE_CONSONANTS, "ccb", false);
+        zigzagging_Comparator_String_helper(VOWELS_BEFORE_CONSONANTS, "acb", true);
+        zigzagging_Comparator_String_helper(VOWELS_BEFORE_CONSONANTS, "abedcgf", true);
+        zigzagging_Comparator_String_helper(VOWELS_BEFORE_CONSONANTS, "abedcgg", false);
+
+        zigzagging_Comparator_String_fail_helper(VOWELS_BEFORE_CONSONANTS, "01");
+    }
+
     private static void readStrict_helper(@NotNull String input, @NotNull String output) {
         aeq(readStrict(input), output);
     }
