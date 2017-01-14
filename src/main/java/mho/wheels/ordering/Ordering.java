@@ -914,7 +914,7 @@ public enum Ordering {
             switch (xsList.size()) {
                 case 0:
                 case 1: return true;
-                case 2: return !Objects.equals(xsList.get(0), xsList.get(1));
+                case 2: return xsList.get(0).equals(xsList.get(1));
                 default:
                     throw new IllegalStateException("unreachable");
             }
