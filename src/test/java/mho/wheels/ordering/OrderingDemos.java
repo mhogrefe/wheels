@@ -511,6 +511,146 @@ public class OrderingDemos extends Demos {
         }
     }
 
+    private void demoIncreasing_Iterable() {
+        for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.integersGeometric()))) {
+            System.out.println(xs + " is " + (increasing(xs) ? "" : "not ") + "increasing");
+        }
+    }
+
+    private void demoDecreasing_Iterable() {
+        for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.integersGeometric()))) {
+            System.out.println(xs + " is " + (decreasing(xs) ? "" : "not ") + "decreasing");
+        }
+    }
+
+    private void demoWeaklyIncreasing_Iterable() {
+        for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.integersGeometric()))) {
+            System.out.println(xs + " is " + (weaklyIncreasing(xs) ? "" : "not ") + "weakly increasing");
+        }
+    }
+
+    private void demoWeaklyDecreasing_Iterable() {
+        for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.integersGeometric()))) {
+            System.out.println(xs + " is " + (weaklyDecreasing(xs) ? "" : "not ") + "weakly decreasing");
+        }
+    }
+
+    private void demoZigzagging_Iterable() {
+        for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.integersGeometric()))) {
+            System.out.println(xs + " is " + (zigzagging(xs) ? "" : "not ") + "zigzagging");
+        }
+    }
+
+    private void demoIncreasing_Comparator_Iterable_T() {
+        Iterable<Pair<List<Integer>, List<Integer>>> ps = P.dependentPairs(
+                P.withScale(4).lists(P.withNull(P.integersGeometric())),
+                is -> P.permutationsFinite(toList(nub(is)))
+        );
+        for (Pair<List<Integer>, List<Integer>> p : take(LIMIT, ps)) {
+            Comparator<Integer> comparator = (x, y) -> {
+                Integer xIndex = p.b.indexOf(x);
+                if (xIndex == -1) {
+                    throw new IllegalArgumentException();
+                }
+                Integer yIndex = p.b.indexOf(y);
+                if (yIndex == -1) {
+                    throw new IllegalArgumentException();
+                }
+                return Integer.compare(xIndex, yIndex);
+            };
+            System.out.println(intercalate(" < ", map(Objects::toString, p.b)) + ": " + p.a + " is " +
+                    (increasing(comparator, p.a) ? "" : "not ") + "increasing");
+        }
+    }
+
+    private void demoDecreasing_Comparator_Iterable_T() {
+        Iterable<Pair<List<Integer>, List<Integer>>> ps = P.dependentPairs(
+                P.withScale(4).lists(P.withNull(P.integersGeometric())),
+                is -> P.permutationsFinite(toList(nub(is)))
+        );
+        for (Pair<List<Integer>, List<Integer>> p : take(LIMIT, ps)) {
+            Comparator<Integer> comparator = (x, y) -> {
+                Integer xIndex = p.b.indexOf(x);
+                if (xIndex == -1) {
+                    throw new IllegalArgumentException();
+                }
+                Integer yIndex = p.b.indexOf(y);
+                if (yIndex == -1) {
+                    throw new IllegalArgumentException();
+                }
+                return Integer.compare(xIndex, yIndex);
+            };
+            System.out.println(intercalate(" < ", map(Objects::toString, p.b)) + ": " + p.a + " is " +
+                    (decreasing(comparator, p.a) ? "" : "not ") + "decreasing");
+        }
+    }
+
+    private void demoWeaklyIncreasing_Comparator_Iterable_T() {
+        Iterable<Pair<List<Integer>, List<Integer>>> ps = P.dependentPairs(
+                P.withScale(4).lists(P.withNull(P.integersGeometric())),
+                is -> P.permutationsFinite(toList(nub(is)))
+        );
+        for (Pair<List<Integer>, List<Integer>> p : take(LIMIT, ps)) {
+            Comparator<Integer> comparator = (x, y) -> {
+                Integer xIndex = p.b.indexOf(x);
+                if (xIndex == -1) {
+                    throw new IllegalArgumentException();
+                }
+                Integer yIndex = p.b.indexOf(y);
+                if (yIndex == -1) {
+                    throw new IllegalArgumentException();
+                }
+                return Integer.compare(xIndex, yIndex);
+            };
+            System.out.println(intercalate(" < ", map(Objects::toString, p.b)) + ": " + p.a + " is " +
+                    (weaklyIncreasing(comparator, p.a) ? "" : "not ") + "weakly increasing");
+        }
+    }
+
+    private void demoWeaklyDecreasing_Comparator_Iterable_T() {
+        Iterable<Pair<List<Integer>, List<Integer>>> ps = P.dependentPairs(
+                P.withScale(4).lists(P.withNull(P.integersGeometric())),
+                is -> P.permutationsFinite(toList(nub(is)))
+        );
+        for (Pair<List<Integer>, List<Integer>> p : take(LIMIT, ps)) {
+            Comparator<Integer> comparator = (x, y) -> {
+                Integer xIndex = p.b.indexOf(x);
+                if (xIndex == -1) {
+                    throw new IllegalArgumentException();
+                }
+                Integer yIndex = p.b.indexOf(y);
+                if (yIndex == -1) {
+                    throw new IllegalArgumentException();
+                }
+                return Integer.compare(xIndex, yIndex);
+            };
+            System.out.println(intercalate(" < ", map(Objects::toString, p.b)) + ": " + p.a + " is " +
+                    (weaklyDecreasing(comparator, p.a) ? "" : "not ") + "weakly decreasing");
+        }
+    }
+
+    private void demoZigzagging_Comparator_Iterable_T() {
+        Iterable<Pair<List<Integer>, List<Integer>>> ps = P.dependentPairs(
+                P.withScale(4).lists(P.withNull(P.integersGeometric())),
+                is -> P.permutationsFinite(toList(nub(is)))
+        );
+        for (Pair<List<Integer>, List<Integer>> p : take(LIMIT, ps)) {
+            Comparator<Integer> comparator = (x, y) -> {
+                Integer xIndex = p.b.indexOf(x);
+                if (xIndex == -1) {
+                    throw new IllegalArgumentException();
+                }
+                Integer yIndex = p.b.indexOf(y);
+                if (yIndex == -1) {
+                    throw new IllegalArgumentException();
+                }
+                return Integer.compare(xIndex, yIndex);
+            };
+            System.out.println(intercalate(" < ", map(Objects::toString, p.b)) + ": " + p.a + " is " +
+                    (zigzagging(comparator, p.a) ? "" : "not ") + "zigzagging");
+        }
+    }
+
     private void demoReadOrderingStrict() {
         for (String s : take(LIMIT, P.strings())) {
             System.out.println("readOrderingStrict(" + nicePrint(s) + ") = " + readStrict(s));

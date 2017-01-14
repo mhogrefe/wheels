@@ -5,6 +5,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Comparator;
+import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import static mho.wheels.iterables.IterableUtils.*;
@@ -907,6 +909,16 @@ public enum Ordering {
      * @return whether {@code xs} is zigzagging
      */
     public static <T extends Comparable<T>> boolean zigzagging(@NotNull Iterable<T> xs) {
+        if (!lengthAtLeast(3, xs)) {
+            List<T> xsList = toList(xs);
+            switch (xsList.size()) {
+                case 0:
+                case 1: return true;
+                case 2: return !Objects.equals(xsList.get(0), xsList.get(1));
+                default:
+                    throw new IllegalStateException("unreachable");
+            }
+        }
         Iterable<Pair<Ordering, Ordering>> compares = adjacentPairsWith(
                 Pair::new,
                 adjacentPairsWith(Ordering::compare, xs)
@@ -1021,6 +1033,16 @@ public enum Ordering {
      * @return whether {@code xs} is zigzagging
      */
     public static <T> boolean zigzagging(@NotNull Comparator<T> comparator, @NotNull Iterable<T> xs) {
+        if (!lengthAtLeast(3, xs)) {
+            List<T> xsList = toList(xs);
+            switch (xsList.size()) {
+                case 0:
+                case 1: return true;
+                case 2: return comparator.compare(xsList.get(0), xsList.get(1)) != 0;
+                default:
+                    throw new IllegalStateException("unreachable");
+            }
+        }
         Iterable<Pair<Ordering, Ordering>> compares = adjacentPairsWith(
                 Pair::new,
                 adjacentPairsWith((x, y) -> compare(comparator, x, y), xs)
@@ -1109,6 +1131,16 @@ public enum Ordering {
      * @return whether {@code s} is zigzagging
      */
     public static boolean zigzagging(@NotNull String s) {
+        int length = s.length();
+        if (length < 3) {
+            switch (length) {
+                case 0:
+                case 1: return true;
+                case 2: return s.charAt(0) != s.charAt(1);
+                default:
+                    throw new IllegalStateException("unreachable");
+            }
+        }
         Iterable<Pair<Ordering, Ordering>> compares = adjacentPairsWith(
                 Pair::new,
                 adjacentPairsWith(Ordering::compare, fromString(s))
@@ -1213,6 +1245,16 @@ public enum Ordering {
      * @return whether {@code s} is zigzagging
      */
     public static boolean zigzagging(@NotNull Comparator<Character> comparator, @NotNull String s) {
+        int length = s.length();
+        if (length < 3) {
+            switch (length) {
+                case 0:
+                case 1: return true;
+                case 2: return comparator.compare(s.charAt(0), s.charAt(1)) != 0;
+                default:
+                    throw new IllegalStateException("unreachable");
+            }
+        }
         Iterable<Pair<Ordering, Ordering>> compares = adjacentPairsWith(
                 Pair::new,
                 adjacentPairsWith((x, y) -> compare(comparator, x, y), fromString(s))
