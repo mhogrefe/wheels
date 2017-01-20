@@ -651,6 +651,146 @@ public class OrderingDemos extends Demos {
         }
     }
 
+    private void demoIncreasing_String() {
+        for (String s : take(LIMIT, P.strings())) {
+            System.out.println(nicePrint(s) + " is " + (increasing(s) ? "" : "not ") + "increasing");
+        }
+    }
+
+    private void demoDecreasing_String() {
+        for (String s : take(LIMIT, P.strings())) {
+            System.out.println(nicePrint(s) + " is " + (decreasing(s) ? "" : "not ") + "decreasing");
+        }
+    }
+
+    private void demoWeaklyIncreasing_String() {
+        for (String s : take(LIMIT, P.strings())) {
+            System.out.println(nicePrint(s) + " is " + (weaklyIncreasing(s) ? "" : "not ") + "weakly increasing");
+        }
+    }
+
+    private void demoWeaklyDecreasing_String() {
+        for (String s : take(LIMIT, P.strings())) {
+            System.out.println(nicePrint(s) + " is " + (weaklyDecreasing(s) ? "" : "not ") + "weakly decreasing");
+        }
+    }
+
+    private void demoZigzagging_String() {
+        for (String s : take(LIMIT, P.strings())) {
+            System.out.println(nicePrint(s) + " is " + (zigzagging(s) ? "" : "not ") + "zigzagging");
+        }
+    }
+
+    private void demoIncreasing_Comparator_String() {
+        Iterable<Pair<String, String>> ps = P.dependentPairs(
+                P.withScale(4).strings(),
+                s -> map(IterableUtils::charsToString, P.permutationsFinite(toList(nub(s))))
+        );
+        for (Pair<String, String> p : take(LIMIT, ps)) {
+            Comparator<Character> comparator = (x, y) -> {
+                Integer xIndex = p.b.indexOf(x);
+                if (xIndex == -1) {
+                    throw new IllegalArgumentException();
+                }
+                Integer yIndex = p.b.indexOf(y);
+                if (yIndex == -1) {
+                    throw new IllegalArgumentException();
+                }
+                return Integer.compare(xIndex, yIndex);
+            };
+            System.out.println(intercalate(" < ", map(Testing::nicePrint, fromString(p.b))) + ": " + nicePrint(p.a) +
+                    " is " + (increasing(p.b) ? "" : "not ") + "increasing");
+        }
+    }
+
+    private void demoDecreasing_Comparator_String() {
+        Iterable<Pair<String, String>> ps = P.dependentPairs(
+                P.withScale(4).strings(),
+                s -> map(IterableUtils::charsToString, P.permutationsFinite(toList(nub(s))))
+        );
+        for (Pair<String, String> p : take(LIMIT, ps)) {
+            Comparator<Character> comparator = (x, y) -> {
+                Integer xIndex = p.b.indexOf(x);
+                if (xIndex == -1) {
+                    throw new IllegalArgumentException();
+                }
+                Integer yIndex = p.b.indexOf(y);
+                if (yIndex == -1) {
+                    throw new IllegalArgumentException();
+                }
+                return Integer.compare(xIndex, yIndex);
+            };
+            System.out.println(intercalate(" < ", map(Testing::nicePrint, fromString(p.b))) + ": " + nicePrint(p.a) +
+                    " is " + (decreasing(p.b) ? "" : "not ") + "decreasing");
+        }
+    }
+
+    private void demoWeaklyIncreasing_Comparator_String() {
+        Iterable<Pair<String, String>> ps = P.dependentPairs(
+                P.withScale(4).strings(),
+                s -> map(IterableUtils::charsToString, P.permutationsFinite(toList(nub(s))))
+        );
+        for (Pair<String, String> p : take(LIMIT, ps)) {
+            Comparator<Character> comparator = (x, y) -> {
+                Integer xIndex = p.b.indexOf(x);
+                if (xIndex == -1) {
+                    throw new IllegalArgumentException();
+                }
+                Integer yIndex = p.b.indexOf(y);
+                if (yIndex == -1) {
+                    throw new IllegalArgumentException();
+                }
+                return Integer.compare(xIndex, yIndex);
+            };
+            System.out.println(intercalate(" < ", map(Testing::nicePrint, fromString(p.b))) + ": " + nicePrint(p.a) +
+                    " is " + (weaklyIncreasing(p.b) ? "" : "not ") + "weakly increasing");
+        }
+    }
+
+    private void demoWeaklyDecreasing_Comparator_String() {
+        Iterable<Pair<String, String>> ps = P.dependentPairs(
+                P.withScale(4).strings(),
+                s -> map(IterableUtils::charsToString, P.permutationsFinite(toList(nub(s))))
+        );
+        for (Pair<String, String> p : take(LIMIT, ps)) {
+            Comparator<Character> comparator = (x, y) -> {
+                Integer xIndex = p.b.indexOf(x);
+                if (xIndex == -1) {
+                    throw new IllegalArgumentException();
+                }
+                Integer yIndex = p.b.indexOf(y);
+                if (yIndex == -1) {
+                    throw new IllegalArgumentException();
+                }
+                return Integer.compare(xIndex, yIndex);
+            };
+            System.out.println(intercalate(" < ", map(Testing::nicePrint, fromString(p.b))) + ": " + nicePrint(p.a) +
+                    " is " + (weaklyDecreasing(p.b) ? "" : "not ") + "weakly decreasing");
+        }
+    }
+
+    private void demoZigzagging_Comparator_String() {
+        Iterable<Pair<String, String>> ps = P.dependentPairs(
+                P.withScale(4).strings(),
+                s -> map(IterableUtils::charsToString, P.permutationsFinite(toList(nub(s))))
+        );
+        for (Pair<String, String> p : take(LIMIT, ps)) {
+            Comparator<Character> comparator = (x, y) -> {
+                Integer xIndex = p.b.indexOf(x);
+                if (xIndex == -1) {
+                    throw new IllegalArgumentException();
+                }
+                Integer yIndex = p.b.indexOf(y);
+                if (yIndex == -1) {
+                    throw new IllegalArgumentException();
+                }
+                return Integer.compare(xIndex, yIndex);
+            };
+            System.out.println(intercalate(" < ", map(Testing::nicePrint, fromString(p.b))) + ": " + nicePrint(p.a) +
+                    " is " + (zigzagging(p.b) ? "" : "not ") + "zigzagging");
+        }
+    }
+
     private void demoReadOrderingStrict() {
         for (String s : take(LIMIT, P.strings())) {
             System.out.println("readOrderingStrict(" + nicePrint(s) + ") = " + readStrict(s));
