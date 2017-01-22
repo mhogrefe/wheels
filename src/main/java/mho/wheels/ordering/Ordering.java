@@ -6,7 +6,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Comparator;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 import static mho.wheels.iterables.IterableUtils.*;
@@ -914,7 +913,7 @@ public enum Ordering {
             switch (xsList.size()) {
                 case 0:
                 case 1: return true;
-                case 2: return xsList.get(0).equals(xsList.get(1));
+                case 2: return !xsList.get(0).equals(xsList.get(1));
                 default:
                     throw new IllegalStateException("unreachable");
             }

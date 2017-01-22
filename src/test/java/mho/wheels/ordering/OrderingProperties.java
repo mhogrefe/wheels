@@ -59,6 +59,16 @@ public class OrderingProperties extends TestProperties {
         propertiesMinimum_Comparator_String();
         propertiesMaximum_Comparator_String();
         propertiesMinimumMaximum_Comparator_String();
+        propertiesIncreasing_Iterable();
+        propertiesDecreasing_Iterable();
+        propertiesWeaklyIncreasing_Iterable();
+        propertiesWeaklyDecreasing_Iterable();
+        propertiesZigzagging_Iterable();
+        propertiesIncreasing_Comparator_Iterable_T();
+        propertiesDecreasing_Comparator_Iterable_T();
+        propertiesWeaklyIncreasing_Comparator_Iterable_T();
+        propertiesWeaklyDecreasing_Comparator_Iterable_T();
+        propertiesZigzagging_Comparator_Iterable_T();
         propertiesReadStrict();
         propertiesToString();
     }
@@ -890,6 +900,201 @@ public class OrderingProperties extends TestProperties {
         Comparator<Character> naturalComparator = Comparator.naturalOrder();
         for (String s : take(LIMIT, P.stringsAtLeast(1))) {
             assertEquals(s, minimumMaximum(naturalComparator, s), minimumMaximum(s));
+        }
+    }
+
+    private void propertiesIncreasing_Iterable() {
+        initialize("increasing(Iterable<T>)");
+        for (List<Integer> xs : take(LIMIT, P.lists(P.integersGeometric()))) {
+            assertEquals(xs, increasing(xs), decreasing(reverse(xs)));
+        }
+
+        for (int i : take(LIMIT, P.integersGeometric())) {
+            assertTrue(i, increasing(Collections.singletonList(i)));
+        }
+    }
+
+    private void propertiesDecreasing_Iterable() {
+        initialize("decreasing(Iterable<T>)");
+        for (List<Integer> xs : take(LIMIT, P.lists(P.integersGeometric()))) {
+            assertEquals(xs, decreasing(xs), increasing(reverse(xs)));
+        }
+
+        for (int i : take(LIMIT, P.integersGeometric())) {
+            assertTrue(i, decreasing(Collections.singletonList(i)));
+        }
+    }
+
+    private void propertiesWeaklyIncreasing_Iterable() {
+        initialize("weaklyIncreasing(Iterable<T>)");
+        for (List<Integer> xs : take(LIMIT, P.lists(P.integersGeometric()))) {
+            assertEquals(xs, weaklyIncreasing(xs), weaklyDecreasing(reverse(xs)));
+        }
+
+        for (int i : take(LIMIT, P.integersGeometric())) {
+            assertTrue(i, weaklyIncreasing(Collections.singletonList(i)));
+        }
+    }
+
+    private void propertiesWeaklyDecreasing_Iterable() {
+        initialize("weaklyDecreasing(Iterable<T>)");
+        for (List<Integer> xs : take(LIMIT, P.lists(P.integersGeometric()))) {
+            assertEquals(xs, weaklyDecreasing(xs), weaklyIncreasing(reverse(xs)));
+        }
+
+        for (int i : take(LIMIT, P.integersGeometric())) {
+            assertTrue(i, weaklyDecreasing(Collections.singletonList(i)));
+        }
+    }
+
+    private void propertiesZigzagging_Iterable() {
+        initialize("zigzagging(Iterable<T>)");
+        for (List<Integer> xs : take(LIMIT, P.lists(P.integersGeometric()))) {
+            assertEquals(xs, zigzagging(xs), zigzagging(reverse(xs)));
+        }
+
+        for (int i : take(LIMIT, P.integersGeometric())) {
+            assertTrue(i, zigzagging(Collections.singletonList(i)));
+        }
+    }
+
+    private void propertiesIncreasing_Comparator_Iterable_T() {
+        initialize("increasing(Comparator, Iterable<T>)");
+        Iterable<Pair<List<Integer>, List<Integer>>> ps = P.dependentPairs(
+                P.lists(P.integersGeometric()),
+                is -> P.permutationsFinite(toList(nub(is)))
+        );
+        for (Pair<List<Integer>, List<Integer>> p : take(LIMIT, ps)) {
+            Comparator<Integer> comparator = new ListBasedComparator<>(p.b);
+            assertEquals(p, increasing(comparator, p.a), decreasing(comparator, reverse(p.a)));
+
+            Iterable<List<Integer>> xss = filterInfinite(
+                    ys -> !any(ys::contains, p.a),
+                    P.listsAtLeast(2, P.withNull(P.integersGeometric()))
+            );
+            for (List<Integer> xs : take(TINY_LIMIT, xss)) {
+                try {
+                    increasing(comparator, xs);
+                    fail(xs);
+                } catch (IllegalArgumentException ignored) {}
+            }
+        }
+
+        Comparator<Integer> naturalComparator = Comparator.naturalOrder();
+        for (List<Integer> xs : take(LIMIT, P.lists(P.integersGeometric()))) {
+            assertEquals(xs, increasing(naturalComparator, xs), increasing(xs));
+        }
+    }
+
+    private void propertiesDecreasing_Comparator_Iterable_T() {
+        initialize("decreasing(Comparator, Iterable<T>)");
+        Iterable<Pair<List<Integer>, List<Integer>>> ps = P.dependentPairs(
+                P.lists(P.integersGeometric()),
+                is -> P.permutationsFinite(toList(nub(is)))
+        );
+        for (Pair<List<Integer>, List<Integer>> p : take(LIMIT, ps)) {
+            Comparator<Integer> comparator = new ListBasedComparator<>(p.b);
+            assertEquals(p, decreasing(comparator, p.a), increasing(comparator, reverse(p.a)));
+
+            Iterable<List<Integer>> xss = filterInfinite(
+                    ys -> !any(ys::contains, p.a),
+                    P.listsAtLeast(2, P.withNull(P.integersGeometric()))
+            );
+            for (List<Integer> xs : take(TINY_LIMIT, xss)) {
+                try {
+                    decreasing(comparator, xs);
+                    fail(xs);
+                } catch (IllegalArgumentException ignored) {}
+            }
+        }
+
+        Comparator<Integer> naturalComparator = Comparator.naturalOrder();
+        for (List<Integer> xs : take(LIMIT, P.lists(P.integersGeometric()))) {
+            assertEquals(xs, decreasing(naturalComparator, xs), decreasing(xs));
+        }
+    }
+
+    private void propertiesWeaklyIncreasing_Comparator_Iterable_T() {
+        initialize("weaklyIncreasing(Comparator, Iterable<T>)");
+        Iterable<Pair<List<Integer>, List<Integer>>> ps = P.dependentPairs(
+                P.lists(P.integersGeometric()),
+                is -> P.permutationsFinite(toList(nub(is)))
+        );
+        for (Pair<List<Integer>, List<Integer>> p : take(LIMIT, ps)) {
+            Comparator<Integer> comparator = new ListBasedComparator<>(p.b);
+            assertEquals(p, weaklyIncreasing(comparator, p.a), weaklyDecreasing(comparator, reverse(p.a)));
+
+            Iterable<List<Integer>> xss = filterInfinite(
+                    ys -> !any(ys::contains, p.a),
+                    P.listsAtLeast(2, P.withNull(P.integersGeometric()))
+            );
+            for (List<Integer> xs : take(TINY_LIMIT, xss)) {
+                try {
+                    weaklyIncreasing(comparator, xs);
+                    fail(xs);
+                } catch (IllegalArgumentException ignored) {}
+            }
+        }
+
+        Comparator<Integer> naturalComparator = Comparator.naturalOrder();
+        for (List<Integer> xs : take(LIMIT, P.lists(P.integersGeometric()))) {
+            assertEquals(xs, weaklyIncreasing(naturalComparator, xs), weaklyIncreasing(xs));
+        }
+    }
+
+    private void propertiesWeaklyDecreasing_Comparator_Iterable_T() {
+        initialize("weaklyDecreasing(Comparator, Iterable<T>)");
+        Iterable<Pair<List<Integer>, List<Integer>>> ps = P.dependentPairs(
+                P.lists(P.integersGeometric()),
+                is -> P.permutationsFinite(toList(nub(is)))
+        );
+        for (Pair<List<Integer>, List<Integer>> p : take(LIMIT, ps)) {
+            Comparator<Integer> comparator = new ListBasedComparator<>(p.b);
+            assertEquals(p, weaklyDecreasing(comparator, p.a), weaklyIncreasing(comparator, reverse(p.a)));
+
+            Iterable<List<Integer>> xss = filterInfinite(
+                    ys -> !any(ys::contains, p.a),
+                    P.listsAtLeast(2, P.withNull(P.integersGeometric()))
+            );
+            for (List<Integer> xs : take(TINY_LIMIT, xss)) {
+                try {
+                    weaklyDecreasing(comparator, xs);
+                    fail(xs);
+                } catch (IllegalArgumentException ignored) {}
+            }
+        }
+
+        Comparator<Integer> naturalComparator = Comparator.naturalOrder();
+        for (List<Integer> xs : take(LIMIT, P.lists(P.integersGeometric()))) {
+            assertEquals(xs, weaklyDecreasing(naturalComparator, xs), weaklyDecreasing(xs));
+        }
+    }
+
+    private void propertiesZigzagging_Comparator_Iterable_T() {
+        initialize("zigzagging(Comparator, Iterable<T>)");
+        Iterable<Pair<List<Integer>, List<Integer>>> ps = P.dependentPairs(
+                P.lists(P.integersGeometric()),
+                is -> P.permutationsFinite(toList(nub(is)))
+        );
+        for (Pair<List<Integer>, List<Integer>> p : take(LIMIT, ps)) {
+            Comparator<Integer> comparator = new ListBasedComparator<>(p.b);
+            assertEquals(p, zigzagging(comparator, p.a), zigzagging(comparator, reverse(p.a)));
+
+            Iterable<List<Integer>> xss = filterInfinite(
+                    ys -> !any(ys::contains, p.a),
+                    P.listsAtLeast(2, P.withNull(P.integersGeometric()))
+            );
+            for (List<Integer> xs : take(TINY_LIMIT, xss)) {
+                try {
+                    zigzagging(comparator, xs);
+                    fail(xs);
+                } catch (IllegalArgumentException ignored) {}
+            }
+        }
+
+        Comparator<Integer> naturalComparator = Comparator.naturalOrder();
+        for (List<Integer> xs : take(LIMIT, P.lists(P.integersGeometric()))) {
+            assertEquals(xs, zigzagging(naturalComparator, xs), zigzagging(xs));
         }
     }
 
