@@ -1,6 +1,7 @@
 package mho.wheels.math;
 
 import mho.wheels.iterables.ExhaustiveProvider;
+import mho.wheels.iterables.NoRemoveIterator;
 import mho.wheels.numberUtils.IntegerUtils;
 import mho.wheels.structures.Pair;
 import org.jetbrains.annotations.NotNull;
@@ -25,7 +26,151 @@ public final class MathUtils {
     /**
      * A cache of small primes, generated using the Sieve of Eratosthenes algorithm.
      */
-    private static BitSet PRIME_SIEVE;
+    private static final @NotNull BitSet PRIME_SIEVE;
+    static {
+        PRIME_SIEVE = new BitSet(PRIME_SIEVE_SIZE);
+        PRIME_SIEVE.set(2, PRIME_SIEVE_SIZE - 1);
+        int multiple;
+        for (multiple = 0; multiple < PRIME_SIEVE_SIZE; multiple++) {
+            while (!PRIME_SIEVE.get(multiple) && multiple < PRIME_SIEVE_SIZE) multiple++;
+            for (int i = multiple * 2; i < PRIME_SIEVE_SIZE; i += multiple) {
+                PRIME_SIEVE.clear(i);
+            }
+        }
+    }
+
+    /**
+     * Returns all prime {@code int}s in ascending order.
+     *
+     * Length is 105,097,565
+     */
+    public static final @NotNull Iterable<Integer> INT_PRIMES;
+    static {
+        @SuppressWarnings("ConstantConditions")
+        int start = (PRIME_SIEVE_SIZE & 1) == 0 ? PRIME_SIEVE_SIZE + 1 : PRIME_SIEVE_SIZE;
+        INT_PRIMES = concat(
+                filter(PRIME_SIEVE::get, ExhaustiveProvider.INSTANCE.rangeIncreasing(2, PRIME_SIEVE_SIZE - 1)),
+                filter(MathUtils::isPrime, takeWhile(j -> j > 0, iterate(i -> i + 2, start)))
+        );
+    }
+
+    /**
+     * Returns all prime {@code BigInteger}s in ascending order.
+     *
+     * Length is infinite
+     */
+    public static final @NotNull Iterable<BigInteger> PRIMES;
+    static {
+        Iterable<BigInteger> candidates = concatMap(
+                i -> {
+                    BigInteger sixI = i.multiply(BigInteger.valueOf(6));
+                    return Arrays.asList(sixI.subtract(BigInteger.ONE), sixI.add(BigInteger.ONE));
+                },
+                ExhaustiveProvider.INSTANCE.rangeUpIncreasing(BigInteger.valueOf(PRIME_SIEVE_SIZE / 6))
+        );
+        //noinspection Convert2MethodRef
+        PRIMES = concat(map(i -> BigInteger.valueOf(i), INT_PRIMES), filterInfinite(MathUtils::isPrime, candidates));
+    }
+
+    /**
+     * The Thue-Morse sequence; the sequence obtained by starting with 0 and repeatedly appending the complement of the
+     * sequence to itself.
+     */
+    public static final @NotNull Iterable<Boolean> THUE_MORSE = () -> new NoRemoveIterator<Boolean>() {
+        private final @NotNull BitSet sequence = new BitSet();
+        private int i = 0;
+        private int sequenceLength = 1;
+
+        @Override
+        public boolean hasNext() {
+            return true;
+        }
+
+        @Override
+        public @NotNull Boolean next() {
+            if (i >= sequenceLength) {
+                for (int j = 0; j < i; j++) {
+                    sequence.set(sequenceLength++, !sequence.get(j));
+                }
+            }
+            return sequence.get(i++);
+        }
+    };
+
+    /**
+     * The Kolakoski sequence; the sequence beginning with [1, 2] that is its own run-length encoding.
+     */
+    public static @NotNull Iterable<Integer> KOLAKOSKI = () -> new NoRemoveIterator<Integer>() {
+        private final @NotNull List<Integer> prefix = new ArrayList<>();
+        private int i = 0;
+        private int counter = 1;
+        private boolean ones = true;
+
+        @Override
+        public boolean hasNext() {
+            return true;
+        }
+
+        @Override
+        public @NotNull Integer next() {
+            int next = ones ? 1 : 2;
+            prefix.add(next);
+            counter--;
+            if (counter == 0) {
+                i++;
+                ones = !ones;
+                counter = i == 1 ? 2 : prefix.get(i);
+            }
+            return next;
+        }
+    };
+
+    /**
+     * The look-and-say sequence. To generate this sequence, start with [1], then count the blocks of adjacent numbers
+     * in the previous term: so the second term is "one 1", or [1, 1], the third term is "two 1s", or [2, 1], the
+     * fourth term is "one 2, one 1", or [1, 2, 1, 1], and so on. Although this sequence is usually described as a
+     * sequence of integers 1, 11, 21, 1211, ..., it is implemented here as a sequence of lists of digits.
+     */
+    public static @NotNull Iterable<List<Integer>> LOOK_AND_SAY = () -> new NoRemoveIterator<List<Integer>>() {
+        private @NotNull List<Integer> preceding = new ArrayList<>();
+
+        @Override
+        public boolean hasNext() {
+            return true;
+        }
+
+        @Override
+        public @NotNull List<Integer> next() {
+            List<Integer> next = new ArrayList<>();
+            if (preceding.isEmpty()) {
+                next.add(1);
+            } else {
+                next = toList(concatMap(p -> Arrays.asList(p.b, p.a), countAdjacent(preceding)));
+            }
+            preceding = next;
+            return next;
+        }
+    };
+
+    /**
+     * The Sylvester sequence, or the sequence beginning with 1, each of whose successive terms is the product of all
+     * the previous terms plus 1.
+     */
+    public static @NotNull Iterable<BigInteger> SYLVESTER = () -> new NoRemoveIterator<BigInteger>() {
+        private @NotNull List<BigInteger> prefix = new ArrayList<>();
+
+        @Override
+        public boolean hasNext() {
+            return true;
+        }
+
+        @Override
+        public @NotNull BigInteger next() {
+            BigInteger next = productBigInteger(prefix).add(BigInteger.ONE);
+            prefix.add(next);
+            return next;
+        }
+    };
 
     /**
      * Disallow instantiation
@@ -41,6 +186,7 @@ public final class MathUtils {
      *  <li>{@code p} cannot be negative.</li>
      *  <li>{@code p}<sup>{@code n}</sup> must be greater than or equal to –2<sup>31</sup> and less than
      *  2<sup>31</sup>.</li>
+     *  <li>The result may be any {@code int}.</li>
      * </ul>
      *
      * @param n a number
@@ -82,6 +228,8 @@ public final class MathUtils {
      * <ul>
      *  <li>{@code x} may be any {@code int}.</li>
      *  <li>{@code y} may be any {@code int}.</li>
+     *  <li>{@code x} and {@code y} cannot both equal –2<sup>31</sup>. Also, if one of {@code x} and {@code y} is 0,
+     *  the other cannot be –2<sup>31</sup>.</li>
      *  <li>The result is non-negative.</li>
      * </ul>
      *
@@ -91,7 +239,24 @@ public final class MathUtils {
      */
     @SuppressWarnings("JavaDoc")
     public static int gcd(int x, int y) {
-        return nonNegativeGcd(Math.abs(x), Math.abs(y));
+        x = Math.abs(x);
+        y = Math.abs(y);
+        if (x == Integer.MIN_VALUE) {
+            if (y == Integer.MIN_VALUE) {
+                throw new ArithmeticException("x and y cannot both equal -2^31.");
+            } else if (y == 0) {
+                throw new ArithmeticException("If y is 0, x cannot be -2^31.");
+            } else {
+                return IntegerUtils.isPowerOfTwo(y) ? y : 1;
+            }
+        } else if (y == Integer.MIN_VALUE) {
+            if (x == 0) {
+                throw new ArithmeticException("If x is 0, y cannot be -2^31.");
+            }
+            return IntegerUtils.isPowerOfTwo(x) ? x : 1;
+        } else {
+            return nonNegativeGcd(x, y);
+        }
     }
 
     /**
@@ -120,6 +285,8 @@ public final class MathUtils {
      * <ul>
      *  <li>{@code x} may be any {@code long}.</li>
      *  <li>{@code y} may be any {@code long}.</li>
+     *  <li>{@code x} and {@code y} cannot both equal –2<sup>63</sup>. Also, if one of {@code x} and {@code y} is 0,
+     *  the other cannot be –2<sup>63</sup>.</li>
      *  <li>The result is non-negative.</li>
      * </ul>
      *
@@ -129,7 +296,24 @@ public final class MathUtils {
      */
     @SuppressWarnings("JavaDoc")
     public static long gcd(long x, long y) {
-        return nonNegativeGcd(Math.abs(x), Math.abs(y));
+        x = Math.abs(x);
+        y = Math.abs(y);
+        if (x == Long.MIN_VALUE) {
+            if (y == Long.MIN_VALUE) {
+                throw new ArithmeticException("x and y cannot both equal -2^63.");
+            } else if (y == 0L) {
+                throw new ArithmeticException("If y is 0, x cannot be -2^63.");
+            } else {
+                return IntegerUtils.isPowerOfTwo(y) ? y : 1L;
+            }
+        } else if (y == Long.MIN_VALUE) {
+            if (x == 0L) {
+                throw new ArithmeticException("If x is 0, y cannot be -2^63.");
+            }
+            return IntegerUtils.isPowerOfTwo(x) ? x : 1L;
+        } else {
+            return nonNegativeGcd(x, y);
+        }
     }
 
     /**
@@ -177,8 +361,8 @@ public final class MathUtils {
     }
 
     /**
-     * The greatest common divisor of a {@code List} of {@code BigInteger}s. The GCD of an empty {@code Iterable}, or
-     * an {@code Iterable} containing only zeros, is zero.
+     * The greatest common divisor of a {@code List} of {@code BigInteger}s. The GCD of an empty {@code List}, or a
+     * {@code List} containing only zeros, is zero.
      *
      * <ul>
      *  <li>{@code xs} cannot contain any nulls.</li>
@@ -268,7 +452,7 @@ public final class MathUtils {
         List<BigInteger> halves = new ArrayList<>();
         BigInteger h = n;
         while (gt(h, IntegerUtils.TWO)) {
-            halves.add(h.and(BigInteger.ONE).equals(BigInteger.ZERO) ? h.subtract(BigInteger.ONE) : h);
+            halves.add(h.testBit(0) ? h : h.subtract(BigInteger.ONE));
             h = h.shiftRight(1);
         }
         int j = halves.size() - 1;
@@ -328,10 +512,10 @@ public final class MathUtils {
         BigInteger sf = BigInteger.ONE;
         for (BigInteger i = BigInteger.ONE; le(i, n); i = i.add(BigInteger.ONE)) {
             sf = sf.multiply(i);
-            if (i.getLowestSetBit() != 0) {
-                sf = sf.add(BigInteger.ONE);
-            } else {
+            if (i.testBit(0)) {
                 sf = sf.subtract(BigInteger.ONE);
+            } else {
+                sf = sf.add(BigInteger.ONE);
             }
         }
         return sf;
@@ -734,22 +918,6 @@ public final class MathUtils {
     }
 
     /**
-     * Initializes the prime sieve, if it hasn't already been initialized.
-     */
-    private static void ensurePrimeSieveInitialized() {
-        if (PRIME_SIEVE != null) return;
-        PRIME_SIEVE = new BitSet(PRIME_SIEVE_SIZE);
-        PRIME_SIEVE.set(2, PRIME_SIEVE_SIZE - 1);
-        int multiple;
-        for (multiple = 0; multiple < PRIME_SIEVE_SIZE; multiple++) {
-            while (!PRIME_SIEVE.get(multiple) && multiple < PRIME_SIEVE_SIZE) multiple++;
-            for (int i = multiple * 2; i < PRIME_SIEVE_SIZE; i += multiple) {
-                PRIME_SIEVE.clear(i);
-            }
-        }
-    }
-
-    /**
      * Returns the smallest prime factor of {@code n}.
      *
      * <ul>
@@ -765,7 +933,6 @@ public final class MathUtils {
             throw new IllegalArgumentException("n must be at least 2. Invalid n: " + n);
         }
         if (n % 2 == 0) return 2;
-        ensurePrimeSieveInitialized();
         if (n < PRIME_SIEVE_SIZE && PRIME_SIEVE.get(n)) return n;
         for (int i = 3; i < PRIME_SIEVE_SIZE; i += 2) {
             int square = i * i;
@@ -794,7 +961,6 @@ public final class MathUtils {
             return BigInteger.valueOf(smallestPrimeFactor(n.intValueExact()));
         }
         if (!n.testBit(0)) return IntegerUtils.TWO;
-        ensurePrimeSieveInitialized();
         for (int i = 3; i < PRIME_SIEVE_SIZE; i += 2) {
             BigInteger bi = BigInteger.valueOf(i);
             if (gt(bi.pow(2), n)) return n;
@@ -969,42 +1135,6 @@ public final class MathUtils {
     }
 
     /**
-     * Returns all prime {@code int}s in ascending order.
-     *
-     * Length is 105,097,565
-     *
-     * @return prime {@code int}s
-     */
-    public static @NotNull Iterable<Integer> intPrimes() {
-        @SuppressWarnings("ConstantConditions")
-        int start = (PRIME_SIEVE_SIZE & 1) == 0 ? PRIME_SIEVE_SIZE + 1 : PRIME_SIEVE_SIZE;
-        ensurePrimeSieveInitialized();
-        return concat(
-                filter(PRIME_SIEVE::get, ExhaustiveProvider.INSTANCE.rangeIncreasing(2, PRIME_SIEVE_SIZE - 1)),
-                filter(MathUtils::isPrime, takeWhile(j -> j > 0, iterate(i -> i + 2, start)))
-        );
-    }
-
-    /**
-     * Returns all prime {@code BigInteger}s in ascending order.
-     *
-     * Length is infinite
-     *
-     * @return prime {@code BigInteger}s
-     */
-    public static @NotNull Iterable<BigInteger> primes() {
-        Iterable<BigInteger> candidates = concatMap(
-                i -> {
-                    BigInteger sixI = i.multiply(BigInteger.valueOf(6));
-                    return Arrays.asList(sixI.subtract(BigInteger.ONE), sixI.add(BigInteger.ONE));
-                },
-                ExhaustiveProvider.INSTANCE.rangeUpIncreasing(BigInteger.valueOf(PRIME_SIEVE_SIZE / 6))
-        );
-        //noinspection Convert2MethodRef
-        return concat(map(i -> BigInteger.valueOf(i), intPrimes()), filterInfinite(MathUtils::isPrime, candidates));
-    }
-
-    /**
      * Returns the largest number that, when raised to the {@code p}th power, divides {@code n}.
      *
      * <ul>
@@ -1073,6 +1203,84 @@ public final class MathUtils {
             }
         }
         return new Pair<>(n, 1);
+    }
+
+    /**
+     * If {@code n} is a perfect {@code r}th power, returns the {@code r}th root of {@code n}. Otherwise, returns
+     * empty.
+     *
+     * <ul>
+     *  <li>{@code n} may be any {@code BigInteger}.</li>
+     *  <li>{@code r} must be positive.</li>
+     *  <li>If {@code r} is even, {@code this} cannot be negative.</li>
+     *  <li>The result may be any {@code BigInteger}, or empty.</li>
+     * </ul>
+     *
+     * @param r the degree of the root extracted from {@code n}
+     * @return {@code n}<sup>1/{@code r}</sup>
+     */
+    public static @NotNull Optional<BigInteger> root(@NotNull BigInteger n, int r) {
+        if (r <= 0) {
+            throw new ArithmeticException("r must be positive. Invalid r: " + r);
+        }
+        if (n.equals(BigInteger.ONE) || r == 1) {
+            return Optional.of(n);
+        }
+        if (n.equals(BigInteger.ZERO)) {
+            return Optional.of(n);
+        }
+        BigInteger root;
+        if (n.signum() == -1) {
+            if ((r & 1) == 0) {
+                throw new ArithmeticException("If r is even, n cannot be negative. r: " + r + ", n: " + n);
+            } else {
+                root = ceilingRoot(r, n.negate()).negate();
+            }
+        } else {
+            root = ceilingRoot(r, n);
+        }
+        return root.pow(r).equals(n) ? Optional.of(root) : Optional.empty();
+    }
+
+    /**
+     * If {@code n} is a perfect square, returns the square root of {@code n}. Otherwise, returns empty.
+     *
+     * <ul>
+     *  <li>{@code n} must be non-negative.</li>
+     *  <li>The result may be any non-negative {@code BigInteger}, or empty.</li>
+     * </ul>
+     *
+     * @return sqrt({@code n})
+     */
+    @SuppressWarnings("JavaDoc")
+    public static @NotNull Optional<BigInteger> sqrt(@NotNull BigInteger n) {
+        if (n.equals(BigInteger.ZERO) || n.equals(BigInteger.ONE)) {
+            return Optional.of(n);
+        }
+        if (n.signum() == -1) {
+            throw new ArithmeticException("n cannot be negative. Invalid n: " + n);
+        }
+        BigInteger root = ceilingRoot(2, n);
+        return root.pow(2).equals(n) ? Optional.of(root) : Optional.empty();
+    }
+
+    /**
+     * If {@code n} is a perfect cibe, returns the cube root of {@code n}. Otherwise, returns empty.
+     *
+     * <ul>
+     *  <li>{@code n} cannot be null.</li>
+     *  <li>The result may be any {@code BigInteger}, or empty.</li>
+     * </ul>
+     *
+     * @return cbrt({@code n})
+     */
+    @SuppressWarnings("JavaDoc")
+    public static @NotNull Optional<BigInteger> cbrt(@NotNull BigInteger n) {
+        if (n.equals(BigInteger.ZERO) || n.equals(BigInteger.ONE)) {
+            return Optional.of(n);
+        }
+        BigInteger root = n.signum() == -1 ? ceilingRoot(3, n.negate()).negate() : ceilingRoot(3, n);
+        return root.pow(3).equals(n) ? Optional.of(root) : Optional.empty();
     }
 
     /**
@@ -1158,7 +1366,7 @@ public final class MathUtils {
             cache.put(n, result);
             return result;
         }
-        if (n.and(BigInteger.ONE).equals(BigInteger.ONE)) {
+        if (n.testBit(0)) {
             result = Collections.emptyList();
             cache.put(n, result);
             return result;
@@ -1178,16 +1386,12 @@ public final class MathUtils {
                     } else {
                         x = x.divide(p);
                     }
-                    if (x.equals(BigInteger.ONE) || x.and(BigInteger.ONE).equals(BigInteger.ZERO)) {
+                    if (x.equals(BigInteger.ONE) || !x.testBit(0)) {
                         for (BigInteger y : inverseTotientHelper(x, cache, spfCache)) {
                             if (y.equals(BigInteger.ONE)) {
                                 elements.add(pPower);
                             } else {
-                                BigInteger spf = spfCache.get(y);
-                                if (spf == null) {
-                                    spf = smallestPrimeFactor(y);
-                                    spfCache.put(y, spf);
-                                }
+                                BigInteger spf = spfCache.computeIfAbsent(y, k -> smallestPrimeFactor(y));
                                 if (gt(spf, p)) {
                                     elements.add(y.multiply(pPower));
                                 }
@@ -1206,9 +1410,9 @@ public final class MathUtils {
         int limit = n.getLowestSetBit();
         for (int d = 0; d < limit; d++) {
             x = x.shiftRight(1);
-            if (x.equals(BigInteger.ONE) || x.and(BigInteger.ONE).equals(BigInteger.ZERO)) {
+            if (x.equals(BigInteger.ONE) || !x.testBit(0)) {
                 for (BigInteger y : inverseTotientHelper(x, cache, spfCache)) {
-                    if (y.and(BigInteger.ONE).equals(BigInteger.ONE)) {
+                    if (y.testBit(0)) {
                         elements.add(y.shiftLeft(d + 2));
                     }
                 }
@@ -1216,5 +1420,124 @@ public final class MathUtils {
         }
         cache.put(n, elements);
         return elements;
+    }
+
+    /**
+     * A normal sequence is a sequence over an alphabet ∑ such that for all n, every length-n string over ∑ appears
+     * with an equal asymptotic frequency. A base-b greedy normal sequence is a sequence over the symbols 0 to b–1 that
+     * tries to be as normal as possible: that is, whenever a new digit is added, an attempt is made to keep the
+     * relative frequencies of all substrings in the sequence balanced. If several choices are the "most normal", the
+     * lowest allowed digit is added.
+     *
+     * For example, suppose that b is 10, so that our sequence contains the digits 0 to 9. We begin with the empty
+     * sequence. The first ten digits in the sequence must be distinct: otherwise, that frequencies of the length-1
+     * subsequences would be prematurely unbalanced. Going by the lowest-digit rule, the sequence begins [0, 1, 2, 3,
+     * 4, 5, 6, 7, 8, 9, ...]. Notice that every length-n subsequence appears 0 or 1 times. What should the next digit
+     * be? Again, we can default to the lowest digit rule and add 0. How about the next digit? We shouldn't add 1,
+     * because then the 2-digit subsequence [0, 1] would appear twice. But 2 is ok. Similarly, we should avoid the
+     * subsequences [1, 2], [2, 3], etc. because they have already been used. It turns out that the first 20 terms are
+     * [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 2, 1, 3, 5, 4, 6, 8, 7, 9, ...].
+     *
+     * For the next digit, let's take a closer look at the algorithm. The algorithm considers adding each digit 0 to 9,
+     * and assigns each digit a number of points. From the set of digits with maximal points, the lowest digit is
+     * selected. A point is given to digit d for each n such that adding d to the sequence would add a "rare" length-n
+     * subsequence, where a rare length-n subsequence is one whose frequency in the sequence is minimal accross all
+     * length-n subsequences.
+     *
+     * If we append a 0 to the first 20 terms, we are adding the 21 substrings "0", "90", "790", "8790", etc. This
+     * gives the digit 0 a score of 21–1 = 20, since all the substrings except for "90" are rare: "0" is rare since its
+     * frequency before adding the next digit is 2, the same as all other length-1 substrings; "790" is rare because
+     * its frequency was 0; and all of the longer substrings are rare. But "90" is not rare, because its frequency is
+     * 1, greater than the frequency of most length-2 substrings, which is 0.
+     *
+     * On the other hand, all digits from 1 to 9 get the full score of 21, so we append the lowest, which is 1.
+     *
+     * <ul>
+     *  <li>{@code base} must be at least 2.</li>
+     *  <li>The result is infinite and contains no negative numbers.</li>
+     * </ul>
+     *
+     * @param base the exclusive upper bound on the elements in the sequence
+     * @return a sequence which tries to be as normal as possible
+     */
+    public static @NotNull Iterable<Integer> greedyNormalSequence(int base) {
+        if (base < 2) {
+            throw new IllegalArgumentException("base must be at least 2. Invalid base: " + base);
+        }
+        return () -> new NoRemoveIterator<Integer>() {
+            private final @NotNull List<Map<List<Integer>, Integer>> frequencyMaps = new ArrayList<>();
+            private final @NotNull List<Integer> minimumFrequencies = new ArrayList<>();
+            private final @NotNull List<Integer> digitsSoFar = new ArrayList<>();
+            {
+                frequencyMaps.add(new HashMap<>());
+                minimumFrequencies.add(0);
+            }
+
+            @Override
+            public boolean hasNext() {
+                return true;
+            }
+
+            @Override
+            public Integer next() {
+                int currentSize = digitsSoFar.size();
+                frequencyMaps.add(new HashMap<>());
+                minimumFrequencies.add(0);
+                int maxPoints = 0;
+                int bestDigit = 0;
+                for (int i = 0; i < base; i++) {
+                    int points = 0;
+                    for (int length = 1; length <= currentSize + 1; length++) {
+                        List<Integer> segment = new ArrayList<>();
+                        for (int j = currentSize - length + 1; j < currentSize; j++) {
+                            segment.add(digitsSoFar.get(j));
+                        }
+                        segment.add(i);
+                        Integer frequency = frequencyMaps.get(length).get(segment);
+                        if (frequency == null) {
+                            frequency = 0;
+                        }
+                        if (Objects.equals(frequency, minimumFrequencies.get(length))) {
+                            points++;
+                        }
+                    }
+                    if (points > maxPoints) {
+                        maxPoints = points;
+                        bestDigit = i;
+                    }
+                }
+                for (int length = 1; length <= currentSize + 1; length++) {
+                    List<Integer> segment = new ArrayList<>();
+                    for (int j = currentSize - length + 1; j < currentSize; j++) {
+                        segment.add(digitsSoFar.get(j));
+                    }
+                    segment.add(bestDigit);
+                    Map<List<Integer>, Integer> frequencyMap = frequencyMaps.get(length);
+                    Integer frequency = frequencyMap.get(segment);
+                    if (frequency == null) {
+                        frequencyMap.put(segment, 1);
+                    } else {
+                        frequencyMap.put(segment, frequency + 1);
+                    }
+                    int minimumFrequency = minimumFrequencies.get(length);
+                    boolean minimumFrequencySeen = false;
+                    if (ceilingLog(BigInteger.valueOf(base), BigInteger.valueOf(frequencyMap.size() + 1)) <= length) {
+                        minimumFrequencySeen = true;
+                    } else {
+                        for (Map.Entry<List<Integer>, Integer> entry : frequencyMap.entrySet()) {
+                            if (entry.getValue() == minimumFrequency) {
+                                minimumFrequencySeen = true;
+                                break;
+                            }
+                        }
+                    }
+                    if (!minimumFrequencySeen) {
+                        minimumFrequencies.set(length, minimumFrequency + 1);
+                    }
+                }
+                digitsSoFar.add(bestDigit);
+                return bestDigit;
+            }
+        };
     }
 }

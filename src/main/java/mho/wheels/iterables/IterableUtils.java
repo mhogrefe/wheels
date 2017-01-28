@@ -299,6 +299,14 @@ public final strictfp class IterableUtils {
         return map;
     }
 
+    public static @NotNull <A, B> IdentityHashMap<A, B> toIdentityMap(@NotNull Iterable<Pair<A, B>> ps) {
+        IdentityHashMap<A, B> map = new IdentityHashMap<>();
+        for (Pair<A, B> p : ps) {
+            map.put(p.a, p.b);
+        }
+        return map;
+    }
+
     public static @NotNull <A, B> Iterable<Pair<A, B>> fromMap(@NotNull Map<A, B> map) {
         return map(entry -> new Pair<A, B>(entry.getKey(), entry.getValue()), map.entrySet());
     }
@@ -1744,239 +1752,6 @@ public final strictfp class IterableUtils {
         }
     }
 
-    public static <T extends Comparable<T>> T minimum(@NotNull Iterable<T> xs) {
-        return foldl1(Ordering::min, xs);
-    }
-
-    public static <T extends Comparable<T>> T maximum(@NotNull Iterable<T> xs) {
-        return foldl1(Ordering::max, xs);
-    }
-
-    public static <T extends Comparable<T>> Pair<T, T> minimumMaximum(@NotNull Iterable<T> xs) {
-        T min = null;
-        T max = null;
-        boolean first = true;
-        for (T x : xs) {
-            if (first) {
-                min = x;
-                max = x;
-                first = false;
-            } else {
-                if (lt(x, min)) {
-                    min = x;
-                } else if (gt(x, max)) {
-                    max = x;
-                }
-            }
-        }
-        if (first) {
-            throw new IllegalArgumentException();
-        }
-        return new Pair<>(min, max);
-    }
-
-    public static <T> T minimum(@NotNull Comparator<T> comparator, @NotNull Iterable<T> xs) {
-        return foldl1((x, y) -> min(comparator, x, y), xs);
-    }
-
-    public static <T> T maximum(@NotNull Comparator<T> comparator, @NotNull Iterable<T> xs) {
-        return foldl1((x, y) -> max(comparator, x, y), xs);
-    }
-
-    public static <T> Pair<T, T> minimumMaximum(@NotNull Comparator<T> comparator, @NotNull Iterable<T> xs) {
-        T min = null;
-        T max = null;
-        boolean first = true;
-        for (T x : xs) {
-            if (first) {
-                min = x;
-                max = x;
-                first = false;
-            } else {
-                if (lt(comparator, x, min)) {
-                    min = x;
-                } else if (gt(comparator, x, max)) {
-                    max = x;
-                }
-            }
-        }
-        if (first) {
-            throw new IllegalArgumentException();
-        }
-        return new Pair<>(min, max);
-    }
-
-    public static char minimum(@NotNull String s) {
-        return foldl1(Ordering::min, fromString(s));
-    }
-
-    public static char maximum(@NotNull String s) {
-        return foldl1(Ordering::max, fromString(s));
-    }
-
-    public static Pair<Character, Character> minimumMaximum(@NotNull String s) {
-        char min = '\0';
-        char max = '\0';
-        boolean first = true;
-        for (int i = 0; i < s.length(); i++) {
-            char c = s.charAt(i);
-            if (first) {
-                min = c;
-                max = c;
-                first = false;
-            } else {
-                if (lt(c, min)) {
-                    min = c;
-                } else if (gt(c, max)) {
-                    max = c;
-                }
-            }
-        }
-        if (first) {
-            throw new IllegalArgumentException();
-        }
-        return new Pair<>(min, max);
-    }
-
-    public static char minimum(@NotNull Comparator<Character> comparator, @NotNull String s) {
-        return foldl1((x, y) -> min(comparator, x, y), fromString(s));
-    }
-
-    public static char maximum(@NotNull Comparator<Character> comparator, @NotNull String s) {
-        return foldl1((x, y) -> max(comparator, x, y), fromString(s));
-    }
-
-    public static Pair<Character, Character> minimumMaximum(
-            @NotNull Comparator<Character> comparator,
-            @NotNull String s
-    ) {
-        char min = '\0';
-        char max = '\0';
-        boolean first = true;
-        for (int i = 0; i < s.length(); i++) {
-            char c = s.charAt(i);
-            if (first) {
-                min = c;
-                max = c;
-                first = false;
-            } else {
-                if (lt(comparator, c, min)) {
-                    min = c;
-                } else if (gt(comparator, c, max)) {
-                    max = c;
-                }
-            }
-        }
-        if (first) {
-            throw new IllegalArgumentException();
-        }
-        return new Pair<>(min, max);
-    }
-
-    public static <A, B extends Comparable<B>> A argmin(@NotNull Function<A, B> f, @NotNull Iterable<A> as) {
-        boolean first = true;
-        A argmin = null;
-        B minimum = null;
-        for (A a : as) {
-            if (first) {
-                first = false;
-                argmin = a;
-                minimum = f.apply(a);
-            } else {
-                B b = f.apply(a);
-                if (lt(b, minimum)) {
-                    minimum = b;
-                    argmin = a;
-                }
-            }
-        }
-        if (first) {
-            throw new IllegalArgumentException("");
-        } else {
-            return argmin;
-        }
-    }
-
-    public static <A, B extends Comparable<B>> A argmax(@NotNull Function<A, B> f, @NotNull Iterable<A> as) {
-        boolean first = true;
-        A argmax = null;
-        B maximum = null;
-        for (A a : as) {
-            if (first) {
-                first = false;
-                argmax = a;
-                maximum = f.apply(a);
-            } else {
-                B b = f.apply(a);
-                if (gt(b, maximum)) {
-                    maximum = b;
-                    argmax = a;
-                }
-            }
-        }
-        if (first) {
-            throw new IllegalArgumentException("");
-        } else {
-            return argmax;
-        }
-    }
-
-    public static <A, B> A argmin(
-            @NotNull Comparator<B> comparator,
-            @NotNull Function<A, B> f,
-            @NotNull Iterable<A> as
-    ) {
-        boolean first = true;
-        A argmin = null;
-        B minimum = null;
-        for (A a : as) {
-            if (first) {
-                first = false;
-                argmin = a;
-                minimum = f.apply(a);
-            } else {
-                B b = f.apply(a);
-                if (lt(comparator, b, minimum)) {
-                    minimum = b;
-                    argmin = a;
-                }
-            }
-        }
-        if (first) {
-            throw new IllegalArgumentException("");
-        } else {
-            return argmin;
-        }
-    }
-
-    public static <A, B> A argmax(
-            @NotNull Comparator<B> comparator,
-            @NotNull Function<A, B> f,
-            @NotNull Iterable<A> as
-    ) {
-        boolean first = true;
-        A argmax = null;
-        B maximum = null;
-        for (A a : as) {
-            if (first) {
-                first = false;
-                argmax = a;
-                maximum = f.apply(a);
-            } else {
-                B b = f.apply(a);
-                if (gt(comparator, b, maximum)) {
-                    maximum = b;
-                    argmax = a;
-                }
-            }
-        }
-        if (first) {
-            throw new IllegalArgumentException("");
-        } else {
-            return argmax;
-        }
-    }
-
     public static @NotNull <A, B> Iterable<B> scanl(
             @NotNull BiFunction<B, A, B> f,
             @Nullable B z,
@@ -2119,7 +1894,7 @@ public final strictfp class IterableUtils {
         };
     }
 
-    public static @NotNull String replicate(int n, char c) {
+    public static @NotNull String replicateString(int n, char c) {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < n; i++) {
             sb.append(c);
@@ -3470,54 +3245,6 @@ public final strictfp class IterableUtils {
         if (isEmpty(s)) return true;
         char head = head(s);
         return all(c -> c == head, tail(s));
-    }
-
-    public static <T extends Comparable<T>> boolean increasing(@NotNull Iterable<T> xs) {
-        return and(adjacentPairsWith((x, y) -> lt(x, y), xs));
-    }
-
-    public static <T extends Comparable<T>> boolean decreasing(@NotNull Iterable<T> xs) {
-        return and(adjacentPairsWith((x, y) -> gt(x, y), xs));
-    }
-
-    public static <T extends Comparable<T>> boolean weaklyIncreasing(@NotNull Iterable<T> xs) {
-        return and(adjacentPairsWith((x, y) -> le(x, y), xs));
-    }
-
-    public static <T extends Comparable<T>> boolean weaklyDecreasing(@NotNull Iterable<T> xs) {
-        return and(adjacentPairsWith((x, y) -> ge(x, y), xs));
-    }
-
-    public static <T extends Comparable<T>> boolean zigzagging(@NotNull Iterable<T> xs) {
-        Iterable<Pair<Ordering, Ordering>> compares = adjacentPairsWith(
-                (a, b) -> new Pair<Ordering, Ordering>(a, b),
-                adjacentPairsWith((x, y) -> compare(x, y), xs)
-        );
-        return all(p -> p.a != EQ && p.a == p.b.invert(), compares);
-    }
-
-    public static <T> boolean increasing(@NotNull Comparator<T> comparator, @NotNull Iterable<T> xs) {
-        return and(adjacentPairsWith((x, y) -> lt(comparator, x, y), xs));
-    }
-
-    public static <T> boolean decreasing(@NotNull Comparator<T> comparator, @NotNull Iterable<T> xs) {
-        return and(adjacentPairsWith((x, y) -> gt(comparator, x, y), xs));
-    }
-
-    public static <T> boolean weaklyIncreasing(@NotNull Comparator<T> comparator, @NotNull Iterable<T> xs) {
-        return and(adjacentPairsWith((x, y) -> le(comparator, x, y), xs));
-    }
-
-    public static <T> boolean weaklyDecreasing(@NotNull Comparator<T> comparator, @NotNull Iterable<T> xs) {
-        return and(adjacentPairsWith((x, y) -> ge(comparator, x, y), xs));
-    }
-
-    public static <T> boolean zigzagging(@NotNull Comparator<T> comparator, @NotNull Iterable<T> xs) {
-        Iterable<Pair<Ordering, Ordering>> compares = adjacentPairsWith(
-                (a, b) -> new Pair<Ordering, Ordering>(a, b),
-                adjacentPairsWith((x, y) -> compare(comparator, x, y), xs)
-        );
-        return all(p -> p.a != EQ && p.a == p.b.invert(), compares);
     }
 
     public static <T> boolean isInfixOf(@NotNull Iterable<T> xs, @NotNull Iterable<T> ys) {

@@ -1688,10 +1688,12 @@ public class IntegerUtilsTest {
         logarithmicMux_helper("5", "10", "11263");
         logarithmicMux_helper("10", "5", "671");
         logarithmicMux_helper("500000", "0", "1000000");
+        logarithmicMux_helper("100000000000000000000", "5", "6400000000000000000031");
 
         logarithmicMux_fail_helper("-5", "5");
         logarithmicMux_fail_helper("5", "-5");
         logarithmicMux_fail_helper("-5", "-5");
+        logarithmicMux_fail_helper("5", "100000000000000000000");
     }
 
     private static void logarithmicDemux_helper(@NotNull String n, @NotNull String x, @NotNull String y) {
@@ -1715,6 +1717,7 @@ public class IntegerUtilsTest {
         logarithmicDemux_helper("11263", "5", "10");
         logarithmicDemux_helper("671", "10", "5");
         logarithmicDemux_helper("1000000", "500000", "0");
+        logarithmicDemux_helper("6400000000000000000031", "100000000000000000000", "5");
 
         logarithmicDemux_fail_helper("-5");
     }
@@ -1738,6 +1741,9 @@ public class IntegerUtilsTest {
         squareRootMux_helper("5", "10", "538");
         squareRootMux_helper("10", "5", "101");
         squareRootMux_helper("7680", "76", "1000000");
+        squareRootMux_helper("5", "100000000000000000000",
+                "408122147460934661546617663009122238394934174203728183164946");
+        squareRootMux_helper("100000000000000000000", "5", "1451615365330893086667197907009");
 
         squareRootMux_fail_helper("-5", "5");
         squareRootMux_fail_helper("5", "-5");
@@ -1765,6 +1771,9 @@ public class IntegerUtilsTest {
         squareRootDemux_helper("538", "5", "10");
         squareRootDemux_helper("101", "10", "5");
         squareRootDemux_helper("1000000", "7680", "76");
+        squareRootDemux_helper("408122147460934661546617663009122238394934174203728183164946", "5",
+                "100000000000000000000");
+        squareRootDemux_helper("1451615365330893086667197907009", "100000000000000000000", "5");
 
         squareRootDemux_fail_helper("-5");
     }

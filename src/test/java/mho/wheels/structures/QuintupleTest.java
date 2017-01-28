@@ -86,8 +86,8 @@ public class QuintupleTest {
     ) {
         aeq(
                 Quintuple.compare(
-                        new Quintuple<>(pa, pb, pc, pd, Readers.readOrderingStrict(pe).get()),
-                        new Quintuple<>(qa, qb, qc, qd, Readers.readOrderingStrict(qe).get())
+                        new Quintuple<>(pa, pb, pc, pd, Ordering.readStrict(pe).get()),
+                        new Quintuple<>(qa, qb, qc, qd, Ordering.readStrict(qe).get())
                 ),
                 output
         );
@@ -132,14 +132,14 @@ public class QuintupleTest {
                         pb,
                         pc,
                         pd,
-                        Readers.readWithNullsStrict(Readers::readOrderingStrict).apply(pe).get()
+                        Readers.readWithNullsStrict(Ordering::readStrict).apply(pe).get()
                 ).equals(
                         new Quintuple<>(
                                 qa,
                                 qb,
                                 qc,
                                 qd,
-                                Readers.readWithNullsStrict(Readers::readOrderingStrict).apply(qe).get()
+                                Readers.readWithNullsStrict(Ordering::readStrict).apply(qe).get()
                         )
                 ),
                 output
@@ -161,7 +161,7 @@ public class QuintupleTest {
                         pb,
                         pc,
                         pd,
-                        Readers.readWithNullsStrict(Readers::readOrderingStrict).apply(pe).get()
+                        Readers.readWithNullsStrict(Ordering::readStrict).apply(pe).get()
                 ).equals(x),
                 output
         );
@@ -229,7 +229,7 @@ public class QuintupleTest {
                         Readers.readWithNullsStrict(Readers::readIntegerStrict),
                         Readers.readWithNullsStrict(Readers::readBooleanStrict),
                         Readers.readWithNullsStrict(Readers::readCharacterStrict),
-                        Readers.readWithNullsStrict(Readers::readOrderingStrict)
+                        Readers.readWithNullsStrict(Ordering::readStrict)
                 ),
                 output
         );
@@ -270,14 +270,14 @@ public class QuintupleTest {
                                 pb,
                                 pc,
                                 pd,
-                                Readers.readWithNullsStrict(Readers::readOrderingStrict).apply(pe).get()
+                                Readers.readWithNullsStrict(Ordering::readStrict).apply(pe).get()
                         ),
                         new Quintuple<>(
                                 qa,
                                 qb,
                                 qc,
                                 qd,
-                                Readers.readWithNullsStrict(Readers::readOrderingStrict).apply(qe).get()
+                                Readers.readWithNullsStrict(Ordering::readStrict).apply(qe).get()
                         )
                 ),
                 output

@@ -5,7 +5,6 @@ import mho.wheels.numberUtils.BigDecimalUtils;
 import mho.wheels.numberUtils.FloatingPointUtils;
 import mho.wheels.ordering.Ordering;
 import mho.wheels.ordering.comparators.ListBasedComparator;
-import mho.wheels.ordering.comparators.WithNullComparator;
 import mho.wheels.random.IsaacPRNG;
 import mho.wheels.structures.*;
 import mho.wheels.testing.TestProperties;
@@ -155,6 +154,7 @@ public class RandomProviderProperties extends TestProperties {
         propertiesOptionals();
         propertiesNullableOptionals();
         propertiesDependentPairsInfinite();
+        propertiesDependentPairsInfiniteIdentityHash();
         propertiesShuffle();
         propertiesPermutationsFinite();
         propertiesStringPermutations();
@@ -209,6 +209,7 @@ public class RandomProviderProperties extends TestProperties {
         propertiesStringsWithSubstrings_Iterable_String_String();
         propertiesStringsWithSubstrings_Iterable_String();
         propertiesMaps();
+        propertiesIdentityMaps();
         propertiesRandomProvidersFixedScales();
         propertiesRandomProvidersDefault();
         propertiesRandomProvidersDefaultSecondaryAndTertiaryScale();
@@ -2674,7 +2675,7 @@ public class RandomProviderProperties extends TestProperties {
         for (Pair<RandomProvider, Iterable<Integer>> p : take(LIMIT, ps)) {
             List<Integer> withNull = toList(take(TINY_LIMIT, p.a.withNull(p.b)));
             testNoRemove(TINY_LIMIT, p.a.withNull(p.b));
-            List<Integer> filteredResult = toList(filter(x -> x != null, withNull));
+            List<Integer> filteredResult = toList(filter(Objects::nonNull, withNull));
             assertEquals(p, filteredResult, toList(take(filteredResult.size(), p.b)));
         }
 
@@ -2814,7 +2815,7 @@ public class RandomProviderProperties extends TestProperties {
         for (Pair<Iterable<Integer>, FiniteDomainFunction<Integer, Iterable<Integer>>> p : take(LIMIT, ps)) {
             Iterable<Pair<Integer, Integer>> pairs = RP.dependentPairsInfinite(p.a, p.b);
             testNoRemove(TINY_LIMIT, pairs);
-            assertTrue(p, all(q -> q != null, take(TINY_LIMIT, pairs)));
+            assertTrue(p, all(Objects::nonNull, take(TINY_LIMIT, pairs)));
         }
 
         Iterable<Pair<Iterable<Integer>, FiniteDomainFunction<Integer, Iterable<Integer>>>> psFail = map(
@@ -2848,27 +2849,155 @@ public class RandomProviderProperties extends TestProperties {
             );
             return new Pair<>(cycle(p.a), new FiniteDomainFunction<>(transformedValues));
         };
-        Iterable<Pair<Iterable<Integer>, FiniteDomainFunction<Integer, Iterable<Integer>>>> psFail2 = map(
+        psFail = map(
                 g,
                 nub(P.dependentPairsInfinite(nub(map(IterableUtils::unrepeat, PS.lists(P.integersGeometric()))), f))
         );
-        for (Pair<Iterable<Integer>, FiniteDomainFunction<Integer, Iterable<Integer>>> p : take(LIMIT, psFail2)) {
+        for (Pair<Iterable<Integer>, FiniteDomainFunction<Integer, Iterable<Integer>>> p : take(LIMIT, psFail)) {
             try {
                 toList(RP.dependentPairsInfinite(p.a, p.b));
                 fail(p);
             } catch (NoSuchElementException ignored) {}
         }
 
-        Iterable<Pair<List<Integer>, FiniteDomainFunction<Integer, Iterable<Integer>>>> psFail3 = map(
+        Iterable<Pair<List<Integer>, FiniteDomainFunction<Integer, Iterable<Integer>>>> psFail2 = map(
                 p -> new Pair<>(
                         p.a,
                         new FiniteDomainFunction<>(toMap(map(e -> new Pair<>(e.a, cycle(e.b)), fromMap(p.b))))
                 ),
                 nub(P.dependentPairsInfinite(PS.listsAtLeast(1, P.integersGeometric()), f))
         );
-        for (Pair<List<Integer>, FiniteDomainFunction<Integer, Iterable<Integer>>> p : take(LIMIT, psFail3)) {
+        for (Pair<List<Integer>, FiniteDomainFunction<Integer, Iterable<Integer>>> p : take(LIMIT, psFail2)) {
             try {
                 toList(RP.dependentPairsInfinite(p.a, p.b));
+                fail(p);
+            } catch (NoSuchElementException ignored) {}
+        }
+    }
+
+    private static class IntNoHashCode {
+        private int i;
+
+        public IntNoHashCode(int i) {
+            this.i = i;
+        }
+
+        public int hashCode() {
+            throw new UnsupportedOperationException();
+        }
+
+        public @NotNull
+        String toString() {
+            return Integer.toString(i);
+        }
+    }
+
+    private void propertiesDependentPairsInfiniteIdentityHash() {
+        initialize("dependentPairsInfiniteIdentityHash(Iterable<A>, Function<A, Iterable<B>>)");
+        RandomProvider RP = RandomProvider.example();
+        IterableProvider PS = P.withScale(4);
+        Function<List<IntNoHashCode>, Iterable<IdentityHashMap<IntNoHashCode, List<Integer>>>> f =
+                xs -> filterInfinite(
+                        m -> !all(p -> isEmpty(p.b), fromMap(m)),
+                        PS.identityMaps(
+                                xs,
+                                IterableUtils.map(IterableUtils::unrepeat, PS.listsAtLeast(1, P.integersGeometric()))
+                        )
+                );
+        Function<
+                Pair<List<IntNoHashCode>, IdentityHashMap<IntNoHashCode, List<Integer>>>,
+                Pair<Iterable<IntNoHashCode>, IdentityFiniteDomainFunction<IntNoHashCode, Iterable<Integer>>>
+        > g = p -> {
+            Iterable<Pair<IntNoHashCode, List<Integer>>> values = fromMap(p.b);
+            IdentityHashMap<IntNoHashCode, Iterable<Integer>> transformedValues = toIdentityMap(
+                    map(e -> new Pair<>(e.a, cycle(e.b)), values)
+            );
+            return new Pair<>(cycle(p.a), new IdentityFiniteDomainFunction<>(transformedValues));
+        };
+        Iterable<Pair<Iterable<IntNoHashCode>, IdentityFiniteDomainFunction<IntNoHashCode, Iterable<Integer>>>> ps =
+                map(
+                        g,
+                        P.dependentPairsInfiniteIdentityHash(
+                                map(
+                                        IterableUtils::unrepeat,
+                                        PS.listsAtLeast(1, map(IntNoHashCode::new, P.integersGeometric()))
+                                ),
+                                f
+                        )
+                );
+        for (Pair<Iterable<IntNoHashCode>, IdentityFiniteDomainFunction<IntNoHashCode, Iterable<Integer>>> p :
+                take(LIMIT, ps)) {
+            Iterable<Pair<IntNoHashCode, Integer>> pairs = RP.dependentPairsInfiniteIdentityHash(p.a, p.b);
+            testNoRemove(TINY_LIMIT, pairs);
+            assertTrue(p, all(Objects::nonNull, take(TINY_LIMIT, pairs)));
+        }
+
+        Iterable<
+                Pair<Iterable<IntNoHashCode>, IdentityFiniteDomainFunction<IntNoHashCode, Iterable<Integer>>>
+        > psFail = map(
+                p -> p.b,
+                P.dependentPairs(
+                        filterInfinite(r -> r.b.domainSize() != 0, ps),
+                        q -> map(k -> new Pair<>(q.a, q.b.set(k, null)), P.uniformSample(q.b.domain()))
+                )
+        );
+        for (Pair<Iterable<IntNoHashCode>, IdentityFiniteDomainFunction<IntNoHashCode, Iterable<Integer>>> p :
+                take(LIMIT, psFail)) {
+            try {
+                toList(RP.dependentPairsInfiniteIdentityHash(p.a, p.b));
+                fail(p);
+            } catch (NullPointerException ignored) {}
+        }
+
+        f = xs -> {
+            if (xs.isEmpty()) {
+                return repeat(new IdentityHashMap<>());
+            } else {
+                return filterInfinite(
+                        m -> !all(p -> isEmpty(p.b), fromMap(m)),
+                        PS.identityMaps(xs, PS.lists(P.integersGeometric()))
+                );
+            }
+        };
+        g = p -> {
+            Iterable<Pair<IntNoHashCode, List<Integer>>> values = fromMap(p.b);
+            IdentityHashMap<IntNoHashCode, Iterable<Integer>> transformedValues = toIdentityMap(
+                    map(e -> new Pair<>(e.a, (Iterable<Integer>) e.b), values)
+            );
+            return new Pair<>(cycle(p.a), new IdentityFiniteDomainFunction<>(transformedValues));
+        };
+        psFail = map(
+                g,
+                P.dependentPairsInfiniteIdentityHash(
+                        map(IterableUtils::unrepeat, PS.lists(map(IntNoHashCode::new, P.integersGeometric()))),
+                        f
+                )
+        );
+        for (Pair<Iterable<IntNoHashCode>, IdentityFiniteDomainFunction<IntNoHashCode, Iterable<Integer>>> p :
+                take(LIMIT, psFail)) {
+            try {
+                toList(RP.dependentPairsInfiniteIdentityHash(p.a, p.b));
+                fail(p);
+            } catch (NoSuchElementException ignored) {}
+        }
+
+        Iterable<Pair<List<IntNoHashCode>, IdentityFiniteDomainFunction<IntNoHashCode, Iterable<Integer>>>> psFail2 =
+                map(
+                        p -> new Pair<>(
+                                p.a,
+                                new IdentityFiniteDomainFunction<>(
+                                        toIdentityMap(map(e -> new Pair<>(e.a, cycle(e.b)), fromMap(p.b)))
+                                )
+                        ),
+                        P.dependentPairsInfiniteIdentityHash(
+                                PS.listsAtLeast(1, map(IntNoHashCode::new, P.integersGeometric())),
+                                f
+                        )
+                );
+        for (Pair<List<IntNoHashCode>, IdentityFiniteDomainFunction<IntNoHashCode, Iterable<Integer>>> p :
+                take(LIMIT, psFail2)) {
+            try {
+                toList(RP.dependentPairsInfiniteIdentityHash(p.a, p.b));
                 fail(p);
             } catch (NoSuchElementException ignored) {}
         }
@@ -3019,7 +3148,7 @@ public class RandomProviderProperties extends TestProperties {
                 )
         );
         for (Triple<RandomProvider, Character, Integer> t : take(LIMIT, ts2)) {
-            aeqit(t, TINY_LIMIT, t.a.strings(t.c, Character.toString(t.b)), repeat(replicate(t.c, t.b.charValue())));
+            aeqit(t, TINY_LIMIT, t.a.strings(t.c, Character.toString(t.b)), repeat(replicateString(t.c, t.b)));
         }
 
         Iterable<Pair<RandomProvider, Integer>> psFail = P.pairs(P.randomProvidersDefault(), P.positiveIntegers());
@@ -3707,7 +3836,7 @@ public class RandomProviderProperties extends TestProperties {
             aeqit(
                     t,
                     TINY_LIMIT,
-                    t.a.stringBags(t.c, Character.toString(t.b)), repeat(replicate(t.c, t.b.charValue()))
+                    t.a.stringBags(t.c, Character.toString(t.b)), repeat(replicateString(t.c, t.b))
             );
         }
 
@@ -3761,7 +3890,7 @@ public class RandomProviderProperties extends TestProperties {
                 P.prefixPermutations(EP.naturalIntegers())
         );
         for (Pair<RandomProvider, Iterable<Integer>> p : take(LIMIT, ps)) {
-            simpleTest(p.a, p.a.bags(p.b), IterableUtils::weaklyIncreasing);
+            simpleTest(p.a, p.a.bags(p.b), Ordering::weaklyIncreasing);
         }
 
         Iterable<Pair<RandomProvider, List<Integer>>> ps2 = P.pairs(
@@ -4125,7 +4254,7 @@ public class RandomProviderProperties extends TestProperties {
                 P.withScale(4).repeatingIterables(P.naturalIntegers())
         );
         for (Pair<RandomProvider, Iterable<Integer>> p : take(LIMIT, ps)) {
-            simpleTest(p.a, p.a.subsets(p.b), IterableUtils::increasing);
+            simpleTest(p.a, p.a.subsets(p.b), Ordering::increasing);
         }
 
         Iterable<Pair<RandomProvider, List<Integer>>> ps2 = P.pairs(
@@ -4965,15 +5094,27 @@ public class RandomProviderProperties extends TestProperties {
 
     private void propertiesMaps() {
         initialize("maps(List<Integer>, List<Integer>)");
-        Comparator<Integer> withNullComparator = new WithNullComparator<>();
+        Comparator<Integer> withNullComparator = Comparator.nullsFirst(Comparator.naturalOrder());
         Iterable<Triple<RandomProvider, List<Integer>, Iterable<Integer>>> ts = P.triples(
                 P.randomProvidersDefault(),
-                P.withScale(4).distinctLists(P.withNull(P.integersGeometric())),
+                P.distinctLists(P.withNull(P.integersGeometric())),
                 P.prefixPermutations(EP.withNull(EP.naturalIntegers()))
         );
         for (Triple<RandomProvider, List<Integer>, Iterable<Integer>> t : take(MEDIUM_LIMIT, ts)) {
             List<Integer> sortedKeys = sort(withNullComparator, t.b);
             simpleTest(t.a, t.a.maps(t.b, t.c), m -> sort(withNullComparator, m.keySet()).equals(sortedKeys));
+        }
+    }
+
+    private void propertiesIdentityMaps() {
+        initialize("identityMaps(List<Integer>, List<Integer>)");
+        Iterable<Triple<RandomProvider, List<IntNoHashCode>, Iterable<Integer>>> ts = P.triples(
+                P.randomProvidersDefault(),
+                P.lists(P.withNull(map(IntNoHashCode::new, P.integersGeometric()))),
+                P.prefixPermutations(EP.withNull(EP.naturalIntegers()))
+        );
+        for (Triple<RandomProvider, List<IntNoHashCode>, Iterable<Integer>> t : take(MEDIUM_LIMIT, ts)) {
+            simpleTest(t.a, t.a.identityMaps(t.b, t.c), m -> true);
         }
     }
 

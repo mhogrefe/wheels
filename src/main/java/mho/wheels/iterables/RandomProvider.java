@@ -1777,12 +1777,11 @@ public final strictfp class RandomProvider extends IterableProvider {
                 if (i == 0) {
                     return BinaryFraction.of(is2.next(), difference.getExponent()).add(a);
                 } else {
-                    Iterator<BigInteger> is4 = isMap.get(i);
-                    if (is4 == null) {
-                        is4 = range(BigInteger.ZERO, BigInteger.ONE.shiftLeft(i - 1).subtract(BigInteger.ONE))
-                                .iterator();
-                        isMap.put(i, is4);
-                    }
+                    Iterator<BigInteger> is4 = isMap.computeIfAbsent(
+                            i,
+                            k -> range(BigInteger.ZERO, BigInteger.ONE.shiftLeft(i - 1).subtract(BigInteger.ONE))
+                                    .iterator()
+                    );
                     BinaryFraction fraction = BinaryFraction.of(is4.next().shiftLeft(1).add(BigInteger.ONE), -i);
                     return fraction.add(BinaryFraction.of(is3.next())).shiftLeft(difference.getExponent()).add(a);
                 }
@@ -2642,12 +2641,11 @@ public final strictfp class RandomProvider extends IterableProvider {
                 if (normalizedScale == 0) {
                     return bs.next() ? BigDecimal.ONE.movePointRight(pow) : BigDecimal.ZERO;
                 } else {
-                    Iterator<BigInteger> ds = isMap.get(normalizedScale);
-                    if (ds == null) {
-                        ds = range(BigInteger.ONE, BigInteger.TEN.pow(normalizedScale).subtract(BigInteger.ONE))
-                                .iterator();
-                        isMap.put(normalizedScale, ds);
-                    }
+                    Iterator<BigInteger> ds = isMap.computeIfAbsent(
+                            normalizedScale,
+                            k -> range(BigInteger.ONE, BigInteger.TEN.pow(normalizedScale).subtract(BigInteger.ONE))
+                                    .iterator()
+                    );
                     BigInteger digits;
                     do {
                         digits = ds.next();
@@ -2895,12 +2893,29 @@ public final strictfp class RandomProvider extends IterableProvider {
                 if (is.next() == 1) {
                     return x;
                 } else if (!xsi.hasNext()) {
-                    throw new IllegalArgumentException();
+                    throw new IllegalArgumentException("xs must be infinite.");
                 } else {
                     return xsi.next();
                 }
             }
         };
+    }
+
+    /**
+     * See {@link RandomProvider#dependentPairsInfinite(Iterable, Function)}
+     *
+     * @param xs an {@code Iterable} of values
+     * @param f a function from a value of type {@code a} to an {@code Iterable} of type-{@code B} values
+     * @param <A> the type of values in the first slot, with no available hash code
+     * @param <B> the type of values in the second slot
+     * @return all possible pairs of values specified by {@code xs} and {@code f}
+     */
+    @Override
+    public @NotNull <A, B> Iterable<Pair<A, B>> dependentPairsIdentityHash(
+            @NotNull Iterable<A> xs,
+            @NotNull Function<A, Iterable<B>> f
+    ) {
+        return dependentPairsInfiniteIdentityHash(xs, f);
     }
 
     /**
@@ -2938,11 +2953,49 @@ public final strictfp class RandomProvider extends IterableProvider {
             @Override
             public @NotNull Pair<A, B> next() {
                 A a = xsi.next();
-                Iterator<B> bs = aToBs.get(a);
-                if (bs == null) {
-                    bs = f.apply(a).iterator();
-                    aToBs.put(a, bs);
-                }
+                Iterator<B> bs = aToBs.computeIfAbsent(a, k -> f.apply(a).iterator());
+                return new Pair<>(a, bs.next());
+            }
+        };
+    }
+
+    /**
+     * Generates all pairs of values, given a list of possible first values of the pairs, and a function mapping each
+     * possible first value to a list of possible second values. This method differs from
+     * {@link RandomProvider#dependentPairsInfinite(Iterable, Function)} in that A doesn't need to have a hash code.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>{@code xs} must be infinite.</li>
+     *  <li>{@code f} must terminate and not return null when applied to any element of {@code xs}. All results must be
+     *  infinite.</li>
+     *  <li>The result is infinite, non-removable and does not contain nulls.</li>
+     * </ul>
+     *
+     * @param xs an {@code Iterable} of values
+     * @param f a function from a value of type {@code a} to an {@code Iterable} of type-{@code B} values
+     * @param <A> the type of values in the first slot, with no available hash code
+     * @param <B> the type of values in the second slot
+     * @return all possible pairs of values specified by {@code xs} and {@code f}
+     */
+    @Override
+    public @NotNull <A, B> Iterable<Pair<A, B>> dependentPairsInfiniteIdentityHash(
+            @NotNull Iterable<A> xs,
+            @NotNull Function<A, Iterable<B>> f
+    ) {
+        return () -> new NoRemoveIterator<Pair<A, B>>() {
+            private final @NotNull Iterator<A> xsi = xs.iterator();
+            private final @NotNull Map<A, Iterator<B>> aToBs = new IdentityHashMap<>();
+
+            @Override
+            public boolean hasNext() {
+                return true;
+            }
+
+            @Override
+            public @NotNull Pair<A, B> next() {
+                A a = xsi.next();
+                Iterator<B> bs = aToBs.computeIfAbsent(a, k -> f.apply(a).iterator());
                 return new Pair<>(a, bs.next());
             }
         };

@@ -200,7 +200,7 @@ public class IntegerUtils {
 
     /**
      * Returns the lowest {@code n} bits of a non-negative {@code int}. The {@code List} returned is little-endian; the
-     * least-significant bits come first. It is exactly {@code n} bits long, and right-padded with zeroes (falses) if
+     * least-significant bits come first. It is exactly {@code n} bits long, and right-padded with zeros (falses) if
      * necessary. Does not support removal.
      *
      * <ul>
@@ -234,7 +234,7 @@ public class IntegerUtils {
     /**
      * Returns the lowest {@code length} bits of a non-negative {@code BigInteger}. The {@code List} returned is
      * little-endian; the least-significant bits come first. It is exactly {@code n} bits long, and right-padded with
-     * zeroes (falses) if necessary. Does not support removal.
+     * zeros (falses) if necessary. Does not support removal.
      *
      * <ul>
      *  <li>{@code length} cannot be negative.</li>
@@ -314,7 +314,7 @@ public class IntegerUtils {
 
     /**
      * Returns the lowest {@code n} bits of a non-negative {@code int}. The {@code List} returned is big-endian; the
-     * most-significant bits come first. It is exactly {@code n} bits long, and left-padded with zeroes (falses) if
+     * most-significant bits come first. It is exactly {@code n} bits long, and left-padded with zeros (falses) if
      * necessary.
      *
      * <ul>
@@ -349,7 +349,7 @@ public class IntegerUtils {
 
     /**
      * Returns the lowest {@code n} bits of a non-negative {@code BigInteger}. The {@code List} returned is big-endian;
-     * the most-significant bits come first. It is exactly {@code n} bits long, and left-padded with zeroes (falses) if
+     * the most-significant bits come first. It is exactly {@code n} bits long, and left-padded with zeros (falses) if
      * necessary.
      *
      * <ul>
@@ -515,8 +515,8 @@ public class IntegerUtils {
 
     /**
      * Returns the lowest {@code n} digits of a non-negative {@code int}. The {@code Iterable} returned is little-
-     * endian; the least-significant digits come first. It is exactly {@code n} digits long, and left-padded with
-     * zeroes if necessary.
+     * endian; the least-significant digits come first. It is exactly {@code n} digits long, and left-padded with zeros
+     * if necessary.
      *
      * <ul>
      *  <li>{@code length} cannot be negative.</li>
@@ -562,7 +562,7 @@ public class IntegerUtils {
     /**
      * Returns the lowest {@code n} digits of a non-negative {@code int}. The {@code Iterable} returned is little-
      * endian; the least-significant digits come first. It is exactly {@code n} digits long, and left-padded with
-     * zeroes if necessary.
+     * zeros if necessary.
      *
      * <ul>
      *  <li>{@code length} cannot be negative.</li>
@@ -650,7 +650,7 @@ public class IntegerUtils {
 
     /**
      * Returns the lowest {@code n} digits of a non-negative {@code int}. The {@code List} returned is big-endian; the
-     * least-significant digits come first. It is exactly {@code n} digits long, and right-padded with zeroes if
+     * least-significant digits come first. It is exactly {@code n} digits long, and right-padded with zeros if
      * necessary.
      *
      * <ul>
@@ -698,7 +698,7 @@ public class IntegerUtils {
     /**
      * Returns the lowest {@code n} digits of a non-negative {@code BigInteger}. The {@code List} returned is
      * big-endian; the least-significant digits come first. It is exactly {@code n} digits long, and right-padded with
-     * zeroes if necessary.
+     * zeros if necessary.
      *
      * <ul>
      *  <li>{@code length} cannot be negative.</li>
@@ -947,7 +947,7 @@ public class IntegerUtils {
      * Converts a {@code BigInteger} to a {@code String} in any base greater than 1. If the base is 36 or less, the
      * digits are '0' through '9' followed by 'A' through 'Z'. If the base is greater than 36, the digits are written
      * in decimal and each digit is surrounded by parentheses. Zero is represented by "0" if the base is 36 or less, or
-     * "(0)" otherwise. In every other case there are no leading zeroes.
+     * "(0)" otherwise. In every other case there are no leading zeros.
      *
      * <ul>
      *  <li>{@code base} must be at least 2.</li>
@@ -986,7 +986,7 @@ public class IntegerUtils {
      * Converts a {@code String} written in some base to a number. If the base is 36 or less, the digits are '0'
      * through '9' followed by 'A' through 'Z'. If the base is greater than 36, the digits are written in decimal and
      * each digit is surrounded by parentheses (in this case, the {@code String} representing the digit cannot be empty
-     * and no leading zeroes are allowed unless the digit is 0). The empty {@code String} represents 0. Leading zeroes
+     * and no leading zeros are allowed unless the digit is 0). The empty {@code String} represents 0. Leading zeros
      * are permitted. If the {@code String} is invalid, an exception is thrown.
      *
      * <ul>
@@ -1049,7 +1049,7 @@ public class IntegerUtils {
      * Converts a {@code String} written in some base to a number. If the base is 36 or less, the digits are '0'
      * through '9' followed by 'A' through 'Z'. If the base is greater than 36, the digits are written in decimal and
      * each digit is surrounded by parentheses (in this case, the {@code String} representing the digit cannot be empty
-     * and no leading zeroes are allowed unless the digit is 0). The empty {@code String} represents 0. Leading zeroes
+     * and no leading zeros are allowed unless the digit is 0). The empty {@code String} represents 0. Leading zeros
      * are permitted. If the {@code String} is invalid, an exception is thrown.
      *
      * <ul>
@@ -1116,7 +1116,7 @@ public class IntegerUtils {
      *
      * <ul>
      *  <li>{@code x} cannot be negative.</li>
-     *  <li>{@code y} cannot be negative.</li>
+     *  <li>{@code y} cannot be negative and must be less than 2<sup>31</sup>.</li>
      *  <li>The result is non-negative.</li>
      * </ul>
      *
@@ -1136,7 +1136,7 @@ public class IntegerUtils {
 
     /**
      * Bijectively maps one natural {@code BigInteger} to two natural {@code BigInteger}s in such a way that the second
-     * is "typically" about the base-2 log of the first. More precisely, this method is the inverse of
+     * is "typically" about the base-2 logarithm of the first. More precisely, this method is the inverse of
      * {@link mho.wheels.numberUtils.IntegerUtils#logarithmicMux}.
      *
      * <ul>
@@ -1266,7 +1266,7 @@ public class IntegerUtils {
         byte[] bytes = new byte[byteLength];
         int k = xs.size() - 1;
         int j = 0;
-        for (int i = bytes.length - 1; i >= 0; i--) {
+        for (int i = byteLength - 1; i >= 0; i--) {
             int b = 0;
             for (int m = 1; m < 256; m <<= 1) {
                 if (xs.get(k).testBit(j)) {
@@ -1288,7 +1288,7 @@ public class IntegerUtils {
      * every element of the list is "typically" about the same size. More precisely, this method is the inverse of
      * {@link mho.wheels.numberUtils.IntegerUtils#mux}. The bijection is between the naturals and lists of a fixed
      * size, not between naturals and all lists. If {@code size} is 0, the only acceptable {@code n} is 0, which maps
-     * to the empty list. The inverse of this method is {@link mho.wheels.numberUtils.IntegerUtils#mux}.
+     * to the empty list.
      *
      * <ul>
      *  <li>{@code size} cannot be negative.</li>

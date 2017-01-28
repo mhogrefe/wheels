@@ -2,6 +2,7 @@ package mho.wheels.math;
 
 import mho.wheels.iterables.ExhaustiveProvider;
 import mho.wheels.iterables.IterableUtils;
+import mho.wheels.iterables.NoRemoveIterator;
 import mho.wheels.numberUtils.IntegerUtils;
 import mho.wheels.structures.FiniteDomainFunction;
 import mho.wheels.structures.Pair;
@@ -11,10 +12,7 @@ import mho.wheels.testing.TestProperties;
 import org.jetbrains.annotations.NotNull;
 
 import java.math.BigInteger;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 
 import static mho.wheels.iterables.IterableUtils.*;
@@ -25,12 +23,20 @@ import static mho.wheels.testing.Testing.*;
 public class MathUtilsProperties extends TestProperties {
     public MathUtilsProperties() {
         super("MathUtils");
+        // force static initialization
+        try {
+            Class.forName("mho.wheels.math.MathUtils");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     protected void testConstant() {
         propertiesIntPrimes();
         propertiesPrimes();
+        propertiesThueMorse();
+        compareImplementationsThueMorse();
     }
 
     @Override
@@ -87,10 +93,109 @@ public class MathUtilsProperties extends TestProperties {
         propertiesLargestPerfectPowerFactor_int_int();
         propertiesLargestPerfectPowerFactor_int_BigInteger();
         propertiesExpressAsPower();
+        propertiesRoot();
+        propertiesSqrt();
+        propertiesCbrt();
         propertiesTotient_int();
         compareImplementationsTotient_int();
         propertiesTotient_BigInteger();
         propertiesInverseTotient();
+    }
+
+    private void propertiesIntPrimes() {
+        initializeConstant("INT_PRIMES");
+        for (int p : take(LARGE_LIMIT, INT_PRIMES)) {
+            assertTrue(p, isPrime(p));
+        }
+    }
+
+    private void propertiesPrimes() {
+        initializeConstant("PRIMES");
+        for (BigInteger p : take(LARGE_LIMIT, PRIMES)) {
+            assertTrue(p, isPrime(p));
+        }
+    }
+
+    private static final @NotNull Iterable<Boolean> THUE_MORSE_LIST = () -> new NoRemoveIterator<Boolean>() {
+        private final @NotNull List<Boolean> prefix = new ArrayList<>();
+        private int i = 0;
+        {
+            prefix.add(false);
+        }
+
+        @Override
+        public boolean hasNext() {
+            return true;
+        }
+
+        @Override
+        public @NotNull Boolean next() {
+            if (i >= prefix.size()) {
+                for (int j = 0; j < i; j++) {
+                    prefix.add(!prefix.get(j));
+                }
+            }
+            return prefix.get(i++);
+        }
+    };
+
+    private static final @NotNull Iterable<Boolean> THUE_MORSE_BITCOUNT = () -> new NoRemoveIterator<Boolean>() {
+        private @NotNull BigInteger i = BigInteger.ZERO;
+
+        @Override
+        public boolean hasNext() {
+            return true;
+        }
+
+        @Override
+        public @NotNull Boolean next() {
+            int ones = i.bitCount();
+            i = i.add(BigInteger.ONE);
+            return ones % 2 == 1;
+        }
+    };
+
+    private static final @NotNull Iterable<Boolean> THUE_MORSE_XOR = () -> new NoRemoveIterator<Boolean>() {
+        private boolean previous = false;
+        private @NotNull BigInteger i = BigInteger.ZERO;
+
+        @Override
+        public boolean hasNext() {
+            return true;
+        }
+
+        @Override
+        public @NotNull Boolean next() {
+            BigInteger j = i.add(BigInteger.ONE);
+            for (int k = j.bitLength() - 1; k >= 0; k--) {
+                if (i.testBit(k) != j.testBit(k)) {
+                    i = j;
+                    if ((k & 1) == 0) {
+                        previous = !previous;
+                        return !previous;
+                    } else {
+                        return previous;
+                    }
+                }
+            }
+            throw new IllegalStateException("unreachable");
+        }
+    };
+
+    private void propertiesThueMorse() {
+        initializeConstant("THUE_MORSE");
+        assertTrue("Thue-Morse", IterableUtils.equal(HUGE_LIMIT, THUE_MORSE, THUE_MORSE_LIST));
+        assertTrue("Thue-Morse", IterableUtils.equal(HUGE_LIMIT, THUE_MORSE, THUE_MORSE_BITCOUNT));
+        assertTrue("Thue-Morse", IterableUtils.equal(HUGE_LIMIT, THUE_MORSE, THUE_MORSE_XOR));
+    }
+
+    private void compareImplementationsThueMorse() {
+        Map<String, Function<Void, Boolean>> functions = new LinkedHashMap<>();
+        functions.put("list", v -> get(THUE_MORSE_LIST, HUGE_LIMIT));
+        functions.put("bitcount", v -> get(THUE_MORSE_BITCOUNT, HUGE_LIMIT));
+        functions.put("xor", v -> get(THUE_MORSE_XOR, HUGE_LIMIT));
+        functions.put("standard", v -> get(THUE_MORSE, HUGE_LIMIT));
+        compareImplementations("THUE_MORSE", Collections.singletonList(null), functions, v -> {});
     }
 
     private static int pow_simplest(int n, int p) {
@@ -192,12 +297,15 @@ public class MathUtilsProperties extends TestProperties {
     }
 
     private static int gcd_int_int_simplest(int x, int y) {
-        return BigInteger.valueOf(x).gcd(BigInteger.valueOf(y)).intValue();
+        return BigInteger.valueOf(x).gcd(BigInteger.valueOf(y)).intValueExact();
     }
 
     private static int gcd_int_int_explicit(int x, int y) {
         x = Math.abs(x);
         y = Math.abs(y);
+        if (x < 0 || y < 0) {
+            throw new ArithmeticException();
+        }
         if (x == 0) return y;
         if (y == 0) return x;
         return maximum(intersect(factors(x), factors(y)));
@@ -205,7 +313,13 @@ public class MathUtilsProperties extends TestProperties {
 
     private void propertiesGcd_int_int() {
         initialize("gcd(int, int)");
-        for (Pair<Integer, Integer> p : take(LIMIT, P.pairs(P.integers()))) {
+        Iterable<Pair<Integer, Integer>> ps = filter(
+                q -> !(q.a == Integer.MIN_VALUE && q.b == Integer.MIN_VALUE) &&
+                        !(q.a == Integer.MIN_VALUE && q.b == 0) &&
+                        !(q.a == 0 && q.b == Integer.MIN_VALUE),
+                P.pairs(P.integers())
+        );
+        for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
             int gcd = gcd(p.a, p.b);
             assertEquals(p, gcd, gcd_int_int_simplest(p.a, p.b));
             assertEquals(p, gcd, gcd_int_int_explicit(p.a, p.b));
@@ -227,11 +341,31 @@ public class MathUtilsProperties extends TestProperties {
 
         for (int i : take(LIMIT, P.integers())) {
             idempotent(j -> gcd(i, j), 1);
+        }
+
+        for (int i : take(LIMIT, filter(j -> j != Integer.MIN_VALUE, P.integers()))) {
             assertEquals(i, gcd(i, i), Math.abs(i));
+            assertEquals(i, gcd(0, i), Math.abs(i));
             assertEquals(i, gcd(i, 0), Math.abs(i));
         }
 
-        for (Triple<Integer, Integer, Integer> t : take(LIMIT, P.triples(P.integers()))) {
+        Iterable<Triple<Integer, Integer, Integer>> ts = filter(
+                t -> {
+                    int minValueCount = 0;
+                    if (t.a == Integer.MIN_VALUE) minValueCount++;
+                    if (t.b == Integer.MIN_VALUE) minValueCount++;
+                    if (t.c == Integer.MIN_VALUE) minValueCount++;
+                    return minValueCount < 2 &&
+                            (minValueCount == 0 ||
+                                    !(t.a == Integer.MIN_VALUE && t.b == 0) &&
+                                    !(t.b == Integer.MIN_VALUE && t.a == 0) &&
+                                    !(t.b == Integer.MIN_VALUE && t.c == 0) &&
+                                    !(t.c == Integer.MIN_VALUE && t.b == 0)
+                            );
+                },
+                P.triples(P.integers())
+        );
+        for (Triple<Integer, Integer, Integer> t : take(LIMIT, ts)) {
             associative(MathUtils::gcd, t);
         }
     }
@@ -245,12 +379,15 @@ public class MathUtilsProperties extends TestProperties {
     }
 
     private static long gcd_long_long_simplest(long x, long y) {
-        return BigInteger.valueOf(x).gcd(BigInteger.valueOf(y)).longValue();
+        return BigInteger.valueOf(x).gcd(BigInteger.valueOf(y)).longValueExact();
     }
 
     private static long gcd_long_long_explicit(long x, long y) {
         x = Math.abs(x);
         y = Math.abs(y);
+        if (x < 0 || y < 0) {
+            throw new ArithmeticException();
+        }
         if (x == 0) return y;
         if (y == 0) return x;
         return maximum(intersect(factors(BigInteger.valueOf(x)), factors(BigInteger.valueOf(y)))).longValue();
@@ -258,7 +395,13 @@ public class MathUtilsProperties extends TestProperties {
 
     private void propertiesGcd_long_long() {
         initialize("gcd(long, long)");
-        for (Pair<Long, Long> p : take(LIMIT, P.pairs(P.longs()))) {
+        Iterable<Pair<Long, Long>> ps = filter(
+                q -> !(q.a == Long.MIN_VALUE && q.b == Long.MIN_VALUE) &&
+                        !(q.a == Long.MIN_VALUE && q.b == 0) &&
+                        !(q.a == 0 && q.b == Long.MIN_VALUE),
+                P.pairs(P.longs())
+        );
+        for (Pair<Long, Long> p : take(LIMIT, ps)) {
             long gcd = gcd(p.a, p.b);
             assertEquals(p, gcd, gcd_long_long_simplest(p.a, p.b));
             if (Math.abs(p.a) <= Integer.MAX_VALUE && Math.abs(p.b) <= Integer.MAX_VALUE) {
@@ -282,11 +425,31 @@ public class MathUtilsProperties extends TestProperties {
 
         for (long l : take(LIMIT, P.longs())) {
             idempotent(m -> gcd(l, m), 1L);
-            assertEquals(l, gcd(l, l), Math.abs(l));
-            assertEquals(l, gcd(l, 0L), Math.abs(l));
         }
 
-        for (Triple<Long, Long, Long> t : take(LIMIT, P.triples(P.longs()))) {
+        for (long l : take(LIMIT, filter(j -> j != Integer.MIN_VALUE, P.longs()))) {
+            assertEquals(l, gcd(l, l), Math.abs(l));
+            assertEquals(l, gcd(0, l), Math.abs(l));
+            assertEquals(l, gcd(l, 0), Math.abs(l));
+        }
+
+        Iterable<Triple<Long, Long, Long>> ts = filter(
+                t -> {
+                    int minValueCount = 0;
+                    if (t.a == Long.MIN_VALUE) minValueCount++;
+                    if (t.b == Long.MIN_VALUE) minValueCount++;
+                    if (t.c == Long.MIN_VALUE) minValueCount++;
+                    return minValueCount < 2 &&
+                            (minValueCount == 0 ||
+                                    !(t.a == Long.MIN_VALUE && t.b == 0) &&
+                                    !(t.b == Long.MIN_VALUE && t.a == 0) &&
+                                    !(t.b == Long.MIN_VALUE && t.c == 0) &&
+                                    !(t.c == Long.MIN_VALUE && t.b == 0)
+                            );
+                },
+                P.triples(P.longs())
+        );
+        for (Triple<Long, Long, Long> t : take(LIMIT, ts)) {
             associative(MathUtils::gcd, t);
         }
     }
@@ -311,6 +474,7 @@ public class MathUtilsProperties extends TestProperties {
     }
 
     private static @NotNull BigInteger lcm_explicit(@NotNull BigInteger x, @NotNull BigInteger y) {
+        //noinspection SuspiciousNameCombination
         return head(orderedIntersection(iterate(n -> n.add(x), x), iterate(n -> n.add(y), y)));
     }
 
@@ -857,8 +1021,7 @@ public class MathUtilsProperties extends TestProperties {
         if (i < 0) {
             throw new IllegalArgumentException("i cannot be negative. Invalid i: " + i);
         }
-        return BigInteger.valueOf(i).multiply(BigInteger.valueOf(i - 1)).shiftRight(1).and(BigInteger.ONE)
-                .equals(BigInteger.ZERO);
+        return !BigInteger.valueOf(i).multiply(BigInteger.valueOf(i - 1)).shiftRight(1).testBit(0);
     }
 
     private void propertiesReversePermutationSign() {
@@ -1420,20 +1583,6 @@ public class MathUtilsProperties extends TestProperties {
         }
     }
 
-    private void propertiesIntPrimes() {
-        initializeConstant("intPrimes()");
-        for (int p : take(LARGE_LIMIT, intPrimes())) {
-            assertTrue(p, isPrime(p));
-        }
-    }
-
-    private void propertiesPrimes() {
-        initializeConstant("primes()");
-        for (BigInteger p : take(LARGE_LIMIT, primes())) {
-            assertTrue(p, isPrime(p));
-        }
-    }
-
     private void propertiesLargestPerfectPowerFactor_int_int() {
         initialize("largestPerfectPowerFactor(int, int)");
         Iterable<Pair<Integer, Integer>> ps = P.pairsLogarithmicOrder(
@@ -1521,6 +1670,81 @@ public class MathUtilsProperties extends TestProperties {
                 expressAsPower(i);
                 fail(i);
             } catch (ArithmeticException ignored) {}
+        }
+    }
+
+    private void propertiesRoot() {
+        initialize("root(BigInteger, int)");
+        Iterable<Pair<BigInteger, Integer>> ps = filterInfinite(
+                p -> (p.b & 1) != 0 || p.a.signum() != -1,
+                P.pairsSquareRootOrder(P.bigIntegers(), P.positiveIntegersGeometric())
+        );
+        for (Pair<BigInteger, Integer> p : take(LIMIT, ps)) {
+            Optional<BigInteger> oi = root(p.a, p.b);
+            if (oi.isPresent()) {
+                BigInteger i = oi.get();
+                if ((p.b & 1) == 0) {
+                    assertNotEquals(p, i.signum(), -1);
+                } else {
+                    assertEquals(p, i.signum(), p.a.signum());
+                }
+                assertEquals(p, i.pow(p.b), p.a);
+            }
+        }
+
+        for (int i : take(LIMIT, P.positiveIntegersGeometric())) {
+            assertEquals(i, root(BigInteger.ZERO, i).get(), BigInteger.ZERO);
+            assertEquals(i, root(BigInteger.ONE, i).get(), BigInteger.ONE);
+            assertEquals(i, root(IntegerUtils.NEGATIVE_ONE, (i << 1) + 1).get(), IntegerUtils.NEGATIVE_ONE);
+        }
+
+        for (Pair<BigInteger, Integer> p : take(LIMIT, P.pairs(P.bigIntegers(), P.negativeIntegers()))) {
+            try {
+                root(p.a, p.b);
+                fail(p);
+            } catch (ArithmeticException ignored) {}
+        }
+
+        Iterable<Pair<BigInteger, Integer>> psFail = P.pairs(
+                P.negativeBigIntegers(),
+                map(i -> i * 2, P.positiveIntegersGeometric())
+        );
+        for (Pair<BigInteger, Integer> p : take(LIMIT, psFail)) {
+            try {
+                root(p.a, p.b);
+                fail(p);
+            } catch (ArithmeticException ignored) {}
+        }
+    }
+
+    private void propertiesSqrt() {
+        initialize("sqrt(int)");
+        for (BigInteger i : take(LIMIT, P.naturalBigIntegers())) {
+            Optional<BigInteger> oj = sqrt(i);
+            if (oj.isPresent()) {
+                BigInteger j = oj.get();
+                assertNotEquals(i, j.signum(), -1);
+                assertEquals(i, j.pow(2), i);
+            }
+        }
+
+        for (BigInteger i : take(LIMIT, P.negativeBigIntegers())) {
+            try {
+                sqrt(i);
+                fail(i);
+            } catch (ArithmeticException ignored) {}
+        }
+    }
+
+    private void propertiesCbrt() {
+        initialize("cbrt(int)");
+        for (BigInteger i : take(LIMIT, P.bigIntegers())) {
+            Optional<BigInteger> oj = cbrt(i);
+            if (oj.isPresent()) {
+                BigInteger j = oj.get();
+                assertEquals(i, j.signum(), i.signum());
+                assertEquals(i, j.pow(3), i);
+            }
         }
     }
 

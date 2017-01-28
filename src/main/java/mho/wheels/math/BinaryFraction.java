@@ -10,6 +10,7 @@ import org.jetbrains.annotations.NotNull;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import static mho.wheels.iterables.IterableUtils.*;
@@ -160,14 +161,14 @@ public strictfp class BinaryFraction implements Comparable<BinaryFraction> {
      */
     public static @NotNull BinaryFraction of(@NotNull BigInteger mantissa, int exponent) {
         if (mantissa.equals(BigInteger.ZERO)) return ZERO;
-        int trailingZeroes = mantissa.getLowestSetBit();
-        if ((long) exponent + trailingZeroes > Integer.MAX_VALUE) {
+        int trailingZeros = mantissa.getLowestSetBit();
+        if ((long) exponent + trailingZeros > Integer.MAX_VALUE) {
             throw new ArithmeticException("The sum of exponent and the number of trailing zero bits of mantissa" +
                     " must be less than 2^31. exponent is " + exponent + " and mantissa is " + mantissa + ".");
         }
-        if (trailingZeroes != 0) {
-            mantissa = mantissa.shiftRight(trailingZeroes);
-            exponent += trailingZeroes;
+        if (trailingZeros != 0) {
+            mantissa = mantissa.shiftRight(trailingZeros);
+            exponent += trailingZeros;
         }
         return mantissa.equals(BigInteger.ONE) && exponent == 0 ? ONE : new BinaryFraction(mantissa, exponent);
     }
@@ -321,7 +322,7 @@ public strictfp class BinaryFraction implements Comparable<BinaryFraction> {
      * to each other. This method returns the pair made up of the left- and right-neighboring {@code float}s. If the
      * left-neighboring {@code float} is a zero, it is a positive zero; if the right-neighboring {@code float} is a
      * zero, it is a negative zero. The exception is when {@code this} is equal to zero; then both neighbors are
-     * positive zeroes.
+     * positive zeros.
      *
      * <ul>
      *  <li>{@code this} may be any {@code BinaryFraction}.</li>
@@ -367,7 +368,7 @@ public strictfp class BinaryFraction implements Comparable<BinaryFraction> {
      * and to each other. This method returns the pair made up of the left- and right-neighboring {@code double}s. If
      * the left-neighboring {@code double} is a zero, it is a positive zero; if the right-neighboring {@code double} is
      * a zero, it is a negative zero. The exception is when {@code this} is equal to zero; then both neighbors are
-     * positive zeroes.
+     * positive zeros.
      *
      * <ul>
      *  <li>{@code this} may be any {@code BinaryFraction}.</li>
@@ -646,11 +647,11 @@ public strictfp class BinaryFraction implements Comparable<BinaryFraction> {
      * @return Σxs
      */
     public static @NotNull BinaryFraction sum(@NotNull List<BinaryFraction> xs) {
-        if (any(x -> x == null, xs)) {
+        if (any(Objects::isNull, xs)) {
             throw new NullPointerException("xs may not contain any nulls. xs: " + xs);
         }
         if (xs.isEmpty()) return ZERO;
-        int smallestExponent = minimum(map(BinaryFraction::getExponent, xs));
+        int smallestExponent = Ordering.minimum(map(BinaryFraction::getExponent, xs));
         return of(
                 sumBigInteger(toList(map(x -> x.shiftRight(smallestExponent).bigIntegerValueExact(), xs))),
                 smallestExponent
@@ -671,7 +672,7 @@ public strictfp class BinaryFraction implements Comparable<BinaryFraction> {
      * @return Πxs
      */
     public static @NotNull BinaryFraction product(@NotNull List<BinaryFraction> xs) {
-        if (any(x -> x == null, xs)) {
+        if (any(Objects::isNull, xs)) {
             throw new NullPointerException("xs may not contain any nulls. xs: " + xs);
         }
         if (any(x -> x == ZERO, xs)) return ZERO;
@@ -824,8 +825,7 @@ public strictfp class BinaryFraction implements Comparable<BinaryFraction> {
                         Optional<BigInteger> oMantissa = Readers.readBigIntegerStrict(s.substring(0, leftShiftIndex));
                         if (!oMantissa.isPresent()) return null;
                         Optional<Integer> oExponent = Readers.readIntegerStrict(s.substring(leftShiftIndex + 4));
-                        if (!oExponent.isPresent()) return null;
-                        return of(oMantissa.get(), oExponent.get());
+                        return oExponent.map(integer -> of(oMantissa.get(), integer)).orElse(null);
                     }
                     int rightShiftIndex = s.indexOf(" >> ");
                     if (rightShiftIndex != -1) {

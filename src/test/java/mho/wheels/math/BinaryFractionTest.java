@@ -141,9 +141,7 @@ public strictfp class BinaryFractionTest {
 
     private static void of_float_helper(float f, @NotNull String output) {
         Optional<BinaryFraction> bf = of(f);
-        if (bf.isPresent()) {
-            bf.get().validate();
-        }
+        bf.ifPresent(BinaryFraction::validate);
         aeq(bf, output);
     }
 
@@ -189,9 +187,7 @@ public strictfp class BinaryFractionTest {
 
     private static void of_double_helper(double d, @NotNull String output) {
         Optional<BinaryFraction> bf = of(d);
-        if (bf.isPresent()) {
-            bf.get().validate();
-        }
+        bf.ifPresent(BinaryFraction::validate);
         aeq(bf, output);
     }
 
@@ -1097,9 +1093,7 @@ public strictfp class BinaryFractionTest {
 
     private static void readStrict_helper(@NotNull String input, @NotNull String output) {
         Optional<BinaryFraction> obf = readStrict(input);
-        if (obf.isPresent()) {
-            obf.get().validate();
-        }
+        obf.ifPresent(BinaryFraction::validate);
         aeq(obf, output);
     }
 

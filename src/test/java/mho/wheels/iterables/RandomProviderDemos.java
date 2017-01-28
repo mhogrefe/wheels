@@ -3,15 +3,14 @@ package mho.wheels.iterables;
 import mho.wheels.math.BinaryFraction;
 import mho.wheels.ordering.Ordering;
 import mho.wheels.random.IsaacPRNG;
-import mho.wheels.structures.FiniteDomainFunction;
-import mho.wheels.structures.Pair;
-import mho.wheels.structures.Quadruple;
-import mho.wheels.structures.Triple;
+import mho.wheels.structures.*;
 import mho.wheels.testing.Demos;
 import mho.wheels.testing.Testing;
+import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -1114,10 +1113,67 @@ public class RandomProviderDemos extends Demos {
                         )
                 )
         );
-        for (Pair<Iterable<Integer>, FiniteDomainFunction<Integer, Iterable<Integer>>> p : take(LIMIT, ps)) {
+        for (Pair<Iterable<Integer>, FiniteDomainFunction<Integer, Iterable<Integer>>> p : take(MEDIUM_LIMIT, ps)) {
             String niceFunction = toMap(map(q -> new Pair<>(q.a, its(q.b)), fromMap(p.b.asMap()))).toString();
             System.out.println("dependentPairsInfinite(" + RandomProvider.example() + ", " + its(p.a) + ", " +
                     niceFunction + ") = " + its(RP.dependentPairsInfinite(p.a, p.b)));
+        }
+    }
+
+    private static class IntNoHashCode {
+        private int i;
+
+        public IntNoHashCode(int i) {
+            this.i = i;
+        }
+
+        public int hashCode() {
+            throw new UnsupportedOperationException();
+        }
+
+        public @NotNull
+        String toString() {
+            return Integer.toString(i);
+        }
+    }
+
+    private void demoDependentPairsInfiniteIdentityHash() {
+        RandomProvider RP = RandomProvider.example();
+        IterableProvider PS = P.withScale(4);
+        Function<List<IntNoHashCode>, Iterable<IdentityHashMap<IntNoHashCode, List<Integer>>>> f =
+                xs -> filterInfinite(
+                        m -> !all(p -> isEmpty(p.b), fromMap(m)),
+                        PS.identityMaps(
+                                xs,
+                                IterableUtils.map(IterableUtils::unrepeat, PS.listsAtLeast(1, P.integersGeometric()))
+                        )
+                );
+        Function<
+                Pair<List<IntNoHashCode>, IdentityHashMap<IntNoHashCode, List<Integer>>>,
+                Pair<Iterable<IntNoHashCode>, IdentityFiniteDomainFunction<IntNoHashCode, Iterable<Integer>>>
+        > g = p -> {
+            Iterable<Pair<IntNoHashCode, List<Integer>>> values = fromMap(p.b);
+            IdentityHashMap<IntNoHashCode, Iterable<Integer>> transformedValues = toIdentityMap(
+                    map(e -> new Pair<>(e.a, cycle(e.b)), values)
+            );
+            return new Pair<>(cycle(p.a), new IdentityFiniteDomainFunction<>(transformedValues));
+        };
+        Iterable<Pair<Iterable<IntNoHashCode>, IdentityFiniteDomainFunction<IntNoHashCode, Iterable<Integer>>>> ps =
+                map(
+                        g,
+                        P.dependentPairsInfiniteIdentityHash(
+                                map(
+                                        IterableUtils::unrepeat,
+                                        PS.listsAtLeast(1, map(IntNoHashCode::new, P.integersGeometric()))
+                                ),
+                                f
+                        )
+                );
+        for (Pair<Iterable<IntNoHashCode>, IdentityFiniteDomainFunction<IntNoHashCode, Iterable<Integer>>> p :
+                take(MEDIUM_LIMIT, ps)) {
+            String niceFunction = toIdentityMap(map(q -> new Pair<>(q.a, its(q.b)), fromMap(p.b.asMap()))).toString();
+            System.out.println("dependentPairsInfiniteIdentityHash(" + RandomProvider.example() + ", " + its(p.a) +
+                    ", " + niceFunction + ") = " + its(RP.dependentPairsInfiniteIdentityHash(p.a, p.b)));
         }
     }
 
@@ -1881,6 +1937,18 @@ public class RandomProviderDemos extends Demos {
         );
         for (Triple<RandomProvider, List<Integer>, Iterable<Integer>> t : take(MEDIUM_LIMIT, ts)) {
             System.out.println("maps(" + t.a + ", " + t.b + ", " + its(t.c) + ") = " + its(t.a.maps(t.b, t.c)));
+        }
+    }
+
+    private void demoIdentityMaps() {
+        Iterable<Triple<RandomProvider, List<IntNoHashCode>, Iterable<Integer>>> ts = P.triples(
+                P.randomProvidersDefault(),
+                P.withScale(4).lists(P.withNull(map(IntNoHashCode::new, P.integersGeometric()))),
+                P.prefixPermutations(EP.withNull(EP.naturalIntegers()))
+        );
+        for (Triple<RandomProvider, List<IntNoHashCode>, Iterable<Integer>> t : take(MEDIUM_LIMIT, ts)) {
+            System.out.println("identityMaps(" + t.a + ", " + t.b + ", " + its(t.c) + ") = " +
+                    its(t.a.identityMaps(t.b, t.c)));
         }
     }
 

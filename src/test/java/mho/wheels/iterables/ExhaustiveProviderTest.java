@@ -1867,10 +1867,10 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testOptionals() {
-        optionals_helper(EP.integers(), "ExhaustiveProvider_nonOptionals_i");
-        optionals_helper(EP.strings(), "ExhaustiveProvider_nonOptionals_ii");
-        optionals_helper("[1, 2, 3]", "ExhaustiveProvider_nonOptionals_iii");
-        optionals_helper("[]", "ExhaustiveProvider_nonOptionals_iv");
+        optionals_helper(EP.integers(), "ExhaustiveProvider_optionals_i");
+        optionals_helper(EP.strings(), "ExhaustiveProvider_optionals_ii");
+        optionals_helper("[1, 2, 3]", "ExhaustiveProvider_optionals_iii");
+        optionals_helper("[]", "ExhaustiveProvider_optionals_iv");
 
         optionals_fail_helper("[1, null, 3]");
     }
@@ -1977,6 +1977,67 @@ public strictfp class ExhaustiveProviderTest {
         dependentPairsInfinite_fail_helper(cycle(Arrays.asList(1, 0)), i -> null);
         dependentPairsInfinite_fail_helper(Arrays.asList(0, 1), f);
         dependentPairsInfinite_fail_helper(cycle(Arrays.asList(1, 0)), i -> Collections.singletonList("a"));
+    }
+
+    private static <A, B> void dependentPairsInfiniteIdentityHash_helper(
+            @NotNull Iterable<A> xs,
+            @NotNull Function<A, Iterable<B>> f,
+            @NotNull String output
+    ) {
+        simpleProviderHelper(EP.dependentPairsInfiniteIdentityHash(xs, f), output);
+    }
+
+    private static <A, B> void dependentPairsInfiniteIdentityHash_fail_helper(
+            @NotNull Iterable<A> xs,
+            @NotNull Function<A, Iterable<B>> f
+    ) {
+        try {
+            toList(EP.dependentPairsInfiniteIdentityHash(xs, f));
+            fail();
+        } catch (NullPointerException | IllegalArgumentException | NoSuchElementException ignored) {}
+    }
+
+    private static class IntNoHashCode {
+        private int i;
+
+        public IntNoHashCode(int i) {
+            this.i = i;
+        }
+
+        public int intValue() {
+            return i;
+        }
+
+        public int hashCode() {
+            throw new UnsupportedOperationException();
+        }
+
+        public @NotNull String toString() {
+            return Integer.toString(i);
+        }
+    }
+
+    @Test
+    public void testDependentPairsInfiniteIdentityHash() {
+        dependentPairsInfiniteIdentityHash_helper(
+                map(IntNoHashCode::new, EP.naturalIntegers()),
+                i -> EP.naturalBigIntegers(),
+                "ExhaustiveProvider_dependentPairsInfinite_i"
+        );
+        Function<IntNoHashCode, Iterable<String>> f = i -> {
+            switch (i.intValue()) {
+                case 0: return repeat("beep");
+                case 1: return cycle(Arrays.asList("a", "b"));
+            }
+            throw new IllegalArgumentException();
+        };
+
+        List<IntNoHashCode> is = Arrays.asList(new IntNoHashCode(1), new IntNoHashCode(0));
+        dependentPairsInfiniteIdentityHash_helper(cycle(is), f, "ExhaustiveProvider_dependentPairsInfinite_ii");
+
+        dependentPairsInfiniteIdentityHash_fail_helper(cycle(is), i -> null);
+        dependentPairsInfiniteIdentityHash_fail_helper(is, f);
+        dependentPairsInfiniteIdentityHash_fail_helper(cycle(is), i -> Collections.singletonList("a"));
     }
 
     private static <A, B> void dependentPairsInfiniteLogarithmicOrder_helper(

@@ -213,7 +213,7 @@ public class IntegerUtilsProperties extends TestProperties {
             assertEquals(i, isPowerOfTwo, 1 << ceilingLog2(i) == i);
         }
 
-        for (int i : take(LIMIT, P.withElement(0, P.negativeIntegers()))) {
+        for (int i : take(LIMIT, P.rangeDown(0))) {
             try {
                 isPowerOfTwo(i);
                 fail(i);
@@ -248,7 +248,7 @@ public class IntegerUtilsProperties extends TestProperties {
             assertEquals(l, isPowerOfTwo, 1L << ceilingLog2(l) == l);
         }
 
-        for (long l : take(LIMIT, P.withElement(0L, P.negativeLongs()))) {
+        for (long l : take(LIMIT, P.rangeDown(0L))) {
             try {
                 isPowerOfTwo(l);
                 fail(l);
@@ -279,7 +279,7 @@ public class IntegerUtilsProperties extends TestProperties {
             assertEquals(i, isPowerOfTwo, BigInteger.ONE.shiftLeft(ceilingLog2(i)).equals(i));
         }
 
-        for (BigInteger i : take(LIMIT, P.withElement(BigInteger.ZERO, P.negativeBigIntegers()))) {
+        for (BigInteger i : take(LIMIT, P.rangeDown(BigInteger.ZERO))) {
             try {
                 isPowerOfTwo(i);
                 fail(i);
@@ -313,7 +313,7 @@ public class IntegerUtilsProperties extends TestProperties {
             assertTrue(i, 1 << (ceilingLog2 - 1) < i);
         }
 
-        for (int i : take(LIMIT, P.withElement(0, P.negativeIntegers()))) {
+        for (int i : take(LIMIT, P.rangeDown(0))) {
             try {
                 ceilingLog2(i);
                 fail(i);
@@ -342,7 +342,7 @@ public class IntegerUtilsProperties extends TestProperties {
             assertTrue(l, 1L << (ceilingLog2 - 1) < l);
         }
 
-        for (long l : take(LIMIT, P.withElement(0L, P.negativeLongs()))) {
+        for (long l : take(LIMIT, P.rangeDown(0L))) {
             try {
                 ceilingLog2(l);
                 fail(l);
@@ -366,7 +366,7 @@ public class IntegerUtilsProperties extends TestProperties {
             assertTrue(i, lt(BigInteger.ONE.shiftLeft(ceilingLog2 - 1), i));
         }
 
-        for (BigInteger i : take(LIMIT, P.withElement(BigInteger.ZERO, P.negativeBigIntegers()))) {
+        for (BigInteger i : take(LIMIT, P.rangeDown(BigInteger.ZERO))) {
             try {
                 ceilingLog2(i);
                 fail(i);
@@ -384,7 +384,7 @@ public class IntegerUtilsProperties extends TestProperties {
             List<Boolean> bits = bits(i);
             assertEquals(i, bits, bits_int_simplest(i));
             assertEquals(i, bits, reverse(bigEndianBits(i)));
-            assertTrue(i, all(b -> b != null, bits));
+            assertTrue(i, all(Objects::nonNull, bits));
             inverse(IntegerUtils::bits, (List<Boolean> bs) -> fromBits(bs).intValueExact(), i);
             assertEquals(i, bits.size(), BigInteger.valueOf(i).bitLength());
         }
@@ -416,7 +416,7 @@ public class IntegerUtilsProperties extends TestProperties {
         }
         List<Boolean> bits = new ArrayList<>();
         for (BigInteger remaining = n; !remaining.equals(BigInteger.ZERO); remaining = remaining.shiftRight(1)) {
-            bits.add(!remaining.and(BigInteger.ONE).equals(BigInteger.ZERO));
+            bits.add(remaining.testBit(0));
         }
         return bits;
     }
@@ -427,7 +427,7 @@ public class IntegerUtilsProperties extends TestProperties {
             List<Boolean> bits = bits(i);
             assertEquals(i, bits, bits_BigInteger_alt(i));
             assertEquals(i, bits, reverse(bigEndianBits(i)));
-            assertTrue(i, all(b -> b != null, bits));
+            assertTrue(i, all(Objects::nonNull, bits));
             inverse(IntegerUtils::bits, IntegerUtils::fromBits, i);
             assertEquals(i, bits.size(), i.bitLength());
         }
@@ -467,7 +467,7 @@ public class IntegerUtilsProperties extends TestProperties {
             List<Boolean> bits = bitsPadded(p.b, p.a);
             assertEquals(p, bits, bitsPadded_int_int_simplest(p.b, p.a));
             assertEquals(p, bits, reverse(bigEndianBitsPadded(p.b, p.a)));
-            assertFalse(p, any(b -> b == null, bits));
+            assertFalse(p, any(Objects::isNull, bits));
             assertEquals(p, bits.size(), p.b);
             for (int i = 32; i < bits.size(); i++) {
                 assertFalse(p, bits.get(i));
@@ -518,7 +518,7 @@ public class IntegerUtilsProperties extends TestProperties {
         for (Pair<BigInteger, Integer> p : take(LIMIT, ps)) {
             List<Boolean> bits = bitsPadded(p.b, p.a);
             assertEquals(p, bits, reverse(bigEndianBitsPadded(p.b, p.a)));
-            assertFalse(p, any(b -> b == null, bits));
+            assertFalse(p, any(Objects::isNull, bits));
             assertEquals(p, bits.size(), p.b);
         }
 
@@ -561,7 +561,7 @@ public class IntegerUtilsProperties extends TestProperties {
             assertEquals(i, bits, bigEndianBits_int_simplest(i));
             assertEquals(i, bits, bigEndianBits_int_alt(i));
             assertEquals(i, bits, reverse(bits(i)));
-            assertTrue(i, all(b -> b != null, bits));
+            assertTrue(i, all(Objects::nonNull, bits));
             assertEquals(i, fromBigEndianBits(bits).intValueExact(), i);
             assertEquals(i, bits.size(), BigInteger.valueOf(i).bitLength());
         }
@@ -598,7 +598,7 @@ public class IntegerUtilsProperties extends TestProperties {
             List<Boolean> bits = bigEndianBits(i);
             assertEquals(i, bits, bigEndianBits_BigInteger_simplest(i));
             assertEquals(i, bits, reverse(bits(i)));
-            assertTrue(i, all(b -> b != null, bits));
+            assertTrue(i, all(Objects::nonNull, bits));
             inverse(IntegerUtils::bigEndianBits, IntegerUtils::fromBigEndianBits, i);
             assertEquals(i, bits.size(), i.bitLength());
         }
@@ -648,7 +648,7 @@ public class IntegerUtilsProperties extends TestProperties {
             assertEquals(p, bits, bigEndianBitsPadded_int_int_simplest(p.b, p.a));
             assertEquals(p, bits, bigEndianBitsPadded_int_int_alt(p.b, p.a));
             assertEquals(p, bits, reverse(bitsPadded(p.b, p.a)));
-            assertTrue(p, all(b -> b != null, bits));
+            assertTrue(p, all(Objects::nonNull, bits));
             assertEquals(p, bits.size(), p.b);
             for (int i = 32; i < bits.size(); i++) {
                 assertFalse(p, bits.get(bits.size() - i - 1));
@@ -705,7 +705,7 @@ public class IntegerUtilsProperties extends TestProperties {
             List<Boolean> bits = bigEndianBitsPadded(p.b, p.a);
             assertEquals(p, bits, bigEndianBitsPadded_int_BigInteger_alt(p.b, p.a));
             assertEquals(p, bits, reverse(bitsPadded(p.b, p.a)));
-            assertTrue(p, all(b -> b != null, bits));
+            assertTrue(p, all(Objects::nonNull, bits));
             assertEquals(p, bits.size(), p.b);
         }
 
@@ -2177,11 +2177,40 @@ public class IntegerUtilsProperties extends TestProperties {
         return fromBits(toList(take(outputSize, concat(ExhaustiveProvider.INSTANCE.choose(yChunks, xChunks)))));
     }
 
+    private @NotNull BigInteger squareRootMux_rec(@NotNull BigInteger x, @NotNull BigInteger y) {
+        return squareRootMux_rec_helper(0, x, y);
+    }
+
+    private @NotNull BigInteger squareRootMux_rec_helper(int c, @NotNull BigInteger x, @NotNull BigInteger y) {
+        if (x.equals(BigInteger.ZERO) && y.equals(BigInteger.ZERO)) {
+            return BigInteger.ZERO;
+        }
+        BigInteger result;
+        if (c == 0) {
+            result = squareRootMux_rec_helper(2, x, y.shiftRight(1)).shiftLeft(1);
+            if (y.testBit(0)) {
+                result = result.setBit(0);
+            }
+        } else if (c == 1) {
+            result = squareRootMux_rec_helper(0, x.shiftRight(1), y).shiftLeft(1);
+            if (x.testBit(0)) {
+                result = result.setBit(0);
+            }
+        } else { //c == 2
+            result = squareRootMux_rec_helper(1, x.shiftRight(1), y).shiftLeft(1);
+            if (x.testBit(0)) {
+                result = result.setBit(0);
+            }
+        }
+        return result;
+    }
+
     private void propertiesSquareRootMux() {
         initialize("squareRootMux(BigInteger, BigInteger)");
         for (Pair<BigInteger, BigInteger> p : take(LIMIT, P.pairs(P.naturalBigIntegers()))) {
             BigInteger i = squareRootMux(p.a, p.b);
             assertEquals(p, i, squareRootMux_alt(p.a, p.b));
+            assertEquals(p, i, squareRootMux_rec(p.a, p.b));
             assertNotEquals(p, i.signum(), -1);
             assertEquals(p, squareRootDemux(i), p);
             assertTrue(p, lt(i, squareRootMux(p.a.add(BigInteger.ONE), p.b)));
@@ -2206,6 +2235,7 @@ public class IntegerUtilsProperties extends TestProperties {
     private void compareImplementationsSquareRootMux() {
         Map<String, Function<Pair<BigInteger, BigInteger>, BigInteger>> functions = new LinkedHashMap<>();
         functions.put("alt", p -> squareRootMux_alt(p.a, p.b));
+        functions.put("recursive", p -> squareRootMux_rec(p.a, p.b));
         functions.put("standard", p -> squareRootMux(p.a, p.b));
         Iterable<Pair<BigInteger, BigInteger>> ps = P.pairs(P.naturalBigIntegers());
         compareImplementations("squareRootMux(BigInteger, BigInteger)", take(LIMIT, ps), functions, v -> P.reset());

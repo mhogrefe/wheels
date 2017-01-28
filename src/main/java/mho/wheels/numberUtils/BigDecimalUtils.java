@@ -50,9 +50,9 @@ public class BigDecimalUtils {
 
     /**
      * Rounds a {@code BigDecimal} to a specified precision (number of significant figures). If the precision is
-     * greater than the {@code BigDecimal}'s, trailing zeroes are appended; otherwise, the {@code BigDecimal} is
-     * rounded according to {@code RoundingMode.HALF_EVEN}. Zero is treated specially: setting the precision of any
-     * zero {@code BigDecimal} to 1 yields 0, setting it to 2 yields 0.0, setting it to 3 yields 0.00, etc.
+     * greater than the {@code BigDecimal}'s, trailing zeros are appended; otherwise, the {@code BigDecimal} is rounded
+     * according to {@code RoundingMode.HALF_EVEN}. Zero is treated specially: setting the precision of any zero
+     * {@code BigDecimal} to 1 yields 0, setting it to 2 yields 0.0, setting it to 3 yields 0.00, etc.
      *
      * <ul>
      *  <li>{@code bd} must be non-null.</li>

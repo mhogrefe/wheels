@@ -108,8 +108,8 @@ public class SeptupleTest {
     ) {
         aeq(
                 Septuple.compare(
-                        new Septuple<>(pa, pb, pc, pd, Readers.readOrderingStrict(pe).get(), pf, pg),
-                        new Septuple<>(qa, qb, qc, qd, Readers.readOrderingStrict(qe).get(), qf, qg)
+                        new Septuple<>(pa, pb, pc, pd, Ordering.readStrict(pe).get(), pf, pg),
+                        new Septuple<>(qa, qb, qc, qd, Ordering.readStrict(qe).get(), qf, qg)
                 ),
                 output
         );
@@ -158,7 +158,7 @@ public class SeptupleTest {
                         pb,
                         pc,
                         pd,
-                        Readers.readWithNullsStrict(Readers::readOrderingStrict).apply(pe).get(),
+                        Readers.readWithNullsStrict(Ordering::readStrict).apply(pe).get(),
                         pf,
                         pg
                 ).equals(
@@ -167,7 +167,7 @@ public class SeptupleTest {
                                 qb,
                                 qc,
                                 qd,
-                                Readers.readWithNullsStrict(Readers::readOrderingStrict).apply(qe).get(),
+                                Readers.readWithNullsStrict(Ordering::readStrict).apply(qe).get(),
                                 qf,
                                 qg
                         )
@@ -193,7 +193,7 @@ public class SeptupleTest {
                         pb,
                         pc,
                         pd,
-                        Readers.readWithNullsStrict(Readers::readOrderingStrict).apply(pe).get(),
+                        Readers.readWithNullsStrict(Ordering::readStrict).apply(pe).get(),
                         pf,
                         pg
                 ).equals(x),
@@ -274,7 +274,7 @@ public class SeptupleTest {
                         Readers.readWithNullsStrict(Readers::readIntegerStrict),
                         Readers.readWithNullsStrict(Readers::readBooleanStrict),
                         Readers.readWithNullsStrict(Readers::readCharacterStrict),
-                        Readers.readWithNullsStrict(Readers::readOrderingStrict),
+                        Readers.readWithNullsStrict(Ordering::readStrict),
                         Readers.readWithNullsStrict(Readers::readDoubleStrict),
                         Readers.readWithNullsStrict(Readers.readListStrict(Readers::readIntegerStrict))
                 ),
@@ -322,7 +322,7 @@ public class SeptupleTest {
                                 pb,
                                 pc,
                                 pd,
-                                Readers.readWithNullsStrict(Readers::readOrderingStrict).apply(pe).get(),
+                                Readers.readWithNullsStrict(Ordering::readStrict).apply(pe).get(),
                                 pf,
                                 pg
                         ),
@@ -331,7 +331,7 @@ public class SeptupleTest {
                                 qb,
                                 qc,
                                 qd,
-                                Readers.readWithNullsStrict(Readers::readOrderingStrict).apply(qe).get(),
+                                Readers.readWithNullsStrict(Ordering::readStrict).apply(qe).get(),
                                 qf,
                                 qg
                         )

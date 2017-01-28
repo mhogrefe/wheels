@@ -4,10 +4,12 @@ import mho.wheels.math.BinaryFraction;
 import mho.wheels.structures.*;
 import mho.wheels.testing.Demos;
 import mho.wheels.testing.Testing;
+import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.HashMap;
+import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -427,7 +429,8 @@ public class ExhaustiveProviderDemos extends Demos {
 
     private void demoWithNull_infinite() {
         for (Iterable<Integer> xs : take(MEDIUM_LIMIT, P.prefixPermutations(EP.naturalIntegers()))) {
-            System.out.println("withNull(" + middle(xs.toString()) + ") = " + its(EP.withNull(xs)));
+            System.out.println("withNull(" + middle(IterableUtils.toString(TINY_LIMIT, xs)) + ") = " +
+                    its(EP.withNull(xs)));
         }
     }
 
@@ -439,7 +442,8 @@ public class ExhaustiveProviderDemos extends Demos {
 
     private void demoNonEmptyOptionals_infinite() {
         for (Iterable<Integer> xs : take(MEDIUM_LIMIT, P.prefixPermutations(EP.naturalIntegers()))) {
-            System.out.println("nonEmptyOptionals(" + middle(xs.toString()) + ") = " + its(EP.nonEmptyOptionals(xs)));
+            System.out.println("nonEmptyOptionals(" + middle(IterableUtils.toString(TINY_LIMIT, xs)) + ") = " +
+                    its(EP.nonEmptyOptionals(xs)));
         }
     }
 
@@ -451,7 +455,8 @@ public class ExhaustiveProviderDemos extends Demos {
 
     private void demoOptionals_infinite() {
         for (Iterable<Integer> xs : take(MEDIUM_LIMIT, P.prefixPermutations(EP.naturalIntegers()))) {
-            System.out.println("optionals(" + middle(xs.toString()) + ") = " + its(EP.optionals(xs)));
+            System.out.println("optionals(" + middle(IterableUtils.toString(TINY_LIMIT, xs)) + ") = " +
+                    its(EP.optionals(xs)));
         }
     }
 
@@ -463,7 +468,7 @@ public class ExhaustiveProviderDemos extends Demos {
 
     private void demoNonEmptyNullableOptionals_infinite() {
         for (Iterable<Integer> xs : take(MEDIUM_LIMIT, P.prefixPermutations(EP.withNull(EP.naturalIntegers())))) {
-            System.out.println("nonEmptyNullableOptionals(" + middle(xs.toString()) + ") = " +
+            System.out.println("nonEmptyNullableOptionals(" + middle(IterableUtils.toString(TINY_LIMIT, xs)) + ") = " +
                     its(EP.nonEmptyNullableOptionals(xs)));
         }
     }
@@ -476,7 +481,8 @@ public class ExhaustiveProviderDemos extends Demos {
 
     private void demoNullableOptionals_infinite() {
         for (Iterable<Integer> xs : take(MEDIUM_LIMIT, P.prefixPermutations(EP.withNull(EP.naturalIntegers())))) {
-            System.out.println("nullableOptionals(" + middle(xs.toString()) + ") = " + its(EP.nullableOptionals(xs)));
+            System.out.println("nullableOptionals(" + middle(IterableUtils.toString(TINY_LIMIT, xs)) + ") = " +
+                    its(EP.nullableOptionals(xs)));
         }
     }
 
@@ -561,6 +567,63 @@ public class ExhaustiveProviderDemos extends Demos {
             String niceFunction = toMap(map(q -> new Pair<>(q.a, its(q.b)), fromMap(p.b.asMap()))).toString();
             System.out.println("dependentPairsInfinite(" + its(p.a) + ", " + niceFunction + ") = " +
                     its(EP.dependentPairsInfinite(p.a, p.b)));
+        }
+    }
+
+    private static class IntNoHashCode {
+        private int i;
+
+        public IntNoHashCode(int i) {
+            this.i = i;
+        }
+
+        public int intValue() {
+            return i;
+        }
+
+        public int hashCode() {
+            throw new UnsupportedOperationException();
+        }
+
+        public @NotNull
+        String toString() {
+            return Integer.toString(i);
+        }
+    }
+
+    private void demoDependentPairsInfiniteIdentityHash() {
+        IterableProvider PS = P.withScale(4);
+        Function<List<IntNoHashCode>, Iterable<IdentityHashMap<IntNoHashCode, List<Integer>>>> f = xs ->
+                filterInfinite(
+                        m -> !all(p -> isEmpty(p.b), fromMap(m)),
+                        PS.identityMaps(xs, map(IterableUtils::unrepeat, PS.listsAtLeast(1, P.integersGeometric())))
+                );
+        Function<
+                Pair<List<IntNoHashCode>, IdentityHashMap<IntNoHashCode, List<Integer>>>,
+                Pair<Iterable<IntNoHashCode>, IdentityFiniteDomainFunction<IntNoHashCode, Iterable<Integer>>>
+        > g = p -> {
+            Iterable<Pair<IntNoHashCode, List<Integer>>> values = fromMap(p.b);
+            IdentityHashMap<IntNoHashCode, Iterable<Integer>> transformedValues = toIdentityMap(
+                    map(e -> new Pair<>(e.a, cycle(e.b)), values)
+            );
+            return new Pair<>(cycle(p.a), new IdentityFiniteDomainFunction<>(transformedValues));
+        };
+        Iterable<Pair<Iterable<IntNoHashCode>, IdentityFiniteDomainFunction<IntNoHashCode, Iterable<Integer>>>> ps =
+                map(
+                        g,
+                        P.dependentPairsInfiniteIdentityHash(
+                                map(
+                                        IterableUtils::unrepeat,
+                                        PS.listsAtLeast(1, map(IntNoHashCode::new, P.integersGeometric()))
+                                ),
+                                f
+                        )
+                );
+        for (Pair<Iterable<IntNoHashCode>, IdentityFiniteDomainFunction<IntNoHashCode, Iterable<Integer>>> p :
+                take(MEDIUM_LIMIT, ps)) {
+            String niceFunction = toIdentityMap(map(q -> new Pair<>(q.a, its(q.b)), fromMap(p.b.asMap()))).toString();
+            System.out.println("dependentPairsInfiniteIdentityHash(" + its(p.a) + ", " + niceFunction + ") = " +
+                    its(EP.dependentPairsInfiniteIdentityHash(p.a, p.b)));
         }
     }
 
@@ -2555,6 +2618,26 @@ public class ExhaustiveProviderDemos extends Demos {
         );
         for (Pair<List<Integer>, Iterable<Integer>> p : take(MEDIUM_LIMIT, ps)) {
             System.out.println("maps(" + p.a + ", " + its(p.b) + ") = " + its(EP.maps(p.a, p.b)));
+        }
+    }
+
+    private void demoIdentityMaps_finite() {
+        Iterable<Pair<List<IntNoHashCode>, List<Integer>>> ps = P.pairs(
+                P.withScale(4).lists(P.withNull(map(IntNoHashCode::new, P.integersGeometric()))),
+                P.withScale(4).lists(P.withNull(P.integersGeometric()))
+        );
+        for (Pair<List<IntNoHashCode>, List<Integer>> p : take(MEDIUM_LIMIT, ps)) {
+            System.out.println("identityMaps(" + p.a + ", " + p.b + ") = " + its(EP.identityMaps(p.a, p.b)));
+        }
+    }
+
+    private void demoIdentityMaps_infinite() {
+        Iterable<Pair<List<IntNoHashCode>, Iterable<Integer>>> ps = P.pairs(
+                P.withScale(4).lists(P.withNull(map(IntNoHashCode::new, P.integersGeometric()))),
+                P.prefixPermutations(P.withNull(EP.naturalIntegers()))
+        );
+        for (Pair<List<IntNoHashCode>, Iterable<Integer>> p : take(MEDIUM_LIMIT, ps)) {
+            System.out.println("identityMaps(" + p.a + ", " + its(p.b) + ") = " + its(EP.identityMaps(p.a, p.b)));
         }
     }
 

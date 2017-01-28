@@ -53,7 +53,7 @@ public class BigDecimalUtilsProperties extends TestProperties {
             );
         }
 
-        for (BigDecimal bd : take(LIMIT, P.withElement(BigDecimal.ZERO, P.negativeBigDecimals()))) {
+        for (BigDecimal bd : take(LIMIT, P.rangeDown(BigDecimal.ZERO))) {
             try {
                 ceilingLog10(bd);
                 fail(bd);
@@ -87,7 +87,8 @@ public class BigDecimalUtilsProperties extends TestProperties {
             BigDecimal bd = setPrecision(p.a, p.b);
             assertTrue(
                     p,
-                    bd.toString().equals("0." + replicate(p.b - 1, '0')) || bd.toString().equals("0E-" + (p.b - 1))
+                    bd.toString().equals("0." + replicateString(p.b - 1, '0')) ||
+                            bd.toString().equals("0E-" + (p.b - 1))
             );
         }
 

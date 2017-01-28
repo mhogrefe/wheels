@@ -1,6 +1,5 @@
 package mho.wheels.io;
 
-import mho.wheels.ordering.Ordering;
 import mho.wheels.structures.NullableOptional;
 import org.jetbrains.annotations.NotNull;
 
@@ -73,7 +72,7 @@ public class Readers {
                 return Optional.empty();
             }
             if (x == null) return Optional.empty();
-            return x.toString().equals(s) ? Optional.of(x) : Optional.<T>empty();
+            return x.toString().equals(s) ? Optional.of(x) : Optional.empty();
         };
     }
 
@@ -91,31 +90,6 @@ public class Readers {
      */
     public static @NotNull Optional<Boolean> readBooleanStrict(@NotNull String s) {
         return genericReadStrict(Boolean::parseBoolean).apply(s);
-    }
-
-    /**
-     * Reads an {@link Ordering} from a {@code String}.
-     *
-     * <ul>
-     *  <li>{@code s} must be non-null.</li>
-     *  <li>The result is non-null.</li>
-     * </ul>
-     *
-     * @param s the input {@code String}
-     * @return the {@code Ordering} represented by {@code s}, or {@code Optional.empty} if {@code s} does not represent
-     * an {@code Ordering}
-     */
-    public static @NotNull Optional<Ordering> readOrderingStrict(@NotNull String s) {
-        switch (s) {
-            case "<":
-                return Optional.of(Ordering.LT);
-            case "=":
-                return Optional.of(Ordering.EQ);
-            case ">":
-                return Optional.of(Ordering.GT);
-            default:
-                return Optional.empty();
-        }
     }
 
     /**
@@ -298,7 +272,7 @@ public class Readers {
      * represent a {@code Character}
      */
     public static @NotNull Optional<Character> readCharacterStrict(@NotNull String s) {
-        return s.length() == 1 ? Optional.of(s.charAt(0)) : Optional.<Character>empty();
+        return s.length() == 1 ? Optional.of(s.charAt(0)) : Optional.empty();
     }
 
     /**
@@ -398,7 +372,7 @@ public class Readers {
             if (s.length() < 2 || head(s) != '[' || last(s) != ']') return Optional.empty();
             s = middle(s);
             NullableOptional<T> ot = read.apply(s);
-            return ot.isPresent() ? Optional.of(ot) : Optional.<NullableOptional<T>>empty();
+            return ot.isPresent() ? Optional.of(ot) : Optional.empty();
         };
     }
 

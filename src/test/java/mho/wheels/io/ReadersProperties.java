@@ -17,7 +17,6 @@ import static mho.wheels.testing.Testing.*;
 
 public strictfp class ReadersProperties extends TestProperties {
     private static final @NotNull String BOOLEAN_CHARS = "aeflrstu";
-    private static final @NotNull String ORDERING_CHARS = "<=>";
     private static final @NotNull String ROUNDING_MODE_CHARS = "ACDEFGHILNOPRSUVWY_";
     private static final @NotNull String INTEGRAL_CHARS = "-0123456789";
     private static final @NotNull String FLOATING_POINT_CHARS = "-.0123456789EINafinty";
@@ -32,7 +31,6 @@ public strictfp class ReadersProperties extends TestProperties {
     protected void testBothModes() {
         propertiesGenericReadStrict();
         propertiesReadBooleanStrict();
-        propertiesReadOrderingStrict();
         propertiesReadRoundingModeStrict();
         propertiesReadBigIntegerStrict();
         propertiesReadByteStrict();
@@ -71,20 +69,6 @@ public strictfp class ReadersProperties extends TestProperties {
     private void propertiesReadBooleanStrict() {
         initialize("readBooleanStrict(String)");
         propertiesReadHelper(LIMIT, P, BOOLEAN_CHARS, P.booleans(), Readers::readBooleanStrict, b -> {}, false, true);
-    }
-
-    private void propertiesReadOrderingStrict() {
-        initialize("readOrderingStrict(String)");
-        propertiesReadHelper(
-                LIMIT,
-                P,
-                ORDERING_CHARS,
-                P.orderings(),
-                Readers::readOrderingStrict,
-                o -> {},
-                false,
-                true
-        );
     }
 
     private void propertiesReadRoundingModeStrict() {
@@ -271,10 +255,8 @@ public strictfp class ReadersProperties extends TestProperties {
                 q -> new Pair<>((Function<String, Optional<Integer>>) q.b, q.b.domain().toString()),
                 P.dependentPairsInfinite(
                         P.withScale(4).subsetsAtLeast(1, P.withScale(4).strings()),
-                        ss -> map(
-                                m -> new FiniteDomainFunction<>(m),
-                                P.maps(ss, P.nonEmptyOptionals(P.integers()))
-                        )
+                        ss -> map(FiniteDomainFunction::new, P.maps(ss, P.nonEmptyOptionals(P.integers()))
+)
                 )
         );
         for (Pair<Function<String, Optional<Integer>>, String> p : take(LIMIT, ps)) {
@@ -292,10 +274,7 @@ public strictfp class ReadersProperties extends TestProperties {
                 q -> new Pair<>((Function<String, Optional<Integer>>) q.b, q.b.domain().toString()),
                 P.dependentPairsInfinite(
                         P.withScale(4).subsetsAtLeast(1, P.withScale(4).strings()),
-                        ss -> map(
-                                m -> new FiniteDomainFunction<>(m),
-                                P.maps(ss, P.nonEmptyOptionals(P.integers()))
-                        )
+                        ss -> map(FiniteDomainFunction::new, P.maps(ss, P.nonEmptyOptionals(P.integers())))
                 )
         );
         for (Pair<Function<String, Optional<Integer>>, String> p : take(LIMIT, ps)) {
