@@ -69,6 +69,16 @@ public class OrderingProperties extends TestProperties {
         propertiesWeaklyIncreasing_Comparator_Iterable_T();
         propertiesWeaklyDecreasing_Comparator_Iterable_T();
         propertiesZigzagging_Comparator_Iterable_T();
+        propertiesIncreasing_String();
+        propertiesDecreasing_String();
+        propertiesWeaklyIncreasing_String();
+        propertiesWeaklyDecreasing_String();
+        propertiesZigzagging_String();
+        propertiesIncreasing_Comparator_String();
+        propertiesDecreasing_Comparator_String();
+        propertiesWeaklyIncreasing_Comparator_String();
+        propertiesWeaklyDecreasing_Comparator_String();
+        propertiesZigzagging_Comparator_String();
         propertiesReadStrict();
         propertiesToString();
     }
@@ -1095,6 +1105,166 @@ public class OrderingProperties extends TestProperties {
         Comparator<Integer> naturalComparator = Comparator.naturalOrder();
         for (List<Integer> xs : take(LIMIT, P.lists(P.integersGeometric()))) {
             assertEquals(xs, zigzagging(naturalComparator, xs), zigzagging(xs));
+        }
+    }
+
+    private void propertiesIncreasing_String() {
+        initialize("increasing(String)");
+        for (String s : take(LIMIT, P.strings())) {
+            assertEquals(s, increasing(s), decreasing(reverse(s)));
+        }
+
+        for (char c : take(LIMIT, P.characters())) {
+            assertTrue(c, increasing(Character.toString(c)));
+        }
+    }
+
+    private void propertiesDecreasing_String() {
+        initialize("decreasing(String)");
+        for (String s : take(LIMIT, P.strings())) {
+            assertEquals(s, decreasing(s), increasing(reverse(s)));
+        }
+
+        for (char c : take(LIMIT, P.characters())) {
+            assertTrue(c, decreasing(Character.toString(c)));
+        }
+    }
+
+    private void propertiesWeaklyIncreasing_String() {
+        initialize("weaklyIncreasing(String)");
+        for (String s : take(LIMIT, P.strings())) {
+            assertEquals(s, weaklyIncreasing(s), weaklyDecreasing(reverse(s)));
+        }
+
+        for (char c : take(LIMIT, P.characters())) {
+            assertTrue(c, weaklyIncreasing(Character.toString(c)));
+        }
+    }
+
+    private void propertiesWeaklyDecreasing_String() {
+        initialize("weaklyDecreasing(String)");
+        for (String s : take(LIMIT, P.strings())) {
+            assertEquals(s, weaklyDecreasing(s), weaklyIncreasing(reverse(s)));
+        }
+
+        for (char c : take(LIMIT, P.characters())) {
+            assertTrue(c, weaklyDecreasing(Character.toString(c)));
+        }
+    }
+
+    private void propertiesZigzagging_String() {
+        initialize("zigzagging(String)");
+        for (String s : take(LIMIT, P.strings())) {
+            assertEquals(s, zigzagging(s), zigzagging(reverse(s)));
+        }
+
+        for (char c : take(LIMIT, P.characters())) {
+            assertTrue(c, zigzagging(Character.toString(c)));
+        }
+    }
+
+    private void propertiesIncreasing_Comparator_String() {
+        initialize("increasing(Comparator, String)");
+        Iterable<Pair<String, String>> ps = P.dependentPairs(P.strings(), is -> P.stringPermutations(nub(is)));
+        for (Pair<String, String> p : take(LIMIT, ps)) {
+            Comparator<Character> comparator = new StringBasedComparator(p.b);
+            assertEquals(p, increasing(comparator, p.a), decreasing(comparator, reverse(p.a)));
+
+            for (String s : take(TINY_LIMIT, filterInfinite(s -> !any(c -> elem(c, s), p.a), P.stringsAtLeast(2)))) {
+                try {
+                    increasing(comparator, s);
+                    fail(s);
+                } catch (IllegalArgumentException ignored) {}
+            }
+        }
+
+        Comparator<Character> naturalComparator = Comparator.naturalOrder();
+        for (String s : take(LIMIT, P.strings())) {
+            assertEquals(s, increasing(naturalComparator, s), increasing(s));
+        }
+    }
+
+    private void propertiesDecreasing_Comparator_String() {
+        initialize("decreasing(Comparator, String)");
+        Iterable<Pair<String, String>> ps = P.dependentPairs(P.strings(), is -> P.stringPermutations(nub(is)));
+        for (Pair<String, String> p : take(LIMIT, ps)) {
+            Comparator<Character> comparator = new StringBasedComparator(p.b);
+            assertEquals(p, decreasing(comparator, p.a), increasing(comparator, reverse(p.a)));
+
+            for (String s : take(TINY_LIMIT, filterInfinite(s -> !any(c -> elem(c, s), p.a), P.stringsAtLeast(2)))) {
+                try {
+                    decreasing(comparator, s);
+                    fail(s);
+                } catch (IllegalArgumentException ignored) {}
+            }
+        }
+
+        Comparator<Character> naturalComparator = Comparator.naturalOrder();
+        for (String s : take(LIMIT, P.strings())) {
+            assertEquals(s, decreasing(naturalComparator, s), decreasing(s));
+        }
+    }
+
+    private void propertiesWeaklyIncreasing_Comparator_String() {
+        initialize("weaklyIncreasing(Comparator, String)");
+        Iterable<Pair<String, String>> ps = P.dependentPairs(P.strings(), is -> P.stringPermutations(nub(is)));
+        for (Pair<String, String> p : take(LIMIT, ps)) {
+            Comparator<Character> comparator = new StringBasedComparator(p.b);
+            assertEquals(p, weaklyIncreasing(comparator, p.a), weaklyDecreasing(comparator, reverse(p.a)));
+
+            for (String s : take(TINY_LIMIT, filterInfinite(s -> !any(c -> elem(c, s), p.a), P.stringsAtLeast(2)))) {
+                try {
+                    weaklyIncreasing(comparator, s);
+                    fail(s);
+                } catch (IllegalArgumentException ignored) {}
+            }
+        }
+
+        Comparator<Character> naturalComparator = Comparator.naturalOrder();
+        for (String s : take(LIMIT, P.strings())) {
+            assertEquals(s, weaklyIncreasing(naturalComparator, s), weaklyIncreasing(s));
+        }
+    }
+
+    private void propertiesWeaklyDecreasing_Comparator_String() {
+        initialize("weaklyDecreasing(Comparator, String)");
+        Iterable<Pair<String, String>> ps = P.dependentPairs(P.strings(), is -> P.stringPermutations(nub(is)));
+        for (Pair<String, String> p : take(LIMIT, ps)) {
+            Comparator<Character> comparator = new StringBasedComparator(p.b);
+            assertEquals(p, weaklyDecreasing(comparator, p.a), weaklyIncreasing(comparator, reverse(p.a)));
+
+            for (String s : take(TINY_LIMIT, filterInfinite(s -> !any(c -> elem(c, s), p.a), P.stringsAtLeast(2)))) {
+                try {
+                    weaklyDecreasing(comparator, s);
+                    fail(s);
+                } catch (IllegalArgumentException ignored) {}
+            }
+        }
+
+        Comparator<Character> naturalComparator = Comparator.naturalOrder();
+        for (String s : take(LIMIT, P.strings())) {
+            assertEquals(s, weaklyDecreasing(naturalComparator, s), weaklyDecreasing(s));
+        }
+    }
+
+    private void propertiesZigzagging_Comparator_String() {
+        initialize("zigzagging(Comparator, String)");
+        Iterable<Pair<String, String>> ps = P.dependentPairs(P.strings(), is -> P.stringPermutations(nub(is)));
+        for (Pair<String, String> p : take(LIMIT, ps)) {
+            Comparator<Character> comparator = new StringBasedComparator(p.b);
+            assertEquals(p, zigzagging(comparator, p.a), zigzagging(comparator, reverse(p.a)));
+
+            for (String s : take(TINY_LIMIT, filterInfinite(s -> !any(c -> elem(c, s), p.a), P.stringsAtLeast(2)))) {
+                try {
+                    zigzagging(comparator, s);
+                    fail(s);
+                } catch (IllegalArgumentException ignored) {}
+            }
+        }
+
+        Comparator<Character> naturalComparator = Comparator.naturalOrder();
+        for (String s : take(LIMIT, P.strings())) {
+            assertEquals(s, zigzagging(naturalComparator, s), zigzagging(s));
         }
     }
 
