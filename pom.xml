@@ -47,6 +47,8 @@
                         <include>**/ExhaustiveProviderProperties.java</include>
                         <include>**/IterableUtilsTest.java</include>
                         <include>**/IterableUtilsProperties.java</include>
+                        <include>**/NoRemoveIterableTest.java</include>
+                        <include>**/NoRemoveIterableProperties.java</include>
                         <include>**/NoRemoveIteratorTest.java</include>
                         <include>**/NoRemoveIteratorProperties.java</include>
                         <include>**/RandomProviderTest.java</include>

@@ -21,7 +21,7 @@ Progress
 | ExhaustiveProvider           | ✔       | ✔       | ✔     | ✔     | ✔          |
 | IterableProvider             | ✔       | ✔       | ✔     | ✔     | ✔          |
 | IterableUtils                | ✘       | ✘       | ✘     | ✘     | ✘          |
-| NoRemoveIterable             | ✔       | ✘       | ✘     | ✘     | ✘          |
+| NoRemoveIterable             | ✔       | ✔       | ✔     | ✔     | ✔          |
 | NoRemoveIterator             | ✔       | ✔       | ✔     | ✔     | ✔          |
 | RandomProvider               | ✔       | ✔       | ✔     | ✔     | ✔          |
 | BinaryFraction               | ✔       | ✔       | ✔     | ✔     | ✔          |

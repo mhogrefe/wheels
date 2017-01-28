@@ -4,6 +4,12 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Iterator;
 
+/**
+ * A wrapper around {@code Iterable} which disallows calling the {@link Iterator#remove()} method on any of its
+ * iterators. If removal is attempted, an exception is thrown.
+ *
+ * @param <T> the type of the elements contained in this {@code NoRemoveIterable}
+ */
 public class NoRemoveIterable<T> implements Iterable<T> {
     private final @NotNull Iterable<T> inner;
 
@@ -12,7 +18,7 @@ public class NoRemoveIterable<T> implements Iterable<T> {
     }
 
     @Override
-    public Iterator<T> iterator() {
+    public @NotNull Iterator<T> iterator() {
         return new NoRemoveIterator<T>() {
             private final @NotNull Iterator<T> it = inner.iterator();
 
