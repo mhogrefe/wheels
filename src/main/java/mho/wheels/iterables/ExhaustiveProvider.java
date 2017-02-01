@@ -3013,9 +3013,9 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
             public @NotNull Pair<A, B> advance() {
                 while (true) {
                     Pair<BigInteger, BigInteger> indices = unpairingFunction.apply(is.next());
-                    NullableOptional<A> oa = cas.get(indices.a.intValueExact());
+                    NullableOptional<A> oa = cas.get(indices.a);
                     if (!oa.isPresent()) continue;
-                    NullableOptional<B> ob = cbs.get(indices.b.intValueExact());
+                    NullableOptional<B> ob = cbs.get(indices.b);
                     if (!ob.isPresent()) continue;
                     if (!outputSizeKnown() && cas.knownSize().isPresent() && cbs.knownSize().isPresent()) {
                         setOutputSize(
@@ -3064,9 +3064,9 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
             public @NotNull Pair<T, T> advance() {
                 while (true) {
                     Pair<BigInteger, BigInteger> indices = unpairingFunction.apply(is.next());
-                    NullableOptional<T> oa = cxs.get(indices.a.intValueExact());
+                    NullableOptional<T> oa = cxs.get(indices.a);
                     if (!oa.isPresent()) continue;
-                    NullableOptional<T> ob = cxs.get(indices.b.intValueExact());
+                    NullableOptional<T> ob = cxs.get(indices.b);
                     if (!ob.isPresent()) continue;
                     if (!outputSizeKnown() && cxs.knownSize().isPresent()) {
                         setOutputSize(BigInteger.valueOf(cxs.knownSize().get()).pow(2));
@@ -3763,7 +3763,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
                     List<BigInteger> indices = IntegerUtils.demux(size, is.next());
                     List<T> list = new ArrayList<>();
                     for (BigInteger index : indices) {
-                        NullableOptional<T> ox = cxs.get(index.intValueExact());
+                        NullableOptional<T> ox = cxs.get(index);
                         if (!ox.isPresent()) continue outer;
                         list.add(ox.get());
                     }
@@ -3858,11 +3858,11 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
             public @NotNull Triple<A, B, C> advance() {
                 while (true) {
                     List<BigInteger> indices = IntegerUtils.demux(3, is.next());
-                    NullableOptional<A> oa = cas.get(indices.get(0).intValueExact());
+                    NullableOptional<A> oa = cas.get(indices.get(0));
                     if (!oa.isPresent()) continue;
-                    NullableOptional<B> ob = cbs.get(indices.get(1).intValueExact());
+                    NullableOptional<B> ob = cbs.get(indices.get(1));
                     if (!ob.isPresent()) continue;
-                    NullableOptional<C> oc = ccs.get(indices.get(2).intValueExact());
+                    NullableOptional<C> oc = ccs.get(indices.get(2));
                     if (!oc.isPresent()) continue;
                     if (!outputSizeKnown() &&
                             cas.knownSize().isPresent() &&
@@ -3945,13 +3945,13 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
             public @NotNull Quadruple<A, B, C, D> advance() {
                 while (true) {
                     List<BigInteger> indices = IntegerUtils.demux(4, is.next());
-                    NullableOptional<A> oa = cas.get(indices.get(0).intValueExact());
+                    NullableOptional<A> oa = cas.get(indices.get(0));
                     if (!oa.isPresent()) continue;
-                    NullableOptional<B> ob = cbs.get(indices.get(1).intValueExact());
+                    NullableOptional<B> ob = cbs.get(indices.get(1));
                     if (!ob.isPresent()) continue;
-                    NullableOptional<C> oc = ccs.get(indices.get(2).intValueExact());
+                    NullableOptional<C> oc = ccs.get(indices.get(2));
                     if (!oc.isPresent()) continue;
-                    NullableOptional<D> od = cds.get(indices.get(3).intValueExact());
+                    NullableOptional<D> od = cds.get(indices.get(3));
                     if (!od.isPresent()) continue;
                     if (!outputSizeKnown() &&
                             cas.knownSize().isPresent() &&
@@ -4042,15 +4042,15 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
             public @NotNull Quintuple<A, B, C, D, E> advance() {
                 while (true) {
                     List<BigInteger> indices = IntegerUtils.demux(5, is.next());
-                    NullableOptional<A> oa = cas.get(indices.get(0).intValueExact());
+                    NullableOptional<A> oa = cas.get(indices.get(0));
                     if (!oa.isPresent()) continue;
-                    NullableOptional<B> ob = cbs.get(indices.get(1).intValueExact());
+                    NullableOptional<B> ob = cbs.get(indices.get(1));
                     if (!ob.isPresent()) continue;
-                    NullableOptional<C> oc = ccs.get(indices.get(2).intValueExact());
+                    NullableOptional<C> oc = ccs.get(indices.get(2));
                     if (!oc.isPresent()) continue;
-                    NullableOptional<D> od = cds.get(indices.get(3).intValueExact());
+                    NullableOptional<D> od = cds.get(indices.get(3));
                     if (!od.isPresent()) continue;
-                    NullableOptional<E> oe = ces.get(indices.get(4).intValueExact());
+                    NullableOptional<E> oe = ces.get(indices.get(4));
                     if (!oe.isPresent()) continue;
                     if (!outputSizeKnown() &&
                             cas.knownSize().isPresent() &&
@@ -4149,17 +4149,17 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
             public @NotNull Sextuple<A, B, C, D, E, F> advance() {
                 while (true) {
                     List<BigInteger> indices = IntegerUtils.demux(6, is.next());
-                    NullableOptional<A> oa = cas.get(indices.get(0).intValueExact());
+                    NullableOptional<A> oa = cas.get(indices.get(0));
                     if (!oa.isPresent()) continue;
-                    NullableOptional<B> ob = cbs.get(indices.get(1).intValueExact());
+                    NullableOptional<B> ob = cbs.get(indices.get(1));
                     if (!ob.isPresent()) continue;
-                    NullableOptional<C> oc = ccs.get(indices.get(2).intValueExact());
+                    NullableOptional<C> oc = ccs.get(indices.get(2));
                     if (!oc.isPresent()) continue;
-                    NullableOptional<D> od = cds.get(indices.get(3).intValueExact());
+                    NullableOptional<D> od = cds.get(indices.get(3));
                     if (!od.isPresent()) continue;
-                    NullableOptional<E> oe = ces.get(indices.get(4).intValueExact());
+                    NullableOptional<E> oe = ces.get(indices.get(4));
                     if (!oe.isPresent()) continue;
-                    NullableOptional<F> of = cfs.get(indices.get(5).intValueExact());
+                    NullableOptional<F> of = cfs.get(indices.get(5));
                     if (!of.isPresent()) continue;
                     if (!outputSizeKnown() &&
                             cas.knownSize().isPresent() &&
@@ -4265,19 +4265,19 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
             public @NotNull Septuple<A, B, C, D, E, F, G> advance() {
                 while (true) {
                     List<BigInteger> indices = IntegerUtils.demux(7, is.next());
-                    NullableOptional<A> oa = cas.get(indices.get(0).intValueExact());
+                    NullableOptional<A> oa = cas.get(indices.get(0));
                     if (!oa.isPresent()) continue;
-                    NullableOptional<B> ob = cbs.get(indices.get(1).intValueExact());
+                    NullableOptional<B> ob = cbs.get(indices.get(1));
                     if (!ob.isPresent()) continue;
-                    NullableOptional<C> oc = ccs.get(indices.get(2).intValueExact());
+                    NullableOptional<C> oc = ccs.get(indices.get(2));
                     if (!oc.isPresent()) continue;
-                    NullableOptional<D> od = cds.get(indices.get(3).intValueExact());
+                    NullableOptional<D> od = cds.get(indices.get(3));
                     if (!od.isPresent()) continue;
-                    NullableOptional<E> oe = ces.get(indices.get(4).intValueExact());
+                    NullableOptional<E> oe = ces.get(indices.get(4));
                     if (!oe.isPresent()) continue;
-                    NullableOptional<F> of = cfs.get(indices.get(5).intValueExact());
+                    NullableOptional<F> of = cfs.get(indices.get(5));
                     if (!of.isPresent()) continue;
-                    NullableOptional<G> og = cgs.get(indices.get(6).intValueExact());
+                    NullableOptional<G> og = cgs.get(indices.get(6));
                     if (!og.isPresent()) continue;
                     if (!outputSizeKnown() &&
                             cas.knownSize().isPresent() &&
