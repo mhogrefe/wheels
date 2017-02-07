@@ -16,7 +16,7 @@ Progress
 | Readers                      | ✔       | ✔       | ✔     | ✔     | ✔          |
 | TextInput                    | ✔       | ✘       | ✘     | ✘     | ✘          |
 | TextOutput                   | ✔       | ✘       | ✘     | ✘     | ✘          |
-| CachedIterator               | ✔       | ✔       | ✘     | ✘     | ✘          |
+| CachedIterator               | ✔       | ✔       | ✔     | ✘     | ✘          |
 | EventuallyKnownSizeIterator  | ✔       | ✘       | ✘     | ✘     | ✘          |
 | ExhaustiveProvider           | ✔       | ✔       | ✔     | ✔     | ✔          |
 | IterableProvider             | ✔       | ✔       | ✔     | ✔     | ✔          |

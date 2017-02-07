@@ -109,7 +109,7 @@ public class CachedIterator<T> {
      *
      * <ul>
      *  <li>{@code this} may be any {@code CachedIterator}.</li>
-     *  <li>{@code is} cannot contain nulls or negative values.</li>
+     *  <li>{@code is} must be finite and cannot contain nulls or negative values.</li>
      *  <li>The result is not null.</li>
      * </ul>
      *
