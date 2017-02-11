@@ -109,14 +109,14 @@ public class CachedIterator<T> {
      *
      * <ul>
      *  <li>{@code this} may be any {@code CachedIterator}.</li>
-     *  <li>{@code is} must be finite and cannot contain nulls or negative values.</li>
+     *  <li>{@code is} cannot contain nulls or negative values.</li>
      *  <li>The result is not null.</li>
      * </ul>
      *
      * @param is a list of indices of elements to be retrieved
      * @return the elements at the specified indices
      */
-    public @NotNull Optional<List<T>> get(@NotNull Iterable<Integer> is) {
+    public @NotNull Optional<List<T>> get(@NotNull List<Integer> is) {
         List<T> list = new ArrayList<>();
         for (int i : is) {
             NullableOptional<T> element = get(i);
