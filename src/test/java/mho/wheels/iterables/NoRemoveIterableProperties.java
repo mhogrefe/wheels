@@ -19,7 +19,7 @@ public class NoRemoveIterableProperties extends TestProperties {
     }
 
     private void propertiesConstructor() {
-        initialize("NoRemoveIterable(Iterable<T>)");
+        initialize("new NoRemoveIterable(Iterable<T>)");
         for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
             NoRemoveIterable<Integer> nrxs = new NoRemoveIterable<>(xs);
             assertEquals(xs, toList(nrxs), xs);
