@@ -45,6 +45,7 @@
                         <include>**/ReadersProperties.java</include>
                         <include>**/CachedIteratorTest.java</include>
                         <include>**/CachedIteratorProperties.java</include>
+                        <include>**/EventuallyKnownSizeIteratorTest.java</include>
                         <include>**/ExhaustiveProviderTest.java</include>
                         <include>**/ExhaustiveProviderProperties.java</include>
                         <include>**/IterableUtilsTest.java</include>
