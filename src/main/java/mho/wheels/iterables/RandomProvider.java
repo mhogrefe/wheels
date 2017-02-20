@@ -420,7 +420,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      * @return a {@code BigInteger} with up to {@code bits} bits
      */
     private @NotNull BigInteger nextBigIntegerPow2(int bits) {
-        byte[] bytes = new byte[bits / 8 + 1];
+        byte[] bytes = new byte[(bits >> 3) + 1];
         int x = 0;
         for (int i = 0; i < bytes.length; i++) {
             if (i % 4 == 0) {
