@@ -135,7 +135,7 @@ public class IsaacPRNG {
      * Constructs an {@code IsaacPRNG} using a seed in the form of a list.
      *
      * <ul>
-     *  <li>The length of {@code seed} must be {@link IsaacPRNG#SIZE}.</li>
+     *  <li>The length of {@code seed} must be {@link IsaacPRNG#SIZE}. {@code seed} may not contain nulls.</li>
      *  <li>Any {@code IsaacPRNG} may be constructed using this constructor.</li>
      * </ul>
      *
@@ -149,7 +149,8 @@ public class IsaacPRNG {
         state = new int[SIZE];
         result = new int[SIZE];
         for (int i = 0; i < seed.size(); i++) {
-            result[i] = seed.get(i);
+            int j = seed.get(i); // throws if null
+            result[i] = j;
         }
         initialize();
     }
@@ -159,7 +160,7 @@ public class IsaacPRNG {
      *
      * <ul>
      *  <li>{@code this} may be any {@code IsaacPRNG}.</li>
-     *  <li>The length of {@code seed} must be {@link IsaacPRNG#SIZE}.</li>
+     *  <li>The length of {@code seed} must be {@link IsaacPRNG#SIZE}. {@code seed} may not contain nulls.</li>
      * </ul>
      *
      * @param seed a seed
@@ -176,7 +177,8 @@ public class IsaacPRNG {
         state = new int[SIZE];
         result = new int[SIZE];
         for (int i = 0; i < seed.size(); i++) {
-            result[i] = seed.get(i);
+            int j = seed.get(i); // throws if null
+            result[i] = j;
         }
         initialize();
     }

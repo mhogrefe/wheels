@@ -2,9 +2,11 @@ package mho.wheels.random;
 
 import mho.wheels.testing.Testing;
 import org.jetbrains.annotations.NotNull;
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static mho.wheels.iterables.IterableUtils.*;
@@ -52,6 +54,8 @@ public class IsaacPRNGTest {
 
     private static final @NotNull List<Integer> SEED_C = toList(take(SIZE, Testing.EP.rangeUp(0)));
 
+    private static final @NotNull List<Integer> NULL_SEED = toList(replicate(SIZE, null));
+
     @Test
     public void testConstructor() {
         new IsaacPRNG().validate();
@@ -63,11 +67,92 @@ public class IsaacPRNGTest {
         aeq(prng, output);
     }
 
+    private static void constructor_List_fail_helper(@NotNull List<Integer> seed) {
+        try {
+            new IsaacPRNG(seed);
+            Assert.fail();
+        } catch (IllegalArgumentException | NullPointerException ignored) {}
+    }
+
     @Test
     public void testConstructor_List() {
         constructor_List_helper(SEED_A, "IsaacPRNG[@3171466001973574424]");
         constructor_List_helper(SEED_B, "IsaacPRNG[@-7948823947390831374]");
         constructor_List_helper(SEED_C, "IsaacPRNG[@7281920748093454742]");
+
+        constructor_List_fail_helper(Collections.emptyList());
+        constructor_List_fail_helper(Collections.singletonList(1));
+        constructor_List_fail_helper(NULL_SEED);
+    }
+
+    private static void setSeed_fail_helper(@NotNull IsaacPRNG prng, @NotNull List<Integer> seed) {
+        try {
+            prng.setSeed(seed);
+            Assert.fail();
+        } catch (IllegalArgumentException | NullPointerException ignored) {}
+    }
+
+    @Test
+    public void testSetSeed() {
+        IsaacPRNG a = new IsaacPRNG(SEED_A);
+        IsaacPRNG b = new IsaacPRNG(SEED_B);
+        IsaacPRNG c = new IsaacPRNG(SEED_C);
+
+        a.setSeed(SEED_B);
+        aeq(a, b);
+        a.setSeed(SEED_C);
+        aeq(a, c);
+        a.nextInt();
+        Assert.assertNotEquals(a, c);
+        c.nextInt();
+        aeq(a, c);
+
+        setSeed_fail_helper(a, Collections.emptyList());
+        setSeed_fail_helper(a, Collections.singletonList(1));
+        setSeed_fail_helper(a, NULL_SEED);
+    }
+
+    @Test
+    public void testExample() {
+        aeq(example(), "IsaacPRNG[@3171466001973574424]");
+    }
+
+    @Test
+    public void testCopy() {
+        IsaacPRNG a1 = new IsaacPRNG(SEED_A);
+        IsaacPRNG a2 = a1.copy();
+        aeq(a1, a2);
+        a1.nextInt();
+        Assert.assertNotEquals(a1, a2);
+        a2 = a1.copy();
+        aeq(a1, a2);
+    }
+
+    private static void getId_helper(@NotNull IsaacPRNG input, long output) {
+        aeq(input.getId(), output);
+    }
+
+    @Test
+    public void testGetId() {
+        IsaacPRNG a = new IsaacPRNG(SEED_A);
+        getId_helper(a, 3171466001973574424L);
+        a.nextInt();
+        getId_helper(a, 2169744302903133081L);
+        getId_helper(new IsaacPRNG(SEED_B), -7948823947390831374L);
+        getId_helper(new IsaacPRNG(SEED_C), 7281920748093454742L);
+    }
+
+    private static void nextInt_helper(@NotNull IsaacPRNG input, int output) {
+        aeq(input.nextInt(), output);
+    }
+
+    @Test
+    public void testNextInt() {
+        IsaacPRNG a = new IsaacPRNG(SEED_A);
+        nextInt_helper(a, -1740315277);
+        nextInt_helper(a, -1661427768);
+        nextInt_helper(new IsaacPRNG(SEED_B), 405143795);
+        nextInt_helper(new IsaacPRNG(SEED_C), -934296046);
     }
 
     @Test
