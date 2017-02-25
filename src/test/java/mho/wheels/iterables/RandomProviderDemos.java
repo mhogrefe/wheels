@@ -26,13 +26,13 @@ public class RandomProviderDemos extends Demos {
 
     private void demoConstructor() {
         for (Void v : take(LIMIT, repeat((Void) null))) {
-            System.out.println("RandomProvider() = " + new RandomProvider());
+            System.out.println("new RandomProvider() = " + new RandomProvider());
         }
     }
 
     private void demoConstructor_List_Integer() {
         for (List<Integer> is : take(SMALL_LIMIT, P.lists(IsaacPRNG.SIZE, P.integers()))) {
-            System.out.println("RandomProvider(" + is + ") = " + new RandomProvider(is));
+            System.out.println("new RandomProvider(" + middle(is.toString()) + ") = " + new RandomProvider(is));
         }
     }
 
