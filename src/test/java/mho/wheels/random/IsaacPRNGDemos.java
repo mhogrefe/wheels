@@ -23,8 +23,39 @@ public class IsaacPRNGDemos extends Demos {
     }
 
     private void demoConstructor_List_Integer() {
-        for (List<Integer> is : take(SMALL_LIMIT, P.lists(IsaacPRNG.SIZE, P.integers()))) {
+        for (List<Integer> is : take(SMALL_LIMIT, P.lists(SIZE, P.integers()))) {
             System.out.println("new IsaacPRNG(" + middle(is.toString()) + ") = " + new IsaacPRNG(is));
+        }
+    }
+
+    private void demoSetSeed() {
+        for (Pair<List<Integer>, List<Integer>> p : take(SMALL_LIMIT, P.pairs(P.lists(SIZE, P.integers())))) {
+            IsaacPRNG prng = new IsaacPRNG(p.a);
+            String oldPrngString = prng.toString();
+            prng.setSeed(p.b);
+            System.out.println("new IsaacPRNG(" + middle(p.a.toString()) + ").setSeed(" +
+                    middle(p.b.toString()) + "): " + oldPrngString + " -> " + prng);
+        }
+    }
+
+    private void demoCopy() {
+        for (List<Integer> is : take(SMALL_LIMIT, P.lists(SIZE, P.integers()))) {
+            IsaacPRNG prng = new IsaacPRNG(is);
+            System.out.println("copy(" + prng + ") = " + prng.copy());
+        }
+    }
+
+    private void demoGetId() {
+        for (List<Integer> is : take(SMALL_LIMIT, P.lists(SIZE, P.integers()))) {
+            IsaacPRNG prng = new IsaacPRNG(is);
+            System.out.println("getId(" + prng + ") = " + prng.getId());
+        }
+    }
+
+    private void demoNextInt() {
+        for (List<Integer> is : take(SMALL_LIMIT, P.lists(SIZE, P.integers()))) {
+            IsaacPRNG prng = new IsaacPRNG(is);
+            System.out.println("nextInt(" + prng + ") = " + prng.nextInt());
         }
     }
 
