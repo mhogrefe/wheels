@@ -81,6 +81,7 @@
                         <include>**/OrderingTest.java</include>
                         <include>**/OrderingProperties.java</include>
                         <include>**/IsaacPRNGTest.java</include>
+                        <include>**/IsaacPRNGProperties.java</include>
                         <include>**/NullableOptionalTest.java</include>
                         <include>**/NullableOptionalProperties.java</include>
                         <include>**/PairTest.java</include>

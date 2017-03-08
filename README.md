@@ -11,13 +11,13 @@ Progress
 
 | Class                        | Methods | JavaDoc | Tests | Demos | Properties |
 |:---------------------------- |:-------:|:-------:|:-----:|:-----:|:----------:|
-| ConcurrencyUtils             | ✔       | ✘       | ✘     | ✘     | ✘          |
+| ConcurrencyUtils             | ✔       | ✘       | ✘     | N/A   | N/A        |
 | ResultCache                  | ✔       | ✘       | ✘     | ✘     | ✘          |
 | Readers                      | ✔       | ✔       | ✔     | ✔     | ✔          |
 | TextInput                    | ✔       | ✘       | ✘     | ✘     | ✘          |
 | TextOutput                   | ✔       | ✘       | ✘     | ✘     | ✘          |
 | CachedIterator               | ✔       | ✔       | ✔     | ✔     | ✔          |
-| EventuallyKnownSizeIterator  | ✔       | ✔       | ✔     | ✔     | ✔          |
+| EventuallyKnownSizeIterator  | ✔       | ✔       | ✔     | N/A   | N/A        |
 | ExhaustiveProvider           | ✔       | ✔       | ✔     | ✔     | ✔          |
 | IterableProvider             | ✔       | ✔       | ✔     | ✔     | ✔          |
 | IterableUtils                | ✘       | ✘       | ✘     | ✘     | ✘          |
@@ -36,7 +36,7 @@ Progress
 | StringLexComparator          | ✔       | ✔       | ✔     | ✔     | ✔          |
 | StringShortlexComparator     | ✔       | ✔       | ✔     | ✔     | ✔          |
 | Ordering                     | ✔       | ✔       | ✔     | ✔     | ✔          |
-| IsaacPRNG                    | ✔       | ✔       | ✔     | ✔     | ✘          |
+| IsaacPRNG                    | ✔       | ✔       | ✔     | ✔     | ✔          |
 | Either                       | ✘       | ✘       | ✘     | ✘     | ✘          |
 | FiniteDomainFunction         | ✔       | ✘       | ✘     | ✘     | ✘          |
 | IdentityFiniteDomainFunction | ✔       | ✘       | ✘     | ✘     | ✘          |
