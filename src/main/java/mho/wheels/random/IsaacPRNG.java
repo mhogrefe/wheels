@@ -1,6 +1,7 @@
 package mho.wheels.random;
 
 import mho.wheels.iterables.IterableUtils;
+import mho.wheels.iterables.RandomProvider;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
@@ -252,9 +253,9 @@ public class IsaacPRNG {
      */
     private void generate() {
         int i = 0;
-        int j = SIZE / 2;
+        int j = SIZE >> 1;
         b += ++c;
-        while (i < SIZE / 2) {
+        while (i < SIZE >> 1) {
             int x = state[i];
             a ^= a << 13;
             a += state[j++];

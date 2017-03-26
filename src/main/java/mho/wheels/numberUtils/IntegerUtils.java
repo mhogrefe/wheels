@@ -391,8 +391,8 @@ public class IntegerUtils {
      * @return The {@code BigInteger} represented by {@code bits}
      */
     public static @NotNull BigInteger fromBits(@NotNull List<Boolean> bits) {
-        byte[] bytes = new byte[bits.size() / 8 + 1]; // if bits.size() is a multiple of 8, we get an extra zero to the
-        int byteIndex = bytes.length;                 // left which ensures a positive sign
+        byte[] bytes = new byte[bits.size() >> 3 + 1]; // if bits.size() is a multiple of 8, we get an extra zero to
+        int byteIndex = bytes.length;                  // the left which ensures a positive sign
         for (int i = 0; i < bits.size(); i++) {
             int j = i % 8;
             if (j == 0) byteIndex--;
@@ -416,8 +416,8 @@ public class IntegerUtils {
      * @return The {@code BigInteger} represented by {@code bits}
      */
     public static @NotNull BigInteger fromBigEndianBits(@NotNull List<Boolean> bits) {
-        byte[] bytes = new byte[bits.size() / 8 + 1]; // if bits.size() is a multiple of 8, we get an extra zero to
-        int byteIndex = bytes.length;                     // the left which ensures a positive sign
+        byte[] bytes = new byte[bits.size() >> 3 + 1]; // if bits.size() is a multiple of 8, we get an extra zero to
+        int byteIndex = bytes.length;                  // the left which ensures a positive sign
         int limit = bits.size() - 1;
         for (int i = 0; i < bits.size(); i++) {
             int j = i % 8;
