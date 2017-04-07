@@ -1513,12 +1513,7 @@ public final class MathUtils {
                     }
                     segment.add(bestDigit);
                     Map<List<Integer>, Integer> frequencyMap = frequencyMaps.get(length);
-                    Integer frequency = frequencyMap.get(segment);
-                    if (frequency == null) {
-                        frequencyMap.put(segment, 1);
-                    } else {
-                        frequencyMap.put(segment, frequency + 1);
-                    }
+                    frequencyMap.merge(segment, 1, (a, b) -> a + b);
                     int minimumFrequency = minimumFrequencies.get(length);
                     boolean minimumFrequencySeen = false;
                     if (ceilingLog(BigInteger.valueOf(base), BigInteger.valueOf(frequencyMap.size() + 1)) <= length) {
