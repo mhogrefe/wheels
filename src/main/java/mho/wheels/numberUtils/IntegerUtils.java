@@ -842,8 +842,6 @@ public class IntegerUtils {
             throw new IllegalArgumentException("base must be at least 2");
         BigInteger n = BigInteger.ZERO;
         for (BigInteger digit : digits) {
-            if (digit.signum() == -1 || ge(digit, base))
-                throw new IllegalArgumentException("every digit must be at least zero and less than the base");
             if (digit.signum() == -1) {
                 String digitsString = Testing.its(digits);
                 throw new IllegalArgumentException("Each element of digits must be non-negative. Invalid digit: " +
